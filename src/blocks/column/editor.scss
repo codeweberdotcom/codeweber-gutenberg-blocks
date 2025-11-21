@@ -1,0 +1,86 @@
+.naviddev-column {
+	position: relative;
+	border: 1px dashed rgba(255, 255, 255, 0.5);
+	margin-bottom: 0.75rem;
+	background-color: rgba(0, 0, 0, 0.02);
+	box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.05);
+}
+
+/* Bootstrap grid styles for wp-block columns to override Gutenberg's width: 100% !important */
+
+.block-editor-block-list__layout .wp-block.col {
+  flex: 1 0 0% !important;
+}
+
+.block-editor-block-list__layout .wp-block.col-auto {
+  flex: 0 0 auto !important;
+  width: auto !important;
+}
+
+@for $i from 1 through 12 {
+  .block-editor-block-list__layout .wp-block.col-#{$i} {
+    flex: 0 0 auto !important;
+    width: calc(100% / 12 * #{$i}) !important;
+  }
+}
+
+// Small devices (≥576px)
+@for $i from 1 through 12 {
+  .block-editor-block-list__layout .wp-block.col-sm-#{$i} {
+    flex: 0 0 auto !important;
+    width: calc(100% / 12 * #{$i}) !important;
+  }
+}
+.block-editor-block-list__layout .wp-block.col-sm-auto {
+  flex: 0 0 auto !important;
+  width: auto !important;
+}
+
+// Medium devices (≥768px)
+@for $i from 1 through 12 {
+  .block-editor-block-list__layout .wp-block.col-md-#{$i} {
+    flex: 0 0 auto !important;
+    width: calc(100% / 12 * #{$i}) !important;
+  }
+}
+.block-editor-block-list__layout .wp-block.col-md-auto {
+  flex: 0 0 auto !important;
+  width: auto !important;
+}
+
+// Large devices (≥992px)
+@for $i from 1 through 12 {
+  .block-editor-block-list__layout .wp-block.col-lg-#{$i} {
+    flex: 0 0 auto !important;
+    width: calc(100% / 12 * #{$i}) !important;
+  }
+}
+.block-editor-block-list__layout .wp-block.col-lg-auto {
+  flex: 0 0 auto !important;
+  width: auto !important;
+}
+
+// Extra large devices (≥1200px)
+@for $i from 1 through 12 {
+  .block-editor-block-list__layout .wp-block.col-xl-#{$i} {
+    flex: 0 0 auto !important;
+    width: calc(100% / 12 * #{$i}) !important;
+  }
+}
+.block-editor-block-list__layout .wp-block.col-xl-auto {
+  flex: 0 0 auto !important;
+  width: auto !important;
+}
+
+// Extra extra large devices (≥1400px)
+@for $i from 1 through 12 {
+  .block-editor-block-list__layout .wp-block.col-xxl-#{$i} {
+    flex: 0 0 auto !important;
+    width: calc(100% / 12 * #{$i}) !important;
+  }
+}
+.block-editor-block-list__layout .wp-block.col-xxl-auto {
+  flex: 0 0 auto !important;
+  width: auto !important;
+}
+

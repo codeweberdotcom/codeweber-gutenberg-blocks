@@ -1,0 +1,113 @@
+{
+    "apiVersion": 2,
+    "name": "codeweber-gutenberg-blocks/heading-subtitle",
+    "version": "0.1.0",
+    "title": "Title",
+    "category": "codeweber-gutenberg-blocks",
+    "icon": "heading",
+    "description": "Heading and subtitle block with advanced typography controls.",
+    "supports": {
+        "html": false,
+        "customClassName": true,
+        "anchor": true
+    },
+    "attributes": {
+        "enableTitle": {
+            "type": "boolean",
+            "default": true
+        },
+        "enableSubtitle": {
+            "type": "boolean",
+            "default": true
+        },
+        "title": {
+            "type": "string",
+            "default": ""
+        },
+        "subtitle": {
+            "type": "string",
+            "default": ""
+        },
+        "order": {
+            "type": "string",
+            "default": "title-first"
+        },
+        "titleTag": {
+            "type": "string",
+            "default": "h1"
+        },
+        "subtitleTag": {
+            "type": "string",
+            "default": "p"
+        },
+        "titleColor": {
+            "type": "string",
+            "default": ""
+        },
+        "titleColorType": {
+            "type": "string",
+            "default": "solid"
+        },
+        "subtitleColor": {
+            "type": "string",
+            "default": ""
+        },
+        "subtitleColorType": {
+            "type": "string",
+            "default": "solid"
+        },
+        "align": {
+            "type": "string",
+            "default": "left"
+        },
+        "titleSize": {
+            "type": "string",
+            "default": ""
+        },
+        "subtitleSize": {
+            "type": "string",
+            "default": ""
+        },
+        "titleWeight": {
+            "type": "string",
+            "default": ""
+        },
+        "subtitleWeight": {
+            "type": "string",
+            "default": ""
+        },
+        "titleTransform": {
+            "type": "string",
+            "default": ""
+        },
+        "subtitleTransform": {
+            "type": "string",
+            "default": ""
+        },
+        "titleLine": {
+            "type": "boolean",
+            "default": false
+        },
+        "subtitleLine": {
+            "type": "boolean",
+            "default": false
+        },
+        "lead": {
+            "type": "boolean",
+            "default": false
+        },
+        "spacing": {
+            "type": "object",
+            "default": {}
+        },
+        "className": {
+            "type": "string",
+            "default": ""
+        }
+    },
+    "textdomain": "codeweber-blocks",
+    "editorScript": "file:./index.js",
+    "editorStyle": "file:./index.css",
+    "style": "file:./style-index.css"
+}
+

@@ -1,0 +1,71 @@
+{
+    "apiVersion": 2,
+    "name": "codeweber-blocks/row",
+    "version": "0.1.0",
+    "title": "Row",
+    "category": "codeweber-gutenberg-blocks",
+    "icon": "editor-table",
+    "description": "Flexible row container that mirrors Bootstrap rows.",
+    "supports": {
+        "html": false,
+        "customClassName": true,
+        "anchor": true,
+        "align": false
+    },
+    "attributes": {
+        "rowType": {
+            "type": "string",
+            "default": "classic"
+        },
+        "rowGutterX": {
+            "type": "string",
+            "default": ""
+        },
+        "rowGutterY": {
+            "type": "string",
+            "default": ""
+        },
+        "rowCols": {
+            "type": "string",
+            "default": ""
+        },
+        "rowAlignItems": {
+            "type": "string",
+            "default": ""
+        },
+        "rowJustifyContent": {
+            "type": "string",
+            "default": ""
+        },
+        "rowTextAlign": {
+            "type": "string",
+            "default": ""
+        },
+        "rowPosition": {
+            "type": "string",
+            "default": ""
+        },
+        "rowClass": {
+            "type": "string",
+            "default": ""
+        },
+        "rowColumnsCount": {
+            "type": "number",
+            "default": 0
+        },
+        "rowData": {
+            "type": "string",
+            "default": ""
+        },
+        "rowId": {
+            "type": "string",
+            "default": ""
+        }
+    },
+    "textdomain": "codeweber-blocks",
+    "editorScript": "file:./index.js",
+    "editorStyle": "file:./index.css",
+    "style": "file:./style-index.css"
+}
+
+

@@ -1,0 +1,119 @@
+@use 'sass:math';
+
+$default-gutter-x: 1.5rem;
+$default-gutter-y: 0;
+
+$grid-breakpoints: (
+	'': null,
+	'sm': 576px,
+	'md': 768px,
+	'lg': 992px,
+	'xl': 1200px,
+	'xxl': 1400px
+);
+
+$gutter-scale: (
+	0: 0,
+	1: 0.25rem,
+	2: 0.5rem,
+	3: 0.75rem,
+	4: 1rem,
+	5: 1.25rem,
+	6: 1.5rem,
+	7: 1.75rem,
+	8: 2rem,
+	9: 2.25rem,
+	10: 2.5rem,
+	11: 3rem,
+	12: 3.5rem,
+	13: 4rem,
+	14: 4.5rem,
+	15: 5rem,
+	16: 6rem,
+	17: 7rem,
+	18: 8rem,
+	19: 9rem,
+	20: 10rem,
+	21: 12.5rem,
+	22: 15rem,
+	23: 17.5rem,
+	24: 20rem,
+	25: 22.5rem
+);
+
+@mixin gutter-classes($infix) {
+	@each $key, $value in $gutter-scale {
+		.naviddev-columns.g#{$infix}-#{$key},
+		.naviddev-columns.gx#{$infix}-#{$key} {
+			--bs-gutter-x: #{$value};
+		}
+
+		.naviddev-columns.g#{$infix}-#{$key},
+		.naviddev-columns.gy#{$infix}-#{$key} {
+			--bs-gutter-y: #{$value};
+		}
+	}
+}
+
+.naviddev-column > div > div {
+	--bs-gutter-x: #{$default-gutter-x};
+	--bs-gutter-y: #{$default-gutter-y};
+	display: flex;
+	flex-wrap: wrap;
+	width: 100%;
+	margin-right: calc(-0.5 * var(--bs-gutter-x));
+	margin-left: calc(-0.5 * var(--bs-gutter-x));
+	margin-top: calc(-1 * var(--bs-gutter-y));
+}
+
+.naviddev-columns .block-editor-inner-blocks,
+.naviddev-columns .block-editor-inner-blocks > .block-editor-block-list__layout {
+	display: contents;
+}
+
+.naviddev-columns > .block-editor-inner-blocks > .block-editor-block-list__layout > .block-editor-block-list__block,
+.naviddev-columns > div > div {
+	padding-right: calc(var(--bs-gutter-x) * 0.5);
+	padding-left: calc(var(--bs-gutter-x) * 0.5);
+	margin-top: var(--bs-gutter-y);
+	min-height: 1px;
+}
+
+@each $breakpoint, $min-width in $grid-breakpoints {
+	$infix: if($breakpoint == '', '', '-#{$breakpoint}');
+
+	@if $min-width == null {
+		@include gutter-classes($infix);
+	} @else {
+		@media (min-width: $min-width) {
+			@include gutter-classes($infix);
+		}
+	}
+}
+
+@function row-cols-percentage($cols) {
+	@return math.div($cols, 12) * 100%;
+}
+
+@mixin apply-row-cols($selector, $columns) {
+	#{$selector} {
+		> .block-editor-inner-blocks > .block-editor-block-list__layout > .block-editor-block-list__block,
+		> .block-editor-block-list__layout > .block-editor-block-list__block {
+			flex: 0 0 row-cols-percentage($columns);
+			max-width: row-cols-percentage($columns);
+		}
+	}
+}
+@function col-percentage($cols) {
+	@return math.div($cols, 12) * 100%;
+}
+
+@for $i from 1 through 12 {
+  @include apply-row-cols(".row-cols-#{$i}", $i);
+  @include apply-row-cols(".row-cols-sm-#{$i}", $i);
+  @include apply-row-cols(".row-cols-md-#{$i}", $i);
+  @include apply-row-cols(".row-cols-lg-#{$i}", $i);
+  @include apply-row-cols(".row-cols-xl-#{$i}", $i);
+  @include apply-row-cols(".row-cols-xxl-#{$i}", $i);
+}
+

@@ -1,0 +1,147 @@
+{
+    "apiVersion": 2,
+    "name": "codeweber-blocks/columns",
+    "version": "0.1.0",
+    "title": "Columns",
+    "category": "codeweber-gutenberg-blocks",
+    "icon": "columns",
+    "description": "Custom columns block with layout controls.",
+    "supports": {
+        "html": false,
+        "customClassName": true,
+        "anchor": true,
+        "align": false
+    },
+    "attributes": {
+        "columnsType": {
+            "type": "string",
+            "default": "classic"
+        },
+        "columnsGutterX": {
+            "type": "string",
+            "default": ""
+        },
+        "columnsGutterY": {
+            "type": "string",
+            "default": ""
+        },
+        "columnsCount": {
+            "type": "number",
+            "default": 2
+        },
+        "columnsAlignItems": {
+            "type": "string",
+            "default": ""
+        },
+        "columnsJustifyContent": {
+            "type": "string",
+            "default": ""
+        },
+        "columnsTextAlign": {
+            "type": "string",
+            "default": ""
+        },
+        "columnsPosition": {
+            "type": "string",
+            "default": ""
+        },
+        "columnsClass": {
+            "type": "string",
+            "default": ""
+        },
+		"columnsData": {
+			"type": "string",
+			"default": ""
+		},
+		"columnsId": {
+			"type": "string",
+			"default": ""
+		},
+		"columnsRowCols": {
+			"type": "string",
+			"default": ""
+		},
+		"columnsRowColsSm": {
+			"type": "string",
+			"default": ""
+		},
+		"columnsRowColsMd": {
+			"type": "string",
+			"default": ""
+		},
+		"columnsRowColsLg": {
+			"type": "string",
+			"default": ""
+		},
+		"columnsRowColsXl": {
+			"type": "string",
+			"default": ""
+		},
+		"columnsRowColsXxl": {
+			"type": "string",
+			"default": ""
+		},
+		"columnsGapType": {
+			"type": "string",
+			"default": "general"
+		},
+		"columnsGapXs": {
+			"type": "string",
+			"default": ""
+		},
+		"columnsGapSm": {
+			"type": "string",
+			"default": ""
+		},
+		"columnsGapMd": {
+			"type": "string",
+			"default": ""
+		},
+		"columnsGapLg": {
+			"type": "string",
+			"default": ""
+		},
+		"columnsGapXl": {
+			"type": "string",
+			"default": ""
+		},
+		"columnsGapXxl": {
+			"type": "string",
+			"default": ""
+		},
+		"columnsSpacingType": {
+			"type": "string",
+			"default": "padding"
+		},
+		"columnsSpacingXs": {
+			"type": "string",
+			"default": ""
+		},
+		"columnsSpacingSm": {
+			"type": "string",
+			"default": ""
+		},
+		"columnsSpacingMd": {
+			"type": "string",
+			"default": ""
+		},
+		"columnsSpacingLg": {
+			"type": "string",
+			"default": ""
+		},
+		"columnsSpacingXl": {
+			"type": "string",
+			"default": ""
+		},
+		"columnsSpacingXxl": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"textdomain": "codeweber-blocks",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+    "style": "file:./style-index.css"
+}
+
+

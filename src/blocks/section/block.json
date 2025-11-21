@@ -1,0 +1,154 @@
+{
+    "apiVersion": 2,
+    "name": "codeweber-blocks/section",
+    "version": "0.1.0",
+    "title": "Section",
+    "category": "codeweber-gutenberg-blocks",
+    "icon": "layout",
+    "description": "Section block with background options and inner blocks support.",
+    "supports": {
+        "html": false,
+        "customClassName": true,
+        "anchor": true,
+        "innerBlocks": true
+    },
+    "attributes": {
+        "backgroundType": {
+            "type": "string",
+            "default": "none"
+        },
+        "backgroundColor": {
+            "type": "string",
+            "default": "primary"
+        },
+        "backgroundColorType": {
+            "type": "string",
+            "default": "solid"
+        },
+        "backgroundGradient": {
+            "type": "string",
+            "default": "gradient-1"
+        },
+        "backgroundImageId": {
+            "type": "number",
+            "default": 0
+        },
+        "backgroundImageUrl": {
+            "type": "string",
+            "default": ""
+        },
+        "backgroundImageSize": {
+            "type": "string",
+            "default": ""
+        },
+        "backgroundSize": {
+            "type": "string",
+            "default": ""
+        },
+        "backgroundVideoId": {
+            "type": "number",
+            "default": 0
+        },
+        "backgroundVideoUrl": {
+            "type": "string",
+            "default": ""
+        },
+        "textColor": {
+            "type": "string",
+            "default": "none"
+        },
+        "backgroundOverlay": {
+            "type": "string",
+            "default": ""
+        },
+        "backgroundPatternUrl": {
+            "type": "string",
+            "default": ""
+        },
+        "containerClass": {
+            "type": "string",
+            "default": "py-14 py-md-16"
+        },
+        "containerType": {
+            "type": "string",
+            "default": "container"
+        },
+        "sectionFrame": {
+            "type": "boolean",
+            "default": false
+        },
+        "overflowHidden": {
+            "type": "boolean",
+            "default": false
+        },
+        "positionRelative": {
+            "type": "boolean",
+            "default": false
+        },
+        "minHeight": {
+            "type": "string",
+            "default": ""
+        },
+        "sectionClass": {
+            "type": "string",
+            "default": ""
+        },
+        "sectionData": {
+            "type": "string",
+            "default": ""
+        },
+        "sectionId": {
+            "type": "string",
+            "default": ""
+        },
+        "containerAlignItems": {
+            "type": "string",
+            "default": ""
+        },
+        "containerJustifyContent": {
+            "type": "string",
+            "default": ""
+        },
+        "containerTextAlign": {
+            "type": "string",
+            "default": ""
+        },
+        "containerPosition": {
+        	"type": "string",
+        	"default": ""
+        },
+        "spacingType": {
+        	"type": "string",
+        	"default": "padding"
+        },
+        "spacingXs": {
+        	"type": "string",
+        	"default": ""
+        },
+        "spacingSm": {
+        	"type": "string",
+        	"default": ""
+        },
+        "spacingMd": {
+        	"type": "string",
+        	"default": ""
+        },
+        "spacingLg": {
+        	"type": "string",
+        	"default": ""
+        },
+        "spacingXl": {
+        	"type": "string",
+        	"default": ""
+        },
+        "spacingXxl": {
+        	"type": "string",
+        	"default": ""
+        }
+       },
+    "textdomain": "codeweber-blocks",
+    "editorScript": "file:./index.js",
+    "editorStyle": "file:./index.css",
+    "style": "file:./style-index.css"
+}
+

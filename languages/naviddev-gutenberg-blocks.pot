@@ -1,0 +1,84 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2024-11-17T12:19:45Z\n"
+"PO-Revision-Date: 2024-11-17T12:19:45Z\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: src/blocks/button3/sidebar.js:170
+msgid "Button Type"
+msgstr ""
+
+#: src/blocks/button3/sidebar.js:165
+msgid "Button Settings"
+msgstr ""
+
+#: src/blocks/button3/sidebar.js:201
+msgid "Button Size"
+msgstr ""
+
+#: src/blocks/button3/sidebar.js:364
+msgid "Left Icon"
+msgstr ""
+
+#: src/blocks/button3/sidebar.js:374
+msgid "Right Icon"
+msgstr ""
+
+#: src/blocks/button3/sidebar.js:383
+msgid "Icon Class"
+msgstr ""
+
+#: src/blocks/button3/sidebar.js:231
+msgid "Button Shape"
+msgstr ""
+
+#: src/blocks/button3/sidebar.js:261
+msgid "Button Style"
+msgstr ""
+
+#: src/blocks/button3/sidebar.js:312
+msgid "Button Color"
+msgstr ""
+
+#: src/blocks/button3/sidebar.js:394
+msgid "Social Icon Class"
+msgstr ""
+
+#: src/utilities/link_type1.js:390
+msgid "Phone Type"
+msgstr ""
+
+#: src/utilities/link_type1.js:326
+msgid "Link Settings"
+msgstr ""
+
+#: settings/options_page/class-options-tabs.php:142
+msgid "Без названия"
+msgstr ""
+
+#: settings/options_page/pages/page_2.php:31
+msgid "Contacts"
+msgstr ""
+
+#: settings/options_page/pages/page_2.php:33
+msgid "Link to RestApi data"
+msgstr ""
+
+#: settings/options_page/pages/page_2.php:49
+msgid "Company"
+msgstr ""
+
+#: settings/options_page/pages/page_2.php:61
+msgid "Phones"
+msgstr ""
+
+#: settings/options_page/pages/page_2.php:78
+msgid "Сохранить изменения"
+msgstr ""

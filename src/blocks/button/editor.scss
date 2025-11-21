@@ -1,0 +1,37 @@
+/* Sidebar-only стили для блока Button */
+
+/* Добавляем нижний отступ к группе кнопок */
+.components-button-group {
+	margin-bottom: 16px !important;
+}
+
+.icon-group {
+	border: 1px solid #777;
+	padding: 20px;
+}
+
+.button-group-sidebar_33 button.components-button {
+	border: 1px solid #007cba;
+	width: 33%;
+	justify-content: center;
+}
+
+.button-group-sidebar_50 button.components-button {
+	border: 1px solid #007cba;
+	width: 50%;
+	justify-content: center;
+}
+
+.button-group-sidebar_33,
+.button-group-sidebar_50 {
+	margin-bottom: 20px;
+}
+
+.component-sidebar-title {
+	font-size: 11px;
+	font-weight: 500;
+	line-height: 1.4;
+	text-transform: uppercase;
+	margin-bottom: 8px;
+}
+

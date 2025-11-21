@@ -137,22 +137,6 @@ export const createSizeOptions = () => [
     { value: 'fs-4', label: 'Large' },
     { value: 'fs-5', label: 'Extra Large' },
     { value: 'fs-6', label: 'XX Large' },
-    { value: 'fs-15', label: 'FS 15' },
-    { value: 'fs-16', label: 'FS 16' },
-    { value: 'fs-17', label: 'FS 17' },
-    { value: 'fs-18', label: 'FS 18' },
-    { value: 'fs-19', label: 'FS 19' },
-    { value: 'fs-20', label: 'FS 20' },
-    { value: 'fs-21', label: 'FS 21' },
-    { value: 'fs-22', label: 'FS 22' },
-    { value: 'fs-23', label: 'FS 23' },
-    { value: 'fs-24', label: 'FS 24' },
-    { value: 'fs-25', label: 'FS 25' },
-    { value: 'fs-26', label: 'FS 26' },
-    { value: 'fs-27', label: 'FS 27' },
-    { value: 'fs-28', label: 'FS 28' },
-    { value: 'fs-29', label: 'FS 29' },
-    { value: 'fs-30', label: 'FS 30' },
 ];
 
 export const createWeightOptions = () => [

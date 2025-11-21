@@ -9,7 +9,6 @@ export const getTitleClasses = (attrs) => {
         titleWeight,
         titleTransform,
         titleLine,
-        titleClass,
     } = attrs;
 
     if (titleTag && titleTag.startsWith('display-')) {

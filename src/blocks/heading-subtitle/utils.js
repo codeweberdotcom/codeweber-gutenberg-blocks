@@ -45,10 +45,6 @@ export const getTitleClasses = (attrs) => {
         classes.push('text-line');
     }
 
-    if (titleClass) {
-        classes.push(titleClass);
-    }
-
     return classes.filter(Boolean).join(' ');
 };
 

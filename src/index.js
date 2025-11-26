@@ -1,11 +1,24 @@
 /**
- * Includes all blocks root files
+ * Includes all blocks root files with lazy loading
  */
 
-import './blocks/button/index';
-import './blocks/row/index';
-import './blocks/column/index';
-import './blocks/columns/index';
-import './blocks/heading-subtitle/index';
+const loadBlocks = async () => {
+    const blocks = [
+        import('./blocks/button/index'),
+        import('./blocks/row/index'),
+        import('./blocks/column/index'),
+        import('./blocks/columns/index'),
+        import('./blocks/heading-subtitle/index'),
+    ];
+
+    await Promise.all(blocks);
+};
+
+// Load blocks when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadBlocks);
+} else {
+    loadBlocks();
+}
 
 

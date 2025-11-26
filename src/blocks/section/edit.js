@@ -6,6 +6,7 @@ import {
 import { SectionSidebar } from './sidebar';
 import { __ } from '@wordpress/i18n';
 import { normalizeMinHeightClass, getContainerClassNames, getSpacingClasses } from './utils';
+import { generateBackgroundClasses, generateTextColorClass } from '../../utilities/class-generators';
 
 const normalizeSectionId = (value = '') => value.replace(/^#/, '').trim();
 
@@ -40,65 +41,16 @@ const TEMPLATE = [
 const getSectionClasses = (attrs) => {
 	const classes = [];
 
-	// Background type classes
-	switch (attrs.backgroundType) {
-		case 'color':
-			if (attrs.backgroundColorType === 'gradient' && attrs.backgroundGradient) {
-				classes.push(attrs.backgroundGradient);
-			} else if (attrs.backgroundColor) {
-				if (attrs.backgroundColorType === 'soft') {
-					classes.push(`bg-soft-${attrs.backgroundColor}`);
-				} else if (attrs.backgroundColorType === 'pale') {
-					classes.push(`bg-pale-${attrs.backgroundColor}`);
-				} else {
-					classes.push(`bg-${attrs.backgroundColor}`);
-				}
-			}
-			break;
-		case 'image':
-			classes.push('image-wrapper bg-image');
-			if (attrs.backgroundSize) {
-				classes.push(attrs.backgroundSize);
-			}
-			if (attrs.backgroundOverlay) {
-				if (attrs.backgroundOverlay === 'bg-overlay-300' || attrs.backgroundOverlay === 'bg-overlay-400') {
-					classes.push('bg-overlay', attrs.backgroundOverlay);
-				} else {
-					classes.push(attrs.backgroundOverlay);
-				}
-			} else {
-				classes.push('bg-overlay');
-			}
-			break;
-		case 'pattern':
-			classes.push('pattern-wrapper bg-image text-white');
-			if (attrs.backgroundSize) {
-				classes.push(attrs.backgroundSize);
-			}
-			break;
-		case 'video':
-			classes.push('video-wrapper ratio ratio-16x9');
-			if (attrs.backgroundOverlay && attrs.backgroundOverlay !== '') {
-				if (attrs.backgroundOverlay === 'bg-overlay-300' || attrs.backgroundOverlay === 'bg-overlay-400') {
-					classes.push('bg-overlay', attrs.backgroundOverlay);
-				} else {
-					classes.push(attrs.backgroundOverlay);
-				}
-			} else if (attrs.backgroundOverlay !== '') {
-				classes.push('bg-overlay');
-			}
-			break;
-	}
-
+	// Background classes
+	classes.push(...generateBackgroundClasses(attrs));
 
 	// Text color
-	if (attrs.textColor) {
-		classes.push(attrs.textColor);
-	}
+	classes.push(generateTextColorClass(attrs.textColor));
 
+	// Spacing classes
 	classes.push(...getSpacingClasses(attrs));
 
-	return classes.join(' ');
+	return classes.filter(Boolean).join(' ');
 };
 
 const SectionEdit = ({ attributes, setAttributes }) => {
@@ -142,6 +94,8 @@ const SectionEdit = ({ attributes, setAttributes }) => {
 	const blockProps = useBlockProps({
 		className: `wrapper dash-border ${getSectionClasses(attributes)} ${sectionFrame ? 'section-frame' : ''} ${overflowHidden ? 'overflow-hidden' : ''} ${positionRelative ? 'position-relative' : ''} ${normalizedMinHeight} ${sectionClass}`,
 		id: safeSectionId || undefined,
+		role: 'region',
+		'aria-label': safeSectionId ? `Section ${safeSectionId}` : 'Content section',
 	});
 
 	const getSectionStyles = () => {

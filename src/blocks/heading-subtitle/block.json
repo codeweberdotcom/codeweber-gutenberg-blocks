@@ -30,7 +30,7 @@
         },
         "order": {
             "type": "string",
-            "default": "title-first"
+            "default": "subtitle-first"
         },
         "titleTag": {
             "type": "string",
@@ -60,6 +60,18 @@
             "type": "string",
             "default": "left"
         },
+        "alignItems": {
+            "type": "string",
+            "default": ""
+        },
+        "justifyContent": {
+            "type": "string",
+            "default": ""
+        },
+        "position": {
+            "type": "string",
+            "default": ""
+        },
         "titleSize": {
             "type": "string",
             "default": ""
@@ -84,23 +96,87 @@
             "type": "string",
             "default": ""
         },
-        "titleLine": {
-            "type": "boolean",
-            "default": false
-        },
         "subtitleLine": {
             "type": "boolean",
-            "default": false
+            "default": true
         },
         "lead": {
-            "type": "boolean",
-            "default": false
+            "type": "string",
+            "default": ""
         },
         "spacing": {
             "type": "object",
             "default": {}
         },
         "className": {
+            "type": "string",
+            "default": ""
+        },
+        "titleClass": {
+            "type": "string",
+            "default": ""
+        },
+        "titleData": {
+            "type": "string",
+            "default": ""
+        },
+        "titleId": {
+            "type": "string",
+            "default": ""
+        },
+        "subtitleClass": {
+            "type": "string",
+            "default": ""
+        },
+        "subtitleData": {
+            "type": "string",
+            "default": ""
+        },
+        "subtitleId": {
+            "type": "string",
+            "default": ""
+        },
+        "animationEnabled": {
+            "type": "boolean",
+            "default": false
+        },
+        "animationType": {
+            "type": "string",
+            "default": ""
+        },
+        "animationDuration": {
+            "type": "number",
+            "default": 600
+        },
+        "animationDelay": {
+            "type": "number",
+            "default": 0
+        },
+        "spacingType": {
+            "type": "string",
+            "default": "padding"
+        },
+        "spacingXs": {
+            "type": "string",
+            "default": ""
+        },
+        "spacingSm": {
+            "type": "string",
+            "default": ""
+        },
+        "spacingMd": {
+            "type": "string",
+            "default": ""
+        },
+        "spacingLg": {
+            "type": "string",
+            "default": ""
+        },
+        "spacingXl": {
+            "type": "string",
+            "default": ""
+        },
+        "spacingXxl": {
             "type": "string",
             "default": ""
         }

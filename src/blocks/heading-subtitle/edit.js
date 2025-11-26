@@ -1,11 +1,13 @@
 import { useBlockProps, InspectorControls, RichText } from '@wordpress/block-editor';
-import { TabPanel, PanelBody } from '@wordpress/components';
+import { TabPanel, PanelBody, ButtonGroup, Button } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
+import { useState } from '@wordpress/element';
 import { HeadingContentControl } from '../../components/heading/HeadingContentControl';
 import { HeadingTypographyControl } from '../../components/heading/HeadingTypographyControl';
 import { PositioningControl } from '../../components/layout/PositioningControl';
 import { SpacingControl } from '../../components/spacing/SpacingControl';
 import { BlockMetaFields } from '../../components/block-meta/BlockMetaFields';
+import { AnimationControl } from '../../components/animation/Animation';
 import { getTitleClasses, getSubtitleClasses } from './utils';
 
 const HeadingSubtitleEdit = ({ attributes, setAttributes }) => {
@@ -22,8 +24,24 @@ const HeadingSubtitleEdit = ({ attributes, setAttributes }) => {
         subtitleColor,
         subtitleColorType,
         align,
+        alignItems,
+        justifyContent,
+        position,
         spacing,
+        animationEnabled,
+        animationType,
+        animationDuration,
+        animationDelay,
+        spacingType,
+        spacingXs,
+        spacingSm,
+        spacingMd,
+        spacingLg,
+        spacingXl,
+        spacingXxl,
     } = attributes;
+
+    const [activeElement, setActiveElement] = useState('title');
 
     const blockProps = useBlockProps();
 
@@ -62,6 +80,7 @@ const HeadingSubtitleEdit = ({ attributes, setAttributes }) => {
         { name: 'typography', title: 'Typ' },
         { name: 'align', title: 'Aln' },
         { name: 'spacing', title: 'Spc' },
+        { name: 'animation', title: 'Ani' },
         { name: 'settings', title: 'Set' },
     ];
 
@@ -93,14 +112,14 @@ const HeadingSubtitleEdit = ({ attributes, setAttributes }) => {
                                 <div style={{ padding: '16px' }}>
                                     <PositioningControl
                                         title={__('Title Align', 'codeweber-blocks')}
-                                        alignItems=""
-                                        onAlignItemsChange={() => {}}
-                                        justifyContent=""
-                                        onJustifyContentChange={() => {}}
+                                        alignItems={alignItems}
+                                        onAlignItemsChange={(value) => setAttributes({ alignItems: value })}
+                                        justifyContent={justifyContent}
+                                        onJustifyContentChange={(value) => setAttributes({ justifyContent: value })}
                                         textAlign={align}
                                         onTextAlignChange={(value) => setAttributes({ align: value })}
-                                        position=""
-                                        onPositionChange={() => {}}
+                                        position={position}
+                                        onPositionChange={(value) => setAttributes({ position: value })}
                                         noPanel={true}
                                     />
                                 </div>
@@ -108,38 +127,74 @@ const HeadingSubtitleEdit = ({ attributes, setAttributes }) => {
                             {tab.name === 'spacing' && (
                                 <div style={{ padding: '16px' }}>
                                     <SpacingControl
-                                        spacingType="padding"
-                                        spacingXs=""
-                                        spacingSm=""
-                                        spacingMd=""
-                                        spacingLg=""
-                                        spacingXl=""
-                                        spacingXxl=""
+                                        spacingType={spacingType}
+                                        spacingXs={spacingXs}
+                                        spacingSm={spacingSm}
+                                        spacingMd={spacingMd}
+                                        spacingLg={spacingLg}
+                                        spacingXl={spacingXl}
+                                        spacingXxl={spacingXxl}
                                         onChange={(key, value) => setAttributes({ [key]: value })}
                                     />
                                 </div>
                             )}
-                            {tab.name === 'settings' && (
-                                <PanelBody
-                                    title={__('Title Block Settings', 'codeweber-blocks')}
-                                    className="custom-panel-body"
-                                    initialOpen={true}
-                                >
-                                    <BlockMetaFields
+                            {tab.name === 'animation' && (
+                                <div style={{ padding: '16px' }}>
+                                    <AnimationControl
                                         attributes={attributes}
                                         setAttributes={setAttributes}
-                                        fieldKeys={{
-                                            classKey: 'className',
-                                            dataKey: 'data',
-                                            idKey: 'id',
-                                        }}
-                                        labels={{
-                                            classLabel: __('CSS Class', 'codeweber-blocks'),
-                                            dataLabel: __('Data Attributes', 'codeweber-blocks'),
-                                            idLabel: __('ID', 'codeweber-blocks'),
-                                        }}
                                     />
-                                </PanelBody>
+                                </div>
+                            )}
+                            {tab.name === 'settings' && (
+                                <div style={{ padding: '16px' }}>
+                                    <ButtonGroup style={{ marginBottom: '16px' }}>
+                                        <Button
+                                            isPrimary={activeElement === 'title'}
+                                            onClick={() => setActiveElement('title')}
+                                        >
+                                            {__('Title', 'codeweber-blocks')}
+                                        </Button>
+                                        <Button
+                                            isPrimary={activeElement === 'subtitle'}
+                                            onClick={() => setActiveElement('subtitle')}
+                                        >
+                                            {__('Subtitle', 'codeweber-blocks')}
+                                        </Button>
+                                    </ButtonGroup>
+                                    {activeElement === 'title' && (
+                                        <BlockMetaFields
+                                            attributes={attributes}
+                                            setAttributes={setAttributes}
+                                            fieldKeys={{
+                                                classKey: 'titleClass',
+                                                dataKey: 'titleData',
+                                                idKey: 'titleId',
+                                            }}
+                                            labels={{
+                                                classLabel: __('Title CSS Class', 'codeweber-blocks'),
+                                                dataLabel: __('Title Data Attributes', 'codeweber-blocks'),
+                                                idLabel: __('Title ID', 'codeweber-blocks'),
+                                            }}
+                                        />
+                                    )}
+                                    {activeElement === 'subtitle' && (
+                                        <BlockMetaFields
+                                            attributes={attributes}
+                                            setAttributes={setAttributes}
+                                            fieldKeys={{
+                                                classKey: 'subtitleClass',
+                                                dataKey: 'subtitleData',
+                                                idKey: 'subtitleId',
+                                            }}
+                                            labels={{
+                                                classLabel: __('Subtitle CSS Class', 'codeweber-blocks'),
+                                                dataLabel: __('Subtitle Data Attributes', 'codeweber-blocks'),
+                                                idLabel: __('Subtitle ID', 'codeweber-blocks'),
+                                            }}
+                                        />
+                                    )}
+                                </div>
                             )}
                         </>
                     )}

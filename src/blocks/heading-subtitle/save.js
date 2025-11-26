@@ -10,9 +10,19 @@ const HeadingSubtitleSave = ({ attributes }) => {
         order,
         titleTag,
         subtitleTag,
+        animationEnabled,
+        animationType,
+        animationDuration,
+        animationDelay,
     } = attributes;
 
-    const blockProps = useBlockProps.save();
+    const blockProps = useBlockProps.save({
+        ...(animationEnabled && animationType && {
+            'data-cue': animationType,
+            'data-duration': animationDuration,
+            'data-delay': animationDelay,
+        }),
+    });
 
     const elements = [];
     if (enableTitle) {

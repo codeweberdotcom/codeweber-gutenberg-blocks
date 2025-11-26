@@ -1,3 +1,5 @@
+import { generateColorClass, generateTypographyClasses, generateTextAlignClass, generateAlignItemsClass, generateJustifyContentClass, generatePositionClass } from '../../utilities/class-generators';
+
 export const getTitleClasses = (attrs) => {
     const classes = [];
     const {
@@ -5,44 +7,37 @@ export const getTitleClasses = (attrs) => {
         titleColor,
         titleColorType,
         align,
-        titleSize,
-        titleWeight,
-        titleTransform,
-        titleLine,
+        alignItems,
+        justifyContent,
+        position,
+        titleClass,
     } = attrs;
 
     if (titleTag && titleTag.startsWith('display-')) {
         classes.push(titleTag);
     }
 
-    if (titleColor) {
-        if (titleColorType === 'soft') {
-            classes.push(`text-soft-${titleColor}`);
-        } else if (titleColorType === 'pale') {
-            classes.push(`text-pale-${titleColor}`);
-        } else {
-            classes.push(`text-${titleColor}`);
-        }
-    }
+    // Color classes
+    classes.push(generateColorClass(titleColor, titleColorType, 'text'));
 
-    if (align) {
-        classes.push(`text-${align}`);
-    }
+    // Text align class
+    classes.push(generateTextAlignClass(align));
 
-    if (titleSize) {
-        classes.push(titleSize);
-    }
+    // Align items class
+    classes.push(generateAlignItemsClass(alignItems));
 
-    if (titleWeight) {
-        classes.push(titleWeight);
-    }
+    // Justify content class
+    classes.push(generateJustifyContentClass(justifyContent));
 
-    if (titleTransform) {
-        classes.push(titleTransform);
-    }
+    // Position class
+    classes.push(generatePositionClass(position));
 
-    if (titleLine) {
-        classes.push('text-line');
+    // Typography classes
+    classes.push(...generateTypographyClasses(attrs, 'title'));
+
+    // Custom class
+    if (titleClass) {
+        classes.push(titleClass);
     }
 
     return classes.filter(Boolean).join(' ');
@@ -55,45 +50,39 @@ export const getSubtitleClasses = (attrs) => {
         subtitleColor,
         subtitleColorType,
         align,
-        subtitleSize,
-        subtitleWeight,
-        subtitleTransform,
-        subtitleLine,
+        alignItems,
+        justifyContent,
+        position,
         lead,
+        subtitleClass,
     } = attrs;
 
+    // Lead class
     if (lead && subtitleTag === 'p') {
-        classes.push('lead');
+        classes.push(lead);
     }
 
-    if (subtitleColor) {
-        if (subtitleColorType === 'soft') {
-            classes.push(`text-soft-${subtitleColor}`);
-        } else if (subtitleColorType === 'pale') {
-            classes.push(`text-pale-${subtitleColor}`);
-        } else {
-            classes.push(`text-${subtitleColor}`);
-        }
-    }
+    // Color classes
+    classes.push(generateColorClass(subtitleColor, subtitleColorType, 'text'));
 
-    if (align) {
-        classes.push(`text-${align}`);
-    }
+    // Text align class
+    classes.push(generateTextAlignClass(align));
 
-    if (subtitleSize) {
-        classes.push(subtitleSize);
-    }
+    // Align items class
+    classes.push(generateAlignItemsClass(alignItems));
 
-    if (subtitleWeight) {
-        classes.push(subtitleWeight);
-    }
+    // Justify content class
+    classes.push(generateJustifyContentClass(justifyContent));
 
-    if (subtitleTransform) {
-        classes.push(subtitleTransform);
-    }
+    // Position class
+    classes.push(generatePositionClass(position));
 
-    if (subtitleLine) {
-        classes.push('text-line');
+    // Typography classes
+    classes.push(...generateTypographyClasses(attrs, 'subtitle'));
+
+    // Custom class
+    if (subtitleClass) {
+        classes.push(subtitleClass);
     }
 
     return classes.filter(Boolean).join(' ');
@@ -126,20 +115,24 @@ export const createSubtitleTagOptions = () => [
 
 export const createSizeOptions = () => [
     { value: '', label: 'Default' },
-    { value: 'fs-1', label: 'Extra Small' },
-    { value: 'fs-2', label: 'Small' },
-    { value: 'fs-3', label: 'Medium' },
-    { value: 'fs-4', label: 'Large' },
-    { value: 'fs-5', label: 'Extra Large' },
-    { value: 'fs-6', label: 'XX Large' },
+    { value: 'fs-1', label: 'fs-1' },
+    { value: 'fs-2', label: 'fs-2' },
+    { value: 'fs-3', label: 'fs-3' },
+    { value: 'fs-4', label: 'fs-4' },
+    { value: 'fs-5', label: 'fs-5' },
+    { value: 'fs-6', label: 'fs-6' },
 ];
 
 export const createWeightOptions = () => [
     { value: '', label: 'Default' },
-    { value: 'fw-light', label: 'Light' },
-    { value: 'fw-normal', label: 'Normal' },
-    { value: 'fw-bold', label: 'Bold' },
-    { value: 'fw-bolder', label: 'Bolder' },
+    { value: 'fw-light', label: 'fw-light (300)' },
+    { value: 'fw-normal', label: 'fw-normal (400)' },
+    { value: 'fw-medium', label: 'fw-medium (500)' },
+    { value: 'fw-semibold', label: 'fw-semibold (600)' },
+    { value: 'fw-bold', label: 'fw-bold (700)' },
+    { value: 'fw-extrabold', label: 'fw-extrabold (800)' },
+    { value: 'fw-black', label: 'fw-black (900)' },
+    { value: 'fw-bolder', label: 'fw-bolder' },
 ];
 
 export const createTransformOptions = () => [
@@ -147,6 +140,16 @@ export const createTransformOptions = () => [
     { value: 'text-uppercase', label: 'Uppercase' },
     { value: 'text-lowercase', label: 'Lowercase' },
     { value: 'text-capitalize', label: 'Capitalize' },
+];
+
+export const createLeadOptions = () => [
+    { value: '', label: 'Default' },
+    { value: 'lead', label: 'lead' },
+    { value: 'lead-sm', label: 'lead-sm' },
+    { value: 'lead-md', label: 'lead-md' },
+    { value: 'lead-lg', label: 'lead-lg' },
+    { value: 'lead-xl', label: 'lead-xl' },
+    { value: 'lead-xxl', label: 'lead-xxl' },
 ];
 
 

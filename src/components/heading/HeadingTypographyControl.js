@@ -7,6 +7,7 @@ import {
     createSizeOptions,
     createWeightOptions,
     createTransformOptions,
+    createLeadOptions,
 } from '../../blocks/heading-subtitle/utils';
 
 export const HeadingTypographyControl = ({ attributes, setAttributes }) => {
@@ -80,11 +81,6 @@ export const HeadingTypographyControl = ({ attributes, setAttributes }) => {
                         options={createTransformOptions()}
                         onChange={(value) => setAttributes({ titleTransform: value })}
                     />
-                    <ToggleControl
-                        label={__('Title Line', 'codeweber-blocks')}
-                        checked={titleLine}
-                        onChange={(value) => setAttributes({ titleLine: value })}
-                    />
                 </>
             )}
             {activeTab === 'subtitle' && (
@@ -123,14 +119,10 @@ export const HeadingTypographyControl = ({ attributes, setAttributes }) => {
                         options={createTransformOptions()}
                         onChange={(value) => setAttributes({ subtitleTransform: value })}
                     />
-                    <ToggleControl
-                        label={__('Subtitle Line', 'codeweber-blocks')}
-                        checked={subtitleLine}
-                        onChange={(value) => setAttributes({ subtitleLine: value })}
-                    />
-                    <ToggleControl
+                    <SelectControl
                         label={__('Lead Style', 'codeweber-blocks')}
-                        checked={lead}
+                        value={lead}
+                        options={createLeadOptions()}
                         onChange={(value) => setAttributes({ lead: value })}
                     />
                 </>

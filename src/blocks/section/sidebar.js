@@ -423,16 +423,10 @@ export const SectionSidebar = ({ attributes, setAttributes }) => {
 								onTextColorChange={handleTextColorChange}
 								onSectionChange={handleSectionChange}
 							/>
-							<PanelBody
-								title={__('Section Block Settings', 'codeweber-blocks')}
-								className="custom-panel-body"
-								initialOpen={true}
-							>
-								<BlockMetaFields
-									attributes={attributes}
-									setAttributes={setAttributes}
-								/>
-							</PanelBody>
+							<BlockMetaFields
+								attributes={attributes}
+								setAttributes={setAttributes}
+							/>
 						</>
 					)}
 

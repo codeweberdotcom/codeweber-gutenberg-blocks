@@ -6,6 +6,8 @@
 - Локальная копия WordPress (Laragon). Плагин уже размещён в `wp-content/plugins/codeweber-gutenberg-blocks`.
 - Активированная тема `codeweber` (плагин расширяет её блоки).
 
+> ⚠️ **Важно:** Плагин работает **только** с темой `codeweber`. Использование других тем не поддерживается.
+
 ## 2. Установка зависимостей
 ```bash
 cd wp-content/plugins/codeweber-gutenberg-blocks

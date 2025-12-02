@@ -4,7 +4,7 @@
 
 > ⚠️ **Плагин работает исключительно с темой `codeweber`.**
 
-Тема `codeweber` построена на базе **Bootstrap** и содержит собственные скрипты и стили.  
+Тема `codeweber` построена на базе **Bootstrap** и содержит собственные скрипты и стили.
 **Всегда** используем готовые классы и компоненты темы вместо написания кастомных стилей.
 
 | Правило | Описание |
@@ -45,6 +45,41 @@
 - Опции, которые связаны с фронтом, должны отображаться в реальном времени в редакторе.
 - Все подписи/подсказки проходят через `__()` / `sprintf` из `@wordpress/i18n`.
 - Для репитера или сложных полей предпочтительно использовать `@wordpress/components` (`RepeaterControl` заменяем на клиентский компонент при необходимости).
+
+### 4.1 Стандарты стилей Sidebar (Inspector Controls)
+
+| Элемент | CSS-класс | Размер шрифта | Стиль |
+|---------|-----------|---------------|-------|
+| **Кнопки панелей** (Container Settings и др.) | `.components-panel__body-toggle` | **14px** | `text-transform: none`, `background: #e0e0e0` |
+| **Заголовки полей** | `.component-sidebar-title label` | **13px** | `text-transform: none`, `font-weight: 500` |
+
+**Стили определены в:** `src/blocks/section/editor.scss`
+
+```scss
+/* Panel body toggle buttons */
+.components-panel__body-toggle {
+    background-color: #e0e0e0 !important;
+    font-size: 14px !important;
+    text-transform: none !important;
+
+    &:hover { background-color: #d0d0d0 !important; }
+    &:focus { background-color: #c8c8c8 !important; }
+}
+
+/* Sidebar component titles */
+.component-sidebar-title {
+    margin-top: 18px;
+    margin-bottom: 12px;
+
+    label {
+        font-size: 13px !important;
+        text-transform: none !important;
+        font-weight: 500;
+    }
+}
+```
+
+> ⚠️ **Важно:** Все новые блоки должны следовать этим стандартам для единообразия UI.
 
 ## 5. Стили и responsive
 - **Приоритет — классы темы**: используем Bootstrap-классы из `codeweber` (`row`, `col-md-6`, `btn`, `card` и др.).

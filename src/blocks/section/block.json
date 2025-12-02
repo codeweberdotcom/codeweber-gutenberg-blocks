@@ -144,6 +144,34 @@
         "spacingXxl": {
         	"type": "string",
         	"default": ""
+        },
+        "angledEnabled": {
+        	"type": "boolean",
+        	"default": false
+        },
+        "angledUpper": {
+        	"type": "string",
+        	"default": ""
+        },
+        "angledLower": {
+        	"type": "string",
+        	"default": ""
+        },
+        "waveTopEnabled": {
+        	"type": "boolean",
+        	"default": false
+        },
+        "waveTopType": {
+        	"type": "string",
+        	"default": ""
+        },
+        "waveBottomEnabled": {
+        	"type": "boolean",
+        	"default": false
+        },
+        "waveBottomType": {
+        	"type": "string",
+        	"default": ""
         }
        },
     "textdomain": "codeweber-blocks",

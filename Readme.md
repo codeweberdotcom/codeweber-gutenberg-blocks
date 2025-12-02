@@ -29,6 +29,7 @@
 | **[QUICK_START.md](QUICK_START.md)** | Быстрый старт, окружение, команды | Новые разработчики |
 | **[DEV_WORKFLOW.md](DEV_WORKFLOW.md)** | Полный цикл: анализ → план → реализация → релиз | Все задачи |
 | **[REFACTORING_GUIDE.md](REFRACTORING_GUIDE.md)** | Чек-лист рефакторинга и миграций | Крупные изменения |
+| **[ICON_COMPONENT.md](doc/ICON_COMPONENT.md)** | Документация Icon Component | Работа с иконками |
 
 ---
 
@@ -58,11 +59,11 @@ npm run lint:js && npm run lint:css
 | Блок | Name | Описание |
 |------|------|----------|
 | **Section** | `codeweber-blocks/section` | Секция с фоном (цвет, изображение, видео) |
-| **Row** | `codeweber-blocks/row` | Bootstrap-ряд |
 | **Column** | `codeweber-blocks/column` | Bootstrap-колонка с фоном |
 | **Columns** | `codeweber-blocks/columns` | Контейнер колонок с row-cols |
 | **Button** | `codeweber-blocks/button` | Кнопка/ссылка с иконками и lightbox |
 | **Heading-Subtitle** | `codeweber-gutenberg-blocks/heading-subtitle` | Заголовок + подзаголовок |
+| **Icon** | `codeweber-blocks/icon` | Универсальная иконка (Font, SVG, Custom) |
 
 **Подробнее:** [BLOCKS_REFERENCE.md](BLOCKS_REFERENCE.md)
 
@@ -79,6 +80,7 @@ npm run lint:js && npm run lint:css
 | `GapControl` | Gap/Gutter |
 | `Animation` | Настройки анимации |
 | `BlockMetaFields` | Мета-поля (class, data, id) |
+| `IconControl` | Универсальные настройки иконки ([документация](doc/ICON_COMPONENT.md)) |
 
 **Подробнее:** [COMPONENTS_REFERENCE.md](COMPONENTS_REFERENCE.md)
 
@@ -127,6 +129,7 @@ codeweber-gutenberg-blocks/
 | Добавить REST endpoint | `API_REFERENCE.md` | §9.2 |
 | Проверить стандарты | `GUTENBERG_BLOCK_STANDARDS.md` | §0-8 |
 | Выполнить рефакторинг | `REFACTORING_GUIDE.md` | Весь документ |
+| Работать с иконками | `doc/ICON_COMPONENT.md` | Весь документ |
 
 ### Ключевые файлы
 
@@ -140,6 +143,7 @@ codeweber-gutenberg-blocks/
 | `src/blocks/<name>/save.js` | HTML-вывод |
 | `src/utilities/class-generators.js` | Генерация CSS-классов |
 | `src/utilities/colors.js` | Палитра цветов темы |
+| `src/components/icon/` | Компоненты иконок ([документация](doc/ICON_COMPONENT.md)) |
 
 ### Контекст для модификаций
 
@@ -161,4 +165,4 @@ codeweber-gutenberg-blocks/
 
 ---
 
-> **Последнее обновление:** 2025-11-26
+> **Последнее обновление:** 2025-12-02

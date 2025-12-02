@@ -2,6 +2,14 @@ import { useBlockProps, InspectorControls, RichText } from '@wordpress/block-edi
 import { TabPanel, PanelBody, ButtonGroup, Button } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
+import { Icon, edit, typography, positionCenter, resizeCornerNE, video, cog } from '@wordpress/icons';
+
+// Tab icon with native title tooltip
+const TabIcon = ({ icon, label }) => (
+    <span title={label} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <Icon icon={icon} size={20} />
+    </span>
+);
 import { HeadingContentControl } from '../../components/heading/HeadingContentControl';
 import { HeadingTypographyControl } from '../../components/heading/HeadingTypographyControl';
 import { PositioningControl } from '../../components/layout/PositioningControl';
@@ -76,12 +84,12 @@ const HeadingSubtitleEdit = ({ attributes, setAttributes }) => {
     }
 
     const tabs = [
-        { name: 'content', title: 'Cnt' },
-        { name: 'typography', title: 'Typ' },
-        { name: 'align', title: 'Aln' },
-        { name: 'spacing', title: 'Spc' },
-        { name: 'animation', title: 'Ani' },
-        { name: 'settings', title: 'Set' },
+        { name: 'content', title: <TabIcon icon={edit} label={__('Content', 'codeweber-blocks')} /> },
+        { name: 'typography', title: <TabIcon icon={typography} label={__('Typography', 'codeweber-blocks')} /> },
+        { name: 'align', title: <TabIcon icon={positionCenter} label={__('Align', 'codeweber-blocks')} /> },
+        { name: 'spacing', title: <TabIcon icon={resizeCornerNE} label={__('Spacing', 'codeweber-blocks')} /> },
+        { name: 'animation', title: <TabIcon icon={video} label={__('Animation', 'codeweber-blocks')} /> },
+        { name: 'settings', title: <TabIcon icon={cog} label={__('Settings', 'codeweber-blocks')} /> },
     ];
 
     return (

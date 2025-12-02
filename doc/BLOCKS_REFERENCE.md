@@ -72,6 +72,13 @@ src/blocks/<block-name>/
 | `sectionId` | string | `""` | HTML ID |
 | `spacingType` | string | `"padding"` | Тип отступов: `padding` или `margin` |
 | `spacingXs`...`spacingXxl` | string | `""` | Отступы по breakpoint-ам |
+| `angledEnabled` | boolean | `false` | Включить скошенный разделитель |
+| `angledUpper` | string | `""` | Верхний угол: `upper-start`, `upper-end` |
+| `angledLower` | string | `""` | Нижний угол: `lower-start`, `lower-end` |
+| `waveTopEnabled` | boolean | `false` | Включить верхнюю волну |
+| `waveTopType` | string | `""` | Тип верхней волны: `wave-1`...`wave-5` |
+| `waveBottomEnabled` | boolean | `false` | Включить нижнюю волну |
+| `waveBottomType` | string | `""` | Тип нижней волны: `wave-1`...`wave-5` |
 
 ### Использование
 
@@ -89,49 +96,35 @@ src/blocks/<block-name>/
     <!-- InnerBlocks -->
   </div>
 </section>
+
+<!-- Секция со скошенным разделителем (Angled) -->
+<section class="wrapper angled upper-start lower-end bg-soft-primary">
+  <div class="container py-14 py-md-16">
+    <!-- InnerBlocks -->
+  </div>
+</section>
+
+<!-- Секция с волнистыми разделителями (Waves) -->
+<section class="wrapper bg-primary">
+  <div class="divider text-light divider-top">
+    <svg xmlns="..." viewBox="..." style="transform: rotate(180deg)">
+      <path fill="currentColor" d="..."/>
+    </svg>
+  </div>
+  <div class="container py-14 py-md-16">
+    <!-- InnerBlocks -->
+  </div>
+  <div class="divider text-light">
+    <svg xmlns="..." viewBox="...">
+      <path fill="currentColor" d="..."/>
+    </svg>
+  </div>
+</section>
 ```
 
 ---
 
-## 2. Row
-
-**Назначение:** Bootstrap-ряд для размещения колонок.
-
-| Поле | Значение |
-|------|----------|
-| **Name** | `codeweber-blocks/row` |
-| **Icon** | `editor-table` |
-| **Supports** | `customClassName`, `anchor` |
-| **Файлы** | `src/blocks/row/` |
-
-### Атрибуты
-
-| Атрибут | Тип | Default | Описание |
-|---------|-----|---------|----------|
-| `rowType` | string | `"classic"` | Тип ряда |
-| `rowGutterX` | string | `""` | Горизонтальный gutter (`gx-0`...`gx-5`) |
-| `rowGutterY` | string | `""` | Вертикальный gutter (`gy-0`...`gy-5`) |
-| `rowCols` | string | `""` | row-cols-* (количество колонок в ряду) |
-| `rowAlignItems` | string | `""` | align-items-* |
-| `rowJustifyContent` | string | `""` | justify-content-* |
-| `rowTextAlign` | string | `""` | text-* |
-| `rowPosition` | string | `""` | position-* |
-| `rowClass` | string | `""` | Кастомные классы |
-| `rowColumnsCount` | number | `0` | Количество колонок (для генерации) |
-| `rowData` | string | `""` | data-атрибуты |
-| `rowId` | string | `""` | HTML ID |
-
-### Использование
-
-```html
-<div class="row gx-lg-8 gx-xl-12 gy-10">
-  <!-- Column blocks -->
-</div>
-```
-
----
-
-## 3. Column
+## 2. Column
 
 **Назначение:** Bootstrap-колонка с поддержкой фона и адаптивных размеров.
 
@@ -183,7 +176,7 @@ src/blocks/<block-name>/
 
 ---
 
-## 4. Columns
+## 3. Columns
 
 **Назначение:** Контейнер колонок с настройками row-cols и gap.
 
@@ -226,7 +219,7 @@ src/blocks/<block-name>/
 
 ---
 
-## 5. Button
+## 4. Button
 
 **Назначение:** Кнопка/ссылка с поддержкой стилей темы, иконок, lightbox, модалок.
 
@@ -302,7 +295,7 @@ src/blocks/<block-name>/
 
 ---
 
-## 6. Heading-Subtitle
+## 5. Heading-Subtitle
 
 **Назначение:** Заголовок и подзаголовок с расширенными настройками типографики.
 
@@ -362,9 +355,9 @@ src/blocks/<block-name>/
 
 ---
 
-## 7. Создание нового блока
+## 6. Создание нового блока
 
-### 7.1 Шаги
+### 6.1 Шаги
 
 1. **Создать директорию:** `src/blocks/<block-name>/`
 2. **Создать `block.json`:** метаданные, атрибуты, supports
@@ -376,7 +369,7 @@ src/blocks/<block-name>/
 8. **Добавить в JS-загрузчик:** `src/index.js`
 9. **Обновить документацию:** этот файл
 
-### 7.2 Шаблон block.json
+### 6.2 Шаблон block.json
 
 ```json
 {
@@ -405,7 +398,7 @@ src/blocks/<block-name>/
 }
 ```
 
-### 7.3 Шаблон index.js
+### 6.3 Шаблон index.js
 
 ```javascript
 import { registerBlockType } from '@wordpress/blocks';
@@ -424,7 +417,7 @@ registerBlockType(metadata.name, {
 });
 ```
 
-### 7.4 Чек-лист нового блока
+### 6.4 Чек-лист нового блока
 
 - [ ] `block.json` с корректными атрибутами
 - [ ] `index.js` с регистрацией
@@ -438,9 +431,9 @@ registerBlockType(metadata.name, {
 
 ---
 
-## 8. Для AI-агентов
+## 7. Для AI-агентов
 
-### 8.1 Быстрый поиск
+### 7.1 Быстрый поиск
 
 | Задача | Где искать |
 |--------|------------|
@@ -451,21 +444,16 @@ registerBlockType(metadata.name, {
 | Изменить классы | `src/utilities/class-generators.js` |
 | Изменить палитру цветов | `src/utilities/colors.js` |
 
-### 8.2 Связи между блоками
+### 7.2 Связи между блоками
 
 ```
-Section
-  └── Row
-        └── Column
-              └── [любые блоки]
-
 Section
   └── Columns
         └── Column
               └── [любые блоки]
 ```
 
-### 8.3 Общие атрибуты
+### 7.3 Общие атрибуты
 
 Многие блоки используют одинаковые группы атрибутов:
 
@@ -475,4 +463,6 @@ Section
 | **Spacing** | `spacingType`, `spacingXs`...`spacingXxl` | Section, Column, Columns, Heading-Subtitle |
 | **Positioning** | `*AlignItems`, `*JustifyContent`, `*TextAlign`, `*Position` | Все layout-блоки |
 | **Meta** | `*Class`, `*Data`, `*Id` | Все блоки |
+| **Angled** | `angledEnabled`, `angledUpper`, `angledLower` | Section |
+| **Waves** | `waveTopEnabled`, `waveTopType`, `waveBottomEnabled`, `waveBottomType` | Section |
 

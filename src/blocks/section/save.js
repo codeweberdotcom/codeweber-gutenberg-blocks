@@ -1,5 +1,5 @@
 import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
-import { normalizeMinHeightClass, getContainerClassNames } from './utils';
+import { normalizeMinHeightClass, getContainerClassNames, getAngledClasses, getWaveConfig, WAVE_SVGS } from './utils';
 import { generateBackgroundClasses, generateTextColorClass } from '../../utilities/class-generators';
 
 const normalizeSectionId = (value = '') => value.replace(/^#/, '').trim();
@@ -27,6 +27,9 @@ const getSectionClasses = (attrs) => {
 
 	// Text color
 	classes.push(generateTextColorClass(attrs.textColor));
+
+	// Angled divider classes
+	classes.push(...getAngledClasses(attrs));
 
 	return classes.filter(Boolean).join(' ');
 };
@@ -104,6 +107,32 @@ const SectionSave = ({ attributes }) => {
 
 	const dataAttributes = parseDataAttributes(sectionData);
 
+	// Get wave configuration
+	const waveConfig = getWaveConfig(attributes);
+
+	// Create wave SVG element for React
+	const createWaveSvg = (waveType, position) => {
+		if (!waveType || !WAVE_SVGS[waveType]) return null;
+		
+		// Parse SVG string to get viewBox and path
+		const svgMatch = WAVE_SVGS[waveType].match(/viewBox="([^"]+)".*d="([^"]+)"/);
+		if (!svgMatch) return null;
+
+		const [, viewBox, pathD] = svgMatch;
+
+		return (
+			<div className={`divider text-light${position === 'top' ? ' divider-top' : ''}`}>
+				<svg 
+					xmlns="http://www.w3.org/2000/svg" 
+					viewBox={viewBox}
+					style={position === 'top' ? { transform: 'rotate(180deg)' } : undefined}
+				>
+					<path fill="currentColor" d={pathD} />
+				</svg>
+			</div>
+		);
+	};
+
 	return (
 		<section
 			{...blockProps}
@@ -111,6 +140,9 @@ const SectionSave = ({ attributes }) => {
 			{...(backgroundType === 'pattern' && backgroundPatternUrl && { 'data-image-src': backgroundPatternUrl })}
 			{...dataAttributes}
 		>
+			{/* Top Wave Divider */}
+			{waveConfig.hasTopWave && createWaveSvg(waveConfig.topType, 'top')}
+
 			{backgroundType === 'video' ? (
 				<>
 					<video
@@ -121,17 +153,20 @@ const SectionSave = ({ attributes }) => {
 						playsInline
 						muted
 					></video>
-				<div className="video-content">
-					<div className={`${containerType} ${containerClassNames}`.trim()}>
-						<InnerBlocks.Content />
+					<div className="video-content">
+						<div className={`${containerType} ${containerClassNames}`.trim()}>
+							<InnerBlocks.Content />
+						</div>
 					</div>
+				</>
+			) : (
+				<div className={`${containerType} ${containerClassNames}`.trim()}>
+					<InnerBlocks.Content />
 				</div>
-			</>
-		) : (
-			<div className={`${containerType} ${containerClassNames}`.trim()}>
-				<InnerBlocks.Content />
-			</div>
-		)}
+			)}
+
+			{/* Bottom Wave Divider */}
+			{waveConfig.hasBottomWave && createWaveSvg(waveConfig.bottomType, 'bottom')}
 		</section>
 	);
 };

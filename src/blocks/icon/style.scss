@@ -1,0 +1,40 @@
+/**
+ * Icon Block - Frontend Styles
+ *
+ * @package CodeWeber Gutenberg Blocks
+ */
+
+.cwgb-icon-block {
+	// Font Icon
+	i.uil {
+		display: inline-block;
+		line-height: 1;
+	}
+
+	// SVG Icon
+	img.icon-svg {
+		display: inline-block;
+		vertical-align: middle;
+	}
+
+	// Wrapper div.icon
+	.icon {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+	}
+}
+
+// Выравнивание
+.cwgb-icon-block {
+	&.text-left {
+		text-align: left;
+	}
+	&.text-center {
+		text-align: center;
+	}
+	&.text-right {
+		text-align: right;
+	}
+}
+

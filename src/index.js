@@ -5,10 +5,10 @@
 const loadBlocks = async () => {
     const blocks = [
         import('./blocks/button/index'),
-        import('./blocks/row/index'),
         import('./blocks/column/index'),
         import('./blocks/columns/index'),
         import('./blocks/heading-subtitle/index'),
+        import('./blocks/icon/index'),
     ];
 
     await Promise.all(blocks);

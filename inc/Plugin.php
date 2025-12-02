@@ -36,14 +36,6 @@ class Plugin {
 			add_filter('block_categories_all', __CLASS__ . '::gutenbergBlocksRegisterCategory', 10, 2);
 		}
 
-		// blocks category
-		if (version_compare($GLOBALS['wp_version'], '5.7', '<')) {
-			add_filter('block_categories', __CLASS__ . '::gutenbergBlocksRegisterCategory', 10, 2);
-		}
-		else {
-			add_filter('block_categories_all', __CLASS__ . '::gutenbergBlocksRegisterCategory', 10, 2);
-		}
-
 		// Register REST API endpoint for image sizes
 		add_action('rest_api_init', __CLASS__ . '::register_image_sizes_endpoint');
 	}
@@ -52,10 +44,10 @@ class Plugin {
 		return [
 			'button',
 			'section',
-			'row',
 			'column',
 			'columns',
 			'heading-subtitle',
+			'icon',
 		];
 	}
 

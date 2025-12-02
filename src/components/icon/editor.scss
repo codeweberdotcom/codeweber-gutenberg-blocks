@@ -1,0 +1,453 @@
+/**
+ * Icon Component - Editor Styles
+ *
+ * @package CodeWeber Gutenberg Blocks
+ */
+
+// ==============================================
+// SVG Icon Colors for Editor (CSS Filters)
+// На фронте цвета работают через SVGInject + text-* классы
+// В редакторе используем фильтры для приблизительного отображения
+// ==============================================
+
+// ==============================================
+// SVG Icon Colors (для InlineSvg с fill="currentColor")
+// ==============================================
+
+$icon-color-values: (
+	'primary': #3f78e0,
+	'aqua': #54a8c7,
+	'green': #45c4a0,
+	'leaf': #7cb798,
+	'navy': #343f52,
+	'orange': #f78b77,
+	'pink': #e668b3,
+	'purple': #747ed1,
+	'red': #e2626b,
+	'violet': #a07cc5,
+	'yellow': #fab758,
+	'fuchsia': #e668b3,
+	'sky': #5eb9f0,
+	'blue': #3f78e0,
+	'grape': #605dba,
+	'ash': #9499a3,
+	'white': #ffffff,
+	'dark': #343f52,
+	'muted': #aab0bc,
+);
+
+// Цвета для InlineSvg (через color который наследуется в currentColor)
+@each $color, $value in $icon-color-values {
+	.inline-svg-wrapper.text-#{$color},
+	.icon-svg.text-#{$color} {
+		color: #{$value};
+	}
+	
+	// Для solid-mono
+	.inline-svg-wrapper.solid-mono.text-#{$color},
+	.icon-svg.solid-mono.text-#{$color} {
+		color: #{$value};
+	}
+}
+
+// ==============================================
+// Solid-duo комбинации цветов
+// Из _icons.scss темы
+// ==============================================
+
+// Solid-duo использует fill-primary и fill-secondary внутри SVG
+.inline-svg-wrapper.solid-duo,
+.icon-svg.solid-duo {
+	// Grape + Fuchsia
+	&.text-grape-fuchsia {
+		.fill-primary { fill: #605dba; }
+		.fill-secondary { fill: #f857a6; }
+	}
+	// Grape + Green
+	&.text-grape-green {
+		.fill-primary { fill: #605dba; }
+		.fill-secondary { fill: #94dd8e; }
+	}
+	// Grape + Yellow
+	&.text-grape-yellow {
+		.fill-primary { fill: #605dba; }
+		.fill-secondary { fill: #fab758; }
+	}
+	// Purple + Aqua
+	&.text-purple-aqua {
+		.fill-primary { fill: #747ed1; }
+		.fill-secondary { fill: #8ce0f1; }
+	}
+	// Purple + Pink
+	&.text-purple-pink {
+		.fill-primary { fill: #747ed1; }
+		.fill-secondary { fill: #fdb9d3; }
+	}
+	// Navy + Green
+	&.text-navy-green {
+		.fill-primary { fill: #414b64; }
+		.fill-secondary { fill: #45c4a0; }
+	}
+	// Navy + Sky
+	&.text-navy-sky {
+		.fill-primary { fill: #414b64; }
+		.fill-secondary { fill: #5eb9f0; }
+	}
+	// Blue + Pink
+	&.text-blue-pink {
+		.fill-primary { fill: #3f78e0; }
+		.fill-secondary { fill: #fc7eb9; }
+	}
+	// Green + Fuchsia
+	&.text-green-fuchsia {
+		.fill-primary { fill: #8ed882; }
+		.fill-secondary { fill: #e668b3; }
+	}
+	// Green + Red
+	&.text-green-red {
+		.fill-primary { fill: #45c4a0; }
+		.fill-secondary { fill: #ff7c94; }
+	}
+	// Sky + Pink
+	&.text-sky-pink {
+		.fill-primary { fill: #5eb9f0; }
+		.fill-secondary { fill: #ff98ab; }
+	}
+	// Red + Yellow
+	&.text-red-yellow {
+		.fill-primary { fill: #e54281; }
+		.fill-secondary { fill: #fab758; }
+	}
+}
+
+// ==============================================
+// Solid стиль (простая заливка одним цветом)
+// ==============================================
+.inline-svg-wrapper.solid,
+.icon-svg.solid {
+	@each $color, $value in $icon-color-values {
+		&.text-#{$color} {
+			.fill-primary,
+			.fill-secondary {
+				fill: #{$value};
+			}
+		}
+	}
+}
+
+// ==============================================
+// Solid-mono (один цвет + полупрозрачный secondary)
+// ==============================================
+.inline-svg-wrapper.solid-mono,
+.icon-svg.solid-mono {
+	@each $color, $value in $icon-color-values {
+		&.text-#{$color} {
+			.fill-primary {
+				fill: #{$value};
+			}
+			.fill-secondary {
+				fill: #{$value};
+				opacity: 0.2;
+			}
+		}
+	}
+}
+
+// ==============================================
+// InlineSvg Component Styles
+// ==============================================
+
+.inline-svg-wrapper {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+
+	svg {
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+}
+
+.inline-svg-loading,
+.inline-svg-error {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+
+	svg {
+		width: 1em;
+		height: 1em;
+		opacity: 0.5;
+	}
+}
+
+.inline-svg-spinner {
+	animation: inline-svg-spin 1s linear infinite;
+}
+
+@keyframes inline-svg-spin {
+	from { transform: rotate(0deg); }
+	to { transform: rotate(360deg); }
+}
+
+// SVG Icon размеры (дублируем для inline)
+.inline-svg-wrapper {
+	&.icon-svg-xs svg { width: 1.5rem; height: 1.5rem; }
+	&.icon-svg-sm svg { width: 2.5rem; height: 2.5rem; }
+	&.icon-svg-md svg { width: 3.75rem; height: 3.75rem; }
+	&.icon-svg-lg svg { width: 5rem; height: 5rem; }
+	&.icon-svg-xl svg { width: 6.25rem; height: 6.25rem; }
+	&.icon-svg-xxl svg { width: 7.5rem; height: 7.5rem; }
+}
+
+// Modal styles
+.icon-picker-modal {
+	.components-modal__content {
+		padding: 0;
+	}
+
+	.components-modal__header {
+		padding: 16px 24px;
+		border-bottom: 1px solid #e0e0e0;
+	}
+}
+
+// Search
+.icon-picker-search {
+	padding: 16px 24px;
+	border-bottom: 1px solid #e0e0e0;
+	background: #f9f9f9;
+
+	.components-text-control__input {
+		width: 100%;
+	}
+}
+
+// Tabs
+.icon-picker-tabs {
+	.components-tab-panel__tabs {
+		padding: 0 24px;
+		border-bottom: 1px solid #e0e0e0;
+		background: #fff;
+	}
+
+	.components-tab-panel__tabs-item {
+		padding: 12px 16px;
+		font-size: 13px;
+		font-weight: 500;
+		color: #757575;
+		border-bottom: 2px solid transparent;
+		margin-bottom: -1px;
+
+		&:hover {
+			color: #1e1e1e;
+		}
+
+		&.is-active {
+			color: #007cba;
+			border-bottom-color: #007cba;
+		}
+	}
+}
+
+// Grid
+.icon-picker-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+	gap: 8px;
+	padding: 16px 24px;
+	max-height: 400px;
+	overflow-y: auto;
+	background: #fff;
+}
+
+// Icon item
+.icon-picker-item {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 12px 8px;
+	border: 1px solid #e0e0e0;
+	border-radius: 4px;
+	background: #fff;
+	cursor: pointer;
+	transition: all 0.15s ease;
+	min-height: 80px;
+
+	&:hover {
+		border-color: #007cba;
+		background: #f0f7fc;
+	}
+
+	&.is-selected {
+		border-color: #007cba;
+		background: #e5f3ff;
+		box-shadow: 0 0 0 1px #007cba;
+	}
+
+	// Font icon
+	i {
+		font-size: 28px;
+		color: #1e1e1e;
+		margin-bottom: 6px;
+	}
+
+	// SVG icon
+	img {
+		width: 28px;
+		height: 28px;
+		margin-bottom: 6px;
+		object-fit: contain;
+	}
+
+	&-label {
+		font-size: 10px;
+		color: #757575;
+		text-align: center;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		max-width: 100%;
+		line-height: 1.2;
+	}
+}
+
+// No results
+.icon-picker-no-results {
+	grid-column: 1 / -1;
+	text-align: center;
+	padding: 32px;
+	color: #757575;
+	font-size: 13px;
+}
+
+// Hint
+.icon-picker-hint {
+	grid-column: 1 / -1;
+	text-align: center;
+	padding: 16px;
+	color: #757575;
+	font-size: 12px;
+	font-style: italic;
+	background: #f9f9f9;
+	border-radius: 4px;
+	margin-top: 8px;
+}
+
+// Footer
+.icon-picker-footer {
+	display: flex;
+	justify-content: space-between;
+	padding: 16px 24px;
+	border-top: 1px solid #e0e0e0;
+	background: #f9f9f9;
+
+	.components-button {
+		&.is-destructive {
+			color: #cc1818;
+		}
+	}
+}
+
+// IconControl styles
+.icon-control-preview {
+	margin-bottom: 16px;
+
+	.components-base-control__label {
+		margin-bottom: 8px;
+	}
+}
+
+.icon-control-preview-wrapper {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 12px;
+	background: #f9f9f9;
+	border: 1px solid #e0e0e0;
+	border-radius: 4px;
+}
+
+.icon-control-preview-icon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 48px;
+	height: 48px;
+	background: #fff;
+	border: 1px solid #e0e0e0;
+	border-radius: 4px;
+
+	i {
+		font-size: 24px;
+		color: #1e1e1e;
+	}
+
+	img {
+		width: 24px;
+		height: 24px;
+		object-fit: contain;
+	}
+}
+
+.icon-control-select-btn {
+	flex: 1;
+}
+
+// Custom SVG preview
+.icon-control-custom-svg {
+	margin-top: 8px;
+}
+
+.icon-control-custom-svg-preview {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 12px;
+	background: #f9f9f9;
+	border: 1px solid #e0e0e0;
+	border-radius: 4px;
+
+	img {
+		width: 40px;
+		height: 40px;
+		object-fit: contain;
+	}
+}
+
+// Scrollbar styling
+.icon-picker-grid {
+	&::-webkit-scrollbar {
+		width: 8px;
+	}
+
+	&::-webkit-scrollbar-track {
+		background: #f1f1f1;
+		border-radius: 4px;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background: #c1c1c1;
+		border-radius: 4px;
+
+		&:hover {
+			background: #a8a8a8;
+		}
+	}
+}
+
+// ==============================================
+// Icon Wrapper Style Buttons
+// ==============================================
+.icon-wrapper-style-buttons {
+	display: flex;
+	width: 100%;
+
+	.components-button {
+		flex: 1;
+		justify-content: center;
+	}
+}
+

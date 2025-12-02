@@ -1,42 +1,33 @@
-import { useState, useEffect } from '@wordpress/element';
 import {
 	useBlockProps,
 	InnerBlocks,
 	InspectorControls,
-	MediaUpload,
-	MediaUploadCheck,
 } from '@wordpress/block-editor';
-import { PanelBody, Button, TabPanel } from '@wordpress/components';
+import { TabPanel } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
+import { Icon, cog, positionCenter, mobile, resizeCornerNE } from '@wordpress/icons';
 import { PositioningControl } from '../../components/layout/PositioningControl';
 import { BlockMetaFields } from '../../components/block-meta/BlockMetaFields';
-import BackgroundSettingsPanel from '../../components/background/BackgroundSettingsPanel';
 import { AdaptiveControl } from '../../components/adaptive/AdaptiveControl';
 import { SpacingControl } from '../../components/spacing/SpacingControl';
-import { getColumnClassNames, normalizeColumnId, getColumnStyles, getSpacingClasses } from './utils';
+import { getColumnClassNames, normalizeColumnId } from './utils';
+
+// Tab icon with native title tooltip
+const TabIcon = ({ icon, label }) => (
+	<span title={label} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+		<Icon icon={icon} size={20} />
+	</span>
+);
 
 const tabs = [
-	{ name: 'settings', title: 'Set' },
-	{ name: 'align', title: 'Pos' },
-	{ name: 'background', title: 'Bg' },
-	{ name: 'adaptive', title: 'Resp' },
-	{ name: 'spacing', title: 'Spc' },
+	{ name: 'settings', title: <TabIcon icon={cog} label={__('Settings', 'codeweber-blocks')} /> },
+	{ name: 'align', title: <TabIcon icon={positionCenter} label={__('Position', 'codeweber-blocks')} /> },
+	{ name: 'adaptive', title: <TabIcon icon={mobile} label={__('Responsive', 'codeweber-blocks')} /> },
+	{ name: 'spacing', title: <TabIcon icon={resizeCornerNE} label={__('Spacing', 'codeweber-blocks')} /> },
 ];
 
-const ALLOWED_BLOCKS = [];
 const ColumnEdit = ({ attributes, setAttributes }) => {
 	const {
-		backgroundType,
-		backgroundColor,
-		backgroundColorType,
-		backgroundGradient,
-		backgroundImageUrl,
-		backgroundSize,
-		backgroundOverlay,
-		backgroundImageId,
-		backgroundPatternUrl,
-		backgroundVideoId,
-		backgroundVideoUrl,
 		columnAlignItems,
 		columnJustifyContent,
 		columnTextAlign,
@@ -59,44 +50,10 @@ const ColumnEdit = ({ attributes, setAttributes }) => {
 		spacingXxl,
 	} = attributes;
 
-	const [videoSize, setVideoSize] = useState('');
-
-	useEffect(() => {
-		if (backgroundVideoId && backgroundVideoId > 0 && wp?.apiFetch) {
-			wp.apiFetch({ path: `/wp/v2/media/${backgroundVideoId}`, method: 'GET' })
-				.then((attachment) => {
-					const sizeInBytes = attachment?.media_details?.filesize;
-					if (sizeInBytes) {
-						setVideoSize(sizeInBytes < 1024 * 1024 ? `${(sizeInBytes / 1024).toFixed(1)} KB` : `${(sizeInBytes / (1024 * 1024)).toFixed(1)} MB`);
-					} else {
-						setVideoSize('');
-					}
-				})
-				.catch(() => setVideoSize(''));
-		} else {
-			setVideoSize('');
-		}
-	}, [backgroundVideoId]);
-
 	const blockProps = useBlockProps({
 		className: getColumnClassNames(attributes),
 		id: normalizeColumnId(columnId) || undefined,
-		style: getColumnStyles(attributes),
 	});
-
-	const handleVideoSelect = (media) => {
-		setAttributes({
-			backgroundVideoId: media?.id || 0,
-			backgroundVideoUrl: media?.url || '',
-		});
-	};
-
-	const handleVideoRemove = () => {
-		setAttributes({
-			backgroundVideoId: 0,
-			backgroundVideoUrl: '',
-		});
-	};
 
 	return (
 		<>
@@ -104,126 +61,6 @@ const ColumnEdit = ({ attributes, setAttributes }) => {
 				<TabPanel tabs={tabs}>
 					{(tab) => (
 						<>
-							{tab.name === 'background' && (
-								<div style={{ padding: '16px' }}>
-									<BackgroundSettingsPanel
-										attributes={attributes}
-										setAttributes={setAttributes}
-										allowVideo={true}
-									/>
-									{backgroundType === 'video' && (
-										<>
-											<div className="component-sidebar-title">
-												<label>{__('Background Video', 'codeweber-blocks')}</label>
-											</div>
-											<MediaUploadCheck>
-												<MediaUpload
-													onSelect={handleVideoSelect}
-													allowedTypes={['video']}
-													value={backgroundVideoId}
-													render={({ open }) =>
-														backgroundVideoUrl ? (
-															<div
-																onClick={(event) => {
-																	event.preventDefault();
-																	open();
-																}}
-																style={{
-																	marginTop: '12px',
-																	marginBottom: '12px',
-																	display: 'flex',
-																	alignItems: 'center',
-																	justifyContent: 'center',
-																	minHeight: '120px',
-																	backgroundColor: '#000',
-																	border: '1px solid #ddd',
-																	borderRadius: '4px',
-																	position: 'relative',
-																	cursor: 'pointer',
-																}}
-															>
-																<div
-																	style={{
-																		color: '#fff',
-																		fontSize: '14px',
-																		fontWeight: '500',
-																		textAlign: 'center',
-																		padding: '10px',
-																	}}
-																>
-																	🎥 {__('Video loaded', 'codeweber-blocks')}
-																</div>
-																{videoSize && (
-																	<div
-																		style={{
-																			position: 'absolute',
-																			bottom: '6px',
-																			right: '6px',
-																			padding: '2px 6px',
-																			backgroundColor: 'rgba(0, 0, 0, 0.7)',
-																			color: '#fff',
-																			borderRadius: '3px',
-																			fontSize: '10px',
-																		}}
-																	>
-																		{videoSize}
-																	</div>
-																)}
-																<Button
-																	isLink
-																	onClick={(event) => {
-																		event.stopPropagation();
-																		handleVideoRemove();
-																	}}
-																	style={{
-																		position: 'absolute',
-																		top: '6px',
-																		right: '6px',
-																		backgroundColor: 'rgba(220, 53, 69, 0.8)',
-																		borderRadius: '50%',
-																		width: '20px',
-																		height: '20px',
-																		display: 'flex',
-																		alignItems: 'center',
-																	justifyContent: 'center',
-																		color: '#fff',
-																	}}
-																>
-																	<i className="uil uil-times" style={{ margin: 0, fontSize: '12px' }}></i>
-																</Button>
-															</div>
-														) : (
-															<div
-																className="video-placeholder"
-																onClick={open}
-																style={{
-																	width: '100%',
-																	height: '100px',
-																	backgroundColor: '#f0f0f0',
-																	border: '2px dashed #ccc',
-																	borderRadius: '4px',
-																	display: 'flex',
-																	alignItems: 'center',
-																	justifyContent: 'center',
-																	cursor: 'pointer',
-																	transition: 'all 0.2s ease',
-																}}
-															>
-																<div style={{ textAlign: 'center', color: '#666' }}>
-																	<div style={{ fontSize: '20px', marginBottom: '4px' }}>🎥</div>
-																	<div style={{ fontSize: '12px', fontWeight: '500' }}>
-																		{__('Select Video', 'codeweber-blocks')}
-																	</div>
-																</div>
-															</div>
-														)
-													}
-												/>
-											</MediaUploadCheck>
-										</>
-									)}
-								</div>
-							)}
 							{tab.name === 'align' && (
 								<div style={{ padding: '16px' }}>
 									<PositioningControl
@@ -291,7 +128,6 @@ const ColumnEdit = ({ attributes, setAttributes }) => {
 			</InspectorControls>
 			<div {...blockProps}>
 				<InnerBlocks
-					allowedBlocks={ALLOWED_BLOCKS}
 					template={[['core/html', { content: '' }]]}
 					templateLock={false}
 				/>

@@ -58,7 +58,6 @@ npm run lint:js && npm run lint:css
 | Блок | Name | Описание |
 |------|------|----------|
 | **Section** | `codeweber-blocks/section` | Секция с фоном (цвет, изображение, видео) |
-| **Row** | `codeweber-blocks/row` | Bootstrap-ряд |
 | **Column** | `codeweber-blocks/column` | Bootstrap-колонка с фоном |
 | **Columns** | `codeweber-blocks/columns` | Контейнер колонок с row-cols |
 | **Button** | `codeweber-blocks/button` | Кнопка/ссылка с иконками и lightbox |
@@ -81,6 +80,19 @@ npm run lint:js && npm run lint:css
 | `BlockMetaFields` | Мета-поля (class, data, id) |
 
 **Подробнее:** [COMPONENTS_REFERENCE.md](COMPONENTS_REFERENCE.md)
+
+---
+
+## 🎨 Стандарты UI Sidebar
+
+| Элемент | CSS-класс | Размер | Стиль |
+|---------|-----------|--------|-------|
+| **Кнопки панелей** | `.components-panel__body-toggle` | **14px** | без uppercase, фон `#e0e0e0` |
+| **Заголовки полей** | `.component-sidebar-title label` | **13px** | без uppercase, `font-weight: 500` |
+
+> Стили определены в `src/blocks/section/editor.scss`
+
+**Подробнее:** [GUTENBERG_BLOCK_STANDARDS.md](GUTENBERG_BLOCK_STANDARDS.md#41-стандарты-стилей-sidebar-inspector-controls)
 
 ---
 

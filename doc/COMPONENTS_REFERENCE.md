@@ -22,6 +22,9 @@
 src/components/
 ├── adaptive/
 │   └── AdaptiveControl.js       # Адаптивные настройки (breakpoints)
+├── angled/
+│   ├── AngledControl.js         # Скошенные разделители (dividers)
+│   └── index.js
 ├── animation/
 │   └── Animation.js             # Настройки анимации
 ├── background/
@@ -40,8 +43,11 @@ src/components/
 ├── section/
 │   ├── ContainerSettingsPanel.js # Настройки контейнера
 │   └── SectionSettingsPanel.js  # Настройки секции
-└── spacing/
-    └── SpacingControl.js        # Настройки отступов (padding/margin)
+├── spacing/
+│   └── SpacingControl.js        # Настройки отступов (padding/margin)
+└── waves/
+    ├── WavesControl.js          # Волнистые разделители (dividers)
+    └── index.js
 ```
 
 ---
@@ -492,9 +498,132 @@ import { SectionSettingsPanel } from '../../components/section/SectionSettingsPa
 
 ---
 
-## 14. Создание нового компонента
+## 14. AngledControl
 
-### 14.1 Шаги
+**Путь:** `src/components/angled/AngledControl.js`
+
+**Назначение:** Управление скошенными разделителями секции (angled dividers).
+
+### Props
+
+| Prop | Тип | Default | Описание |
+|------|-----|---------|----------|
+| `angledEnabled` | boolean | — | Включен ли angled divider |
+| `angledUpper` | string | — | Верхний угол: `''`, `'upper-start'`, `'upper-end'` |
+| `angledLower` | string | — | Нижний угол: `''`, `'lower-start'`, `'lower-end'` |
+| `onAngledEnabledChange` | function | — | Callback при переключении |
+| `onAngledUpperChange` | function | — | Callback при изменении верхнего угла |
+| `onAngledLowerChange` | function | — | Callback при изменении нижнего угла |
+
+### Генерируемые классы
+
+```html
+<!-- При angledUpper="upper-start" и angledLower="lower-end" -->
+<section class="wrapper angled upper-start lower-end bg-soft-primary">
+```
+
+### Использование
+
+```javascript
+import { AngledControl } from '../../components/angled/AngledControl';
+
+<PanelBody title={__('Angles', 'codeweber-blocks')}>
+  <AngledControl
+    angledEnabled={angledEnabled}
+    angledUpper={angledUpper}
+    angledLower={angledLower}
+    onAngledEnabledChange={(value) => setAttributes({ angledEnabled: value })}
+    onAngledUpperChange={(value) => setAttributes({ angledUpper: value })}
+    onAngledLowerChange={(value) => setAttributes({ angledLower: value })}
+  />
+</PanelBody>
+```
+
+### Документация темы
+
+[Sandbox Dividers](https://sandbox.elemisthemes.com/docs/elements/dividers.html)
+
+---
+
+## 15. WavesControl
+
+**Путь:** `src/components/waves/WavesControl.js`
+
+**Назначение:** Управление волнистыми разделителями секции (wave dividers).
+
+### Props
+
+| Prop | Тип | Default | Описание |
+|------|-----|---------|----------|
+| `waveTopEnabled` | boolean | — | Включена ли верхняя волна |
+| `waveTopType` | string | — | Тип верхней волны: `'wave-1'`...`'wave-5'` |
+| `waveBottomEnabled` | boolean | — | Включена ли нижняя волна |
+| `waveBottomType` | string | — | Тип нижней волны: `'wave-1'`...`'wave-5'` |
+| `onWaveTopEnabledChange` | function | — | Callback при переключении верхней волны |
+| `onWaveTopTypeChange` | function | — | Callback при изменении типа верхней волны |
+| `onWaveBottomEnabledChange` | function | — | Callback при переключении нижней волны |
+| `onWaveBottomTypeChange` | function | — | Callback при изменении типа нижней волны |
+
+### Генерируемая разметка
+
+```html
+<section class="wrapper bg-primary">
+  <!-- Top wave (rotated 180deg) -->
+  <div class="divider text-light divider-top">
+    <svg xmlns="..." viewBox="..." style="transform: rotate(180deg)">
+      <path fill="currentColor" d="..."/>
+    </svg>
+  </div>
+  
+  <div class="container">...</div>
+  
+  <!-- Bottom wave -->
+  <div class="divider text-light">
+    <svg xmlns="..." viewBox="...">
+      <path fill="currentColor" d="..."/>
+    </svg>
+  </div>
+</section>
+```
+
+### Доступные волны
+
+| Тип | Описание |
+|-----|----------|
+| `wave-1` | Плавная дуга |
+| `wave-2` | Выпуклая дуга |
+| `wave-3` | Сложная волна с несколькими изгибами |
+| `wave-4` | Волнистая линия |
+| `wave-5` | Ассиметричная волна |
+
+### Использование
+
+```javascript
+import { WavesControl } from '../../components/waves/WavesControl';
+
+<PanelBody title={__('Waves', 'codeweber-blocks')}>
+  <WavesControl
+    waveTopEnabled={waveTopEnabled}
+    waveTopType={waveTopType}
+    waveBottomEnabled={waveBottomEnabled}
+    waveBottomType={waveBottomType}
+    onWaveTopEnabledChange={(value) => setAttributes({ waveTopEnabled: value })}
+    onWaveTopTypeChange={(value) => setAttributes({ waveTopType: value })}
+    onWaveBottomEnabledChange={(value) => setAttributes({ waveBottomEnabled: value })}
+    onWaveBottomTypeChange={(value) => setAttributes({ waveBottomType: value })}
+  />
+</PanelBody>
+```
+
+### Документация темы
+
+[Sandbox Dividers](https://sandbox.elemisthemes.com/docs/elements/dividers.html)
+
+---
+
+## 16. Создание нового компонента
+
+### 16.1 Шаги
 
 1. **Создать директорию:** `src/components/<component-name>/`
 2. **Создать файл:** `<ComponentName>.js`
@@ -502,7 +631,7 @@ import { SectionSettingsPanel } from '../../components/section/SectionSettingsPa
 4. **Импортировать в блоках:** `import { ComponentName } from '../../components/<folder>/<ComponentName>'`
 5. **Документировать:** добавить раздел в этот файл
 
-### 14.2 Шаблон компонента
+### 16.2 Шаблон компонента
 
 ```javascript
 import { __ } from '@wordpress/i18n';
@@ -536,7 +665,7 @@ export const MyComponent = ({ attributes, setAttributes }) => {
 export default MyComponent;
 ```
 
-### 14.3 Чек-лист нового компонента
+### 16.3 Чек-лист нового компонента
 
 - [ ] Файл в `src/components/<folder>/`
 - [ ] Экспорт компонента
@@ -547,9 +676,192 @@ export default MyComponent;
 
 ---
 
-## 15. Для AI-агентов
+## 17. IconControl (Icon Picker)
 
-### 15.1 Быстрый поиск
+**Путь:** `src/components/icon/`
+
+**Назначение:** Универсальный компонент для выбора и отображения иконок (Font Icons, SVG Icons, кастомные SVG).
+
+### Структура
+
+```
+src/components/icon/
+├── IconControl.js      # Inspector Control для настроек
+├── IconPicker.js       # Модальное окно выбора иконки
+├── IconRender.js       # Компонент рендеринга иконки
+├── editor.scss         # Стили редактора
+└── index.js            # Экспорты
+```
+
+### Поддерживаемые типы иконок
+
+| Тип | Описание | Пример |
+|-----|----------|--------|
+| `font` | Unicons Font Icons (1260+ иконок) | `<i class="uil uil-check"></i>` |
+| `svg` | SVG иконки (lineal/solid) | `<img src="..." class="svg-inject icon-svg">` |
+| `custom` | Кастомные SVG из Media Library | Загрузка своих SVG |
+
+### SVG стили
+
+| Стиль | Класс | Описание |
+|-------|-------|----------|
+| `lineal` | `icon-svg` | Контурные иконки |
+| `solid` | `icon-svg` | Заполненные иконки |
+| `solid-mono` | `icon-svg solid-mono text-{color}` | Одноцветные заполненные |
+| `solid-duo` | `icon-svg solid-duo text-{color1}-{color2}` | Двухцветные (градиент) |
+
+### Атрибуты
+
+Используйте функцию `iconAttributes(prefix)` для генерации атрибутов:
+
+```javascript
+import { iconAttributes } from '../../components/icon';
+
+// В block.json или registerBlockType
+attributes: {
+  ...iconAttributes('icon'),  // iconIconType, iconIconName, etc.
+  ...iconAttributes('leftIcon'),  // leftIconIconType, etc.
+}
+```
+
+| Атрибут | Тип | Default | Описание |
+|---------|-----|---------|----------|
+| `iconType` | string | `'none'` | Тип: `'none'`, `'font'`, `'svg'`, `'custom'` |
+| `iconName` | string | `''` | Имя Font иконки (без `uil-`) |
+| `svgIcon` | string | `''` | Имя SVG иконки |
+| `svgStyle` | string | `'lineal'` | Стиль SVG |
+| `iconSize` | string | `'md'` | Размер SVG: `'xs'`-`'xxl'` |
+| `iconFontSize` | string | `''` | Размер Font: `'fs-24'`, `'fs-28'`, etc. |
+| `iconColor` | string | `''` | Цвет из палитры |
+| `iconColor2` | string | `''` | Второй цвет для `solid-duo` |
+| `iconClass` | string | `''` | Дополнительные классы (margin) |
+| `iconWrapper` | boolean | `false` | Обернуть в `div.icon` |
+| `iconWrapperClass` | string | `''` | Классы обёртки |
+| `customSvgUrl` | string | `''` | URL кастомного SVG |
+| `customSvgId` | number | `null` | ID в Media Library |
+
+### Props IconControl
+
+| Prop | Тип | Default | Описание |
+|------|-----|---------|----------|
+| `attributes` | object | — | Атрибуты блока |
+| `setAttributes` | function | — | Функция обновления |
+| `prefix` | string | `''` | Префикс атрибутов |
+| `label` | string | `'Иконка'` | Заголовок панели |
+| `allowSvg` | boolean | `true` | Разрешить SVG иконки |
+| `allowFont` | boolean | `true` | Разрешить Font иконки |
+| `allowCustom` | boolean | `true` | Разрешить кастомные SVG |
+| `showWrapper` | boolean | `true` | Показать чекбокс обёртки |
+| `showMargin` | boolean | `true` | Показать выбор отступа |
+| `initialOpen` | boolean | `false` | Панель открыта по умолчанию |
+
+### Использование в edit.js
+
+```javascript
+import { InspectorControls } from '@wordpress/block-editor';
+import { IconControl, IconRender } from '../../components/icon';
+
+const Edit = ({ attributes, setAttributes }) => {
+  const { iconType, iconName, svgIcon, svgStyle, iconSize, iconFontSize, iconColor, iconWrapper } = attributes;
+
+  return (
+    <>
+      <InspectorControls>
+        <IconControl
+          attributes={attributes}
+          setAttributes={setAttributes}
+          prefix=""
+          label="Иконка"
+        />
+      </InspectorControls>
+
+      <div className="my-block">
+        <IconRender
+          iconType={iconType}
+          iconName={iconName}
+          svgIcon={svgIcon}
+          svgStyle={svgStyle}
+          iconSize={iconSize}
+          iconFontSize={iconFontSize}
+          iconColor={iconColor}
+          wrapper={iconWrapper}
+        />
+        <span>Контент блока</span>
+      </div>
+    </>
+  );
+};
+```
+
+### Использование в save.js
+
+```javascript
+import { IconRenderSave } from '../../components/icon';
+
+const Save = ({ attributes }) => {
+  const { iconType, iconName, svgIcon, svgStyle, iconSize, iconFontSize, iconColor, iconWrapper } = attributes;
+
+  return (
+    <div className="my-block">
+      <IconRenderSave
+        iconType={iconType}
+        iconName={iconName}
+        svgIcon={svgIcon}
+        svgStyle={svgStyle}
+        iconSize={iconSize}
+        iconFontSize={iconFontSize}
+        iconColor={iconColor}
+        wrapper={iconWrapper}
+      />
+      <span>Контент блока</span>
+    </div>
+  );
+};
+```
+
+### Примеры вывода HTML
+
+**Font Icon:**
+```html
+<i class="uil uil-check fs-28 text-primary me-4"></i>
+```
+
+**Font Icon с обёрткой:**
+```html
+<div class="icon text-primary fs-28 me-6 mt-n1">
+  <i class="uil uil-phone-volume"></i>
+</div>
+```
+
+**SVG Lineal:**
+```html
+<img src="/wp-content/themes/codeweber/assets/img/icons/lineal/target.svg" 
+     class="svg-inject icon-svg icon-svg-sm text-primary me-4" alt="">
+```
+
+**SVG Solid Mono:**
+```html
+<img src="/wp-content/themes/codeweber/assets/img/icons/solid/lamp.svg" 
+     class="svg-inject icon-svg icon-svg-xs solid-mono text-fuchsia" alt="">
+```
+
+**SVG Solid Duo:**
+```html
+<img src="/wp-content/themes/codeweber/assets/img/icons/solid/puzzle.svg" 
+     class="svg-inject icon-svg icon-svg-md solid-duo text-grape-fuchsia" alt="">
+```
+
+### Документация темы
+
+- [Font Icons (Unicons)](https://sandbox.elemisthemes.com/docs/styleguide/icons-font.html)
+- [SVG Icons](https://sandbox.elemisthemes.com/docs/styleguide/icons-svg.html)
+- [Features Blocks](https://sandbox.elemisthemes.com/docs/blocks/features.html)
+
+---
+
+## 18. Для AI-агентов
+
+### 18.1 Быстрый поиск
 
 | Задача | Компонент |
 |--------|-----------|
@@ -561,8 +873,11 @@ export default MyComponent;
 | Анимация | `Animation` |
 | Мета-поля | `BlockMetaFields` |
 | Типографика | `HeadingTypographyControl` |
+| Скошенные разделители | `AngledControl` |
+| Волнистые разделители | `WavesControl` |
+| **Иконки** | `IconControl` + `IconRender` |
 
-### 15.2 Зависимости компонентов
+### 18.2 Зависимости компонентов
 
 ```
 BackgroundSettingsPanel
@@ -573,9 +888,16 @@ BackgroundSettingsPanel
 HeadingTypographyControl
   └── ColorTypeControl
   └── colors.js
+
+IconControl
+  └── IconPicker
+  └── IconRender
+  └── font_icon.js
+  └── svg_icons.js
+  └── icon_sizes.js
 ```
 
-### 15.3 Утилиты для компонентов
+### 18.3 Утилиты для компонентов
 
 | Утилита | Путь | Описание |
 |---------|------|----------|
@@ -585,6 +907,8 @@ HeadingTypographyControl
 | `generateBackgroundClasses` | `src/utilities/class-generators.js` | Генерация классов фона |
 | `font_icon` | `src/utilities/font_icon.js` | Иконки (Unicons) |
 | `font_icon_social` | `src/utilities/font_icon_social.js` | Социальные иконки |
+| `svg_icons` | `src/utilities/svg_icons.js` | SVG иконки (lineal/solid) |
+| `icon_sizes` | `src/utilities/icon_sizes.js` | Размеры и цвета иконок |
 | `shapes` | `src/utilities/shapes.js` | SVG-формы |
 | `link_type` | `src/utilities/link_type.js` | Типы ссылок |
 

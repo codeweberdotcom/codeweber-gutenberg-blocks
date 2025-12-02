@@ -4,7 +4,6 @@ import {
 	InspectorControls,
 } from '@wordpress/block-editor';
 import {
-	PanelBody,
 	Button,
 	ButtonGroup,
 	TextControl,
@@ -14,12 +13,20 @@ import {
 import { __ } from '@wordpress/i18n';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { createBlock } from '@wordpress/blocks';
+import { Icon, column, positionCenter, resizeCornerNE, cog, justifySpaceBetween } from '@wordpress/icons';
 
 import { PositioningControl } from '../../components/layout/PositioningControl';
 import { BlockMetaFields } from '../../components/block-meta/BlockMetaFields';
 import { GapControl } from '../../components/gap/GapControl';
 import { SpacingControl } from '../../components/spacing/SpacingControl';
 import { getColumnsClassNames, normalizeColumnsData, normalizeColumnsId } from './utils';
+
+// Tab icon with native title tooltip
+const TabIcon = ({ icon, label }) => (
+	<span title={label} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+		<Icon icon={icon} size={20} />
+	</span>
+);
 
 const GRID_TYPE_OPTIONS = [
 	{ value: 'classic', label: __('Classic grid', 'codeweber-blocks') },
@@ -114,7 +121,7 @@ const ColumnsEdit = ({ attributes, setAttributes, clientId }) => {
 	const adjustColumns = (value) => {
 		const count = Number(value);
 		const normalized = Number.isNaN(count) ? 1 : count;
-		const clamped = Math.min(30, Math.max(1, normalized));
+		const clamped = Math.min(30, Math.max(0, normalized));
 		if (clamped === columnsCount) return;
 		const nextBlocks = innerBlocks.slice(0, clamped);
 		while (nextBlocks.length < clamped) {
@@ -125,11 +132,11 @@ const ColumnsEdit = ({ attributes, setAttributes, clientId }) => {
 	};
 
 	const tabs = [
-		{ name: 'layout', title: 'Lay' },
-		{ name: 'align', title: 'Pos' },
-		{ name: 'gap', title: 'Gap' },
-		{ name: 'spacing', title: 'Spc' },
-		{ name: 'settings', title: 'Set' },
+		{ name: 'layout', title: <TabIcon icon={column} label={__('Layout', 'codeweber-blocks')} /> },
+		{ name: 'align', title: <TabIcon icon={positionCenter} label={__('Position', 'codeweber-blocks')} /> },
+		{ name: 'gap', title: <TabIcon icon={justifySpaceBetween} label={__('Gap', 'codeweber-blocks')} /> },
+		{ name: 'spacing', title: <TabIcon icon={resizeCornerNE} label={__('Spacing', 'codeweber-blocks')} /> },
+		{ name: 'settings', title: <TabIcon icon={cog} label={__('Settings', 'codeweber-blocks')} /> },
 	];
 
 	return (
@@ -147,7 +154,7 @@ const ColumnsEdit = ({ attributes, setAttributes, clientId }) => {
 										label={__('Columns count', 'codeweber-blocks')}
 										type="number"
 										value={columnsCount}
-										min={1}
+										min={0}
 										max={30}
 										step={1}
 										onChange={adjustColumns}
@@ -233,11 +240,7 @@ const ColumnsEdit = ({ attributes, setAttributes, clientId }) => {
 								</div>
 							)}
 							{tab.name === 'settings' && (
-								<PanelBody
-									title={__('Columns Block Settings', 'codeweber-blocks')}
-									className="custom-panel-body"
-									initialOpen={true}
-								>
+								<div style={{ padding: '16px' }}>
 									<BlockMetaFields
 										attributes={attributes}
 										setAttributes={setAttributes}
@@ -252,7 +255,7 @@ const ColumnsEdit = ({ attributes, setAttributes, clientId }) => {
 											idLabel: __('Columns ID', 'codeweber-blocks'),
 										}}
 									/>
-								</PanelBody>
+								</div>
 							)}
 						</>
 					)}
@@ -261,7 +264,6 @@ const ColumnsEdit = ({ attributes, setAttributes, clientId }) => {
 			<div {...blockProps}>
 				<div {...editorWrapperProps}>
 					<InnerBlocks
-						allowedBlocks={['codeweber-blocks/column']}
 						template={Array.from({ length: columnsCount }, () => ['codeweber-blocks/column', {}])}
 						templateLock={false}
 					/>

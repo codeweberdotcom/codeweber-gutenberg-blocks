@@ -1,0 +1,69 @@
+/**
+ * Icon Block - Editor Styles
+ *
+ * @package CodeWeber Gutenberg Blocks
+ */
+
+.cwgb-icon-block {
+	// В редакторе показываем границу для удобства
+	&.is-selected,
+	&:hover {
+		outline: 1px dashed rgba(0, 124, 186, 0.3);
+		outline-offset: 4px;
+	}
+}
+
+// Плейсхолдер когда иконка не выбрана
+.cwgb-icon-placeholder {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 60px;
+	padding: 20px;
+	background: #f9f9f9;
+	border: 2px dashed #ddd;
+	border-radius: 4px;
+	color: #757575;
+	font-size: 14px;
+	text-align: center;
+
+	span {
+		display: block;
+	}
+}
+
+// Превью иконки в редакторе
+.cwgb-icon-block {
+	// Font Icon
+	i.uil {
+		display: inline-block;
+		line-height: 1;
+	}
+
+	// SVG Icon
+	img.icon-svg {
+		display: inline-block;
+		vertical-align: middle;
+	}
+
+	// Wrapper div.icon
+	.icon {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+	}
+}
+
+// Выравнивание
+.cwgb-icon-block {
+	&.text-left {
+		text-align: left;
+	}
+	&.text-center {
+		text-align: center;
+	}
+	&.text-right {
+		text-align: right;
+	}
+}
+

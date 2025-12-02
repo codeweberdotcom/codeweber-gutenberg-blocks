@@ -11,6 +11,7 @@ import {
 	FormFileUpload,
 	TabPanel,
 } from '@wordpress/components';
+import { Icon, layout, box, image, styles, resizeCornerNE, cog } from '@wordpress/icons';
 import {
 	InspectorControls,
 	MediaUpload,
@@ -22,6 +23,8 @@ import { ContainerSettingsPanel } from '../../components/section/ContainerSettin
 import BackgroundSettingsPanel from '../../components/background/BackgroundSettingsPanel';
 import { PositioningControl } from '../../components/layout/PositioningControl';
 import { SpacingControl } from '../../components/spacing/SpacingControl';
+import { AngledControl } from '../../components/angled/AngledControl';
+import { WavesControl } from '../../components/waves/WavesControl';
 
 export const SectionSidebar = ({ attributes, setAttributes }) => {
 	const [imageSize, setImageSize] = useState('');
@@ -62,6 +65,13 @@ export const SectionSidebar = ({ attributes, setAttributes }) => {
 		spacingLg,
 		spacingXl,
 		spacingXxl,
+		angledEnabled,
+		angledUpper,
+		angledLower,
+		waveTopEnabled,
+		waveTopType,
+		waveBottomEnabled,
+		waveBottomType,
 	} = attributes;
 
 
@@ -192,10 +202,23 @@ export const SectionSidebar = ({ attributes, setAttributes }) => {
 		setAttributes({ textColor: color });
 	};
 
+	// Tab icon with native title tooltip
+	const TabIcon = ({ icon, label }) => (
+		<span 
+			title={label}
+			style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+		>
+			<Icon icon={icon} size={20} />
+		</span>
+	);
+
 	const tabs = [
-		{ name: 'section', title: 'Sec' },
-		{ name: 'background', title: 'Bg' },
-		{ name: 'spacing', title: 'Spc' },
+		{ name: 'section', title: <TabIcon icon={layout} label={__('Section', 'codeweber-blocks')} /> },
+		{ name: 'container', title: <TabIcon icon={box} label={__('Container', 'codeweber-blocks')} /> },
+		{ name: 'background', title: <TabIcon icon={image} label={__('Background', 'codeweber-blocks')} /> },
+		{ name: 'angled', title: <TabIcon icon={styles} label={__('Dividers', 'codeweber-blocks')} /> },
+		{ name: 'spacing', title: <TabIcon icon={resizeCornerNE} label={__('Spacing', 'codeweber-blocks')} /> },
+		{ name: 'settings', title: <TabIcon icon={cog} label={__('Settings', 'codeweber-blocks')} /> },
 	];
 
 	return (
@@ -381,6 +404,33 @@ export const SectionSidebar = ({ attributes, setAttributes }) => {
 						</>
 					)}
 
+					{tab.name === 'angled' && (
+						<div style={{ padding: '16px' }}>
+							<PanelBody title={__('Angles', 'codeweber-blocks')} initialOpen={true}>
+								<AngledControl
+									angledEnabled={angledEnabled}
+									angledUpper={angledUpper}
+									angledLower={angledLower}
+									onAngledEnabledChange={(value) => setAttributes({ angledEnabled: value })}
+									onAngledUpperChange={(value) => setAttributes({ angledUpper: value })}
+									onAngledLowerChange={(value) => setAttributes({ angledLower: value })}
+								/>
+							</PanelBody>
+							<PanelBody title={__('Waves', 'codeweber-blocks')} initialOpen={false}>
+								<WavesControl
+									waveTopEnabled={waveTopEnabled}
+									waveTopType={waveTopType}
+									waveBottomEnabled={waveBottomEnabled}
+									waveBottomType={waveBottomType}
+									onWaveTopEnabledChange={(value) => setAttributes({ waveTopEnabled: value })}
+									onWaveTopTypeChange={(value) => setAttributes({ waveTopType: value })}
+									onWaveBottomEnabledChange={(value) => setAttributes({ waveBottomEnabled: value })}
+									onWaveBottomTypeChange={(value) => setAttributes({ waveBottomType: value })}
+								/>
+							</PanelBody>
+						</div>
+					)}
+
 					{tab.name === 'spacing' && (
 						<div style={{ padding: '16px' }}>
 							<SpacingControl
@@ -398,6 +448,20 @@ export const SectionSidebar = ({ attributes, setAttributes }) => {
 
 					{tab.name === 'section' && (
 						<>
+							<SectionSettingsPanel
+								textColor={textColor}
+								sectionFrame={sectionFrame}
+								overflowHidden={overflowHidden}
+								positionRelative={positionRelative}
+								minHeight={minHeight}
+								onTextColorChange={handleTextColorChange}
+								onSectionChange={handleSectionChange}
+							/>
+						</>
+					)}
+
+					{tab.name === 'container' && (
+						<>
 							<ContainerSettingsPanel
 								containerType={containerType}
 								containerClass={containerClass}
@@ -414,20 +478,16 @@ export const SectionSidebar = ({ attributes, setAttributes }) => {
 								position={containerPosition}
 								onPositionChange={(value) => handleContainerChange('containerPosition', value)}
 							/>
-							<SectionSettingsPanel
-								textColor={textColor}
-								sectionFrame={sectionFrame}
-								overflowHidden={overflowHidden}
-								positionRelative={positionRelative}
-								minHeight={minHeight}
-								onTextColorChange={handleTextColorChange}
-								onSectionChange={handleSectionChange}
-							/>
+						</>
+					)}
+
+					{tab.name === 'settings' && (
+						<div style={{ padding: '16px' }}>
 							<BlockMetaFields
 								attributes={attributes}
 								setAttributes={setAttributes}
 							/>
-						</>
+						</div>
 					)}
 
 				</>

@@ -5,25 +5,10 @@ import {
 } from '@wordpress/block-editor';
 import { SectionSidebar } from './sidebar';
 import { __ } from '@wordpress/i18n';
-import { normalizeMinHeightClass, getContainerClassNames, getSpacingClasses } from './utils';
+import { normalizeMinHeightClass, getContainerClassNames, getSpacingClasses, getAngledClasses, getWaveConfig, WAVE_SVGS } from './utils';
 import { generateBackgroundClasses, generateTextColorClass } from '../../utilities/class-generators';
 
 const normalizeSectionId = (value = '') => value.replace(/^#/, '').trim();
-
-const ALLOWED_BLOCKS = [
-	'core/paragraph',
-	'core/heading',
-	'core/image',
-	'core/list',
-	'core/quote',
-	'core/group',
-	'codeweber-blocks/button',
-	'codeweber-blocks/grid',
-	'codeweber-blocks/row',
-	'codeweber-blocks/columns',
-	'codeweber-blocks/row',
-	// Add more allowed blocks as needed
-];
 
 const TEMPLATE = [
 	[
@@ -49,6 +34,9 @@ const getSectionClasses = (attrs) => {
 
 	// Spacing classes
 	classes.push(...getSpacingClasses(attrs));
+
+	// Angled divider classes
+	classes.push(...getAngledClasses(attrs));
 
 	return classes.filter(Boolean).join(' ');
 };
@@ -130,6 +118,9 @@ const SectionEdit = ({ attributes, setAttributes }) => {
 		return Object.keys(styles).length > 0 ? styles : undefined;
 	};
 
+	// Get wave configuration
+	const waveConfig = getWaveConfig(attributes);
+
 	return (
 		<>
 			<InspectorControls>
@@ -142,6 +133,23 @@ const SectionEdit = ({ attributes, setAttributes }) => {
 				{...blockProps}
 				style={getSectionStyles()}
 			>
+				{/* Top Wave Divider */}
+				{waveConfig.hasTopWave && (
+					<div 
+						className="divider text-light"
+						style={{ 
+							position: 'absolute', 
+							top: 0, 
+							left: 0, 
+							right: 0,
+							transform: 'rotate(180deg)',
+							zIndex: 1,
+							lineHeight: 0
+						}}
+						dangerouslySetInnerHTML={{ __html: WAVE_SVGS[waveConfig.topType] }}
+					/>
+				)}
+
 				{backgroundType === 'video' && backgroundVideoUrl ? (
 					<video
 						poster={backgroundVideoUrl ? `./assets/img/photos/movie2.jpg` : undefined}
@@ -155,11 +163,26 @@ const SectionEdit = ({ attributes, setAttributes }) => {
 				) : null}
 				<div className={`${backgroundType === 'video' ? 'video-content' : ''} ${containerType} ${containerClassNames}`.trim()}>
 					<InnerBlocks
-						allowedBlocks={ALLOWED_BLOCKS}
 						template={TEMPLATE}
 						templateLock={false}
 					/>
 				</div>
+
+				{/* Bottom Wave Divider */}
+				{waveConfig.hasBottomWave && (
+					<div 
+						className="divider text-light"
+						style={{ 
+							position: 'absolute', 
+							bottom: 0, 
+							left: 0, 
+							right: 0,
+							zIndex: 1,
+							lineHeight: 0
+						}}
+						dangerouslySetInnerHTML={{ __html: WAVE_SVGS[waveConfig.bottomType] }}
+					/>
+				)}
 			</section>
 		</>
 	);

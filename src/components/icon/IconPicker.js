@@ -1,0 +1,277 @@
+/**
+ * IconPicker - Модальное окно выбора иконки
+ *
+ * @package CodeWeber Gutenberg Blocks
+ */
+
+import { __ } from '@wordpress/i18n';
+import { useState, useMemo } from '@wordpress/element';
+import {
+	Modal,
+	Button,
+	TextControl,
+	TabPanel,
+	Spinner,
+} from '@wordpress/components';
+
+import { fontIcons } from '../../utilities/font_icon';
+import { svgIconsLineal, svgIconsSolid, getSvgIconPath } from '../../utilities/svg_icons';
+import { InlineSvg } from './InlineSvg';
+
+/**
+ * Компонент превью Font Icon
+ */
+const FontIconPreview = ({ iconName, isSelected, onClick }) => (
+	<button
+		type="button"
+		className={`icon-picker-item ${isSelected ? 'is-selected' : ''}`}
+		onClick={onClick}
+		title={iconName}
+	>
+		<i className={`uil uil-${iconName}`}></i>
+		<span className="icon-picker-item-label">{iconName}</span>
+	</button>
+);
+
+/**
+ * Компонент превью SVG Icon
+ * Используем InlineSvg для корректного отображения
+ */
+const SvgIconPreview = ({ iconName, style, isSelected, onClick }) => (
+	<button
+		type="button"
+		className={`icon-picker-item ${isSelected ? 'is-selected' : ''}`}
+		onClick={onClick}
+		title={iconName}
+	>
+		<InlineSvg
+			src={getSvgIconPath(iconName, style)}
+			className="icon-svg icon-svg-xs"
+			alt={iconName}
+		/>
+		<span className="icon-picker-item-label">{iconName}</span>
+	</button>
+);
+
+/**
+ * IconPicker Component
+ *
+ * @param {Object} props
+ * @param {boolean} props.isOpen - Открыто ли модальное окно
+ * @param {Function} props.onClose - Callback закрытия
+ * @param {Function} props.onSelect - Callback выбора иконки
+ * @param {string} props.selectedIcon - Текущая выбранная иконка
+ * @param {string} props.selectedType - Тип: 'font', 'svg-lineal', 'svg-solid'
+ * @param {string} props.initialTab - Начальная вкладка
+ */
+export const IconPicker = ({
+	isOpen,
+	onClose,
+	onSelect,
+	selectedIcon = '',
+	selectedType = 'font',
+	initialTab = 'font',
+}) => {
+	const [searchTerm, setSearchTerm] = useState('');
+	const [activeTab, setActiveTab] = useState(initialTab);
+
+	// Фильтрация Font Icons
+	const filteredFontIcons = useMemo(() => {
+		if (!searchTerm) {
+			return fontIcons.slice(0, 200); // Показываем первые 200 по умолчанию
+		}
+		const term = searchTerm.toLowerCase();
+		return fontIcons.filter(
+			(icon) =>
+				icon.label.toLowerCase().includes(term) ||
+				icon.value.toLowerCase().includes(term)
+		);
+	}, [searchTerm]);
+
+	// Фильтрация SVG Lineal Icons
+	const filteredLinealIcons = useMemo(() => {
+		if (!searchTerm) {
+			return svgIconsLineal;
+		}
+		const term = searchTerm.toLowerCase();
+		return svgIconsLineal.filter(
+			(icon) =>
+				icon.label.toLowerCase().includes(term) ||
+				icon.value.toLowerCase().includes(term)
+		);
+	}, [searchTerm]);
+
+	// Фильтрация SVG Solid Icons
+	const filteredSolidIcons = useMemo(() => {
+		if (!searchTerm) {
+			return svgIconsSolid;
+		}
+		const term = searchTerm.toLowerCase();
+		return svgIconsSolid.filter(
+			(icon) =>
+				icon.label.toLowerCase().includes(term) ||
+				icon.value.toLowerCase().includes(term)
+		);
+	}, [searchTerm]);
+
+	// Обработчик выбора иконки
+	const handleSelect = (iconValue, type) => {
+		onSelect({
+			iconType: type === 'font' ? 'font' : 'svg',
+			iconName: type === 'font' ? iconValue : '',
+			svgIcon: type !== 'font' ? iconValue : '',
+			svgStyle: type === 'svg-solid' ? 'solid' : 'lineal',
+		});
+		onClose();
+	};
+
+	// Табы
+	const tabs = [
+		{
+			name: 'font',
+			title: __('Font Icons', 'codeweber-blocks'),
+			className: 'icon-picker-tab',
+		},
+		{
+			name: 'svg-lineal',
+			title: __('SVG Lineal', 'codeweber-blocks'),
+			className: 'icon-picker-tab',
+		},
+		{
+			name: 'svg-solid',
+			title: __('SVG Solid', 'codeweber-blocks'),
+			className: 'icon-picker-tab',
+		},
+	];
+
+	if (!isOpen) {
+		return null;
+	}
+
+	return (
+		<Modal
+			title={__('Выберите иконку', 'codeweber-blocks')}
+			onRequestClose={onClose}
+			className="icon-picker-modal"
+			isFullScreen={false}
+		>
+			<div className="icon-picker-search">
+				<TextControl
+					placeholder={__('Поиск иконки...', 'codeweber-blocks')}
+					value={searchTerm}
+					onChange={setSearchTerm}
+					__nextHasNoMarginBottom
+				/>
+			</div>
+
+			<TabPanel
+				className="icon-picker-tabs"
+				tabs={tabs}
+				initialTabName={activeTab}
+				onSelect={setActiveTab}
+			>
+				{(tab) => (
+					<div className="icon-picker-grid">
+						{tab.name === 'font' && (
+							<>
+								{filteredFontIcons.length === 0 ? (
+									<p className="icon-picker-no-results">
+										{__('Иконки не найдены', 'codeweber-blocks')}
+									</p>
+								) : (
+									filteredFontIcons.map((icon) => (
+										<FontIconPreview
+											key={icon.value}
+											iconName={icon.value.replace('uil-', '')}
+											isSelected={
+												selectedType === 'font' &&
+												selectedIcon === icon.value.replace('uil-', '')
+											}
+											onClick={() =>
+												handleSelect(icon.value.replace('uil-', ''), 'font')
+											}
+										/>
+									))
+								)}
+								{!searchTerm && filteredFontIcons.length === 200 && (
+									<p className="icon-picker-hint">
+										{__('Введите поисковый запрос для отображения всех иконок', 'codeweber-blocks')}
+									</p>
+								)}
+							</>
+						)}
+
+						{tab.name === 'svg-lineal' && (
+							<>
+								{filteredLinealIcons.length === 0 ? (
+									<p className="icon-picker-no-results">
+										{__('Иконки не найдены', 'codeweber-blocks')}
+									</p>
+								) : (
+									filteredLinealIcons.map((icon) => (
+										<SvgIconPreview
+											key={icon.value}
+											iconName={icon.value}
+											style="lineal"
+											isSelected={
+												selectedType === 'svg-lineal' &&
+												selectedIcon === icon.value
+											}
+											onClick={() => handleSelect(icon.value, 'svg-lineal')}
+										/>
+									))
+								)}
+							</>
+						)}
+
+						{tab.name === 'svg-solid' && (
+							<>
+								{filteredSolidIcons.length === 0 ? (
+									<p className="icon-picker-no-results">
+										{__('Иконки не найдены', 'codeweber-blocks')}
+									</p>
+								) : (
+									filteredSolidIcons.map((icon) => (
+										<SvgIconPreview
+											key={icon.value}
+											iconName={icon.value}
+											style="solid"
+											isSelected={
+												selectedType === 'svg-solid' &&
+												selectedIcon === icon.value
+											}
+											onClick={() => handleSelect(icon.value, 'svg-solid')}
+										/>
+									))
+								)}
+							</>
+						)}
+					</div>
+				)}
+			</TabPanel>
+
+			<div className="icon-picker-footer">
+				<Button
+					variant="secondary"
+					onClick={() => {
+						onSelect({
+							iconType: 'none',
+							iconName: '',
+							svgIcon: '',
+							svgStyle: 'lineal',
+						});
+						onClose();
+					}}
+				>
+					{__('Удалить иконку', 'codeweber-blocks')}
+				</Button>
+				<Button variant="tertiary" onClick={onClose}>
+					{__('Отмена', 'codeweber-blocks')}
+				</Button>
+			</div>
+		</Modal>
+	);
+};
+
+export default IconPicker;
+

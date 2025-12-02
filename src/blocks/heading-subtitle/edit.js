@@ -2,7 +2,7 @@ import { useBlockProps, InspectorControls, RichText } from '@wordpress/block-edi
 import { TabPanel, PanelBody, ButtonGroup, Button } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
-import { Icon, edit, typography, positionCenter, resizeCornerNE, video, cog } from '@wordpress/icons';
+import { Icon, edit, typography, positionCenter, resizeCornerNE, cog } from '@wordpress/icons';
 
 // Tab icon with native title tooltip
 const TabIcon = ({ icon, label }) => (
@@ -15,18 +15,21 @@ import { HeadingTypographyControl } from '../../components/heading/HeadingTypogr
 import { PositioningControl } from '../../components/layout/PositioningControl';
 import { SpacingControl } from '../../components/spacing/SpacingControl';
 import { BlockMetaFields } from '../../components/block-meta/BlockMetaFields';
-import { AnimationControl } from '../../components/animation/Animation';
 import { getTitleClasses, getSubtitleClasses } from './utils';
+import { ParagraphRender } from '../../components/paragraph';
 
 const HeadingSubtitleEdit = ({ attributes, setAttributes }) => {
     const {
         enableTitle,
         enableSubtitle,
+        enableText,
         title,
         subtitle,
+        text,
         order,
         titleTag,
         subtitleTag,
+        textTag,
         titleColor,
         titleColorType,
         subtitleColor,
@@ -36,10 +39,6 @@ const HeadingSubtitleEdit = ({ attributes, setAttributes }) => {
         justifyContent,
         position,
         spacing,
-        animationEnabled,
-        animationType,
-        animationDuration,
-        animationDelay,
         spacingType,
         spacingXs,
         spacingSm,
@@ -78,9 +77,21 @@ const HeadingSubtitleEdit = ({ attributes, setAttributes }) => {
             />
         );
     }
-
     if (order === 'subtitle-first') {
         elements.reverse();
+    }
+
+    // Paragraph всегда после title и subtitle
+    if (enableText) {
+        elements.push(
+            <ParagraphRender
+                key="text"
+                attributes={attributes}
+                setAttributes={setAttributes}
+                prefix=""
+                tag={textTag}
+            />
+        );
     }
 
     const tabs = [
@@ -88,7 +99,6 @@ const HeadingSubtitleEdit = ({ attributes, setAttributes }) => {
         { name: 'typography', title: <TabIcon icon={typography} label={__('Typography', 'codeweber-blocks')} /> },
         { name: 'align', title: <TabIcon icon={positionCenter} label={__('Align', 'codeweber-blocks')} /> },
         { name: 'spacing', title: <TabIcon icon={resizeCornerNE} label={__('Spacing', 'codeweber-blocks')} /> },
-        { name: 'animation', title: <TabIcon icon={video} label={__('Animation', 'codeweber-blocks')} /> },
         { name: 'settings', title: <TabIcon icon={cog} label={__('Settings', 'codeweber-blocks')} /> },
     ];
 
@@ -146,14 +156,6 @@ const HeadingSubtitleEdit = ({ attributes, setAttributes }) => {
                                     />
                                 </div>
                             )}
-                            {tab.name === 'animation' && (
-                                <div style={{ padding: '16px' }}>
-                                    <AnimationControl
-                                        attributes={attributes}
-                                        setAttributes={setAttributes}
-                                    />
-                                </div>
-                            )}
                             {tab.name === 'settings' && (
                                 <div style={{ padding: '16px' }}>
                                     <ButtonGroup style={{ marginBottom: '16px' }}>
@@ -168,6 +170,12 @@ const HeadingSubtitleEdit = ({ attributes, setAttributes }) => {
                                             onClick={() => setActiveElement('subtitle')}
                                         >
                                             {__('Subtitle', 'codeweber-blocks')}
+                                        </Button>
+                                        <Button
+                                            isPrimary={activeElement === 'paragraph'}
+                                            onClick={() => setActiveElement('paragraph')}
+                                        >
+                                            {__('Paragraph', 'codeweber-blocks')}
                                         </Button>
                                     </ButtonGroup>
                                     {activeElement === 'title' && (
@@ -199,6 +207,22 @@ const HeadingSubtitleEdit = ({ attributes, setAttributes }) => {
                                                 classLabel: __('Subtitle CSS Class', 'codeweber-blocks'),
                                                 dataLabel: __('Subtitle Data Attributes', 'codeweber-blocks'),
                                                 idLabel: __('Subtitle ID', 'codeweber-blocks'),
+                                            }}
+                                        />
+                                    )}
+                                    {activeElement === 'paragraph' && (
+                                        <BlockMetaFields
+                                            attributes={attributes}
+                                            setAttributes={setAttributes}
+                                            fieldKeys={{
+                                                classKey: 'textClass',
+                                                dataKey: 'textData',
+                                                idKey: 'textId',
+                                            }}
+                                            labels={{
+                                                classLabel: __('Paragraph CSS Class', 'codeweber-blocks'),
+                                                dataLabel: __('Paragraph Data Attributes', 'codeweber-blocks'),
+                                                idLabel: __('Paragraph ID', 'codeweber-blocks'),
                                             }}
                                         />
                                     )}

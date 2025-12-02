@@ -99,6 +99,7 @@ const ButtonEdit = ({ attributes, setAttributes }) => {
 				) : (
 					<a
 						{...useBlockProps({ className: buttonClass, id: anchor })}
+						style={{ width: 'auto' }}
 						href={LinkUrl}
 						// Применяем сгенерированный класс
 						onClick={(event) => event.preventDefault()}

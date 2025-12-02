@@ -1,4 +1,19 @@
-/* Sidebar-only стили для блока Button */
+/* Editor стили для блока Button */
+
+/* Исправляем ширину кнопки в редакторе (wp-block по умолчанию width: 100%) */
+.block-editor-block-list__layout .wp-block.wp-block-codeweber-blocks-button,
+.editor-styles-wrapper .block-editor-block-list__layout .wp-block-codeweber-blocks-button,
+a.block-editor-block-list__block.wp-block.wp-block-codeweber-blocks-button,
+a.wp-block.wp-block-codeweber-blocks-button.btn {
+	width: auto !important;
+	max-width: 100% !important;
+	display: inline-block !important;
+}
+
+/* Еще более специфичный селектор */
+.block-editor-block-list__layout > .wp-block-codeweber-blocks-button.wp-block {
+	width: auto !important;
+}
 
 /* Добавляем нижний отступ к группе кнопок */
 .components-button-group {

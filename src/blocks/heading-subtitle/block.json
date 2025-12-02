@@ -1,5 +1,5 @@
 {
-    "apiVersion": 2,
+    "apiVersion": 3,
     "name": "codeweber-gutenberg-blocks/heading-subtitle",
     "version": "0.1.0",
     "title": "Title",
@@ -8,7 +8,8 @@
     "description": "Heading and subtitle block with advanced typography controls.",
     "supports": {
         "html": false,
-        "customClassName": true,
+        "className": false,
+        "customClassName": false,
         "anchor": true
     },
     "attributes": {
@@ -20,11 +21,19 @@
             "type": "boolean",
             "default": true
         },
+        "enableText": {
+            "type": "boolean",
+            "default": false
+        },
         "title": {
             "type": "string",
             "default": ""
         },
         "subtitle": {
+            "type": "string",
+            "default": ""
+        },
+        "text": {
             "type": "string",
             "default": ""
         },
@@ -37,6 +46,10 @@
             "default": "h1"
         },
         "subtitleTag": {
+            "type": "string",
+            "default": "p"
+        },
+        "textTag": {
             "type": "string",
             "default": "p"
         },
@@ -53,6 +66,14 @@
             "default": ""
         },
         "subtitleColorType": {
+            "type": "string",
+            "default": "solid"
+        },
+        "textColor": {
+            "type": "string",
+            "default": ""
+        },
+        "textColorType": {
             "type": "string",
             "default": "solid"
         },
@@ -88,11 +109,23 @@
             "type": "string",
             "default": ""
         },
+        "textSize": {
+            "type": "string",
+            "default": ""
+        },
+        "textWeight": {
+            "type": "string",
+            "default": ""
+        },
         "titleTransform": {
             "type": "string",
             "default": ""
         },
         "subtitleTransform": {
+            "type": "string",
+            "default": ""
+        },
+        "textTransform": {
             "type": "string",
             "default": ""
         },
@@ -136,21 +169,17 @@
             "type": "string",
             "default": ""
         },
-        "animationEnabled": {
-            "type": "boolean",
-            "default": false
-        },
-        "animationType": {
+        "textClass": {
             "type": "string",
             "default": ""
         },
-        "animationDuration": {
-            "type": "number",
-            "default": 600
+        "textData": {
+            "type": "string",
+            "default": ""
         },
-        "animationDelay": {
-            "type": "number",
-            "default": 0
+        "textId": {
+            "type": "string",
+            "default": ""
         },
         "spacingType": {
             "type": "string",

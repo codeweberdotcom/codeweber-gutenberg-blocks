@@ -1,0 +1,63 @@
+{
+	"apiVersion": 3,
+	"name": "codeweber-blocks/paragraph",
+	"version": "0.1.0",
+	"title": "Paragraph",
+	"category": "codeweber-gutenberg-blocks",
+	"icon": "editor-paragraph",
+	"description": "Paragraph block with advanced typography controls.",
+	"keywords": ["paragraph", "text", "p", "параграф"],
+	"supports": {
+		"html": false,
+		"className": false,
+		"customClassName": false,
+		"anchor": true
+	},
+	"attributes": {
+		"text": {
+			"type": "string",
+			"default": ""
+		},
+		"textTag": {
+			"type": "string",
+			"default": "p"
+		},
+		"textColor": {
+			"type": "string",
+			"default": ""
+		},
+		"textColorType": {
+			"type": "string",
+			"default": "solid"
+		},
+		"textSize": {
+			"type": "string",
+			"default": ""
+		},
+		"textWeight": {
+			"type": "string",
+			"default": ""
+		},
+		"textTransform": {
+			"type": "string",
+			"default": ""
+		},
+		"textClass": {
+			"type": "string",
+			"default": ""
+		},
+		"textData": {
+			"type": "string",
+			"default": ""
+		},
+		"textId": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"textdomain": "codeweber-blocks",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
+}
+

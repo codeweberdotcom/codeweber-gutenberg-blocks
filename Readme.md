@@ -62,8 +62,9 @@ npm run lint:js && npm run lint:css
 | **Column** | `codeweber-blocks/column` | Bootstrap-колонка с фоном |
 | **Columns** | `codeweber-blocks/columns` | Контейнер колонок с row-cols |
 | **Button** | `codeweber-blocks/button` | Кнопка/ссылка с иконками и lightbox |
-| **Heading-Subtitle** | `codeweber-gutenberg-blocks/heading-subtitle` | Заголовок + подзаголовок |
+| **Heading-Subtitle** | `codeweber-gutenberg-blocks/heading-subtitle` | Заголовок + подзаголовок + параграф |
 | **Icon** | `codeweber-blocks/icon` | Универсальная иконка (Font, SVG, Custom) |
+| **Paragraph** | `codeweber-blocks/paragraph` | Параграф с расширенными настройками типографики |
 
 **Подробнее:** [BLOCKS_REFERENCE.md](BLOCKS_REFERENCE.md)
 
@@ -81,6 +82,8 @@ npm run lint:js && npm run lint:css
 | `Animation` | Настройки анимации |
 | `BlockMetaFields` | Мета-поля (class, data, id) |
 | `IconControl` | Универсальные настройки иконки ([документация](doc/ICON_COMPONENT.md)) |
+| `ParagraphControl` | Настройки параграфа (text, color, typography) |
+| `TagControl` | Выбор HTML тега (h1-h6, p, div, span, display-*) |
 
 **Подробнее:** [COMPONENTS_REFERENCE.md](COMPONENTS_REFERENCE.md)
 

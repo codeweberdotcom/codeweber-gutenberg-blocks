@@ -7,8 +7,10 @@ export const HeadingContentControl = ({ attributes, setAttributes }) => {
     const {
         enableTitle,
         enableSubtitle,
+        enableText,
         title,
         subtitle,
+        text,
         order,
         titleTag,
         subtitleTag,
@@ -26,6 +28,11 @@ export const HeadingContentControl = ({ attributes, setAttributes }) => {
                 label={__('Enable Subtitle', 'codeweber-blocks')}
                 checked={enableSubtitle}
                 onChange={(value) => setAttributes({ enableSubtitle: value })}
+            />
+            <ToggleControl
+                label={__('Enable Paragraph', 'codeweber-blocks')}
+                checked={enableText}
+                onChange={(value) => setAttributes({ enableText: value })}
             />
             <ToggleControl
                 label={__('Subtitle First', 'codeweber-blocks')}
@@ -73,6 +80,27 @@ export const HeadingContentControl = ({ attributes, setAttributes }) => {
                             value={subtitle}
                             onChange={(value) => setAttributes({ subtitle: value })}
                             placeholder={__('Enter subtitle...', 'codeweber-blocks')}
+                            allowedFormats={[]}
+                            __unstableAllowHtml={true}
+                        />
+                    </div>
+                </div>
+            )}
+            {enableText && (
+                <div className="mb-3">
+                    <label>{__('Paragraph Text', 'codeweber-blocks')}</label>
+                    <div style={{
+                        border: '1px solid #ccc',
+                        borderRadius: '4px',
+                        padding: '8px',
+                        minHeight: '80px',
+                        backgroundColor: '#fff'
+                    }}>
+                        <RichText
+                            tagName="div"
+                            value={text}
+                            onChange={(value) => setAttributes({ text: value })}
+                            placeholder={__('Enter paragraph...', 'codeweber-blocks')}
                             allowedFormats={[]}
                             __unstableAllowHtml={true}
                         />

@@ -48,6 +48,7 @@ class Plugin {
 			'columns',
 			'heading-subtitle',
 			'icon',
+			'paragraph',
 		];
 	}
 

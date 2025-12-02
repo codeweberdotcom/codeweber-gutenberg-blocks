@@ -216,12 +216,17 @@ export const IconRender = ({
 
 	let iconElement = null;
 
+	// Определяем, нужен ли цвет на иконке
+	// Для Solid-кнопок иконка должна быть белой (без цвета)
+	const isButtonWrapper = iconWrapper && (iconWrapperStyle === 'btn' || iconWrapperStyle === 'btn-circle');
+	const shouldApplyColorToIcon = !isButtonWrapper || iconBtnVariant !== 'solid';
+
 	// Font Icon
 	if (iconType === 'font' && iconName) {
 		const classes = getFontIconClasses({
 			iconName,
 			iconFontSize: iconWrapper ? '' : iconFontSize, // Размер на обёртке если wrapper
-			iconColor: iconWrapper ? '' : iconColor, // Цвет на обёртке если wrapper
+			iconColor: shouldApplyColorToIcon ? iconColor : '', // Цвет только если не Solid-кнопка
 			iconClass: iconClass, // Всегда применяется к иконке
 		});
 
@@ -233,8 +238,8 @@ export const IconRender = ({
 		const svgClasses = getSvgIconClasses({
 			svgStyle,
 			iconSize,
-			iconColor,
-			iconColor2,
+			iconColor: shouldApplyColorToIcon ? iconColor : '', // Цвет только если не Solid-кнопка
+			iconColor2: shouldApplyColorToIcon ? iconColor2 : '',
 			iconClass: iconClass, // Всегда применяется к иконке
 			isEditor,
 		});
@@ -271,7 +276,7 @@ export const IconRender = ({
 		const svgClasses = getSvgIconClasses({
 			svgStyle: 'lineal', // Кастомные как lineal
 			iconSize,
-			iconColor,
+			iconColor: shouldApplyColorToIcon ? iconColor : '', // Цвет только если не Solid-кнопка
 			iconColor2: '',
 			iconClass: iconClass, // Всегда применяется к иконке
 			isEditor,

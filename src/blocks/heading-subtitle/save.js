@@ -1,30 +1,22 @@
-import { useBlockProps, RichText } from '@wordpress/block-editor';
+import { RichText } from '@wordpress/block-editor';
 import { getTitleClasses, getSubtitleClasses } from './utils';
+import { ParagraphRenderSave } from '../../components/paragraph';
 
 const HeadingSubtitleSave = ({ attributes }) => {
     const {
         enableTitle,
         enableSubtitle,
+        enableText,
         title,
         subtitle,
         order,
         titleTag,
         subtitleTag,
-        animationEnabled,
-        animationType,
-        animationDuration,
-        animationDelay,
+        textTag,
     } = attributes;
 
-    const blockProps = useBlockProps.save({
-        ...(animationEnabled && animationType && {
-            'data-cue': animationType,
-            'data-duration': animationDuration,
-            'data-delay': animationDelay,
-        }),
-    });
-
     const elements = [];
+
     if (enableTitle) {
         elements.push(
             <RichText.Content
@@ -50,11 +42,20 @@ const HeadingSubtitleSave = ({ attributes }) => {
         elements.reverse();
     }
 
-    return (
-        <div {...blockProps}>
-            {elements}
-        </div>
-    );
+    // Paragraph всегда после title и subtitle
+    if (enableText) {
+        elements.push(
+            <ParagraphRenderSave
+                key="text"
+                attributes={attributes}
+                prefix=""
+                tag={textTag}
+            />
+        );
+    }
+
+    // Возвращаем элементы без обёртки
+    return <>{elements}</>;
 };
 
 export default HeadingSubtitleSave;

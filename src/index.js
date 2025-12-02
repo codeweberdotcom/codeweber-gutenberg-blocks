@@ -9,6 +9,7 @@ const loadBlocks = async () => {
         import('./blocks/columns/index'),
         import('./blocks/heading-subtitle/index'),
         import('./blocks/icon/index'),
+        import('./blocks/paragraph/index'),
     ];
 
     await Promise.all(blocks);

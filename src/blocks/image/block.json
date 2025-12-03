@@ -1,0 +1,126 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "codeweber-blocks/image",
+  "version": "1.0.0",
+  "title": "Image",
+  "category": "codeweber-gutenberg-blocks",
+  "icon": "format-image",
+  "description": "Universal image block with gallery, carousel, and effects",
+  "keywords": ["image", "gallery", "carousel", "swiper", "lightbox"],
+  "supports": {
+    "html": false,
+    "customClassName": false
+  },
+  "textdomain": "codeweber-blocks",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./editor.scss",
+  "style": "file:./style.scss",
+  "attributes": {
+    "displayMode": {
+      "type": "string",
+      "default": "single"
+    },
+    "images": {
+      "type": "array",
+      "default": []
+    },
+    "gridColumns": {
+      "type": "string",
+      "default": "3"
+    },
+    "gridGapX": {
+      "type": "string",
+      "default": "md-5"
+    },
+    "gridGapY": {
+      "type": "string",
+      "default": "5"
+    },
+    "swiperNav": {
+      "type": "boolean",
+      "default": true
+    },
+    "swiperDots": {
+      "type": "boolean",
+      "default": true
+    },
+    "swiperMargin": {
+      "type": "string",
+      "default": "30"
+    },
+    "swiperItemsXl": {
+      "type": "string",
+      "default": "3"
+    },
+    "swiperItemsMd": {
+      "type": "string",
+      "default": "2"
+    },
+    "swiperItemsXs": {
+      "type": "string",
+      "default": "1"
+    },
+    "hoverEffect": {
+      "type": "string",
+      "default": "hover-scale"
+    },
+    "overlayType": {
+      "type": "string",
+      "default": "none"
+    },
+    "overlayGradient": {
+      "type": "string",
+      "default": ""
+    },
+    "overlayColor": {
+      "type": "boolean",
+      "default": false
+    },
+    "tooltipType": {
+      "type": "string",
+      "default": "none"
+    },
+    "cursor": {
+      "type": "string",
+      "default": ""
+    },
+    "captionType": {
+      "type": "string",
+      "default": "none"
+    },
+    "captionBg": {
+      "type": "string",
+      "default": "white"
+    },
+    "captionPosition": {
+      "type": "string",
+      "default": "bottom-center"
+    },
+    "borderRadius": {
+      "type": "string",
+      "default": "rounded"
+    },
+    "enableLightbox": {
+      "type": "boolean",
+      "default": true
+    },
+    "lightboxGallery": {
+      "type": "string",
+      "default": "gallery-1"
+    },
+    "blockClass": {
+      "type": "string",
+      "default": ""
+    },
+    "blockData": {
+      "type": "string",
+      "default": ""
+    },
+    "blockId": {
+      "type": "string",
+      "default": ""
+    }
+  }
+}
+

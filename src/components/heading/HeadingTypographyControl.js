@@ -11,7 +11,7 @@ import {
 	createLeadOptions,
 } from '../../blocks/heading-subtitle/utils';
 
-export const HeadingTypographyControl = ({ attributes, setAttributes }) => {
+export const HeadingTypographyControl = ({ attributes, setAttributes, hideSubtitle = false }) => {
     const {
         titleTag,
         subtitleTag,
@@ -50,12 +50,14 @@ export const HeadingTypographyControl = ({ attributes, setAttributes }) => {
                 >
                     {__('Title', 'codeweber-blocks')}
                 </Button>
-                <Button
-                    isPrimary={activeTab === 'subtitle'}
-                    onClick={() => setActiveTab('subtitle')}
-                >
-                    {__('Subtitle', 'codeweber-blocks')}
-                </Button>
+                {!hideSubtitle && (
+                    <Button
+                        isPrimary={activeTab === 'subtitle'}
+                        onClick={() => setActiveTab('subtitle')}
+                    >
+                        {__('Subtitle', 'codeweber-blocks')}
+                    </Button>
+                )}
                 <Button
                     isPrimary={activeTab === 'paragraph'}
                     onClick={() => setActiveTab('paragraph')}
@@ -162,7 +164,7 @@ export const HeadingTypographyControl = ({ attributes, setAttributes }) => {
                         options={createLeadOptions()}
                         onChange={(value) => setAttributes({ lead: value })}
                     />
-                    <TextControl
+					<TextControl
                         label={__('Subtitle Class', 'codeweber-blocks')}
                         value={subtitleClass}
                         onChange={(value) => setAttributes({ subtitleClass: value })}

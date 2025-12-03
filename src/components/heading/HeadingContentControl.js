@@ -3,7 +3,7 @@ import { ToggleControl } from '@wordpress/components';
 import { RichText } from '@wordpress/block-editor';
 import { createHeadingTagOptions, createSubtitleTagOptions } from '../../blocks/heading-subtitle/utils';
 
-export const HeadingContentControl = ({ attributes, setAttributes }) => {
+export const HeadingContentControl = ({ attributes, setAttributes, hideSubtitle = false }) => {
     const {
         enableTitle,
         enableSubtitle,
@@ -24,26 +24,34 @@ export const HeadingContentControl = ({ attributes, setAttributes }) => {
                 checked={enableTitle}
                 onChange={(value) => setAttributes({ enableTitle: value })}
             />
-            <ToggleControl
-                label={__('Enable Subtitle', 'codeweber-blocks')}
-                checked={enableSubtitle}
-                onChange={(value) => setAttributes({ enableSubtitle: value })}
-            />
+            {!hideSubtitle && (
+                <>
+                    <ToggleControl
+                        label={__('Enable Subtitle', 'codeweber-blocks')}
+                        checked={enableSubtitle}
+                        onChange={(value) => setAttributes({ enableSubtitle: value })}
+                    />
+                </>
+            )}
             <ToggleControl
                 label={__('Enable Paragraph', 'codeweber-blocks')}
                 checked={enableText}
                 onChange={(value) => setAttributes({ enableText: value })}
             />
-            <ToggleControl
-                label={__('Subtitle First', 'codeweber-blocks')}
-                checked={order === 'subtitle-first'}
-                onChange={(value) => setAttributes({ order: value ? 'subtitle-first' : 'title-first' })}
-            />
-            <ToggleControl
-                label={__('Subtitle Line', 'codeweber-blocks')}
-                checked={subtitleLine}
-                onChange={(value) => setAttributes({ subtitleLine: value })}
-            />
+            {!hideSubtitle && (
+                <>
+                    <ToggleControl
+                        label={__('Subtitle First', 'codeweber-blocks')}
+                        checked={order === 'subtitle-first'}
+                        onChange={(value) => setAttributes({ order: value ? 'subtitle-first' : 'title-first' })}
+                    />
+                    <ToggleControl
+                        label={__('Subtitle Line', 'codeweber-blocks')}
+                        checked={subtitleLine}
+                        onChange={(value) => setAttributes({ subtitleLine: value })}
+                    />
+                </>
+            )}
             {enableTitle && (
                 <div className="mb-3">
                     <label>{__('Title Text', 'codeweber-blocks')}</label>
@@ -65,7 +73,7 @@ export const HeadingContentControl = ({ attributes, setAttributes }) => {
                     </div>
                 </div>
             )}
-            {enableSubtitle && (
+            {!hideSubtitle && enableSubtitle && (
                 <div className="mb-3">
                     <label>{__('Subtitle Text', 'codeweber-blocks')}</label>
                     <div style={{

@@ -1,0 +1,167 @@
+// Editor styles for Image block
+
+.cwgb-image-block {
+	// Placeholder когда нет изображений
+	.cwgb-image-placeholder {
+		padding: 40px;
+		text-align: center;
+		background: #f0f0f0;
+		border: 2px dashed #ccc;
+		border-radius: 4px;
+
+		p {
+			margin: 0;
+			color: #666;
+		}
+	}
+}
+
+// Image Control styles
+.cwgb-image-control {
+	.cwgb-image-list {
+		margin-top: 16px;
+	}
+
+	.cwgb-image-item {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		padding: 12px;
+		margin-bottom: 8px;
+		background: #f9f9f9;
+		border: 1px solid #ddd;
+		border-radius: 4px;
+
+		.cwgb-image-thumbnail {
+			width: 60px;
+			height: 60px;
+			object-fit: cover;
+			border-radius: 2px;
+		}
+
+		.cwgb-image-actions {
+			display: flex;
+			gap: 4px;
+			margin-left: auto;
+
+			.components-button {
+				min-width: 32px;
+				height: 32px;
+			}
+		}
+	}
+}
+
+// Отключаем pointer events для изображений в редакторе
+.editor-styles-wrapper {
+	.cwgb-image-block {
+		figure {
+			a, div {
+				cursor: default;
+				pointer-events: none;
+			}
+		}
+
+		// Стили для overlay в редакторе
+		figure.overlay {
+			position: relative;
+			overflow: hidden;
+			display: inline-block;
+
+			> div {
+				position: relative;
+				display: block;
+			}
+
+			img {
+				display: block;
+				width: 100%;
+				max-width: 100%;
+				position: relative;
+				z-index: 0;
+			}
+
+			span.bg {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				opacity: 0.3; // Уменьшаем opacity чтобы изображение было видно
+				transition: opacity 0.35s ease-in-out;
+				pointer-events: none;
+				z-index: 1;
+			}
+
+			// Базовый overlay - делаем менее насыщенным в редакторе
+			&.overlay-1 span.bg,
+			&.overlay-2:not(.color) span.bg,
+			&.overlay-3 span.bg {
+				background: rgba(#000, 0.4);
+			}
+
+			// Цветной overlay - делаем менее насыщенным в редакторе
+			&.overlay-2.color span.bg {
+				background: rgba(#3f78e0, 0.4);
+			}
+
+			figcaption {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				z-index: 2;
+				color: #fff;
+				text-align: center;
+				width: 90%;
+				pointer-events: none;
+
+				h5 {
+					color: #fff;
+					margin: 0;
+					text-shadow: 0 1px 3px rgba(#000, 0.5);
+				}
+			}
+
+			&:hover {
+				span.bg {
+					opacity: 0.5;
+				}
+			}
+		}
+
+		// Стили для caption-image в редакторе
+		.caption-image {
+			.caption-wrapper {
+				.caption {
+					pointer-events: none;
+
+					&.bg-white {
+						background: #fff;
+						color: #000;
+					}
+
+					&.bg-dark {
+						background: #343a40;
+						color: #fff;
+					}
+
+					&.bg-primary {
+						background: #3f78e0;
+						color: #fff;
+					}
+
+					&.bg-soft-primary {
+						background: rgba(#3f78e0, 0.1);
+						color: #3f78e0;
+					}
+
+					h5 {
+						margin: 0;
+					}
+				}
+			}
+		}
+	}
+}
+

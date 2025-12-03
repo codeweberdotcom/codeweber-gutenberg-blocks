@@ -207,3 +207,55 @@ export const validateTag = (tag, allowedTags = []) => {
     if (!tag) return true;
     return allowedTags.includes(tag);
 };
+
+/**
+ * Generate spacing classes (padding and margin)
+ * @param {Object} attrs - Attributes object
+ * @returns {string[]} Array of spacing classes
+ */
+export const generateSpacingClasses = (attrs) => {
+    const classes = [];
+    
+    // Padding
+    if (attrs.paddingTop) classes.push(`pt-${attrs.paddingTop}`);
+    if (attrs.paddingBottom) classes.push(`pb-${attrs.paddingBottom}`);
+    if (attrs.paddingLeft) classes.push(`ps-${attrs.paddingLeft}`);
+    if (attrs.paddingRight) classes.push(`pe-${attrs.paddingRight}`);
+    
+    // Margin
+    if (attrs.marginTop) classes.push(`mt-${attrs.marginTop}`);
+    if (attrs.marginBottom) classes.push(`mb-${attrs.marginBottom}`);
+    
+    return classes;
+};
+
+/**
+ * Generate alignment classes
+ * @param {Object} attrs - Attributes object
+ * @returns {string[]} Array of alignment classes
+ */
+export const generateAlignmentClasses = (attrs) => {
+    const classes = [];
+    
+    // Text align
+    if (attrs.align) {
+        classes.push(generateTextAlignClass(attrs.align));
+    }
+    
+    // Align items
+    if (attrs.alignItems) {
+        classes.push(generateAlignItemsClass(attrs.alignItems));
+    }
+    
+    // Justify content
+    if (attrs.justifyContent) {
+        classes.push(generateJustifyContentClass(attrs.justifyContent));
+    }
+    
+    // Position
+    if (attrs.position) {
+        classes.push(generatePositionClass(attrs.position));
+    }
+    
+    return classes.filter(Boolean);
+};

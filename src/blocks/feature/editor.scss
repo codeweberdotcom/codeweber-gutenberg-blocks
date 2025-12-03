@@ -1,0 +1,43 @@
+/**
+ * Feature Block - Editor Styles
+ *
+ * @package CodeWeber Gutenberg Blocks
+ */
+
+.wp-block-codeweber-blocks-feature {
+	/* Минимальная высота для пустого feature */
+	&.card {
+		min-height: 100px;
+		
+		.card-body {
+			min-height: 80px;
+		}
+	}
+	
+	/* Стили для горизонтального layout в редакторе - используем классы темы */
+	&.d-flex.flex-row {
+		/* Тема сама применит display: flex; flex-direction: row; */
+		> div:first-child {
+			flex-shrink: 0;
+		}
+	}
+	
+	/* Визуализация card-body в редакторе */
+	&.card .card-body {
+		position: relative;
+		
+		/* Показать границы card-body в редакторе */
+		&:before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			border: 1px dashed rgba(0, 0, 0, 0.1);
+			pointer-events: none;
+			border-radius: inherit;
+		}
+	}
+}
+

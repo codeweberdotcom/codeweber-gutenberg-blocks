@@ -26,6 +26,9 @@ const OVERLAY_OPTIONS = [
 	{ label: '30%', value: 'bg-overlay bg-overlay-300' },
 	{ label: '40%', value: 'bg-overlay bg-overlay-400' },
 	{ label: '50%', value: 'bg-overlay' },
+	{ label: '60%', value: 'bg-overlay bg-overlay-600' },
+	{ label: '70%', value: 'bg-overlay bg-overlay-700' },
+	{ label: '80%', value: 'bg-overlay bg-overlay-800' },
 ];
 
 export const BackgroundSettingsPanel = ({

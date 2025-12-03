@@ -49,6 +49,9 @@ class Plugin {
 			'heading-subtitle',
 			'icon',
 			'paragraph',
+			'card',
+			'feature',
+			'image',
 		];
 	}
 

@@ -1,0 +1,151 @@
+{
+	"apiVersion": 3,
+	"name": "codeweber-blocks/card",
+	"version": "0.1.0",
+	"title": "Card",
+	"category": "codeweber-gutenberg-blocks",
+	"icon": "index-card",
+	"description": "Flexible card container with InnerBlocks support and advanced styling options.",
+	"keywords": ["card", "container", "wrapper"],
+	"supports": {
+		"html": false,
+		"className": false,
+		"customClassName": false,
+		"anchor": true
+	},
+	"attributes": {
+		"enableCard": {
+			"type": "boolean",
+			"default": true
+		},
+		"enableCardBody": {
+			"type": "boolean",
+			"default": true
+		},
+		"overflowHidden": {
+			"type": "boolean",
+			"default": false
+		},
+		"h100": {
+			"type": "boolean",
+			"default": true
+		},
+		"borderRadius": {
+			"type": "string",
+			"default": ""
+		},
+		"shadow": {
+			"type": "string",
+			"default": ""
+		},
+		"cardBorder": {
+			"type": "string",
+			"default": ""
+		},
+		"borderColor": {
+			"type": "string",
+			"default": ""
+		},
+		"backgroundType": {
+			"type": "string",
+			"default": "none"
+		},
+		"backgroundColor": {
+			"type": "string",
+			"default": ""
+		},
+		"backgroundColorType": {
+			"type": "string",
+			"default": "solid"
+		},
+		"backgroundGradient": {
+			"type": "string",
+			"default": ""
+		},
+		"backgroundImageId": {
+			"type": "number",
+			"default": 0
+		},
+		"backgroundImageUrl": {
+			"type": "string",
+			"default": ""
+		},
+		"backgroundImageSize": {
+			"type": "string",
+			"default": "full"
+		},
+		"backgroundSize": {
+			"type": "string",
+			"default": ""
+		},
+		"backgroundOverlay": {
+			"type": "string",
+			"default": ""
+		},
+		"backgroundPatternUrl": {
+			"type": "string",
+			"default": ""
+		},
+		"spacingType": {
+			"type": "string",
+			"default": "padding"
+		},
+		"spacingXs": {
+			"type": "string",
+			"default": ""
+		},
+		"spacingSm": {
+			"type": "string",
+			"default": ""
+		},
+		"spacingMd": {
+			"type": "string",
+			"default": ""
+		},
+		"spacingLg": {
+			"type": "string",
+			"default": ""
+		},
+		"spacingXl": {
+			"type": "string",
+			"default": ""
+		},
+		"spacingXxl": {
+			"type": "string",
+			"default": ""
+		},
+		"align": {
+			"type": "string",
+			"default": ""
+		},
+		"alignItems": {
+			"type": "string",
+			"default": ""
+		},
+		"justifyContent": {
+			"type": "string",
+			"default": ""
+		},
+		"position": {
+			"type": "string",
+			"default": ""
+		},
+		"blockClass": {
+			"type": "string",
+			"default": ""
+		},
+		"blockData": {
+			"type": "string",
+			"default": ""
+		},
+		"blockId": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"textdomain": "codeweber-blocks",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
+}
+

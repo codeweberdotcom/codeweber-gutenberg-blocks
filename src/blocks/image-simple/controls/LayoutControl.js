@@ -59,7 +59,7 @@ export const LayoutControl = ({ attributes, setAttributes }) => {
 			{displayMode === 'grid' && (
 				<>
 					<SelectControl
-						label={__('Columns', 'codeweber-blocks')}
+						label={__('Grid Columns', 'codeweber-blocks')}
 						value={gridColumns}
 						options={[
 							{ label: '2', value: '2' },
@@ -78,36 +78,30 @@ export const LayoutControl = ({ attributes, setAttributes }) => {
 					/>
 
 					<SelectControl
-						label={__('Gap X (Horizontal)', 'codeweber-blocks')}
+						label={__('Grid Gap X', 'codeweber-blocks')}
 						value={gridGapX}
 						options={[
-							{ label: 'gx-0', value: '0' },
-							{ label: 'gx-1', value: '1' },
-							{ label: 'gx-2', value: '2' },
-							{ label: 'gx-3', value: '3' },
-							{ label: 'gx-4', value: '4' },
-							{ label: 'gx-5', value: '5' },
-							{ label: 'gx-md-5', value: 'md-5' },
-							{ label: 'gx-lg-8', value: 'lg-8' },
-							{ label: 'gx-xl-12', value: 'xl-12' },
+							{ label: 'None', value: '0' },
+							{ label: 'XS (5)', value: 'xs-5' },
+							{ label: 'SM (5)', value: 'sm-5' },
+							{ label: 'MD (5)', value: 'md-5' },
+							{ label: 'LG (5)', value: 'lg-5' },
+							{ label: 'XL (5)', value: 'xl-5' },
 						]}
 						onChange={(value) => setAttributes({ gridGapX: value })}
 					/>
 
 					<SelectControl
-						label={__('Gap Y (Vertical)', 'codeweber-blocks')}
+						label={__('Grid Gap Y', 'codeweber-blocks')}
 						value={gridGapY}
 						options={[
-							{ label: 'gy-0', value: '0' },
-							{ label: 'gy-1', value: '1' },
-							{ label: 'gy-2', value: '2' },
-							{ label: 'gy-3', value: '3' },
-							{ label: 'gy-4', value: '4' },
-							{ label: 'gy-5', value: '5' },
-							{ label: 'gy-6', value: '6' },
-							{ label: 'gy-8', value: '8' },
-							{ label: 'gy-10', value: '10' },
-							{ label: 'gy-12', value: '12' },
+							{ label: '0', value: '0' },
+							{ label: '1', value: '1' },
+							{ label: '2', value: '2' },
+							{ label: '3', value: '3' },
+							{ label: '4', value: '4' },
+							{ label: '5', value: '5' },
+							{ label: '6', value: '6' },
 						]}
 						onChange={(value) => setAttributes({ gridGapY: value })}
 					/>
@@ -335,3 +329,4 @@ export const LayoutControl = ({ attributes, setAttributes }) => {
 		</>
 	);
 };
+

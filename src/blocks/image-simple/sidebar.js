@@ -3,7 +3,7 @@ import { TabPanel, PanelBody } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { Icon, image, grid, cog, search } from '@wordpress/icons';
 import { ImageControl } from '../../components/image/ImageControl';
-import { LayoutControl } from '../image/controls/LayoutControl';
+import { LayoutControl } from './controls/LayoutControl';
 import { LightboxControl } from '../image/controls/LightboxControl';
 import { BorderRadiusControl } from '../../components/border-radius';
 import { BlockMetaFields } from '../../components/block-meta/BlockMetaFields';

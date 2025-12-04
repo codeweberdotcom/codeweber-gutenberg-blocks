@@ -37,6 +37,66 @@
       "type": "string",
       "default": "5"
     },
+    "swiperEffect": {
+      "type": "string",
+      "default": "slide"
+    },
+    "swiperItems": {
+      "type": "string",
+      "default": "3"
+    },
+    "swiperItemsXs": {
+      "type": "string",
+      "default": "1"
+    },
+    "swiperItemsSm": {
+      "type": "string",
+      "default": ""
+    },
+    "swiperItemsMd": {
+      "type": "string",
+      "default": "2"
+    },
+    "swiperItemsLg": {
+      "type": "string",
+      "default": ""
+    },
+    "swiperItemsXl": {
+      "type": "string",
+      "default": "3"
+    },
+    "swiperItemsXxl": {
+      "type": "string",
+      "default": ""
+    },
+    "swiperSpeed": {
+      "type": "number",
+      "default": 500
+    },
+    "swiperAutoplay": {
+      "type": "boolean",
+      "default": false
+    },
+    "swiperAutoplayTime": {
+      "type": "number",
+      "default": 5000
+    },
+    "swiperAutoHeight": {
+      "type": "boolean",
+      "default": false
+    },
+    "swiperWatchOverflow": {
+      "type": "boolean",
+      "default": false
+    },
+    "swiperMargin": {
+      "type": "string",
+      "default": "30"
+    },
+    "swiperLoop": {
+      "type": "boolean",
+      "default": false
+    },
     "swiperNav": {
       "type": "boolean",
       "default": true
@@ -45,21 +105,17 @@
       "type": "boolean",
       "default": true
     },
-    "swiperMargin": {
-      "type": "string",
-      "default": "30"
+    "swiperDrag": {
+      "type": "boolean",
+      "default": false
     },
-    "swiperItemsXl": {
-      "type": "string",
-      "default": "3"
+    "swiperReverse": {
+      "type": "boolean",
+      "default": false
     },
-    "swiperItemsMd": {
-      "type": "string",
-      "default": "2"
-    },
-    "swiperItemsXs": {
-      "type": "string",
-      "default": "1"
+    "swiperUpdateResize": {
+      "type": "boolean",
+      "default": true
     },
     "borderRadius": {
       "type": "string",

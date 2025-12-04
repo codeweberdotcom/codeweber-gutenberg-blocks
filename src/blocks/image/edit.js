@@ -11,12 +11,26 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		gridColumns,
 		gridGapX,
 		gridGapY,
+		swiperEffect,
+		swiperItems,
+		swiperItemsXs,
+		swiperItemsSm,
+		swiperItemsMd,
+		swiperItemsLg,
+		swiperItemsXl,
+		swiperItemsXxl,
+		swiperSpeed,
+		swiperAutoplay,
+		swiperAutoplayTime,
+		swiperAutoHeight,
+		swiperWatchOverflow,
+		swiperMargin,
+		swiperLoop,
 		swiperNav,
 		swiperDots,
-		swiperMargin,
-		swiperItemsXl,
-		swiperItemsMd,
-		swiperItemsXs,
+		swiperDrag,
+		swiperReverse,
+		swiperUpdateResize,
 		hoverEffect,
 		enableEffect,
 		effectType,
@@ -100,6 +114,14 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 				'2': 'col-md-6',
 				'3': 'col-md-4',
 				'4': 'col-md-3',
+				'5': 'col-md-2',
+				'6': 'col-md-2',
+				'7': 'col-md-1',
+				'8': 'col-md-1',
+				'9': 'col-md-1',
+				'10': 'col-md-1',
+				'11': 'col-md-1',
+				'12': 'col-md-1',
 			};
 			return colMap[gridColumns] || 'col-md-4';
 		}
@@ -109,14 +131,41 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 	// Функция для получения data-атрибутов swiper
 	const getSwiperDataAttributes = () => {
 		if (displayMode === 'swiper') {
-			return {
-				'data-margin': swiperMargin,
-				'data-nav': swiperNav ? 'true' : 'false',
-				'data-dots': swiperDots ? 'true' : 'false',
-				'data-items-xl': swiperItemsXl,
-				'data-items-md': swiperItemsMd,
-				'data-items-xs': swiperItemsXs,
-			};
+			const attrs = {};
+			
+			// Transition
+			if (swiperEffect) attrs['data-effect'] = swiperEffect;
+			if (swiperSpeed) attrs['data-speed'] = swiperSpeed;
+			
+			// Items per view
+			if (swiperItems) attrs['data-items'] = swiperItems;
+			if (swiperItemsXs) attrs['data-items-xs'] = swiperItemsXs;
+			if (swiperItemsSm) attrs['data-items-sm'] = swiperItemsSm;
+			if (swiperItemsMd) attrs['data-items-md'] = swiperItemsMd;
+			if (swiperItemsLg) attrs['data-items-lg'] = swiperItemsLg;
+			if (swiperItemsXl) attrs['data-items-xl'] = swiperItemsXl;
+			if (swiperItemsXxl) attrs['data-items-xxl'] = swiperItemsXxl;
+			
+			// Spacing & Behavior
+			if (swiperMargin) attrs['data-margin'] = swiperMargin;
+			if (swiperLoop) attrs['data-loop'] = swiperLoop;
+			if (swiperAutoHeight) attrs['data-autoheight'] = swiperAutoHeight;
+			if (swiperWatchOverflow) attrs['data-watchoverflow'] = swiperWatchOverflow;
+			if (swiperUpdateResize !== undefined) attrs['data-updateresize'] = swiperUpdateResize;
+			
+			// Autoplay
+			if (swiperAutoplay) {
+				attrs['data-autoplay'] = swiperAutoplay;
+				if (swiperAutoplayTime) attrs['data-autoplaytime'] = swiperAutoplayTime;
+				if (swiperReverse) attrs['data-reverse'] = swiperReverse;
+			}
+			
+			// Navigation
+			if (swiperNav !== undefined) attrs['data-nav'] = swiperNav;
+			if (swiperDots !== undefined) attrs['data-dots'] = swiperDots;
+			if (swiperDrag !== undefined) attrs['data-drag'] = swiperDrag;
+			
+			return attrs;
 		}
 		return {};
 	};

@@ -75,6 +75,7 @@ class Plugin {
 			'columns',
 			'heading-subtitle',
 			'icon',
+			'image',
 			'paragraph',
 			'card',
 			'feature',

@@ -45,24 +45,45 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		'data-block': clientId,
 	});
 
-	// Инициализация tooltip при изменении настроек
+	// Переинициализация theme.js при изменении Effect Type
 	useEffect(() => {
-		if (typeof window === 'undefined') return;
-		if (!enableEffect || effectType !== 'tooltip') return;
-		if (!window.theme || typeof window.theme.iTooltip !== 'function') return;
+		if (typeof window === 'undefined' || !window.theme) return;
 
 		const timer = setTimeout(() => {
 			try {
-				// Вызываем функцию темы для инициализации всех tooltip'ов
-				window.theme.iTooltip();
-				console.log('✅ Tooltip reinitialized via theme.iTooltip()');
+				console.log('🔄 Reinitializing theme.js for Effect Type:', effectType);
+				
+				// 1. Tooltip (iTooltip)
+				if (enableEffect && effectType === 'tooltip' && typeof window.theme.iTooltip === 'function') {
+					window.theme.iTooltip();
+					console.log('✅ iTooltip reinitialized');
+				}
+				
+				// 2. Lightbox (GLightbox)
+				if (enableLightbox && typeof window.theme.initLightbox === 'function') {
+					window.theme.initLightbox();
+					console.log('✅ GLightbox reinitialized');
+				}
+				
+				// 3. Overlay эффекты (если есть функция в теме)
+				if (enableEffect && effectType === 'overlay' && typeof window.theme.initOverlay === 'function') {
+					window.theme.initOverlay();
+					console.log('✅ Overlay reinitialized');
+				}
+				
+				// 4. Cursor эффекты (если есть функция в теме)
+				if (enableEffect && effectType === 'icon' && typeof window.theme.initCursor === 'function') {
+					window.theme.initCursor();
+					console.log('✅ Cursor reinitialized');
+				}
+				
 			} catch (error) {
-				console.warn('Tooltip initialization failed:', error);
+				console.warn('⚠️ Theme initialization failed:', error);
 			}
 		}, 300);
 
 		return () => clearTimeout(timer);
-	}, [enableEffect, effectType, tooltipType, clientId]);
+	}, [enableEffect, effectType, tooltipType, overlayType, iconColor, enableLightbox, clientId]);
 
 	// Функция для получения классов контейнера
 	const getContainerClasses = () => {

@@ -195,28 +195,28 @@ export const ImageRender = ({
 					<span className="bg"></span>
 					{overlayType === 'overlay-4' ? (
 						<figcaption>
-							<h5 className="from-top mb-0">
+							<div className="from-top mb-0 h5">
 								<i className="uil uil-plus mt-5"></i>
-							</h5>
+							</div>
 						</figcaption>
 					) : overlayType === 'overlay-2' ? (
 						((image.title || image.caption) || image.description) && (
 							<figcaption>
-								<h5 className="from-top mb-1">{image.title || image.caption}</h5>
+								<div className="from-top mb-1 h5">{image.title || image.caption}</div>
 								{image.description && <p className="from-bottom mb-0">{image.description}</p>}
 							</figcaption>
 						)
 					) : overlayType === 'overlay-3' ? (
 						((image.title || image.caption) || image.description) && (
 							<figcaption>
-								<h5 className="from-left mb-1">{image.title || image.caption}</h5>
+								<div className="from-left mb-1 h5">{image.title || image.caption}</div>
 								{image.description && <p className="from-left mb-0">{image.description}</p>}
 							</figcaption>
 						)
 					) : (
 						(image.title || image.caption) && (
 							<figcaption>
-								<h5 className="from-top mb-0">{image.title || image.caption}</h5>
+								<div className="from-top mb-0 h5">{image.title || image.caption}</div>
 							</figcaption>
 						)
 					)}
@@ -224,12 +224,23 @@ export const ImageRender = ({
 			);
 		}
 
-		// Вариант с Tooltip или без эффектов
+		// Вариант с Tooltip
+		if (enableEffect && effectType === 'tooltip') {
+			return (
+				<figure
+					className={figureClasses}
+					{...(tooltipTitle && { title: tooltipTitle })}
+				>
+					<a href="#" onClick={(e) => e.preventDefault()}>
+						<img src={image.url} alt={image.alt || ''} />
+					</a>
+				</figure>
+			);
+		}
+
+		// Вариант без эффектов или для других типов
 		return (
-			<figure
-				className={figureClasses}
-				{...(tooltipTitle && { title: tooltipTitle })}
-			>
+			<figure className={figureClasses}>
 				<a href="#" onClick={(e) => e.preventDefault()}>
 					<img src={image.url} alt={image.alt || ''} />
 				</a>
@@ -237,12 +248,24 @@ export const ImageRender = ({
 		);
 	}
 
-	// Для фронтенда (старые блоки без enableEffect - обратная совместимость)
+	// Для фронтенда
+	// Вариант с Tooltip
+	if (enableEffect && effectType === 'tooltip') {
+		return (
+			<figure
+				className={figureClasses}
+				{...(tooltipTitle && { title: tooltipTitle })}
+			>
+				<a href={image.linkUrl || image.url} {...lightboxAttrs}>
+					<img src={image.url} alt={image.alt || ''} />
+				</a>
+			</figure>
+		);
+	}
+
+	// Вариант без эффектов или для других типов  
 	return (
-		<figure
-			className={figureClasses}
-			{...(tooltipTitle && { title: tooltipTitle })}
-		>
+		<figure className={figureClasses}>
 			<a href={image.linkUrl || image.url} {...lightboxAttrs}>
 				<img src={image.url} alt={image.alt || ''} />
 			</a>
@@ -447,28 +470,28 @@ export const ImageRenderSave = ({
 				</a>
 				{overlayType === 'overlay-4' ? (
 					<figcaption>
-						<h5 className="from-top mb-0">
+						<div className="from-top mb-0 h5">
 							<i className="uil uil-plus mt-5"></i>
-						</h5>
+						</div>
 					</figcaption>
 				) : overlayType === 'overlay-2' ? (
 					((image.title || image.caption) || image.description) && (
 						<figcaption>
-							<h5 className="from-top mb-1">{image.title || image.caption}</h5>
+							<div className="from-top mb-1 h5">{image.title || image.caption}</div>
 							{image.description && <p className="from-bottom mb-0">{image.description}</p>}
 						</figcaption>
 					)
 				) : overlayType === 'overlay-3' ? (
 					((image.title || image.caption) || image.description) && (
 						<figcaption>
-							<h5 className="from-left mb-1">{image.title || image.caption}</h5>
+							<div className="from-left mb-1 h5">{image.title || image.caption}</div>
 							{image.description && <p className="from-left mb-0">{image.description}</p>}
 						</figcaption>
 					)
 				) : (
 					(image.title || image.caption) && (
 						<figcaption>
-							<h5 className="from-top mb-0">{image.title || image.caption}</h5>
+							<div className="from-top mb-0 h5">{image.title || image.caption}</div>
 						</figcaption>
 					)
 				)}
@@ -476,12 +499,23 @@ export const ImageRenderSave = ({
 		);
 	}
 
-	// Вариант с Tooltip или без эффектов
+	// Вариант с Tooltip
+	if (enableEffect && effectType === 'tooltip') {
+		return (
+			<figure
+				className={figureClasses}
+				{...(tooltipTitle && { title: tooltipTitle })}
+			>
+				<a href={image.linkUrl || image.url} {...lightboxAttrs}>
+					<img src={image.url} alt={image.alt || ''} />
+				</a>
+			</figure>
+		);
+	}
+
+	// Вариант без эффектов или для других типов
 	return (
-		<figure
-			className={figureClasses}
-			{...(tooltipTitle && { title: tooltipTitle })}
-		>
+		<figure className={figureClasses}>
 			<a href={image.linkUrl || image.url} {...lightboxAttrs}>
 				<img src={image.url} alt={image.alt || ''} />
 			</a>

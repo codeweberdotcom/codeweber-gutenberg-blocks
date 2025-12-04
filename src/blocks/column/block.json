@@ -4,8 +4,7 @@
 	"version": "0.1.0",
 	"title": "Column",
 	"category": "codeweber-gutenberg-blocks",
-	"parent": ["codeweber-blocks/columns"],
-	"icon": "column",
+	"icon": "columns",
 	"description": "Standalone column block with extra background and meta settings.",
 	"supports": {
 		"html": false,

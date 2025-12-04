@@ -11,7 +11,8 @@ import {
 	InspectorControls,
 } from '@wordpress/block-editor';
 import { TabPanel, PanelBody, ToggleControl, ButtonGroup, Button, ComboboxControl } from '@wordpress/components';
-import { Icon, symbol, brush, resizeCornerNE, positionCenter, image, cog } from '@wordpress/icons';
+import { Icon, symbol, brush, resizeCornerNE, positionCenter, image, cog, arrowRight } from '@wordpress/icons';
+import { useEffect } from '@wordpress/element';
 
 import { BorderRadiusControl } from '../../components/border-radius';
 import { ShadowControl } from '../../components/shadow';
@@ -19,6 +20,7 @@ import { SpacingControl } from '../../components/spacing/SpacingControl';
 import { PositioningControl } from '../../components/layout/PositioningControl';
 import { BackgroundSettingsPanel } from '../../components/background/BackgroundSettingsPanel';
 import { BlockMetaFields } from '../../components/block-meta/BlockMetaFields';
+import { AnimationControl } from '../../components/animation/Animation';
 import { colors } from '../../utilities/colors';
 import { generateBackgroundClasses, generateAlignmentClasses } from '../../utilities/class-generators';
 import { getSpacingClasses } from '../section/utils';
@@ -68,6 +70,10 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 		blockClass,
 		blockId,
 		blockData,
+		animationEnabled,
+		animationType,
+		animationDuration,
+		animationDelay,
 	} = attributes;
 
 	const tabs = [
@@ -76,6 +82,7 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 		{ name: 'spacing', title: <TabIcon icon={resizeCornerNE} label={__('Spacing', 'codeweber-blocks')} /> },
 		{ name: 'align', title: <TabIcon icon={positionCenter} label={__('Position', 'codeweber-blocks')} /> },
 		{ name: 'background', title: <TabIcon icon={image} label={__('Background', 'codeweber-blocks')} /> },
+		...(enableCard ? [{ name: 'animation', title: <TabIcon icon={arrowRight} label={__('Animation', 'codeweber-blocks')} /> }] : []),
 		{ name: 'settings', title: <TabIcon icon={cog} label={__('Settings', 'codeweber-blocks')} /> },
 	];
 
@@ -177,7 +184,74 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 		className: getCardClasses(),
 		...(blockId && { id: blockId }),
 		...getDataAttributes(),
+		'data-block': clientId,
+		...(animationEnabled && animationType && { 
+			'data-cue': animationType,
+			...(animationDuration && { 'data-duration': animationDuration }),
+			...(animationDelay && { 'data-delay': animationDelay }),
+		}),
 	});
+
+	// Реинициализация scrollCue при изменении настроек анимации
+	useEffect(() => {
+		if (typeof window === 'undefined') return;
+
+		// Задержка для применения новых атрибутов в DOM
+		const timer = setTimeout(() => {
+			const currentBlock = document.querySelector(`[data-block="${clientId}"]`);
+			if (!currentBlock) {
+				console.warn('⚠️ Block with clientId not found:', clientId);
+				return;
+			}
+
+			// Ищем элемент с data-cue - это сам блок
+			const elementWithCue =
+				currentBlock.hasAttribute('data-cue') ? currentBlock : currentBlock.querySelector('[data-cue]');
+
+			// Если анимация включена и есть тип — настраиваем и обновляем
+			if (animationEnabled && animationType && elementWithCue && elementWithCue.hasAttribute('data-cue')) {
+				console.log('🎬 Resetting animation:', animationType, '| Duration:', animationDuration, '| Delay:', animationDelay);
+
+				// Шаг 1: Полный сброс состояния
+				elementWithCue.classList.remove('cue-hide', 'cue-show', 'cue-sticky');
+				elementWithCue.removeAttribute('data-show');
+				elementWithCue.style.animationDelay = '';
+				elementWithCue.style.animationDuration = '';
+				elementWithCue.style.opacity = '';
+				
+				// Удаляем все animation-классы scrollCue
+				const animationClasses = Array.from(elementWithCue.classList).filter(cls => 
+					cls.startsWith('fadeIn') || cls.startsWith('slideIn') || 
+					cls.startsWith('zoomIn') || cls.startsWith('zoomOut') ||
+					cls.startsWith('rotateIn') || cls.startsWith('bounceIn') ||
+					cls.startsWith('flipIn')
+				);
+				animationClasses.forEach(cls => elementWithCue.classList.remove(cls));
+
+				// Шаг 2: Принудительно скрываем элемент (имитируем состояние до срабатывания scrollCue)
+				elementWithCue.classList.add('cue-hide');
+				elementWithCue.style.opacity = '0';
+
+				// Шаг 3: Глобальная реинициализация scrollCue
+				if (typeof window.reinitScrollCue === 'function') {
+					// Первый update
+					setTimeout(() => {
+						window.reinitScrollCue();
+					}, 50);
+					
+					// Второй update и принудительный показ анимации
+					setTimeout(() => {
+						elementWithCue.classList.remove('cue-hide');
+						elementWithCue.classList.add('cue-show');
+						elementWithCue.style.opacity = '1';
+						window.reinitScrollCue();
+					}, 150);
+				}
+			}
+		}, 100);
+
+		return () => clearTimeout(timer);
+	}, [animationEnabled, animationType, animationDuration, animationDelay, clientId]);
 
 	return (
 		<>
@@ -321,6 +395,16 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 										allowVideo={false}
 									/>
 								</PanelBody>
+							)}
+
+							{/* ANIMATION TAB - Показывается только если Card включен */}
+							{tab.name === 'animation' && enableCard && (
+								<div style={{ padding: '16px' }}>
+									<AnimationControl
+										attributes={attributes}
+										setAttributes={setAttributes}
+									/>
+								</div>
 							)}
 
 							{/* SETTINGS TAB */}

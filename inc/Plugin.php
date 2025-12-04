@@ -76,6 +76,7 @@ class Plugin {
 			'card',
 			'feature',
 			'image',
+			'image-simple',
 		];
 	}
 

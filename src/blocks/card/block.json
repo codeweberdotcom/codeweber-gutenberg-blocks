@@ -141,6 +141,22 @@
 		"blockId": {
 			"type": "string",
 			"default": ""
+		},
+		"animationEnabled": {
+			"type": "boolean",
+			"default": false
+		},
+		"animationType": {
+			"type": "string",
+			"default": ""
+		},
+		"animationDuration": {
+			"type": "number",
+			"default": 1000
+		},
+		"animationDelay": {
+			"type": "number",
+			"default": 0
 		}
 	},
 	"textdomain": "codeweber-blocks",

@@ -1,0 +1,29 @@
+// Editor styles for Image Simple block
+
+.cwgb-image-simple-block {
+	// Placeholder когда нет изображений
+	.cwgb-image-placeholder {
+		display: block;
+		max-width: 100%;
+		
+		.placeholder-image {
+			display: block;
+			width: 100%;
+			height: auto;
+			opacity: 0.7;
+		}
+	}
+}
+
+// Отключаем pointer events для изображений в редакторе
+.editor-styles-wrapper {
+	.cwgb-image-simple-block {
+		figure {
+			a {
+				cursor: default;
+				pointer-events: none;
+			}
+		}
+	}
+}
+

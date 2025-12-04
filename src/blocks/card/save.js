@@ -32,6 +32,10 @@ const Save = ({ attributes }) => {
 		blockClass,
 		blockId,
 		blockData,
+		animationEnabled,
+		animationType,
+		animationDuration,
+		animationDelay,
 	} = attributes;
 
 	// Generate classes for card wrapper
@@ -111,6 +115,11 @@ const Save = ({ attributes }) => {
 			{...(backgroundType === 'image' && backgroundImageUrl && { 'data-image-src': backgroundImageUrl })}
 			{...(backgroundType === 'pattern' && backgroundPatternUrl && { 'data-image-src': backgroundPatternUrl })}
 			{...dataAttributes}
+			{...(animationEnabled && animationType && { 
+				'data-cue': animationType,
+				...(animationDuration && { 'data-duration': animationDuration }),
+				...(animationDelay && { 'data-delay': animationDelay }),
+			})}
 		>
 			{enableCardBody ? (
 				<div className="card-body">

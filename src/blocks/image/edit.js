@@ -1,9 +1,10 @@
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
+import { useEffect } from '@wordpress/element';
 import { ImageSidebar } from './sidebar';
 import { ImageRender } from '../../components/image/ImageRender';
 
-export default function Edit({ attributes, setAttributes }) {
+export default function Edit({ attributes, setAttributes, clientId }) {
 	const {
 		displayMode,
 		images,
@@ -17,14 +18,20 @@ export default function Edit({ attributes, setAttributes }) {
 		swiperItemsMd,
 		swiperItemsXs,
 		hoverEffect,
+		enableEffect,
+		effectType,
 		overlayType,
 		overlayGradient,
 		overlayColor,
 		tooltipType,
 		cursor,
+		iconName,
+		iconColor,
 		captionType,
 		captionBg,
 		captionPosition,
+		captionPadding,
+		captionFontSize,
 		borderRadius,
 		enableLightbox,
 		lightboxGallery,
@@ -35,7 +42,27 @@ export default function Edit({ attributes, setAttributes }) {
 
 	const blockProps = useBlockProps({
 		className: `cwgb-image-block ${blockClass}`,
+		'data-block': clientId,
 	});
+
+	// Инициализация tooltip при изменении настроек
+	useEffect(() => {
+		if (typeof window === 'undefined') return;
+		if (!enableEffect || effectType !== 'tooltip') return;
+		if (!window.theme || typeof window.theme.iTooltip !== 'function') return;
+
+		const timer = setTimeout(() => {
+			try {
+				// Вызываем функцию темы для инициализации всех tooltip'ов
+				window.theme.iTooltip();
+				console.log('✅ Tooltip reinitialized via theme.iTooltip()');
+			} catch (error) {
+				console.warn('Tooltip initialization failed:', error);
+			}
+		}, 300);
+
+		return () => clearTimeout(timer);
+	}, [enableEffect, effectType, tooltipType, clientId]);
 
 	// Функция для получения классов контейнера
 	const getContainerClasses = () => {
@@ -78,7 +105,11 @@ export default function Edit({ attributes, setAttributes }) {
 		if (!images || images.length === 0) {
 			return (
 				<div className="cwgb-image-placeholder">
-					<p>{__('No images selected. Use sidebar to add images.', 'codeweber-blocks')}</p>
+					<img 
+						src="/wp-content/plugins/codeweber-gutenberg-blocks/placeholder.jpg" 
+						alt="Placeholder" 
+						className="placeholder-image"
+					/>
 				</div>
 			);
 		}
@@ -89,14 +120,20 @@ export default function Edit({ attributes, setAttributes }) {
 				<ImageRender
 					image={images[0]}
 					hoverEffect={hoverEffect}
+					enableEffect={enableEffect}
+					effectType={effectType}
 					overlayType={overlayType}
 					overlayGradient={overlayGradient}
 					overlayColor={overlayColor}
 					tooltipType={tooltipType}
 					cursor={cursor}
+					iconName={iconName}
+					iconColor={iconColor}
 					captionType={captionType}
 					captionBg={captionBg}
 					captionPosition={captionPosition}
+					captionPadding={captionPadding}
+					captionFontSize={captionFontSize}
 					borderRadius={borderRadius}
 					enableLightbox={enableLightbox}
 					lightboxGallery={lightboxGallery}

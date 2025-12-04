@@ -3,15 +3,14 @@
 .cwgb-image-block {
 	// Placeholder когда нет изображений
 	.cwgb-image-placeholder {
-		padding: 40px;
-		text-align: center;
-		background: #f0f0f0;
-		border: 2px dashed #ccc;
-		border-radius: 4px;
-
-		p {
-			margin: 0;
-			color: #666;
+		display: block;
+		max-width: 100%;
+		
+		.placeholder-image {
+			display: block;
+			width: 100%;
+			height: auto;
+			opacity: 0.7;
 		}
 	}
 }
@@ -60,6 +59,28 @@
 				cursor: default;
 				pointer-events: none;
 			}
+			
+			// Для cursor эффектов НЕ переопределяем cursor
+			&.cursor-dark,
+			&.cursor-light,
+			&.cursor-primary {
+				display: inline-block !important;
+				position: relative !important;
+				
+				a {
+					cursor: inherit !important; // Наследуем cursor от figure
+					pointer-events: auto !important; // Разрешаем события для cursor
+					display: block !important; // Ссылка занимает всю область
+					line-height: 0 !important; // Убираем лишнее пространство
+					
+					img {
+						display: block !important;
+						width: 100% !important;
+						height: auto !important;
+						margin: 0 !important;
+					}
+				}
+			}
 		}
 
 		// Стили для overlay в редакторе
@@ -67,11 +88,6 @@
 			position: relative;
 			overflow: hidden;
 			display: inline-block;
-
-			> div {
-				position: relative;
-				display: block;
-			}
 
 			img {
 				display: block;
@@ -87,20 +103,21 @@
 				left: 0;
 				width: 100%;
 				height: 100%;
-				opacity: 0.3; // Уменьшаем opacity чтобы изображение было видно
+				opacity: 0.3;
 				transition: opacity 0.35s ease-in-out;
 				pointer-events: none;
 				z-index: 1;
 			}
 
-			// Базовый overlay - делаем менее насыщенным в редакторе
+			// Базовый overlay
 			&.overlay-1 span.bg,
 			&.overlay-2:not(.color) span.bg,
-			&.overlay-3 span.bg {
+			&.overlay-3 span.bg,
+			&.overlay-4 span.bg {
 				background: rgba(#000, 0.4);
 			}
 
-			// Цветной overlay - делаем менее насыщенным в редакторе
+			// Цветной overlay
 			&.overlay-2.color span.bg {
 				background: rgba(#3f78e0, 0.4);
 			}
@@ -116,7 +133,7 @@
 				width: 90%;
 				pointer-events: none;
 
-				h5 {
+				h5, .h5 {
 					color: #fff;
 					margin: 0;
 					text-shadow: 0 1px 3px rgba(#000, 0.5);
@@ -126,6 +143,15 @@
 			&:hover {
 				span.bg {
 					opacity: 0.5;
+				}
+			}
+			
+			// Стили для overlay-4 (иконка)
+			&.overlay-4 {
+				figcaption {
+					.h5 i, h5 i {
+						font-size: 2rem;
+					}
 				}
 			}
 		}
@@ -156,7 +182,7 @@
 						color: #3f78e0;
 					}
 
-					h5 {
+					div, h1, h2, h3, h4, h5, h6 {
 						margin: 0;
 					}
 				}

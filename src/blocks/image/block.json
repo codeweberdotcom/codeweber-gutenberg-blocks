@@ -2,7 +2,7 @@
   "$schema": "https://schemas.wp.org/trunk/block.json",
   "apiVersion": 3,
   "name": "codeweber-blocks/image",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "title": "Image",
   "category": "codeweber-gutenberg-blocks",
   "icon": "format-image",
@@ -65,9 +65,17 @@
       "type": "string",
       "default": "hover-scale"
     },
+    "enableEffect": {
+      "type": "boolean",
+      "default": false
+    },
+    "effectType": {
+      "type": "string",
+      "default": "overlay"
+    },
     "overlayType": {
       "type": "string",
-      "default": "none"
+      "default": "overlay-1"
     },
     "overlayGradient": {
       "type": "string",
@@ -79,11 +87,19 @@
     },
     "tooltipType": {
       "type": "string",
-      "default": "none"
+      "default": "itooltip-light"
     },
     "cursor": {
       "type": "string",
       "default": ""
+    },
+    "iconName": {
+      "type": "string",
+      "default": "arrow-right"
+    },
+    "iconColor": {
+      "type": "string",
+      "default": "dark"
     },
     "captionType": {
       "type": "string",
@@ -95,7 +111,15 @@
     },
     "captionPosition": {
       "type": "string",
-      "default": "bottom-center"
+      "default": "bottom-left"
+    },
+    "captionPadding": {
+      "type": "string",
+      "default": "2-3"
+    },
+    "captionFontSize": {
+      "type": "string",
+      "default": "h5"
     },
     "borderRadius": {
       "type": "string",

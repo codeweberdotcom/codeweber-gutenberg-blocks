@@ -1,0 +1,10 @@
+/**
+ * Global Editor Styles for Codeweber Gutenberg Blocks
+ * Стили редактора, применяемые ко всем блокам плагина
+ */
+
+/* Стили для табов во всех блоках плагина */
+.components-tab-panel__tabs-item {
+	padding: 3px 10px !important;
+}
+

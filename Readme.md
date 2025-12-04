@@ -176,12 +176,13 @@ codeweber-gutenberg-blocks/
 ## 📦 Feature Block
 
 ### Обзор
-Универсальный блок для отображения Features (иконка + заголовок + описание + кнопка) с двумя вариантами верстки.
+Универсальный блок для отображения Features (иконка + заголовок + описание + кнопка) с тремя вариантами верстки.
 
 ### Особенности
-- **Два варианта layout:**
+- **Три варианта layout:**
   - Feature 1 (вертикальный) — элементы расположены вертикально
   - Feature 2 (горизонтальный) — иконка слева, контент справа
+  - Feature 3 (иконка + заголовок в строке) — иконка и заголовок на одной строке, параграф и кнопка под ними
 - **Автоматическое переключение настроек** при смене layout
 - **Интеграция компонентов:** Icon, Title, Paragraph, Button, Card
 - **Полная настройка** типографики, цветов, стилей
@@ -231,6 +232,12 @@ buttonClass: 'more hover'
 - Button: без цвета
 - Layout: `d-flex flex-row`
 
+**Feature 3 (иконка + заголовок в строке):**
+- Icon: `btn-circle`, `btn-soft-primary`, wrapper `pe-none me-5`
+- Title: класс `mb-1`
+- Button: `link-yellow`
+- Layout: иконка и заголовок в `d-flex flex-row align-items-center mb-4`
+
 ### HTML-структура
 
 **Feature 1:**
@@ -258,6 +265,20 @@ buttonClass: 'more hover'
     <p class="mb-2">Nulla vitae elit libero...</p>
     <a href="#" class="more hover">Learn More</a>
   </div>
+</div>
+```
+
+**Feature 3:**
+```html
+<div class="wp-block-codeweber-blocks-feature">
+  <div class="d-flex flex-row align-items-center mb-4">
+    <div class="icon btn btn-circle btn-lg btn-soft-primary pe-none me-5">
+      <i class="uil uil-phone-volume"></i>
+    </div>
+    <h4 class="mb-1">24/7 Support</h4>
+  </div>
+  <p class="mb-3">Nulla vitae elit libero pharetra augue dapibus.</p>
+  <a href="#" class="more hover link-yellow">Learn More</a>
 </div>
 ```
 

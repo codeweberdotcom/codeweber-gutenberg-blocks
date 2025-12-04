@@ -15,14 +15,20 @@ export default function save({ attributes }) {
 		swiperItemsMd,
 		swiperItemsXs,
 		hoverEffect,
+		enableEffect,
+		effectType,
 		overlayType,
 		overlayGradient,
 		overlayColor,
 		tooltipType,
 		cursor,
+		iconName,
+		iconColor,
 		captionType,
 		captionBg,
 		captionPosition,
+		captionPadding,
+		captionFontSize,
 		borderRadius,
 		enableLightbox,
 		lightboxGallery,
@@ -103,14 +109,20 @@ export default function save({ attributes }) {
 				<ImageRenderSave
 					image={images[0]}
 					hoverEffect={hoverEffect}
+					enableEffect={enableEffect}
+					effectType={effectType}
 					overlayType={overlayType}
 					overlayGradient={overlayGradient}
 					overlayColor={overlayColor}
 					tooltipType={tooltipType}
 					cursor={cursor}
+					iconName={iconName}
+					iconColor={iconColor}
 					captionType={captionType}
 					captionBg={captionBg}
 					captionPosition={captionPosition}
+					captionPadding={captionPadding}
+					captionFontSize={captionFontSize}
 					borderRadius={borderRadius}
 					enableLightbox={enableLightbox}
 					lightboxGallery={lightboxGallery}
@@ -127,14 +139,20 @@ export default function save({ attributes }) {
 							<ImageRenderSave
 								image={image}
 								hoverEffect={hoverEffect}
+								enableEffect={enableEffect}
+								effectType={effectType}
 								overlayType={overlayType}
 								overlayGradient={overlayGradient}
 								overlayColor={overlayColor}
 								tooltipType={tooltipType}
 								cursor={cursor}
+								iconName={iconName}
+								iconColor={iconColor}
 								captionType={captionType}
 								captionBg={captionBg}
 								captionPosition={captionPosition}
+								captionPadding={captionPadding}
+								captionFontSize={captionFontSize}
 								borderRadius={borderRadius}
 								enableLightbox={enableLightbox}
 								lightboxGallery={lightboxGallery}
@@ -156,11 +174,20 @@ export default function save({ attributes }) {
 									<ImageRenderSave
 										image={image}
 										hoverEffect={hoverEffect}
+										enableEffect={enableEffect}
+										effectType={effectType}
 										overlayType={overlayType}
 										overlayGradient={overlayGradient}
 										overlayColor={overlayColor}
 										tooltipType={tooltipType}
 										cursor={cursor}
+										iconName={iconName}
+										iconColor={iconColor}
+										captionType={captionType}
+										captionBg={captionBg}
+										captionPosition={captionPosition}
+										captionPadding={captionPadding}
+										captionFontSize={captionFontSize}
 										borderRadius={borderRadius}
 										enableLightbox={enableLightbox}
 										lightboxGallery={lightboxGallery}

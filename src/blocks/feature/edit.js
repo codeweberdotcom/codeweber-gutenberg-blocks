@@ -11,7 +11,8 @@ import {
 	RichText,
 } from '@wordpress/block-editor';
 import { TabPanel, PanelBody, ButtonGroup, Button, TextControl, ToggleControl } from '@wordpress/components';
-import { Icon, symbol, typography, button, addCard, starFilled } from '@wordpress/icons';
+import { useEffect } from '@wordpress/element';
+import { Icon, symbol, typography, button, addCard, starFilled, cog, arrowRight } from '@wordpress/icons';
 
 import { IconControl, IconRender } from '../../components/icon';
 import { HeadingContentControl } from '../../components/heading/HeadingContentControl';
@@ -22,6 +23,7 @@ import { ShadowControl } from '../../components/shadow';
 import { SpacingControl } from '../../components/spacing/SpacingControl';
 import { BackgroundSettingsPanel } from '../../components/background/BackgroundSettingsPanel';
 import { BlockMetaFields } from '../../components/block-meta/BlockMetaFields';
+import { AnimationControl } from '../../components/animation/Animation';
 import { getTitleClasses, getTextClasses } from '../heading-subtitle/utils';
 import { generateBackgroundClasses } from '../../utilities/class-generators';
 import { getSpacingClasses } from '../section/utils';
@@ -41,7 +43,7 @@ const TabIcon = ({ icon, label }) => (
 /**
  * Edit Component
  */
-const Edit = ({ attributes, setAttributes }) => {
+const Edit = ({ attributes, setAttributes, clientId }) => {
 	const {
 		featureLayout,
 		// Icon
@@ -116,8 +118,13 @@ const Edit = ({ attributes, setAttributes }) => {
 		blockClass,
 		blockId,
 		blockData,
+		animationEnabled,
+		animationType,
+		animationDuration,
+		animationDelay,
 	} = attributes;
 
+	// Динамический массив табов
 	const tabs = [
 		{ name: 'feature', title: <TabIcon icon={symbol} label={__('Feature', 'codeweber-blocks')} /> },
 		{ name: 'icon', title: <TabIcon icon={starFilled} label={__('Icon', 'codeweber-blocks')} /> },
@@ -125,6 +132,127 @@ const Edit = ({ attributes, setAttributes }) => {
 		{ name: 'button', title: <TabIcon icon={button} label={__('Button', 'codeweber-blocks')} /> },
 		{ name: 'card', title: <TabIcon icon={addCard} label={__('Card', 'codeweber-blocks')} /> },
 	];
+	
+	// Добавляем табы Settings и Animation только если Card включен
+	if (enableCard) {
+		tabs.push({ name: 'animation', title: <TabIcon icon={arrowRight} label={__('Animation', 'codeweber-blocks')} /> });
+		tabs.push({ name: 'settings', title: <TabIcon icon={cog} label={__('Settings', 'codeweber-blocks')} /> });
+	}
+
+	// Реинициализация анимации при изменении настроек (Enable, Type, Duration, Delay)
+	useEffect(() => {
+		if (typeof window === 'undefined') return;
+
+		// Задержка для применения новых атрибутов в DOM
+		const timer = setTimeout(() => {
+			const currentBlock = document.querySelector(`[data-block="${clientId}"]`);
+			if (!currentBlock) {
+				console.warn('⚠️ Block with clientId not found:', clientId);
+				return;
+			}
+
+			// Ищем элемент с data-cue - это сам блок или его первый div
+			const elementWithCue =
+				currentBlock.querySelector('[data-cue]') ||
+				(currentBlock.hasAttribute('data-cue') ? currentBlock : null) ||
+				currentBlock.querySelector('div[data-cue]');
+
+			// Если анимация включена и есть тип — настраиваем и обновляем
+			if (animationEnabled && animationType && elementWithCue && elementWithCue.hasAttribute('data-cue')) {
+				console.log('🎬 Resetting animation:', animationType, '| Duration:', animationDuration, '| Delay:', animationDelay);
+
+				// Шаг 1: Полный сброс состояния
+				elementWithCue.classList.remove('cue-hide', 'cue-show', 'cue-sticky');
+				elementWithCue.removeAttribute('data-show');
+				elementWithCue.style.animationDelay = '';
+				elementWithCue.style.animationDuration = '';
+				elementWithCue.style.opacity = '';
+				
+				// Удаляем все animation-классы scrollCue
+				const animationClasses = Array.from(elementWithCue.classList).filter(cls => 
+					cls.startsWith('fadeIn') || cls.startsWith('slideIn') || 
+					cls.startsWith('zoomIn') || cls.startsWith('zoomOut') ||
+					cls.startsWith('rotateIn') || cls.startsWith('bounceIn') ||
+					cls.startsWith('flipIn')
+				);
+				animationClasses.forEach(cls => elementWithCue.classList.remove(cls));
+
+				// Шаг 2: Принудительно скрываем элемент (имитируем состояние до срабатывания scrollCue)
+				elementWithCue.classList.add('cue-hide');
+				elementWithCue.style.opacity = '0';
+
+				// Шаг 3: Глобальная реинициализация scrollCue
+				if (typeof window.reinitScrollCue === 'function') {
+					// Первый update
+					setTimeout(() => {
+						window.reinitScrollCue();
+					}, 50);
+					
+					// Второй update и принудительный показ анимации
+					setTimeout(() => {
+						elementWithCue.classList.remove('cue-hide');
+						elementWithCue.classList.add('cue-show');
+						elementWithCue.style.opacity = '';
+						
+						// Применяем CSS-анимацию вручную для preview в редакторе
+						if (animationDuration) {
+							elementWithCue.style.animationDuration = `${animationDuration}ms`;
+						}
+						if (animationDelay) {
+							elementWithCue.style.animationDelay = `${animationDelay}ms`;
+						}
+						
+						// Добавляем класс анимации для мгновенного preview
+						elementWithCue.classList.add(animationType);
+						
+						window.reinitScrollCue();
+						console.log('✅ Animation reinitialized and triggered');
+					}, 200);
+				}
+				return;
+			}
+
+			// Если анимация отключена или тип пустой — очищаем и обновляем
+			if (!animationEnabled || !animationType) {
+				console.log('🔴 Animation disabled or type empty - cleaning up');
+				
+				const target =
+					elementWithCue ||
+					(currentBlock.hasAttribute('data-cue') ? currentBlock : null) ||
+					currentBlock.firstElementChild;
+
+				if (target) {
+					target.classList.remove('cue-hide', 'cue-show', 'cue-sticky');
+					target.removeAttribute('data-show');
+					
+					// Сбрасываем inline-стили анимации
+					target.style.animationDelay = '';
+					target.style.animationDuration = '';
+					
+					// Удаляем все animation-классы scrollCue
+					const animationClasses = Array.from(target.classList).filter(cls => 
+						cls.startsWith('fadeIn') || cls.startsWith('slideIn') || 
+						cls.startsWith('zoomIn') || cls.startsWith('zoomOut') ||
+						cls.startsWith('rotateIn') || cls.startsWith('bounceIn') ||
+						cls.startsWith('flipIn')
+					);
+					animationClasses.forEach(cls => target.classList.remove(cls));
+				}
+
+				if (typeof window.reinitScrollCue === 'function') {
+					window.reinitScrollCue();
+					
+					// Дополнительный вызов для надежности
+					setTimeout(() => {
+						window.reinitScrollCue();
+						console.log('✅ Animation disabled - cleanup complete');
+					}, 150);
+				}
+			}
+		}, 200);
+
+		return () => clearTimeout(timer);
+	}, [animationEnabled, animationType, animationDuration, animationDelay, clientId]);
 
 	// Generate classes for card wrapper
 	const getCardClasses = () => {
@@ -181,6 +309,11 @@ const Edit = ({ attributes, setAttributes }) => {
 			spacingXxl,
 		}));
 		
+		// Custom class
+		if (blockClass) {
+			classes.push(blockClass);
+		}
+		
 		return classes.filter(Boolean).join(' ');
 	};
 
@@ -212,12 +345,36 @@ const Edit = ({ attributes, setAttributes }) => {
 		return classes.filter(Boolean).join(' ');
 	};
 
+	// Parse data attributes
+	const getDataAttributes = () => {
+		const dataAttrs = {};
+		if (blockData) {
+			blockData.split(',').forEach((pair) => {
+				const [key, value] = pair.split('=').map((s) => s.trim());
+				if (key && value) {
+					dataAttrs[`data-${key}`] = value;
+				}
+			});
+		}
+		return dataAttrs;
+	};
+
 	const blockProps = useBlockProps({
 		className: getCardClasses(),
 		style: getCardStyles(),
+		id: blockId || undefined,
+		...(backgroundType === 'image' && backgroundImageUrl && { 'data-image-src': backgroundImageUrl }),
+		...(backgroundType === 'pattern' && backgroundPatternUrl && { 'data-image-src': backgroundPatternUrl }),
+		...getDataAttributes(),
+		...(animationEnabled && animationType && { 
+			'data-cue': animationType,
+			...(animationDuration && { 'data-duration': animationDuration }),
+			...(animationDelay && { 'data-delay': animationDelay }),
+		}),
 	});
 	
 	// Layout classes применяются к card-body или card, не к основному контейнеру
+	// Для feature-3 не нужны классы на основном контейнере
 	const layoutClasses = featureLayout === 'horizontal' ? 'd-flex flex-row' : '';
 
 	// Render content based on layout
@@ -307,16 +464,30 @@ const Edit = ({ attributes, setAttributes }) => {
 		}
 
 		// Layout 2: Horizontal
+		if (featureLayout === 'horizontal') {
+			return (
+				<>
+					<div>
+						{iconElement}
+					</div>
+					<div>
+						{titleElement}
+						{paragraphElement}
+						{buttonElement}
+					</div>
+				</>
+			);
+		}
+
+		// Layout 3: Feature 3 (Icon + Title в одной строке)
 		return (
 			<>
-				<div>
+				<div className="d-flex flex-row align-items-center mb-4">
 					{iconElement}
-				</div>
-				<div>
 					{titleElement}
-					{paragraphElement}
-					{buttonElement}
 				</div>
+				{paragraphElement}
+				{buttonElement}
 			</>
 		);
 	};
@@ -340,6 +511,7 @@ const Edit = ({ attributes, setAttributes }) => {
 													iconBtnVariant: 'soft',
 													iconColor: 'yellow',
 													iconWrapperClass: 'pe-none mb-5',
+													titleClass: '',
 													buttonColor: 'yellow',
 												});
 											}}
@@ -355,11 +527,28 @@ const Edit = ({ attributes, setAttributes }) => {
 													iconBtnVariant: 'solid',
 													iconColor: 'primary',
 													iconWrapperClass: 'me-5',
+													titleClass: '',
 													buttonColor: '',
 												});
 											}}
 										>
 											{__('Feature 2', 'codeweber-blocks')}
+										</Button>
+										<Button
+											variant={featureLayout === 'feature-3' ? 'primary' : 'secondary'}
+											onClick={() => {
+												setAttributes({ 
+													featureLayout: 'feature-3',
+													iconWrapperStyle: 'btn-circle',
+													iconBtnVariant: 'soft',
+													iconColor: 'primary',
+													iconWrapperClass: 'pe-none me-5',
+													titleClass: 'mb-1',
+													buttonColor: 'yellow',
+												});
+											}}
+										>
+											{__('Feature 3', 'codeweber-blocks')}
 										</Button>
 									</ButtonGroup>
 								</PanelBody>
@@ -523,6 +712,36 @@ const Edit = ({ attributes, setAttributes }) => {
 										/>
 									</div>
 								</PanelBody>
+							)}
+
+							{/* ANIMATION TAB - Показывается только если Card включен */}
+							{tab.name === 'animation' && enableCard && (
+								<div style={{ padding: '16px' }}>
+									<AnimationControl
+										attributes={attributes}
+										setAttributes={setAttributes}
+									/>
+								</div>
+							)}
+
+							{/* SETTINGS TAB - Показывается только если Card включен */}
+							{tab.name === 'settings' && enableCard && (
+								<div style={{ padding: '16px' }}>
+									<BlockMetaFields
+										attributes={attributes}
+										setAttributes={setAttributes}
+										fieldKeys={{
+											classKey: 'blockClass',
+											dataKey: 'blockData',
+											idKey: 'blockId',
+										}}
+										labels={{
+											classLabel: __('Card Class', 'codeweber-blocks'),
+											dataLabel: __('Card Data', 'codeweber-blocks'),
+											idLabel: __('Card ID', 'codeweber-blocks'),
+										}}
+									/>
+								</div>
 							)}
 						</>
 					)}

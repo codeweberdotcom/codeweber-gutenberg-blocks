@@ -680,3 +680,4 @@ getSvgIconPath(iconName, style)
 
 > **Последнее обновление:** 2025-12-02
 
+

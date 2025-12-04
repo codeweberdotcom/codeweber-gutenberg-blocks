@@ -4,14 +4,46 @@ import { Button } from '@wordpress/components';
 
 export const ImageControl = ({ images, setAttributes }) => {
 	// Обработка выбора изображений
-	const handleSelectImages = (media) => {
-		const newImages = media.map((item) => ({
-			id: item.id,
-			url: item.url,
-			alt: item.alt || '',
-			caption: item.caption || '',
-			linkUrl: '', // Пока пустая ссылка (на Этапе 3 добавим полный LinkTypeSelector)
-		}));
+	const handleSelectImages = async (media) => {
+		// Получаем полные данные через REST API
+		const newImages = await Promise.all(
+			media.map(async (item) => {
+				let title = '';
+				let description = '';
+				
+				// Запрашиваем полные данные из REST API для получения title и description
+				try {
+					const response = await fetch(`/wp-json/wp/v2/media/${item.id}`);
+					if (response.ok) {
+						const fullData = await response.json();
+						title = fullData.title?.rendered || '';
+						
+						// Description может содержать HTML - извлекаем только текст
+						let descriptionHtml = fullData.description?.rendered || '';
+						if (descriptionHtml) {
+							// Создаем временный элемент для парсинга HTML
+							const tempDiv = document.createElement('div');
+							tempDiv.innerHTML = descriptionHtml;
+							description = tempDiv.textContent || tempDiv.innerText || '';
+							description = description.trim();
+						}
+					}
+				} catch (error) {
+					console.warn('Failed to fetch full media data:', error);
+				}
+				
+				return {
+					id: item.id,
+					url: item.url,
+					alt: item.alt || '',
+					title: title,
+					caption: item.caption || '',
+					description: description,
+					linkUrl: '', // Пока пустая ссылка (на Этапе 3 добавим полный LinkTypeSelector)
+				};
+			})
+		);
+		
 		setAttributes({ images: newImages });
 	};
 
@@ -99,4 +131,5 @@ export const ImageControl = ({ images, setAttributes }) => {
 		</div>
 	);
 };
+
 

@@ -5,7 +5,7 @@
 	"title": "Feature",
 	"category": "codeweber-gutenberg-blocks",
 	"icon": "star-filled",
-	"description": "Feature block with Icon, Title, Paragraph, and Button. Supports two layout variants.",
+	"description": "Feature block with Icon, Title, Paragraph, and Button. Supports three layout variants.",
 	"keywords": ["feature", "icon", "title", "button", "card"],
 	"supports": {
 		"html": false,
@@ -285,6 +285,22 @@
 		"blockId": {
 			"type": "string",
 			"default": ""
+		},
+		"animationEnabled": {
+			"type": "boolean",
+			"default": false
+		},
+		"animationType": {
+			"type": "string",
+			"default": ""
+		},
+		"animationDuration": {
+			"type": "number",
+			"default": 1000
+		},
+		"animationDelay": {
+			"type": "number",
+			"default": 0
 		}
 	},
 	"textdomain": "codeweber-blocks",

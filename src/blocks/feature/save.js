@@ -81,6 +81,10 @@ const Save = ({ attributes }) => {
 		blockClass,
 		blockId,
 		blockData,
+		animationEnabled,
+		animationType,
+		animationDuration,
+		animationDelay,
 	} = attributes;
 
 	// Generate classes for card wrapper
@@ -247,16 +251,30 @@ const Save = ({ attributes }) => {
 		}
 
 		// Layout 2: Horizontal
+		if (featureLayout === 'horizontal') {
+			return (
+				<>
+					<div>
+						{iconElement}
+					</div>
+					<div>
+						{titleElement}
+						{paragraphElement}
+						{buttonElement}
+					</div>
+				</>
+			);
+		}
+
+		// Layout 3: Feature 3 (Icon + Title в одной строке)
 		return (
 			<>
-				<div>
+				<div className="d-flex flex-row align-items-center mb-4">
 					{iconElement}
-				</div>
-				<div>
 					{titleElement}
-					{paragraphElement}
-					{buttonElement}
 				</div>
+				{paragraphElement}
+				{buttonElement}
 			</>
 		);
 	};
@@ -268,6 +286,11 @@ const Save = ({ attributes }) => {
 		...(backgroundType === 'image' && backgroundImageUrl && { 'data-image-src': backgroundImageUrl }),
 		...(backgroundType === 'pattern' && backgroundPatternUrl && { 'data-image-src': backgroundPatternUrl }),
 		...dataAttributes,
+		...(animationEnabled && animationType && { 
+			'data-cue': animationType,
+			...(animationDuration && { 'data-duration': animationDuration }),
+			...(animationDelay && { 'data-delay': animationDelay }),
+		}),
 	});
 	
 	// Layout classes применяются к card-body или card, не к основному контейнеру

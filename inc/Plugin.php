@@ -25,6 +25,9 @@ class Plugin {
 	public static function perInit(): void {
 		// block initialization
 		add_action('init',  __CLASS__ . '::gutenbergBlocksInit');
+		
+		// Enqueue global editor styles
+		add_action('enqueue_block_editor_assets', __CLASS__ . '::enqueueEditorGlobalStyles');
 	}
 
 	public static function init(): void {
@@ -38,6 +41,27 @@ class Plugin {
 
 		// Register REST API endpoint for image sizes
 		add_action('rest_api_init', __CLASS__ . '::register_image_sizes_endpoint');
+	}
+	
+	/**
+	 * Enqueue global editor styles for all blocks
+	 */
+	public static function enqueueEditorGlobalStyles(): void {
+		wp_enqueue_style(
+			'codeweber-blocks-editor-global',
+			self::getBaseUrl() . '/includes/css/editor-global.css',
+			[],
+			GUTENBERG_BLOCKS_VERSION
+		);
+		
+		// Enqueue scrollCue init script for editor
+		wp_enqueue_script(
+			'codeweber-blocks-scrollcue-init',
+			self::getBaseUrl() . '/includes/js/scrollcue-editor-init.js',
+			[],
+			GUTENBERG_BLOCKS_VERSION,
+			true
+		);
 	}
 
 	public static function getBlocksName(): array {

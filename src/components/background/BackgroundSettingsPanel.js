@@ -8,21 +8,21 @@ import { gradientcolors } from '../../utilities/gradient_colors';
 import { ColorTypeControl } from '../colors/ColorTypeControl';
 
 const BACKGROUND_TYPES = [
-	{ label: __('None', 'codeweber-blocks'), value: 'none' },
-	{ label: __('Color', 'codeweber-blocks'), value: 'color' },
-	{ label: __('Image', 'codeweber-blocks'), value: 'image' },
-	{ label: __('Pattern', 'codeweber-blocks'), value: 'pattern' },
+	{ label: __('None', 'codeweber-gutenberg-blocks'), value: 'none' },
+	{ label: __('Color', 'codeweber-gutenberg-blocks'), value: 'color' },
+	{ label: __('Image', 'codeweber-gutenberg-blocks'), value: 'image' },
+	{ label: __('Pattern', 'codeweber-gutenberg-blocks'), value: 'pattern' },
 ];
 
 const BACKGROUND_SIZE_BUTTONS = [
-	{ label: __('None', 'codeweber-blocks'), value: '' },
-	{ label: __('Auto', 'codeweber-blocks'), value: 'bg-auto' },
-	{ label: __('Cover', 'codeweber-blocks'), value: 'bg-cover' },
-	{ label: __('Full', 'codeweber-blocks'), value: 'bg-full' },
+	{ label: __('None', 'codeweber-gutenberg-blocks'), value: '' },
+	{ label: __('Auto', 'codeweber-gutenberg-blocks'), value: 'bg-auto' },
+	{ label: __('Cover', 'codeweber-gutenberg-blocks'), value: 'bg-cover' },
+	{ label: __('Full', 'codeweber-gutenberg-blocks'), value: 'bg-full' },
 ];
 
 const OVERLAY_OPTIONS = [
-	{ label: __('None', 'codeweber-blocks'), value: '' },
+	{ label: __('None', 'codeweber-gutenberg-blocks'), value: '' },
 	{ label: '30%', value: 'bg-overlay bg-overlay-300' },
 	{ label: '40%', value: 'bg-overlay bg-overlay-400' },
 	{ label: '50%', value: 'bg-overlay' },
@@ -57,7 +57,7 @@ export const BackgroundSettingsPanel = ({
 	const typeOptions = useMemo(() => {
 		const base = [...BACKGROUND_TYPES];
 		if (allowVideo) {
-			base.push({ label: __('Video', 'codeweber-blocks'), value: 'video' });
+			base.push({ label: __('Video', 'codeweber-gutenberg-blocks'), value: 'video' });
 		}
 		return base;
 	}, [allowVideo]);
@@ -84,7 +84,7 @@ export const BackgroundSettingsPanel = ({
 const overlayControl = showOverlayControl ? (
 	<>
 		<div className="component-sidebar-title">
-			<label>{__('Background Overlay', 'codeweber-blocks')}</label>
+			<label>{__('Background Overlay', 'codeweber-gutenberg-blocks')}</label>
 		</div>
 		<div className="button-group-sidebar_33 mb-3">
 			{OVERLAY_OPTIONS.map((option) => (
@@ -253,29 +253,29 @@ const renderDefaultMediaPicker = ({
 );
 
 	const imagePickerProps = {
-		label: __('Background Image', 'codeweber-blocks'),
+		label: __('Background Image', 'codeweber-gutenberg-blocks'),
 		url: backgroundImageUrl,
 		value: backgroundImageId,
 		onSelect: handleImageSelect,
 		onRemove: () => setAttributes({ backgroundImageId: 0, backgroundImageUrl: '' }),
 		placeholderIcon: '📷',
-		placeholderLabel: __('Select Image', 'codeweber-blocks'),
+		placeholderLabel: __('Select Image', 'codeweber-gutenberg-blocks'),
 		sizeLabel: imageSizeLabel,
-		selectLabel: __('Image Size', 'codeweber-blocks'),
+		selectLabel: __('Image Size', 'codeweber-gutenberg-blocks'),
 		selectOptions: imageSizes,
 		selectValue: backgroundImageSize,
 		selectOnChange: (value) => setAttributes({ backgroundImageSize: value }),
 	};
 
 	const patternPickerProps = {
-		label: __('Pattern Image', 'codeweber-blocks'),
+		label: __('Pattern Image', 'codeweber-gutenberg-blocks'),
 		url: backgroundPatternUrl,
 		onSelect: handlePatternSelect,
 		onRemove: () => setAttributes({ backgroundPatternUrl: '' }),
 		placeholderIcon: '🎨',
-		placeholderLabel: __('Select Pattern', 'codeweber-blocks'),
+		placeholderLabel: __('Select Pattern', 'codeweber-gutenberg-blocks'),
 		sizeLabel: patternSizeLabel,
-		selectLabel: __('Pattern Size', 'codeweber-blocks'),
+		selectLabel: __('Pattern Size', 'codeweber-gutenberg-blocks'),
 		selectOptions: imageSizes,
 		selectValue: backgroundImageSize,
 		selectOnChange: (value) => setAttributes({ backgroundImageSize: value }),
@@ -287,7 +287,7 @@ const renderDefaultMediaPicker = ({
 	return (
 		<>
 			<div className="component-sidebar-title">
-				<label>{__('Background Type', 'codeweber-blocks')}</label>
+				<label>{__('Background Type', 'codeweber-gutenberg-blocks')}</label>
 			</div>
 			<ButtonGroup>
 				{typeOptions.map((option) => (
@@ -304,20 +304,20 @@ const renderDefaultMediaPicker = ({
 			{backgroundType === 'color' && (
 				<>
 					<ColorTypeControl
-						label={__('Background Color Type', 'codeweber-blocks')}
+						label={__('Background Color Type', 'codeweber-gutenberg-blocks')}
 						value={backgroundColorType}
 						onChange={(value) => setAttributes({ backgroundColorType: value })}
 					/>
 					{backgroundColorType === 'gradient' ? (
 						<ComboboxControl
-							label={__('Background Gradient', 'codeweber-blocks')}
+							label={__('Background Gradient', 'codeweber-gutenberg-blocks')}
 							value={backgroundGradient}
 							options={gradientcolors}
 							onChange={(value) => setAttributes({ backgroundGradient: value })}
 						/>
 					) : (
 						<ComboboxControl
-							label={__('Background Color', 'codeweber-blocks')}
+							label={__('Background Color', 'codeweber-gutenberg-blocks')}
 							value={backgroundColor}
 							options={colors}
 							onChange={(value) => setAttributes({ backgroundColor: value })}

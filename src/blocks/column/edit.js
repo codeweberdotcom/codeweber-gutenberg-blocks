@@ -20,10 +20,10 @@ const TabIcon = ({ icon, label }) => (
 );
 
 const tabs = [
-	{ name: 'settings', title: <TabIcon icon={cog} label={__('Settings', 'codeweber-blocks')} /> },
-	{ name: 'align', title: <TabIcon icon={positionCenter} label={__('Position', 'codeweber-blocks')} /> },
-	{ name: 'adaptive', title: <TabIcon icon={mobile} label={__('Responsive', 'codeweber-blocks')} /> },
-	{ name: 'spacing', title: <TabIcon icon={resizeCornerNE} label={__('Spacing', 'codeweber-blocks')} /> },
+	{ name: 'settings', title: <TabIcon icon={cog} label={__('Settings', 'codeweber-gutenberg-blocks')} /> },
+	{ name: 'align', title: <TabIcon icon={positionCenter} label={__('Position', 'codeweber-gutenberg-blocks')} /> },
+	{ name: 'adaptive', title: <TabIcon icon={mobile} label={__('Responsive', 'codeweber-gutenberg-blocks')} /> },
+	{ name: 'spacing', title: <TabIcon icon={resizeCornerNE} label={__('Spacing', 'codeweber-gutenberg-blocks')} /> },
 ];
 
 const ColumnEdit = ({ attributes, setAttributes }) => {
@@ -64,7 +64,7 @@ const ColumnEdit = ({ attributes, setAttributes }) => {
 							{tab.name === 'align' && (
 								<div style={{ padding: '16px' }}>
 									<PositioningControl
-										title={__('Column align', 'codeweber-blocks')}
+										title={__('Column align', 'codeweber-gutenberg-blocks')}
 										alignItems={columnAlignItems}
 										onAlignItemsChange={(value) => setAttributes({ columnAlignItems: value })}
 										justifyContent={columnJustifyContent}
@@ -88,9 +88,9 @@ const ColumnEdit = ({ attributes, setAttributes }) => {
 											idKey: 'columnId',
 										}}
 										labels={{
-											classLabel: __('Column Class', 'codeweber-blocks'),
-											dataLabel: __('Column Data', 'codeweber-blocks'),
-											idLabel: __('Column ID', 'codeweber-blocks'),
+											classLabel: __('Column Class', 'codeweber-gutenberg-blocks'),
+											dataLabel: __('Column Data', 'codeweber-gutenberg-blocks'),
+											idLabel: __('Column ID', 'codeweber-gutenberg-blocks'),
 										}}
 									/>
 								</div>

@@ -213,12 +213,12 @@ export const SectionSidebar = ({ attributes, setAttributes }) => {
 	);
 
 	const tabs = [
-		{ name: 'section', title: <TabIcon icon={layout} label={__('Section', 'codeweber-blocks')} /> },
-		{ name: 'container', title: <TabIcon icon={box} label={__('Container', 'codeweber-blocks')} /> },
-		{ name: 'background', title: <TabIcon icon={image} label={__('Background', 'codeweber-blocks')} /> },
-		{ name: 'angled', title: <TabIcon icon={styles} label={__('Dividers', 'codeweber-blocks')} /> },
-		{ name: 'spacing', title: <TabIcon icon={resizeCornerNE} label={__('Spacing', 'codeweber-blocks')} /> },
-		{ name: 'settings', title: <TabIcon icon={cog} label={__('Settings', 'codeweber-blocks')} /> },
+		{ name: 'section', title: <TabIcon icon={layout} label={__('Section', 'codeweber-gutenberg-blocks')} /> },
+		{ name: 'container', title: <TabIcon icon={box} label={__('Container', 'codeweber-gutenberg-blocks')} /> },
+		{ name: 'background', title: <TabIcon icon={image} label={__('Background', 'codeweber-gutenberg-blocks')} /> },
+		{ name: 'angled', title: <TabIcon icon={styles} label={__('Dividers', 'codeweber-gutenberg-blocks')} /> },
+		{ name: 'spacing', title: <TabIcon icon={resizeCornerNE} label={__('Spacing', 'codeweber-gutenberg-blocks')} /> },
+		{ name: 'settings', title: <TabIcon icon={cog} label={__('Settings', 'codeweber-gutenberg-blocks')} /> },
 	];
 
 	return (
@@ -230,7 +230,7 @@ export const SectionSidebar = ({ attributes, setAttributes }) => {
 					{tab.name === 'background' && (
 						<>
 							<PanelBody
-								title={__('Background Settings', 'codeweber-blocks')}
+								title={__('Background Settings', 'codeweber-gutenberg-blocks')}
 								className="custom-panel-body"
 							>
 							<BackgroundSettingsPanel
@@ -245,7 +245,7 @@ export const SectionSidebar = ({ attributes, setAttributes }) => {
 								{backgroundType === 'video' && (
 									<>
 										<div className="component-sidebar-title">
-											<label>{__('Background Video', 'codeweber-blocks')}</label>
+											<label>{__('Background Video', 'codeweber-gutenberg-blocks')}</label>
 										</div>
 										{!backgroundVideoUrl && (
 											<MediaUploadCheck>
@@ -289,7 +289,7 @@ export const SectionSidebar = ({ attributes, setAttributes }) => {
 																	fontSize: '12px',
 																	fontWeight: '500'
 																}}>
-																	{__('Select Video', 'codeweber-blocks')}
+																	{__('Select Video', 'codeweber-gutenberg-blocks')}
 																</div>
 															</div>
 														</div>
@@ -315,9 +315,9 @@ export const SectionSidebar = ({ attributes, setAttributes }) => {
 												onClick={() => {
 													// Open WordPress media library and select the current video
 													const mediaFrame = wp.media({
-														title: __('Select Video', 'codeweber-blocks'),
+														title: __('Select Video', 'codeweber-gutenberg-blocks'),
 														button: {
-															text: __('Select', 'codeweber-blocks'),
+															text: __('Select', 'codeweber-gutenberg-blocks'),
 														},
 														multiple: false,
 														library: {
@@ -351,7 +351,7 @@ export const SectionSidebar = ({ attributes, setAttributes }) => {
 														textAlign: 'center',
 														padding: '10px'
 													}}>
-														🎥 {__('Video loaded', 'codeweber-blocks')}
+														🎥 {__('Video loaded', 'codeweber-gutenberg-blocks')}
 													</div>
 													{videoSize && (
 														<div style={{
@@ -391,7 +391,7 @@ export const SectionSidebar = ({ attributes, setAttributes }) => {
 																backgroundVideoUrl: '',
 															});
 														}}
-														title={__('Remove Video', 'codeweber-blocks')}
+														title={__('Remove Video', 'codeweber-gutenberg-blocks')}
 													>
 														<i className="uil uil-times" style={{ margin: 0 }}></i>
 													</div>
@@ -406,7 +406,7 @@ export const SectionSidebar = ({ attributes, setAttributes }) => {
 
 					{tab.name === 'angled' && (
 						<div style={{ padding: '16px' }}>
-							<PanelBody title={__('Angles', 'codeweber-blocks')} initialOpen={true}>
+							<PanelBody title={__('Angles', 'codeweber-gutenberg-blocks')} initialOpen={true}>
 								<AngledControl
 									angledEnabled={angledEnabled}
 									angledUpper={angledUpper}
@@ -416,7 +416,7 @@ export const SectionSidebar = ({ attributes, setAttributes }) => {
 									onAngledLowerChange={(value) => setAttributes({ angledLower: value })}
 								/>
 							</PanelBody>
-							<PanelBody title={__('Waves', 'codeweber-blocks')} initialOpen={false}>
+							<PanelBody title={__('Waves', 'codeweber-gutenberg-blocks')} initialOpen={false}>
 								<WavesControl
 									waveTopEnabled={waveTopEnabled}
 									waveTopType={waveTopType}
@@ -468,7 +468,7 @@ export const SectionSidebar = ({ attributes, setAttributes }) => {
 								onContainerChange={handleContainerChange}
 							/>
 							<PositioningControl
-								title={__('Container Align', 'codeweber-blocks')}
+								title={__('Container Align', 'codeweber-gutenberg-blocks')}
 								textAlign={containerTextAlign}
 								onTextAlignChange={(value) => handleContainerChange('containerTextAlign', value)}
 								alignItems={containerAlignItems}

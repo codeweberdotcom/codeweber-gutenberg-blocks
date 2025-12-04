@@ -1,5 +1,6 @@
 import { RichText } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
+import { getLightboxAttributes } from '../../utilities/lightbox';
 
 /**
  * ImageRender - компонент для рендеринга изображения в редакторе
@@ -70,22 +71,10 @@ export const ImageRender = ({
 		return classes.join(' ');
 	};
 
-	// Формируем атрибуты для lightbox
-	const getLightboxAttributes = () => {
-		if (!enableLightbox || isEditor) {
-			return {};
-		}
-
-		const attrs = {
-			'data-glightbox': 'image',
-		};
-
-		if (lightboxGallery) {
-			attrs['data-gallery'] = lightboxGallery;
-		}
-
-		return attrs;
-	};
+	// Формируем атрибуты для lightbox (используем утилиту)
+	const lightboxAttrs = !isEditor 
+		? getLightboxAttributes(enableLightbox, lightboxGallery, 'image')
+		: {};
 
 	// Формируем title для tooltip
 	const getTooltipTitle = () => {
@@ -152,7 +141,6 @@ export const ImageRender = ({
 	};
 
 	const figureClasses = getFigureClasses();
-	const lightboxAttrs = getLightboxAttributes();
 	const tooltipTitle = getTooltipTitle();
 	const captionClasses = getCaptionClasses();
 
@@ -348,22 +336,8 @@ export const ImageRenderSave = ({
 		return classes.join(' ');
 	};
 
-	// Формируем атрибуты для lightbox
-	const getLightboxAttributes = () => {
-		if (!enableLightbox) {
-			return {};
-		}
-
-		const attrs = {
-			'data-glightbox': 'image',
-		};
-
-		if (lightboxGallery) {
-			attrs['data-gallery'] = lightboxGallery;
-		}
-
-		return attrs;
-	};
+	// Формируем атрибуты для lightbox (используем утилиту)
+	const lightboxAttrs = getLightboxAttributes(enableLightbox, lightboxGallery, 'image');
 
 	// Формируем title для tooltip
 	const getTooltipTitle = () => {
@@ -430,7 +404,6 @@ export const ImageRenderSave = ({
 	};
 
 	const figureClasses = getFigureClasses();
-	const lightboxAttrs = getLightboxAttributes();
 	const tooltipTitle = getTooltipTitle();
 	const captionClasses = getCaptionClasses();
 

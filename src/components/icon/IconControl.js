@@ -63,7 +63,7 @@ export const IconControl = ({
 	attributes,
 	setAttributes,
 	prefix = '',
-	label = __('Иконка', 'codeweber-blocks'),
+	label = __('Icon', 'codeweber-gutenberg-blocks'),
 	allowSvg = true,
 	allowFont = true,
 	allowCustom = true,
@@ -140,7 +140,7 @@ export const IconControl = ({
 		<div style={{ padding: '16px' }}>
 			{/* Тип иконки */}
 			<SelectControl
-				label={__('Тип иконки', 'codeweber-blocks')}
+				label={__('Icon Type', 'codeweber-gutenberg-blocks')}
 				value={iconType}
 				options={availableTypes}
 				onChange={(value) => setAttr(setAttributes, prefix, 'iconType', value)}
@@ -151,7 +151,7 @@ export const IconControl = ({
 			{(iconType === 'font' || iconType === 'svg') && (
 				<>
 					<BaseControl
-						label={__('Выбранная иконка', 'codeweber-blocks')}
+						label={__('Selected Icon', 'codeweber-gutenberg-blocks')}
 						className="icon-control-preview"
 					>
 						<div className="icon-control-preview-wrapper">
@@ -176,8 +176,8 @@ export const IconControl = ({
 								className="icon-control-select-btn"
 							>
 								{iconName || svgIcon
-									? __('Изменить иконку', 'codeweber-blocks')
-									: __('Выбрать иконку', 'codeweber-blocks')}
+									? __('Change Icon', 'codeweber-gutenberg-blocks')
+									: __('Select Icon', 'codeweber-gutenberg-blocks')}
 							</Button>
 						</div>
 					</BaseControl>
@@ -195,7 +195,7 @@ export const IconControl = ({
 
 			{/* Кастомный SVG */}
 			{iconType === 'custom' && (
-				<BaseControl label={__('Кастомный SVG', 'codeweber-blocks')}>
+				<BaseControl label={__('Custom SVG', 'codeweber-gutenberg-blocks')}>
 					<div className="icon-control-custom-svg">
 						{customSvgUrl ? (
 							<div className="icon-control-custom-svg-preview">
@@ -205,7 +205,7 @@ export const IconControl = ({
 									isDestructive
 									onClick={handleCustomSvgRemove}
 								>
-									{__('Удалить', 'codeweber-blocks')}
+									{__('Remove', 'codeweber-gutenberg-blocks')}
 								</Button>
 							</div>
 						) : (
@@ -216,7 +216,7 @@ export const IconControl = ({
 									value={customSvgId}
 									render={({ open }) => (
 										<Button variant="secondary" onClick={open}>
-											{__('Загрузить SVG', 'codeweber-blocks')}
+											{__('Upload SVG', 'codeweber-gutenberg-blocks')}
 										</Button>
 									)}
 								/>
@@ -230,7 +230,7 @@ export const IconControl = ({
 			{iconType === 'svg' && svgIcon && (
 				<>
 					<SelectControl
-						label={__('Стиль SVG', 'codeweber-blocks')}
+						label={__('SVG Style', 'codeweber-gutenberg-blocks')}
 						value={svgStyle}
 						options={
 							// Если иконка из lineal - только lineal стиль доступен
@@ -243,13 +243,13 @@ export const IconControl = ({
 						__nextHasNoMarginBottom
 						help={
 							svgStyle === 'lineal'
-								? __('Для Lineal иконок доступен только контурный стиль', 'codeweber-blocks')
-								: __('Для Solid иконок доступны стили с заливкой', 'codeweber-blocks')
+								? __('For Lineal icons, only outline style is available', 'codeweber-gutenberg-blocks')
+								: __('For Solid icons, filled styles are available', 'codeweber-gutenberg-blocks')
 						}
 					/>
 
 					<SelectControl
-						label={__('Размер', 'codeweber-blocks')}
+						label={__('Size', 'codeweber-gutenberg-blocks')}
 						value={iconSize}
 						options={iconSvgSizes.map((s) => ({ value: s.value, label: s.label }))}
 						onChange={(value) => setAttr(setAttributes, prefix, 'iconSize', value)}
@@ -261,7 +261,7 @@ export const IconControl = ({
 			{/* Размер Font иконки */}
 			{iconType === 'font' && iconName && (
 				<SelectControl
-					label={__('Размер', 'codeweber-blocks')}
+					label={__('Size', 'codeweber-gutenberg-blocks')}
 					value={iconFontSize}
 					options={iconFontSizes}
 					onChange={(value) => setAttr(setAttributes, prefix, 'iconFontSize', value)}
@@ -272,7 +272,7 @@ export const IconControl = ({
 			{/* Настройки кастомного SVG */}
 			{iconType === 'custom' && customSvgUrl && (
 				<SelectControl
-					label={__('Размер', 'codeweber-blocks')}
+					label={__('Size', 'codeweber-gutenberg-blocks')}
 					value={iconSize}
 					options={iconSvgSizes.map((s) => ({ value: s.value, label: s.label }))}
 					onChange={(value) => setAttr(setAttributes, prefix, 'iconSize', value)}
@@ -286,10 +286,10 @@ export const IconControl = ({
 					{/* Для solid-duo используем предустановленные комбинации */}
 					{iconType === 'svg' && svgStyle === 'solid-duo' ? (
 						<SelectControl
-							label={__('Комбинация цветов', 'codeweber-blocks')}
+							label={__('Color Combination', 'codeweber-gutenberg-blocks')}
 							value={iconColor && iconColor2 ? `${iconColor}-${iconColor2}` : ''}
 							options={[
-								{ value: '', label: __('Выберите комбинацию', 'codeweber-blocks') },
+								{ value: '', label: __('Select combination', 'codeweber-gutenberg-blocks') },
 								...iconDuoColors,
 							]}
 							onChange={(value) => {
@@ -306,7 +306,7 @@ export const IconControl = ({
 						/>
 					) : (
 						<SelectControl
-							label={__('Цвет', 'codeweber-blocks')}
+							label={__('Color', 'codeweber-gutenberg-blocks')}
 							value={iconColor}
 							options={iconColors}
 							onChange={(value) => setAttr(setAttributes, prefix, 'iconColor', value)}
@@ -319,8 +319,8 @@ export const IconControl = ({
 			{/* Дополнительные классы */}
 			{iconType !== 'none' && (iconName || svgIcon || customSvgUrl) && (
 				<BaseControl
-					label={__('Дополнительный класс иконки', 'codeweber-blocks')}
-					help={__('Например: me-4, mb-3 и др.', 'codeweber-blocks')}
+					label={__('Additional icon class', 'codeweber-gutenberg-blocks')}
+					help={__('Например: me-4, mb-3 и др.', 'codeweber-gutenberg-blocks')}
 				>
 					<input
 						type="text"
@@ -336,8 +336,8 @@ export const IconControl = ({
 			{showWrapper && iconType !== 'none' && (iconName || svgIcon || customSvgUrl) && (
 				<>
 					<ToggleControl
-						label={__('Обернуть в div.icon', 'codeweber-blocks')}
-						help={__('Добавляет обёртку для позиционирования или стилизации', 'codeweber-blocks')}
+						label={__('Wrap in div.icon', 'codeweber-gutenberg-blocks')}
+						help={__('Adds wrapper for positioning or styling', 'codeweber-gutenberg-blocks')}
 						checked={iconWrapper}
 						onChange={(value) => setAttr(setAttributes, prefix, 'iconWrapper', value)}
 						__nextHasNoMarginBottom
@@ -346,7 +346,7 @@ export const IconControl = ({
 					{iconWrapper && (
 						<>
 							<BaseControl
-								label={__('Стиль обёртки', 'codeweber-blocks')}
+								label={__('Wrapper Style', 'codeweber-gutenberg-blocks')}
 								__nextHasNoMarginBottom
 							>
 								<ButtonGroup className="icon-wrapper-style-buttons">
@@ -367,7 +367,7 @@ export const IconControl = ({
 							{(iconWrapperStyle === 'btn' || iconWrapperStyle === 'btn-circle') && (
 								<>
 									<BaseControl
-										label={__('Вариант кнопки', 'codeweber-blocks')}
+										label={__('Button Variant', 'codeweber-gutenberg-blocks')}
 										__nextHasNoMarginBottom
 									>
 										<ButtonGroup className="icon-wrapper-style-buttons">
@@ -385,7 +385,7 @@ export const IconControl = ({
 									</BaseControl>
 
 									<BaseControl
-										label={__('Размер кнопки', 'codeweber-blocks')}
+										label={__('Button Size', 'codeweber-gutenberg-blocks')}
 										__nextHasNoMarginBottom
 									>
 										<ButtonGroup className="icon-wrapper-style-buttons">
@@ -405,8 +405,8 @@ export const IconControl = ({
 							)}
 
 							<BaseControl
-								label={__('Доп. классы обёртки', 'codeweber-blocks')}
-								help={__('Например: pe-none, mb-5', 'codeweber-blocks')}
+								label={__('Additional wrapper classes', 'codeweber-gutenberg-blocks')}
+								help={__('Например: pe-none, mb-5', 'codeweber-gutenberg-blocks')}
 							>
 								<input
 									type="text"

@@ -1,5 +1,7 @@
 import { __ } from '@wordpress/i18n';
-import { SelectControl, ToggleControl, RangeControl, ButtonGroup, Button } from '@wordpress/components';
+import { SelectControl, ToggleControl, RangeControl, ButtonGroup, Button, Tooltip, Dropdown } from '@wordpress/components';
+import { Icon, info, chevronDown } from '@wordpress/icons';
+import { useState } from '@wordpress/element';
 
 export const LayoutControl = ({ attributes, setAttributes }) => {
 	const {
@@ -27,31 +29,113 @@ export const LayoutControl = ({ attributes, setAttributes }) => {
 		swiperDrag,
 		swiperReverse,
 		swiperUpdateResize,
+		swiperNavStyle,
+		swiperNavPosition,
+		swiperDotsStyle,
+		swiperContainerType,
+		swiperItemsAuto,
+		swiperCentered,
 	} = attributes;
+
+	// Helper для label с tooltip
+	const LabelWithTooltip = ({ label, tooltip }) => (
+		<div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+			<span>{label}</span>
+			<Tooltip text={tooltip}>
+				<span style={{ display: 'inline-flex', cursor: 'help' }}>
+					<Icon icon={info} size={16} style={{ color: '#949494' }} />
+				</span>
+			</Tooltip>
+		</div>
+	);
+
+	// Helper для Items Per View с выпадающими списками
+	const ItemsPerViewTabs = () => {
+		const breakpoints = [
+			{ key: 'D', label: 'D', value: swiperItems, onChange: (v) => setAttributes({ swiperItems: v }), options: ['1', '2', '3', '4', '5', '6'] },
+			{ key: 'XS', label: 'XS', value: swiperItemsXs, onChange: (v) => setAttributes({ swiperItemsXs: v }), options: ['', '1', '2', '3', '4'] },
+			{ key: 'SM', label: 'SM', value: swiperItemsSm, onChange: (v) => setAttributes({ swiperItemsSm: v }), options: ['', '1', '2', '3', '4'] },
+			{ key: 'MD', label: 'MD', value: swiperItemsMd, onChange: (v) => setAttributes({ swiperItemsMd: v }), options: ['', '1', '2', '3', '4', '5'] },
+			{ key: 'LG', label: 'LG', value: swiperItemsLg, onChange: (v) => setAttributes({ swiperItemsLg: v }), options: ['', '1', '2', '3', '4', '5', '6'] },
+			{ key: 'XL', label: 'XL', value: swiperItemsXl, onChange: (v) => setAttributes({ swiperItemsXl: v }), options: ['', '1', '2', '3', '4', '5', '6'] },
+			{ key: 'XXL', label: 'XXL', value: swiperItemsXxl, onChange: (v) => setAttributes({ swiperItemsXxl: v }), options: ['', '1', '2', '3', '4', '5', '6'] },
+		];
+
+		return (
+			<div style={{ marginBottom: '12px' }}>
+				<div style={{ marginBottom: '8px', fontSize: '11px', fontWeight: '500', textTransform: 'uppercase', color: '#1e1e1e' }}>
+					{__('Items Per View', 'codeweber-gutenberg-blocks')}
+				</div>
+				<div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+					{breakpoints.map((bp) => (
+						<Dropdown
+							key={bp.key}
+							position="bottom center"
+							renderToggle={({ isOpen, onToggle }) => (
+								<Button
+									variant={bp.value && bp.value !== '' ? 'primary' : 'secondary'}
+									onClick={onToggle}
+									aria-expanded={isOpen}
+									style={{ minWidth: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '2px' }}
+								>
+									{bp.label}
+									<span style={{ fontSize: '10px', opacity: 0.7 }}>
+										{bp.value === '' ? 'Auto' : bp.value}
+									</span>
+									<Icon icon={chevronDown} size={12} />
+								</Button>
+							)}
+							renderContent={({ onClose }) => (
+								<div style={{ padding: '8px', minWidth: '80px' }}>
+									{bp.options.map((opt) => (
+										<Button
+											key={opt}
+											onClick={() => {
+												bp.onChange(opt);
+												onClose();
+											}}
+											variant={bp.value === opt ? 'primary' : 'tertiary'}
+											style={{ 
+												width: '100%', 
+												marginBottom: '4px',
+												justifyContent: 'flex-start'
+											}}
+										>
+											{opt === '' ? 'Auto' : opt}
+										</Button>
+									))}
+								</div>
+							)}
+						/>
+					))}
+				</div>
+			</div>
+		);
+	};
 
 	return (
 		<>
 			<div className="component-sidebar-title">
-				<label>{__('Display Mode', 'codeweber-blocks')}</label>
+				<label>{__('Display Mode', 'codeweber-gutenberg-blocks')}</label>
 			</div>
 			<ButtonGroup className="button-group-sidebar_3">
 				<Button
 					isPrimary={displayMode === 'single'}
 					onClick={() => setAttributes({ displayMode: 'single' })}
 				>
-					{__('Single', 'codeweber-blocks')}
+					{__('Single', 'codeweber-gutenberg-blocks')}
 				</Button>
 				<Button
 					isPrimary={displayMode === 'grid'}
 					onClick={() => setAttributes({ displayMode: 'grid' })}
 				>
-					{__('Grid', 'codeweber-blocks')}
+					{__('Grid', 'codeweber-gutenberg-blocks')}
 				</Button>
 				<Button
 					isPrimary={displayMode === 'swiper'}
 					onClick={() => setAttributes({ displayMode: 'swiper' })}
 				>
-					{__('Swiper', 'codeweber-blocks')}
+					{__('Swiper', 'codeweber-gutenberg-blocks')}
 				</Button>
 			</ButtonGroup>
 
@@ -59,7 +143,7 @@ export const LayoutControl = ({ attributes, setAttributes }) => {
 			{displayMode === 'grid' && (
 				<>
 					<SelectControl
-						label={__('Grid Columns', 'codeweber-blocks')}
+						label={__('Grid Columns', 'codeweber-gutenberg-blocks')}
 						value={gridColumns}
 						options={[
 							{ label: '2', value: '2' },
@@ -78,7 +162,7 @@ export const LayoutControl = ({ attributes, setAttributes }) => {
 					/>
 
 					<SelectControl
-						label={__('Grid Gap X', 'codeweber-blocks')}
+						label={__('Grid Gap X', 'codeweber-gutenberg-blocks')}
 						value={gridGapX}
 						options={[
 							{ label: 'None', value: '0' },
@@ -92,7 +176,7 @@ export const LayoutControl = ({ attributes, setAttributes }) => {
 					/>
 
 					<SelectControl
-						label={__('Grid Gap Y', 'codeweber-blocks')}
+						label={__('Grid Gap Y', 'codeweber-gutenberg-blocks')}
 						value={gridGapY}
 						options={[
 							{ label: '0', value: '0' },
@@ -111,12 +195,24 @@ export const LayoutControl = ({ attributes, setAttributes }) => {
 			{/* Swiper Settings */}
 			{displayMode === 'swiper' && (
 				<>
+					<SelectControl
+						label={__('Container Type', 'codeweber-gutenberg-blocks')}
+						value={swiperContainerType}
+						options={[
+							{ label: __('Default', 'codeweber-gutenberg-blocks'), value: '' },
+							{ label: __('Hero Slider', 'codeweber-gutenberg-blocks'), value: 'swiper-hero' },
+							{ label: __('Fullscreen Slider', 'codeweber-gutenberg-blocks'), value: 'swiper-fullscreen' },
+						]}
+						onChange={(value) => setAttributes({ swiperContainerType: value })}
+						help={__('Special slider types for hero sections or fullscreen layouts', 'codeweber-gutenberg-blocks')}
+					/>
+
 					<h3 style={{ marginTop: '16px', marginBottom: '12px', fontSize: '14px', fontWeight: 'bold' }}>
-						{__('Transition', 'codeweber-blocks')}
+						{__('Transition', 'codeweber-gutenberg-blocks')}
 					</h3>
 
 					<SelectControl
-						label={__('Effect', 'codeweber-blocks')}
+						label={__('Effect', 'codeweber-gutenberg-blocks')}
 						value={swiperEffect}
 						options={[
 							{ label: 'Slide', value: 'slide' },
@@ -126,7 +222,7 @@ export const LayoutControl = ({ attributes, setAttributes }) => {
 					/>
 
 					<RangeControl
-						label={__('Speed (ms)', 'codeweber-blocks')}
+						label={__('Speed (ms)', 'codeweber-gutenberg-blocks')}
 						value={swiperSpeed}
 						onChange={(value) => setAttributes({ swiperSpeed: value })}
 						min={100}
@@ -134,115 +230,25 @@ export const LayoutControl = ({ attributes, setAttributes }) => {
 						step={100}
 					/>
 
-					<h3 style={{ marginTop: '16px', marginBottom: '12px', fontSize: '14px', fontWeight: 'bold' }}>
-						{__('Items Per View', 'codeweber-blocks')}
-					</h3>
+					<ItemsPerViewTabs />
 
-					<SelectControl
-						label={__('Items (Default)', 'codeweber-blocks')}
-						value={swiperItems}
-						options={[
-							{ label: '1', value: '1' },
-							{ label: '2', value: '2' },
-							{ label: '3', value: '3' },
-							{ label: '4', value: '4' },
-							{ label: '5', value: '5' },
-							{ label: '6', value: '6' },
-						]}
-						onChange={(value) => setAttributes({ swiperItems: value })}
-					/>
-
-					<SelectControl
-						label={__('Items XS (0-575px)', 'codeweber-blocks')}
-						value={swiperItemsXs}
-						options={[
-							{ label: 'Default', value: '' },
-							{ label: '1', value: '1' },
-							{ label: '2', value: '2' },
-							{ label: '3', value: '3' },
-							{ label: '4', value: '4' },
-						]}
-						onChange={(value) => setAttributes({ swiperItemsXs: value })}
-					/>
-
-					<SelectControl
-						label={__('Items SM (576-767px)', 'codeweber-blocks')}
-						value={swiperItemsSm}
-						options={[
-							{ label: 'Default (items-xs)', value: '' },
-							{ label: '1', value: '1' },
-							{ label: '2', value: '2' },
-							{ label: '3', value: '3' },
-							{ label: '4', value: '4' },
-						]}
-						onChange={(value) => setAttributes({ swiperItemsSm: value })}
-					/>
-
-					<SelectControl
-						label={__('Items MD (768-991px)', 'codeweber-blocks')}
-						value={swiperItemsMd}
-						options={[
-							{ label: 'Default (items-sm)', value: '' },
-							{ label: '1', value: '1' },
-							{ label: '2', value: '2' },
-							{ label: '3', value: '3' },
-							{ label: '4', value: '4' },
-							{ label: '5', value: '5' },
-						]}
-						onChange={(value) => setAttributes({ swiperItemsMd: value })}
-					/>
-
-					<SelectControl
-						label={__('Items LG (992-1199px)', 'codeweber-blocks')}
-						value={swiperItemsLg}
-						options={[
-							{ label: 'Default (items-md)', value: '' },
-							{ label: '1', value: '1' },
-							{ label: '2', value: '2' },
-							{ label: '3', value: '3' },
-							{ label: '4', value: '4' },
-							{ label: '5', value: '5' },
-							{ label: '6', value: '6' },
-						]}
-						onChange={(value) => setAttributes({ swiperItemsLg: value })}
-					/>
-
-					<SelectControl
-						label={__('Items XL (1200-1400px)', 'codeweber-blocks')}
-						value={swiperItemsXl}
-						options={[
-							{ label: 'Default (items-lg)', value: '' },
-							{ label: '1', value: '1' },
-							{ label: '2', value: '2' },
-							{ label: '3', value: '3' },
-							{ label: '4', value: '4' },
-							{ label: '5', value: '5' },
-							{ label: '6', value: '6' },
-						]}
-						onChange={(value) => setAttributes({ swiperItemsXl: value })}
-					/>
-
-					<SelectControl
-						label={__('Items XXL (1400px+)', 'codeweber-blocks')}
-						value={swiperItemsXxl}
-						options={[
-							{ label: 'Default (items-xl)', value: '' },
-							{ label: '1', value: '1' },
-							{ label: '2', value: '2' },
-							{ label: '3', value: '3' },
-							{ label: '4', value: '4' },
-							{ label: '5', value: '5' },
-							{ label: '6', value: '6' },
-						]}
-						onChange={(value) => setAttributes({ swiperItemsXxl: value })}
+					<ToggleControl
+						label={
+							<LabelWithTooltip
+								label={__('Auto Width', 'codeweber-gutenberg-blocks')}
+								tooltip={__('Slides will have auto width based on their content. Overrides items per view settings.', 'codeweber-gutenberg-blocks')}
+							/>
+						}
+						checked={swiperItemsAuto}
+						onChange={(value) => setAttributes({ swiperItemsAuto: value })}
 					/>
 
 					<h3 style={{ marginTop: '16px', marginBottom: '12px', fontSize: '14px', fontWeight: 'bold' }}>
-						{__('Spacing & Behavior', 'codeweber-blocks')}
+						{__('Spacing & Behavior', 'codeweber-gutenberg-blocks')}
 					</h3>
 
 					<RangeControl
-						label={__('Margin (px)', 'codeweber-blocks')}
+						label={__('Margin (px)', 'codeweber-gutenberg-blocks')}
 						value={parseInt(swiperMargin)}
 						onChange={(value) => setAttributes({ swiperMargin: value.toString() })}
 						min={0}
@@ -251,35 +257,71 @@ export const LayoutControl = ({ attributes, setAttributes }) => {
 					/>
 
 					<ToggleControl
-						label={__('Loop', 'codeweber-blocks')}
+						label={
+							<LabelWithTooltip
+								label={__('Loop', 'codeweber-gutenberg-blocks')}
+								tooltip={__('Enable continuous loop mode. Slides will loop from last to first seamlessly.', 'codeweber-gutenberg-blocks')}
+							/>
+						}
 						checked={swiperLoop}
 						onChange={(value) => setAttributes({ swiperLoop: value })}
 					/>
 
 					<ToggleControl
-						label={__('Auto Height', 'codeweber-blocks')}
+						label={
+							<LabelWithTooltip
+								label={__('Auto Height', 'codeweber-gutenberg-blocks')}
+								tooltip={__('Slider wrapper will adapt its height to the height of the currently active slide.', 'codeweber-gutenberg-blocks')}
+							/>
+						}
 						checked={swiperAutoHeight}
 						onChange={(value) => setAttributes({ swiperAutoHeight: value })}
 					/>
 
 					<ToggleControl
-						label={__('Watch Overflow', 'codeweber-blocks')}
+						label={
+							<LabelWithTooltip
+								label={__('Watch Overflow', 'codeweber-gutenberg-blocks')}
+								tooltip={__('When enabled, Swiper will be disabled and hide navigation buttons when there are not enough slides.', 'codeweber-gutenberg-blocks')}
+							/>
+						}
 						checked={swiperWatchOverflow}
 						onChange={(value) => setAttributes({ swiperWatchOverflow: value })}
 					/>
 
 					<ToggleControl
-						label={__('Update on Resize', 'codeweber-blocks')}
+						label={
+							<LabelWithTooltip
+								label={__('Update on Resize', 'codeweber-gutenberg-blocks')}
+								tooltip={__('Swiper will recalculate slides position on window resize (orientation change).', 'codeweber-gutenberg-blocks')}
+							/>
+						}
 						checked={swiperUpdateResize}
 						onChange={(value) => setAttributes({ swiperUpdateResize: value })}
 					/>
 
+					<ToggleControl
+						label={
+							<LabelWithTooltip
+								label={__('Centered Slides', 'codeweber-gutenberg-blocks')}
+								tooltip={__('Active slide will be centered, not at the beginning of the slider.', 'codeweber-gutenberg-blocks')}
+							/>
+						}
+						checked={swiperCentered}
+						onChange={(value) => setAttributes({ swiperCentered: value })}
+					/>
+
 					<h3 style={{ marginTop: '16px', marginBottom: '12px', fontSize: '14px', fontWeight: 'bold' }}>
-						{__('Autoplay', 'codeweber-blocks')}
+						{__('Autoplay', 'codeweber-gutenberg-blocks')}
 					</h3>
 
 					<ToggleControl
-						label={__('Enable Autoplay', 'codeweber-blocks')}
+						label={
+							<LabelWithTooltip
+								label={__('Enable Autoplay', 'codeweber-gutenberg-blocks')}
+								tooltip={__('Enable automatic slide change. Slides will automatically transition at specified intervals.', 'codeweber-gutenberg-blocks')}
+							/>
+						}
 						checked={swiperAutoplay}
 						onChange={(value) => setAttributes({ swiperAutoplay: value })}
 					/>
@@ -287,7 +329,7 @@ export const LayoutControl = ({ attributes, setAttributes }) => {
 					{swiperAutoplay && (
 						<>
 							<RangeControl
-								label={__('Autoplay Time (ms)', 'codeweber-blocks')}
+								label={__('Autoplay Time (ms)', 'codeweber-gutenberg-blocks')}
 								value={swiperAutoplayTime}
 								onChange={(value) => setAttributes({ swiperAutoplayTime: value })}
 								min={1000}
@@ -296,7 +338,7 @@ export const LayoutControl = ({ attributes, setAttributes }) => {
 							/>
 
 							<ToggleControl
-								label={__('Reverse Direction', 'codeweber-blocks')}
+								label={__('Reverse Direction', 'codeweber-gutenberg-blocks')}
 								checked={swiperReverse}
 								onChange={(value) => setAttributes({ swiperReverse: value })}
 							/>
@@ -304,29 +346,147 @@ export const LayoutControl = ({ attributes, setAttributes }) => {
 					)}
 
 					<h3 style={{ marginTop: '16px', marginBottom: '12px', fontSize: '14px', fontWeight: 'bold' }}>
-						{__('Navigation', 'codeweber-blocks')}
+						{__('Navigation', 'codeweber-gutenberg-blocks')}
 					</h3>
 
 					<ToggleControl
-						label={__('Navigation Arrows', 'codeweber-blocks')}
+						label={
+							<LabelWithTooltip
+								label={__('Navigation Arrows', 'codeweber-gutenberg-blocks')}
+								tooltip={__('Show previous/next navigation arrows to manually change slides.', 'codeweber-gutenberg-blocks')}
+							/>
+						}
 						checked={swiperNav}
 						onChange={(value) => setAttributes({ swiperNav: value })}
 					/>
 
 					<ToggleControl
-						label={__('Pagination Dots', 'codeweber-blocks')}
+						label={
+							<LabelWithTooltip
+								label={__('Pagination Dots', 'codeweber-gutenberg-blocks')}
+								tooltip={__('Show pagination bullets/dots indicator at the bottom of the slider.', 'codeweber-gutenberg-blocks')}
+							/>
+						}
 						checked={swiperDots}
 						onChange={(value) => setAttributes({ swiperDots: value })}
 					/>
 
 					<ToggleControl
-						label={__('Touch Drag', 'codeweber-blocks')}
+						label={
+							<LabelWithTooltip
+								label={__('Touch Drag', 'codeweber-gutenberg-blocks')}
+								tooltip={__('Enable touch/mouse drag to change slides by swiping with finger or mouse.', 'codeweber-gutenberg-blocks')}
+							/>
+						}
 						checked={swiperDrag}
 						onChange={(value) => setAttributes({ swiperDrag: value })}
 					/>
+
+					<div style={{ marginBottom: '12px' }}>
+						<div style={{ marginBottom: '8px', fontSize: '11px', fontWeight: '500', textTransform: 'uppercase', color: '#1e1e1e' }}>
+							{__('Navigation Style', 'codeweber-gutenberg-blocks')}
+						</div>
+						<ButtonGroup style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
+							<Button
+								variant={swiperNavStyle === '' ? 'primary' : 'secondary'}
+								onClick={() => setAttributes({ swiperNavStyle: '' })}
+								style={{ flex: '1 1 auto' }}
+							>
+								{__('Default', 'codeweber-gutenberg-blocks')}
+							</Button>
+							<Button
+								variant={swiperNavStyle === 'nav-dark' ? 'primary' : 'secondary'}
+								onClick={() => setAttributes({ swiperNavStyle: 'nav-dark' })}
+								style={{ flex: '1 1 auto' }}
+							>
+								{__('Dark', 'codeweber-gutenberg-blocks')}
+							</Button>
+							<Button
+								variant={swiperNavStyle === 'nav-color' ? 'primary' : 'secondary'}
+								onClick={() => setAttributes({ swiperNavStyle: 'nav-color' })}
+								style={{ flex: '1 1 auto' }}
+							>
+								{__('Primary', 'codeweber-gutenberg-blocks')}
+							</Button>
+						</ButtonGroup>
+					</div>
+
+					<div style={{ marginBottom: '12px' }}>
+						<div style={{ marginBottom: '8px', fontSize: '11px', fontWeight: '500', textTransform: 'uppercase', color: '#1e1e1e' }}>
+							{__('Navigation Position', 'codeweber-gutenberg-blocks')}
+						</div>
+						<ButtonGroup style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
+							<Button
+								variant={swiperNavPosition === '' ? 'primary' : 'secondary'}
+								onClick={() => setAttributes({ swiperNavPosition: '' })}
+								style={{ flex: '1 1 auto' }}
+							>
+								{__('Center', 'codeweber-gutenberg-blocks')}
+							</Button>
+							<Button
+								variant={swiperNavPosition === 'nav-bottom' ? 'primary' : 'secondary'}
+								onClick={() => setAttributes({ swiperNavPosition: 'nav-bottom' })}
+								style={{ flex: '1 1 auto' }}
+							>
+								{__('Below', 'codeweber-gutenberg-blocks')}
+							</Button>
+							<Button
+								variant={swiperNavPosition === 'nav-bottom nav-start' ? 'primary' : 'secondary'}
+								onClick={() => setAttributes({ swiperNavPosition: 'nav-bottom nav-start' })}
+								style={{ flex: '1 1 auto' }}
+							>
+								{__('Left', 'codeweber-gutenberg-blocks')}
+							</Button>
+						</ButtonGroup>
+					</div>
+
+					<div style={{ marginBottom: '12px' }}>
+						<div style={{ marginBottom: '8px', fontSize: '11px', fontWeight: '500', textTransform: 'uppercase', color: '#1e1e1e' }}>
+							{__('Pagination Style', 'codeweber-gutenberg-blocks')}
+						</div>
+						<ButtonGroup style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
+							<Button
+								variant={swiperDotsStyle === '' ? 'primary' : 'secondary'}
+								onClick={() => setAttributes({ swiperDotsStyle: '' })}
+								style={{ flex: '1 1 auto' }}
+							>
+								{__('Default', 'codeweber-gutenberg-blocks')}
+							</Button>
+							<Button
+								variant={swiperDotsStyle === 'dots-light' ? 'primary' : 'secondary'}
+								onClick={() => setAttributes({ swiperDotsStyle: 'dots-light' })}
+								style={{ flex: '1 1 auto' }}
+							>
+								{__('Light', 'codeweber-gutenberg-blocks')}
+							</Button>
+							<Button
+								variant={swiperDotsStyle === 'dots-start' ? 'primary' : 'secondary'}
+								onClick={() => setAttributes({ swiperDotsStyle: 'dots-start' })}
+								style={{ flex: '1 1 auto' }}
+							>
+								{__('Start', 'codeweber-gutenberg-blocks')}
+							</Button>
+							<Button
+								variant={swiperDotsStyle === 'dots-over' ? 'primary' : 'secondary'}
+								onClick={() => setAttributes({ swiperDotsStyle: 'dots-over' })}
+								style={{ flex: '1 1 auto' }}
+							>
+								{__('Over', 'codeweber-gutenberg-blocks')}
+							</Button>
+							<Button
+								variant={swiperDotsStyle === 'dots-closer' ? 'primary' : 'secondary'}
+								onClick={() => setAttributes({ swiperDotsStyle: 'dots-closer' })}
+								style={{ flex: '1 1 auto' }}
+							>
+								{__('Closer', 'codeweber-gutenberg-blocks')}
+							</Button>
+						</ButtonGroup>
+					</div>
 				</>
 			)}
 		</>
 	);
 };
+
+
 

@@ -10,6 +10,7 @@
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       codeweber-gutenberg-blocks
+ * Domain Path:       /languages
  */
 
  namespace Codeweber\Blocks;
@@ -39,10 +40,54 @@
 
 
 
- add_action('plugins_loaded', __NAMESPACE__ . '\Plugin::loadTextDomain');
- add_action('init', __NAMESPACE__ . '\Plugin::perInit', 0);
- add_action('init', __NAMESPACE__ . '\Plugin::init', 20);
+add_action('plugins_loaded', __NAMESPACE__ . '\Plugin::loadTextDomain');
+add_action('init', __NAMESPACE__ . '\Plugin::perInit', 0);
+add_action('init', __NAMESPACE__ . '\Plugin::init', 20);
 //add_action('admin_init', __NAMESPACE__ . '\Admin::init');
+
+// Загрузка переводов для JavaScript
+add_action('init', function() {
+	$blocks = [
+		'button', 'card', 'column', 'columns', 'feature', 
+		'heading-subtitle', 'icon', 'image-simple', 'paragraph', 'section'
+	];
+	
+	foreach ($blocks as $block) {
+		$handle = 'codeweber-blocks-' . $block . '-editor-script';
+		wp_set_script_translations(
+			$handle,
+			'codeweber-gutenberg-blocks',
+			plugin_dir_path(__FILE__) . 'languages'
+		);
+	}
+}, 999);
+
+// Настройка Loco Translate
+add_filter('loco_plugins_data', function($data) {
+	$plugin_file = plugin_basename(__FILE__);
+	
+	// Регистрируем наш плагин в Loco
+	if (!isset($data[$plugin_file])) {
+		$data[$plugin_file] = [
+			'Name' => 'Codeweber Blocks',
+			'TextDomain' => 'codeweber-gutenberg-blocks',
+			'DomainPath' => '/languages',
+		];
+	}
+	
+	return $data;
+});
+
+// Автоматическая компиляция переводов после сохранения в Loco Translate
+add_filter('loco_file_written', function($path) {
+	// После сохранения переводов регенерируем MO и JSON файлы
+	if (strpos($path, 'codeweber-gutenberg-blocks') !== false && strpos($path, '.po') !== false) {
+		$plugin_dir = plugin_dir_path(__FILE__);
+		// Запускаем компиляцию переводов
+		exec("cd " . escapeshellarg($plugin_dir) . " && node compile-translations.js 2>&1", $output);
+	}
+	return $path;
+});
 
 
 

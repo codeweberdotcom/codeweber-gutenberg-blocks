@@ -77,13 +77,13 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 	} = attributes;
 
 	const tabs = [
-		{ name: 'general', title: <TabIcon icon={symbol} label={__('General', 'codeweber-blocks')} /> },
-		{ name: 'appearance', title: <TabIcon icon={brush} label={__('Appearance', 'codeweber-blocks')} /> },
-		{ name: 'spacing', title: <TabIcon icon={resizeCornerNE} label={__('Spacing', 'codeweber-blocks')} /> },
-		{ name: 'align', title: <TabIcon icon={positionCenter} label={__('Position', 'codeweber-blocks')} /> },
-		{ name: 'background', title: <TabIcon icon={image} label={__('Background', 'codeweber-blocks')} /> },
-		...(enableCard ? [{ name: 'animation', title: <TabIcon icon={arrowRight} label={__('Animation', 'codeweber-blocks')} /> }] : []),
-		{ name: 'settings', title: <TabIcon icon={cog} label={__('Settings', 'codeweber-blocks')} /> },
+		{ name: 'general', title: <TabIcon icon={symbol} label={__('General', 'codeweber-gutenberg-blocks')} /> },
+		{ name: 'appearance', title: <TabIcon icon={brush} label={__('Appearance', 'codeweber-gutenberg-blocks')} /> },
+		{ name: 'spacing', title: <TabIcon icon={resizeCornerNE} label={__('Spacing', 'codeweber-gutenberg-blocks')} /> },
+		{ name: 'align', title: <TabIcon icon={positionCenter} label={__('Position', 'codeweber-gutenberg-blocks')} /> },
+		{ name: 'background', title: <TabIcon icon={image} label={__('Background', 'codeweber-gutenberg-blocks')} /> },
+		...(enableCard ? [{ name: 'animation', title: <TabIcon icon={arrowRight} label={__('Animation', 'codeweber-gutenberg-blocks')} /> }] : []),
+		{ name: 'settings', title: <TabIcon icon={cog} label={__('Settings', 'codeweber-gutenberg-blocks')} /> },
 	];
 
 	// Generate classes for card wrapper
@@ -264,27 +264,27 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 							{tab.name === 'general' && (
 								<PanelBody>
 									<ToggleControl
-										label={__('Enable Card Wrapper', 'codeweber-blocks')}
+										label={__('Enable Card Wrapper', 'codeweber-gutenberg-blocks')}
 										checked={enableCard}
 										onChange={(value) => setAttributes({ enableCard: value })}
 									/>
 
 									{enableCard && (
 										<ToggleControl
-											label={__('Enable Card Body', 'codeweber-blocks')}
+											label={__('Enable Card Body', 'codeweber-gutenberg-blocks')}
 											checked={enableCardBody}
 											onChange={(value) => setAttributes({ enableCardBody: value })}
 										/>
 									)}
 
 									<ToggleControl
-										label={__('Overflow Hidden', 'codeweber-blocks')}
+										label={__('Overflow Hidden', 'codeweber-gutenberg-blocks')}
 										checked={overflowHidden}
 										onChange={(value) => setAttributes({ overflowHidden: value })}
 									/>
 
 									<ToggleControl
-										label={__('H-100', 'codeweber-blocks')}
+										label={__('H-100', 'codeweber-gutenberg-blocks')}
 										checked={h100}
 										onChange={(value) => setAttributes({ h100: value })}
 									/>
@@ -305,26 +305,26 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 									/>
 
 									<div className="component-sidebar-title">
-										<label>{__('Card Border Position', 'codeweber-blocks')}</label>
+										<label>{__('Card Border Position', 'codeweber-gutenberg-blocks')}</label>
 									</div>
 									<ButtonGroup className="button-group-sidebar_33" style={{ marginBottom: '16px' }}>
 										<Button
 											isPrimary={cardBorder === ''}
 											onClick={() => setAttributes({ cardBorder: '' })}
 										>
-											{__('None', 'codeweber-blocks')}
+											{__('None', 'codeweber-gutenberg-blocks')}
 										</Button>
 										<Button
 											isPrimary={cardBorder === 'card-border-top'}
 											onClick={() => setAttributes({ cardBorder: 'card-border-top' })}
 										>
-											{__('Top', 'codeweber-blocks')}
+											{__('Top', 'codeweber-gutenberg-blocks')}
 										</Button>
 										<Button
 											isPrimary={cardBorder === 'card-border-bottom'}
 											onClick={() => setAttributes({ cardBorder: 'card-border-bottom' })}
 										>
-											{__('Bottom', 'codeweber-blocks')}
+											{__('Bottom', 'codeweber-gutenberg-blocks')}
 										</Button>
 									</ButtonGroup>
 									<ButtonGroup className="button-group-sidebar_50" style={{ marginBottom: '16px' }}>
@@ -332,19 +332,19 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 											isPrimary={cardBorder === 'card-border-start'}
 											onClick={() => setAttributes({ cardBorder: 'card-border-start' })}
 										>
-											{__('Start', 'codeweber-blocks')}
+											{__('Start', 'codeweber-gutenberg-blocks')}
 										</Button>
 										<Button
 											isPrimary={cardBorder === 'card-border-end'}
 											onClick={() => setAttributes({ cardBorder: 'card-border-end' })}
 										>
-											{__('End', 'codeweber-blocks')}
+											{__('End', 'codeweber-gutenberg-blocks')}
 										</Button>
 									</ButtonGroup>
 
 									{cardBorder && (
 										<ComboboxControl
-											label={__('Border Color', 'codeweber-blocks')}
+											label={__('Border Color', 'codeweber-gutenberg-blocks')}
 											value={borderColor}
 											options={colors}
 											onChange={(value) => setAttributes({ borderColor: value })}
@@ -419,9 +419,9 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 											idKey: 'blockId',
 										}}
 										labels={{
-											classLabel: __('Card Class', 'codeweber-blocks'),
-											dataLabel: __('Card Data', 'codeweber-blocks'),
-											idLabel: __('Card ID', 'codeweber-blocks'),
+											classLabel: __('Card Class', 'codeweber-gutenberg-blocks'),
+											dataLabel: __('Card Data', 'codeweber-gutenberg-blocks'),
+											idLabel: __('Card ID', 'codeweber-gutenberg-blocks'),
 										}}
 									/>
 								</PanelBody>

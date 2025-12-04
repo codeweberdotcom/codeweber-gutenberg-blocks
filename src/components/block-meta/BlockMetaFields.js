@@ -16,14 +16,14 @@ export const BlockMetaFields = ({
 		idKey: 'sectionId',
 	},
 	labels = {
-		classLabel: __('Block Class', 'codeweber-blocks'),
-		dataLabel: __('Block Data', 'codeweber-blocks'),
-		idLabel: __('Block ID', 'codeweber-blocks'),
+		classLabel: __('Block Class', 'codeweber-gutenberg-blocks'),
+		dataLabel: __('Block Data', 'codeweber-gutenberg-blocks'),
+		idLabel: __('Block ID', 'codeweber-gutenberg-blocks'),
 	},
 	placeholders = {
-		classPlaceholder: __('custom-wrapper classes', 'codeweber-blocks'),
-		dataPlaceholder: __('key=value,key2=value2', 'codeweber-blocks'),
-		idPlaceholder: __('custom-id', 'codeweber-blocks'),
+		classPlaceholder: __('custom-wrapper classes', 'codeweber-gutenberg-blocks'),
+		dataPlaceholder: __('key=value,key2=value2', 'codeweber-gutenberg-blocks'),
+		idPlaceholder: __('custom-id', 'codeweber-gutenberg-blocks'),
 	},
 }) => {
 	const handleChange = (key, value) => {
@@ -46,7 +46,7 @@ export const BlockMetaFields = ({
 				label={labels.dataLabel}
 				value={attributes[fieldKeys.dataKey] || ''}
 				placeholder={placeholders.dataPlaceholder}
-				help={__('Comma separated pairs: key=value,key2=value2', 'codeweber-blocks')}
+				help={__('Comma separated pairs: key=value,key2=value2', 'codeweber-gutenberg-blocks')}
 				onChange={(value) => handleChange(fieldKeys.dataKey, value)}
 			/>
 			<TextControl

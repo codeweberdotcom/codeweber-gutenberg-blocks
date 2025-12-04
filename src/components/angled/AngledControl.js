@@ -6,15 +6,15 @@ import { __ } from '@wordpress/i18n';
 import { Button, ButtonGroup, ToggleControl } from '@wordpress/components';
 
 const UPPER_OPTIONS = [
-	{ value: '', label: __('None', 'codeweber-blocks') },
-	{ value: 'upper-start', label: __('Up.Start', 'codeweber-blocks') },
-	{ value: 'upper-end', label: __('Up.End', 'codeweber-blocks') },
+	{ value: '', label: __('None', 'codeweber-gutenberg-blocks') },
+	{ value: 'upper-start', label: __('Up.Start', 'codeweber-gutenberg-blocks') },
+	{ value: 'upper-end', label: __('Up.End', 'codeweber-gutenberg-blocks') },
 ];
 
 const LOWER_OPTIONS = [
-	{ value: '', label: __('None', 'codeweber-blocks') },
-	{ value: 'lower-start', label: __('Down.Start', 'codeweber-blocks') },
-	{ value: 'lower-end', label: __('Down.End', 'codeweber-blocks') },
+	{ value: '', label: __('None', 'codeweber-gutenberg-blocks') },
+	{ value: 'lower-start', label: __('Down.Start', 'codeweber-gutenberg-blocks') },
+	{ value: 'lower-end', label: __('Down.End', 'codeweber-gutenberg-blocks') },
 ];
 
 export const AngledControl = ({
@@ -28,7 +28,7 @@ export const AngledControl = ({
 	return (
 		<>
 			<ToggleControl
-				label={__('Enable Angled Divider', 'codeweber-blocks')}
+				label={__('Enable Angled Divider', 'codeweber-gutenberg-blocks')}
 				checked={angledEnabled}
 				onChange={onAngledEnabledChange}
 			/>
@@ -36,7 +36,7 @@ export const AngledControl = ({
 			{angledEnabled && (
 				<>
 					<div className="component-sidebar-title">
-						<label>{__('Upper', 'codeweber-blocks')}</label>
+						<label>{__('Upper', 'codeweber-gutenberg-blocks')}</label>
 					</div>
 					<div className="button-group-sidebar_33 mb-3">
 						{UPPER_OPTIONS.map((option) => (
@@ -51,7 +51,7 @@ export const AngledControl = ({
 					</div>
 
 					<div className="component-sidebar-title">
-						<label>{__('Down', 'codeweber-blocks')}</label>
+						<label>{__('Down', 'codeweber-gutenberg-blocks')}</label>
 					</div>
 					<div className="button-group-sidebar_33 mb-3">
 						{LOWER_OPTIONS.map((option) => (
@@ -74,7 +74,7 @@ export const AngledControl = ({
 							fontSize: '12px',
 							color: '#666'
 						}}>
-							<strong>{__('Preview classes:', 'codeweber-blocks')}</strong>
+							<strong>{__('Preview classes:', 'codeweber-gutenberg-blocks')}</strong>
 							<code style={{ display: 'block', marginTop: '4px' }}>
 								angled {angledUpper} {angledLower}
 							</code>

@@ -107,7 +107,7 @@
     },
     "swiperDrag": {
       "type": "boolean",
-      "default": false
+      "default": true
     },
     "swiperReverse": {
       "type": "boolean",
@@ -116,6 +116,30 @@
     "swiperUpdateResize": {
       "type": "boolean",
       "default": true
+    },
+    "swiperNavStyle": {
+      "type": "string",
+      "default": "nav-dark"
+    },
+    "swiperNavPosition": {
+      "type": "string",
+      "default": ""
+    },
+    "swiperDotsStyle": {
+      "type": "string",
+      "default": "dots-over"
+    },
+    "swiperContainerType": {
+      "type": "string",
+      "default": ""
+    },
+    "swiperItemsAuto": {
+      "type": "boolean",
+      "default": false
+    },
+    "swiperCentered": {
+      "type": "boolean",
+      "default": false
     },
     "borderRadius": {
       "type": "string",

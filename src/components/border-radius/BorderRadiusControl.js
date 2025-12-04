@@ -20,7 +20,7 @@ import { borderRadiusOptions } from '../../utilities/border-radius';
 export const BorderRadiusControl = ({ 
 	value = '', 
 	onChange, 
-	label = __('Border Radius', 'codeweber-blocks'),
+	label = __('Border Radius', 'codeweber-gutenberg-blocks'),
 	help = '' 
 }) => {
 	return (
@@ -35,5 +35,7 @@ export const BorderRadiusControl = ({
 };
 
 export default BorderRadiusControl;
+
+
 
 

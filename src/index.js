@@ -12,7 +12,6 @@ const loadBlocks = async () => {
         import('./blocks/paragraph/index'),
         import('./blocks/card/index'),
         import('./blocks/feature/index'),
-        import('./blocks/image/index'),
         import('./blocks/image-simple/index'),
     ];
 

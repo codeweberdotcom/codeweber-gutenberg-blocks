@@ -65,7 +65,7 @@ export const ParagraphRender = ({
 			value={text}
 			onChange={(value) => setAttr('text', value)}
 			className={classes}
-			placeholder={__('Enter paragraph...', 'codeweber-blocks')}
+			placeholder={__('Enter paragraph...', 'codeweber-gutenberg-blocks')}
 		/>
 	);
 };

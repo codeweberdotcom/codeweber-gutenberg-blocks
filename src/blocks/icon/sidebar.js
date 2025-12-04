@@ -40,9 +40,9 @@ export const IconSidebar = ({ attributes, setAttributes }) => {
 	} = attributes;
 
 	const tabs = [
-		{ name: 'icon', title: <TabIcon icon={symbol} label={__('Icon', 'codeweber-blocks')} /> },
-		{ name: 'wrapper', title: <TabIcon icon={cover} label={__('Wrapper', 'codeweber-blocks')} /> },
-		{ name: 'settings', title: <TabIcon icon={cog} label={__('Settings', 'codeweber-blocks')} /> },
+		{ name: 'icon', title: <TabIcon icon={symbol} label={__('Icon', 'codeweber-gutenberg-blocks')} /> },
+		{ name: 'wrapper', title: <TabIcon icon={cover} label={__('Wrapper', 'codeweber-gutenberg-blocks')} /> },
+		{ name: 'settings', title: <TabIcon icon={cog} label={__('Settings', 'codeweber-gutenberg-blocks')} /> },
 	];
 
 	return (
@@ -56,7 +56,7 @@ export const IconSidebar = ({ attributes, setAttributes }) => {
 						attributes={attributes}
 						setAttributes={setAttributes}
 						prefix=""
-						label={__('Настройки иконки', 'codeweber-blocks')}
+						label={__('Icon Settings', 'codeweber-gutenberg-blocks')}
 						allowSvg={true}
 						allowFont={true}
 						allowCustom={true}
@@ -71,8 +71,8 @@ export const IconSidebar = ({ attributes, setAttributes }) => {
 						{iconType !== 'none' && (iconName || svgIcon || customSvgUrl) && (
 							<>
 								<ToggleControl
-									label={__('Обернуть в div.icon', 'codeweber-blocks')}
-									help={__('Добавляет обёртку для позиционирования или стилизации', 'codeweber-blocks')}
+									label={__('Wrap in div.icon', 'codeweber-gutenberg-blocks')}
+									help={__('Adds wrapper for positioning or styling', 'codeweber-gutenberg-blocks')}
 									checked={iconWrapper}
 									onChange={(value) => setAttributes({ iconWrapper: value })}
 									__nextHasNoMarginBottom
@@ -81,7 +81,7 @@ export const IconSidebar = ({ attributes, setAttributes }) => {
 								{iconWrapper && (
 									<>
 										<BaseControl
-											label={__('Стиль обёртки', 'codeweber-blocks')}
+											label={__('Wrapper Style', 'codeweber-gutenberg-blocks')}
 											__nextHasNoMarginBottom
 										>
 											<ButtonGroup className="icon-wrapper-style-buttons">
@@ -102,7 +102,7 @@ export const IconSidebar = ({ attributes, setAttributes }) => {
 										{(iconWrapperStyle === 'btn' || iconWrapperStyle === 'btn-circle') && (
 											<>
 												<BaseControl
-													label={__('Вариант кнопки', 'codeweber-blocks')}
+													label={__('Button Variant', 'codeweber-gutenberg-blocks')}
 													__nextHasNoMarginBottom
 												>
 													<ButtonGroup className="icon-wrapper-style-buttons">
@@ -120,7 +120,7 @@ export const IconSidebar = ({ attributes, setAttributes }) => {
 												</BaseControl>
 
 												<BaseControl
-													label={__('Размер кнопки', 'codeweber-blocks')}
+													label={__('Button Size', 'codeweber-gutenberg-blocks')}
 													__nextHasNoMarginBottom
 												>
 													<ButtonGroup className="icon-wrapper-style-buttons">
@@ -140,8 +140,8 @@ export const IconSidebar = ({ attributes, setAttributes }) => {
 										)}
 
 										<BaseControl
-											label={__('Доп. классы обёртки', 'codeweber-blocks')}
-											help={__('Например: pe-none, mb-5', 'codeweber-blocks')}
+											label={__('Additional wrapper classes', 'codeweber-gutenberg-blocks')}
+											help={__('Например: pe-none, mb-5', 'codeweber-gutenberg-blocks')}
 										>
 											<input
 												type="text"
@@ -169,9 +169,9 @@ export const IconSidebar = ({ attributes, setAttributes }) => {
 								idKey: 'blockId',
 							}}
 							labels={{
-								classLabel: __('Block Class', 'codeweber-blocks'),
-								dataLabel: __('Block Data', 'codeweber-blocks'),
-								idLabel: __('Block ID', 'codeweber-blocks'),
+								classLabel: __('Block Class', 'codeweber-gutenberg-blocks'),
+								dataLabel: __('Block Data', 'codeweber-gutenberg-blocks'),
+								idLabel: __('Block ID', 'codeweber-gutenberg-blocks'),
 							}}
 						/>
 					</div>

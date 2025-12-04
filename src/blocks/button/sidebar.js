@@ -220,12 +220,12 @@ const handleIconChange = (type, value) => {
 
 	return (
 		<PanelBody
-			title={__('Button Settings', 'codeweber-blocks')}
+			title={__('Button Settings', 'codeweber-gutenberg-blocks')}
 			className="custom-panel-body"
 		>
 			{/* Тип кнопки */}
 			<div className="component-sidebar-title">
-				<label>{__('Button Type', 'codeweber-blocks')}</label>
+				<label>{__('Button Type', 'codeweber-gutenberg-blocks')}</label>
 			</div>
 			<div className="button-type-controls button-group-sidebar_33">
 				{[
@@ -255,7 +255,7 @@ const handleIconChange = (type, value) => {
 					{/* Размер кнопки */}
 					<div className="component-sidebar-title">
 						<label>
-							{__('Button Size', 'codeweber-blocks')}
+							{__('Button Size', 'codeweber-gutenberg-blocks')}
 						</label>
 					</div>
 					<div className="button-size-controls button-group-sidebar_33">
@@ -285,7 +285,7 @@ const handleIconChange = (type, value) => {
 				<div className="button-shape-controls">
 					<div className="component-sidebar-title">
 						<label>
-							{__('Button Shape', 'codeweber-blocks')}
+							{__('Button Shape', 'codeweber-gutenberg-blocks')}
 						</label>
 					</div>
 					<div className="button-shape-buttons button-group-sidebar_33">
@@ -313,7 +313,7 @@ const handleIconChange = (type, value) => {
 				<div className="button-style-controls">
 					<div className="component-sidebar-title">
 						<label>
-							{__('Button Style', 'codeweber-blocks')}
+							{__('Button Style', 'codeweber-gutenberg-blocks')}
 						</label>
 					</div>
 					<div className="button-style-buttons button-group-sidebar_50">
@@ -359,7 +359,7 @@ const handleIconChange = (type, value) => {
 					ButtonStyle === 'outline' ||
 					ButtonStyle === 'soft') && (
 					<ComboboxControl
-						label={__('Button Color', 'codeweber-blocks')}
+						label={__('Button Color', 'codeweber-gutenberg-blocks')}
 						value={ButtonColor}
 						options={colors}
 						onChange={handleButtonColorChange} // Используем функцию для изменения цвета кнопки
@@ -377,7 +377,7 @@ const handleIconChange = (type, value) => {
 					<ComboboxControl
 						label={__(
 							'Gradient Color',
-							'codeweber-blocks'
+							'codeweber-gutenberg-blocks'
 						)}
 						value={ButtonGradientColor}
 						options={gradientcolors}
@@ -394,7 +394,7 @@ const handleIconChange = (type, value) => {
 				<div className="link-type-controls button-group-sidebar_33">
 					<div className="component-sidebar-title">
 						<label>
-							{__('Link Type', 'codeweber-blocks')}
+							{__('Link Type', 'codeweber-gutenberg-blocks')}
 						</label>
 					</div>
 					{[
@@ -418,7 +418,7 @@ const handleIconChange = (type, value) => {
 				<div className="link-variant-controls button-group-sidebar_33">
 					<div className="component-sidebar-title">
 						<label>
-							{__('Link Variant', 'codeweber-blocks')}
+							{__('Link Variant', 'codeweber-gutenberg-blocks')}
 						</label>
 					</div>
 					{[
@@ -440,7 +440,7 @@ const handleIconChange = (type, value) => {
 			{/* Link Text Color */}
 			{ButtonType === 'link' && (
 				<ComboboxControl
-					label={__('Link Text Color', 'codeweber-blocks')}
+					label={__('Link Text Color', 'codeweber-gutenberg-blocks')}
 					value={LinkTextColor}
 					options={colors}
 					onChange={handleLinkTextColorChange}
@@ -455,7 +455,7 @@ const handleIconChange = (type, value) => {
 							<label>
 								{__(
 									'Icon Position',
-									'codeweber-blocks'
+									'codeweber-gutenberg-blocks'
 								)}
 							</label>
 						</div>
@@ -463,7 +463,7 @@ const handleIconChange = (type, value) => {
 							isPrimary={ButtonIconPosition === 'left'}
 							onClick={() => handleIconChange('position', 'left')} // Используем универсальный обработчик
 						>
-							{__('Left Icon', 'codeweber-blocks')}
+							{__('Left Icon', 'codeweber-gutenberg-blocks')}
 						</Button>
 						<Button
 							isPrimary={ButtonIconPosition === 'right'}
@@ -471,7 +471,7 @@ const handleIconChange = (type, value) => {
 								handleIconChange('position', 'right')
 							} // Используем универсальный обработчик
 						>
-							{__('Right Icon', 'codeweber-blocks')}
+							{__('Right Icon', 'codeweber-gutenberg-blocks')}
 						</Button>
 					</div>
 				</>
@@ -480,7 +480,7 @@ const handleIconChange = (type, value) => {
 			{/* Иконка круга */}
 			{(ButtonType === 'circle' || ButtonType === 'icon') && (
 				<SelectControl
-					label={__('Icon Class', 'codeweber-blocks')}
+					label={__('Icon Class', 'codeweber-gutenberg-blocks')}
 					value={IconClass}
 					options={fontIcons}
 					onChange={(newIcon) => handleIconChange('icon', newIcon)} // Универсальный обработчик
@@ -490,7 +490,7 @@ const handleIconChange = (type, value) => {
 			{/* Социальные иконки */}
 			{ButtonType === 'social' && (
 				<ComboboxControl
-					label={__('Social Icon Class', 'codeweber-blocks')}
+					label={__('Social Icon Class', 'codeweber-gutenberg-blocks')}
 					value={SocialIconClass}
 					options={fontIconsSocial}
 					onChange={(newIconClass) =>
@@ -507,7 +507,7 @@ const handleIconChange = (type, value) => {
 							<label>
 								{__(
 									'Social Icon Style',
-									'codeweber-blocks'
+									'codeweber-gutenberg-blocks'
 								)}
 							</label>
 						</div>

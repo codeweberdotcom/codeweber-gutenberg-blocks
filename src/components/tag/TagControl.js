@@ -68,7 +68,7 @@ export const createTextTagOptions = () => [
  * @param {string} props.type - Тип опций: 'heading', 'subtitle', 'text'
  */
 export const TagControl = ({
-	label = __('Tag', 'codeweber-blocks'),
+	label = __('Tag', 'codeweber-gutenberg-blocks'),
 	value,
 	onChange,
 	type = 'text',
@@ -92,5 +92,7 @@ export const TagControl = ({
 };
 
 export default TagControl;
+
+
 
 

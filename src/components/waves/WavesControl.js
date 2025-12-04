@@ -6,17 +6,17 @@ import { __ } from '@wordpress/i18n';
 import { Button, ToggleControl, SelectControl } from '@wordpress/components';
 
 const WAVE_OPTIONS = [
-	{ value: '', label: __('None', 'codeweber-blocks') },
-	{ value: 'wave-1', label: __('Wave 1', 'codeweber-blocks') },
-	{ value: 'wave-2', label: __('Wave 2', 'codeweber-blocks') },
-	{ value: 'wave-3', label: __('Wave 3', 'codeweber-blocks') },
-	{ value: 'wave-4', label: __('Wave 4', 'codeweber-blocks') },
-	{ value: 'wave-5', label: __('Wave 5', 'codeweber-blocks') },
+	{ value: '', label: __('None', 'codeweber-gutenberg-blocks') },
+	{ value: 'wave-1', label: __('Wave 1', 'codeweber-gutenberg-blocks') },
+	{ value: 'wave-2', label: __('Wave 2', 'codeweber-gutenberg-blocks') },
+	{ value: 'wave-3', label: __('Wave 3', 'codeweber-gutenberg-blocks') },
+	{ value: 'wave-4', label: __('Wave 4', 'codeweber-gutenberg-blocks') },
+	{ value: 'wave-5', label: __('Wave 5', 'codeweber-gutenberg-blocks') },
 ];
 
 const WAVE_POSITION_OPTIONS = [
-	{ value: 'top', label: __('Top', 'codeweber-blocks') },
-	{ value: 'bottom', label: __('Bottom', 'codeweber-blocks') },
+	{ value: 'top', label: __('Top', 'codeweber-gutenberg-blocks') },
+	{ value: 'bottom', label: __('Bottom', 'codeweber-gutenberg-blocks') },
 ];
 
 // Wave SVG paths from Sandbox theme
@@ -71,7 +71,7 @@ export const WavesControl = ({
 		<>
 			{/* Top Wave */}
 			<ToggleControl
-				label={__('Enable Top Wave', 'codeweber-blocks')}
+				label={__('Enable Top Wave', 'codeweber-gutenberg-blocks')}
 				checked={waveTopEnabled}
 				onChange={onWaveTopEnabledChange}
 			/>
@@ -79,7 +79,7 @@ export const WavesControl = ({
 			{waveTopEnabled && (
 				<>
 					<SelectControl
-						label={__('Top Wave Style', 'codeweber-blocks')}
+						label={__('Top Wave Style', 'codeweber-gutenberg-blocks')}
 						value={waveTopType}
 						options={WAVE_OPTIONS}
 						onChange={onWaveTopTypeChange}
@@ -92,7 +92,7 @@ export const WavesControl = ({
 
 			{/* Bottom Wave */}
 			<ToggleControl
-				label={__('Enable Bottom Wave', 'codeweber-blocks')}
+				label={__('Enable Bottom Wave', 'codeweber-gutenberg-blocks')}
 				checked={waveBottomEnabled}
 				onChange={onWaveBottomEnabledChange}
 			/>
@@ -100,7 +100,7 @@ export const WavesControl = ({
 			{waveBottomEnabled && (
 				<>
 					<SelectControl
-						label={__('Bottom Wave Style', 'codeweber-blocks')}
+						label={__('Bottom Wave Style', 'codeweber-gutenberg-blocks')}
 						value={waveBottomType}
 						options={WAVE_OPTIONS}
 						onChange={onWaveBottomTypeChange}

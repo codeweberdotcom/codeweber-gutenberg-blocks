@@ -82,8 +82,8 @@ export const ImageControl = ({ images, setAttributes }) => {
 					render={({ open }) => (
 						<Button onClick={open} variant="primary" className="mb-3">
 							{images.length > 0
-								? __('Edit Images', 'codeweber-blocks')
-								: __('Add Images', 'codeweber-blocks')}
+								? __('Edit Images', 'codeweber-gutenberg-blocks')
+								: __('Add Images', 'codeweber-gutenberg-blocks')}
 						</Button>
 					)}
 				/>
@@ -92,7 +92,7 @@ export const ImageControl = ({ images, setAttributes }) => {
 			{images && images.length > 0 && (
 				<div className="cwgb-image-list">
 					<p className="components-base-control__label">
-						{__('Selected Images:', 'codeweber-blocks')} {images.length}
+						{__('Selected Images:', 'codeweber-gutenberg-blocks')} {images.length}
 					</p>
 					{images.map((image, index) => (
 						<div key={index} className="cwgb-image-item">
@@ -106,20 +106,20 @@ export const ImageControl = ({ images, setAttributes }) => {
 									icon="arrow-up-alt2"
 									onClick={() => handleMoveUp(index)}
 									disabled={index === 0}
-									label={__('Move Up', 'codeweber-blocks')}
+									label={__('Move Up', 'codeweber-gutenberg-blocks')}
 									isSmall
 								/>
 								<Button
 									icon="arrow-down-alt2"
 									onClick={() => handleMoveDown(index)}
 									disabled={index === images.length - 1}
-									label={__('Move Down', 'codeweber-blocks')}
+									label={__('Move Down', 'codeweber-gutenberg-blocks')}
 									isSmall
 								/>
 								<Button
 									icon="trash"
 									onClick={() => handleRemoveImage(index)}
-									label={__('Remove', 'codeweber-blocks')}
+									label={__('Remove', 'codeweber-gutenberg-blocks')}
 									isDestructive
 									isSmall
 								/>

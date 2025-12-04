@@ -715,36 +715,36 @@ const handleHtml5VideoChange = (newUrl) => {
 	return (
 		<>
 			<PanelBody
-				title={__('Link Settings', 'codeweber-blocks')}
+				title={__('Link Settings', 'codeweber-gutenberg-blocks')}
 				className="custom-panel-body"
 			>
-				<SelectControl
-					label="Type link"
-					value={LinkType}
-					options={[
-						{ label: 'External', value: 'external' },
-						{ label: 'Page', value: 'page' },
-						{ label: 'Post', value: 'post' },
-						{ label: 'CF7', value: 'cf7' },
-						{ label: 'Modal', value: 'modal' },
-						{ label: 'HTML', value: 'html' },
-						{ label: 'Document', value: 'document' },
-						{ label: 'Phone', value: 'phone' },
-						{ label: 'PDF', value: 'pdf' },
-						{ label: 'Image', value: 'image' },
-						{ label: 'Html5 Video', value: 'html5video' },
-						{ label: 'YouTube', value: 'youtube' },
-						{ label: 'Vimeo', value: 'vimeo' },
-						{ label: 'Rutube', value: 'rutube' },
-						{ label: 'VK Video', value: 'vk' },
-					]}
+			<SelectControl
+				label={__('Type link', 'codeweber-gutenberg-blocks')}
+				value={LinkType}
+				options={[
+					{ label: __('External', 'codeweber-gutenberg-blocks'), value: 'external' },
+					{ label: __('Page', 'codeweber-gutenberg-blocks'), value: 'page' },
+					{ label: __('Post', 'codeweber-gutenberg-blocks'), value: 'post' },
+					{ label: __('CF7', 'codeweber-gutenberg-blocks'), value: 'cf7' },
+					{ label: __('Modal', 'codeweber-gutenberg-blocks'), value: 'modal' },
+					{ label: __('HTML', 'codeweber-gutenberg-blocks'), value: 'html' },
+					{ label: __('Document', 'codeweber-gutenberg-blocks'), value: 'document' },
+					{ label: __('Phone', 'codeweber-gutenberg-blocks'), value: 'phone' },
+					{ label: __('PDF', 'codeweber-gutenberg-blocks'), value: 'pdf' },
+					{ label: __('Image', 'codeweber-gutenberg-blocks'), value: 'image' },
+					{ label: __('Html5 Video', 'codeweber-gutenberg-blocks'), value: 'html5video' },
+					{ label: __('YouTube', 'codeweber-gutenberg-blocks'), value: 'youtube' },
+					{ label: __('Vimeo', 'codeweber-gutenberg-blocks'), value: 'vimeo' },
+					{ label: __('Rutube', 'codeweber-gutenberg-blocks'), value: 'rutube' },
+					{ label: __('VK Video', 'codeweber-gutenberg-blocks'), value: 'vk' },
+				]}
 					onChange={handleLinkTypeChange}
 				/>
 
 				{/* Поля для YouTube */}
 				{LinkType === 'youtube' && (
 					<TextControl
-						label="YouTube Video URL"
+					label={__('YouTube Video URL', 'codeweber-gutenberg-blocks')}
 						value={YoutubeID}
 						onChange={handleYoutubeIDChange}
 						placeholder="YouTube URL"
@@ -754,7 +754,7 @@ const handleHtml5VideoChange = (newUrl) => {
 				{/* Поля для Vimeo */}
 				{LinkType === 'vimeo' && (
 					<TextControl
-						label="Vimeo Video URL"
+					label={__('Vimeo Video URL', 'codeweber-gutenberg-blocks')}
 						value={VimeoID}
 						onChange={handleVimeoIDChange}
 						placeholder="Vimeo URL"
@@ -764,7 +764,7 @@ const handleHtml5VideoChange = (newUrl) => {
 				{/* Поля для Rutube */}
 				{LinkType === 'rutube' && (
 					<TextControl
-						label="Rutube Video URL or Embed Code"
+					label={__('Rutube Video URL or Embed Code', 'codeweber-gutenberg-blocks')}
 						value={RutubeID}
 						onChange={handleRutubeIDChange}
 						placeholder="https://rutube.ru/play/embed/... or paste full iframe embed code"
@@ -775,7 +775,7 @@ const handleHtml5VideoChange = (newUrl) => {
 				{/* Поля для VK */}
 				{LinkType === 'vk' && (
 					<TextControl
-						label="VK Video URL or Embed Code"
+					label={__('VK Video URL or Embed Code', 'codeweber-gutenberg-blocks')}
 						value={VKID}
 						onChange={handleVKIDChange}
 						placeholder="https://vkvideo.ru/video_ext.php?oid=... or paste full iframe embed code"
@@ -785,7 +785,7 @@ const handleHtml5VideoChange = (newUrl) => {
 
 				{LinkType === 'external' && (
 					<TextControl
-						label="URL"
+						label={__('URL', 'codeweber-gutenberg-blocks')}
 						value={LinkUrl}
 						onChange={handleLinkUrlChange}
 						placeholder="https://example.com"
@@ -794,7 +794,7 @@ const handleHtml5VideoChange = (newUrl) => {
 
 				{LinkType === 'pdf' && (
 					<TextControl
-						label="URL"
+						label={__('URL', 'codeweber-gutenberg-blocks')}
 						value={LinkUrl}
 						onChange={handlePdfChange}
 						placeholder="https://example.com"
@@ -816,7 +816,7 @@ const handleHtml5VideoChange = (newUrl) => {
 
 				{LinkType === 'image' && (
 					<TextControl
-						label="Image URL"
+						label={__('Image URL', 'codeweber-gutenberg-blocks')}
 						value={LinkUrl}
 						onChange={handleImageChange}
 						placeholder="https://example.com"
@@ -845,7 +845,7 @@ const handleHtml5VideoChange = (newUrl) => {
 
 				{LinkType === 'html5video' && (
 					<TextControl
-						label="Html 5 video URL"
+						label={__('Html 5 video URL', 'codeweber-gutenberg-blocks')}
 						value={LinkUrl}
 						onChange={handleHtml5VideoChange}
 						placeholder="https://example.com"
@@ -873,7 +873,7 @@ const handleHtml5VideoChange = (newUrl) => {
 					LinkType
 				) && (
 					<TextControl
-						label="Gallery ID"
+						label={__('Gallery ID', 'codeweber-gutenberg-blocks')}
 						value={DataGallery} // Привязываем значение к DataGallery
 						onChange={handleGalleryID} // Функция обработки изменений
 						placeholder="Enter Gallery ID"
@@ -884,7 +884,7 @@ const handleHtml5VideoChange = (newUrl) => {
 					<>
 						<div className="component-sidebar-title">
 							<label>
-								{__('Phone Type', 'codeweber-blocks')}
+								{__('Phone Type', 'codeweber-gutenberg-blocks')}
 							</label>
 						</div>
 
@@ -913,7 +913,7 @@ const handleHtml5VideoChange = (newUrl) => {
 
 						{PhoneType === 'custom' && (
 							<TextControl
-								label="Custom phone"
+								label={__('Custom phone', 'codeweber-gutenberg-blocks')}
 								value={LinkUrl.replace(/^tel:/, '')} // Убираем "tel:" для отображения
 								onChange={handleLinkUrlChange}
 								placeholder="+1234567890"
@@ -922,7 +922,7 @@ const handleHtml5VideoChange = (newUrl) => {
 
 						{PhoneType === 'contacts' && (
 							<SelectControl
-								label="Select Phone"
+								label={__('Select Phone', 'codeweber-gutenberg-blocks')}
 								value={PhoneNumber}
 								options={phones}
 								onChange={(newPhone) => {
@@ -944,7 +944,7 @@ const handleHtml5VideoChange = (newUrl) => {
 				{LinkType === 'post' &&
 					(posts.length > 0 ? (
 						<SelectControl
-							label="Select Post"
+							label={__('Select Post', 'codeweber-gutenberg-blocks')}
 							value={PostId}
 							options={posts.map((post) => ({
 								label: post.title.rendered,
@@ -959,7 +959,7 @@ const handleHtml5VideoChange = (newUrl) => {
 				{LinkType === 'page' &&
 					(pages.length > 0 ? (
 						<SelectControl
-							label="Select Page"
+							label={__('Select Page', 'codeweber-gutenberg-blocks')}
 							value={PageId}
 							options={pages.map((page) => ({
 								label: page.title.rendered,
@@ -974,7 +974,7 @@ const handleHtml5VideoChange = (newUrl) => {
 				{LinkType === 'cf7' &&
 					(cf7Forms.length > 0 ? (
 						<SelectControl
-							label="Select CF7"
+							label={__('Select CF7', 'codeweber-gutenberg-blocks')}
 							value={CF7ID}
 							options={cf7Forms.map((form) => ({
 								label: form.label, // Используем label, который вы формировали в fetchCF7Forms
@@ -988,9 +988,9 @@ const handleHtml5VideoChange = (newUrl) => {
 
 				{LinkType === 'modal' &&
 					(modals.length > 0 ? (
-						<SelectControl
-							label="Select Modal"
-							value={ModalID}
+					<SelectControl
+						label={__('Select Modal', 'codeweber-gutenberg-blocks')}
+						value={ModalID}
 							options={modals.map((modal) => ({
 								label: modal.title.rendered,
 								value: modal.id,
@@ -1004,7 +1004,7 @@ const handleHtml5VideoChange = (newUrl) => {
 				{LinkType === 'html' &&
 					(htmlPosts.length > 0 ? (
 						<SelectControl
-							label="Select HTML"
+							label={__('Select HTML', 'codeweber-gutenberg-blocks')}
 							value={HtmlID}
 							options={htmlPosts.map((htmlPost) => ({
 								label: htmlPost.title.rendered,
@@ -1019,7 +1019,7 @@ const handleHtml5VideoChange = (newUrl) => {
 				{LinkType === 'document' &&
 					(documentPosts.length > 0 ? (
 						<SelectControl
-							label="Select Document"
+							label={__('Select Document', 'codeweber-gutenberg-blocks')}
 							value={DocumentID}
 							options={documentPosts.map((documentPost) => {
 								// Извлекаем расширение файла из URL

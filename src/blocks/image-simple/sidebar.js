@@ -4,7 +4,7 @@ import { __ } from '@wordpress/i18n';
 import { Icon, image, grid, cog, search } from '@wordpress/icons';
 import { ImageControl } from '../../components/image/ImageControl';
 import { LayoutControl } from './controls/LayoutControl';
-import { LightboxControl } from '../image/controls/LightboxControl';
+import { LightboxControl } from '../../components/lightbox/LightboxControl';
 import { BorderRadiusControl } from '../../components/border-radius';
 import { BlockMetaFields } from '../../components/block-meta/BlockMetaFields';
 
@@ -20,10 +20,10 @@ const TabIcon = ({ icon, label }) => (
 
 export const ImageSimpleSidebar = ({ attributes, setAttributes }) => {
 	const tabs = [
-		{ name: 'images', title: <TabIcon icon={image} label={__('Images', 'codeweber-blocks')} /> },
-		{ name: 'layout', title: <TabIcon icon={grid} label={__('Layout', 'codeweber-blocks')} /> },
-		{ name: 'lightbox', title: <TabIcon icon={search} label={__('Lightbox', 'codeweber-blocks')} /> },
-		{ name: 'settings', title: <TabIcon icon={cog} label={__('Settings', 'codeweber-blocks')} /> },
+		{ name: 'images', title: <TabIcon icon={image} label={__('Images', 'codeweber-gutenberg-blocks')} /> },
+		{ name: 'layout', title: <TabIcon icon={grid} label={__('Layout', 'codeweber-gutenberg-blocks')} /> },
+		{ name: 'lightbox', title: <TabIcon icon={search} label={__('Lightbox', 'codeweber-gutenberg-blocks')} /> },
+		{ name: 'settings', title: <TabIcon icon={cog} label={__('Settings', 'codeweber-gutenberg-blocks')} /> },
 	];
 
 	return (
@@ -80,9 +80,9 @@ export const ImageSimpleSidebar = ({ attributes, setAttributes }) => {
 										idKey: 'blockId',
 									}}
 									labels={{
-										classLabel: __('Block Class', 'codeweber-blocks'),
-										dataLabel: __('Block Data', 'codeweber-blocks'),
-										idLabel: __('Block ID', 'codeweber-blocks'),
+										classLabel: __('Block Class', 'codeweber-gutenberg-blocks'),
+										dataLabel: __('Block Data', 'codeweber-gutenberg-blocks'),
+										idLabel: __('Block ID', 'codeweber-gutenberg-blocks'),
 									}}
 								/>
 							</PanelBody>

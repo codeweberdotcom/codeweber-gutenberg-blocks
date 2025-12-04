@@ -41,6 +41,9 @@ class Plugin {
 
 		// Register REST API endpoint for image sizes
 		add_action('rest_api_init', __CLASS__ . '::register_image_sizes_endpoint');
+		
+		// Load JavaScript translations after scripts are enqueued
+		add_action('enqueue_block_editor_assets', __CLASS__ . '::loadJSTranslations', 100);
 	}
 	
 	/**
@@ -75,14 +78,74 @@ class Plugin {
 			'paragraph',
 			'card',
 			'feature',
-			'image',
 			'image-simple',
 		];
 	}
 
 	public static function gutenbergBlocksInit(): void {
+		$blocks_path = self::getBasePath() . '/build/blocks/';
+		$lang_path = self::getBasePath() . '/languages';
+		
 		foreach (self::getBlocksName() as $block_name) {
-			register_block_type(self::getBasePath() . '/build/blocks/' . $block_name);
+			$block_type = register_block_type($blocks_path . $block_name);
+			
+			// Устанавливаем переводы СРАЗУ после успешной регистрации
+			if ($block_type) {
+				$script_handle = 'codeweber-blocks-' . $block_name . '-editor-script';
+				
+				// Проверяем что скрипт действительно зарегистрирован
+				global $wp_scripts;
+				if (isset($wp_scripts->registered[$script_handle])) {
+					$result = wp_set_script_translations(
+						$script_handle,
+						'codeweber-gutenberg-blocks',
+						$lang_path
+					);
+					
+					// Debug log
+					if (defined('WP_DEBUG') && WP_DEBUG) {
+						error_log("[$block_name] Translation setup: " . ($result ? 'SUCCESS' : 'FAILED') . " for $script_handle");
+					}
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Loads JavaScript translations for Gutenberg blocks.
+	 */
+	public static function loadJSTranslations(): void {
+		// Загружаем переводы для всех скриптов блоков
+		// WordPress автоматически генерирует handle: {namespace}-{block-name}-editor-script
+		$blocks = [
+			'image-simple',
+			'button',
+			'card',
+			'column',
+			'columns',
+			'feature',
+			'heading-subtitle',
+			'icon',
+			'paragraph',
+			'section',
+		];
+		
+		foreach ($blocks as $block_name) {
+			$script_handle = 'codeweber-blocks-' . $block_name . '-editor-script';
+			
+			// Проверяем что скрипт зарегистрирован
+			if (wp_script_is($script_handle, 'registered') || wp_script_is($script_handle, 'enqueued')) {
+				$result = wp_set_script_translations(
+					$script_handle,
+					'codeweber-gutenberg-blocks',
+					self::getBasePath() . '/languages'
+				);
+				
+				// Debug
+				if (defined('WP_DEBUG') && WP_DEBUG) {
+					error_log("Translation set for $script_handle: " . ($result ? 'SUCCESS' : 'FAILED'));
+				}
+			}
 		}
 	}
 
@@ -161,7 +224,11 @@ class Plugin {
 	 * Loads the plugin text domain.
 	 */
 	public static function loadTextDomain(): void {
-		load_plugin_textdomain(static::L10N, FALSE, static::L10N . '/languages/');
+		load_plugin_textdomain(
+			static::L10N, 
+			false, 
+			basename(self::getBasePath()) . '/languages/'
+		);
 	}
 
 	/**

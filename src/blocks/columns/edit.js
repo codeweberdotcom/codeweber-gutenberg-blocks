@@ -29,26 +29,26 @@ const TabIcon = ({ icon, label }) => (
 );
 
 const GRID_TYPE_OPTIONS = [
-	{ value: 'classic', label: __('Classic grid', 'codeweber-blocks') },
-	{ value: 'columns-grid', label: __('Columns grid', 'codeweber-blocks') },
+	{ value: 'classic', label: __('Classic grid', 'codeweber-gutenberg-blocks') },
+	{ value: 'columns-grid', label: __('Columns grid', 'codeweber-gutenberg-blocks') },
 ];
 
 
 const ROW_COLS_OPTIONS = [
-	{ value: '', label: __('Default', 'codeweber-blocks') },
-	{ value: 'auto', label: __('Auto', 'codeweber-blocks') },
-	{ value: '1', label: __('1 column', 'codeweber-blocks') },
-	{ value: '2', label: __('2 columns', 'codeweber-blocks') },
-	{ value: '3', label: __('3 columns', 'codeweber-blocks') },
-	{ value: '4', label: __('4 columns', 'codeweber-blocks') },
-	{ value: '5', label: __('5 columns', 'codeweber-blocks') },
-	{ value: '6', label: __('6 columns', 'codeweber-blocks') },
+	{ value: '', label: __('Default', 'codeweber-gutenberg-blocks') },
+	{ value: 'auto', label: __('Auto', 'codeweber-gutenberg-blocks') },
+	{ value: '1', label: __('1 column', 'codeweber-gutenberg-blocks') },
+	{ value: '2', label: __('2 columns', 'codeweber-gutenberg-blocks') },
+	{ value: '3', label: __('3 columns', 'codeweber-gutenberg-blocks') },
+	{ value: '4', label: __('4 columns', 'codeweber-gutenberg-blocks') },
+	{ value: '5', label: __('5 columns', 'codeweber-gutenberg-blocks') },
+	{ value: '6', label: __('6 columns', 'codeweber-gutenberg-blocks') },
 ];
 
 const GridTypeControl = ({ value, onChange }) => (
 	<div className="mb-3">
 		<div className="component-sidebar-title">
-			<label>{__('Grid type', 'codeweber-blocks')}</label>
+			<label>{__('Grid type', 'codeweber-gutenberg-blocks')}</label>
 		</div>
 		<ButtonGroup>
 			{GRID_TYPE_OPTIONS.map((option) => (
@@ -132,11 +132,11 @@ const ColumnsEdit = ({ attributes, setAttributes, clientId }) => {
 	};
 
 	const tabs = [
-		{ name: 'layout', title: <TabIcon icon={column} label={__('Layout', 'codeweber-blocks')} /> },
-		{ name: 'align', title: <TabIcon icon={positionCenter} label={__('Position', 'codeweber-blocks')} /> },
-		{ name: 'gap', title: <TabIcon icon={justifySpaceBetween} label={__('Gap', 'codeweber-blocks')} /> },
-		{ name: 'spacing', title: <TabIcon icon={resizeCornerNE} label={__('Spacing', 'codeweber-blocks')} /> },
-		{ name: 'settings', title: <TabIcon icon={cog} label={__('Settings', 'codeweber-blocks')} /> },
+		{ name: 'layout', title: <TabIcon icon={column} label={__('Layout', 'codeweber-gutenberg-blocks')} /> },
+		{ name: 'align', title: <TabIcon icon={positionCenter} label={__('Position', 'codeweber-gutenberg-blocks')} /> },
+		{ name: 'gap', title: <TabIcon icon={justifySpaceBetween} label={__('Gap', 'codeweber-gutenberg-blocks')} /> },
+		{ name: 'spacing', title: <TabIcon icon={resizeCornerNE} label={__('Spacing', 'codeweber-gutenberg-blocks')} /> },
+		{ name: 'settings', title: <TabIcon icon={cog} label={__('Settings', 'codeweber-gutenberg-blocks')} /> },
 	];
 
 	return (
@@ -151,7 +151,7 @@ const ColumnsEdit = ({ attributes, setAttributes, clientId }) => {
 								<div style={{ padding: '16px' }}>
 									<GridTypeControl value={columnsType} onChange={(value) => setAttributes({ columnsType: value })} />
 									<TextControl
-										label={__('Columns count', 'codeweber-blocks')}
+										label={__('Columns count', 'codeweber-gutenberg-blocks')}
 										type="number"
 										value={columnsCount}
 										min={0}
@@ -162,32 +162,32 @@ const ColumnsEdit = ({ attributes, setAttributes, clientId }) => {
 									{columnsType === 'columns-grid' && (
 										<div className="component-sidebar-group">
 											<RowColsSelect
-												label={__('Columns (base)', 'codeweber-blocks')}
+												label={__('Columns (base)', 'codeweber-gutenberg-blocks')}
 												value={columnsRowCols}
 												onChange={(value) => setAttributes({ columnsRowCols: value })}
 											/>
 											<RowColsSelect
-												label={__('Columns SM (≥576px)', 'codeweber-blocks')}
+												label={__('Columns SM (≥576px)', 'codeweber-gutenberg-blocks')}
 												value={columnsRowColsSm}
 												onChange={(value) => setAttributes({ columnsRowColsSm: value })}
 											/>
 											<RowColsSelect
-												label={__('Columns MD (≥768px)', 'codeweber-blocks')}
+												label={__('Columns MD (≥768px)', 'codeweber-gutenberg-blocks')}
 												value={columnsRowColsMd}
 												onChange={(value) => setAttributes({ columnsRowColsMd: value })}
 											/>
 											<RowColsSelect
-												label={__('Columns LG (≥992px)', 'codeweber-blocks')}
+												label={__('Columns LG (≥992px)', 'codeweber-gutenberg-blocks')}
 												value={columnsRowColsLg}
 												onChange={(value) => setAttributes({ columnsRowColsLg: value })}
 											/>
 											<RowColsSelect
-												label={__('Columns XL (≥1200px)', 'codeweber-blocks')}
+												label={__('Columns XL (≥1200px)', 'codeweber-gutenberg-blocks')}
 												value={columnsRowColsXl}
 												onChange={(value) => setAttributes({ columnsRowColsXl: value })}
 											/>
 											<RowColsSelect
-												label={__('Columns XXL (≥1400px)', 'codeweber-blocks')}
+												label={__('Columns XXL (≥1400px)', 'codeweber-gutenberg-blocks')}
 												value={columnsRowColsXxl}
 												onChange={(value) => setAttributes({ columnsRowColsXxl: value })}
 											/>
@@ -198,7 +198,7 @@ const ColumnsEdit = ({ attributes, setAttributes, clientId }) => {
 							{tab.name === 'align' && (
 								<div style={{ padding: '16px' }}>
 									<PositioningControl
-										title={__('Columns align', 'codeweber-blocks')}
+										title={__('Columns align', 'codeweber-gutenberg-blocks')}
 										alignItems={columnsAlignItems}
 										onAlignItemsChange={(value) => setAttributes({ columnsAlignItems: value })}
 										justifyContent={columnsJustifyContent}
@@ -250,9 +250,9 @@ const ColumnsEdit = ({ attributes, setAttributes, clientId }) => {
 											idKey: 'columnsId',
 										}}
 										labels={{
-											classLabel: __('Columns Class', 'codeweber-blocks'),
-											dataLabel: __('Columns Data', 'codeweber-blocks'),
-											idLabel: __('Columns ID', 'codeweber-blocks'),
+											classLabel: __('Columns Class', 'codeweber-gutenberg-blocks'),
+											dataLabel: __('Columns Data', 'codeweber-gutenberg-blocks'),
+											idLabel: __('Columns ID', 'codeweber-gutenberg-blocks'),
 										}}
 									/>
 								</div>

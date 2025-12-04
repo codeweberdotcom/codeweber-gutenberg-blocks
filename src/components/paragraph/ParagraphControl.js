@@ -44,7 +44,7 @@ export const ParagraphControl = ({
 	attributes,
 	setAttributes,
 	prefix = '',
-	label = __('Paragraph', 'codeweber-blocks'),
+	label = __('Paragraph', 'codeweber-gutenberg-blocks'),
 }) => {
 	const text = getAttr(attributes, prefix, 'text') || '';
 	const textColor = getAttr(attributes, prefix, 'textColor') || '';
@@ -69,7 +69,7 @@ export const ParagraphControl = ({
 						tagName="div"
 						value={text}
 						onChange={(value) => setAttr(setAttributes, prefix, 'text', value)}
-						placeholder={__('Enter paragraph...', 'codeweber-blocks')}
+						placeholder={__('Enter paragraph...', 'codeweber-gutenberg-blocks')}
 						allowedFormats={[]}
 						__unstableAllowHtml={true}
 					/>
@@ -78,35 +78,35 @@ export const ParagraphControl = ({
 
 			{/* Типографика */}
 			<ColorTypeControl
-				label={__('Color Type', 'codeweber-blocks')}
+				label={__('Color Type', 'codeweber-gutenberg-blocks')}
 				value={textColorType}
 				onChange={(value) => setAttr(setAttributes, prefix, 'textColorType', value)}
 				options={[
-					{ value: 'solid', label: __('Solid', 'codeweber-blocks') },
-					{ value: 'soft', label: __('Soft', 'codeweber-blocks') },
-					{ value: 'pale', label: __('Pale', 'codeweber-blocks') },
+					{ value: 'solid', label: __('Solid', 'codeweber-gutenberg-blocks') },
+					{ value: 'soft', label: __('Soft', 'codeweber-gutenberg-blocks') },
+					{ value: 'pale', label: __('Pale', 'codeweber-gutenberg-blocks') },
 				]}
 			/>
 			<ComboboxControl
-				label={__('Color', 'codeweber-blocks')}
+				label={__('Color', 'codeweber-gutenberg-blocks')}
 				value={textColor}
 				options={colors}
 				onChange={(value) => setAttr(setAttributes, prefix, 'textColor', value)}
 			/>
 			<SelectControl
-				label={__('Size', 'codeweber-blocks')}
+				label={__('Size', 'codeweber-gutenberg-blocks')}
 				value={textSize}
 				options={createSizeOptions()}
 				onChange={(value) => setAttr(setAttributes, prefix, 'textSize', value)}
 			/>
 			<SelectControl
-				label={__('Weight', 'codeweber-blocks')}
+				label={__('Weight', 'codeweber-gutenberg-blocks')}
 				value={textWeight}
 				options={createWeightOptions()}
 				onChange={(value) => setAttr(setAttributes, prefix, 'textWeight', value)}
 			/>
 			<SelectControl
-				label={__('Transform', 'codeweber-blocks')}
+				label={__('Transform', 'codeweber-gutenberg-blocks')}
 				value={textTransform}
 				options={createTransformOptions()}
 				onChange={(value) => setAttr(setAttributes, prefix, 'textTransform', value)}

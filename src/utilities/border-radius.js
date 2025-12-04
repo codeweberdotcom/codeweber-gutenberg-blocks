@@ -19,28 +19,28 @@ import { __ } from '@wordpress/i18n';
  * $rounded-pill: 1.5rem
  */
 export const borderRadiusOptions = [
-	{ value: '', label: __('Default', 'codeweber-blocks') },
-	{ value: 'rounded-0', label: __('Rounded-0 (0)', 'codeweber-blocks') },
-	{ value: 'rounded-1', label: __('Rounded-1 (0.2rem)', 'codeweber-blocks') },
-	{ value: 'rounded-2', label: __('Rounded-2 (0.25rem)', 'codeweber-blocks') },
-	{ value: 'rounded', label: __('Rounded (0.4rem)', 'codeweber-blocks') },
-	{ value: 'rounded-3', label: __('Rounded-3 (0.5rem)', 'codeweber-blocks') },
-	{ value: 'rounded-4', label: __('Rounded-4 (1rem)', 'codeweber-blocks') },
-	{ value: 'rounded-5', label: __('Rounded-5 (1.5rem)', 'codeweber-blocks') },
-	{ value: 'rounded-xl', label: __('Rounded-xl (0.8rem - Theme)', 'codeweber-blocks') },
-	{ value: 'rounded-pill', label: __('Rounded-pill (50rem)', 'codeweber-blocks') },
-	{ value: 'rounded-circle', label: __('Rounded-circle (50%)', 'codeweber-blocks') },
+	{ value: '', label: __('Default', 'codeweber-gutenberg-blocks') },
+	{ value: 'rounded-0', label: __('Rounded-0 (0)', 'codeweber-gutenberg-blocks') },
+	{ value: 'rounded-1', label: __('Rounded-1 (0.2rem)', 'codeweber-gutenberg-blocks') },
+	{ value: 'rounded-2', label: __('Rounded-2 (0.25rem)', 'codeweber-gutenberg-blocks') },
+	{ value: 'rounded', label: __('Rounded (0.4rem)', 'codeweber-gutenberg-blocks') },
+	{ value: 'rounded-3', label: __('Rounded-3 (0.5rem)', 'codeweber-gutenberg-blocks') },
+	{ value: 'rounded-4', label: __('Rounded-4 (1rem)', 'codeweber-gutenberg-blocks') },
+	{ value: 'rounded-5', label: __('Rounded-5 (1.5rem)', 'codeweber-gutenberg-blocks') },
+	{ value: 'rounded-xl', label: __('Rounded-xl (0.8rem - Theme)', 'codeweber-gutenberg-blocks') },
+	{ value: 'rounded-pill', label: __('Rounded-pill (50rem)', 'codeweber-gutenberg-blocks') },
+	{ value: 'rounded-circle', label: __('Rounded-circle (50%)', 'codeweber-gutenberg-blocks') },
 ];
 
 /**
  * Positional Border Radius Options
  */
 export const positionOptions = [
-	{ value: '', label: __('All Sides', 'codeweber-blocks') },
-	{ value: 'top', label: __('Top Only', 'codeweber-blocks') },
-	{ value: 'bottom', label: __('Bottom Only', 'codeweber-blocks') },
-	{ value: 'start', label: __('Start (Left) Only', 'codeweber-blocks') },
-	{ value: 'end', label: __('End (Right) Only', 'codeweber-blocks') },
+	{ value: '', label: __('All Sides', 'codeweber-gutenberg-blocks') },
+	{ value: 'top', label: __('Top Only', 'codeweber-gutenberg-blocks') },
+	{ value: 'bottom', label: __('Bottom Only', 'codeweber-gutenberg-blocks') },
+	{ value: 'start', label: __('Start (Left) Only', 'codeweber-gutenberg-blocks') },
+	{ value: 'end', label: __('End (Right) Only', 'codeweber-gutenberg-blocks') },
 ];
 
 /**

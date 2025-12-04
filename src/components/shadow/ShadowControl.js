@@ -20,7 +20,7 @@ import { shadowOptions } from '../../utilities/shadows';
 export const ShadowControl = ({ 
 	value = '', 
 	onChange, 
-	label = __('Shadow', 'codeweber-blocks'),
+	label = __('Shadow', 'codeweber-gutenberg-blocks'),
 	help = '' 
 }) => {
 	return (
@@ -35,5 +35,7 @@ export const ShadowControl = ({
 };
 
 export default ShadowControl;
+
+
 
 

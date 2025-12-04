@@ -7,12 +7,12 @@ export const ContainerSettingsPanel = ({
 	onContainerChange,
 }) => (
 	<PanelBody
-		title={__('Container Settings', 'codeweber-blocks')}
+		title={__('Container Settings', 'codeweber-gutenberg-blocks')}
 		className="custom-panel-body"
 		initialOpen={true}
 	>
 		<SelectControl
-			label={__('Container Type', 'codeweber-blocks')}
+			label={__('Container Type', 'codeweber-gutenberg-blocks')}
 			value={containerType}
 			options={[
 				{ label: 'Container', value: 'container' },
@@ -22,7 +22,7 @@ export const ContainerSettingsPanel = ({
 			onChange={(value) => onContainerChange('containerType', value)}
 		/>
 		<TextControl
-			label={__('Container Class', 'codeweber-blocks')}
+			label={__('Container Class', 'codeweber-gutenberg-blocks')}
 			value={containerClass}
 			onChange={(value) => onContainerChange('containerClass', value)}
 		/>

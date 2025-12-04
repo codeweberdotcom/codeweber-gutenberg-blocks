@@ -50,8 +50,8 @@ const Edit = ({ attributes, setAttributes }) => {
 	} = attributes;
 
 	const tabs = [
-		{ name: 'typography', title: <TabIcon icon={typography} label={__('Typography', 'codeweber-blocks')} /> },
-		{ name: 'settings', title: <TabIcon icon={cog} label={__('Settings', 'codeweber-blocks')} /> },
+		{ name: 'typography', title: <TabIcon icon={typography} label={__('Typography', 'codeweber-gutenberg-blocks')} /> },
+		{ name: 'settings', title: <TabIcon icon={cog} label={__('Settings', 'codeweber-gutenberg-blocks')} /> },
 	];
 
 	const paragraphClasses = getParagraphClasses(attributes, '');
@@ -67,41 +67,41 @@ const Edit = ({ attributes, setAttributes }) => {
 							{tab.name === 'typography' && (
 								<div style={{ padding: '16px' }}>
 									<TagControl
-										label={__('Paragraph Tag', 'codeweber-blocks')}
+										label={__('Paragraph Tag', 'codeweber-gutenberg-blocks')}
 										value={textTag}
 										onChange={(value) => setAttributes({ textTag: value })}
 										type="text"
 									/>
 									<ColorTypeControl
-										label={__('Color Type', 'codeweber-blocks')}
+										label={__('Color Type', 'codeweber-gutenberg-blocks')}
 										value={textColorType}
 										onChange={(value) => setAttributes({ textColorType: value })}
 										options={[
-											{ value: 'solid', label: __('Solid', 'codeweber-blocks') },
-											{ value: 'soft', label: __('Soft', 'codeweber-blocks') },
-											{ value: 'pale', label: __('Pale', 'codeweber-blocks') },
+											{ value: 'solid', label: __('Solid', 'codeweber-gutenberg-blocks') },
+											{ value: 'soft', label: __('Soft', 'codeweber-gutenberg-blocks') },
+											{ value: 'pale', label: __('Pale', 'codeweber-gutenberg-blocks') },
 										]}
 									/>
 									<ComboboxControl
-										label={__('Color', 'codeweber-blocks')}
+										label={__('Color', 'codeweber-gutenberg-blocks')}
 										value={textColor}
 										options={colors}
 										onChange={(value) => setAttributes({ textColor: value })}
 									/>
 									<SelectControl
-										label={__('Size', 'codeweber-blocks')}
+										label={__('Size', 'codeweber-gutenberg-blocks')}
 										value={textSize}
 										options={createSizeOptions()}
 										onChange={(value) => setAttributes({ textSize: value })}
 									/>
 									<SelectControl
-										label={__('Weight', 'codeweber-blocks')}
+										label={__('Weight', 'codeweber-gutenberg-blocks')}
 										value={textWeight}
 										options={createWeightOptions()}
 										onChange={(value) => setAttributes({ textWeight: value })}
 									/>
 									<SelectControl
-										label={__('Transform', 'codeweber-blocks')}
+										label={__('Transform', 'codeweber-gutenberg-blocks')}
 										value={textTransform}
 										options={createTransformOptions()}
 										onChange={(value) => setAttributes({ textTransform: value })}
@@ -120,9 +120,9 @@ const Edit = ({ attributes, setAttributes }) => {
 											idKey: 'textId',
 										}}
 										labels={{
-											classLabel: __('Paragraph Class', 'codeweber-blocks'),
-											dataLabel: __('Paragraph Data', 'codeweber-blocks'),
-											idLabel: __('Paragraph ID', 'codeweber-blocks'),
+											classLabel: __('Paragraph Class', 'codeweber-gutenberg-blocks'),
+											dataLabel: __('Paragraph Data', 'codeweber-gutenberg-blocks'),
+											idLabel: __('Paragraph ID', 'codeweber-gutenberg-blocks'),
 										}}
 									/>
 								</div>
@@ -138,7 +138,7 @@ const Edit = ({ attributes, setAttributes }) => {
 				tagName={textTag}
 				value={text}
 				onChange={(value) => setAttributes({ text: value })}
-				placeholder={__('Введите текст параграфа...', 'codeweber-blocks')}
+				placeholder={__('Enter paragraph text...', 'codeweber-gutenberg-blocks')}
 				className={paragraphClasses}
 			/>
 		</>

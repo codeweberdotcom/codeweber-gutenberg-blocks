@@ -1,7 +1,16 @@
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
+import { useEffect } from '@wordpress/element';
 import { ImageSimpleSidebar } from './sidebar';
 import { ImageSimpleRender } from '../../components/image/ImageSimpleRender';
+import { 
+	SwiperSlider, 
+	SwiperSlide, 
+	getSwiperConfigFromAttributes,
+	initSwiper,
+	destroySwiper 
+} from '../../components/swiper/SwiperSlider';
+import { initLightbox } from '../../utilities/lightbox';
 
 export default function Edit({ attributes, setAttributes, clientId }) {
 	const {
@@ -30,6 +39,12 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		swiperDrag,
 		swiperReverse,
 		swiperUpdateResize,
+		swiperNavStyle,
+		swiperNavPosition,
+		swiperDotsStyle,
+		swiperContainerType,
+		swiperItemsAuto,
+		swiperCentered,
 		borderRadius,
 		enableLightbox,
 		lightboxGallery,
@@ -40,6 +55,67 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		className: `cwgb-image-simple-block ${blockClass}`,
 		'data-block': clientId,
 	});
+
+	// Переинициализация Swiper при изменении настроек
+	useEffect(() => {
+		if (typeof window === 'undefined' || !window.theme) return;
+
+		// Cleanup: уничтожаем все экземпляры Swiper перед реинициализацией
+		// Cleanup: используем утилиту для очистки Swiper
+		destroySwiper('.cwgb-image-simple-block .swiper');
+
+		const timer = setTimeout(() => {
+			try {
+				// Swiper Slider - используем утилиту
+				if (displayMode === 'swiper' && initSwiper()) {
+					console.log('✅ Swiper reinitialized (image-simple)');
+				}
+				
+				// Lightbox (GLightbox) - используем утилиту
+				if (enableLightbox && initLightbox()) {
+					console.log('✅ GLightbox reinitialized (image-simple)');
+				}
+			} catch (error) {
+				console.warn('⚠️ Theme initialization failed (image-simple):', error);
+			}
+		}, 300);
+
+		return () => {
+			clearTimeout(timer);
+			destroySwiper('.cwgb-image-simple-block .swiper');
+		};
+	}, [
+		displayMode,
+		enableLightbox,
+		// Все Swiper параметры для полной реинициализации
+		swiperEffect,
+		swiperSpeed,
+		swiperItems,
+		swiperItemsXs,
+		swiperItemsSm,
+		swiperItemsMd,
+		swiperItemsLg,
+		swiperItemsXl,
+		swiperItemsXxl,
+		swiperItemsAuto,
+		swiperMargin,
+		swiperLoop,
+		swiperCentered,
+		swiperAutoHeight,
+		swiperWatchOverflow,
+		swiperUpdateResize,
+		swiperAutoplay,
+		swiperAutoplayTime,
+		swiperReverse,
+		swiperNav,
+		swiperDots,
+		swiperDrag,
+		swiperNavStyle,
+		swiperNavPosition,
+		swiperDotsStyle,
+		swiperContainerType,
+		clientId
+	]);
 
 	// Функция для получения классов контейнера
 	const getContainerClasses = () => {
@@ -67,44 +143,8 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		return colMap[gridColumns] || 'col-md-4';
 	};
 
-	// Функция для получения атрибутов Swiper
-	const getSwiperAttrs = () => {
-		const attrs = {};
-		
-		// Transition
-		if (swiperEffect) attrs['data-effect'] = swiperEffect;
-		if (swiperSpeed) attrs['data-speed'] = swiperSpeed;
-		
-		// Items per view
-		if (swiperItems) attrs['data-items'] = swiperItems;
-		if (swiperItemsXs) attrs['data-items-xs'] = swiperItemsXs;
-		if (swiperItemsSm) attrs['data-items-sm'] = swiperItemsSm;
-		if (swiperItemsMd) attrs['data-items-md'] = swiperItemsMd;
-		if (swiperItemsLg) attrs['data-items-lg'] = swiperItemsLg;
-		if (swiperItemsXl) attrs['data-items-xl'] = swiperItemsXl;
-		if (swiperItemsXxl) attrs['data-items-xxl'] = swiperItemsXxl;
-		
-		// Spacing & Behavior
-		if (swiperMargin) attrs['data-margin'] = swiperMargin;
-		if (swiperLoop) attrs['data-loop'] = swiperLoop;
-		if (swiperAutoHeight) attrs['data-autoheight'] = swiperAutoHeight;
-		if (swiperWatchOverflow) attrs['data-watchoverflow'] = swiperWatchOverflow;
-		if (swiperUpdateResize !== undefined) attrs['data-updateresize'] = swiperUpdateResize;
-		
-		// Autoplay
-		if (swiperAutoplay) {
-			attrs['data-autoplay'] = swiperAutoplay;
-			if (swiperAutoplayTime) attrs['data-autoplaytime'] = swiperAutoplayTime;
-			if (swiperReverse) attrs['data-reverse'] = swiperReverse;
-		}
-		
-		// Navigation
-		if (swiperNav !== undefined) attrs['data-nav'] = swiperNav;
-		if (swiperDots !== undefined) attrs['data-dots'] = swiperDots;
-		if (swiperDrag !== undefined) attrs['data-drag'] = swiperDrag;
-		
-		return attrs;
-	};
+	// Получаем конфигурацию Swiper из атрибутов (используем утилиту)
+	const swiperConfig = getSwiperConfigFromAttributes(attributes);
 
 	return (
 		<>
@@ -115,7 +155,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 					<div className="cwgb-image-placeholder">
 						<img 
 							src="/wp-content/plugins/codeweber-gutenberg-blocks/placeholder.jpg" 
-							alt={__('Placeholder', 'codeweber-blocks')}
+							alt={__('Placeholder', 'codeweber-gutenberg-blocks')}
 							className="placeholder-image"
 						/>
 					</div>
@@ -144,22 +184,23 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 						))}
 					</div>
 				) : displayMode === 'swiper' ? (
-					// Режим Swiper
-					<div className="swiper-container" {...getSwiperAttrs()}>
-						<div className="swiper-wrapper">
-							{images.map((image, index) => (
-								<div key={index} className="swiper-slide">
-									<ImageSimpleRender
-										image={image}
-										borderRadius={borderRadius}
-										enableLightbox={enableLightbox}
-										lightboxGallery={lightboxGallery}
-										isEditor={true}
-									/>
-								</div>
-							))}
-						</div>
-					</div>
+					// Режим Swiper - используем компонент SwiperSlider
+					<SwiperSlider 
+						config={swiperConfig} 
+						uniqueKey={`swiper-${swiperEffect}-${clientId}`}
+					>
+						{images.map((image, index) => (
+							<SwiperSlide key={index}>
+								<ImageSimpleRender
+									image={image}
+									borderRadius={borderRadius}
+									enableLightbox={enableLightbox}
+									lightboxGallery={lightboxGallery}
+									isEditor={true}
+								/>
+							</SwiperSlide>
+						))}
+					</SwiperSlider>
 				) : null}
 			</div>
 		</>

@@ -126,17 +126,17 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 
 	// Динамический массив табов
 	const tabs = [
-		{ name: 'feature', title: <TabIcon icon={symbol} label={__('Feature', 'codeweber-blocks')} /> },
-		{ name: 'icon', title: <TabIcon icon={starFilled} label={__('Icon', 'codeweber-blocks')} /> },
-		{ name: 'title', title: <TabIcon icon={typography} label={__('Title', 'codeweber-blocks')} /> },
-		{ name: 'button', title: <TabIcon icon={button} label={__('Button', 'codeweber-blocks')} /> },
-		{ name: 'card', title: <TabIcon icon={addCard} label={__('Card', 'codeweber-blocks')} /> },
+		{ name: 'feature', title: <TabIcon icon={symbol} label={__('Feature', 'codeweber-gutenberg-blocks')} /> },
+		{ name: 'icon', title: <TabIcon icon={starFilled} label={__('Icon', 'codeweber-gutenberg-blocks')} /> },
+		{ name: 'title', title: <TabIcon icon={typography} label={__('Title', 'codeweber-gutenberg-blocks')} /> },
+		{ name: 'button', title: <TabIcon icon={button} label={__('Button', 'codeweber-gutenberg-blocks')} /> },
+		{ name: 'card', title: <TabIcon icon={addCard} label={__('Card', 'codeweber-gutenberg-blocks')} /> },
 	];
 	
 	// Добавляем табы Settings и Animation только если Card включен
 	if (enableCard) {
-		tabs.push({ name: 'animation', title: <TabIcon icon={arrowRight} label={__('Animation', 'codeweber-blocks')} /> });
-		tabs.push({ name: 'settings', title: <TabIcon icon={cog} label={__('Settings', 'codeweber-blocks')} /> });
+		tabs.push({ name: 'animation', title: <TabIcon icon={arrowRight} label={__('Animation', 'codeweber-gutenberg-blocks')} /> });
+		tabs.push({ name: 'settings', title: <TabIcon icon={cog} label={__('Settings', 'codeweber-gutenberg-blocks')} /> });
 	}
 
 	// Реинициализация анимации при изменении настроек (Enable, Type, Duration, Delay)
@@ -409,7 +409,7 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 				value={title}
 				onChange={(value) => setAttributes({ title: value })}
 				className={getTitleClasses(attributes)}
-				placeholder={__('Enter title...', 'codeweber-blocks')}
+				placeholder={__('Enter title...', 'codeweber-gutenberg-blocks')}
 			/>
 		) : null;
 
@@ -516,7 +516,7 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 												});
 											}}
 										>
-											{__('Feature 1', 'codeweber-blocks')}
+											{__('Feature 1', 'codeweber-gutenberg-blocks')}
 										</Button>
 										<Button
 											variant={featureLayout === 'horizontal' ? 'primary' : 'secondary'}
@@ -532,7 +532,7 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 												});
 											}}
 										>
-											{__('Feature 2', 'codeweber-blocks')}
+											{__('Feature 2', 'codeweber-gutenberg-blocks')}
 										</Button>
 										<Button
 											variant={featureLayout === 'feature-3' ? 'primary' : 'secondary'}
@@ -548,7 +548,7 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 												});
 											}}
 										>
-											{__('Feature 3', 'codeweber-blocks')}
+											{__('Feature 3', 'codeweber-gutenberg-blocks')}
 										</Button>
 									</ButtonGroup>
 								</PanelBody>
@@ -627,33 +627,33 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 							{tab.name === 'button' && (
 								<PanelBody>
 									<ToggleControl
-										label={__('Enable Button', 'codeweber-blocks')}
+										label={__('Enable Button', 'codeweber-gutenberg-blocks')}
 										checked={enableButton}
 										onChange={(value) => setAttributes({ enableButton: value })}
 									/>
 									{enableButton && (
 										<>
 											<TextControl
-												label={__('Button Text', 'codeweber-blocks')}
+												label={__('Button Text', 'codeweber-gutenberg-blocks')}
 												value={buttonText}
 												onChange={(value) => setAttributes({ buttonText: value })}
 											/>
 											<TextControl
-												label={__('Button URL', 'codeweber-blocks')}
+												label={__('Button URL', 'codeweber-gutenberg-blocks')}
 												value={buttonUrl}
 												onChange={(value) => setAttributes({ buttonUrl: value })}
 											/>
 											<ComboboxControl
-												label={__('Button Color', 'codeweber-blocks')}
+												label={__('Button Color', 'codeweber-gutenberg-blocks')}
 												value={buttonColor}
 												options={colors}
 												onChange={(value) => setAttributes({ buttonColor: value })}
 											/>
 											<TextControl
-												label={__('Button Classes', 'codeweber-blocks')}
+												label={__('Button Classes', 'codeweber-gutenberg-blocks')}
 												value={buttonClass}
 												onChange={(value) => setAttributes({ buttonClass: value })}
-												help={__('Default: more hover', 'codeweber-blocks')}
+												help={__('Default: more hover', 'codeweber-gutenberg-blocks')}
 											/>
 										</>
 									)}
@@ -664,24 +664,24 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 							{tab.name === 'card' && (
 								<PanelBody>
 									<ToggleControl
-										label={__('Enable Card Wrapper', 'codeweber-blocks')}
+										label={__('Enable Card Wrapper', 'codeweber-gutenberg-blocks')}
 										checked={enableCard}
 										onChange={(value) => setAttributes({ enableCard: value })}
 									/>
 									{enableCard && (
 										<ToggleControl
-											label={__('Enable Card Body', 'codeweber-blocks')}
+											label={__('Enable Card Body', 'codeweber-gutenberg-blocks')}
 											checked={enableCardBody}
 											onChange={(value) => setAttributes({ enableCardBody: value })}
 										/>
 									)}
 									<ToggleControl
-										label={__('Overflow Hidden', 'codeweber-blocks')}
+										label={__('Overflow Hidden', 'codeweber-gutenberg-blocks')}
 										checked={overflowHidden}
 										onChange={(value) => setAttributes({ overflowHidden: value })}
 									/>
 									<ToggleControl
-										label={__('H-100', 'codeweber-blocks')}
+										label={__('H-100', 'codeweber-gutenberg-blocks')}
 										checked={h100}
 										onChange={(value) => setAttributes({ h100: value })}
 									/>
@@ -736,9 +736,9 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 											idKey: 'blockId',
 										}}
 										labels={{
-											classLabel: __('Card Class', 'codeweber-blocks'),
-											dataLabel: __('Card Data', 'codeweber-blocks'),
-											idLabel: __('Card ID', 'codeweber-blocks'),
+											classLabel: __('Card Class', 'codeweber-gutenberg-blocks'),
+											dataLabel: __('Card Data', 'codeweber-gutenberg-blocks'),
+											idLabel: __('Card ID', 'codeweber-gutenberg-blocks'),
 										}}
 									/>
 								</div>

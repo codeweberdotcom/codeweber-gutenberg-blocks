@@ -88,7 +88,7 @@ const Edit = ({ attributes, setAttributes }) => {
 			<div {...blockProps}>
 				{iconType === 'none' ? (
 					<div className="cwgb-icon-placeholder">
-						<span>{__('Выберите иконку в настройках', 'codeweber-blocks')}</span>
+						<span>{__('Select icon in settings', 'codeweber-gutenberg-blocks')}</span>
 					</div>
 				) : (
 					<IconRender

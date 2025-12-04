@@ -129,17 +129,17 @@ export const IconPicker = ({
 	const tabs = [
 		{
 			name: 'font',
-			title: __('Font Icons', 'codeweber-blocks'),
+			title: __('Font Icons', 'codeweber-gutenberg-blocks'),
 			className: 'icon-picker-tab',
 		},
 		{
 			name: 'svg-lineal',
-			title: __('SVG Lineal', 'codeweber-blocks'),
+			title: __('SVG Lineal', 'codeweber-gutenberg-blocks'),
 			className: 'icon-picker-tab',
 		},
 		{
 			name: 'svg-solid',
-			title: __('SVG Solid', 'codeweber-blocks'),
+			title: __('SVG Solid', 'codeweber-gutenberg-blocks'),
 			className: 'icon-picker-tab',
 		},
 	];
@@ -150,14 +150,14 @@ export const IconPicker = ({
 
 	return (
 		<Modal
-			title={__('Выберите иконку', 'codeweber-blocks')}
+			title={__('Select Icon', 'codeweber-gutenberg-blocks')}
 			onRequestClose={onClose}
 			className="icon-picker-modal"
 			isFullScreen={false}
 		>
 			<div className="icon-picker-search">
 				<TextControl
-					placeholder={__('Поиск иконки...', 'codeweber-blocks')}
+					placeholder={__('Search icon...', 'codeweber-gutenberg-blocks')}
 					value={searchTerm}
 					onChange={setSearchTerm}
 					__nextHasNoMarginBottom
@@ -176,7 +176,7 @@ export const IconPicker = ({
 							<>
 								{filteredFontIcons.length === 0 ? (
 									<p className="icon-picker-no-results">
-										{__('Иконки не найдены', 'codeweber-blocks')}
+										{__('No icons found', 'codeweber-gutenberg-blocks')}
 									</p>
 								) : (
 									filteredFontIcons.map((icon) => (
@@ -195,7 +195,7 @@ export const IconPicker = ({
 								)}
 								{!searchTerm && filteredFontIcons.length === 200 && (
 									<p className="icon-picker-hint">
-										{__('Введите поисковый запрос для отображения всех иконок', 'codeweber-blocks')}
+										{__('Enter search query to display all icons', 'codeweber-gutenberg-blocks')}
 									</p>
 								)}
 							</>
@@ -205,7 +205,7 @@ export const IconPicker = ({
 							<>
 								{filteredLinealIcons.length === 0 ? (
 									<p className="icon-picker-no-results">
-										{__('Иконки не найдены', 'codeweber-blocks')}
+										{__('No icons found', 'codeweber-gutenberg-blocks')}
 									</p>
 								) : (
 									filteredLinealIcons.map((icon) => (
@@ -228,7 +228,7 @@ export const IconPicker = ({
 							<>
 								{filteredSolidIcons.length === 0 ? (
 									<p className="icon-picker-no-results">
-										{__('Иконки не найдены', 'codeweber-blocks')}
+										{__('No icons found', 'codeweber-gutenberg-blocks')}
 									</p>
 								) : (
 									filteredSolidIcons.map((icon) => (
@@ -263,10 +263,10 @@ export const IconPicker = ({
 						onClose();
 					}}
 				>
-					{__('Удалить иконку', 'codeweber-blocks')}
+					{__('Remove Icon', 'codeweber-gutenberg-blocks')}
 				</Button>
 				<Button variant="tertiary" onClick={onClose}>
-					{__('Отмена', 'codeweber-blocks')}
+					{__('Cancel', 'codeweber-gutenberg-blocks')}
 				</Button>
 			</div>
 		</Modal>

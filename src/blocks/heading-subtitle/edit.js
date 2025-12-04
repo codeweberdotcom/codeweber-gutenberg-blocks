@@ -61,7 +61,7 @@ const HeadingSubtitleEdit = ({ attributes, setAttributes }) => {
                 value={title}
                 onChange={(value) => setAttributes({ title: value })}
                 className={getTitleClasses(attributes)}
-                placeholder={__('Enter title...', 'codeweber-blocks')}
+                placeholder={__('Enter title...', 'codeweber-gutenberg-blocks')}
             />
         );
     }
@@ -73,7 +73,7 @@ const HeadingSubtitleEdit = ({ attributes, setAttributes }) => {
                 value={subtitle}
                 onChange={(value) => setAttributes({ subtitle: value })}
                 className={getSubtitleClasses(attributes)}
-                placeholder={__('Enter subtitle...', 'codeweber-blocks')}
+                placeholder={__('Enter subtitle...', 'codeweber-gutenberg-blocks')}
             />
         );
     }
@@ -95,11 +95,11 @@ const HeadingSubtitleEdit = ({ attributes, setAttributes }) => {
     }
 
     const tabs = [
-        { name: 'content', title: <TabIcon icon={edit} label={__('Content', 'codeweber-blocks')} /> },
-        { name: 'typography', title: <TabIcon icon={typography} label={__('Typography', 'codeweber-blocks')} /> },
-        { name: 'align', title: <TabIcon icon={positionCenter} label={__('Align', 'codeweber-blocks')} /> },
-        { name: 'spacing', title: <TabIcon icon={resizeCornerNE} label={__('Spacing', 'codeweber-blocks')} /> },
-        { name: 'settings', title: <TabIcon icon={cog} label={__('Settings', 'codeweber-blocks')} /> },
+        { name: 'content', title: <TabIcon icon={edit} label={__('Content', 'codeweber-gutenberg-blocks')} /> },
+        { name: 'typography', title: <TabIcon icon={typography} label={__('Typography', 'codeweber-gutenberg-blocks')} /> },
+        { name: 'align', title: <TabIcon icon={positionCenter} label={__('Align', 'codeweber-gutenberg-blocks')} /> },
+        { name: 'spacing', title: <TabIcon icon={resizeCornerNE} label={__('Spacing', 'codeweber-gutenberg-blocks')} /> },
+        { name: 'settings', title: <TabIcon icon={cog} label={__('Settings', 'codeweber-gutenberg-blocks')} /> },
     ];
 
     return (
@@ -129,7 +129,7 @@ const HeadingSubtitleEdit = ({ attributes, setAttributes }) => {
                             {tab.name === 'align' && (
                                 <div style={{ padding: '16px' }}>
                                     <PositioningControl
-                                        title={__('Title Align', 'codeweber-blocks')}
+                                        title={__('Title Align', 'codeweber-gutenberg-blocks')}
                                         alignItems={alignItems}
                                         onAlignItemsChange={(value) => setAttributes({ alignItems: value })}
                                         justifyContent={justifyContent}
@@ -163,19 +163,19 @@ const HeadingSubtitleEdit = ({ attributes, setAttributes }) => {
                                             isPrimary={activeElement === 'title'}
                                             onClick={() => setActiveElement('title')}
                                         >
-                                            {__('Title', 'codeweber-blocks')}
+                                            {__('Title', 'codeweber-gutenberg-blocks')}
                                         </Button>
                                         <Button
                                             isPrimary={activeElement === 'subtitle'}
                                             onClick={() => setActiveElement('subtitle')}
                                         >
-                                            {__('Subtitle', 'codeweber-blocks')}
+                                            {__('Subtitle', 'codeweber-gutenberg-blocks')}
                                         </Button>
                                         <Button
                                             isPrimary={activeElement === 'paragraph'}
                                             onClick={() => setActiveElement('paragraph')}
                                         >
-                                            {__('Paragraph', 'codeweber-blocks')}
+                                            {__('Paragraph', 'codeweber-gutenberg-blocks')}
                                         </Button>
                                     </ButtonGroup>
                                     {activeElement === 'title' && (
@@ -188,9 +188,9 @@ const HeadingSubtitleEdit = ({ attributes, setAttributes }) => {
                                                 idKey: 'titleId',
                                             }}
                                             labels={{
-                                                classLabel: __('Title CSS Class', 'codeweber-blocks'),
-                                                dataLabel: __('Title Data Attributes', 'codeweber-blocks'),
-                                                idLabel: __('Title ID', 'codeweber-blocks'),
+                                                classLabel: __('Title CSS Class', 'codeweber-gutenberg-blocks'),
+                                                dataLabel: __('Title Data Attributes', 'codeweber-gutenberg-blocks'),
+                                                idLabel: __('Title ID', 'codeweber-gutenberg-blocks'),
                                             }}
                                         />
                                     )}
@@ -204,9 +204,9 @@ const HeadingSubtitleEdit = ({ attributes, setAttributes }) => {
                                                 idKey: 'subtitleId',
                                             }}
                                             labels={{
-                                                classLabel: __('Subtitle CSS Class', 'codeweber-blocks'),
-                                                dataLabel: __('Subtitle Data Attributes', 'codeweber-blocks'),
-                                                idLabel: __('Subtitle ID', 'codeweber-blocks'),
+                                                classLabel: __('Subtitle CSS Class', 'codeweber-gutenberg-blocks'),
+                                                dataLabel: __('Subtitle Data Attributes', 'codeweber-gutenberg-blocks'),
+                                                idLabel: __('Subtitle ID', 'codeweber-gutenberg-blocks'),
                                             }}
                                         />
                                     )}
@@ -220,9 +220,9 @@ const HeadingSubtitleEdit = ({ attributes, setAttributes }) => {
                                                 idKey: 'textId',
                                             }}
                                             labels={{
-                                                classLabel: __('Paragraph CSS Class', 'codeweber-blocks'),
-                                                dataLabel: __('Paragraph Data Attributes', 'codeweber-blocks'),
-                                                idLabel: __('Paragraph ID', 'codeweber-blocks'),
+                                                classLabel: __('Paragraph CSS Class', 'codeweber-gutenberg-blocks'),
+                                                dataLabel: __('Paragraph Data Attributes', 'codeweber-gutenberg-blocks'),
+                                                idLabel: __('Paragraph ID', 'codeweber-gutenberg-blocks'),
                                             }}
                                         />
                                     )}
@@ -233,7 +233,7 @@ const HeadingSubtitleEdit = ({ attributes, setAttributes }) => {
                 </TabPanel>
             </InspectorControls>
             <div {...blockProps}>
-                {elements.length > 0 ? elements : <div>{__('Title Block', 'codeweber-blocks')}</div>}
+                {elements.length > 0 ? elements : <div>{__('Title Block', 'codeweber-gutenberg-blocks')}</div>}
             </div>
         </>
     );

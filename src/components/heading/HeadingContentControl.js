@@ -20,33 +20,33 @@ export const HeadingContentControl = ({ attributes, setAttributes, hideSubtitle 
     return (
         <>
             <ToggleControl
-                label={__('Enable Title', 'codeweber-blocks')}
+                label={__('Enable Title', 'codeweber-gutenberg-blocks')}
                 checked={enableTitle}
                 onChange={(value) => setAttributes({ enableTitle: value })}
             />
             {!hideSubtitle && (
                 <>
                     <ToggleControl
-                        label={__('Enable Subtitle', 'codeweber-blocks')}
+                        label={__('Enable Subtitle', 'codeweber-gutenberg-blocks')}
                         checked={enableSubtitle}
                         onChange={(value) => setAttributes({ enableSubtitle: value })}
                     />
                 </>
             )}
             <ToggleControl
-                label={__('Enable Paragraph', 'codeweber-blocks')}
+                label={__('Enable Paragraph', 'codeweber-gutenberg-blocks')}
                 checked={enableText}
                 onChange={(value) => setAttributes({ enableText: value })}
             />
             {!hideSubtitle && (
                 <>
                     <ToggleControl
-                        label={__('Subtitle First', 'codeweber-blocks')}
+                        label={__('Subtitle First', 'codeweber-gutenberg-blocks')}
                         checked={order === 'subtitle-first'}
                         onChange={(value) => setAttributes({ order: value ? 'subtitle-first' : 'title-first' })}
                     />
                     <ToggleControl
-                        label={__('Subtitle Line', 'codeweber-blocks')}
+                        label={__('Subtitle Line', 'codeweber-gutenberg-blocks')}
                         checked={subtitleLine}
                         onChange={(value) => setAttributes({ subtitleLine: value })}
                     />
@@ -54,7 +54,7 @@ export const HeadingContentControl = ({ attributes, setAttributes, hideSubtitle 
             )}
             {enableTitle && (
                 <div className="mb-3">
-                    <label>{__('Title Text', 'codeweber-blocks')}</label>
+                    <label>{__('Title Text', 'codeweber-gutenberg-blocks')}</label>
                     <div style={{
                         border: '1px solid #ccc',
                         borderRadius: '4px',
@@ -66,7 +66,7 @@ export const HeadingContentControl = ({ attributes, setAttributes, hideSubtitle 
                             tagName="div"
                             value={title}
                             onChange={(value) => setAttributes({ title: value })}
-                            placeholder={__('Enter title...', 'codeweber-blocks')}
+                            placeholder={__('Enter title...', 'codeweber-gutenberg-blocks')}
                             allowedFormats={[]}
                             __unstableAllowHtml={true}
                         />
@@ -75,7 +75,7 @@ export const HeadingContentControl = ({ attributes, setAttributes, hideSubtitle 
             )}
             {!hideSubtitle && enableSubtitle && (
                 <div className="mb-3">
-                    <label>{__('Subtitle Text', 'codeweber-blocks')}</label>
+                    <label>{__('Subtitle Text', 'codeweber-gutenberg-blocks')}</label>
                     <div style={{
                         border: '1px solid #ccc',
                         borderRadius: '4px',
@@ -87,7 +87,7 @@ export const HeadingContentControl = ({ attributes, setAttributes, hideSubtitle 
                             tagName="div"
                             value={subtitle}
                             onChange={(value) => setAttributes({ subtitle: value })}
-                            placeholder={__('Enter subtitle...', 'codeweber-blocks')}
+                            placeholder={__('Enter subtitle...', 'codeweber-gutenberg-blocks')}
                             allowedFormats={[]}
                             __unstableAllowHtml={true}
                         />
@@ -96,7 +96,7 @@ export const HeadingContentControl = ({ attributes, setAttributes, hideSubtitle 
             )}
             {enableText && (
                 <div className="mb-3">
-                    <label>{__('Paragraph Text', 'codeweber-blocks')}</label>
+                    <label>{__('Paragraph Text', 'codeweber-gutenberg-blocks')}</label>
                     <div style={{
                         border: '1px solid #ccc',
                         borderRadius: '4px',
@@ -108,7 +108,7 @@ export const HeadingContentControl = ({ attributes, setAttributes, hideSubtitle 
                             tagName="div"
                             value={text}
                             onChange={(value) => setAttributes({ text: value })}
-                            placeholder={__('Enter paragraph...', 'codeweber-blocks')}
+                            placeholder={__('Enter paragraph...', 'codeweber-gutenberg-blocks')}
                             allowedFormats={[]}
                             __unstableAllowHtml={true}
                         />

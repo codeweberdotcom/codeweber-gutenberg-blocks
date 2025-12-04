@@ -7,7 +7,6 @@ import {
 	Button,
 	ButtonGroup,
 	TextControl,
-	SelectControl,
 	TabPanel,
 } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
@@ -17,8 +16,8 @@ import { Icon, column, positionCenter, resizeCornerNE, cog, justifySpaceBetween 
 
 import { PositioningControl } from '../../components/layout/PositioningControl';
 import { BlockMetaFields } from '../../components/block-meta/BlockMetaFields';
-import { GapControl } from '../../components/gap/GapControl';
-import { SpacingControl } from '../../components/spacing/SpacingControl';
+import { GridControl, getGridClasses } from '../../components/grid-control';
+import { ResponsiveControl, createColumnWidthConfig } from '../../components/responsive-control';
 import { getColumnsClassNames, normalizeColumnsData, normalizeColumnsId } from './utils';
 
 // Tab icon with native title tooltip
@@ -33,41 +32,28 @@ const GRID_TYPE_OPTIONS = [
 	{ value: 'columns-grid', label: __('Columns grid', 'codeweber-gutenberg-blocks') },
 ];
 
-
-const ROW_COLS_OPTIONS = [
-	{ value: '', label: __('Default', 'codeweber-gutenberg-blocks') },
-	{ value: 'auto', label: __('Auto', 'codeweber-gutenberg-blocks') },
-	{ value: '1', label: __('1 column', 'codeweber-gutenberg-blocks') },
-	{ value: '2', label: __('2 columns', 'codeweber-gutenberg-blocks') },
-	{ value: '3', label: __('3 columns', 'codeweber-gutenberg-blocks') },
-	{ value: '4', label: __('4 columns', 'codeweber-gutenberg-blocks') },
-	{ value: '5', label: __('5 columns', 'codeweber-gutenberg-blocks') },
-	{ value: '6', label: __('6 columns', 'codeweber-gutenberg-blocks') },
-];
-
-const GridTypeControl = ({ value, onChange }) => (
+const GridTypeControl = ({ value, onChange, onTypeChange }) => (
 	<div className="mb-3">
 		<div className="component-sidebar-title">
 			<label>{__('Grid type', 'codeweber-gutenberg-blocks')}</label>
 		</div>
 		<ButtonGroup>
 			{GRID_TYPE_OPTIONS.map((option) => (
-				<Button key={option.value} isPrimary={value === option.value} onClick={() => onChange(option.value)}>
+				<Button 
+					key={option.value} 
+					isPrimary={value === option.value} 
+					onClick={() => {
+						onChange(option.value);
+						if (onTypeChange) {
+							onTypeChange(option.value);
+						}
+					}}
+				>
 					{option.label}
 				</Button>
 			))}
 		</ButtonGroup>
 	</div>
-);
-
-
-const RowColsSelect = ({ label, value, onChange }) => (
-	<SelectControl
-		label={label}
-		value={value}
-		options={ROW_COLS_OPTIONS}
-		onChange={onChange}
-	/>
 );
 
 const ColumnsEdit = ({ attributes, setAttributes, clientId }) => {
@@ -105,7 +91,7 @@ const ColumnsEdit = ({ attributes, setAttributes, clientId }) => {
 		columnsSpacingXxl,
 	} = attributes;
 
-	const { replaceInnerBlocks, insertBlocks } = useDispatch('core/block-editor');
+	const { replaceInnerBlocks, insertBlocks, updateBlockAttributes } = useDispatch('core/block-editor');
 
 	const innerBlocks = useSelect(
 		(select) => select('core/block-editor').getBlocks(clientId) || [],
@@ -131,6 +117,44 @@ const ColumnsEdit = ({ attributes, setAttributes, clientId }) => {
 		replaceInnerBlocks(clientId, nextBlocks, false);
 	};
 
+	// Функция синхронизации ширины колонок для Classic Grid
+	const syncColumnWidths = (attribute, value) => {
+		if (columnsType !== 'classic') return;
+		
+		// Обновляем все дочерние Column блоки
+		innerBlocks.forEach(block => {
+			if (block.name === 'codeweber-blocks/column') {
+				updateBlockAttributes(block.clientId, { [attribute]: value });
+			}
+		});
+	};
+
+	// Функция сброса ширины колонок при переключении на Columns Grid
+	const resetColumnWidthsToNone = () => {
+		innerBlocks.forEach(block => {
+			if (block.name === 'codeweber-blocks/column') {
+				updateBlockAttributes(block.clientId, {
+					columnColXs: '',  // Нет (col) - растягивается
+					columnColSm: '',
+					columnColMd: '',
+					columnColLg: '',
+					columnColXl: '',
+					columnColXxl: '',
+				});
+			}
+		});
+	};
+
+	// Обработчик изменения типа сетки
+	const handleGridTypeChange = (newType) => {
+		setAttributes({ columnsType: newType });
+		
+		// Если переключились на Columns Grid, сбрасываем ширины колонок на None (col)
+		if (newType === 'columns-grid') {
+			resetColumnWidthsToNone();
+		}
+	};
+
 	const tabs = [
 		{ name: 'layout', title: <TabIcon icon={column} label={__('Layout', 'codeweber-gutenberg-blocks')} /> },
 		{ name: 'align', title: <TabIcon icon={positionCenter} label={__('Position', 'codeweber-gutenberg-blocks')} /> },
@@ -149,7 +173,11 @@ const ColumnsEdit = ({ attributes, setAttributes, clientId }) => {
 						<>
 							{tab.name === 'layout' && (
 								<div style={{ padding: '16px' }}>
-									<GridTypeControl value={columnsType} onChange={(value) => setAttributes({ columnsType: value })} />
+									<GridTypeControl 
+										value={columnsType} 
+										onChange={(value) => setAttributes({ columnsType: value })}
+										onTypeChange={handleGridTypeChange}
+									/>
 									<TextControl
 										label={__('Columns count', 'codeweber-gutenberg-blocks')}
 										type="number"
@@ -159,37 +187,54 @@ const ColumnsEdit = ({ attributes, setAttributes, clientId }) => {
 										step={1}
 										onChange={adjustColumns}
 									/>
+									
+									{/* Columns Grid - управление шириной на уровне контейнера */}
 									{columnsType === 'columns-grid' && (
-										<div className="component-sidebar-group">
-											<RowColsSelect
-												label={__('Columns (base)', 'codeweber-gutenberg-blocks')}
-												value={columnsRowCols}
-												onChange={(value) => setAttributes({ columnsRowCols: value })}
-											/>
-											<RowColsSelect
-												label={__('Columns SM (≥576px)', 'codeweber-gutenberg-blocks')}
-												value={columnsRowColsSm}
-												onChange={(value) => setAttributes({ columnsRowColsSm: value })}
-											/>
-											<RowColsSelect
-												label={__('Columns MD (≥768px)', 'codeweber-gutenberg-blocks')}
-												value={columnsRowColsMd}
-												onChange={(value) => setAttributes({ columnsRowColsMd: value })}
-											/>
-											<RowColsSelect
-												label={__('Columns LG (≥992px)', 'codeweber-gutenberg-blocks')}
-												value={columnsRowColsLg}
-												onChange={(value) => setAttributes({ columnsRowColsLg: value })}
-											/>
-											<RowColsSelect
-												label={__('Columns XL (≥1200px)', 'codeweber-gutenberg-blocks')}
-												value={columnsRowColsXl}
-												onChange={(value) => setAttributes({ columnsRowColsXl: value })}
-											/>
-											<RowColsSelect
-												label={__('Columns XXL (≥1400px)', 'codeweber-gutenberg-blocks')}
-												value={columnsRowColsXxl}
-												onChange={(value) => setAttributes({ columnsRowColsXxl: value })}
+										<GridControl
+											attributes={attributes}
+											setAttributes={setAttributes}
+											attributePrefix="columns"
+											showRowCols={true}
+											showGap={false}
+											showSpacing={false}
+											rowColsLabel={__('Columns Per Row', 'codeweber-gutenberg-blocks')}
+										/>
+									)}
+									
+									{/* Classic Grid - управление шириной дочерних Column блоков */}
+									{columnsType === 'classic' && (
+										<div style={{ 
+											marginTop: '16px',
+											padding: '12px',
+											backgroundColor: '#f0f0f0',
+											borderRadius: '4px'
+										}}>
+											<div style={{ 
+												marginBottom: '8px',
+												fontSize: '12px',
+												fontWeight: '500',
+												color: '#666'
+											}}>
+												{__('Apply column width to all child columns:', 'codeweber-gutenberg-blocks')}
+											</div>
+											<ResponsiveControl
+												{...createColumnWidthConfig(
+													{
+														columnColXs: '',
+														columnColSm: '',
+														columnColMd: '',
+														columnColLg: '',
+														columnColXl: '',
+														columnColXxl: '',
+													},
+													(attrs) => {
+														// При изменении синхронизируем со всеми Column блоками
+														Object.keys(attrs).forEach(attr => {
+															syncColumnWidths(attr, attrs[attr]);
+														});
+													},
+													'dropdown'
+												)}
 											/>
 										</div>
 									)}
@@ -213,29 +258,25 @@ const ColumnsEdit = ({ attributes, setAttributes, clientId }) => {
 							)}
 							{tab.name === 'gap' && (
 								<div style={{ padding: '16px' }}>
-									<GapControl
-										columnsGapType={columnsGapType}
-										columnsGapXs={columnsGapXs}
-										columnsGapSm={columnsGapSm}
-										columnsGapMd={columnsGapMd}
-										columnsGapLg={columnsGapLg}
-										columnsGapXl={columnsGapXl}
-										columnsGapXxl={columnsGapXxl}
-										onChange={(key, value) => setAttributes({ [key]: value })}
+									<GridControl
+										attributes={attributes}
+										setAttributes={setAttributes}
+										attributePrefix="columns"
+										showRowCols={false}
+										showGap={true}
+										showSpacing={false}
 									/>
 								</div>
 							)}
 							{tab.name === 'spacing' && (
 								<div style={{ padding: '16px' }}>
-									<SpacingControl
-										spacingType={columnsSpacingType}
-										spacingXs={columnsSpacingXs}
-										spacingSm={columnsSpacingSm}
-										spacingMd={columnsSpacingMd}
-										spacingLg={columnsSpacingLg}
-										spacingXl={columnsSpacingXl}
-										spacingXxl={columnsSpacingXxl}
-										onChange={(key, value) => setAttributes({ [key]: value })}
+									<GridControl
+										attributes={attributes}
+										setAttributes={setAttributes}
+										attributePrefix="columns"
+										showRowCols={false}
+										showGap={false}
+										showSpacing={true}
 									/>
 								</div>
 							)}

@@ -1,17 +1,16 @@
 import { InspectorControls } from '@wordpress/block-editor';
 import { TabPanel, PanelBody } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import { Icon, image, grid, cog, search, starFilled } from '@wordpress/icons';
-import { ImageControl } from '../../components/image/ImageControl';
-import { LayoutControl } from './controls/LayoutControl';
+import { Icon, image, starFilled, search, cog } from '@wordpress/icons';
+import { MediaControl } from './controls/MediaControl';
+import { ImageHoverControl } from '../../components/image-hover/ImageHoverControl';
 import { LightboxControl } from '../../components/lightbox/LightboxControl';
 import { BorderRadiusControl } from '../../components/border-radius';
 import { BlockMetaFields } from '../../components/block-meta/BlockMetaFields';
-import { ImageHoverControl } from '../../components/image-hover/ImageHoverControl';
 
 // Tab icon with native title tooltip
 const TabIcon = ({ icon, label }) => (
-	<span 
+	<span
 		title={label}
 		style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
 	>
@@ -19,10 +18,9 @@ const TabIcon = ({ icon, label }) => (
 	</span>
 );
 
-export const ImageSimpleSidebar = ({ attributes, setAttributes }) => {
+export const ImageSidebar = ({ attributes, setAttributes }) => {
 	const tabs = [
-		{ name: 'images', title: <TabIcon icon={image} label={__('Images', 'codeweber-gutenberg-blocks')} /> },
-		{ name: 'layout', title: <TabIcon icon={grid} label={__('Layout', 'codeweber-gutenberg-blocks')} /> },
+		{ name: 'media', title: <TabIcon icon={image} label={__('Media', 'codeweber-gutenberg-blocks')} /> },
 		{ name: 'effects', title: <TabIcon icon={starFilled} label={__('Effects', 'codeweber-gutenberg-blocks')} /> },
 		{ name: 'lightbox', title: <TabIcon icon={search} label={__('Lightbox', 'codeweber-gutenberg-blocks')} /> },
 		{ name: 'settings', title: <TabIcon icon={cog} label={__('Settings', 'codeweber-gutenberg-blocks')} /> },
@@ -33,51 +31,46 @@ export const ImageSimpleSidebar = ({ attributes, setAttributes }) => {
 			<TabPanel tabs={tabs}>
 				{(tab) => (
 					<>
-						{/* IMAGES TAB */}
-						{tab.name === 'images' && (
+						{/* MEDIA TAB */}
+						{tab.name === 'media' && (
 							<PanelBody>
-								<ImageControl
-									images={attributes.images}
-									imageSize={attributes.imageSize}
-									setAttributes={setAttributes}
-								/>
-							</PanelBody>
-						)}
-
-						{/* LAYOUT TAB */}
-						{tab.name === 'layout' && (
-							<PanelBody>
-								<LayoutControl
-									attributes={attributes}
-									setAttributes={setAttributes}
-								/>
-
-								<div style={{ marginTop: '16px' }}>
-									<BorderRadiusControl
-										value={attributes.borderRadius}
-										onChange={(value) => setAttributes({ borderRadius: value })}
-									/>
-								</div>
+								<MediaControl attributes={attributes} setAttributes={setAttributes} />
+								
+								{/* Border Radius */}
+								{attributes.mediaType === 'image' && attributes.image.url && (
+									<div style={{ marginTop: '16px' }}>
+										<BorderRadiusControl
+											value={attributes.borderRadius}
+											onChange={(value) => setAttributes({ borderRadius: value })}
+										/>
+									</div>
+								)}
 							</PanelBody>
 						)}
 
 						{/* EFFECTS TAB */}
 						{tab.name === 'effects' && (
 							<PanelBody>
-								<ImageHoverControl
-									attributes={attributes}
-									setAttributes={setAttributes}
-								/>
+								{attributes.mediaType === 'image' && attributes.image.url ? (
+									<ImageHoverControl attributes={attributes} setAttributes={setAttributes} />
+								) : (
+									<p style={{ color: '#757575', fontSize: '13px' }}>
+										{__('Hover effects are only available for images.', 'codeweber-gutenberg-blocks')}
+									</p>
+								)}
 							</PanelBody>
 						)}
 
 						{/* LIGHTBOX TAB */}
 						{tab.name === 'lightbox' && (
 							<PanelBody>
-								<LightboxControl
-									attributes={attributes}
-									setAttributes={setAttributes}
-								/>
+								{attributes.mediaType === 'image' && attributes.image.url ? (
+									<LightboxControl attributes={attributes} setAttributes={setAttributes} />
+								) : (
+									<p style={{ color: '#757575', fontSize: '13px' }}>
+										{__('Lightbox is only available for images.', 'codeweber-gutenberg-blocks')}
+									</p>
+								)}
 							</PanelBody>
 						)}
 
@@ -106,4 +99,3 @@ export const ImageSimpleSidebar = ({ attributes, setAttributes }) => {
 		</InspectorControls>
 	);
 };
-

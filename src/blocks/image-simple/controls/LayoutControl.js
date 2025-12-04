@@ -1,7 +1,9 @@
 import { __ } from '@wordpress/i18n';
-import { SelectControl, ToggleControl, RangeControl, ButtonGroup, Button, Tooltip, Dropdown } from '@wordpress/components';
-import { Icon, info, chevronDown } from '@wordpress/icons';
+import { SelectControl, ToggleControl, RangeControl, ButtonGroup, Button, Tooltip } from '@wordpress/components';
+import { Icon, info } from '@wordpress/icons';
 import { useState } from '@wordpress/element';
+import { ResponsiveControl, createSwiperItemsConfig } from '../../../components/responsive-control';
+import { GridControl } from '../../../components/grid-control';
 
 export const LayoutControl = ({ attributes, setAttributes }) => {
 	const {
@@ -49,69 +51,7 @@ export const LayoutControl = ({ attributes, setAttributes }) => {
 		</div>
 	);
 
-	// Helper для Items Per View с выпадающими списками
-	const ItemsPerViewTabs = () => {
-		const breakpoints = [
-			{ key: 'D', label: 'D', value: swiperItems, onChange: (v) => setAttributes({ swiperItems: v }), options: ['1', '2', '3', '4', '5', '6'] },
-			{ key: 'XS', label: 'XS', value: swiperItemsXs, onChange: (v) => setAttributes({ swiperItemsXs: v }), options: ['', '1', '2', '3', '4'] },
-			{ key: 'SM', label: 'SM', value: swiperItemsSm, onChange: (v) => setAttributes({ swiperItemsSm: v }), options: ['', '1', '2', '3', '4'] },
-			{ key: 'MD', label: 'MD', value: swiperItemsMd, onChange: (v) => setAttributes({ swiperItemsMd: v }), options: ['', '1', '2', '3', '4', '5'] },
-			{ key: 'LG', label: 'LG', value: swiperItemsLg, onChange: (v) => setAttributes({ swiperItemsLg: v }), options: ['', '1', '2', '3', '4', '5', '6'] },
-			{ key: 'XL', label: 'XL', value: swiperItemsXl, onChange: (v) => setAttributes({ swiperItemsXl: v }), options: ['', '1', '2', '3', '4', '5', '6'] },
-			{ key: 'XXL', label: 'XXL', value: swiperItemsXxl, onChange: (v) => setAttributes({ swiperItemsXxl: v }), options: ['', '1', '2', '3', '4', '5', '6'] },
-		];
-
-		return (
-			<div style={{ marginBottom: '12px' }}>
-				<div style={{ marginBottom: '8px', fontSize: '11px', fontWeight: '500', textTransform: 'uppercase', color: '#1e1e1e' }}>
-					{__('Items Per View', 'codeweber-gutenberg-blocks')}
-				</div>
-				<div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
-					{breakpoints.map((bp) => (
-						<Dropdown
-							key={bp.key}
-							position="bottom center"
-							renderToggle={({ isOpen, onToggle }) => (
-								<Button
-									variant={bp.value && bp.value !== '' ? 'primary' : 'secondary'}
-									onClick={onToggle}
-									aria-expanded={isOpen}
-									style={{ minWidth: '44px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '2px' }}
-								>
-									{bp.label}
-									<span style={{ fontSize: '10px', opacity: 0.7 }}>
-										{bp.value === '' ? 'Auto' : bp.value}
-									</span>
-									<Icon icon={chevronDown} size={12} />
-								</Button>
-							)}
-							renderContent={({ onClose }) => (
-								<div style={{ padding: '8px', minWidth: '80px' }}>
-									{bp.options.map((opt) => (
-										<Button
-											key={opt}
-											onClick={() => {
-												bp.onChange(opt);
-												onClose();
-											}}
-											variant={bp.value === opt ? 'primary' : 'tertiary'}
-											style={{ 
-												width: '100%', 
-												marginBottom: '4px',
-												justifyContent: 'flex-start'
-											}}
-										>
-											{opt === '' ? 'Auto' : opt}
-										</Button>
-									))}
-								</div>
-							)}
-						/>
-					))}
-				</div>
-			</div>
-		);
-	};
+	// Используем универсальный компонент ResponsiveControl вместо ItemsPerViewTabs
 
 	return (
 		<>
@@ -142,23 +82,15 @@ export const LayoutControl = ({ attributes, setAttributes }) => {
 			{/* Grid Settings */}
 			{displayMode === 'grid' && (
 				<>
-					<SelectControl
-						label={__('Grid Columns', 'codeweber-gutenberg-blocks')}
-						value={gridColumns}
-						options={[
-							{ label: '2', value: '2' },
-							{ label: '3', value: '3' },
-							{ label: '4', value: '4' },
-							{ label: '5', value: '5' },
-							{ label: '6', value: '6' },
-							{ label: '7', value: '7' },
-							{ label: '8', value: '8' },
-							{ label: '9', value: '9' },
-							{ label: '10', value: '10' },
-							{ label: '11', value: '11' },
-							{ label: '12', value: '12' },
-						]}
-						onChange={(value) => setAttributes({ gridColumns: value })}
+					{/* Используем GridControl только для Row Cols */}
+					<GridControl
+						attributes={attributes}
+						setAttributes={setAttributes}
+						attributePrefix="grid"
+						showRowCols={true}
+						showGap={false}
+						showSpacing={false}
+						rowColsLabel={__('Images Per Row', 'codeweber-gutenberg-blocks')}
 					/>
 
 					<SelectControl
@@ -230,7 +162,9 @@ export const LayoutControl = ({ attributes, setAttributes }) => {
 						step={100}
 					/>
 
-					<ItemsPerViewTabs />
+					<ResponsiveControl
+						{...createSwiperItemsConfig(attributes, setAttributes)}
+					/>
 
 					<ToggleControl
 						label={

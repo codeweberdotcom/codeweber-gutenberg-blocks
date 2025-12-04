@@ -1,73 +1,116 @@
 /**
- * ImageSimpleRender - простой рендеринг изображения без эффектов
+ * ImageSimpleRender - рендеринг изображения с hover эффектами
  * Используется в блоке Image Simple
  */
+import { getLightboxAttributes } from '../../utilities/lightbox';
+import { getImageHoverClasses, getTooltipTitle } from '../image-hover/ImageHoverControl';
+import { getImageUrl } from '../../utilities/image-url';
+
 export const ImageSimpleRender = ({
 	image,
 	borderRadius,
 	enableLightbox,
 	lightboxGallery,
+	imageSize = 'full',
+	// Новые атрибуты для hover эффектов
+	simpleEffect,
+	effectType,
+	tooltipStyle,
+	overlayStyle,
+	overlayGradient,
+	overlayColor,
+	cursorStyle,
 	isEditor = false,
 }) => {
 	if (!image || !image.url) {
 		return null;
 	}
 
-	// Формируем атрибуты для lightbox
-	const getLightboxAttributes = () => {
-		if (!enableLightbox) {
-			return {};
-		}
+	// Получаем URL нужного размера
+	const imageUrl = getImageUrl(image, imageSize);
 
-		const attrs = {
-			'data-glightbox': 'image',
-		};
+	// Получаем атрибуты lightbox через утилиту
+	const lightboxAttrs = !isEditor 
+		? getLightboxAttributes(enableLightbox, lightboxGallery, 'image')
+		: {};
 
-		if (lightboxGallery) {
-			attrs['data-gallery'] = lightboxGallery;
-		}
+	// Получаем классы hover эффектов
+	const hoverClasses = getImageHoverClasses({
+		simpleEffect,
+		effectType,
+		tooltipStyle,
+		overlayStyle,
+		overlayGradient,
+		overlayColor,
+		cursorStyle,
+	});
 
-		return attrs;
-	};
+	// Формируем финальные классы
+	const figureClasses = `${hoverClasses} ${borderRadius || ''}`.trim();
 
-	const lightboxAttrs = getLightboxAttributes();
-	const figureClasses = borderRadius || '';
+	// Получаем title для tooltip
+	const tooltipTitle = getTooltipTitle(image, effectType);
 
-	// Для редактора - отключаем клики
-	if (isEditor) {
-		if (enableLightbox) {
-			return (
-				<figure className={figureClasses}>
-					<a href="#" onClick={(e) => e.preventDefault()}>
-						<img src={image.url} alt={image.alt || ''} />
-					</a>
-				</figure>
-			);
-		}
-		
-		// Без lightbox - без тега <a>
+	// Определяем href и обработчик клика в зависимости от контекста
+	const href = isEditor ? '#' : (image.linkUrl || image.url);
+	const onClickHandler = isEditor ? (e) => e.preventDefault() : undefined;
+
+	// Единая верстка для редактора и фронтенда
+	// Tooltip вариант
+	if (effectType === 'tooltip' && tooltipTitle) {
 		return (
-			<figure className={figureClasses}>
-				<img src={image.url} alt={image.alt || ''} />
-			</figure>
-		);
-	}
-
-	// Для фронтенда
-	if (enableLightbox) {
-		return (
-			<figure className={figureClasses}>
-				<a href={image.linkUrl || image.url} {...lightboxAttrs}>
-					<img src={image.url} alt={image.alt || ''} />
+			<figure className={figureClasses} title={tooltipTitle}>
+				<a href={href} onClick={onClickHandler} {...lightboxAttrs}>
+					<img src={imageUrl} alt={image.alt || ''} />
 				</a>
 			</figure>
 		);
 	}
-	
-	// Без lightbox - без тега <a>
+
+	// Overlay вариант
+	if (effectType === 'overlay') {
+		return (
+			<figure className={figureClasses}>
+				<a href={href} onClick={onClickHandler} {...lightboxAttrs}>
+					<img src={imageUrl} alt={image.alt || ''} />
+				</a>
+				{overlayStyle === 'overlay-4' ? (
+					<figcaption>
+						<div className="from-top mb-0 h2">
+							<span className="mt-5">+</span>
+						</div>
+					</figcaption>
+				) : overlayStyle === 'overlay-2' ? (
+					(image.title || image.caption || image.description) && (
+						<figcaption>
+							<h5 className="from-top mb-1">{image.title || image.caption}</h5>
+							{image.description && <p className="from-bottom mb-0">{image.description}</p>}
+						</figcaption>
+					)
+				) : overlayStyle === 'overlay-3' ? (
+					(image.title || image.caption || image.description) && (
+						<figcaption>
+							<h5 className="from-left mb-1">{image.title || image.caption}</h5>
+							{image.description && <p className="from-left mb-0">{image.description}</p>}
+						</figcaption>
+					)
+				) : (
+					(image.title || image.caption) && (
+						<figcaption>
+							<h5 className="from-top mb-0">{image.title || image.caption}</h5>
+						</figcaption>
+					)
+				)}
+			</figure>
+		);
+	}
+
+	// Простой вариант (cursor, none или только simple эффекты)
 	return (
 		<figure className={figureClasses}>
-			<img src={image.url} alt={image.alt || ''} />
+			<a href={href} onClick={onClickHandler} {...lightboxAttrs}>
+				<img src={imageUrl} alt={image.alt || ''} />
+			</a>
 		</figure>
 	);
 };

@@ -8,7 +8,7 @@
 	"description": "Standalone column block with extra background and meta settings.",
 	"supports": {
 		"html": false,
-		"customClassName": true,
+		"customClassName": false,
 		"anchor": true,
 		"innerBlocks": true
 	},
@@ -87,7 +87,7 @@
 		},
 		"columnColXs": {
 			"type": "string",
-			"default": "3"
+			"default": ""
 		},
 		"columnColSm": {
 			"type": "string",

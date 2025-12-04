@@ -1,0 +1,80 @@
+/**
+ * Image Block - Frontend Styles
+ */
+
+.cwgb-image-block {
+	display: block;
+
+	figure {
+		margin: 0;
+	}
+
+	img {
+		max-width: 100%;
+		height: auto;
+		display: block;
+	}
+
+	// Video Play Icon
+	.video-wrapper {
+		position: relative;
+		
+		.video-play-icon {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			z-index: 10;
+			width: 80px;
+			height: 80px;
+			background: rgba(255, 255, 255, 0.9);
+			border-radius: 50%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			cursor: pointer;
+			transition: all 0.3s ease;
+			
+			i {
+				font-size: 36px;
+				color: var(--bs-primary);
+				margin-left: 4px; // Визуальное центрирование треугольника
+			}
+
+			&:hover {
+				background: rgba(255, 255, 255, 1);
+				transform: translate(-50%, -50%) scale(1.1);
+			}
+		}
+
+		// Скрываем иконку после начала воспроизведения
+		&.playing .video-play-icon {
+			opacity: 0;
+			pointer-events: none;
+		}
+	}
+
+	// Responsive embed
+	.ratio {
+		position: relative;
+		width: 100%;
+		
+		&::before {
+			display: block;
+			padding-top: var(--bs-aspect-ratio);
+			content: "";
+		}
+
+		> * {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+		}
+	}
+
+	.ratio-16x9 {
+		--bs-aspect-ratio: calc(9 / 16 * 100%);
+	}
+}

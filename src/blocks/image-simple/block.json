@@ -6,8 +6,8 @@
   "title": "Image Simple",
   "category": "codeweber-gutenberg-blocks",
   "icon": "format-gallery",
-  "description": "Simple image block with gallery and carousel (without effects)",
-  "keywords": ["image", "gallery", "carousel", "simple"],
+  "description": "Image block with gallery, carousel and hover effects (tooltip, overlay, cursor)",
+  "keywords": ["image", "gallery", "carousel", "hover", "tooltip", "overlay"],
   "supports": {
     "html": false,
     "customClassName": false
@@ -25,9 +25,37 @@
       "type": "array",
       "default": []
     },
+    "imageSize": {
+      "type": "string",
+      "default": "full"
+    },
     "gridColumns": {
       "type": "string",
       "default": "3"
+    },
+    "gridRowCols": {
+      "type": "string",
+      "default": ""
+    },
+    "gridRowColsSm": {
+      "type": "string",
+      "default": ""
+    },
+    "gridRowColsMd": {
+      "type": "string",
+      "default": ""
+    },
+    "gridRowColsLg": {
+      "type": "string",
+      "default": ""
+    },
+    "gridRowColsXl": {
+      "type": "string",
+      "default": ""
+    },
+    "gridRowColsXxl": {
+      "type": "string",
+      "default": ""
     },
     "gridGapX": {
       "type": "string",
@@ -152,6 +180,34 @@
     "lightboxGallery": {
       "type": "string",
       "default": "gallery-1"
+    },
+    "simpleEffect": {
+      "type": "string",
+      "default": "none"
+    },
+    "effectType": {
+      "type": "string",
+      "default": "none"
+    },
+    "tooltipStyle": {
+      "type": "string",
+      "default": "itooltip-dark"
+    },
+    "overlayStyle": {
+      "type": "string",
+      "default": "overlay-1"
+    },
+    "overlayGradient": {
+      "type": "string",
+      "default": "gradient-1"
+    },
+    "overlayColor": {
+      "type": "boolean",
+      "default": false
+    },
+    "cursorStyle": {
+      "type": "string",
+      "default": "cursor-dark"
     },
     "blockClass": {
       "type": "string",

@@ -8,7 +8,7 @@ import { __ } from '@wordpress/i18n';
 import { Icon, cog, positionCenter, mobile, resizeCornerNE } from '@wordpress/icons';
 import { PositioningControl } from '../../components/layout/PositioningControl';
 import { BlockMetaFields } from '../../components/block-meta/BlockMetaFields';
-import { AdaptiveControl } from '../../components/adaptive/AdaptiveControl';
+import { ResponsiveControl, createColumnWidthConfig } from '../../components/responsive-control';
 import { SpacingControl } from '../../components/spacing/SpacingControl';
 import { getColumnClassNames, normalizeColumnId } from './utils';
 
@@ -97,14 +97,8 @@ const ColumnEdit = ({ attributes, setAttributes }) => {
 							)}
 							{tab.name === 'adaptive' && (
 								<div style={{ padding: '16px' }}>
-									<AdaptiveControl
-										columnColXs={columnColXs}
-										columnColSm={columnColSm}
-										columnColMd={columnColMd}
-										columnColLg={columnColLg}
-										columnColXl={columnColXl}
-										columnColXxl={columnColXxl}
-										onChange={(key, value) => setAttributes({ [key]: value })}
+									<ResponsiveControl
+										{...createColumnWidthConfig(attributes, setAttributes, 'dropdown')}
 									/>
 								</div>
 							)}

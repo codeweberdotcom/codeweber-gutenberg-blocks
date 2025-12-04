@@ -4,7 +4,7 @@ import { getColumnsClassNames, normalizeColumnsId, normalizeColumnsData } from '
 const ColumnsSave = ({ attributes }) => {
 	const { columnsId, columnsData } = attributes;
 	const blockProps = useBlockProps.save({
-		className: getColumnsClassNames(attributes),
+		className: getColumnsClassNames(attributes, 'save'),
 		id: normalizeColumnsId(columnsId) || undefined,
 	});
 

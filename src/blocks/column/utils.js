@@ -130,22 +130,33 @@ export const getAdaptiveClasses = (attrs = {}) => {
 		columnColXxl,
 	} = attrs;
 
-	if (columnColXs) {
-		classes.push(columnColXs === 'auto' ? 'col-auto' : `col-${columnColXs}`);
+	// "" (None) = 'col' (растягивается)
+	// "auto" = 'col-auto' (по контенту)
+	// "3" = 'col-3' (фиксированная ширина)
+	
+	if (columnColXs !== undefined && columnColXs !== null) {
+		if (columnColXs === '') {
+			classes.push('col');
+		} else if (columnColXs === 'auto') {
+			classes.push('col-auto');
+		} else {
+			classes.push(`col-${columnColXs}`);
+		}
 	}
-	if (columnColSm) {
+	
+	if (columnColSm !== undefined && columnColSm !== null && columnColSm !== '') {
 		classes.push(columnColSm === 'auto' ? 'col-sm-auto' : `col-sm-${columnColSm}`);
 	}
-	if (columnColMd) {
+	if (columnColMd !== undefined && columnColMd !== null && columnColMd !== '') {
 		classes.push(columnColMd === 'auto' ? 'col-md-auto' : `col-md-${columnColMd}`);
 	}
-	if (columnColLg) {
+	if (columnColLg !== undefined && columnColLg !== null && columnColLg !== '') {
 		classes.push(columnColLg === 'auto' ? 'col-lg-auto' : `col-lg-${columnColLg}`);
 	}
-	if (columnColXl) {
+	if (columnColXl !== undefined && columnColXl !== null && columnColXl !== '') {
 		classes.push(columnColXl === 'auto' ? 'col-xl-auto' : `col-xl-${columnColXl}`);
 	}
-	if (columnColXxl) {
+	if (columnColXxl !== undefined && columnColXxl !== null && columnColXxl !== '') {
 		classes.push(columnColXxl === 'auto' ? 'col-xxl-auto' : `col-xxl-${columnColXxl}`);
 	}
 

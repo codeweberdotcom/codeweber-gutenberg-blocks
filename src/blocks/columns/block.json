@@ -8,7 +8,7 @@
     "description": "Custom columns block with layout controls.",
     "supports": {
         "html": false,
-        "customClassName": true,
+        "customClassName": false,
         "anchor": true,
         "align": false
     },

@@ -118,6 +118,7 @@ class Plugin {
 		// Загружаем переводы для всех скриптов блоков
 		// WordPress автоматически генерирует handle: {namespace}-{block-name}-editor-script
 		$blocks = [
+			'image',
 			'image-simple',
 			'button',
 			'card',
@@ -185,36 +186,83 @@ class Plugin {
 	 */
 	public static function get_image_sizes_callback() {
 		$image_sizes = [];
+		$all_sizes = [];
+		
+		// Получаем все intermediate размеры (исключая удаленные)
+		$intermediate_sizes = get_intermediate_image_sizes();
+		
+		// Добавляем стандартные размеры WordPress (если они не удалены)
+		foreach (['thumbnail', 'medium', 'medium_large', 'large'] as $size) {
+			if (in_array($size, $intermediate_sizes)) {
+				$width = get_option($size . '_size_w');
+				$height = get_option($size . '_size_h');
+				
+				if ($width || $height) {
+					$all_sizes[$size] = [
+						'width' => $width,
+						'height' => $height,
+						'crop' => get_option($size . '_crop'),
+					];
+				}
+			}
+		}
+		
+		// Добавляем все кастомные размеры из темы
+		if (isset($GLOBALS['_wp_additional_image_sizes'])) {
+			foreach ($GLOBALS['_wp_additional_image_sizes'] as $size_key => $size_info) {
+				// Проверяем, что размер не был удален
+				if (in_array($size_key, $intermediate_sizes)) {
+					$all_sizes[$size_key] = $size_info;
+				}
+			}
+		}
 
-		// Get all registered image sizes
-		$registered_sizes = get_intermediate_image_sizes();
-
-		foreach ($registered_sizes as $size_key) {
+		// Формируем массив для REST API
+		foreach ($all_sizes as $size_key => $size_info) {
+			$width = isset($size_info['width']) ? intval($size_info['width']) : null;
+			$height = isset($size_info['height']) ? intval($size_info['height']) : null;
+			
+			// Пропускаем размеры без параметров
+			if (!$width && !$height) {
+				continue;
+			}
+			
 			$size_data = [
 				'value' => $size_key,
-				'label' => ucfirst($size_key),
-				'width' => null,
-				'height' => null,
+				'label' => ucfirst(str_replace(['_', '-'], ' ', $size_key)),
+				'width' => $width,
+				'height' => $height,
 			];
 
-			// Get size details if available
-			if (isset($GLOBALS['_wp_additional_image_sizes'][$size_key])) {
-				$size_info = $GLOBALS['_wp_additional_image_sizes'][$size_key];
-				$size_data['width'] = $size_info['width'];
-				$size_data['height'] = $size_info['height'];
-				$size_data['crop'] = $size_info['crop'];
-			} elseif (in_array($size_key, ['thumbnail', 'medium', 'large'])) {
-				$size_data['width'] = get_option($size_key . '_size_w');
-				$size_data['height'] = get_option($size_key . '_size_h');
-			}
-
-			// Create label with dimensions if available
-			if ($size_data['width'] && $size_data['height']) {
-				$size_data['label'] = sprintf('%s (%dx%d)', ucfirst($size_key), $size_data['width'], $size_data['height']);
+			// Create label with dimensions
+			if ($width && $height) {
+				$size_data['label'] = sprintf(
+					'%s (%dx%d)', 
+					ucfirst(str_replace(['_', '-'], ' ', $size_key)), 
+					$width, 
+					$height
+				);
+			} elseif ($width) {
+				$size_data['label'] = sprintf(
+					'%s (%dpx width)', 
+					ucfirst(str_replace(['_', '-'], ' ', $size_key)), 
+					$width
+				);
+			} elseif ($height) {
+				$size_data['label'] = sprintf(
+					'%s (%dpx height)', 
+					ucfirst(str_replace(['_', '-'], ' ', $size_key)), 
+					$height
+				);
 			}
 
 			$image_sizes[] = $size_data;
 		}
+
+		// Сортируем по имени для удобства
+		usort($image_sizes, function($a, $b) {
+			return strcmp($a['label'], $b['label']);
+		});
 
 		return new \WP_REST_Response($image_sizes, 200);
 	}

@@ -5,12 +5,20 @@ import {
 	SwiperSlide, 
 	getSwiperConfigFromAttributes 
 } from '../../components/swiper/SwiperSlider';
+import { getRowColsClasses } from '../../components/grid-control';
 
 export default function Save({ attributes }) {
 	const {
 		displayMode,
 		images,
+		imageSize,
 		gridColumns,
+		gridRowCols,
+		gridRowColsSm,
+		gridRowColsMd,
+		gridRowColsLg,
+		gridRowColsXl,
+		gridRowColsXxl,
 		gridGapX,
 		gridGapY,
 		swiperEffect,
@@ -42,6 +50,14 @@ export default function Save({ attributes }) {
 		borderRadius,
 		enableLightbox,
 		lightboxGallery,
+		// Image Hover атрибуты
+		simpleEffect,
+		effectType,
+		tooltipStyle,
+		overlayStyle,
+		overlayGradient,
+		overlayColor,
+		cursorStyle,
 		blockClass,
 		blockId,
 		blockData,
@@ -50,27 +66,11 @@ export default function Save({ attributes }) {
 	// Функция для получения классов контейнера
 	const getContainerClasses = () => {
 		if (displayMode === 'grid') {
-			return `row gy-${gridGapY} gx-${gridGapX}`;
+			// Используем row-cols для адаптивности
+			const rowColsClasses = getRowColsClasses(attributes, 'grid', gridColumns);
+			return `row gy-${gridGapY} gx-${gridGapX} ${rowColsClasses.join(' ')}`;
 		}
 		return '';
-	};
-
-	// Функция для получения классов колонок в grid
-	const getColumnClasses = () => {
-		const colMap = {
-			'2': 'col-md-6',
-			'3': 'col-md-4',
-			'4': 'col-md-3',
-			'5': 'col-md-2',
-			'6': 'col-md-2',
-			'7': 'col-md-1',
-			'8': 'col-md-1',
-			'9': 'col-md-1',
-			'10': 'col-md-1',
-			'11': 'col-md-1',
-			'12': 'col-md-1',
-		};
-		return colMap[gridColumns] || 'col-md-4';
 	};
 
 	// Получаем конфигурацию Swiper из атрибутов (используем утилиту)
@@ -106,21 +106,37 @@ export default function Save({ attributes }) {
 				// Режим Single
 				<ImageSimpleRender
 					image={images[0]}
+					imageSize={imageSize}
 					borderRadius={borderRadius}
 					enableLightbox={enableLightbox}
 					lightboxGallery={lightboxGallery}
+					simpleEffect={simpleEffect}
+					effectType={effectType}
+					tooltipStyle={tooltipStyle}
+					overlayStyle={overlayStyle}
+					overlayGradient={overlayGradient}
+					overlayColor={overlayColor}
+					cursorStyle={cursorStyle}
 					isEditor={false}
 				/>
 			) : displayMode === 'grid' ? (
 				// Режим Grid
 				<div className={getContainerClasses()}>
 					{images.map((image, index) => (
-						<div key={index} className={getColumnClasses()}>
+						<div key={index}>
 							<ImageSimpleRender
 								image={image}
+								imageSize={imageSize}
 								borderRadius={borderRadius}
 								enableLightbox={enableLightbox}
 								lightboxGallery={lightboxGallery}
+								simpleEffect={simpleEffect}
+								effectType={effectType}
+								tooltipStyle={tooltipStyle}
+								overlayStyle={overlayStyle}
+								overlayGradient={overlayGradient}
+								overlayColor={overlayColor}
+								cursorStyle={cursorStyle}
 								isEditor={false}
 							/>
 						</div>
@@ -133,9 +149,17 @@ export default function Save({ attributes }) {
 						<SwiperSlide key={index}>
 							<ImageSimpleRender
 								image={image}
+								imageSize={imageSize}
 								borderRadius={borderRadius}
 								enableLightbox={enableLightbox}
 								lightboxGallery={lightboxGallery}
+								simpleEffect={simpleEffect}
+								effectType={effectType}
+								tooltipStyle={tooltipStyle}
+								overlayStyle={overlayStyle}
+								overlayGradient={overlayGradient}
+								overlayColor={overlayColor}
+								cursorStyle={cursorStyle}
 								isEditor={false}
 							/>
 						</SwiperSlide>

@@ -1,8 +1,9 @@
 import { __ } from '@wordpress/i18n';
 import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
 import { Button } from '@wordpress/components';
+import { ImageSizeControl } from '../image-size';
 
-export const ImageControl = ({ images, setAttributes }) => {
+export const ImageControl = ({ images, setAttributes, imageSize }) => {
 	// Обработка выбора изображений
 	const handleSelectImages = async (media) => {
 		// Получаем полные данные через REST API
@@ -10,8 +11,9 @@ export const ImageControl = ({ images, setAttributes }) => {
 			media.map(async (item) => {
 				let title = '';
 				let description = '';
+				let sizes = {};
 				
-				// Запрашиваем полные данные из REST API для получения title и description
+				// Запрашиваем полные данные из REST API для получения title, description и sizes
 				try {
 					const response = await fetch(`/wp-json/wp/v2/media/${item.id}`);
 					if (response.ok) {
@@ -27,6 +29,11 @@ export const ImageControl = ({ images, setAttributes }) => {
 							description = tempDiv.textContent || tempDiv.innerText || '';
 							description = description.trim();
 						}
+						
+						// Получаем все доступные размеры
+						if (fullData.media_details?.sizes) {
+							sizes = fullData.media_details.sizes;
+						}
 					}
 				} catch (error) {
 					console.warn('Failed to fetch full media data:', error);
@@ -34,12 +41,13 @@ export const ImageControl = ({ images, setAttributes }) => {
 				
 				return {
 					id: item.id,
-					url: item.url,
+					url: item.url, // Full size URL
+					sizes: sizes,  // Все доступные размеры
 					alt: item.alt || '',
 					title: title,
 					caption: item.caption || '',
 					description: description,
-					linkUrl: '', // Пока пустая ссылка (на Этапе 3 добавим полный LinkTypeSelector)
+					linkUrl: '', // Пока пустая ссылка
 				};
 			})
 		);
@@ -90,43 +98,55 @@ export const ImageControl = ({ images, setAttributes }) => {
 			</MediaUploadCheck>
 
 			{images && images.length > 0 && (
-				<div className="cwgb-image-list">
-					<p className="components-base-control__label">
-						{__('Selected Images:', 'codeweber-gutenberg-blocks')} {images.length}
-					</p>
-					{images.map((image, index) => (
-						<div key={index} className="cwgb-image-item">
-							<img
-								src={image.url}
-								alt={image.alt || ''}
-								className="cwgb-image-thumbnail"
-							/>
-							<div className="cwgb-image-actions">
-								<Button
-									icon="arrow-up-alt2"
-									onClick={() => handleMoveUp(index)}
-									disabled={index === 0}
-									label={__('Move Up', 'codeweber-gutenberg-blocks')}
-									isSmall
+				<>
+					{/* Image Size Control - в самом верху */}
+					<div style={{ marginBottom: '16px' }}>
+						<ImageSizeControl
+							value={imageSize}
+							onChange={(value) => setAttributes({ imageSize: value })}
+							label={__('Image Size', 'codeweber-gutenberg-blocks')}
+							help={__('Choose image size for display', 'codeweber-gutenberg-blocks')}
+						/>
+					</div>
+
+					<div className="cwgb-image-list">
+						<p className="components-base-control__label">
+							{__('Selected Images:', 'codeweber-gutenberg-blocks')} {images.length}
+						</p>
+						{images.map((image, index) => (
+							<div key={index} className="cwgb-image-item">
+								<img
+									src={image.url}
+									alt={image.alt || ''}
+									className="cwgb-image-thumbnail"
 								/>
-								<Button
-									icon="arrow-down-alt2"
-									onClick={() => handleMoveDown(index)}
-									disabled={index === images.length - 1}
-									label={__('Move Down', 'codeweber-gutenberg-blocks')}
-									isSmall
-								/>
-								<Button
-									icon="trash"
-									onClick={() => handleRemoveImage(index)}
-									label={__('Remove', 'codeweber-gutenberg-blocks')}
-									isDestructive
-									isSmall
-								/>
+								<div className="cwgb-image-actions">
+									<Button
+										icon="arrow-up-alt2"
+										onClick={() => handleMoveUp(index)}
+										disabled={index === 0}
+										label={__('Move Up', 'codeweber-gutenberg-blocks')}
+										isSmall
+									/>
+									<Button
+										icon="arrow-down-alt2"
+										onClick={() => handleMoveDown(index)}
+										disabled={index === images.length - 1}
+										label={__('Move Down', 'codeweber-gutenberg-blocks')}
+										isSmall
+									/>
+									<Button
+										icon="trash"
+										onClick={() => handleRemoveImage(index)}
+										label={__('Remove', 'codeweber-gutenberg-blocks')}
+										isDestructive
+										isSmall
+									/>
+								</div>
 							</div>
-						</div>
-					))}
-				</div>
+						))}
+					</div>
+				</>
 			)}
 		</div>
 	);

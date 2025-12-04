@@ -92,20 +92,17 @@ $gutter-scale: (
 }
 
 @function row-cols-percentage($cols) {
-	@return math.div($cols, 12) * 100%;
+	@return math.div(100%, $cols);
 }
 
 @mixin apply-row-cols($selector, $columns) {
-	#{$selector} {
-		> .block-editor-inner-blocks > .block-editor-block-list__layout > .block-editor-block-list__block,
-		> .block-editor-block-list__layout > .block-editor-block-list__block {
-			flex: 0 0 row-cols-percentage($columns);
-			max-width: row-cols-percentage($columns);
+	.naviddev-columns#{$selector} {
+		> .block-editor-inner-blocks > .block-editor-block-list__layout > .block-editor-block-list__block {
+			flex: 0 0 row-cols-percentage($columns) !important;
+			max-width: row-cols-percentage($columns) !important;
+			width: auto !important;
 		}
 	}
-}
-@function col-percentage($cols) {
-	@return math.div($cols, 12) * 100%;
 }
 
 @for $i from 1 through 12 {
@@ -115,5 +112,14 @@ $gutter-scale: (
   @include apply-row-cols(".row-cols-lg-#{$i}", $i);
   @include apply-row-cols(".row-cols-xl-#{$i}", $i);
   @include apply-row-cols(".row-cols-xxl-#{$i}", $i);
+}
+
+// Также добавляем правила для row-cols-auto
+.naviddev-columns.row-cols-auto {
+	> .block-editor-inner-blocks > .block-editor-block-list__layout > .block-editor-block-list__block {
+		flex: 0 0 auto !important;
+		width: auto !important;
+		max-width: none !important;
+	}
 }
 

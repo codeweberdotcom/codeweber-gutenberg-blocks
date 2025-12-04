@@ -138,10 +138,10 @@ export const initSwiper = (selector = null) => {
 		return false;
 	}
 
-	// Check if theme has Swiper initialization function
-	if (typeof window.theme?.initSwiper === 'function') {
+	// Check if theme has Swiper initialization function (swiperSlider is the actual function name)
+	if (typeof window.theme?.swiperSlider === 'function') {
 		try {
-			window.theme.initSwiper(selector);
+			window.theme.swiperSlider(selector);
 			return true;
 		} catch (error) {
 			console.error('Error initializing Swiper:', error);

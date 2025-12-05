@@ -17,6 +17,7 @@ import { useImageSizes } from '../../hooks/useImageSizes';
  * @param {string} props.label - Label для контрола
  * @param {string} props.help - Текст подсказки
  * @param {Array} props.customSizes - Кастомные размеры (опционально, переопределяет API)
+ * @param {Array} props.availableSizes - Массив доступных размеров для фильтрации (имена размеров)
  * @param {boolean} props.includeFull - Включать "Full Size" (по умолчанию true)
  * @param {boolean} props.sort - Сортировать размеры (по умолчанию true)
  * @param {boolean} props.showLoading - Показывать индикатор загрузки (по умолчанию false)
@@ -27,6 +28,7 @@ export const ImageSizeControl = ({
 	label,
 	help,
 	customSizes,
+	availableSizes = null,
 	includeFull = true,
 	sort = true,
 	showLoading = false,
@@ -38,7 +40,12 @@ export const ImageSizeControl = ({
 	});
 
 	// Используем customSizes или API sizes
-	const sizes = customSizes || apiSizes;
+	let sizes = customSizes || apiSizes;
+
+	// Фильтруем размеры по availableSizes если передан
+	if (availableSizes && availableSizes.length > 0) {
+		sizes = sizes.filter(size => availableSizes.includes(size.value));
+	}
 
 	// Форматируем опции для SelectControl
 	const options = sizes.map(size => ({

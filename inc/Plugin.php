@@ -75,7 +75,7 @@ class Plugin {
 			'columns',
 			'heading-subtitle',
 			'icon',
-			'image',
+			'media',
 			'paragraph',
 			'card',
 			'feature',
@@ -119,7 +119,7 @@ class Plugin {
 		// Загружаем переводы для всех скриптов блоков
 		// WordPress автоматически генерирует handle: {namespace}-{block-name}-editor-script
 		$blocks = [
-			'image',
+			'media',
 			'image-simple',
 			'button',
 			'card',

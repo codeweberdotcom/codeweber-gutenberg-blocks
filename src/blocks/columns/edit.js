@@ -147,11 +147,38 @@ const ColumnsEdit = ({ attributes, setAttributes, clientId }) => {
 
 	// Обработчик изменения типа сетки
 	const handleGridTypeChange = (newType) => {
-		setAttributes({ columnsType: newType });
-		
-		// Если переключились на Columns Grid, сбрасываем ширины колонок на None (col)
 		if (newType === 'columns-grid') {
+			// Переключение на Columns Grid: очищаем Classic Grid атрибуты и сбрасываем ширины колонок
 			resetColumnWidthsToNone();
+			setAttributes({ columnsType: newType });
+		} else if (newType === 'classic') {
+			// Переключение на Classic Grid: очищаем Columns Grid атрибуты (row-cols, gap, spacing)
+			setAttributes({
+				columnsType: newType,
+				// Очищаем row-cols
+				columnsRowCols: '',
+				columnsRowColsSm: '',
+				columnsRowColsMd: '',
+				columnsRowColsLg: '',
+				columnsRowColsXl: '',
+				columnsRowColsXxl: '',
+				// Очищаем gap
+				columnsGapType: '',
+				columnsGapXs: '',
+				columnsGapSm: '',
+				columnsGapMd: '',
+				columnsGapLg: '',
+				columnsGapXl: '',
+				columnsGapXxl: '',
+				// Очищаем spacing
+				columnsSpacingType: '',
+				columnsSpacingXs: '',
+				columnsSpacingSm: '',
+				columnsSpacingMd: '',
+				columnsSpacingLg: '',
+				columnsSpacingXl: '',
+				columnsSpacingXxl: '',
+			});
 		}
 	};
 

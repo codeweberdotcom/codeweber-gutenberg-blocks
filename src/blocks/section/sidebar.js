@@ -29,7 +29,7 @@ import { WavesControl } from '../../components/waves/WavesControl';
 export const SectionSidebar = ({ attributes, setAttributes }) => {
 	const [imageSize, setImageSize] = useState('');
 	const [videoSize, setVideoSize] = useState('');
-	const [imageSizes, setImageSizes] = useState([]);
+	const [availableImageSizes, setAvailableImageSizes] = useState([]);
 
 	const {
 		backgroundType,
@@ -75,51 +75,14 @@ export const SectionSidebar = ({ attributes, setAttributes }) => {
 	} = attributes;
 
 
-	// Fetch image sizes and current image data when component mounts or backgroundImageId changes
+	// Fetch current image data when component mounts or backgroundImageId changes
 	useEffect(() => {
-		// Get available image sizes from our custom REST API endpoint
-		wp.apiFetch({
-			path: '/codeweber-blocks/v1/image-sizes',
-			method: 'GET'
-		}).then((sizes) => {
-			let availableSizes = sizes.map(size => ({
-				value: size.value,
-				label: size.label,
-				width: size.width,
-				height: size.height
-			}));
-
-			// Ensure full size is always available
-			if (!availableSizes.find(size => size.value === 'full')) {
-				availableSizes.push({
-					value: 'full',
-					label: 'Full Size',
-					width: null,
-					height: null
-				});
-			}
-
-			// Sort sizes by label for better UX
-			availableSizes.sort((a, b) => a.label.localeCompare(b.label));
-
-			setImageSizes(availableSizes);
-		}).catch((error) => {
-			console.error('Failed to fetch image sizes:', error);
-			// Fallback to basic sizes
-			const fallbackSizes = [
-				{ value: 'thumbnail', label: 'Thumbnail (150x150)', width: 150, height: 150 },
-				{ value: 'medium', label: 'Medium (300x300)', width: 300, height: 300 },
-				{ value: 'large', label: 'Large (1024x1024)', width: 1024, height: 1024 },
-				{ value: 'full', label: 'Full Size', width: null, height: null }
-			];
-			setImageSizes(fallbackSizes);
-		});
-
 		if (backgroundImageId && backgroundImageId > 0) {
 			wp.apiFetch({
 				path: `/wp/v2/media/${backgroundImageId}`,
 				method: 'GET'
 			}).then((attachment) => {
+				// Get file size
 				if (attachment && attachment.media_details && attachment.media_details.filesize) {
 					const sizeInBytes = attachment.media_details.filesize;
 					if (sizeInBytes < 1024 * 1024) {
@@ -130,38 +93,51 @@ export const SectionSidebar = ({ attributes, setAttributes }) => {
 				} else {
 					setImageSize('');
 				}
+				
+				// Get available sizes from media_details
+				if (attachment && attachment.media_details && attachment.media_details.sizes) {
+					const sizes = Object.keys(attachment.media_details.sizes);
+					sizes.push('full'); // Always include full size
+					setAvailableImageSizes(sizes);
+				} else {
+					setAvailableImageSizes(['full']);
+				}
 			}).catch(() => {
 				setImageSize('');
+				setAvailableImageSizes([]);
 			});
 		} else {
 			setImageSize('');
+			setAvailableImageSizes([]);
 		}
 	}, [backgroundImageId]);
 
 	// Update image URL when backgroundImageSize changes
 	useEffect(() => {
-		if (backgroundImageId && backgroundImageId > 0) {
-			// Use WordPress function to get the correct image URL for the selected size
-			const imageData = wp.media.attachment(backgroundImageId);
-			if (imageData) {
-				imageData.fetch().then(() => {
-					const sizeUrl = imageData.get('url');
-					const sizes = imageData.get('sizes');
+		if (backgroundImageId && backgroundImageId > 0 && backgroundImageSize) {
+			// Use WordPress REST API to get image data
+			wp.apiFetch({
+				path: `/wp/v2/media/${backgroundImageId}`,
+				method: 'GET'
+			}).then((attachment) => {
+				let newUrl = attachment.source_url; // Default to full size
 
-					let newUrl = sizeUrl; // Default to full size
+				// Check if requested size exists in media_details
+				if (backgroundImageSize !== 'full' && 
+					attachment.media_details && 
+					attachment.media_details.sizes && 
+					attachment.media_details.sizes[backgroundImageSize]) {
+					
+					newUrl = attachment.media_details.sizes[backgroundImageSize].source_url;
+				}
 
-					if (backgroundImageSize && backgroundImageSize !== 'full' && sizes && sizes[backgroundImageSize]) {
-						newUrl = sizes[backgroundImageSize].url;
-					}
-
-					// Only update if URL is different
-					if (newUrl !== backgroundImageUrl) {
-						setAttributes({ backgroundImageUrl: newUrl });
-					}
-				}).catch((error) => {
-					console.error('Failed to fetch image data:', error);
-				});
-			}
+				// Update URL if different
+				if (newUrl !== backgroundImageUrl) {
+					setAttributes({ backgroundImageUrl: newUrl });
+				}
+			}).catch((error) => {
+				console.error('Failed to fetch image data:', error);
+			});
 		}
 	}, [backgroundImageSize, backgroundImageId]);
 
@@ -237,9 +213,9 @@ export const SectionSidebar = ({ attributes, setAttributes }) => {
 								attributes={attributes}
 								setAttributes={setAttributes}
 								allowVideo={true}
-								imageSizes={imageSizes}
 								backgroundImageSize={backgroundImageSize}
 								imageSizeLabel={imageSize}
+								availableImageSizes={availableImageSizes}
 							/>
 								{/* Background Video */}
 								{backgroundType === 'video' && (

@@ -4,6 +4,7 @@ import { ImageSidebar } from './sidebar';
 import { ImageRender } from './components/ImageRender';
 import { VideoRender } from './components/VideoRender';
 import { initLightbox } from '../../utilities/lightbox';
+import { initPlyr, destroyPlyr } from '../../utilities/plyr';
 
 export default function Edit({ attributes, setAttributes, clientId }) {
 	const {
@@ -19,10 +20,16 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		cursorStyle,
 		enableLightbox,
 		videoType,
+		videoLightbox,
+		videoVimeoId,
+		videoYoutubeId,
+		videoVkId,
+		videoRutubeId,
+		videoUrl,
 	} = attributes;
 
 	const blockProps = useBlockProps({
-		className: 'cwgb-image-block',
+		className: 'cwgb-media-block',
 	});
 
 	// Генерируем уникальный ключ для форсирования ре-рендера при изменении hover эффектов или imageSize
@@ -34,61 +41,52 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 	useEffect(() => {
 		if (typeof window === 'undefined' || !window.theme) return;
 
+		// Cleanup перед реинициализацией
+		destroyPlyr();
+
 		const timer = setTimeout(() => {
 			try {
 				// Очистка старых span.bg перед реинициализацией overlay
-				const oldBgSpans = document.querySelectorAll('.cwgb-image-block .overlay > a > span.bg, .cwgb-image-block .overlay > span > span.bg');
+				const oldBgSpans = document.querySelectorAll('.cwgb-media-block .overlay > a > span.bg, .cwgb-media-block .overlay > span > span.bg');
 				oldBgSpans.forEach(span => span.remove());
 
 				// Overlay (imageHoverOverlay) - добавляет <span class="bg"></span>
 				if (mediaType === 'image' && effectType === 'overlay' && typeof window.theme?.imageHoverOverlay === 'function') {
 					window.theme.imageHoverOverlay();
-					console.log('✅ Overlay reinitialized (image)');
+					console.log('✅ Overlay reinitialized (media)');
 				}
 
 				// Tooltip (iTooltip)
 				if (mediaType === 'image' && effectType === 'tooltip' && typeof window.theme?.iTooltip === 'function') {
 					window.theme.iTooltip();
-					console.log('✅ iTooltip reinitialized (image)');
+					console.log('✅ iTooltip reinitialized (media)');
 				}
 
-				// Lightbox (GLightbox)
-				if (mediaType === 'image' && enableLightbox && initLightbox()) {
-					console.log('✅ GLightbox reinitialized (image)');
-				}
-
-				// Plyr для видео
-				if (mediaType === 'video' && (videoType === 'html5' || videoType === 'vimeo' || videoType === 'youtube')) {
-					if (typeof window.Plyr !== 'undefined') {
-						// Уничтожаем старые экземпляры
-						const existingPlayers = document.querySelectorAll('.cwgb-image-block .player');
-						existingPlayers.forEach(player => {
-							if (player.plyr) {
-								player.plyr.destroy();
-							}
-						});
-
-						// Инициализируем новые
-						const players = Array.from(document.querySelectorAll('.cwgb-image-block .player')).map(p => new Plyr(p));
-						console.log('✅ Plyr reinitialized (image)', players.length);
+				// Lightbox (GLightbox) - для изображений и видео
+				if ((mediaType === 'image' && enableLightbox) || (mediaType === 'video' && videoLightbox)) {
+					if (initLightbox()) {
+						console.log('✅ GLightbox reinitialized (media)');
 					}
 				}
+
+				// Plyr (Video Player) - инициализируем в редакторе для YouTube и Vimeo
+				if (mediaType === 'video' && !videoLightbox && (videoType === 'youtube' || videoType === 'vimeo')) {
+					// Дополнительная задержка для Plyr
+					setTimeout(() => {
+						if (initPlyr()) {
+							console.log('✅ Plyr reinitialized (media)');
+						}
+					}, 200);
+				}
+
 			} catch (error) {
-				console.warn('⚠️ Library initialization failed (image):', error);
+				console.warn('⚠️ Library initialization failed (media):', error);
 			}
 		}, 300);
 
 		return () => {
 			clearTimeout(timer);
-			// Cleanup при unmount
-			if (mediaType === 'video' && typeof window.Plyr !== 'undefined') {
-				const players = document.querySelectorAll('.cwgb-image-block .player');
-				players.forEach(player => {
-					if (player.plyr) {
-						player.plyr.destroy();
-					}
-				});
-			}
+			destroyPlyr();
 		};
 	}, [
 		mediaType,
@@ -102,7 +100,13 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		overlayColor,
 		cursorStyle,
 		enableLightbox,
+		videoLightbox,
 		videoType,
+		videoVimeoId,
+		videoYoutubeId,
+		videoVkId,
+		videoRutubeId,
+		videoUrl,
 		clientId,
 	]);
 
@@ -131,7 +135,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 						</div>
 					)
 				) : (
-					<div key={`video-${videoType}`}>
+					<div key={`video-${videoType}-${videoLightbox}-${videoVimeoId}-${videoYoutubeId}-${videoVkId}-${videoRutubeId}-${videoUrl}`}>
 						<VideoRender attributes={attributes} isEditor={true} />
 					</div>
 				)}
@@ -139,3 +143,4 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		</>
 	);
 }
+

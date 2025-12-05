@@ -1,0 +1,38 @@
+/**
+ * Media Block - Editor Styles
+ */
+
+.wp-block-codeweber-blocks-media {
+	.cwgb-media-block {
+		// Запрет кликабельности в редакторе
+		a {
+			pointer-events: none;
+			cursor: default;
+		}
+
+		// Overlay элементы тоже не кликабельны
+		figure a {
+			pointer-events: none;
+		}
+	}
+
+	// Media Control
+	.cwgb-media-control {
+		.button-group-sidebar_2 {
+			display: flex;
+			width: 100%;
+
+			button {
+				flex: 1;
+			}
+		}
+
+		.mt-2 {
+			margin-top: 8px;
+		}
+
+		.mt-3 {
+			margin-top: 16px;
+		}
+	}
+}

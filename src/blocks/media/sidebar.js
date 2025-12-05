@@ -1,5 +1,5 @@
 import { InspectorControls } from '@wordpress/block-editor';
-import { TabPanel, PanelBody } from '@wordpress/components';
+import { TabPanel, PanelBody, ToggleControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { Icon, image, starFilled, search, cog } from '@wordpress/icons';
 import { MediaControl } from './controls/MediaControl';
@@ -22,7 +22,6 @@ export const ImageSidebar = ({ attributes, setAttributes }) => {
 	const tabs = [
 		{ name: 'media', title: <TabIcon icon={image} label={__('Media', 'codeweber-gutenberg-blocks')} /> },
 		{ name: 'effects', title: <TabIcon icon={starFilled} label={__('Effects', 'codeweber-gutenberg-blocks')} /> },
-		{ name: 'lightbox', title: <TabIcon icon={search} label={__('Lightbox', 'codeweber-gutenberg-blocks')} /> },
 		{ name: 'settings', title: <TabIcon icon={cog} label={__('Settings', 'codeweber-gutenberg-blocks')} /> },
 	];
 
@@ -36,6 +35,17 @@ export const ImageSidebar = ({ attributes, setAttributes }) => {
 							<PanelBody>
 								<MediaControl attributes={attributes} setAttributes={setAttributes} />
 								
+								{/* Video Lightbox Settings */}
+								{attributes.mediaType === 'video' && (
+									<div style={{ marginTop: '16px' }}>
+										<ToggleControl
+											label={__('Enable Video Lightbox', 'codeweber-gutenberg-blocks')}
+											checked={attributes.videoLightbox}
+											onChange={(value) => setAttributes({ videoLightbox: value })}
+										/>
+									</div>
+								)}
+
 								{/* Border Radius */}
 								{attributes.mediaType === 'image' && attributes.image.url && (
 									<div style={{ marginTop: '16px' }}>
@@ -61,18 +71,6 @@ export const ImageSidebar = ({ attributes, setAttributes }) => {
 							</PanelBody>
 						)}
 
-						{/* LIGHTBOX TAB */}
-						{tab.name === 'lightbox' && (
-							<PanelBody>
-								{attributes.mediaType === 'image' && attributes.image.url ? (
-									<LightboxControl attributes={attributes} setAttributes={setAttributes} />
-								) : (
-									<p style={{ color: '#757575', fontSize: '13px' }}>
-										{__('Lightbox is only available for images.', 'codeweber-gutenberg-blocks')}
-									</p>
-								)}
-							</PanelBody>
-						)}
 
 						{/* SETTINGS TAB */}
 						{tab.name === 'settings' && (

@@ -39,8 +39,9 @@ export const getColumnsClassNames = (attrs = {}, mode = 'save') => {
 	}
 	
 	// Используем getGridClasses для row-cols, gap и spacing
+	// Для Classic Grid не передаем fallbackRowCols, чтобы не генерировались row-cols-* классы
 	const gridClasses = getGridClasses(attrs, 'columns', {
-		fallbackRowCols: columnsCount ? String(columnsCount) : null,
+		fallbackRowCols: columnsType === 'columns-grid' && columnsCount ? String(columnsCount) : null,
 	});
 	classes.push(gridClasses);
 	

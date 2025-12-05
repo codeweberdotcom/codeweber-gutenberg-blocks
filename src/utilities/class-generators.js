@@ -82,14 +82,9 @@ export const generateBackgroundClasses = (attrs) => {
             if (backgroundSize) {
                 classes.push(backgroundSize);
             }
-            if (backgroundOverlay) {
-                if (backgroundOverlay === 'bg-overlay-300' || backgroundOverlay === 'bg-overlay-400') {
-                    classes.push('bg-overlay', backgroundOverlay);
-                } else {
-                    classes.push(backgroundOverlay);
-                }
-            } else {
-                classes.push('bg-overlay');
+            // Only add overlay classes if backgroundOverlay is not empty
+            if (backgroundOverlay && backgroundOverlay !== '') {
+                classes.push(backgroundOverlay);
             }
             break;
         case 'pattern':
@@ -100,14 +95,9 @@ export const generateBackgroundClasses = (attrs) => {
             break;
         case 'video':
             classes.push('video-wrapper', 'ratio', 'ratio-16x9');
-            if (backgroundOverlay) {
-                if (backgroundOverlay === 'bg-overlay-300' || backgroundOverlay === 'bg-overlay-400') {
-                    classes.push('bg-overlay', backgroundOverlay);
-                } else {
-                    classes.push(backgroundOverlay);
-                }
-            } else if (backgroundOverlay !== '') {
-                classes.push('bg-overlay');
+            // Only add overlay classes if backgroundOverlay is not empty
+            if (backgroundOverlay && backgroundOverlay !== '') {
+                classes.push(backgroundOverlay);
             }
             break;
     }

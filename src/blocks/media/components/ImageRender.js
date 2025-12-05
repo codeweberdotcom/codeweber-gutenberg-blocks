@@ -36,8 +36,13 @@ export const ImageRender = ({ attributes, isEditor = false }) => {
 	const lightboxAttrs = getLightboxAttributes(enableLightbox, lightboxGallery);
 
 	// Определяем href и обработчик клика
-	const href = isEditor ? '#' : (enableLightbox ? image.url : '#');
-	const onClickHandler = isEditor ? (e) => e.preventDefault() : undefined;
+	const href = enableLightbox && !isEditor ? image.url : '#';
+	const onClickHandler = (e) => {
+		if (isEditor) {
+			e.preventDefault();
+			e.stopPropagation();
+		}
+	};
 
 	// Формируем классы figure
 	const figureClasses = [
@@ -57,11 +62,14 @@ export const ImageRender = ({ attributes, isEditor = false }) => {
 		</div>
 	) : imageContent;
 
+	// Стили для отключения кликабельности в редакторе
+	const linkStyle = isEditor ? { pointerEvents: 'none', cursor: 'default' } : undefined;
+
 	// Tooltip вариант
 	if (effectType === 'tooltip' && tooltipTitle) {
 		return (
 			<figure className={figureClasses} title={tooltipTitle}>
-				<a href={href} onClick={onClickHandler} {...lightboxAttrs}>
+				<a href={href} onClick={onClickHandler} {...lightboxAttrs} style={linkStyle}>
 					{maskedImage}
 				</a>
 			</figure>
@@ -77,7 +85,7 @@ export const ImageRender = ({ attributes, isEditor = false }) => {
 		if (overlayStyle === 'overlay-4') {
 			return (
 				<figure className={figureClasses}>
-					<a href={href} onClick={onClickHandler} {...lightboxAttrs}>
+					<a href={href} onClick={onClickHandler} {...lightboxAttrs} style={linkStyle}>
 						{maskedImage}
 					</a>
 					{overlayText && (
@@ -92,7 +100,7 @@ export const ImageRender = ({ attributes, isEditor = false }) => {
 		// Остальные overlay стили
 		return (
 			<figure className={figureClasses}>
-				<a href={href} onClick={onClickHandler} {...lightboxAttrs}>
+				<a href={href} onClick={onClickHandler} {...lightboxAttrs} style={linkStyle}>
 					{maskedImage}
 				</a>
 				{overlayText && (
@@ -107,7 +115,7 @@ export const ImageRender = ({ attributes, isEditor = false }) => {
 	// Простой вариант (cursor, none или только simple эффекты)
 	return (
 		<figure className={figureClasses}>
-			<a href={href} onClick={onClickHandler} {...lightboxAttrs}>
+			<a href={href} onClick={onClickHandler} {...lightboxAttrs} style={linkStyle}>
 				{maskedImage}
 			</a>
 		</figure>

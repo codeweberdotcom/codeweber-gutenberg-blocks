@@ -1,10 +1,10 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"name": "codeweber-blocks/image",
+	"name": "codeweber-blocks/media",
 	"version": "1.0.0",
-	"title": "Image",
-	"category": "codeweber-blocks",
+	"title": "Media",
+	"category": "codeweber-gutenberg-blocks",
 	"icon": "format-image",
 	"description": "Display image or video with effects, masks and lightbox",
 	"keywords": ["image", "video", "mask", "lightbox", "hover"],
@@ -58,6 +58,14 @@
 			"default": ""
 		},
 		"videoYoutubeId": {
+			"type": "string",
+			"default": ""
+		},
+		"videoVkId": {
+			"type": "string",
+			"default": ""
+		},
+		"videoRutubeId": {
 			"type": "string",
 			"default": ""
 		},
@@ -128,6 +136,10 @@
 		"lightboxGallery": {
 			"type": "string",
 			"default": "gallery-1"
+		},
+		"videoLightbox": {
+			"type": "boolean",
+			"default": false
 		},
 		"blockClass": {
 			"type": "string",

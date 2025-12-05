@@ -1,0 +1,19 @@
+/**
+ * Media Block - Frontend Styles
+ * 
+ * Все основные стили (img-mask, player, ratio, btn-play) уже есть в теме
+ */
+
+.cwgb-media-block {
+	display: block;
+
+	figure {
+		margin: 0;
+	}
+
+	img {
+		max-width: 100%;
+		height: auto;
+		display: block;
+	}
+}

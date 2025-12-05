@@ -6,6 +6,7 @@ import { __ } from '@wordpress/i18n';
 import { colors } from '../../utilities/colors';
 import { gradientcolors } from '../../utilities/gradient_colors';
 import { ColorTypeControl } from '../colors/ColorTypeControl';
+import { ImageSizeControl } from '../image-size';
 
 const BACKGROUND_TYPES = [
 	{ label: __('None', 'codeweber-gutenberg-blocks'), value: 'none' },
@@ -35,12 +36,12 @@ export const BackgroundSettingsPanel = ({
 	attributes,
 	setAttributes,
 	allowVideo = false,
-	imageSizes = [],
 	backgroundImageSize,
 	renderImagePicker,
 	renderPatternPicker,
 	imageSizeLabel = '',
 	patternSizeLabel = '',
+	availableImageSizes = [],
 }) => {
 	const {
 		backgroundType,
@@ -124,9 +125,9 @@ const renderDefaultMediaPicker = ({
 	placeholderLabel,
 	sizeLabel = '',
 	selectLabel,
-	selectOptions = [],
 	selectValue,
 	selectOnChange,
+	availableSizes = [],
 }) => (
 	<div className="mb-3">
 		<div className="component-sidebar-title">
@@ -154,6 +155,7 @@ const renderDefaultMediaPicker = ({
 									justifyContent: 'center',
 									cursor: 'pointer',
 									transition: 'all 0.2s ease',
+									marginBottom: '15px',
 								}}
 							>
 								<div style={{ textAlign: 'center', color: '#666' }}>
@@ -219,6 +221,42 @@ const renderDefaultMediaPicker = ({
 								>
 									<i className="uil uil-times" style={{ margin: 0, fontSize: '12px' }}></i>
 								</Button>
+								{/* Size availability badge */}
+								{selectValue && availableSizes.length > 0 && (() => {
+									const isAvailable = availableSizes.includes(selectValue);
+									return (
+										<div
+											style={{
+												position: 'absolute',
+												top: '6px',
+												left: '6px',
+												padding: '4px 8px',
+												backgroundColor: isAvailable
+													? 'rgba(40, 167, 69, 0.9)' 
+													: 'rgba(255, 193, 7, 0.9)',
+												color: '#fff',
+												borderRadius: '3px',
+												fontSize: '10px',
+												fontWeight: '600',
+												display: 'flex',
+												alignItems: 'center',
+												gap: '4px',
+											}}
+										>
+											{isAvailable ? (
+												<>
+													<span>✓</span>
+													<span>{__('Available', 'codeweber-gutenberg-blocks')}</span>
+												</>
+											) : (
+												<>
+													<span>⚠</span>
+													<span>{__('Not Available', 'codeweber-gutenberg-blocks')}</span>
+												</>
+											)}
+										</div>
+									);
+								})()}
 								{sizeLabel && (
 									<div
 										style={{
@@ -241,12 +279,12 @@ const renderDefaultMediaPicker = ({
 				)}
 			/>
 		</MediaUploadCheck>
-		{selectOptions.length > 0 && selectLabel && (
-			<SelectControl
+		{selectLabel && selectOnChange && (
+			<ImageSizeControl
 				label={selectLabel}
 				value={selectValue || 'full'}
-				options={selectOptions}
 				onChange={(value) => selectOnChange?.(value)}
+				availableSizes={availableSizes}
 			/>
 		)}
 	</div>
@@ -262,9 +300,9 @@ const renderDefaultMediaPicker = ({
 		placeholderLabel: __('Select Image', 'codeweber-gutenberg-blocks'),
 		sizeLabel: imageSizeLabel,
 		selectLabel: __('Image Size', 'codeweber-gutenberg-blocks'),
-		selectOptions: imageSizes,
 		selectValue: backgroundImageSize,
 		selectOnChange: (value) => setAttributes({ backgroundImageSize: value }),
+		availableSizes: availableImageSizes,
 	};
 
 	const patternPickerProps = {
@@ -276,7 +314,6 @@ const renderDefaultMediaPicker = ({
 		placeholderLabel: __('Select Pattern', 'codeweber-gutenberg-blocks'),
 		sizeLabel: patternSizeLabel,
 		selectLabel: __('Pattern Size', 'codeweber-gutenberg-blocks'),
-		selectOptions: imageSizes,
 		selectValue: backgroundImageSize,
 		selectOnChange: (value) => setAttributes({ backgroundImageSize: value }),
 	};

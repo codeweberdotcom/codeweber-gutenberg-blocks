@@ -141,6 +141,10 @@
 			"type": "boolean",
 			"default": false
 		},
+		"lightboxUniqueId": {
+			"type": "string",
+			"default": ""
+		},
 		"blockClass": {
 			"type": "string",
 			"default": ""

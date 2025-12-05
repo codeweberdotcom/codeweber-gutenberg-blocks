@@ -37,6 +37,14 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		return `${simpleEffect}-${effectType}-${tooltipStyle}-${overlayStyle}-${overlayGradient}-${overlayColor}-${cursorStyle}`;
 	}, [simpleEffect, effectType, tooltipStyle, overlayStyle, overlayGradient, overlayColor, cursorStyle]);
 
+	// Generate unique ID for lightbox (only once, to avoid validation errors)
+	useEffect(() => {
+		if (videoLightbox && (videoType === 'vk' || videoType === 'rutube') && !attributes.lightboxUniqueId) {
+			const uniqueId = `video-${Math.random().toString(36).substr(2, 9)}`;
+			setAttributes({ lightboxUniqueId: uniqueId });
+		}
+	}, [videoLightbox, videoType, attributes.lightboxUniqueId]);
+
 	// Переинициализация библиотек при изменении настроек
 	useEffect(() => {
 		if (typeof window === 'undefined' || !window.theme) return;
@@ -53,34 +61,28 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 				// Overlay (imageHoverOverlay) - добавляет <span class="bg"></span>
 				if (mediaType === 'image' && effectType === 'overlay' && typeof window.theme?.imageHoverOverlay === 'function') {
 					window.theme.imageHoverOverlay();
-					console.log('✅ Overlay reinitialized (media)');
 				}
 
 				// Tooltip (iTooltip)
 				if (mediaType === 'image' && effectType === 'tooltip' && typeof window.theme?.iTooltip === 'function') {
 					window.theme.iTooltip();
-					console.log('✅ iTooltip reinitialized (media)');
 				}
 
 				// Lightbox (GLightbox) - для изображений и видео
 				if ((mediaType === 'image' && enableLightbox) || (mediaType === 'video' && videoLightbox)) {
-					if (initLightbox()) {
-						console.log('✅ GLightbox reinitialized (media)');
-					}
+					initLightbox();
 				}
 
 				// Plyr (Video Player) - инициализируем в редакторе для YouTube и Vimeo
 				if (mediaType === 'video' && !videoLightbox && (videoType === 'youtube' || videoType === 'vimeo')) {
 					// Дополнительная задержка для Plyr
 					setTimeout(() => {
-						if (initPlyr()) {
-							console.log('✅ Plyr reinitialized (media)');
-						}
+						initPlyr();
 					}, 200);
 				}
 
 			} catch (error) {
-				console.warn('⚠️ Library initialization failed (media):', error);
+				console.error('Library initialization failed (media):', error);
 			}
 		}, 300);
 
@@ -136,7 +138,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 					)
 				) : (
 					<div key={`video-${videoType}-${videoLightbox}-${videoVimeoId}-${videoYoutubeId}-${videoVkId}-${videoRutubeId}-${videoUrl}`}>
-						<VideoRender attributes={attributes} isEditor={true} />
+						<VideoRender attributes={attributes} isEditor={true} setAttributes={setAttributes} />
 					</div>
 				)}
 			</div>

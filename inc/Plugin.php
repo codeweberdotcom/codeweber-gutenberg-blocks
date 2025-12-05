@@ -46,6 +46,13 @@ class Plugin {
 		add_action('enqueue_block_editor_assets', __CLASS__ . '::loadJSTranslations', 100);
 	}
 	
+	public static function initVideoThumbnailAPI(): void {
+		error_log('Plugin::initVideoThumbnailAPI() called');
+		// Initialize Video Thumbnail API - must be called early
+		$api = new VideoThumbnailAPI();
+		error_log('VideoThumbnailAPI instance created: ' . get_class($api));
+	}
+	
 	/**
 	 * Enqueue global editor styles for all blocks
 	 */

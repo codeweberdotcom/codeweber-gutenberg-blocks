@@ -1,6 +1,6 @@
 import { __ } from '@wordpress/i18n';
 
-export const VideoRender = ({ attributes, isEditor = false }) => {
+export const VideoRender = ({ attributes, isEditor = false, setAttributes }) => {
 	const {
 		videoType,
 		videoUrl,
@@ -16,27 +16,146 @@ export const VideoRender = ({ attributes, isEditor = false }) => {
 		videoControls,
 		showPlayIcon,
 		videoLightbox,
+		lightboxUniqueId,
 	} = attributes;
 
-	// Функция для получения URL видео для lightbox
-	const getVideoLightboxUrl = () => {
-		if (videoType === 'html5') return videoUrl;
-		if (videoType === 'vimeo') return `https://vimeo.com/${videoVimeoId}`;
-		if (videoType === 'youtube') return `https://www.youtube.com/watch?v=${videoYoutubeId}`;
+	// Функция для получения embed URL (используется inline плеером)
+	const getVideoEmbedUrl = () => {
 		if (videoType === 'vk' && videoVkId) {
-			// VK поддерживает два формата: oid=-123&id=456 или -123_456
-			if (videoVkId.includes('oid=')) {
-				return `https://vk.com/video_ext.php?${videoVkId}`;
+			console.log('🔍 VK - Starting parsing:', videoVkId);
+			let vkSrc = '';
+			
+			// Если это iframe код - извлекаем src
+			if (videoVkId.includes('<iframe')) {
+				const srcMatch = videoVkId.match(/src=["']([^"']+)["']/);
+				if (srcMatch && srcMatch[1]) {
+					vkSrc = srcMatch[1];
+					console.log('✅ VK - Extracted from iframe:', vkSrc);
+				}
 			}
-			return `https://vk.com/video${videoVkId}`;
+			// Если это прямая ссылка
+			else if (videoVkId.includes('vkvideo.ru') || videoVkId.includes('vk.com/video')) {
+				try {
+					const url = new URL(videoVkId.includes('http') ? videoVkId : `https://${videoVkId}`);
+					console.log('🔍 VK - Parsed URL:', url.href);
+					if (url.pathname.includes('video_ext.php')) {
+						vkSrc = url.href;
+						console.log('✅ VK - Already embed URL:', vkSrc);
+					} else {
+						const videoIdMatch = url.pathname.match(/video(-?\d+)_(\d+)/);
+						if (videoIdMatch) {
+							const oid = videoIdMatch[1];
+							const id = videoIdMatch[2];
+							vkSrc = `https://vkvideo.ru/video_ext.php?oid=${oid}&id=${id}`;
+							console.log('✅ VK - Converted to embed:', vkSrc);
+						}
+					}
+				} catch (e) {
+					console.error('❌ VK URL parsing error:', e);
+				}
+			}
+			// Если это ID в формате -229485578_456239126 или oid=-229485578&id=456239126
+			else if (videoVkId.includes('_') || videoVkId.includes('oid=')) {
+				if (videoVkId.includes('oid=')) {
+					vkSrc = `https://vkvideo.ru/video_ext.php?${videoVkId}`;
+					console.log('✅ VK - From params:', vkSrc);
+				} else {
+					const parts = videoVkId.split('_');
+					vkSrc = `https://vkvideo.ru/video_ext.php?oid=${parts[0]}&id=${parts[1]}`;
+					console.log('✅ VK - From ID format:', vkSrc);
+				}
+			}
+			console.log('🎯 VK - Final URL:', vkSrc);
+			return vkSrc;
 		}
-		if (videoType === 'rutube') return `https://rutube.ru/video/${videoRutubeId}`;
+		
+		if (videoType === 'rutube' && videoRutubeId) {
+			console.log('🔍 Rutube - Starting parsing:', videoRutubeId);
+			let rutubeId = videoRutubeId;
+			
+			// Если это iframe код
+			if (videoRutubeId.includes('<iframe')) {
+				const srcMatch = videoRutubeId.match(/src=["']([^"']+)["']/);
+				console.log('🔍 Rutube - iframe srcMatch:', srcMatch);
+				if (srcMatch && srcMatch[1]) {
+					const idMatch = srcMatch[1].match(/\/embed\/([a-f0-9]+)/);
+					console.log('🔍 Rutube - idMatch from src:', idMatch);
+					if (idMatch && idMatch[1]) {
+						rutubeId = idMatch[1];
+						console.log('✅ Rutube - ID from iframe:', rutubeId);
+					}
+				}
+			}
+			// Если это полная ссылка
+			else if (videoRutubeId.includes('rutube.ru')) {
+				try {
+					const url = new URL(videoRutubeId.includes('http') ? videoRutubeId : `https://${videoRutubeId}`);
+					console.log('🔍 Rutube - Parsed URL:', url.href);
+					const idMatch = url.pathname.match(/\/(?:video|embed)\/([a-f0-9]+)/);
+					console.log('🔍 Rutube - idMatch from URL:', idMatch);
+					if (idMatch && idMatch[1]) {
+						rutubeId = idMatch[1];
+						console.log('✅ Rutube - ID from URL:', rutubeId);
+					}
+				} catch (e) {
+					console.error('❌ Rutube URL parsing error:', e);
+				}
+			} else {
+				console.log('✅ Rutube - Direct ID:', rutubeId);
+			}
+			
+			const finalUrl = `https://rutube.ru/play/embed/${rutubeId}`;
+			console.log('🎯 Rutube - Final URL:', finalUrl);
+			return finalUrl;
+		}
+		
 		return '';
 	};
 
 	// Если включен Video Lightbox - рендерим превью с ссылкой
 	if (videoLightbox && (videoType === 'html5' || videoType === 'vimeo' || videoType === 'youtube' || videoType === 'vk' || videoType === 'rutube')) {
-		const videoLightboxUrl = getVideoLightboxUrl();
+		let videoLightboxUrl = '';
+		let glightboxAttr = '';
+		let hiddenIframe = null;
+		
+		// Используем сохраненный uniqueId или генерируем на основе видео ID (для save)
+		const uniqueId = lightboxUniqueId || `video-${(videoVkId || videoRutubeId || videoYoutubeId || videoVimeoId || 'default').substr(0, 9).replace(/[^a-z0-9]/gi, '')}`;
+		
+		// YouTube и Vimeo - используют нативную поддержку GLightbox
+		if (videoType === 'youtube') {
+			videoLightboxUrl = `https://www.youtube.com/watch?v=${videoYoutubeId}`;
+			glightboxAttr = ''; // GLightbox автоматически определяет YouTube
+		} else if (videoType === 'vimeo') {
+			videoLightboxUrl = `https://vimeo.com/${videoVimeoId}`;
+			glightboxAttr = ''; // GLightbox автоматически определяет Vimeo
+		} 
+		// HTML5 - прямой URL видеофайла
+		else if (videoType === 'html5') {
+			videoLightboxUrl = videoUrl;
+			glightboxAttr = ''; // GLightbox автоматически определяет видеофайл
+		}
+		// VK и Rutube - создаем скрытый div с iframe и ссылаемся на него
+		else if (videoType === 'vk' || videoType === 'rutube') {
+			const embedUrl = getVideoEmbedUrl();
+			if (!embedUrl) return null;
+			
+			// Ссылка на скрытый контейнер
+			videoLightboxUrl = `#${uniqueId}`;
+			glightboxAttr = 'width: auto;';
+			
+			// Скрытый iframe контейнер - минимальная обёртка
+			hiddenIframe = (
+				<div id={uniqueId} style={{ display: 'none' }}>
+					<iframe
+						src={embedUrl}
+						allow="autoplay; encrypted-media; fullscreen; picture-in-picture; clipboard-write;"
+						frameBorder="0"
+						allowFullScreen
+						style={{ width: '100%', height: '100%', aspectRatio: '16/9' }}
+					/>
+				</div>
+			);
+		}
 		
 		if (!videoLightboxUrl) {
 			return null;
@@ -47,13 +166,15 @@ export const VideoRender = ({ attributes, isEditor = false }) => {
 		const linkStyle = isEditor ? { pointerEvents: 'none', cursor: 'default' } : undefined;
 
 		return (
-			<figure className="position-relative">
-				<a 
-					href={href} 
-					onClick={onClickHandler}
-					data-glightbox={!isEditor ? '' : undefined}
-					style={linkStyle}
-				>
+			<>
+				{hiddenIframe}
+				<figure className="position-relative">
+					<a 
+						href={href} 
+						onClick={onClickHandler}
+						data-glightbox={!isEditor && glightboxAttr ? glightboxAttr : undefined}
+						style={linkStyle}
+					>
 					{videoPoster.url ? (
 						<img src={videoPoster.url} alt={videoPoster.alt || ''} />
 					) : (
@@ -79,6 +200,7 @@ export const VideoRender = ({ attributes, isEditor = false }) => {
 					)}
 				</a>
 			</figure>
+			</>
 		);
 	}
 
@@ -165,49 +287,7 @@ export const VideoRender = ({ attributes, isEditor = false }) => {
 
 	// VK Video (inline player)
 	if (videoType === 'vk' && videoVkId) {
-		// Парсим VK video URL или iframe
-		let vkSrc = '';
-		
-		// Если это iframe код - извлекаем src
-		if (videoVkId.includes('<iframe')) {
-			const srcMatch = videoVkId.match(/src=["']([^"']+)["']/);
-			if (srcMatch && srcMatch[1]) {
-				vkSrc = srcMatch[1];
-			}
-		}
-		// Если это прямая ссылка на vkvideo.ru или vk.com
-		else if (videoVkId.includes('vkvideo.ru') || videoVkId.includes('vk.com/video')) {
-			// Извлекаем все параметры из URL
-			try {
-				const url = new URL(videoVkId.includes('http') ? videoVkId : `https://${videoVkId}`);
-				// Если это уже embed ссылка
-				if (url.pathname.includes('video_ext.php')) {
-					vkSrc = url.href;
-				} else {
-					// Парсим video ID из разных форматов
-					// Формат: https://vk.com/video-229485578_456239126
-					// Формат: https://vkvideo.ru/video-229485578_456239126
-					const videoIdMatch = url.pathname.match(/video(-?\d+)_(\d+)/);
-					if (videoIdMatch) {
-						const oid = videoIdMatch[1];
-						const id = videoIdMatch[2];
-						// Используем vkvideo.ru как в примере
-						vkSrc = `https://vkvideo.ru/video_ext.php?oid=${oid}&id=${id}`;
-					}
-				}
-			} catch (e) {
-				console.error('VK URL parsing error:', e);
-			}
-		}
-		// Если это ID в формате -229485578_456239126 или oid=-229485578&id=456239126
-		else if (videoVkId.includes('_') || videoVkId.includes('oid=')) {
-			if (videoVkId.includes('oid=')) {
-				vkSrc = `https://vkvideo.ru/video_ext.php?${videoVkId}`;
-			} else {
-				const parts = videoVkId.split('_');
-				vkSrc = `https://vkvideo.ru/video_ext.php?oid=${parts[0]}&id=${parts[1]}`;
-			}
-		}
+		const vkSrc = getVideoEmbedUrl();
 
 		if (!vkSrc) {
 			return null;
@@ -227,39 +307,16 @@ export const VideoRender = ({ attributes, isEditor = false }) => {
 
 	// Rutube Video (inline player)
 	if (videoType === 'rutube' && videoRutubeId) {
-		// Парсим Rutube URL или ID
-		let rutubeId = videoRutubeId;
-		
-		// Если это iframe код - извлекаем src
-		if (videoRutubeId.includes('<iframe')) {
-			const srcMatch = videoRutubeId.match(/src=["']([^"']+)["']/);
-			if (srcMatch && srcMatch[1]) {
-				// Извлекаем ID из src
-				const idMatch = srcMatch[1].match(/\/embed\/([a-f0-9]+)/);
-				if (idMatch && idMatch[1]) {
-					rutubeId = idMatch[1];
-				}
-			}
-		}
-		// Если это полная ссылка
-		else if (videoRutubeId.includes('rutube.ru')) {
-			try {
-				const url = new URL(videoRutubeId.includes('http') ? videoRutubeId : `https://${videoRutubeId}`);
-				// Формат: https://rutube.ru/video/1234567890abcdef1234567890abcdef
-				// Формат: https://rutube.ru/play/embed/1234567890abcdef1234567890abcdef
-				const idMatch = url.pathname.match(/\/(?:video|embed)\/([a-f0-9]+)/);
-				if (idMatch && idMatch[1]) {
-					rutubeId = idMatch[1];
-				}
-			} catch (e) {
-				console.error('Rutube URL parsing error:', e);
-			}
+		const rutubeSrc = getVideoEmbedUrl();
+
+		if (!rutubeSrc) {
+			return null;
 		}
 
 		return (
 			<div className="ratio ratio-16x9">
 				<iframe
-					src={`https://rutube.ru/play/embed/${rutubeId}`}
+					src={rutubeSrc}
 					allow="clipboard-write; autoplay"
 					frameBorder="0"
 					allowFullScreen

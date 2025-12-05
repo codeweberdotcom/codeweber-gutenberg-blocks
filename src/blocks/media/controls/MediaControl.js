@@ -27,6 +27,311 @@ export const MediaControl = ({ attributes, setAttributes }) => {
 	} = attributes;
 
 	const [availableImageSizes, setAvailableImageSizes] = useState([]);
+	const [isLoadingPoster, setIsLoadingPoster] = useState(false);
+
+	// Auto-fetch poster when Video Type changes OR when VK/Rutube video URL changes
+	useEffect(() => {
+		// Auto-fetch VK poster when videoType switches to 'vk' OR when videoVkId changes
+		if (videoType === 'vk' && videoVkId) {
+			setIsLoadingPoster(true);
+			const extractOidId = (vkUrl) => {
+				let oid = '', id = '';
+				try {
+					const url = new URL(vkUrl.includes('http') ? vkUrl : `https://${vkUrl}`);
+					oid = url.searchParams.get('oid');
+					id = url.searchParams.get('id');
+					
+					// If not found, try to extract from pathname (video page URL)
+					if (!oid || !id) {
+						const pathMatch = url.pathname.match(/video(-?\d+)_(\d+)/);
+						if (pathMatch) {
+							oid = pathMatch[1];
+							id = pathMatch[2];
+						}
+					}
+				} catch (e) {}
+				return { oid, id };
+			};
+			
+			const { oid, id } = extractOidId(videoVkId);
+			if (oid && id) {
+				console.log('🔄 Auto-fetching VK poster (videoType or URL changed):', { oid, id, videoType });
+				wp.apiFetch({
+					path: `/codeweber-gutenberg-blocks/v1/vk-thumbnail?oid=${encodeURIComponent(oid)}&id=${encodeURIComponent(id)}`,
+					method: 'GET'
+				}).then(response => {
+					if (response.success && response.thumbnail_url) {
+						setAttributes({
+							videoPoster: {
+								id: 0,
+								url: response.thumbnail_url,
+								alt: response.title || 'VK video thumbnail'
+							}
+						});
+						console.log('✅ VK poster auto-loaded:', response.thumbnail_url);
+					}
+					setIsLoadingPoster(false);
+				}).catch(error => {
+					console.error('❌ Could not fetch VK poster:', error);
+					setIsLoadingPoster(false);
+				});
+			} else {
+				setIsLoadingPoster(false);
+			}
+		}
+		
+		// Auto-fetch Rutube poster when videoType switches to 'rutube' OR when videoRutubeId changes
+		if (videoType === 'rutube' && videoRutubeId) {
+			setIsLoadingPoster(true);
+			const extractRutubeId = (rutubeUrl) => {
+				try {
+					const url = new URL(rutubeUrl.includes('http') ? rutubeUrl : `https://${rutubeUrl}`);
+					// Try to match both /embed/ and /video/ formats
+					let match = url.pathname.match(/\/embed\/([a-f0-9]{32})/);
+					if (!match) {
+						match = url.pathname.match(/\/video\/([a-f0-9]{32})/);
+					}
+					return match ? match[1] : '';
+				} catch (e) {
+					return '';
+				}
+			};
+			
+			const videoId = extractRutubeId(videoRutubeId);
+			if (videoId && videoId.match(/^[a-f0-9]{32}$/)) {
+				console.log('🔄 Auto-fetching Rutube poster (videoType or URL changed):', { videoId, videoType });
+				wp.apiFetch({
+					path: `/codeweber-gutenberg-blocks/v1/rutube-thumbnail/${videoId}`,
+					method: 'GET'
+				}).then(response => {
+					if (response.success && response.thumbnail_url) {
+						setAttributes({
+							videoPoster: {
+								id: 0,
+								url: response.thumbnail_url,
+								alt: response.title || 'Rutube video thumbnail'
+							}
+						});
+						console.log('✅ Rutube poster auto-loaded:', response.thumbnail_url);
+					}
+					setIsLoadingPoster(false);
+				}).catch(error => {
+					console.error('❌ Could not fetch Rutube poster:', error);
+					setIsLoadingPoster(false);
+				});
+			} else {
+				console.log('⚠️ Rutube videoId not extracted from:', videoRutubeId);
+				setIsLoadingPoster(false);
+			}
+		}
+	}, [videoType, videoVkId, videoRutubeId]); // Auto-fetch when Video Type OR video URLs change
+
+	// VK Video ID Parser (from Button block logic)
+	const handleVKIDChange = async (newVKID) => {
+		let processedVKID = newVKID;
+		let extractedUrl = '';
+		let oid = '';
+		let id = '';
+
+		// Check if the input is a full iframe embed code
+		if (newVKID.includes('<iframe') && newVKID.includes('vkvideo.ru')) {
+			// Extract the src URL from the iframe
+			const srcMatch = newVKID.match(/src="([^"]*vkvideo\.ru[^"]*)"/);
+			if (srcMatch) {
+				extractedUrl = srcMatch[1];
+				// Ensure the URL has the proper protocol
+				if (extractedUrl.startsWith('//')) {
+					extractedUrl = `https:${extractedUrl}`;
+				}
+				processedVKID = extractedUrl;
+				
+				// Extract oid and id for poster
+				try {
+					const url = new URL(extractedUrl);
+					oid = url.searchParams.get('oid');
+					id = url.searchParams.get('id');
+				} catch (e) {}
+			}
+		} else if (newVKID.includes('vkvideo.ru/video_ext.php')) {
+			// Handle direct URL input
+			try {
+				extractedUrl = newVKID.startsWith('http') ? newVKID : `https://${newVKID}`;
+				// Validate that it's a proper VK video URL
+				const urlParams = new URL(extractedUrl);
+				if (urlParams.searchParams.has('oid') && urlParams.searchParams.has('id')) {
+					processedVKID = extractedUrl;
+					oid = urlParams.searchParams.get('oid');
+					id = urlParams.searchParams.get('id');
+
+					// Generate enhanced VK video URL with additional parameters
+					const enhancedUrl = new URL(extractedUrl);
+					enhancedUrl.searchParams.set('hd', '2');
+					if (!enhancedUrl.searchParams.has('hash')) {
+						const hash = '0f00c4ecd2885c04'; // Default hash
+						enhancedUrl.searchParams.set('hash', hash);
+					}
+
+					extractedUrl = enhancedUrl.toString();
+				}
+			} catch (error) {
+				console.warn('Invalid VK video URL format');
+			}
+		}
+
+		setAttributes({
+			videoVkId: extractedUrl || processedVKID,
+		});
+
+		// Auto-fetch poster from VK if we have oid and id
+		if (oid && id) {
+			console.log('🔄 Fetching VK poster for:', { oid, id });
+			try {
+				const apiPath = `/codeweber-gutenberg-blocks/v1/vk-thumbnail?oid=${encodeURIComponent(oid)}&id=${encodeURIComponent(id)}`;
+				console.log('📡 VK API path:', apiPath);
+				
+				const response = await wp.apiFetch({
+					path: apiPath,
+					method: 'GET'
+				});
+				
+				console.log('📦 VK API response:', response);
+				
+				if (response.success && response.thumbnail_url) {
+					// Automatically set poster
+					setAttributes({
+						videoPoster: {
+							id: 0,
+							url: response.thumbnail_url,
+							alt: response.title || 'VK video thumbnail'
+						}
+					});
+					console.log('✅ VK poster auto-loaded:', response.thumbnail_url);
+				} else {
+					console.warn('⚠️ VK API returned no thumbnail');
+				}
+			} catch (error) {
+				console.error('❌ Could not fetch VK poster:', error);
+			}
+		} else {
+			console.log('⚠️ VK oid/id not extracted:', { oid, id });
+		}
+	};
+
+	// Rutube Video ID Parser (from Button block logic)
+	const handleRutubeIDChange = async (newRutubeID) => {
+		let processedRutubeID = newRutubeID;
+		let extractedUrl = '';
+		let videoId = '';
+
+		// Check if the input is a full iframe embed code
+		if (newRutubeID.includes('<iframe') && newRutubeID.includes('rutube.ru')) {
+			// Extract the src URL from the iframe
+			const srcMatch = newRutubeID.match(/src="([^"]*rutube\.ru[^"]*)"/);
+			if (srcMatch) {
+				extractedUrl = srcMatch[1];
+				// Ensure the URL has the proper protocol
+				if (extractedUrl.startsWith('//')) {
+					extractedUrl = `https:${extractedUrl}`;
+				}
+				processedRutubeID = extractedUrl;
+
+				// Extract video ID from Rutube URL
+				try {
+					const urlObj = new URL(extractedUrl);
+					const pathname = urlObj.pathname;
+					const pathMatch = pathname.match(/\/embed\/([^\/]+)/);
+					if (pathMatch) {
+						videoId = pathMatch[1];
+					}
+				} catch (error) {
+					console.warn('Could not extract video ID from Rutube iframe');
+				}
+			}
+		} else if (newRutubeID.includes('rutube.ru/play/embed/')) {
+			// Handle direct URL input
+			try {
+				extractedUrl = newRutubeID.startsWith('http') ? newRutubeID : `https://${newRutubeID}`;
+				// Validate that it's a proper Rutube URL
+				const urlObj = new URL(extractedUrl);
+				if (urlObj.hostname.includes('rutube.ru') && urlObj.pathname.includes('/embed/')) {
+					processedRutubeID = extractedUrl;
+
+					// Extract video ID from URL
+					const pathname = urlObj.pathname;
+					const pathMatch = pathname.match(/\/embed\/([^\/]+)/);
+					if (pathMatch) {
+						videoId = pathMatch[1];
+					}
+				}
+			} catch (error) {
+				console.warn('Invalid Rutube URL format');
+			}
+		} else if (newRutubeID.match(/^[a-f0-9]{32}$/)) {
+			// If input is just a 32-char hex ID, construct the embed URL
+			videoId = newRutubeID;
+			extractedUrl = `https://rutube.ru/play/embed/${videoId}`;
+			processedRutubeID = extractedUrl;
+		}
+
+		// Save videoId before adding autoplay (important for poster fetch)
+		const finalVideoId = videoId;
+		
+		// Add autoplay parameter to Rutube URL for faster initialization
+		if (extractedUrl || processedRutubeID) {
+			try {
+				const finalUrl = new URL(extractedUrl || processedRutubeID);
+				finalUrl.searchParams.set('autoplay', '1');
+				const enhancedUrl = finalUrl.toString();
+				
+				setAttributes({
+					videoRutubeId: enhancedUrl,
+				});
+			} catch (error) {
+				// If URL parsing fails, use as is
+				setAttributes({
+					videoRutubeId: extractedUrl || processedRutubeID,
+				});
+			}
+		} else {
+			setAttributes({
+				videoRutubeId: newRutubeID,
+			});
+		}
+
+		// Auto-fetch poster from Rutube API if we have video ID
+		if (finalVideoId && finalVideoId.match(/^[a-f0-9]{32}$/)) {
+			console.log('🔄 Fetching Rutube poster for:', finalVideoId);
+			try {
+				const apiPath = `/codeweber-gutenberg-blocks/v1/rutube-thumbnail/${finalVideoId}`;
+				console.log('📡 Rutube API path:', apiPath);
+				
+				const response = await wp.apiFetch({
+					path: apiPath,
+					method: 'GET'
+				});
+				
+				console.log('📦 Rutube API response:', response);
+				
+				if (response.success && response.thumbnail_url) {
+					// Automatically set poster
+					setAttributes({
+						videoPoster: {
+							id: 0,
+							url: response.thumbnail_url,
+							alt: response.title || 'Rutube video thumbnail'
+						}
+					});
+					console.log('✅ Rutube poster auto-loaded:', response.thumbnail_url);
+				} else {
+					console.warn('⚠️ Rutube API returned no thumbnail');
+				}
+			} catch (error) {
+				console.error('❌ Could not fetch Rutube poster:', error);
+			}
+		} else {
+			console.log('⚠️ Rutube videoId not valid:', finalVideoId);
+		}
+	};
 
 	// Handler for image selection
 	const handleSelectImage = (media) => {
@@ -401,8 +706,8 @@ export const MediaControl = ({ attributes, setAttributes }) => {
 						<TextareaControl
 							label={__('VK Video URL or iframe', 'codeweber-gutenberg-blocks')}
 							value={videoVkId || ''}
-							onChange={(value) => setAttributes({ videoVkId: value })}
-							help={__('Paste VK video link or iframe code', 'codeweber-gutenberg-blocks')}
+							onChange={handleVKIDChange}
+							help={__('Paste VK video embed URL or full iframe code - URL will be extracted automatically', 'codeweber-gutenberg-blocks')}
 							rows={3}
 						/>
 					)}
@@ -412,8 +717,8 @@ export const MediaControl = ({ attributes, setAttributes }) => {
 						<TextareaControl
 							label={__('Rutube Video URL or ID', 'codeweber-gutenberg-blocks')}
 							value={videoRutubeId || ''}
-							onChange={(value) => setAttributes({ videoRutubeId: value })}
-							help={__('Paste Rutube video link or video ID', 'codeweber-gutenberg-blocks')}
+							onChange={handleRutubeIDChange}
+							help={__('Paste Rutube embed URL, video ID, or full iframe code - URL will be extracted automatically', 'codeweber-gutenberg-blocks')}
 							rows={3}
 						/>
 					)}
@@ -532,6 +837,143 @@ export const MediaControl = ({ attributes, setAttributes }) => {
 									)}
 								/>
 							</MediaUploadCheck>
+							
+							{/* Loading indicator */}
+							{isLoadingPoster && (
+								<div style={{
+									marginTop: '8px',
+									marginBottom: '15px',
+									padding: '8px 12px',
+									backgroundColor: '#f0f6fc',
+									border: '1px solid #0073aa',
+									borderRadius: '4px',
+									color: '#0073aa',
+									fontSize: '13px',
+									fontWeight: '500',
+									display: 'flex',
+									alignItems: 'center',
+									gap: '8px'
+								}}>
+									<span style={{ 
+										display: 'inline-block',
+										width: '14px',
+										height: '14px',
+										border: '2px solid #0073aa',
+										borderTopColor: 'transparent',
+										borderRadius: '50%',
+										animation: 'spin 0.6s linear infinite'
+									}}></span>
+									{__('Загрузка постера...', 'codeweber-gutenberg-blocks')}
+								</div>
+							)}
+							
+							{/* Auto-load poster button for VK/Rutube */}
+							{(videoType === 'vk' || videoType === 'rutube') && !isLoadingPoster && (
+								<Button
+									variant="secondary"
+									onClick={async () => {
+										console.log('🔘 Button clicked! videoType:', videoType, 'videoRutubeId:', videoRutubeId, 'videoVkId:', videoVkId);
+										setIsLoadingPoster(true);
+										
+										if (videoType === 'rutube' && videoRutubeId) {
+											const extractRutubeId = (url) => {
+												try {
+													const urlObj = new URL(url.includes('http') ? url : `https://${url}`);
+													// Try to match both /embed/ and /video/ formats
+													let match = urlObj.pathname.match(/\/embed\/([a-f0-9]{32})/);
+													if (!match) {
+														match = urlObj.pathname.match(/\/video\/([a-f0-9]{32})/);
+													}
+													return match ? match[1] : '';
+												} catch (e) {
+													return '';
+												}
+											};
+											
+											const videoId = extractRutubeId(videoRutubeId);
+											if (videoId) {
+												console.log('🔄 Manual fetch Rutube poster:', videoId);
+												try {
+													const response = await wp.apiFetch({
+														path: `/codeweber-gutenberg-blocks/v1/rutube-thumbnail/${videoId}`,
+														method: 'GET'
+													});
+													if (response.success && response.thumbnail_url) {
+														setAttributes({
+															videoPoster: {
+																id: 0,
+																url: response.thumbnail_url,
+																alt: response.title || 'Rutube video thumbnail'
+															}
+														});
+														console.log('✅ Rutube poster loaded manually');
+													}
+												} catch (error) {
+													console.error('❌ Failed to load Rutube poster:', error);
+												} finally {
+													setIsLoadingPoster(false);
+												}
+											} else {
+												setIsLoadingPoster(false);
+											}
+										} else if (videoType === 'vk' && videoVkId) {
+											const extractOidId = (url) => {
+												let oid = '', id = '';
+												try {
+													const urlObj = new URL(url.includes('http') ? url : `https://${url}`);
+													
+													// Try to get from query params (embed URL)
+													oid = urlObj.searchParams.get('oid');
+													id = urlObj.searchParams.get('id');
+													
+													// If not found, try to extract from pathname (video page URL)
+													if (!oid || !id) {
+														const pathMatch = urlObj.pathname.match(/video(-?\d+)_(\d+)/);
+														if (pathMatch) {
+															oid = pathMatch[1];
+															id = pathMatch[2];
+														}
+													}
+												} catch (e) {
+													console.error('Failed to parse VK URL:', e);
+												}
+												return { oid, id };
+											};
+											
+											const { oid, id } = extractOidId(videoVkId);
+											console.log('🔍 Extracted VK oid/id:', { oid, id });
+											if (oid && id) {
+												console.log('🔄 Manual fetch VK poster:', { oid, id });
+												try {
+													const response = await wp.apiFetch({
+														path: `/codeweber-gutenberg-blocks/v1/vk-thumbnail?oid=${encodeURIComponent(oid)}&id=${encodeURIComponent(id)}`,
+														method: 'GET'
+													});
+													if (response.success && response.thumbnail_url) {
+														setAttributes({
+															videoPoster: {
+																id: 0,
+																url: response.thumbnail_url,
+																alt: response.title || 'VK video thumbnail'
+															}
+														});
+														console.log('✅ VK poster loaded manually');
+													}
+												} catch (error) {
+													console.error('❌ Failed to load VK poster:', error);
+												} finally {
+													setIsLoadingPoster(false);
+												}
+											} else {
+												setIsLoadingPoster(false);
+											}
+										}
+									}}
+									style={{ marginTop: '8px', marginBottom: '15px', width: '100%' }}
+								>
+									{__('Auto-load Poster from Provider', 'codeweber-gutenberg-blocks')}
+								</Button>
+							)}
 						</>
 					)}
 

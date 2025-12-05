@@ -9,11 +9,36 @@
 
 	figure {
 		margin: 0;
+		
+		// Унификация размера превью для видео (VK, Rutube, и др.)
+		a > img {
+			width: 100%;
+			height: auto;
+			object-fit: cover;
+			aspect-ratio: 16 / 9; // Стандартное соотношение для видео
+			display: block;
+		}
 	}
 
+	// Общие стили для всех изображений
 	img {
 		max-width: 100%;
 		height: auto;
 		display: block;
+	}
+}
+
+/* GLightbox - убираем padding у inline контента (VK/Rutube) */
+.gslide-inline {
+	padding: 0 !important;
+	
+	.ginlined-content {
+		padding: 0 !important;
+	}
+	
+	iframe {
+		display: block;
+		max-width: 1200px;
+		width: 100%;
 	}
 }

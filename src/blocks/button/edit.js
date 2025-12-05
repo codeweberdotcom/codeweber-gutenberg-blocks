@@ -78,16 +78,21 @@ const ButtonEdit = ({ attributes, setAttributes }) => {
 				{ButtonType === 'social' ? (
 					<nav className={`nav social${SocialIconStyle === 'style_2' ? ' social-muted' : ''}`}>
 						<a
-							href={LinkUrl}
+							href="#"
 							className={
 								SocialIconStyle === 'style_1'
 									? `btn btn-circle ${ButtonSize} btn-${SocialIconClass}`
 									: ''
 							}
-							onClick={(event) => event.preventDefault()}
+							onClick={(event) => {
+								event.preventDefault();
+								event.stopPropagation();
+								return false;
+							}}
 							data-value={DataValue || undefined}
-							{...(hasGlightbox && { 'data-glightbox': DataGlightbox })}
-							{...(hasGallery && { 'data-gallery': DataGallery })}
+							// DON'T add glightbox attributes in editor
+							// {...(hasGlightbox && { 'data-glightbox': DataGlightbox })}
+							// {...(hasGallery && { 'data-gallery': DataGallery })}
 							{...(hasBsToggle && { 'data-bs-toggle': DataBsToggle })}
 							{...(hasBsTarget && {
 								'data-bs-target': `#${DataBsTarget}`,
@@ -99,14 +104,18 @@ const ButtonEdit = ({ attributes, setAttributes }) => {
 				) : (
 					<a
 						{...useBlockProps({ className: buttonClass, id: anchor })}
-						style={{ width: 'auto' }}
-						href={LinkUrl}
+						style={{ width: 'auto', pointerEvents: 'auto', cursor: 'default' }}
+						href="#"
 						// Применяем сгенерированный класс
-						onClick={(event) => event.preventDefault()}
+						onClick={(event) => {
+							event.preventDefault();
+							event.stopPropagation();
+							return false;
+						}}
 						data-value={DataValue || undefined}
-						// Добавляем атрибуты только если они есть
-						{...(hasGlightbox && { 'data-glightbox': DataGlightbox })}
-						{...(hasGallery && { 'data-gallery': DataGallery })}
+						// DON'T add glightbox attributes in editor - they cause unwanted popups
+						// {...(hasGlightbox && { 'data-glightbox': DataGlightbox })}
+						// {...(hasGallery && { 'data-gallery': DataGallery })}
 						{...(hasBsToggle && { 'data-bs-toggle': DataBsToggle })}
 						{...(hasBsTarget && {
 							'data-bs-target': `#${DataBsTarget}`,

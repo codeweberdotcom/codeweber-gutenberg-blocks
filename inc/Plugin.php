@@ -28,6 +28,9 @@ class Plugin {
 		
 		// Enqueue global editor styles
 		add_action('enqueue_block_editor_assets', __CLASS__ . '::enqueueEditorGlobalStyles');
+		
+		// Enqueue frontend scripts
+		add_action('wp_enqueue_scripts', __CLASS__ . '::gutenbergBlocksExternalLibraries');
 	}
 
 	public static function init(): void {
@@ -171,7 +174,7 @@ class Plugin {
 	public static function gutenbergBlocksExternalLibraries() {
 		wp_enqueue_script(
 			'gutenberg-blocks-lib',
-			GUTENBERG_BLOCKS_INC_URL . 'js/plugin.js',
+			GUTENBERG_BLOCKS_INC_URL . 'js/pluign.js',
 			[],
 			GUTENBERG_BLOCKS_VERSION,
 			TRUE

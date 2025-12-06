@@ -105,13 +105,21 @@ $gutter-scale: (
 	}
 }
 
+// Базовые классы row-cols (без префикса) - применяются всегда
 @for $i from 1 through 12 {
-  @include apply-row-cols(".row-cols-#{$i}", $i);
-  @include apply-row-cols(".row-cols-sm-#{$i}", $i);
-  @include apply-row-cols(".row-cols-md-#{$i}", $i);
-  @include apply-row-cols(".row-cols-lg-#{$i}", $i);
-  @include apply-row-cols(".row-cols-xl-#{$i}", $i);
-  @include apply-row-cols(".row-cols-xxl-#{$i}", $i);
+	@include apply-row-cols(".row-cols-#{$i}", $i);
+}
+
+// Responsive классы - обернуты в media queries для правильного переопределения
+@each $breakpoint, $min-width in $grid-breakpoints {
+	@if $min-width != null {
+		$infix: '-#{$breakpoint}';
+		@media (min-width: $min-width) {
+			@for $i from 1 through 12 {
+				@include apply-row-cols(".row-cols#{$infix}-#{$i}", $i);
+			}
+		}
+	}
 }
 
 // Также добавляем правила для row-cols-auto

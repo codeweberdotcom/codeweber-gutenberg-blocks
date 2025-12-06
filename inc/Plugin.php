@@ -95,6 +95,7 @@ class Plugin {
 		'card',
 		'feature',
 		'image-simple',
+		'post-grid',
 	];
 	}
 
@@ -145,6 +146,7 @@ class Plugin {
 			'icon',
 			'paragraph',
 			'section',
+			'post-grid',
 		];
 		
 		foreach ($blocks as $block_name) {

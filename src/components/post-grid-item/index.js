@@ -1,0 +1,2 @@
+export { PostGridItemRender } from './PostGridItemRender';
+

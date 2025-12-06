@@ -1,0 +1,2 @@
+export { PostGridTemplateControl } from './PostGridTemplateControl';
+

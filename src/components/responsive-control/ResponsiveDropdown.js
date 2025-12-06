@@ -23,7 +23,7 @@ export const ResponsiveDropdown = ({ breakpoints, onChange }) => {
 				// Нормализуем options - если это массив строк, конвертируем в объекты
 				const normalizedOptions = bp.options.map(opt => {
 					if (typeof opt === 'string') {
-						return { value: opt, label: opt === '' ? (bp.defaultLabel || __('Auto', 'codeweber-gutenberg-blocks')) : opt };
+						return { value: opt, label: opt === '' ? (bp.defaultLabel || __('Нет', 'codeweber-gutenberg-blocks')) : opt };
 					}
 					return opt;
 				});
@@ -47,7 +47,7 @@ export const ResponsiveDropdown = ({ breakpoints, onChange }) => {
 							>
 								{bp.label}
 								<span style={{ fontSize: '10px', opacity: 0.7 }}>
-									{bp.value === '' ? (bp.defaultLabel || __('Auto', 'codeweber-gutenberg-blocks')) : bp.value}
+									{bp.value === '' ? (bp.defaultLabel || __('Нет', 'codeweber-gutenberg-blocks')) : bp.value}
 								</span>
 								<Icon icon={chevronDown} size={12} />
 							</Button>

@@ -10,8 +10,9 @@
  */
 
 import { __ } from '@wordpress/i18n';
-import { PanelBody, SelectControl, ToggleControl } from '@wordpress/components';
+import { PanelBody, SelectControl, ToggleControl, ButtonGroup, Button } from '@wordpress/components';
 import { ResponsiveControl, createBreakpointsConfig } from '../responsive-control';
+import { getGapClasses } from './helpers';
 
 /**
  * GridControl Component
@@ -43,6 +44,11 @@ export const GridControl = ({
 	
 	const gapType = getAttr('GapType') || 'general';
 	const spacingType = getAttr('SpacingType') || 'padding';
+	
+	// Генерируем классы gap для отображения
+	// Собираем все классы для всех заполненных breakpoints
+	const gapClasses = getGapClasses(attributes, attributePrefix);
+	const gapClassesString = gapClasses.length > 0 ? gapClasses.join(' ') : __('Нет классов Gap', 'codeweber-gutenberg-blocks');
 
 	return (
 		<>
@@ -66,41 +72,133 @@ export const GridControl = ({
 			{/* Gap Settings */}
 			{showGap && (
 				<PanelBody
-					title={gapLabel || __('Gap Settings', 'codeweber-gutenberg-blocks')}
+					title={gapLabel || __('Настройки Gap', 'codeweber-gutenberg-blocks')}
 					initialOpen={false}
 				>
-					<SelectControl
-						label={__('Gap Type', 'codeweber-gutenberg-blocks')}
-						value={gapType}
-						options={[
-							{ label: __('General (Both)', 'codeweber-gutenberg-blocks'), value: 'general' },
-							{ label: __('Horizontal (X)', 'codeweber-gutenberg-blocks'), value: 'x' },
-							{ label: __('Vertical (Y)', 'codeweber-gutenberg-blocks'), value: 'y' },
-						]}
-						onChange={(value) => setAttributes({ [`${attributePrefix}GapType`]: value })}
-						help={__('Choose gap direction: both axes, horizontal only, or vertical only', 'codeweber-gutenberg-blocks')}
-					/>
+					<div style={{ marginBottom: '16px' }}>
+						<div style={{ marginBottom: '8px', fontSize: '11px', fontWeight: '500', textTransform: 'uppercase', color: '#1e1e1e' }}>
+							{__('Тип Gap', 'codeweber-gutenberg-blocks')}
+						</div>
+						<ButtonGroup style={{ display: 'flex', width: '100%' }}>
+							<Button
+								variant={gapType === 'general' ? 'primary' : 'secondary'}
+								onClick={() => setAttributes({ [`${attributePrefix}GapType`]: 'general' })}
+								style={{ flex: '1 1 auto' }}
+							>
+								{__('Gap', 'codeweber-gutenberg-blocks')}
+							</Button>
+							<Button
+								variant={gapType === 'x' ? 'primary' : 'secondary'}
+								onClick={() => setAttributes({ [`${attributePrefix}GapType`]: 'x' })}
+								style={{ flex: '1 1 auto' }}
+							>
+								{__('Gap-X', 'codeweber-gutenberg-blocks')}
+							</Button>
+							<Button
+								variant={gapType === 'y' ? 'primary' : 'secondary'}
+								onClick={() => setAttributes({ [`${attributePrefix}GapType`]: 'y' })}
+								style={{ flex: '1 1 auto' }}
+							>
+								{__('Gap-Y', 'codeweber-gutenberg-blocks')}
+							</Button>
+						</ButtonGroup>
+					</div>
+					
+					{/* Отображение классов gap - все типы одновременно */}
+					<div style={{ 
+						marginBottom: '16px', 
+						padding: '8px 12px', 
+						backgroundColor: '#f0f0f1', 
+						borderRadius: '4px',
+						fontSize: '12px',
+						fontFamily: 'monospace',
+						color: '#1e1e1e'
+					}}>
+						<div style={{ 
+							marginBottom: '4px', 
+							fontSize: '11px', 
+							fontWeight: '500', 
+							textTransform: 'uppercase', 
+							color: '#757575' 
+						}}>
+							{__('Классы Gap', 'codeweber-gutenberg-blocks')}:
+						</div>
+						<div style={{ wordBreak: 'break-word' }}>
+							{gapClassesString}
+						</div>
+					</div>
 
-					<ResponsiveControl
-						{...createBreakpointsConfig({
-							type: 'custom',
-							attributes,
-							attributePrefix: `${attributePrefix}Gap`,
-							onChange: setAttributes,
-							variant: 'dropdown',
-							label: __('Gap Size', 'codeweber-gutenberg-blocks'),
-							tooltip: __('Spacing between grid items', 'codeweber-gutenberg-blocks'),
-							customOptions: {
-								default: ['0', '1', '2', '3', '4', '5', '6'],
-								xs: ['', '0', '1', '2', '3', '4', '5'],
-								sm: ['', '0', '1', '2', '3', '4', '5'],
-								md: ['', '0', '1', '2', '3', '4', '5', '6'],
-								lg: ['', '0', '1', '2', '3', '4', '5', '6'],
-								xl: ['', '0', '1', '2', '3', '4', '5', '6'],
-								xxl: ['', '0', '1', '2', '3', '4', '5', '6'],
-							},
-						})}
-					/>
+					{/* ResponsiveControl для Gap (General) */}
+					{gapType === 'general' && (
+						<ResponsiveControl
+							{...createBreakpointsConfig({
+								type: 'custom',
+								attributes,
+								attributePrefix: `${attributePrefix}Gap`,
+								onChange: setAttributes,
+								variant: 'dropdown',
+								label: __('Размер Gap', 'codeweber-gutenberg-blocks'),
+								tooltip: __('Spacing between grid items (both axes)', 'codeweber-gutenberg-blocks'),
+								customOptions: {
+									default: ['', '0', '1', '2', '3', '4', '5', '6'],
+									xs: ['', '0', '1', '2', '3', '4', '5'],
+									sm: ['', '0', '1', '2', '3', '4', '5'],
+									md: ['', '0', '1', '2', '3', '4', '5', '6'],
+									lg: ['', '0', '1', '2', '3', '4', '5', '6'],
+									xl: ['', '0', '1', '2', '3', '4', '5', '6'],
+									xxl: ['', '0', '1', '2', '3', '4', '5', '6'],
+								},
+							})}
+						/>
+					)}
+
+					{/* ResponsiveControl для Gap-X (Horizontal) */}
+					{gapType === 'x' && (
+						<ResponsiveControl
+							{...createBreakpointsConfig({
+								type: 'custom',
+								attributes,
+								attributePrefix: `${attributePrefix}GapX`,
+								onChange: setAttributes,
+								variant: 'dropdown',
+								label: __('Размер Gap-X', 'codeweber-gutenberg-blocks'),
+								tooltip: __('Horizontal spacing between grid items', 'codeweber-gutenberg-blocks'),
+								customOptions: {
+									default: ['', '0', '1', '2', '3', '4', '5', '6'],
+									xs: ['', '0', '1', '2', '3', '4', '5'],
+									sm: ['', '0', '1', '2', '3', '4', '5'],
+									md: ['', '0', '1', '2', '3', '4', '5', '6'],
+									lg: ['', '0', '1', '2', '3', '4', '5', '6'],
+									xl: ['', '0', '1', '2', '3', '4', '5', '6'],
+									xxl: ['', '0', '1', '2', '3', '4', '5', '6'],
+								},
+							})}
+						/>
+					)}
+
+					{/* ResponsiveControl для Gap-Y (Vertical) */}
+					{gapType === 'y' && (
+						<ResponsiveControl
+							{...createBreakpointsConfig({
+								type: 'custom',
+								attributes,
+								attributePrefix: `${attributePrefix}GapY`,
+								onChange: setAttributes,
+								variant: 'dropdown',
+								label: __('Размер Gap-Y', 'codeweber-gutenberg-blocks'),
+								tooltip: __('Vertical spacing between grid items', 'codeweber-gutenberg-blocks'),
+								customOptions: {
+									default: ['', '0', '1', '2', '3', '4', '5', '6'],
+									xs: ['', '0', '1', '2', '3', '4', '5'],
+									sm: ['', '0', '1', '2', '3', '4', '5'],
+									md: ['', '0', '1', '2', '3', '4', '5', '6'],
+									lg: ['', '0', '1', '2', '3', '4', '5', '6'],
+									xl: ['', '0', '1', '2', '3', '4', '5', '6'],
+									xxl: ['', '0', '1', '2', '3', '4', '5', '6'],
+								},
+							})}
+						/>
+					)}
 				</PanelBody>
 			)}
 

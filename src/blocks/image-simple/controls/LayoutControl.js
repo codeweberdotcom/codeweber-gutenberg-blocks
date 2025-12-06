@@ -1,13 +1,38 @@
 import { __ } from '@wordpress/i18n';
-import { SelectControl, ToggleControl, RangeControl, ButtonGroup, Button, Tooltip } from '@wordpress/components';
+import { SelectControl, ToggleControl, RangeControl, ButtonGroup, Button, Tooltip, TextControl } from '@wordpress/components';
 import { Icon, info } from '@wordpress/icons';
 import { useState } from '@wordpress/element';
-import { ResponsiveControl, createSwiperItemsConfig } from '../../../components/responsive-control';
+import { ResponsiveControl, createSwiperItemsConfig, createBreakpointsConfig } from '../../../components/responsive-control';
 import { GridControl } from '../../../components/grid-control';
+
+const GRID_TYPE_OPTIONS = [
+	{ value: 'classic', label: __('Classic grid', 'codeweber-gutenberg-blocks') },
+	{ value: 'columns-grid', label: __('Columns grid', 'codeweber-gutenberg-blocks') },
+];
+
+const GridTypeControl = ({ value, onChange }) => (
+	<div className="mb-3">
+		<div className="component-sidebar-title">
+			<label>{__('Grid type', 'codeweber-gutenberg-blocks')}</label>
+		</div>
+		<ButtonGroup>
+			{GRID_TYPE_OPTIONS.map((option) => (
+				<Button 
+					key={option.value} 
+					isPrimary={value === option.value} 
+					onClick={() => onChange(option.value)}
+				>
+					{option.label}
+				</Button>
+			))}
+		</ButtonGroup>
+	</div>
+);
 
 export const LayoutControl = ({ attributes, setAttributes }) => {
 	const {
 		displayMode,
+		gridType,
 		gridColumns,
 		gridGapX,
 		gridGapY,
@@ -82,17 +107,102 @@ export const LayoutControl = ({ attributes, setAttributes }) => {
 			{/* Grid Settings */}
 			{displayMode === 'grid' && (
 				<>
-					{/* GridControl для Row Cols и Gap */}
-					<GridControl
-						attributes={attributes}
-						setAttributes={setAttributes}
-						attributePrefix="grid"
-						showRowCols={true}
-						showGap={true}
-						showSpacing={false}
-						rowColsLabel={__('Images Per Row', 'codeweber-gutenberg-blocks')}
-						gapLabel={__('Grid Gap', 'codeweber-gutenberg-blocks')}
+					<GridTypeControl 
+						value={gridType || 'classic'} 
+						onChange={(value) => {
+							if (value === 'columns-grid') {
+								// Переключение на Columns Grid: очищаем Classic Grid атрибуты
+								setAttributes({ 
+									gridType: value,
+									gridColumns: '',
+								});
+							} else if (value === 'classic') {
+								// Переключение на Classic Grid: очищаем Columns Grid атрибуты (row-cols, gap)
+								setAttributes({
+									gridType: value,
+									// Очищаем row-cols
+									gridRowCols: '',
+									gridRowColsSm: '',
+									gridRowColsMd: '',
+									gridRowColsLg: '',
+									gridRowColsXl: '',
+									gridRowColsXxl: '',
+									// Очищаем gap
+									gridGapType: 'general',
+									gridGap: '',
+									gridGapXs: '',
+									gridGapSm: '',
+									gridGapMd: '',
+									gridGapLg: '',
+									gridGapXl: '',
+									gridGapXxl: '',
+									gridGapX: '',
+									gridGapXXs: '',
+									gridGapXSm: '',
+									gridGapXMd: '',
+									gridGapXLg: '',
+									gridGapXXl: '',
+									gridGapXXxl: '',
+									gridGapY: '',
+									gridGapYXs: '',
+									gridGapYSm: '',
+									gridGapYMd: '',
+									gridGapYLg: '',
+									gridGapYXl: '',
+									gridGapYXxl: '',
+								});
+							}
+						}}
 					/>
+
+					{/* Columns Grid - управление через GridControl */}
+					{gridType === 'columns-grid' && (
+						<GridControl
+							attributes={attributes}
+							setAttributes={setAttributes}
+							attributePrefix="grid"
+							showRowCols={true}
+							showGap={true}
+							showSpacing={false}
+							rowColsLabel={__('Images Per Row', 'codeweber-gutenberg-blocks')}
+							gapLabel={__('Gap сетки', 'codeweber-gutenberg-blocks')}
+						/>
+					)}
+
+					{/* Classic Grid - адаптивное управление через gridColumns и Gap */}
+					{gridType === 'classic' && (
+						<>
+							<ResponsiveControl
+								{...createBreakpointsConfig({
+									type: 'custom',
+									attributes,
+									attributePrefix: 'gridColumns',
+									onChange: setAttributes,
+									variant: 'dropdown',
+									label: __('Columns count', 'codeweber-gutenberg-blocks'),
+									tooltip: __('Number of columns at each breakpoint', 'codeweber-gutenberg-blocks'),
+									customOptions: {
+										default: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+										xs: ['', '1', '2', '3', '4', '5', '6'],
+										sm: ['', '1', '2', '3', '4', '5', '6'],
+										md: ['', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+										lg: ['', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+										xl: ['', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+										xxl: ['', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+									},
+								})}
+							/>
+							<GridControl
+								attributes={attributes}
+								setAttributes={setAttributes}
+								attributePrefix="grid"
+								showRowCols={false}
+								showGap={true}
+								showSpacing={false}
+								gapLabel={__('Gap сетки', 'codeweber-gutenberg-blocks')}
+							/>
+						</>
+					)}
 				</>
 			)}
 

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Codeweber Gutenberg Blocks\n"
 "POT-Creation-Date: 2025-12-04T14:31:54Z\n"
-"PO-Revision-Date: 2025-12-06 11:01+0000\n"
+"PO-Revision-Date: 2025-12-04 16:00+0000\n"
 "Last-Translator: Codeweber\n"
 "Language-Team: Русский\n"
 "Language: ru_RU\n"
@@ -21,6 +21,7 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "Report-Msgid-Bugs-To: \n"
 "X-Loco-Version: 2.8.0; wp-6.9; php-8.1.10"
+
 
 #: src/blocks/button/sidebar.js:223
 msgid "Button Settings"
@@ -228,7 +229,7 @@ msgstr "Макет"
 
 #: src/blocks/columns/edit.js:137
 msgid "Gap"
-msgstr "Gap"
+msgstr "Промежуток"
 
 #: src/blocks/columns/edit.js:154
 msgid "Columns count"
@@ -399,10 +400,8 @@ msgid "Title Block"
 msgstr "Блок заголовка"
 
 #: src/blocks/heading-subtitle/index.js:10
-msgid ""
-"A flexible heading and subtitle block with advanced typography controls."
-msgstr ""
-"Гибкий блок заголовка и подзаголовка с расширенными настройками типографики."
+msgid "A flexible heading and subtitle block with advanced typography controls."
+msgstr "Гибкий блок заголовка и подзаголовка с расширенными настройками типографики."
 
 #: src/blocks/icon/edit.js:91
 msgid "Select icon in settings"
@@ -582,11 +581,11 @@ msgstr "Колонки"
 
 #: src/blocks/image/controls/LayoutControl.js:165
 msgid "Gap X (Horizontal)"
-msgstr "Gap X"
+msgstr "Промежуток X (Горизонтальный)"
 
 #: src/blocks/image/controls/LayoutControl.js:182
 msgid "Gap Y (Vertical)"
-msgstr "Gap Y"
+msgstr "Промежуток Y (Вертикальный)"
 
 #: src/components/section/ContainerSettingsPanel.js:15
 msgid "Container Type"
@@ -633,11 +632,8 @@ msgid "Loop"
 msgstr "Зацикливание"
 
 #: src/blocks/image-simple/controls/LayoutControl.js:263
-msgid ""
-"Enable continuous loop mode. Slides will loop from last to first seamlessly."
-msgstr ""
-"Включить режим непрерывного зацикливания. Слайды будут переключаться от "
-"последнего к первому плавно."
+msgid "Enable continuous loop mode. Slides will loop from last to first seamlessly."
+msgstr "Включить режим непрерывного зацикливания. Слайды будут переключаться от последнего к первому плавно."
 
 #: src/blocks/image-simple/controls/LayoutControl.js:273
 msgid "Auto Height"
@@ -681,8 +677,7 @@ msgstr "Стрелки навигации"
 
 #: src/blocks/image-simple/controls/LayoutControl.js:356
 msgid "Show previous/next navigation arrows to manually change slides."
-msgstr ""
-"Показывать стрелки предыдущий/следующий для ручного переключения слайдов."
+msgstr "Показывать стрелки предыдущий/следующий для ручного переключения слайдов."
 
 #: src/blocks/image-simple/controls/LayoutControl.js:366
 msgid "Pagination Dots"
@@ -697,11 +692,8 @@ msgid "Touch Drag"
 msgstr "Сенсорное перетаскивание"
 
 #: src/blocks/image-simple/controls/LayoutControl.js:378
-msgid ""
-"Enable touch/mouse drag to change slides by swiping with finger or mouse."
-msgstr ""
-"Включить сенсорное/мышиное перетаскивание для смены слайдов свайпом пальца "
-"или мыши."
+msgid "Enable touch/mouse drag to change slides by swiping with finger or mouse."
+msgstr "Включить сенсорное/мышиное перетаскивание для смены слайдов свайпом пальца или мыши."
 
 #: src/blocks/image-simple/controls/LayoutControl.js:387
 msgid "Navigation Style"
@@ -757,11 +749,11 @@ msgstr "Колонки сетки"
 
 #: src/blocks/image-simple/controls/LayoutControl.js:165
 msgid "Grid Gap X"
-msgstr "Gap сетки X"
+msgstr "Промежуток сетки X"
 
 #: src/blocks/image-simple/controls/LayoutControl.js:179
 msgid "Grid Gap Y"
-msgstr "Gap сетки Y"
+msgstr "Промежуток сетки Y"
 
 #: src/blocks/image-simple/edit.js:239
 msgid "Placeholder"
@@ -1576,16 +1568,13 @@ msgid "Select Modal"
 msgstr "Выбрать модальное окно"
 
 #: src/blocks/image-simple/controls/LayoutControl.js:285
-msgid ""
-"When enabled, Swiper will be disabled and hide navigation buttons when there "
-"are not enough slides."
-msgstr ""
-"При включении Swiper будет отключен и скроет кнопки навигации, когда "
-"недостаточно слайдов."
+msgid "When enabled, Swiper will be disabled and hide navigation buttons when there are not enough slides."
+msgstr "При включении Swiper будет отключен и скроет кнопки навигации, когда недостаточно слайдов."
 
 #: src/blocks/image-simple/controls/LayoutControl.js:307
 msgid "Active slide will be centered, not at the beginning of the slider."
 msgstr "Активный слайд будет отцентрирован, а не в начале слайдера."
+
 
 #: src/utilities/link_type.js
 msgid "External"

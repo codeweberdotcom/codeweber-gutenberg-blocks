@@ -56,39 +56,61 @@ export const getRowColsClasses = (attrs = {}, prefix = 'grid', fallbackCount = n
  * @param {string} prefix - Префикс атрибутов (например, 'grid', 'columns')
  * @returns {Array} Массив CSS классов
  */
-export const getGapClasses = (attrs = {}, prefix = 'grid') => {
+/**
+ * Генерирует классы gap для одного типа (general, x, или y)
+ */
+const getGapClassesForType = (attrs = {}, prefix = 'grid', gapTypePrefix = 'g') => {
 	const classes = [];
+	const suffix = gapTypePrefix === 'g' ? '' : gapTypePrefix === 'gx' ? 'X' : 'Y';
+	
 	const {
-		[`${prefix}GapType`]: gapType = 'general',
-		[`${prefix}GapXs`]: gapXs,
-		[`${prefix}GapSm`]: gapSm,
-		[`${prefix}GapMd`]: gapMd,
-		[`${prefix}GapLg`]: gapLg,
-		[`${prefix}GapXl`]: gapXl,
-		[`${prefix}GapXxl`]: gapXxl,
+		[`${prefix}Gap${suffix}`]: gapDefault,
+		[`${prefix}Gap${suffix}Xs`]: gapXs,
+		[`${prefix}Gap${suffix}Sm`]: gapSm,
+		[`${prefix}Gap${suffix}Md`]: gapMd,
+		[`${prefix}Gap${suffix}Lg`]: gapLg,
+		[`${prefix}Gap${suffix}Xl`]: gapXl,
+		[`${prefix}Gap${suffix}Xxl`]: gapXxl,
 	} = attrs;
 
-	// Определяем префикс классов в зависимости от типа
-	const classPrefix = gapType === 'general' ? 'g' : gapType === 'x' ? 'gx' : 'gy';
+	// Базовое значение (default breakpoint)
+	if (gapDefault && gapDefault !== '') {
+		classes.push(`${gapTypePrefix}-${gapDefault}`);
+	}
+	// XS breakpoint
+	if (gapXs && gapXs !== '') {
+		classes.push(`${gapTypePrefix}-${gapXs}`);
+	}
+	// Остальные breakpoints
+	if (gapSm && gapSm !== '') {
+		classes.push(`${gapTypePrefix}-sm-${gapSm}`);
+	}
+	if (gapMd && gapMd !== '') {
+		classes.push(`${gapTypePrefix}-md-${gapMd}`);
+	}
+	if (gapLg && gapLg !== '') {
+		classes.push(`${gapTypePrefix}-lg-${gapLg}`);
+	}
+	if (gapXl && gapXl !== '') {
+		classes.push(`${gapTypePrefix}-xl-${gapXl}`);
+	}
+	if (gapXxl && gapXxl !== '') {
+		classes.push(`${gapTypePrefix}-xxl-${gapXxl}`);
+	}
 
-	if (gapXs) {
-		classes.push(`${classPrefix}-${gapXs}`);
-	}
-	if (gapSm) {
-		classes.push(`${classPrefix}-sm-${gapSm}`);
-	}
-	if (gapMd) {
-		classes.push(`${classPrefix}-md-${gapMd}`);
-	}
-	if (gapLg) {
-		classes.push(`${classPrefix}-lg-${gapLg}`);
-	}
-	if (gapXl) {
-		classes.push(`${classPrefix}-xl-${gapXl}`);
-	}
-	if (gapXxl) {
-		classes.push(`${classPrefix}-xxl-${gapXxl}`);
-	}
+	return classes;
+};
+
+/**
+ * Генерирует классы gap с учетом всех типов (general, x, y) одновременно
+ */
+export const getGapClasses = (attrs = {}, prefix = 'grid') => {
+	const classes = [];
+	
+	// Собираем классы для всех трех типов одновременно
+	classes.push(...getGapClassesForType(attrs, prefix, 'g'));   // General (g-*)
+	classes.push(...getGapClassesForType(attrs, prefix, 'gx'));   // Horizontal (gx-*)
+	classes.push(...getGapClassesForType(attrs, prefix, 'gy'));   // Vertical (gy-*)
 
 	return classes;
 };

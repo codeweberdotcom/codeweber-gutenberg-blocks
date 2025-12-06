@@ -29,9 +29,37 @@
       "type": "string",
       "default": "full"
     },
+    "gridType": {
+      "type": "string",
+      "default": "classic"
+    },
     "gridColumns": {
       "type": "string",
       "default": "3"
+    },
+    "gridColumnsXs": {
+      "type": "string",
+      "default": ""
+    },
+    "gridColumnsSm": {
+      "type": "string",
+      "default": ""
+    },
+    "gridColumnsMd": {
+      "type": "string",
+      "default": ""
+    },
+    "gridColumnsLg": {
+      "type": "string",
+      "default": ""
+    },
+    "gridColumnsXl": {
+      "type": "string",
+      "default": ""
+    },
+    "gridColumnsXxl": {
+      "type": "string",
+      "default": ""
     },
     "gridRowCols": {
       "type": "string",
@@ -69,6 +97,10 @@
       "type": "string",
       "default": "general"
     },
+    "gridGap": {
+      "type": "string",
+      "default": ""
+    },
     "gridGapXs": {
       "type": "string",
       "default": ""
@@ -90,6 +122,62 @@
       "default": ""
     },
     "gridGapXxl": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapX": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapXXs": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapXSm": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapXMd": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapXLg": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapXXl": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapXXxl": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapY": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapYXs": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapYSm": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapYMd": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapYLg": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapYXl": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapYXxl": {
       "type": "string",
       "default": ""
     },

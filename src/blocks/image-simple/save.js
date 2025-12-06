@@ -12,6 +12,7 @@ export default function Save({ attributes }) {
 		displayMode,
 		images,
 		imageSize,
+		gridType,
 		gridColumns,
 		gridRowCols,
 		gridRowColsSm,
@@ -66,21 +67,60 @@ export default function Save({ attributes }) {
 	// Функция для получения классов контейнера
 	const getContainerClasses = () => {
 		if (displayMode === 'grid') {
-			// Используем row-cols для адаптивности
-			const rowColsClasses = getRowColsClasses(attributes, 'grid', gridColumns);
-			const gapClasses = getGapClasses(attributes, 'grid');
+			const currentGridType = gridType || 'classic';
 			
-			// Fallback на старые атрибуты gridGapX и gridGapY для обратной совместимости
-			let gapClassesStr = gapClasses.join(' ');
-			if (!gapClassesStr && (gridGapX || gridGapY)) {
-				// Используем старые атрибуты
-				const oldGapClasses = [];
-				if (gridGapY) oldGapClasses.push(`gy-${gridGapY}`);
-				if (gridGapX) oldGapClasses.push(`gx-${gridGapX}`);
-				gapClassesStr = oldGapClasses.join(' ');
+			if (currentGridType === 'columns-grid') {
+				// Columns Grid: используем row-cols и новые gap атрибуты
+				const rowColsClasses = getRowColsClasses(attributes, 'grid', gridColumns);
+				const gapClasses = getGapClasses(attributes, 'grid');
+				
+				// Fallback на старые атрибуты gridGapX и gridGapY для обратной совместимости
+				let gapClassesStr = gapClasses.join(' ');
+				if (!gapClassesStr && (gridGapX || gridGapY)) {
+					// Используем старые атрибуты
+					const oldGapClasses = [];
+					if (gridGapY) oldGapClasses.push(`gy-${gridGapY}`);
+					if (gridGapX) oldGapClasses.push(`gx-${gridGapX}`);
+					gapClassesStr = oldGapClasses.join(' ');
+				}
+				
+				return `row ${gapClassesStr} ${rowColsClasses.join(' ')}`;
+			} else {
+				// Classic Grid: используем адаптивные gridColumns как row-cols и новые gap атрибуты
+				// Используем getGapClasses для новых gap атрибутов, с fallback на старые
+				const gapClasses = getGapClasses(attributes, 'grid');
+				let gapClassesStr = gapClasses.join(' ');
+				
+				// Fallback на старые атрибуты gridGapX и gridGapY для обратной совместимости
+				if (!gapClassesStr && (gridGapX || gridGapY)) {
+					const oldGapClasses = [];
+					if (gridGapY) oldGapClasses.push(`gy-${gridGapY}`);
+					if (gridGapX) oldGapClasses.push(`gx-${gridGapX}`);
+					gapClassesStr = oldGapClasses.join(' ');
+				}
+				
+				// Генерируем адаптивные row-cols классы из gridColumns атрибутов
+				const colsClasses = [];
+				const {
+					gridColumns: colsDefault,
+					gridColumnsXs: colsXs,
+					gridColumnsSm: colsSm,
+					gridColumnsMd: colsMd,
+					gridColumnsLg: colsLg,
+					gridColumnsXl: colsXl,
+					gridColumnsXxl: colsXxl,
+				} = attributes;
+				
+				if (colsDefault) colsClasses.push(`row-cols-${colsDefault}`);
+				if (colsXs) colsClasses.push(`row-cols-${colsXs}`);
+				if (colsSm) colsClasses.push(`row-cols-sm-${colsSm}`);
+				if (colsMd) colsClasses.push(`row-cols-md-${colsMd}`);
+				if (colsLg) colsClasses.push(`row-cols-lg-${colsLg}`);
+				if (colsXl) colsClasses.push(`row-cols-xl-${colsXl}`);
+				if (colsXxl) colsClasses.push(`row-cols-xxl-${colsXxl}`);
+				
+				return `row ${gapClassesStr} ${colsClasses.join(' ')}`.trim();
 			}
-			
-			return `row ${gapClassesStr} ${rowColsClasses.join(' ')}`;
 		}
 		return '';
 	};

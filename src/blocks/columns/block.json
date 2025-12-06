@@ -59,7 +59,7 @@
 		},
 		"columnsRowCols": {
 			"type": "string",
-			"default": ""
+			"default": "12"
 		},
 		"columnsRowColsSm": {
 			"type": "string",
@@ -67,7 +67,7 @@
 		},
 		"columnsRowColsMd": {
 			"type": "string",
-			"default": ""
+			"default": "3"
 		},
 		"columnsRowColsLg": {
 			"type": "string",
@@ -85,6 +85,10 @@
 			"type": "string",
 			"default": "general"
 		},
+		"columnsGap": {
+			"type": "string",
+			"default": "3"
+		},
 		"columnsGapXs": {
 			"type": "string",
 			"default": ""
@@ -95,7 +99,7 @@
 		},
 		"columnsGapMd": {
 			"type": "string",
-			"default": ""
+			"default": "3"
 		},
 		"columnsGapLg": {
 			"type": "string",

@@ -12,7 +12,7 @@
 import { __ } from '@wordpress/i18n';
 import { PanelBody, SelectControl, ToggleControl, ButtonGroup, Button } from '@wordpress/components';
 import { ResponsiveControl, createBreakpointsConfig } from '../responsive-control';
-import { getGapClasses } from './helpers';
+import { getGapClasses, getRowColsClasses } from './helpers';
 
 /**
  * GridControl Component
@@ -49,12 +49,40 @@ export const GridControl = ({
 	// Собираем все классы для всех заполненных breakpoints
 	const gapClasses = getGapClasses(attributes, attributePrefix);
 	const gapClassesString = gapClasses.length > 0 ? gapClasses.join(' ') : __('Нет классов Gap', 'codeweber-gutenberg-blocks');
+	
+	// Генерируем классы row-cols для отображения
+	const rowColsClasses = getRowColsClasses(attributes, attributePrefix);
+	const rowColsClassesString = rowColsClasses.length > 0 ? rowColsClasses.join(' ') : __('Нет классов Row Cols', 'codeweber-gutenberg-blocks');
 
 	return (
 		<>
 			{/* Row Cols Settings */}
 			{showRowCols && (
 				<div style={{ marginBottom: '16px' }}>
+					{/* Отображение классов row-cols - над ResponsiveControl */}
+					<div style={{ 
+						marginBottom: '16px', 
+						padding: '8px 12px', 
+						backgroundColor: '#f0f0f1', 
+						borderRadius: '4px',
+						fontSize: '12px',
+						fontFamily: 'monospace',
+						color: '#1e1e1e'
+					}}>
+						<div style={{ 
+							marginBottom: '4px', 
+							fontSize: '11px', 
+							fontWeight: '500', 
+							textTransform: 'uppercase', 
+							color: '#757575' 
+						}}>
+							{__('Классы Row Cols', 'codeweber-gutenberg-blocks')}:
+						</div>
+						<div style={{ wordBreak: 'break-word' }}>
+							{rowColsClassesString}
+						</div>
+					</div>
+					
 					<ResponsiveControl
 						{...createBreakpointsConfig({
 							type: 'columns',

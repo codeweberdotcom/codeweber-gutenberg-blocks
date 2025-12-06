@@ -68,7 +68,7 @@ export const createBreakpointsConfig = ({
 }) => {
 	const breakpointKeys = ['default', 'xs', 'sm', 'md', 'lg', 'xl', 'xxl'];
 	const breakpointLabels = {
-		default: 'D',
+		default: 'Base',
 		xs: 'XS',
 		sm: 'SM',
 		md: 'MD',

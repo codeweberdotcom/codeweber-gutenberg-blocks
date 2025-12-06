@@ -184,7 +184,7 @@ msgstr "Classic grid"
 
 #: src/blocks/columns/edit.js:33
 msgid "Columns grid"
-msgstr "Columns grid"
+msgstr "Сетка колонок"
 
 #: src/utilities/border-radius.js:22
 msgid "Default"

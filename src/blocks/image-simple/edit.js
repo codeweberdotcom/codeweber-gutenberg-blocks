@@ -95,21 +95,19 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 				// Overlay (imageHoverOverlay) - добавляет <span class="bg"></span>
 				if (effectType === 'overlay' && typeof window.theme?.imageHoverOverlay === 'function') {
 					window.theme.imageHoverOverlay();
-					console.log('✅ Overlay reinitialized (image-simple)');
 				}
 				
 				// Tooltip (iTooltip)
 				if (effectType === 'tooltip' && typeof window.theme?.iTooltip === 'function') {
 					window.theme.iTooltip();
-					console.log('✅ iTooltip reinitialized (image-simple)');
 				}
 				
 				// Lightbox (GLightbox) - используем утилиту
-				if (enableLightbox && initLightbox()) {
-					console.log('✅ GLightbox reinitialized (image-simple)');
+				if (enableLightbox) {
+					initLightbox();
 				}
 			} catch (error) {
-				console.warn('⚠️ Theme initialization failed (image-simple):', error);
+				// Silently handle theme initialization errors
 			}
 		}, 300);
 
@@ -181,7 +179,8 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 				
 				return `row ${gapClassesStr} ${rowColsClasses.join(' ')}`;
 			} else {
-				// Classic Grid: используем адаптивные gridColumns как row-cols и новые gap атрибуты
+				// Classic Grid: только row и gap классы, БЕЗ row-cols-*
+				// Управление колонками происходит через col-* классы в самих элементах
 				// Используем getGapClasses для новых gap атрибутов, с fallback на старые
 				const gapClasses = getGapClasses(attributes, 'grid');
 				let gapClassesStr = gapClasses.join(' ');
@@ -194,30 +193,59 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 					gapClassesStr = oldGapClasses.join(' ');
 				}
 				
-				// Генерируем адаптивные row-cols классы из gridColumns атрибутов
-				const colsClasses = [];
-				const {
-					gridColumns: colsDefault,
-					gridColumnsXs: colsXs,
-					gridColumnsSm: colsSm,
-					gridColumnsMd: colsMd,
-					gridColumnsLg: colsLg,
-					gridColumnsXl: colsXl,
-					gridColumnsXxl: colsXxl,
-				} = attributes;
-				
-				if (colsDefault) colsClasses.push(`row-cols-${colsDefault}`);
-				if (colsXs) colsClasses.push(`row-cols-${colsXs}`);
-				if (colsSm) colsClasses.push(`row-cols-sm-${colsSm}`);
-				if (colsMd) colsClasses.push(`row-cols-md-${colsMd}`);
-				if (colsLg) colsClasses.push(`row-cols-lg-${colsLg}`);
-				if (colsXl) colsClasses.push(`row-cols-xl-${colsXl}`);
-				if (colsXxl) colsClasses.push(`row-cols-xxl-${colsXxl}`);
-				
-				return `row ${gapClassesStr} ${colsClasses.join(' ')}`.trim();
+				// Classic Grid: только row + gap, без row-cols-*
+				return `row ${gapClassesStr}`.trim();
 			}
 		}
 		return '';
+	};
+
+	// Функция для генерации классов col-* из gridColumns* атрибутов (для Classic Grid)
+	// В классической сетке Bootstrap значение напрямую используется как ширина колонки (1-12)
+	const getColClasses = () => {
+		if (displayMode !== 'grid' || gridType !== 'classic') {
+			return '';
+		}
+		
+		const colClasses = [];
+		const {
+			gridColumns: colsDefault,
+			gridColumnsXs: colsXs,
+			gridColumnsSm: colsSm,
+			gridColumnsMd: colsMd,
+			gridColumnsLg: colsLg,
+			gridColumnsXl: colsXl,
+			gridColumnsXxl: colsXxl,
+		} = attributes;
+		
+		// Base (default) - без префикса
+		if (colsDefault) {
+			colClasses.push(`col-${colsDefault}`);
+		}
+		
+		// XS - без префикса (как и default)
+		if (colsXs) {
+			colClasses.push(`col-${colsXs}`);
+		}
+		
+		// SM и выше - с префиксами
+		if (colsSm) {
+			colClasses.push(`col-sm-${colsSm}`);
+		}
+		if (colsMd) {
+			colClasses.push(`col-md-${colsMd}`);
+		}
+		if (colsLg) {
+			colClasses.push(`col-lg-${colsLg}`);
+		}
+		if (colsXl) {
+			colClasses.push(`col-xl-${colsXl}`);
+		}
+		if (colsXxl) {
+			colClasses.push(`col-xxl-${colsXxl}`);
+		}
+		
+		return colClasses.join(' ');
 	};
 
 	// Получаем конфигурацию Swiper из атрибутов (используем утилиту)
@@ -265,7 +293,10 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 					// Режим Grid - добавляем key с hover эффектами и imageSize для полной переинициализации
 					<div className={getContainerClasses()} key={`grid-${hoverEffectsKey}-${imageSize}`}>
 						{images.map((image, index) => (
-							<div key={`${index}-${hoverEffectsKey}-${imageSize}`}>
+							<div 
+								key={`${index}-${hoverEffectsKey}-${imageSize}`}
+								className={gridType === 'classic' ? getColClasses() : ''}
+							>
 								<ImageSimpleRender
 									image={image}
 									imageSize={imageSize}

@@ -57,5 +57,11 @@
 	}
 }
 
+// Переопределяем margin-left и margin-right с auto на 0 для wp-block в редакторе
+.editor-styles-wrapper :where(:not(.is-layout-flex,.is-layout-grid))>.wp-block {
+	margin-left: 0;
+	margin-right: 0;
+}
+
 
 

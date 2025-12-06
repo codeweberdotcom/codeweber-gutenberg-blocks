@@ -41,16 +41,7 @@ export const ImageHoverControl = ({ attributes, setAttributes }) => {
 		cursorStyle = 'cursor-dark', // cursor-dark, cursor-light, cursor-primary
 	} = attributes;
 
-	// Отладка текущих значений
-	console.log('🎨 ImageHoverControl RENDER:', {
-		simpleEffect,
-		effectType,
-		tooltipStyle,
-		overlayStyle,
-		overlayGradient,
-		overlayColor,
-		cursorStyle
-	});
+	// Component render
 
 	return (
 		<>
@@ -64,10 +55,8 @@ export const ImageHoverControl = ({ attributes, setAttributes }) => {
 					<Button
 						isPrimary={simpleEffect === 'none'}
 						isSecondary={simpleEffect !== 'none'}
-						onClick={(e) => {
-							console.log('🔵 Simple Effect CLICKED: none', 'Current:', simpleEffect, 'Event:', e);
+						onClick={() => {
 							setAttributes({ simpleEffect: 'none' });
-							console.log('✅ setAttributes called for: none');
 						}}
 					>
 						{__('None', 'codeweber-gutenberg-blocks')}
@@ -75,10 +64,8 @@ export const ImageHoverControl = ({ attributes, setAttributes }) => {
 					<Button
 						isPrimary={simpleEffect === 'lift'}
 						isSecondary={simpleEffect !== 'lift'}
-						onClick={(e) => {
-							console.log('🔵 Simple Effect CLICKED: lift', 'Current:', simpleEffect, 'Event:', e);
+						onClick={() => {
 							setAttributes({ simpleEffect: 'lift' });
-							console.log('✅ setAttributes called for: lift');
 						}}
 					>
 						{__('Lift', 'codeweber-gutenberg-blocks')}
@@ -86,10 +73,8 @@ export const ImageHoverControl = ({ attributes, setAttributes }) => {
 					<Button
 						isPrimary={simpleEffect === 'hover-scale'}
 						isSecondary={simpleEffect !== 'hover-scale'}
-						onClick={(e) => {
-							console.log('🔵 Simple Effect CLICKED: hover-scale', 'Current:', simpleEffect, 'Event:', e);
+						onClick={() => {
 							setAttributes({ simpleEffect: 'hover-scale' });
-							console.log('✅ setAttributes called for: hover-scale');
 						}}
 					>
 						{__('Hover Scale', 'codeweber-gutenberg-blocks')}
@@ -107,10 +92,8 @@ export const ImageHoverControl = ({ attributes, setAttributes }) => {
 					<Button
 						isPrimary={effectType === 'none'}
 						isSecondary={effectType !== 'none'}
-						onClick={(e) => {
-							console.log('🟢 Advanced Effect CLICKED: none', 'Current:', effectType, 'Event:', e);
+						onClick={() => {
 							setAttributes({ effectType: 'none' });
-							console.log('✅ setAttributes called for: none');
 						}}
 					>
 						{__('None', 'codeweber-gutenberg-blocks')}
@@ -118,10 +101,8 @@ export const ImageHoverControl = ({ attributes, setAttributes }) => {
 					<Button
 						isPrimary={effectType === 'tooltip'}
 						isSecondary={effectType !== 'tooltip'}
-						onClick={(e) => {
-							console.log('🟢 Advanced Effect CLICKED: tooltip', 'Current:', effectType, 'Event:', e);
+						onClick={() => {
 							setAttributes({ effectType: 'tooltip' });
-							console.log('✅ setAttributes called for: tooltip');
 						}}
 					>
 						{__('Tooltip', 'codeweber-gutenberg-blocks')}
@@ -129,10 +110,8 @@ export const ImageHoverControl = ({ attributes, setAttributes }) => {
 					<Button
 						isPrimary={effectType === 'overlay'}
 						isSecondary={effectType !== 'overlay'}
-						onClick={(e) => {
-							console.log('🟢 Advanced Effect CLICKED: overlay', 'Current:', effectType, 'Event:', e);
+						onClick={() => {
 							setAttributes({ effectType: 'overlay' });
-							console.log('✅ setAttributes called for: overlay');
 						}}
 					>
 						{__('Overlay', 'codeweber-gutenberg-blocks')}

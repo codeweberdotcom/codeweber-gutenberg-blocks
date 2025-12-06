@@ -70,7 +70,6 @@ export const MediaControl = ({ attributes, setAttributes }) => {
 			const { videoId } = parseRutubeVideoURL(videoRutubeId);
 			
 			if (videoId && videoId.match(/^[a-f0-9]{32}$/)) {
-				console.log('🔄 Auto-fetching Rutube poster (videoType or URL changed):', { videoId, videoType });
 				wp.apiFetch({
 					path: `/codeweber-gutenberg-blocks/v1/rutube-thumbnail/${videoId}`,
 					method: 'GET'
@@ -83,15 +82,12 @@ export const MediaControl = ({ attributes, setAttributes }) => {
 								alt: response.title || 'Rutube video thumbnail'
 							}
 						});
-						console.log('✅ Rutube poster auto-loaded:', response.thumbnail_url);
 					}
 					setIsLoadingPoster(false);
 				}).catch(error => {
-					console.error('❌ Could not fetch Rutube poster:', error);
 					setIsLoadingPoster(false);
 				});
 			} else {
-				console.log('⚠️ Rutube videoId not extracted from:', videoRutubeId);
 				setIsLoadingPoster(false);
 			}
 		}
@@ -647,13 +643,11 @@ export const MediaControl = ({ attributes, setAttributes }) => {
 								<Button
 									variant="secondary"
 									onClick={async () => {
-										console.log('🔘 Button clicked! videoType:', videoType, 'videoRutubeId:', videoRutubeId, 'videoVkId:', videoVkId);
 										setIsLoadingPoster(true);
 										
 										if (videoType === 'rutube' && videoRutubeId) {
 											const { videoId } = parseRutubeVideoURL(videoRutubeId);
 											if (videoId) {
-												console.log('🔄 Manual fetch Rutube poster:', videoId);
 												try {
 													const response = await wp.apiFetch({
 														path: `/codeweber-gutenberg-blocks/v1/rutube-thumbnail/${videoId}`,
@@ -667,10 +661,9 @@ export const MediaControl = ({ attributes, setAttributes }) => {
 																alt: response.title || 'Rutube video thumbnail'
 															}
 														});
-														console.log('✅ Rutube poster loaded manually');
 													}
 												} catch (error) {
-													console.error('❌ Failed to load Rutube poster:', error);
+													// Silently handle poster loading errors
 												} finally {
 													setIsLoadingPoster(false);
 												}

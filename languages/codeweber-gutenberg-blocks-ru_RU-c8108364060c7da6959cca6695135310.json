@@ -1,5 +1,5 @@
 {
-    "translation-revision-date": "2025-12-06 11:01+0000",
+    "translation-revision-date": "2025-12-06 11:41+0000",
     "generator": "Loco https://localise.biz/",
     "source": "src/blocks/columns/edit.js",
     "domain": "codeweber-gutenberg-blocks",
@@ -11,10 +11,10 @@
                 "plural-forms": "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10 >= 2 && n%10<=4 &&(n%100<10||n%100 >= 20)? 1 : 2);"
             },
             "Classic grid": [
-                "\u041a\u043b\u0430\u0441\u0441\u0438\u0447\u0435\u0441\u043a\u0430\u044f \u0441\u0435\u0442\u043a\u0430"
+                "Classic grid"
             ],
             "Columns grid": [
-                "\u0421\u0435\u0442\u043a\u0430 \u043a\u043e\u043b\u043e\u043d\u043e\u043a"
+                "Columns grid"
             ],
             "1 column": [
                 "1 \u043a\u043e\u043b\u043e\u043d\u043a\u0430"

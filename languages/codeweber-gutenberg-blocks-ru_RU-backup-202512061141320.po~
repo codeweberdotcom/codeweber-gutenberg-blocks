@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Codeweber Gutenberg Blocks\n"
 "POT-Creation-Date: 2025-12-04T14:31:54Z\n"
-"PO-Revision-Date: 2025-12-06 11:41+0000\n"
+"PO-Revision-Date: 2025-12-06 11:01+0000\n"
 "Last-Translator: Codeweber\n"
 "Language-Team: Русский\n"
 "Language: ru_RU\n"
@@ -180,11 +180,11 @@ msgstr "ID колонки"
 
 #: src/blocks/columns/edit.js:32
 msgid "Classic grid"
-msgstr "Classic grid"
+msgstr "Классическая сетка"
 
 #: src/blocks/columns/edit.js:33
 msgid "Columns grid"
-msgstr "Columns grid"
+msgstr "Сетка колонок"
 
 #: src/utilities/border-radius.js:22
 msgid "Default"

@@ -70,19 +70,15 @@ export const VideoRender = ({ attributes, isEditor = false, setAttributes }) => 
 		}
 		
 		if (videoType === 'rutube' && videoRutubeId) {
-			console.log('🔍 Rutube - Starting parsing:', videoRutubeId);
 			let rutubeId = videoRutubeId;
 			
 			// Если это iframe код
 			if (videoRutubeId.includes('<iframe')) {
 				const srcMatch = videoRutubeId.match(/src=["']([^"']+)["']/);
-				console.log('🔍 Rutube - iframe srcMatch:', srcMatch);
 				if (srcMatch && srcMatch[1]) {
 					const idMatch = srcMatch[1].match(/\/embed\/([a-f0-9]+)/);
-					console.log('🔍 Rutube - idMatch from src:', idMatch);
 					if (idMatch && idMatch[1]) {
 						rutubeId = idMatch[1];
-						console.log('✅ Rutube - ID from iframe:', rutubeId);
 					}
 				}
 			}
@@ -90,22 +86,16 @@ export const VideoRender = ({ attributes, isEditor = false, setAttributes }) => 
 			else if (videoRutubeId.includes('rutube.ru')) {
 				try {
 					const url = new URL(videoRutubeId.includes('http') ? videoRutubeId : `https://${videoRutubeId}`);
-					console.log('🔍 Rutube - Parsed URL:', url.href);
 					const idMatch = url.pathname.match(/\/(?:video|embed)\/([a-f0-9]+)/);
-					console.log('🔍 Rutube - idMatch from URL:', idMatch);
 					if (idMatch && idMatch[1]) {
 						rutubeId = idMatch[1];
-						console.log('✅ Rutube - ID from URL:', rutubeId);
 					}
 				} catch (e) {
-					console.error('❌ Rutube URL parsing error:', e);
+					// Silently handle parsing errors
 				}
-			} else {
-				console.log('✅ Rutube - Direct ID:', rutubeId);
 			}
 			
 			const finalUrl = `https://rutube.ru/play/embed/${rutubeId}`;
-			console.log('🎯 Rutube - Final URL:', finalUrl);
 			return finalUrl;
 		}
 		

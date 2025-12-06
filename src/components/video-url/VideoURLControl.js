@@ -125,10 +125,9 @@ export const VideoURLControl = ({
 							url: response.thumbnail_url,
 							alt: response.title || 'Rutube video thumbnail'
 						});
-						console.log('✅ Rutube poster auto-loaded:', response.thumbnail_url);
 					}
 				} catch (error) {
-					console.error('❌ Could not fetch Rutube poster:', error);
+					// Silently handle poster loading errors
 				} finally {
 					setIsLoadingPoster(false);
 				}

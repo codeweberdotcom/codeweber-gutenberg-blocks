@@ -35,7 +35,7 @@
     },
     "gridColumns": {
       "type": "string",
-      "default": "3"
+      "default": "1"
     },
     "gridColumnsXs": {
       "type": "string",
@@ -47,7 +47,7 @@
     },
     "gridColumnsMd": {
       "type": "string",
-      "default": ""
+      "default": "3"
     },
     "gridColumnsLg": {
       "type": "string",
@@ -63,7 +63,7 @@
     },
     "gridRowCols": {
       "type": "string",
-      "default": ""
+      "default": "12"
     },
     "gridRowColsSm": {
       "type": "string",
@@ -71,7 +71,7 @@
     },
     "gridRowColsMd": {
       "type": "string",
-      "default": ""
+      "default": "3"
     },
     "gridRowColsLg": {
       "type": "string",
@@ -99,7 +99,7 @@
     },
     "gridGap": {
       "type": "string",
-      "default": ""
+      "default": "3"
     },
     "gridGapXs": {
       "type": "string",
@@ -111,7 +111,7 @@
     },
     "gridGapMd": {
       "type": "string",
-      "default": "5"
+      "default": "3"
     },
     "gridGapLg": {
       "type": "string",

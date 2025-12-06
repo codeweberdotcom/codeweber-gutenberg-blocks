@@ -5,6 +5,50 @@ import { useState } from '@wordpress/element';
 import { ResponsiveControl, createSwiperItemsConfig, createBreakpointsConfig } from '../../../components/responsive-control';
 import { GridControl } from '../../../components/grid-control';
 
+// Функция для генерации классов col-* из gridColumns* атрибутов (для Classic Grid)
+// Используется для отображения классов в UI
+const getColClassesFromGridColumns = (attributes) => {
+	const colClasses = [];
+	const {
+		gridColumns: colsDefault,
+		gridColumnsXs: colsXs,
+		gridColumnsSm: colsSm,
+		gridColumnsMd: colsMd,
+		gridColumnsLg: colsLg,
+		gridColumnsXl: colsXl,
+		gridColumnsXxl: colsXxl,
+	} = attributes;
+	
+	// Base (default) - без префикса
+	if (colsDefault) {
+		colClasses.push(`col-${colsDefault}`);
+	}
+	
+	// XS - без префикса (как и default)
+	if (colsXs) {
+		colClasses.push(`col-${colsXs}`);
+	}
+	
+	// SM и выше - с префиксами
+	if (colsSm) {
+		colClasses.push(`col-sm-${colsSm}`);
+	}
+	if (colsMd) {
+		colClasses.push(`col-md-${colsMd}`);
+	}
+	if (colsLg) {
+		colClasses.push(`col-lg-${colsLg}`);
+	}
+	if (colsXl) {
+		colClasses.push(`col-xl-${colsXl}`);
+	}
+	if (colsXxl) {
+		colClasses.push(`col-xxl-${colsXxl}`);
+	}
+	
+	return colClasses;
+};
+
 const GRID_TYPE_OPTIONS = [
 	{ value: 'classic', label: __('Classic grid', 'codeweber-gutenberg-blocks') },
 	{ value: 'columns-grid', label: __('Columns grid', 'codeweber-gutenberg-blocks') },
@@ -111,45 +155,38 @@ export const LayoutControl = ({ attributes, setAttributes }) => {
 						value={gridType || 'classic'} 
 						onChange={(value) => {
 							if (value === 'columns-grid') {
-								// Переключение на Columns Grid: очищаем Classic Grid атрибуты
+								// Переключение на Columns Grid: очищаем Classic Grid атрибуты (gridColumns*)
+								// и устанавливаем значения по умолчанию для Columns Grid
 								setAttributes({ 
 									gridType: value,
+									// Очищаем Classic Grid атрибуты
 									gridColumns: '',
+									gridColumnsXs: '',
+									gridColumnsSm: '',
+									gridColumnsMd: '',
+									gridColumnsLg: '',
+									gridColumnsXl: '',
+									gridColumnsXxl: '',
+									// Устанавливаем значения по умолчанию для Columns Grid
+									gridRowCols: attributes.gridRowCols || '12',
+									gridRowColsMd: attributes.gridRowColsMd || '3',
 								});
 							} else if (value === 'classic') {
-								// Переключение на Classic Grid: очищаем Columns Grid атрибуты (row-cols, gap)
+								// Переключение на Classic Grid: очищаем Columns Grid атрибуты (row-cols-*)
+								// и устанавливаем значения по умолчанию для Classic Grid
+								// Gap НЕ очищаем, так как он используется в обоих типах сеток
 								setAttributes({
 									gridType: value,
-									// Очищаем row-cols
+									// Очищаем row-cols-* классы (Columns Grid)
 									gridRowCols: '',
 									gridRowColsSm: '',
 									gridRowColsMd: '',
 									gridRowColsLg: '',
 									gridRowColsXl: '',
 									gridRowColsXxl: '',
-									// Очищаем gap
-									gridGapType: 'general',
-									gridGap: '',
-									gridGapXs: '',
-									gridGapSm: '',
-									gridGapMd: '',
-									gridGapLg: '',
-									gridGapXl: '',
-									gridGapXxl: '',
-									gridGapX: '',
-									gridGapXXs: '',
-									gridGapXSm: '',
-									gridGapXMd: '',
-									gridGapXLg: '',
-									gridGapXXl: '',
-									gridGapXXxl: '',
-									gridGapY: '',
-									gridGapYXs: '',
-									gridGapYSm: '',
-									gridGapYMd: '',
-									gridGapYLg: '',
-									gridGapYXl: '',
-									gridGapYXxl: '',
+									// Устанавливаем значения по умолчанию для Classic Grid
+									gridColumns: attributes.gridColumns || '1',
+									gridColumnsMd: attributes.gridColumnsMd || '3',
 								});
 							}
 						}}
@@ -169,9 +206,37 @@ export const LayoutControl = ({ attributes, setAttributes }) => {
 						/>
 					)}
 
-					{/* Classic Grid - адаптивное управление через gridColumns и Gap */}
+					{/* Classic Grid - управление через gridColumns (для информации) и Gap */}
+					{/* В Classic Grid управление колонками происходит через col-* классы в элементах, а не через row-cols-* */}
 					{gridType === 'classic' && (
 						<>
+							{/* Отображение классов col-* для Classic Grid - над ResponsiveControl */}
+							<div style={{ 
+								marginBottom: '16px', 
+								padding: '8px 12px', 
+								backgroundColor: '#f0f0f1', 
+								borderRadius: '4px',
+								fontSize: '12px',
+								fontFamily: 'monospace',
+								color: '#1e1e1e'
+							}}>
+								<div style={{ 
+									marginBottom: '4px', 
+									fontSize: '11px', 
+									fontWeight: '500', 
+									textTransform: 'uppercase', 
+									color: '#757575' 
+								}}>
+									{__('Классы Col', 'codeweber-gutenberg-blocks')}:
+								</div>
+								<div style={{ wordBreak: 'break-word' }}>
+									{(() => {
+										const colClasses = getColClassesFromGridColumns(attributes);
+										return colClasses.length > 0 ? colClasses.join(' ') : __('Нет классов Col', 'codeweber-gutenberg-blocks');
+									})()}
+								</div>
+							</div>
+							
 							<ResponsiveControl
 								{...createBreakpointsConfig({
 									type: 'custom',

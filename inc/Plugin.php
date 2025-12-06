@@ -56,6 +56,11 @@ class Plugin {
 		error_log('VideoThumbnailAPI instance created: ' . get_class($api));
 	}
 	
+	public static function initLoadMoreAPI(): void {
+		// Initialize Load More API
+		$api = new LoadMoreAPI();
+	}
+	
 	/**
 	 * Enqueue global editor styles for all blocks
 	 */
@@ -179,6 +184,21 @@ class Plugin {
 			GUTENBERG_BLOCKS_VERSION,
 			TRUE
 		);
+		
+		// Load More functionality
+		wp_enqueue_script(
+			'codeweber-blocks-load-more',
+			GUTENBERG_BLOCKS_INC_URL . 'js/load-more.js',
+			[],
+			GUTENBERG_BLOCKS_VERSION,
+			TRUE
+		);
+		
+		// Localize script for Load More
+		wp_localize_script('codeweber-blocks-load-more', 'cwgbLoadMore', [
+			'restUrl' => rest_url('codeweber-gutenberg-blocks/v1/load-more'),
+			'nonce' => wp_create_nonce('wp_rest'),
+		]);
 	}
 
 	/**

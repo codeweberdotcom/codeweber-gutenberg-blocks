@@ -8,6 +8,7 @@ import { LightboxControl } from '../../components/lightbox/LightboxControl';
 import { BorderRadiusControl } from '../../components/border-radius';
 import { BlockMetaFields } from '../../components/block-meta/BlockMetaFields';
 import { ImageHoverControl } from '../../components/image-hover/ImageHoverControl';
+import { LoadMoreControl } from '../../components/load-more';
 
 // Tab icon with native title tooltip
 const TabIcon = ({ icon, label }) => (
@@ -51,6 +52,19 @@ export const ImageSimpleSidebar = ({ attributes, setAttributes }) => {
 									attributes={attributes}
 									setAttributes={setAttributes}
 								/>
+
+								{/* Load More - только для Grid режима */}
+								{attributes.displayMode === 'grid' && (
+									<div style={{ marginTop: '24px', paddingTop: '24px', borderTop: '1px solid #ddd' }}>
+										<PanelBody title={__('Load More', 'codeweber-gutenberg-blocks')} initialOpen={false}>
+											<LoadMoreControl 
+												attributes={attributes} 
+												setAttributes={setAttributes}
+												attributePrefix="loadMore"
+											/>
+										</PanelBody>
+									</div>
+								)}
 
 								<div style={{ marginTop: '16px' }}>
 									<BorderRadiusControl

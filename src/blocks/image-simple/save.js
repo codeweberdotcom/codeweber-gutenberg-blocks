@@ -62,6 +62,11 @@ export default function Save({ attributes }) {
 		blockClass,
 		blockId,
 		blockData,
+		// Load More атрибуты
+		loadMoreEnable,
+		loadMoreInitialCount,
+		loadMoreLoadMoreCount,
+		loadMoreText,
 	} = attributes;
 
 	// Функция для получения классов контейнера
@@ -202,31 +207,118 @@ export default function Save({ attributes }) {
 					isEditor={false}
 				/>
 			) : displayMode === 'grid' ? (
-				// Режим Grid
-				<div className={getContainerClasses()}>
-					{images.map((image, index) => (
-						<div 
-							key={index}
-							className={gridType === 'classic' ? getColClasses() : ''}
-						>
-							<ImageSimpleRender
-								image={image}
-								imageSize={imageSize}
-								borderRadius={borderRadius}
-								enableLightbox={enableLightbox}
-								lightboxGallery={lightboxGallery}
-								simpleEffect={simpleEffect}
-								effectType={effectType}
-								tooltipStyle={tooltipStyle}
-								overlayStyle={overlayStyle}
-								overlayGradient={overlayGradient}
-								overlayColor={overlayColor}
-								cursorStyle={cursorStyle}
-								isEditor={false}
-							/>
+				// Режим Grid с поддержкой Load More
+				(() => {
+					// Определяем, нужно ли ограничивать количество изображений
+					const shouldLimitImages = loadMoreEnable && loadMoreInitialCount > 0;
+					const initialImages = shouldLimitImages 
+						? images.slice(0, loadMoreInitialCount) 
+						: images;
+					const hasMoreImages = shouldLimitImages && images.length > loadMoreInitialCount;
+					
+					// Если Load More включен, оборачиваем в контейнер
+					if (loadMoreEnable) {
+						// Сохраняем все атрибуты блока в data-атрибуте для использования в AJAX
+						const blockDataJson = JSON.stringify({
+							images: images,
+							imageSize,
+							gridType,
+							borderRadius,
+							enableLightbox,
+							lightboxGallery,
+							simpleEffect,
+							effectType,
+							tooltipStyle,
+							overlayStyle,
+							overlayGradient,
+							overlayColor,
+							cursorStyle,
+							gridColumns,
+							gridColumnsXs: attributes.gridColumnsXs,
+							gridColumnsSm: attributes.gridColumnsSm,
+							gridColumnsMd: attributes.gridColumnsMd,
+							gridColumnsLg: attributes.gridColumnsLg,
+							gridColumnsXl: attributes.gridColumnsXl,
+							gridColumnsXxl: attributes.gridColumnsXxl,
+						});
+						
+						return (
+							<div 
+								className="cwgb-load-more-container"
+								data-block-id={blockId || 'image-simple-block'}
+								data-block-type="image-simple"
+								data-current-offset={loadMoreInitialCount}
+								data-load-count={loadMoreLoadMoreCount || 6}
+								data-post-id=""
+								data-block-attributes={blockDataJson}
+							>
+								<div className={`cwgb-load-more-items ${getContainerClasses()}`}>
+									{initialImages.map((image, index) => (
+										<div 
+											key={index}
+											className={gridType === 'classic' ? getColClasses() : ''}
+										>
+											<ImageSimpleRender
+												image={image}
+												imageSize={imageSize}
+												borderRadius={borderRadius}
+												enableLightbox={enableLightbox}
+												lightboxGallery={lightboxGallery}
+												simpleEffect={simpleEffect}
+												effectType={effectType}
+												tooltipStyle={tooltipStyle}
+												overlayStyle={overlayStyle}
+												overlayGradient={overlayGradient}
+												overlayColor={overlayColor}
+												cursorStyle={cursorStyle}
+												isEditor={false}
+											/>
+										</div>
+									))}
+								</div>
+								
+								{hasMoreImages && (
+									<div style={{ textAlign: 'center', marginTop: '2rem' }}>
+										<button 
+											className="btn btn-primary cwgb-load-more-btn"
+											data-loading-text="Загрузка..."
+										>
+											{loadMoreText || 'Показать еще'}
+										</button>
+									</div>
+								)}
+							</div>
+						);
+					}
+					
+					// Если Load More отключен, отображаем все изображения как обычно
+					return (
+						<div className={getContainerClasses()}>
+							{images.map((image, index) => (
+								<div 
+									key={index}
+									className={gridType === 'classic' ? getColClasses() : ''}
+								>
+									<ImageSimpleRender
+										image={image}
+										imageSize={imageSize}
+										borderRadius={borderRadius}
+										enableLightbox={enableLightbox}
+										lightboxGallery={lightboxGallery}
+										simpleEffect={simpleEffect}
+										effectType={effectType}
+										tooltipStyle={tooltipStyle}
+										overlayStyle={overlayStyle}
+										overlayGradient={overlayGradient}
+										overlayColor={overlayColor}
+										cursorStyle={cursorStyle}
+										isEditor={false}
+									/>
+								</div>
+							))}
 						</div>
-					))}
-				</div>
+					);
+				})()
 			) : displayMode === 'swiper' ? (
 				// Режим Swiper - используем компонент SwiperSlider
 				<SwiperSlider config={swiperConfig}>

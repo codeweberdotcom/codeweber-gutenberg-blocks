@@ -42,6 +42,7 @@
 
 add_action('plugins_loaded', __NAMESPACE__ . '\Plugin::loadTextDomain');
 add_action('plugins_loaded', __NAMESPACE__ . '\Plugin::initVideoThumbnailAPI');
+add_action('plugins_loaded', __NAMESPACE__ . '\Plugin::initLoadMoreAPI');
 add_action('init', __NAMESPACE__ . '\Plugin::perInit', 0);
 add_action('init', __NAMESPACE__ . '\Plugin::init', 20);
 //add_action('admin_init', __NAMESPACE__ . '\Admin::init');

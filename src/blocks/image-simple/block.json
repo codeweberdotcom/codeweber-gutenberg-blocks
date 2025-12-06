@@ -336,6 +336,22 @@
     "blockId": {
       "type": "string",
       "default": ""
+    },
+    "loadMoreEnable": {
+      "type": "boolean",
+      "default": false
+    },
+    "loadMoreInitialCount": {
+      "type": "number",
+      "default": 6
+    },
+    "loadMoreLoadMoreCount": {
+      "type": "number",
+      "default": 6
+    },
+    "loadMoreText": {
+      "type": "string",
+      "default": "Показать еще"
     }
   }
 }

@@ -30,8 +30,10 @@ export const getLightboxAttributes = (
         return {};
     }
 
+    // According to Sandbox documentation: <a href="#" data-glightbox data-gallery="g1">
+    // data-glightbox should be empty or contain title/description, not type
     const attrs = {
-        'data-glightbox': type,
+        'data-glightbox': '', // Empty attribute, GLightbox auto-detects type from href
     };
 
     // Add gallery grouping if specified

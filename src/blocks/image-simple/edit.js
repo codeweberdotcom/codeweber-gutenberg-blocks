@@ -66,6 +66,11 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		overlayColor,
 		cursorStyle,
 		blockClass,
+		// Load More атрибуты
+		loadMoreEnable,
+		loadMoreInitialCount,
+		loadMoreLoadMoreCount,
+		loadMoreText,
 	} = attributes;
 
 	const blockProps = useBlockProps({
@@ -292,7 +297,10 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 				) : displayMode === 'grid' ? (
 					// Режим Grid - добавляем key с hover эффектами и imageSize для полной переинициализации
 					<div className={getContainerClasses()} key={`grid-${hoverEffectsKey}-${imageSize}`}>
-						{images.map((image, index) => (
+						{(loadMoreEnable && displayMode === 'grid' 
+							? images.slice(0, loadMoreInitialCount || images.length)
+							: images
+						).map((image, index) => (
 							<div 
 								key={`${index}-${hoverEffectsKey}-${imageSize}`}
 								className={gridType === 'classic' ? getColClasses() : ''}
@@ -314,6 +322,20 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 								/>
 							</div>
 						))}
+						{loadMoreEnable && displayMode === 'grid' && images.length > (loadMoreInitialCount || images.length) && (
+							<div style={{ 
+								width: '100%', 
+								textAlign: 'center', 
+								marginTop: '20px',
+								padding: '8px',
+								backgroundColor: '#f0f0f0',
+								borderRadius: '4px',
+								fontSize: '12px',
+								color: '#666'
+							}}>
+								{__('Load More будет работать на фронтенде', 'codeweber-gutenberg-blocks')}
+							</div>
+						)}
 					</div>
 				) : displayMode === 'swiper' ? (
 					// Режим Swiper - используем компонент SwiperSlider

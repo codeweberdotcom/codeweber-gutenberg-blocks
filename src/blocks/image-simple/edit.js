@@ -11,7 +11,7 @@ import {
 	destroySwiper 
 } from '../../components/swiper/SwiperSlider';
 import { initLightbox } from '../../utilities/lightbox';
-import { getRowColsClasses } from '../../components/grid-control';
+import { getRowColsClasses, getGapClasses } from '../../components/grid-control';
 
 export default function Edit({ attributes, setAttributes, clientId }) {
 	const {
@@ -163,7 +163,19 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		if (displayMode === 'grid') {
 			// Используем row-cols для адаптивности
 			const rowColsClasses = getRowColsClasses(attributes, 'grid', gridColumns);
-			return `row gy-${gridGapY} gx-${gridGapX} ${rowColsClasses.join(' ')}`;
+			const gapClasses = getGapClasses(attributes, 'grid');
+			
+			// Fallback на старые атрибуты gridGapX и gridGapY для обратной совместимости
+			let gapClassesStr = gapClasses.join(' ');
+			if (!gapClassesStr && (gridGapX || gridGapY)) {
+				// Используем старые атрибуты
+				const oldGapClasses = [];
+				if (gridGapY) oldGapClasses.push(`gy-${gridGapY}`);
+				if (gridGapX) oldGapClasses.push(`gx-${gridGapX}`);
+				gapClassesStr = oldGapClasses.join(' ');
+			}
+			
+			return `row ${gapClassesStr} ${rowColsClasses.join(' ')}`;
 		}
 		return '';
 	};

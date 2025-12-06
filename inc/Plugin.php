@@ -78,19 +78,19 @@ class Plugin {
 	}
 
 	public static function getBlocksName(): array {
-		return [
-			'button',
-			'section',
-			'column',
-			'columns',
-			'heading-subtitle',
-			'icon',
-			'media',
-			'paragraph',
-			'card',
-			'feature',
-			'image-simple',
-		];
+	return [
+		'button',
+		'section',
+		'column',
+		'columns',
+		'heading-subtitle',
+		'icon',
+		'media',
+		'paragraph',
+		'card',
+		'feature',
+		'image-simple',
+	];
 	}
 
 	public static function gutenbergBlocksInit(): void {

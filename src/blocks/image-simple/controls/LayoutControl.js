@@ -82,44 +82,16 @@ export const LayoutControl = ({ attributes, setAttributes }) => {
 			{/* Grid Settings */}
 			{displayMode === 'grid' && (
 				<>
-					{/* Используем GridControl только для Row Cols */}
+					{/* GridControl для Row Cols и Gap */}
 					<GridControl
 						attributes={attributes}
 						setAttributes={setAttributes}
 						attributePrefix="grid"
 						showRowCols={true}
-						showGap={false}
+						showGap={true}
 						showSpacing={false}
 						rowColsLabel={__('Images Per Row', 'codeweber-gutenberg-blocks')}
-					/>
-
-					<SelectControl
-						label={__('Grid Gap X', 'codeweber-gutenberg-blocks')}
-						value={gridGapX}
-						options={[
-							{ label: 'None', value: '0' },
-							{ label: 'XS (5)', value: 'xs-5' },
-							{ label: 'SM (5)', value: 'sm-5' },
-							{ label: 'MD (5)', value: 'md-5' },
-							{ label: 'LG (5)', value: 'lg-5' },
-							{ label: 'XL (5)', value: 'xl-5' },
-						]}
-						onChange={(value) => setAttributes({ gridGapX: value })}
-					/>
-
-					<SelectControl
-						label={__('Grid Gap Y', 'codeweber-gutenberg-blocks')}
-						value={gridGapY}
-						options={[
-							{ label: '0', value: '0' },
-							{ label: '1', value: '1' },
-							{ label: '2', value: '2' },
-							{ label: '3', value: '3' },
-							{ label: '4', value: '4' },
-							{ label: '5', value: '5' },
-							{ label: '6', value: '6' },
-						]}
-						onChange={(value) => setAttributes({ gridGapY: value })}
+						gapLabel={__('Grid Gap', 'codeweber-gutenberg-blocks')}
 					/>
 				</>
 			)}

@@ -65,6 +65,34 @@
       "type": "string",
       "default": "5"
     },
+    "gridGapType": {
+      "type": "string",
+      "default": "general"
+    },
+    "gridGapXs": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapSm": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapMd": {
+      "type": "string",
+      "default": "5"
+    },
+    "gridGapLg": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapXl": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapXxl": {
+      "type": "string",
+      "default": ""
+    },
     "swiperEffect": {
       "type": "string",
       "default": "slide"

@@ -10,8 +10,9 @@
 	figure {
 		margin: 0;
 		
-		// Унификация размера превью для видео (VK, Rutube, и др.)
-		a > img {
+		// Унификация размера превью ТОЛЬКО для видео (VK, Rutube, и др.)
+		// Применяется только когда есть кнопка play
+		&:has(.video-play-btn) a > img {
 			width: 100%;
 			height: auto;
 			object-fit: cover;

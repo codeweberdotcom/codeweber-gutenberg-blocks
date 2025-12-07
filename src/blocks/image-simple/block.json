@@ -351,7 +351,7 @@
     },
     "loadMoreText": {
       "type": "string",
-      "default": "Показать еще"
+      "default": "show-more"
     }
   }
 }

@@ -27,6 +27,7 @@ $block_class = isset($attributes['blockClass']) ? $attributes['blockClass'] : ''
 $block_id = isset($attributes['blockId']) ? $attributes['blockId'] : '';
 $block_data = isset($attributes['blockData']) ? $attributes['blockData'] : '';
 $template = isset($attributes['template']) ? $attributes['template'] : 'default';
+$selected_taxonomies = isset($attributes['selectedTaxonomies']) ? $attributes['selectedTaxonomies'] : [];
 
 // Генерируем уникальный ID для блока, если он не задан (необходимо для Load More)
 if (empty($block_id)) {
@@ -57,7 +58,20 @@ $cursor_style = isset($attributes['cursorStyle']) ? $attributes['cursorStyle'] :
 $load_more_enable = isset($attributes['loadMoreEnable']) ? $attributes['loadMoreEnable'] : false;
 $load_more_initial_count = isset($attributes['loadMoreInitialCount']) ? (int) $attributes['loadMoreInitialCount'] : 6;
 $load_more_load_more_count = isset($attributes['loadMoreLoadMoreCount']) ? (int) $attributes['loadMoreLoadMoreCount'] : 6;
-$load_more_text = isset($attributes['loadMoreText']) ? $attributes['loadMoreText'] : 'Показать еще';
+$load_more_text_key = isset($attributes['loadMoreText']) ? $attributes['loadMoreText'] : 'show-more';
+$load_more_type = isset($attributes['loadMoreType']) ? $attributes['loadMoreType'] : 'button';
+
+// Предустановленные тексты для кнопки/ссылки
+$load_more_texts = [
+	'show-more' => __('Show More', 'codeweber-gutenberg-blocks'),
+	'load-more' => __('Load More', 'codeweber-gutenberg-blocks'),
+	'show-more-items' => __('Show More Items', 'codeweber-gutenberg-blocks'),
+	'more-posts' => __('More Posts', 'codeweber-gutenberg-blocks'),
+	'view-all' => __('View All', 'codeweber-gutenberg-blocks'),
+	'show-all' => __('Show All', 'codeweber-gutenberg-blocks'),
+];
+
+$load_more_text = isset($load_more_texts[$load_more_text_key]) ? $load_more_texts[$load_more_text_key] : $load_more_texts['show-more'];
 
 // Helper function to get container classes
 if (!function_exists('get_post_grid_container_classes')) {
@@ -138,6 +152,26 @@ $col_classes = get_post_grid_col_classes($attributes, $grid_type);
 		'orderby' => $order_by,
 		'order' => $order,
 	);
+
+	// Добавляем фильтрацию по таксономиям, если выбраны термины
+	if (!empty($selected_taxonomies) && is_array($selected_taxonomies)) {
+		$tax_query = array('relation' => 'AND');
+		
+		foreach ($selected_taxonomies as $taxonomy_slug => $term_ids) {
+			if (!empty($term_ids) && is_array($term_ids)) {
+				$tax_query[] = array(
+					'taxonomy' => $taxonomy_slug,
+					'field' => 'term_id',
+					'terms' => array_map('intval', $term_ids),
+					'operator' => 'IN',
+				);
+			}
+		}
+		
+		if (count($tax_query) > 1) { // Если есть хотя бы одна таксономия с терминами
+			$args['tax_query'] = $tax_query;
+		}
+	}
 
 $query = new WP_Query($args);
 
@@ -336,7 +370,7 @@ if (!function_exists('get_swiper_data_attributes')) {
 
 // Helper function to render post item based on template
 if (!function_exists('render_post_grid_item')) {
-	function render_post_grid_item($post, $attributes, $image_url, $image_size, $grid_type, $col_classes) {
+	function render_post_grid_item($post, $attributes, $image_url, $image_size, $grid_type, $col_classes, $is_swiper = false) {
 		$template = isset($attributes['template']) ? $attributes['template'] : 'default';
 		
 		// Загружаем новую систему шаблонов из темы, если доступна
@@ -347,50 +381,81 @@ if (!function_exists('render_post_grid_item')) {
 		
 		// Используем новую систему шаблонов из темы, если доступна
 		if (function_exists('cw_render_post_card')) {
-			// Настройки отображения
-			$display_settings = [
-				'show_title' => true,
-				'show_date' => true,
-				'show_category' => true,
-				'show_comments' => true,
-				'title_length' => 56,
-				'excerpt_length' => 0,
-				'title_tag' => 'h2',
-				'title_class' => '',
-			];
+			$post_type = get_post_type($post->ID);
 			
-			// Для card-content и slider включаем excerpt
-			if ($template === 'card-content' || $template === 'slider') {
-				$display_settings['excerpt_length'] = 20;
-			}
-			// Для overlay-5 используем больше слов для обрезки до 116 символов
-			if ($template === 'overlay-5') {
-				$display_settings['excerpt_length'] = 40;
+			// Специальная обработка для clients
+			if ($post_type === 'clients') {
+				// Упрощенные настройки для clients
+				$display_settings = [
+					'show_title' => false,
+					'show_date' => false,
+					'show_category' => false,
+					'show_comments' => false,
+					'title_length' => 0,
+					'excerpt_length' => 0,
+					'title_tag' => 'h2',
+					'title_class' => '',
+				];
+				
+				// Размер изображения по умолчанию для clients
+				if ($image_size === 'full' || empty($image_size)) {
+					$image_size = 'codeweber_clients_300-200';
+				}
+				
+				$template_args = [
+					'image_size' => $image_size,
+					'enable_link' => isset($attributes['enableLink']) ? (bool) $attributes['enableLink'] : false,
+				];
+			} else {
+				// Настройки отображения для обычных постов
+				$display_settings = [
+					'show_title' => true,
+					'show_date' => true,
+					'show_category' => true,
+					'show_comments' => true,
+					'title_length' => 56,
+					'excerpt_length' => 0,
+					'title_tag' => 'h2',
+					'title_class' => '',
+				];
+				
+				// Для card-content и slider включаем excerpt
+				if ($template === 'card-content' || $template === 'slider') {
+					$display_settings['excerpt_length'] = 20;
+				}
+				// Для overlay-5 используем больше слов для обрезки до 116 символов
+				if ($template === 'overlay-5') {
+					$display_settings['excerpt_length'] = 40;
+				}
+				
+				// Настройки шаблона
+				$hover_classes = 'overlay overlay-1';
+				// Для overlay-5 используем overlay-5
+				if ($template === 'overlay-5') {
+					$hover_classes = 'overlay overlay-5';
+				}
+				// Добавляем hover-scale для соответствующих шаблонов
+				if ($template === 'slider' || $template === 'card-content') {
+					$hover_classes .= ' hover-scale';
+				}
+				
+				$template_args = [
+					'image_size' => $image_size,
+					'hover_classes' => $hover_classes,
+					'border_radius' => isset($attributes['borderRadius']) ? $attributes['borderRadius'] : 'rounded',
+					'show_figcaption' => true,
+					'enable_hover_scale' => ($template === 'default' && isset($attributes['enableHoverScale']) && $attributes['enableHoverScale']) ? true : false,
+					'enable_lift' => ($template === 'default-clickable') ? true : false,
+				];
 			}
 			
-			// Настройки шаблона
-			$hover_classes = 'overlay overlay-1';
-			// Для overlay-5 используем overlay-5
-			if ($template === 'overlay-5') {
-				$hover_classes = 'overlay overlay-5';
+			// В режиме Swiper (slider) НИКОГДА не добавляем col-* классы
+			$html = cw_render_post_card($post, $template, $display_settings, $template_args);
+			// Добавляем обертку с col-* классами только для grid режима (не swiper) и только для classic grid
+			// Для client шаблонов также не добавляем col-* в swiper режиме
+			if (!$is_swiper && $grid_type === 'classic' && !empty($col_classes)) {
+				$html = '<div class="' . esc_attr($col_classes) . '">' . $html . '</div>';
 			}
-			// Добавляем hover-scale для соответствующих шаблонов
-			if ($template === 'slider' || $template === 'card-content') {
-				$hover_classes .= ' hover-scale';
-			}
-			
-			$template_args = [
-				'image_size' => $image_size,
-				'hover_classes' => $hover_classes,
-				'border_radius' => isset($attributes['borderRadius']) ? $attributes['borderRadius'] : 'rounded',
-				'show_figcaption' => true,
-				'enable_hover_scale' => ($template === 'default' && isset($attributes['enableHoverScale']) && $attributes['enableHoverScale']) ? true : false,
-				'enable_lift' => ($template === 'default-clickable') ? true : false,
-			];
-			
-			$html = '<div class="' . esc_attr($grid_type === 'classic' ? $col_classes : '') . '">';
-			$html .= cw_render_post_card($post, $template, $display_settings, $template_args);
-			$html .= '</div>';
 			
 			return $html;
 		}
@@ -428,7 +493,10 @@ if (!function_exists('render_post_grid_item')) {
 		
 		if ($template === 'card') {
 			// Card template
-			$html .= '<div class="' . esc_attr($grid_type === 'classic' ? $col_classes : '') . '">';
+			// В режиме Swiper не добавляем col-* классы
+			if (!$is_swiper && $grid_type === 'classic' && !empty($col_classes)) {
+				$html .= '<div class="' . esc_attr($col_classes) . '">';
+			}
 			$html .= '<article>';
 			$html .= '<div class="card shadow-lg">';
 			
@@ -480,10 +548,16 @@ if (!function_exists('render_post_grid_item')) {
 			$html .= '</div>'; // card-body
 			$html .= '</div>'; // card
 			$html .= '</article>';
-			$html .= '</div>';
+			// В режиме Swiper не закрываем div с col-* классами
+			if (!$is_swiper && $grid_type === 'classic' && !empty($col_classes)) {
+				$html .= '</div>';
+			}
 		} else {
 			// Default template
-			$html .= '<div class="' . esc_attr($grid_type === 'classic' ? $col_classes : '') . '">';
+			// В режиме Swiper не добавляем col-* классы
+			if (!$is_swiper && $grid_type === 'classic' && !empty($col_classes)) {
+				$html .= '<div class="' . esc_attr($col_classes) . '">';
+			}
 			$html .= '<article>';
 			
 			// Figure with overlay
@@ -533,7 +607,10 @@ if (!function_exists('render_post_grid_item')) {
 			$html .= '</ul>';
 			$html .= '</div>';
 			$html .= '</article>';
-			$html .= '</div>';
+			// В режиме Swiper не закрываем div с col-* классами
+			if (!$is_swiper && $grid_type === 'classic' && !empty($col_classes)) {
+				$html .= '</div>';
+			}
 		}
 		
 		return $html;
@@ -550,7 +627,39 @@ if (!function_exists('render_post_grid_item')) {
 			$swiper_container_classes = get_swiper_container_classes($attributes);
 			$swiper_data_attrs = get_swiper_data_attributes($attributes);
 			
-			// Добавляем настройки из таба "Настройки" к swiper-container
+			// Для шаблона client-simple добавляем класс clients
+			if ($template === 'client-simple') {
+				$swiper_container_classes .= ' clients';
+			}
+			
+			// Убираем классы навигации и точек для всех шаблонов, если они не используются
+			$swiper_nav = isset($attributes['swiperNav']) ? $attributes['swiperNav'] : true;
+			$swiper_dots = isset($attributes['swiperDots']) ? $attributes['swiperDots'] : true;
+			
+			// Разбиваем классы на массив
+			$classes_array = explode(' ', $swiper_container_classes);
+			$filtered_classes = [];
+			
+			foreach ($classes_array as $class) {
+				$class = trim($class);
+				if (empty($class)) continue;
+				
+				// Пропускаем классы навигации, если nav выключен
+				if (!$swiper_nav && in_array($class, ['nav-dark', 'nav-color'])) {
+					continue;
+				}
+				
+				// Пропускаем классы точек, если dots выключен
+				if (!$swiper_dots && in_array($class, ['dots-light', 'dots-start', 'dots-over', 'dots-closer'])) {
+					continue;
+				}
+				
+				$filtered_classes[] = $class;
+			}
+			
+			$swiper_container_classes = implode(' ', $filtered_classes);
+			
+			// Add settings from Settings tab to swiper-container
 			if (!empty($settings_attrs['class'])) {
 				$swiper_container_classes .= ' ' . $settings_attrs['class'];
 			}
@@ -560,9 +669,9 @@ if (!function_exists('render_post_grid_item')) {
 				$swiper_data_attrs_str .= ' ' . esc_attr($key) . '="' . esc_attr($value) . '"';
 			}
 			
-			// Добавляем id и data-атрибуты из настроек
+			// Добавляем id и data-атрибуты из настроек (для client-simple не добавляем ID)
 			$swiper_settings_str = '';
-			if (!empty($settings_attrs['id'])) {
+			if ($template !== 'client-simple' && !empty($settings_attrs['id'])) {
 				$swiper_settings_str .= ' id="' . $settings_attrs['id'] . '"';
 			}
 			if (!empty($settings_attrs['data-block-data'])) {
@@ -580,9 +689,13 @@ if (!function_exists('render_post_grid_item')) {
 							<?php
 							$image_url = get_post_image_url($post, $image_size);
 							if (!$image_url) continue;
+							$slide_class = 'swiper-slide';
+							if ($template === 'client-simple') {
+								$slide_class .= ' px-5';
+							}
 							?>
-							<div class="swiper-slide">
-								<?php echo render_post_grid_item($post, $attributes, $image_url, $image_size, $grid_type, $col_classes); ?>
+							<div class="<?php echo esc_attr($slide_class); ?>">
+								<?php echo render_post_grid_item($post, $attributes, $image_url, $image_size, $grid_type, $col_classes, true); ?>
 							</div>
 						<?php endforeach; wp_reset_postdata(); ?>
 					</div>
@@ -602,9 +715,15 @@ if (!function_exists('render_post_grid_item')) {
 			
 			<?php if ($load_more_enable && $has_more) : ?>
 				<div style="text-align: center; margin-top: 20px;">
-					<button class="btn btn-primary cwgb-load-more-btn" type="button">
-						<?php echo esc_html($load_more_text); ?>
-					</button>
+					<?php if ($load_more_type === 'link') : ?>
+						<a href="#" class="hover cwgb-load-more-btn" data-load-more="true">
+							<?php echo esc_html($load_more_text); ?>
+						</a>
+					<?php else : ?>
+						<button class="btn btn-primary cwgb-load-more-btn" type="button">
+							<?php echo esc_html($load_more_text); ?>
+						</button>
+					<?php endif; ?>
 				</div>
 			<?php endif; ?>
 		<?php endif; ?>

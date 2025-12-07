@@ -1,0 +1,2 @@
+export { TaxonomyFilterControl } from './TaxonomyFilterControl';
+

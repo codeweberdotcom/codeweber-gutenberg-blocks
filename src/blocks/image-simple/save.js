@@ -281,9 +281,9 @@ export default function Save({ attributes }) {
 									<div style={{ textAlign: 'center', marginTop: '2rem' }}>
 										<button 
 											className="btn btn-primary cwgb-load-more-btn"
-											data-loading-text="Загрузка..."
+											data-loading-text="Loading..."
 										>
-											{loadMoreText || 'Показать еще'}
+											{loadMoreText || 'Show More'}
 										</button>
 									</div>
 								)}

@@ -227,12 +227,12 @@ export const LayoutControl = ({ attributes, setAttributes }) => {
 									textTransform: 'uppercase', 
 									color: '#757575' 
 								}}>
-									{__('Классы Col', 'codeweber-gutenberg-blocks')}:
+									{__('Col Classes', 'codeweber-gutenberg-blocks')}:
 								</div>
 								<div style={{ wordBreak: 'break-word' }}>
 									{(() => {
 										const colClasses = getColClassesFromGridColumns(attributes);
-										return colClasses.length > 0 ? colClasses.join(' ') : __('Нет классов Col', 'codeweber-gutenberg-blocks');
+										return colClasses.length > 0 ? colClasses.join(' ') : __('No Col Classes', 'codeweber-gutenberg-blocks');
 									})()}
 								</div>
 							</div>

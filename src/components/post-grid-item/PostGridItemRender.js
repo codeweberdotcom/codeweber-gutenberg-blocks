@@ -15,6 +15,8 @@ export const PostGridItemRender = ({
 	overlayColor,
 	cursorStyle,
 	isEditor = false,
+	enableLink = false,
+	postType = 'post',
 }) => {
 	const postLink = post.linkUrl || '#';
 	const postTitle = post.title || '';
@@ -271,6 +273,49 @@ export const PostGridItemRender = ({
 					</figcaption>
 				</figure>
 			</article>
+		);
+	} else if (template === 'client-simple') {
+		// Client Simple template - для Swiper (без figure, просто img)
+		return (
+			<>
+				{enableLink && postLink ? (
+					<a href={isEditor ? '#' : postLink} onClick={isEditor ? (e) => e.preventDefault() : undefined}>
+						<img src={imageUrl} alt={post.alt || postTitle} />
+					</a>
+				) : (
+					<img src={imageUrl} alt={post.alt || postTitle} />
+				)}
+			</>
+		);
+	} else if (template === 'client-grid') {
+		// Client Grid template
+		return (
+			<figure className="px-3 px-md-0 px-xxl-2">
+				{enableLink && postLink ? (
+					<a href={isEditor ? '#' : postLink} onClick={isEditor ? (e) => e.preventDefault() : undefined}>
+						<img src={imageUrl} alt={post.alt || postTitle} />
+					</a>
+				) : (
+					<img src={imageUrl} alt={post.alt || postTitle} />
+				)}
+			</figure>
+		);
+	} else if (template === 'client-card') {
+		// Client Card template
+		return (
+			<div className="card shadow-lg h-100 p-0 align-items-center">
+				<div className="card-body align-items-center d-flex px-3 py-6 p-md-8">
+					<figure className="px-md-3 px-xl-0 px-xxl-3 mb-0">
+						{enableLink && postLink ? (
+							<a href={isEditor ? '#' : postLink} onClick={isEditor ? (e) => e.preventDefault() : undefined}>
+								<img src={imageUrl} alt={post.alt || postTitle} />
+							</a>
+						) : (
+							<img src={imageUrl} alt={post.alt || postTitle} />
+						)}
+					</figure>
+				</div>
+			</div>
 		);
 	} else {
 		// Default template

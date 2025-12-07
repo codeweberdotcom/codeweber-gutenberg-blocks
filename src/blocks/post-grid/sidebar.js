@@ -1,14 +1,13 @@
 import { InspectorControls } from '@wordpress/block-editor';
 import { TabPanel, PanelBody } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import { Icon, cog, grid, starFilled, layout } from '@wordpress/icons';
+import { Icon, cog, grid, starFilled } from '@wordpress/icons';
 import { MainControl } from './controls/MainControl';
 import { LayoutControl } from './controls/LayoutControl';
 import { BorderRadiusControl } from '../../components/border-radius';
 import { BlockMetaFields } from '../../components/block-meta/BlockMetaFields';
 import { ImageHoverControl } from '../../components/image-hover/ImageHoverControl';
 import { LoadMoreControl } from '../../components/load-more';
-import { PostGridTemplateControl } from '../../components/post-grid-template';
 
 // Tab icon with native title tooltip
 const TabIcon = ({ icon, label }) => (
@@ -23,7 +22,6 @@ const TabIcon = ({ icon, label }) => (
 export const PostGridSidebar = ({ attributes, setAttributes }) => {
 	const tabs = [
 		{ name: 'main', title: <TabIcon icon={cog} label={__('Main', 'codeweber-gutenberg-blocks')} /> },
-		{ name: 'template', title: <TabIcon icon={layout} label={__('Template', 'codeweber-gutenberg-blocks')} /> },
 		{ name: 'layout', title: <TabIcon icon={grid} label={__('Layout', 'codeweber-gutenberg-blocks')} /> },
 		{ name: 'effects', title: <TabIcon icon={starFilled} label={__('Effects', 'codeweber-gutenberg-blocks')} /> },
 		{ name: 'settings', title: <TabIcon icon={cog} label={__('Settings', 'codeweber-gutenberg-blocks')} /> },
@@ -40,16 +38,6 @@ export const PostGridSidebar = ({ attributes, setAttributes }) => {
 								<MainControl
 									attributes={attributes}
 									setAttributes={setAttributes}
-								/>
-							</PanelBody>
-						)}
-
-						{/* TEMPLATE TAB */}
-						{tab.name === 'template' && (
-							<PanelBody title={__('Post Card Template', 'codeweber-gutenberg-blocks')} initialOpen={true}>
-								<PostGridTemplateControl
-									value={attributes.template || 'default'}
-									onChange={(value) => setAttributes({ template: value })}
 								/>
 							</PanelBody>
 						)}

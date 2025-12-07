@@ -21,6 +21,7 @@ import { useImageSizes } from '../../hooks/useImageSizes';
  * @param {boolean} props.includeFull - Включать "Full Size" (по умолчанию true)
  * @param {boolean} props.sort - Сортировать размеры (по умолчанию true)
  * @param {boolean} props.showLoading - Показывать индикатор загрузки (по умолчанию false)
+ * @param {string} props.postType - Тип записи для фильтрации размеров
  */
 export const ImageSizeControl = ({
 	value,
@@ -32,11 +33,13 @@ export const ImageSizeControl = ({
 	includeFull = true,
 	sort = true,
 	showLoading = false,
+	postType = null,
 }) => {
 	// Загружаем размеры из API (если не переданы customSizes)
 	const { sizes: apiSizes, loading } = useImageSizes({
 		includeFull,
 		sort,
+		postType,
 	});
 
 	// Используем customSizes или API sizes

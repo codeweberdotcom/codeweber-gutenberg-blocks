@@ -132,13 +132,13 @@ export const LayoutControl = ({ attributes, setAttributes }) => {
 					isPrimary={displayMode === 'grid'}
 					onClick={() => setAttributes({ displayMode: 'grid' })}
 				>
-					{__('Сетка', 'codeweber-gutenberg-blocks')}
+					{__('Grid', 'codeweber-gutenberg-blocks')}
 				</Button>
 				<Button
 					isPrimary={displayMode === 'swiper'}
 					onClick={() => setAttributes({ displayMode: 'swiper' })}
 				>
-					{__('Слайдер', 'codeweber-gutenberg-blocks')}
+					{__('Slider', 'codeweber-gutenberg-blocks')}
 				</Button>
 			</ButtonGroup>
 
@@ -221,12 +221,12 @@ export const LayoutControl = ({ attributes, setAttributes }) => {
 									textTransform: 'uppercase', 
 									color: '#757575' 
 								}}>
-									{__('Классы Col', 'codeweber-gutenberg-blocks')}:
+									{__('Col Classes', 'codeweber-gutenberg-blocks')}:
 								</div>
 								<div style={{ wordBreak: 'break-word' }}>
 									{(() => {
 										const colClasses = getColClassesFromGridColumns(attributes);
-										return colClasses.length > 0 ? colClasses.join(' ') : __('Нет классов Col', 'codeweber-gutenberg-blocks');
+										return colClasses.length > 0 ? colClasses.join(' ') : __('No Col Classes', 'codeweber-gutenberg-blocks');
 									})()}
 								</div>
 							</div>

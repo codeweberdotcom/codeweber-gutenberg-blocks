@@ -51,9 +51,18 @@
 				}
 
 				// Show loading state
-				const originalText = button.textContent;
-				button.disabled = true;
-				button.textContent = button.dataset.loadingText || 'Загрузка...';
+				const originalText = button.textContent || button.innerText;
+				const isLoadingText = button.dataset.loadingText || 'Loading...';
+				
+				// Для кнопок используем disabled, для ссылок - pointer-events
+				if (button.tagName === 'BUTTON') {
+					button.disabled = true;
+					button.textContent = isLoadingText;
+				} else {
+					button.style.pointerEvents = 'none';
+					button.style.opacity = '0.6';
+					button.textContent = isLoadingText;
+				}
 
 				// Use REST API endpoint
 				const apiUrl = cwgbLoadMore?.restUrl || '/wp-json/codeweber-gutenberg-blocks/v1/load-more';
@@ -160,7 +169,13 @@
 						if (!responseData.has_more) {
 							button.style.display = 'none';
 						} else {
-							button.disabled = false;
+							// Восстанавливаем состояние для кнопок и ссылок
+							if (button.tagName === 'BUTTON') {
+								button.disabled = false;
+							} else {
+								button.style.pointerEvents = '';
+								button.style.opacity = '';
+							}
 							button.textContent = originalText;
 						}
 					} else {
@@ -170,9 +185,15 @@
 				})
 				.catch(error => {
 					console.error('Load More Error:', error);
-					button.disabled = false;
+					// Восстанавливаем состояние для кнопок и ссылок
+					if (button.tagName === 'BUTTON') {
+						button.disabled = false;
+					} else {
+						button.style.pointerEvents = '';
+						button.style.opacity = '';
+					}
 					button.textContent = originalText;
-					alert('Ошибка загрузки. Попробуйте еще раз.');
+					alert('Load error. Please try again.');
 				});
 			});
 		});

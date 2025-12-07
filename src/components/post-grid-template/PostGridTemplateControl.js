@@ -1,7 +1,7 @@
 import { __ } from '@wordpress/i18n';
 import { SelectControl } from '@wordpress/components';
 
-const TEMPLATES = [
+const POST_TEMPLATES = [
 	{
 		value: 'default',
 		label: __('Default', 'codeweber-gutenberg-blocks'),
@@ -34,15 +34,37 @@ const TEMPLATES = [
 	},
 ];
 
-export const PostGridTemplateControl = ({ value, onChange }) => {
-	const selectedTemplate = TEMPLATES.find(t => t.value === value) || TEMPLATES[0];
+const CLIENT_TEMPLATES = [
+	{
+		value: 'client-simple',
+		label: __('Client Simple', 'codeweber-gutenberg-blocks'),
+		description: __('Simple logo for Swiper slider', 'codeweber-gutenberg-blocks'),
+	},
+	{
+		value: 'client-grid',
+		label: __('Client Grid', 'codeweber-gutenberg-blocks'),
+		description: __('Logo in figure with adaptive padding for Grid layout', 'codeweber-gutenberg-blocks'),
+	},
+	{
+		value: 'client-card',
+		label: __('Client Card', 'codeweber-gutenberg-blocks'),
+		description: __('Logo in card with shadow for Grid with cards', 'codeweber-gutenberg-blocks'),
+	},
+];
+
+export const PostGridTemplateControl = ({ value, onChange, postType = 'post' }) => {
+	// Определяем какие шаблоны показывать в зависимости от типа записи
+	const templates = postType === 'clients' ? CLIENT_TEMPLATES : POST_TEMPLATES;
+	const defaultTemplate = postType === 'clients' ? 'client-simple' : 'default';
+	
+	const selectedTemplate = templates.find(t => t.value === value) || templates[0];
 
 	return (
 		<>
 			<SelectControl
 				label={__('Template', 'codeweber-gutenberg-blocks')}
-				value={value || 'default'}
-				options={TEMPLATES.map(template => ({
+				value={value || defaultTemplate}
+				options={templates.map(template => ({
 					label: template.label,
 					value: template.value,
 				}))}

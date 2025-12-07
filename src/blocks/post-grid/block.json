@@ -16,6 +16,7 @@
   "editorScript": "file:./index.js",
   "editorStyle": "file:./editor.scss",
   "style": "file:./style.scss",
+  "viewScript": "file:./view.js",
   "render": "file:./render.php",
   "attributes": {
     "displayMode": {
@@ -252,11 +253,19 @@
     },
     "loadMoreText": {
       "type": "string",
-      "default": "Показать еще"
+      "default": "show-more"
+    },
+    "loadMoreType": {
+      "type": "string",
+      "default": "button"
     },
     "template": {
       "type": "string",
       "default": "default"
+    },
+    "enableLink": {
+      "type": "boolean",
+      "default": false
     },
     "swiperEffect": {
       "type": "string",
@@ -361,6 +370,10 @@
     "swiperCentered": {
       "type": "boolean",
       "default": false
+    },
+    "selectedTaxonomies": {
+      "type": "object",
+      "default": {}
     }
   }
 }

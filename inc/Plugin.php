@@ -45,6 +45,9 @@ class Plugin {
 		// Register REST API endpoint for image sizes
 		add_action('rest_api_init', __CLASS__ . '::register_image_sizes_endpoint');
 		
+		// Register REST API endpoint for taxonomies and terms
+		add_action('rest_api_init', __CLASS__ . '::register_taxonomies_endpoint');
+		
 		// Load JavaScript translations after scripts are enqueued
 		add_action('enqueue_block_editor_assets', __CLASS__ . '::loadJSTranslations', 100);
 	}
@@ -210,14 +213,21 @@ class Plugin {
 		register_rest_route('codeweber-gutenberg-blocks/v1', '/image-sizes', [
 			'methods' => 'GET',
 			'callback' => __CLASS__ . '::get_image_sizes_callback',
-			'permission_callback' => '__return_true', // Allow public access for now
+			'permission_callback' => '__return_true',
+			'args' => [
+				'post_type' => [
+					'required' => false,
+					'sanitize_callback' => 'sanitize_key',
+				],
+			],
 		]);
 	}
 
 	/**
 	 * REST API callback for getting image sizes
 	 */
-	public static function get_image_sizes_callback() {
+	public static function get_image_sizes_callback($request) {
+		$post_type = $request->get_param('post_type');
 		$image_sizes = [];
 		$all_sizes = [];
 		
@@ -292,6 +302,27 @@ class Plugin {
 			$image_sizes[] = $size_data;
 		}
 
+		// Если передан post_type, фильтруем размеры по разрешенным для этого типа записи
+		if ($post_type && function_exists('codeweber_get_allowed_image_sizes')) {
+			$allowed_sizes = codeweber_get_allowed_image_sizes($post_type);
+			
+			// Если есть разрешенные размеры, фильтруем список
+			if (!empty($allowed_sizes) && is_array($allowed_sizes)) {
+				// Всегда добавляем 'full' в разрешенные размеры
+				$allowed_sizes[] = 'full';
+				$image_sizes = array_filter($image_sizes, function($size) use ($allowed_sizes) {
+					return in_array($size['value'], $allowed_sizes, true);
+				});
+				// Переиндексируем массив после фильтрации
+				$image_sizes = array_values($image_sizes);
+			}
+		} elseif ($post_type) {
+			// Если функция не доступна, но post_type передан, логируем для отладки
+			if (defined('WP_DEBUG') && WP_DEBUG) {
+				error_log('codeweber_get_allowed_image_sizes function not found for post_type: ' . $post_type);
+			}
+		}
+
 		// Сортируем по имени для удобства
 		usort($image_sizes, function($a, $b) {
 			return strcmp($a['label'], $b['label']);
@@ -300,6 +331,79 @@ class Plugin {
 		return new \WP_REST_Response($image_sizes, 200);
 	}
 
+	/**
+	 * Register REST API endpoint for taxonomies and terms
+	 */
+	public static function register_taxonomies_endpoint() {
+		register_rest_route('codeweber-gutenberg-blocks/v1', '/taxonomies/(?P<post_type>[a-zA-Z0-9_-]+)', [
+			'methods' => 'GET',
+			'callback' => __CLASS__ . '::get_taxonomies_callback',
+			'permission_callback' => '__return_true',
+			'args' => [
+				'post_type' => [
+					'required' => true,
+					'sanitize_callback' => 'sanitize_key',
+				],
+			],
+		]);
+	}
+
+	/**
+	 * REST API callback for getting taxonomies and terms for a post type
+	 */
+	public static function get_taxonomies_callback($request) {
+		$post_type = $request->get_param('post_type');
+		
+		if (empty($post_type)) {
+			return new \WP_Error('missing_post_type', 'Post type is required', ['status' => 400]);
+		}
+
+		// Получаем все таксономии для данного типа записи
+		$taxonomies = get_object_taxonomies($post_type, 'objects');
+		
+		$result = [];
+		
+		foreach ($taxonomies as $taxonomy_slug => $taxonomy) {
+			// Пропускаем скрытые таксономии (но показываем если show_ui = true)
+			if (!$taxonomy->show_ui) {
+				continue;
+			}
+
+			// Получаем все термины для этой таксономии
+			$terms = get_terms([
+				'taxonomy' => $taxonomy_slug,
+				'hide_empty' => false,
+			]);
+
+			if (is_wp_error($terms)) {
+				error_log('TaxonomyFilterControl: Error getting terms for ' . $taxonomy_slug . ': ' . $terms->get_error_message());
+				continue;
+			}
+
+			$terms_data = [];
+			foreach ($terms as $term) {
+				$terms_data[] = [
+					'id' => $term->term_id,
+					'slug' => $term->slug,
+					'name' => $term->name,
+					'count' => $term->count,
+				];
+			}
+
+			// Получаем rest_base для REST API (может отличаться от slug)
+			$rest_base = !empty($taxonomy->rest_base) ? $taxonomy->rest_base : $taxonomy_slug;
+			
+			$result[] = [
+				'slug' => $taxonomy_slug,
+				'rest_base' => $rest_base,
+				'name' => $taxonomy->label,
+				'singular_name' => $taxonomy->labels->singular_name,
+				'terms' => $terms_data,
+			];
+		}
+
+		return new \WP_REST_Response($result, 200);
+	}
 
 	/**
 	 * Loads the plugin text domain.

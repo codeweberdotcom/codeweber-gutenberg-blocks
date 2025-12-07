@@ -14,6 +14,7 @@ import apiFetch from '@wordpress/api-fetch';
  * @param {boolean} options.includeFull - Включать размер "Full" (по умолчанию true)
  * @param {boolean} options.sort - Сортировать по label (по умолчанию true)
  * @param {Array} options.fallbackSizes - Размеры по умолчанию при ошибке
+ * @param {string} options.postType - Тип записи для фильтрации размеров
  * 
  * @returns {Object} { sizes: Array, loading: boolean, error: Error|null }
  */
@@ -21,6 +22,7 @@ export const useImageSizes = (options = {}) => {
 	const {
 		includeFull = true,
 		sort = true,
+		postType = null,
 		fallbackSizes = [
 			{ value: 'thumbnail', label: 'Thumbnail (150x150)', width: 150, height: 150 },
 			{ value: 'medium', label: 'Medium (300x300)', width: 300, height: 300 },
@@ -37,8 +39,14 @@ export const useImageSizes = (options = {}) => {
 		setLoading(true);
 		setError(null);
 
+		// Формируем путь с параметром post_type если он передан
+		let apiPath = '/codeweber-gutenberg-blocks/v1/image-sizes';
+		if (postType) {
+			apiPath += `?post_type=${encodeURIComponent(postType)}`;
+		}
+
 		apiFetch({
-			path: '/codeweber-gutenberg-blocks/v1/image-sizes',
+			path: apiPath,
 			method: 'GET'
 		})
 			.then((response) => {
@@ -75,7 +83,7 @@ export const useImageSizes = (options = {}) => {
 				setSizes(fallbackSizes);
 				setLoading(false);
 			});
-	}, []); // Загружаем только один раз при монтировании
+	}, [postType, includeFull, sort]); // Перезагружаем при изменении postType
 
 	return { sizes, loading, error };
 };

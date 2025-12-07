@@ -1,12 +1,14 @@
 import { __ } from '@wordpress/i18n';
-import { SelectControl, RangeControl } from '@wordpress/components';
+import { SelectControl, RangeControl, ToggleControl } from '@wordpress/components';
 import { useEffect, useState } from '@wordpress/element';
 import apiFetch from '@wordpress/api-fetch';
 import { ImageSizeControl } from '../../../components/image-size';
 import { PostSortControl } from '../../../components/post-sort';
+import { PostGridTemplateControl } from '../../../components/post-grid-template';
+import { TaxonomyFilterControl } from '../../../components/taxonomy-filter';
 
 export const MainControl = ({ attributes, setAttributes }) => {
-	const { postType, postsPerPage, imageSize, orderBy, order } = attributes;
+	const { postType, postsPerPage, imageSize, orderBy, order, template, enableLink, selectedTaxonomies } = attributes;
 	const [postTypes, setPostTypes] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 
@@ -47,6 +49,34 @@ export const MainControl = ({ attributes, setAttributes }) => {
 				help={__('Select the post type to display', 'codeweber-gutenberg-blocks')}
 			/>
 
+			{postType && (
+				<div style={{ marginTop: '16px' }}>
+					<TaxonomyFilterControl
+						postType={postType}
+						selectedTaxonomies={selectedTaxonomies || {}}
+						onChange={(value) => setAttributes({ selectedTaxonomies: value })}
+					/>
+				</div>
+			)}
+
+			<div style={{ marginTop: '16px' }}>
+				<PostGridTemplateControl
+					value={template || (postType === 'clients' ? 'client-simple' : 'default')}
+					onChange={(value) => setAttributes({ template: value })}
+					postType={postType || 'post'}
+				/>
+				{postType === 'clients' && (
+					<div style={{ marginTop: '16px' }}>
+						<ToggleControl
+							label={__('Enable Links', 'codeweber-gutenberg-blocks')}
+							checked={enableLink || false}
+							onChange={(value) => setAttributes({ enableLink: value })}
+							help={__('Enable links to client posts (disabled by default)', 'codeweber-gutenberg-blocks')}
+						/>
+					</div>
+				)}
+			</div>
+
 			<RangeControl
 				label={__('Posts Per Page', 'codeweber-gutenberg-blocks')}
 				value={postsPerPage}
@@ -63,6 +93,7 @@ export const MainControl = ({ attributes, setAttributes }) => {
 					onChange={(value) => setAttributes({ imageSize: value })}
 					label={__('Image Size', 'codeweber-gutenberg-blocks')}
 					help={__('Select the size for featured images.', 'codeweber-gutenberg-blocks')}
+					postType={postType}
 				/>
 			</div>
 			
@@ -77,4 +108,5 @@ export const MainControl = ({ attributes, setAttributes }) => {
 		</>
 	);
 };
+
 

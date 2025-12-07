@@ -68,6 +68,8 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		loadMoreEnable,
 		loadMoreInitialCount,
 		template = 'default',
+		enableLink = false,
+		selectedTaxonomies = {},
 	} = attributes;
 
 	const [posts, setPosts] = useState([]);
@@ -77,6 +79,29 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		className: `cwgb-post-grid-block ${blockClass}`,
 		'data-block': clientId,
 	});
+
+	// Автоматически меняем template и imageSize при смене postType на clients
+	useEffect(() => {
+		if (postType === 'clients') {
+			const updates = {};
+			// Если template не является client шаблоном, меняем на client-simple
+			if (!template || !template.startsWith('client-')) {
+				updates.template = 'client-simple';
+			}
+			// Если imageSize = 'full' или пустой, меняем на codeweber_clients_300-200
+			if (imageSize === 'full' || !imageSize) {
+				updates.imageSize = 'codeweber_clients_300-200';
+			}
+			if (Object.keys(updates).length > 0) {
+				setAttributes(updates);
+			}
+		} else if (postType && postType !== 'clients') {
+			// Если переключились с clients на другой тип, меняем template на default если был client шаблон
+			if (template && template.startsWith('client-')) {
+				setAttributes({ template: 'default' });
+			}
+		}
+	}, [postType]);
 
 	// Загружаем посты через REST API
 	useEffect(() => {
@@ -89,8 +114,58 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 				const orderParam = order || 'desc';
 				// Исправляем endpoint для типа 'post' - должно быть 'posts' (множественное число)
 				const endpoint = postType === 'post' ? 'posts' : postType;
+				
+				// Формируем параметры для фильтрации по таксономиям
+				let queryParams = `per_page=${postsPerPage || 6}&orderby=${orderByParam}&order=${orderParam}&_embed`;
+				
+				// Добавляем фильтры по таксономиям
+				// WordPress REST API использует rest_base таксономии для фильтрации
+				// Нужно загрузить таксономии, чтобы получить их rest_base
+				if (selectedTaxonomies && Object.keys(selectedTaxonomies).length > 0) {
+					try {
+						// Загружаем информацию о таксономиях для получения rest_base
+						const taxonomiesData = await apiFetch({
+							path: `/codeweber-gutenberg-blocks/v1/taxonomies/${postType}`,
+						});
+						
+						// Создаем маппинг slug -> rest_base
+						const taxonomyMap = {};
+						if (taxonomiesData && Array.isArray(taxonomiesData)) {
+							taxonomiesData.forEach((tax) => {
+								taxonomyMap[tax.slug] = tax.rest_base || tax.slug;
+							});
+						}
+						
+						// Добавляем параметры фильтрации
+						Object.keys(selectedTaxonomies).forEach((taxonomySlug) => {
+							const termIds = selectedTaxonomies[taxonomySlug];
+							if (termIds && termIds.length > 0) {
+								// Используем rest_base из маппинга, или slug как fallback
+								const restBase = taxonomyMap[taxonomySlug] || taxonomySlug;
+								
+								// Для стандартных таксономий используем известные имена
+								// WordPress REST API использует множественное число для стандартных таксономий
+								let paramName = restBase;
+								if (taxonomySlug === 'post_tag') {
+									paramName = 'tags';
+								} else if (taxonomySlug === 'category') {
+									paramName = 'categories';
+								}
+								
+								// Преобразуем termIds в массив чисел для правильной передачи
+								const termIdsArray = termIds.map(id => parseInt(id, 10)).filter(id => !isNaN(id));
+								if (termIdsArray.length > 0) {
+									queryParams += `&${paramName}=${termIdsArray.join(',')}`;
+								}
+							}
+						});
+					} catch (error) {
+						console.error('Error fetching taxonomies for filtering:', error);
+					}
+				}
+				
 				const fetchedPosts = await apiFetch({
-					path: `/wp/v2/${endpoint}?per_page=${postsPerPage || 6}&orderby=${orderByParam}&order=${orderParam}&_embed`,
+					path: `/wp/v2/${endpoint}?${queryParams}`,
 				});
 
 				console.log('Post Grid: Fetched posts:', fetchedPosts);
@@ -135,6 +210,12 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 						excerptText = excerptText.substring(0, 50) + '...';
 					}
 					
+					// Для типа записи clients при включенном enableLink используем company_url из метаполя
+					let linkUrl = post.link || '';
+					if (postType === 'clients' && enableLink && post.company_url) {
+						linkUrl = post.company_url;
+					}
+					
 					const postData = {
 						id: imageId || post.id,
 						url: finalImageUrl, // Всегда должен быть заполнен
@@ -143,7 +224,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 						title: titleText,
 						caption: '',
 						description: excerptText,
-						linkUrl: post.link || '',
+						linkUrl: linkUrl,
 					};
 
 					console.log('Post Grid: Post data:', postData);
@@ -166,7 +247,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		};
 
 		fetchPosts();
-	}, [postType, postsPerPage, orderBy, order]);
+	}, [postType, postsPerPage, orderBy, order, selectedTaxonomies, enableLink]);
 
 	// Функция для получения классов контейнера
 	const getContainerClasses = () => {
@@ -231,10 +312,11 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		return colClasses.join(' ');
 	};
 
-	// Переинициализация Swiper при изменении настроек
+	// Переинициализация Swiper при изменении настроек и загрузке постов
 	useEffect(() => {
 		if (typeof window === 'undefined' || !window.theme) return;
 		if (displayMode !== 'swiper') return;
+		if (isLoading || posts.length === 0) return; // Не инициализируем во время загрузки или если нет постов
 
 		destroySwiper('.cwgb-post-grid-block .swiper');
 
@@ -301,11 +383,22 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		swiperNavPosition,
 		swiperDotsStyle,
 		swiperContainerType,
-		clientId
+		clientId,
+		posts, // Добавляем posts для переинициализации при загрузке новых записей
+		isLoading, // Добавляем isLoading для контроля состояния загрузки
+		template, // Добавляем template для переинициализации при изменении шаблона
 	]);
 
 	// Получаем конфигурацию Swiper из атрибутов
-	const swiperConfig = getSwiperConfigFromAttributes(attributes);
+	let swiperConfig = getSwiperConfigFromAttributes(attributes);
+	
+	// Убираем классы навигации и точек для всех шаблонов, если они не используются
+	if (!swiperNav) {
+		swiperConfig = { ...swiperConfig, navStyle: '', navPosition: '' };
+	}
+	if (!swiperDots) {
+		swiperConfig = { ...swiperConfig, dotsStyle: '' };
+	}
 
 	// Генерируем уникальный ключ для hover эффектов
 	const hoverEffectsKey = useMemo(() => 
@@ -348,7 +441,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 								key={`${post.id}-${index}-${hoverEffectsKey}-${imageSize}`}
 								className={gridType === 'classic' ? getColClasses() : ''}
 							>
-								{['default', 'card', 'card-content', 'slider', 'default-clickable', 'overlay-5'].includes(template) ? (
+								{['default', 'card', 'card-content', 'slider', 'default-clickable', 'overlay-5', 'client-simple', 'client-grid', 'client-card'].includes(template) ? (
 									<PostGridItemRender
 										post={post}
 										template={template}
@@ -362,6 +455,8 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 										overlayColor={overlayColor}
 										cursorStyle={cursorStyle}
 										isEditor={true}
+										enableLink={enableLink || false}
+										postType={postType}
 									/>
 								) : (
 									<ImageSimpleRender
@@ -400,12 +495,15 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 				) : displayMode === 'swiper' ? (
 					<SwiperSlider 
 						config={swiperConfig} 
-						className={blockClass || ''}
+						className={template === 'client-simple' ? `clients ${blockClass || ''}`.trim() : (blockClass || '')}
 						uniqueKey={`${swiperUniqueKey}-${imageSize}-${template}`}
 					>
 						{posts.map((post, index) => (
-							<SwiperSlide key={`${post.id}-${index}-${hoverEffectsKey}-${imageSize}-${template}`}>
-								{['default', 'card', 'card-content', 'slider', 'default-clickable', 'overlay-5'].includes(template) ? (
+							<SwiperSlide 
+								key={`${post.id}-${index}-${hoverEffectsKey}-${imageSize}-${template}`}
+								className={template === 'client-simple' ? 'px-5' : ''}
+							>
+								{['default', 'card', 'card-content', 'slider', 'default-clickable', 'overlay-5', 'client-simple', 'client-grid', 'client-card'].includes(template) ? (
 									<PostGridItemRender
 										post={post}
 										template={template}
@@ -419,6 +517,8 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 										overlayColor={overlayColor}
 										cursorStyle={cursorStyle}
 										isEditor={true}
+										enableLink={enableLink || false}
+										postType={postType}
 									/>
 								) : (
 									<ImageSimpleRender

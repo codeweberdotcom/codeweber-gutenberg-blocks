@@ -13,9 +13,24 @@ const TEMPLATES = [
 		description: __('Card layout with shadow and card body', 'codeweber-gutenberg-blocks'),
 	},
 	{
-		value: 'card-alt',
-		label: __('Card Alternative', 'codeweber-gutenberg-blocks'),
-		description: __('Alternative card layout with different styling', 'codeweber-gutenberg-blocks'),
+		value: 'card-content',
+		label: __('Card Content', 'codeweber-gutenberg-blocks'),
+		description: __('Card with excerpt and footer', 'codeweber-gutenberg-blocks'),
+	},
+	{
+		value: 'slider',
+		label: __('Slider', 'codeweber-gutenberg-blocks'),
+		description: __('Slider layout with category on image and excerpt', 'codeweber-gutenberg-blocks'),
+	},
+	{
+		value: 'default-clickable',
+		label: __('Default Clickable', 'codeweber-gutenberg-blocks'),
+		description: __('Fully clickable card with lift effect', 'codeweber-gutenberg-blocks'),
+	},
+	{
+		value: 'overlay-5',
+		label: __('Overlay 5', 'codeweber-gutenberg-blocks'),
+		description: __('Overlay effect with 90% opacity and bottom overlay for date', 'codeweber-gutenberg-blocks'),
 	},
 ];
 

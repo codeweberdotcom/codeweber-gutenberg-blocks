@@ -299,7 +299,7 @@ export const LayoutControl = ({ attributes, setAttributes }) => {
 						value={swiperSpeed}
 						onChange={(value) => setAttributes({ swiperSpeed: value })}
 						min={100}
-						max={3000}
+						max={10000}
 						step={100}
 					/>
 
@@ -407,9 +407,9 @@ export const LayoutControl = ({ attributes, setAttributes }) => {
 								label={__('Autoplay Time (ms)', 'codeweber-gutenberg-blocks')}
 								value={swiperAutoplayTime}
 								onChange={(value) => setAttributes({ swiperAutoplayTime: value })}
-								min={1000}
+								min={1}
 								max={10000}
-								step={500}
+								step={1}
 							/>
 
 							<ToggleControl

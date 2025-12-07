@@ -46,7 +46,7 @@ export const PostGridSidebar = ({ attributes, setAttributes }) => {
 
 						{/* TEMPLATE TAB */}
 						{tab.name === 'template' && (
-							<PanelBody>
+							<PanelBody title={__('Post Card Template', 'codeweber-gutenberg-blocks')} initialOpen={true}>
 								<PostGridTemplateControl
 									value={attributes.template || 'default'}
 									onChange={(value) => setAttributes({ template: value })}
@@ -63,15 +63,17 @@ export const PostGridSidebar = ({ attributes, setAttributes }) => {
 								/>
 
 								{/* Load More - только для Grid режима */}
-								<div style={{ marginTop: '24px', paddingTop: '24px', borderTop: '1px solid #ddd' }}>
-									<PanelBody title={__('Load More', 'codeweber-gutenberg-blocks')} initialOpen={false}>
-										<LoadMoreControl 
-											attributes={attributes} 
-											setAttributes={setAttributes}
-											attributePrefix="loadMore"
-										/>
-									</PanelBody>
-								</div>
+								{attributes.displayMode !== 'swiper' && (
+									<div style={{ marginTop: '24px', paddingTop: '24px', borderTop: '1px solid #ddd' }}>
+										<PanelBody title={__('Load More', 'codeweber-gutenberg-blocks')} initialOpen={false}>
+											<LoadMoreControl 
+												attributes={attributes} 
+												setAttributes={setAttributes}
+												attributePrefix="loadMore"
+											/>
+										</PanelBody>
+									</div>
+								)}
 
 								<div style={{ marginTop: '16px' }}>
 									<BorderRadiusControl

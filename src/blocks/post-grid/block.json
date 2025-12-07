@@ -257,6 +257,110 @@
     "template": {
       "type": "string",
       "default": "default"
+    },
+    "swiperEffect": {
+      "type": "string",
+      "default": "slide"
+    },
+    "swiperItems": {
+      "type": "string",
+      "default": "3"
+    },
+    "swiperItemsXs": {
+      "type": "string",
+      "default": "1"
+    },
+    "swiperItemsSm": {
+      "type": "string",
+      "default": ""
+    },
+    "swiperItemsMd": {
+      "type": "string",
+      "default": "2"
+    },
+    "swiperItemsLg": {
+      "type": "string",
+      "default": ""
+    },
+    "swiperItemsXl": {
+      "type": "string",
+      "default": "3"
+    },
+    "swiperItemsXxl": {
+      "type": "string",
+      "default": ""
+    },
+    "swiperSpeed": {
+      "type": "number",
+      "default": 500
+    },
+    "swiperAutoplay": {
+      "type": "boolean",
+      "default": false
+    },
+    "swiperAutoplayTime": {
+      "type": "number",
+      "default": 5000
+    },
+    "swiperAutoHeight": {
+      "type": "boolean",
+      "default": false
+    },
+    "swiperWatchOverflow": {
+      "type": "boolean",
+      "default": false
+    },
+    "swiperMargin": {
+      "type": "string",
+      "default": "30"
+    },
+    "swiperLoop": {
+      "type": "boolean",
+      "default": false
+    },
+    "swiperNav": {
+      "type": "boolean",
+      "default": true
+    },
+    "swiperDots": {
+      "type": "boolean",
+      "default": true
+    },
+    "swiperDrag": {
+      "type": "boolean",
+      "default": true
+    },
+    "swiperReverse": {
+      "type": "boolean",
+      "default": false
+    },
+    "swiperUpdateResize": {
+      "type": "boolean",
+      "default": true
+    },
+    "swiperNavStyle": {
+      "type": "string",
+      "default": "nav-dark"
+    },
+    "swiperNavPosition": {
+      "type": "string",
+      "default": ""
+    },
+    "swiperDotsStyle": {
+      "type": "string",
+      "default": "dots-over"
+    },
+    "swiperContainerType": {
+      "type": "string",
+      "default": ""
+    },
+    "swiperItemsAuto": {
+      "type": "boolean",
+      "default": false
+    },
+    "swiperCentered": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

@@ -27,11 +27,6 @@ const TEMPLATES = [
 		label: __('Default Clickable', 'codeweber-gutenberg-blocks'),
 		description: __('Fully clickable card with lift effect', 'codeweber-gutenberg-blocks'),
 	},
-	{
-		value: 'overlay-5',
-		label: __('Overlay 5', 'codeweber-gutenberg-blocks'),
-		description: __('Overlay effect with 90% opacity and bottom overlay for date', 'codeweber-gutenberg-blocks'),
-	},
 ];
 
 export const PostGridTemplateControl = ({ value, onChange }) => {

@@ -240,38 +240,6 @@ export const PostGridItemRender = ({
 				</div>
 			</article>
 		);
-	} else if (template === 'overlay-5') {
-		// Overlay-5 template
-		const excerptLimited = descriptionLimited.length > 116 ? descriptionLimited.substring(0, 113) + '...' : descriptionLimited;
-		const overlay5Classes = `overlay overlay-5 hover-scale ${borderRadius || 'rounded'}`;
-		
-		return (
-			<article>
-				<figure className={overlay5Classes}>
-					<a href={isEditor ? '#' : postLink} onClick={isEditor ? (e) => e.preventDefault() : undefined}>
-						<div className="bottom-overlay post-meta fs-16 justify-content-between position-absolute zindex-1 d-flex flex-column h-100 w-100 p-5">
-							<div className="d-flex w-100 justify-content-end">
-								<span className="post-date badge bg-primary rounded-pill">{__('Date', 'codeweber-gutenberg-blocks')}</span>
-							</div>
-							<h2 className="h5 mb-0">{titleLimited}</h2>
-						</div>
-						<img src={imageUrl} alt={post.alt || postTitle} />
-					</a>
-					<figcaption className="p-5">
-						<div className="post-body h-100 d-flex flex-column justify-content-between from-left">
-							{excerptLimited && (
-								<p className="mb-3">{excerptLimited}</p>
-							)}
-							<div className="d-block">
-								<a href={isEditor ? '#' : postLink} className="hover-4 link-body label-s text-charcoal-blue me-4 post-read-more" onClick={isEditor ? (e) => e.preventDefault() : undefined}>
-									{__('Read more', 'codeweber-gutenberg-blocks')}
-								</a>
-							</div>
-						</div>
-					</figcaption>
-				</figure>
-			</article>
-		);
 	} else {
 		// Default template
 		return (

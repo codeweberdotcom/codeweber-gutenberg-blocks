@@ -409,7 +409,7 @@ export const LayoutControl = ({ attributes, setAttributes }) => {
 								onChange={(value) => setAttributes({ swiperAutoplayTime: value })}
 								min={1}
 								max={10000}
-								step={500}
+								step={1}
 							/>
 
 							<ToggleControl

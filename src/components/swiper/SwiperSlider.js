@@ -19,9 +19,17 @@ export const getSwiperContainerClasses = (config = {}) => {
 		navStyle = '',
 		navPosition = '',
 		dotsStyle = '',
+		itemsAuto = false,
 	} = config;
 
 	const classes = ['swiper-container'];
+
+	// Auto mode classes for continuous scrolling
+	if (itemsAuto) {
+		classes.push('swiper-auto');
+		// Add responsive auto class if needed
+		// classes.push('swiper-auto-xs');
+	}
 
 	// Container type
 	if (containerType) {
@@ -205,11 +213,14 @@ export const SwiperSlider = ({
 }) => {
 	const containerClasses = `${getSwiperContainerClasses(config)} ${className}`.trim();
 	const dataAttrs = getSwiperDataAttributes(config);
+	
+	// Add ticker class to wrapper for continuous scrolling when itemsAuto is enabled
+	const wrapperClasses = config.itemsAuto ? 'swiper-wrapper ticker' : 'swiper-wrapper';
 
 	return (
 		<div key={uniqueKey} className={containerClasses} {...dataAttrs}>
 			<div className="swiper">
-				<div className="swiper-wrapper">
+				<div className={wrapperClasses}>
 					{children}
 				</div>
 			</div>

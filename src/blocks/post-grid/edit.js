@@ -1,6 +1,6 @@
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
-import { useEffect, useState } from '@wordpress/element';
+import { useEffect, useState, useMemo } from '@wordpress/element';
 import { PostGridSidebar } from './sidebar';
 import { ImageSimpleRender } from '../../components/image/ImageSimpleRender';
 import { PostGridItemRender } from '../../components/post-grid-item';
@@ -308,10 +308,22 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 	const swiperConfig = getSwiperConfigFromAttributes(attributes);
 
 	// Генерируем уникальный ключ для hover эффектов
-	const hoverEffectsKey = `${simpleEffect}-${effectType}-${tooltipStyle}-${overlayStyle}-${overlayGradient}-${overlayColor}-${cursorStyle}`;
+	const hoverEffectsKey = useMemo(() => 
+		`${simpleEffect}-${effectType}-${tooltipStyle}-${overlayStyle}-${overlayGradient}-${overlayColor}-${cursorStyle}`,
+		[simpleEffect, effectType, tooltipStyle, overlayStyle, overlayGradient, overlayColor, cursorStyle]
+	);
 
-	// Генерируем уникальный ключ для Swiper
-	const swiperUniqueKey = `swiper-${swiperEffect}-${swiperSpeed}-${swiperItems}-${swiperItemsXs}-${swiperItemsMd}-${swiperItemsXl}-${swiperMargin}-${swiperLoop}-${swiperAutoplay}-${swiperNav}-${swiperDots}-${hoverEffectsKey}-${clientId}`;
+	// Генерируем уникальный ключ для Swiper (включаем все параметры для перерендеринга при изменении)
+	const swiperUniqueKey = useMemo(() => 
+		`swiper-${swiperEffect}-${swiperSpeed}-${swiperItems}-${swiperItemsXs}-${swiperItemsSm}-${swiperItemsMd}-${swiperItemsLg}-${swiperItemsXl}-${swiperItemsXxl}-${swiperItemsAuto}-${swiperMargin}-${swiperLoop}-${swiperCentered}-${swiperAutoHeight}-${swiperWatchOverflow}-${swiperUpdateResize}-${swiperDrag}-${swiperReverse}-${swiperAutoplay}-${swiperAutoplayTime}-${swiperNav}-${swiperDots}-${swiperNavStyle}-${swiperNavPosition}-${swiperDotsStyle}-${swiperContainerType}-${hoverEffectsKey}-${clientId}`,
+		[
+			swiperEffect, swiperSpeed, swiperItems, swiperItemsXs, swiperItemsSm, swiperItemsMd,
+			swiperItemsLg, swiperItemsXl, swiperItemsXxl, swiperItemsAuto, swiperMargin, swiperLoop,
+			swiperCentered, swiperAutoHeight, swiperWatchOverflow, swiperUpdateResize, swiperDrag,
+			swiperReverse, swiperAutoplay, swiperAutoplayTime, swiperNav, swiperDots, swiperNavStyle,
+			swiperNavPosition, swiperDotsStyle, swiperContainerType, hoverEffectsKey, clientId
+		]
+	);
 
 	return (
 		<>
@@ -327,7 +339,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 						{__('No posts found. Please select a post type and ensure there are published posts.', 'codeweber-gutenberg-blocks')}
 					</div>
 				) : displayMode === 'grid' ? (
-					<div className={getContainerClasses()} key={`grid-${hoverEffectsKey}-${imageSize}`}>
+					<div className={`${getContainerClasses()} ${blockClass || ''}`.trim()} key={`grid-${hoverEffectsKey}-${imageSize}`}>
 						{(loadMoreEnable 
 							? posts.slice(0, loadMoreInitialCount || posts.length)
 							: posts
@@ -336,7 +348,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 								key={`${post.id}-${index}-${hoverEffectsKey}-${imageSize}`}
 								className={gridType === 'classic' ? getColClasses() : ''}
 							>
-								{['default', 'card', 'card-content', 'slider', 'default-clickable'].includes(template) ? (
+								{['default', 'card', 'card-content', 'slider', 'default-clickable', 'overlay-5'].includes(template) ? (
 									<PostGridItemRender
 										post={post}
 										template={template}
@@ -388,25 +400,43 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 				) : displayMode === 'swiper' ? (
 					<SwiperSlider 
 						config={swiperConfig} 
-						uniqueKey={`${swiperUniqueKey}-${imageSize}`}
+						className={blockClass || ''}
+						uniqueKey={`${swiperUniqueKey}-${imageSize}-${template}`}
 					>
 						{posts.map((post, index) => (
-							<SwiperSlide key={`${post.id}-${index}-${hoverEffectsKey}-${imageSize}`}>
-								<ImageSimpleRender
-									image={post}
-									imageSize={imageSize}
-									borderRadius={borderRadius}
-									enableLightbox={false}
-									lightboxGallery={lightboxGallery}
-									simpleEffect={simpleEffect}
-									effectType={effectType}
-									tooltipStyle={tooltipStyle}
-									overlayStyle={overlayStyle}
-									overlayGradient={overlayGradient}
-									overlayColor={overlayColor}
-									cursorStyle={cursorStyle}
-									isEditor={true}
-								/>
+							<SwiperSlide key={`${post.id}-${index}-${hoverEffectsKey}-${imageSize}-${template}`}>
+								{['default', 'card', 'card-content', 'slider', 'default-clickable', 'overlay-5'].includes(template) ? (
+									<PostGridItemRender
+										post={post}
+										template={template}
+										imageSize={imageSize}
+										borderRadius={borderRadius}
+										simpleEffect={simpleEffect}
+										effectType={effectType}
+										tooltipStyle={tooltipStyle}
+										overlayStyle={overlayStyle}
+										overlayGradient={overlayGradient}
+										overlayColor={overlayColor}
+										cursorStyle={cursorStyle}
+										isEditor={true}
+									/>
+								) : (
+									<ImageSimpleRender
+										image={post}
+										imageSize={imageSize}
+										borderRadius={borderRadius}
+										enableLightbox={false}
+										lightboxGallery={lightboxGallery}
+										simpleEffect={simpleEffect}
+										effectType={effectType}
+										tooltipStyle={tooltipStyle}
+										overlayStyle={overlayStyle}
+										overlayGradient={overlayGradient}
+										overlayColor={overlayColor}
+										cursorStyle={cursorStyle}
+										isEditor={true}
+									/>
+								)}
 							</SwiperSlide>
 						))}
 					</SwiperSlider>

@@ -677,6 +677,64 @@ class LoadMoreAPI {
 	 */
 	private function render_post_grid_item_ajax($post, $attributes, $image_url, $image_size, $grid_type, $col_classes) {
 		$template = isset($attributes['template']) ? $attributes['template'] : 'default';
+		
+		// Загружаем новую систему шаблонов из темы, если доступна
+		$post_card_templates_path = get_template_directory() . '/functions/post-card-templates.php';
+		if (file_exists($post_card_templates_path) && !function_exists('cw_render_post_card')) {
+			require_once $post_card_templates_path;
+		}
+		
+		// Используем новую систему шаблонов из темы, если доступна
+		if (function_exists('cw_render_post_card')) {
+			// Настройки отображения
+			$display_settings = [
+				'show_title' => true,
+				'show_date' => true,
+				'show_category' => true,
+				'show_comments' => true,
+				'title_length' => 56,
+				'excerpt_length' => 0,
+				'title_tag' => 'h2',
+				'title_class' => '',
+			];
+			
+			// Для card-content и slider включаем excerpt
+			if ($template === 'card-content' || $template === 'slider') {
+				$display_settings['excerpt_length'] = 20;
+			}
+			// Для overlay-5 используем больше слов для обрезки до 116 символов
+			if ($template === 'overlay-5') {
+				$display_settings['excerpt_length'] = 40;
+			}
+			
+			// Настройки шаблона
+			$hover_classes = 'overlay overlay-1';
+			// Для overlay-5 используем overlay-5
+			if ($template === 'overlay-5') {
+				$hover_classes = 'overlay overlay-5';
+			}
+			// Добавляем hover-scale для соответствующих шаблонов
+			if ($template === 'slider' || $template === 'card-content') {
+				$hover_classes .= ' hover-scale';
+			}
+			
+			$template_args = [
+				'image_size' => $image_size,
+				'hover_classes' => $hover_classes,
+				'border_radius' => isset($attributes['borderRadius']) ? $attributes['borderRadius'] : 'rounded',
+				'show_figcaption' => true,
+				'enable_hover_scale' => ($template === 'default' && isset($attributes['enableHoverScale']) && $attributes['enableHoverScale']) ? true : false,
+				'enable_lift' => ($template === 'default-clickable') ? true : false,
+			];
+			
+			$html = '<div class="' . esc_attr($grid_type === 'classic' ? $col_classes : '') . '">';
+			$html .= cw_render_post_card($post, $template, $display_settings, $template_args);
+			$html .= '</div>';
+			
+			return $html;
+		}
+		
+		// Fallback на старую систему, если новая недоступна
 		$post_link = get_permalink($post->ID);
 		$post_title = get_the_title($post->ID);
 		$post_excerpt = get_the_excerpt($post->ID);

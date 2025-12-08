@@ -386,6 +386,18 @@ if (!function_exists('render_post_grid_item')) {
 		
 		// Используем новую систему шаблонов из темы, если доступна
 		if (function_exists('cw_render_post_card')) {
+			// Убеждаемся, что $post является объектом WP_Post
+			if (!is_object($post) || !isset($post->ID)) {
+				if (is_numeric($post)) {
+					$post = get_post($post);
+				} else {
+					$post = get_post($post);
+				}
+			}
+			if (!$post || !isset($post->ID)) {
+				return '';
+			}
+			
 			$post_type = get_post_type($post->ID);
 			
 			// Специальная обработка для clients
@@ -456,16 +468,34 @@ if (!function_exists('render_post_grid_item')) {
 			
 			// В режиме Swiper (slider) НИКОГДА не добавляем col-* классы
 			$html = cw_render_post_card($post, $template, $display_settings, $template_args);
-			// Добавляем обертку с col-* классами только для grid режима (не swiper) и только для classic grid
-			// Для client шаблонов также не добавляем col-* в swiper режиме
-			if (!$is_swiper && $grid_type === 'classic' && !empty($col_classes)) {
-				$html = '<div class="' . esc_attr($col_classes) . '">' . $html . '</div>';
+			
+			// Если функция вернула не пустую строку, используем её
+			if (!empty($html) && trim($html) !== '') {
+				// Добавляем обертку с col-* классами только для grid режима (не swiper) и только для classic grid
+				// Для client шаблонов также не добавляем col-* в swiper режиме
+				if (!$is_swiper && $grid_type === 'classic' && !empty($col_classes)) {
+					$html = '<div class="' . esc_attr($col_classes) . '">' . $html . '</div>';
+				}
+				
+				return $html;
 			}
 			
-			return $html;
+			// Если функция вернула пустую строку, продолжаем с fallback ниже
 		}
 		
-		// Fallback на старую систему, если новая недоступна
+		// Fallback на старую систему, если новая недоступна или вернула пустую строку
+		// Убеждаемся, что $post является объектом WP_Post
+		if (!is_object($post) || !isset($post->ID)) {
+			if (is_numeric($post)) {
+				$post = get_post($post);
+			} else {
+				$post = get_post($post);
+			}
+		}
+		if (!$post || !isset($post->ID)) {
+			return '';
+		}
+		
 		$post_link = get_permalink($post->ID);
 		$post_title = get_the_title($post->ID);
 		$post_excerpt = get_the_excerpt($post->ID);
@@ -625,7 +655,7 @@ if (!function_exists('render_post_grid_item')) {
 ?>
 
 <div <?php echo $wrapper_attributes; ?>>
-	<?php if ($query->have_posts()) : ?>
+	<?php if ($query->have_posts() && !empty($query->posts)) : ?>
 		<?php if ($display_mode === 'swiper') : ?>
 			<?php
 			// Swiper mode
@@ -692,16 +722,31 @@ if (!function_exists('render_post_grid_item')) {
 					<div class="<?php echo esc_attr($wrapper_classes); ?>">
 						<?php foreach ($query->posts as $post) : setup_postdata($post); ?>
 							<?php
+							// Для шаблонов, использующих cw_render_post_card, проверка изображения не обязательна
 							$image_url = get_post_image_url($post, $image_size);
-							if (!$image_url) continue;
+							
+							// Если используется cw_render_post_card, пропускаем проверку изображения
+							$post_card_templates_path = get_template_directory() . '/functions/post-card-templates.php';
+							$use_new_system = file_exists($post_card_templates_path) && function_exists('cw_render_post_card');
+							
+							// Пропускаем только если не используется новая система И нет изображения
+							if (!$use_new_system && !$image_url) {
+								continue;
+							}
+							
 							$slide_class = 'swiper-slide';
 							if ($template === 'client-simple') {
 								$slide_class .= ' px-5';
 							}
 							?>
+							<?php
+							$item_html = render_post_grid_item($post, $attributes, $image_url, $image_size, $grid_type, $col_classes, true);
+							if (!empty($item_html) && trim($item_html) !== '') :
+							?>
 							<div class="<?php echo esc_attr($slide_class); ?>">
-								<?php echo render_post_grid_item($post, $attributes, $image_url, $image_size, $grid_type, $col_classes, true); ?>
+								<?php echo $item_html; ?>
 							</div>
+							<?php endif; ?>
 						<?php endforeach; wp_reset_postdata(); ?>
 					</div>
 				</div>
@@ -710,10 +755,23 @@ if (!function_exists('render_post_grid_item')) {
 			<div class="cwgb-load-more-items <?php echo esc_attr($grid_classes); ?>">
 				<?php foreach ($posts_to_show as $post) : setup_postdata($post); ?>
 					<?php
+					// Для шаблонов, использующих cw_render_post_card, проверка изображения не обязательна
+					// так как функция сама обработает отсутствие изображения
 					$image_url = get_post_image_url($post, $image_size);
-					if (!$image_url) continue;
 					
-					echo render_post_grid_item($post, $attributes, $image_url, $image_size, $grid_type, $col_classes);
+					// Если используется cw_render_post_card, пропускаем проверку изображения
+					$post_card_templates_path = get_template_directory() . '/functions/post-card-templates.php';
+					$use_new_system = file_exists($post_card_templates_path) && function_exists('cw_render_post_card');
+					
+					// Пропускаем только если не используется новая система И нет изображения
+					if (!$use_new_system && !$image_url) {
+						continue;
+					}
+					
+					$item_html = render_post_grid_item($post, $attributes, $image_url, $image_size, $grid_type, $col_classes);
+					if (!empty($item_html) && trim($item_html) !== '') {
+						echo $item_html;
+					}
 					?>
 				<?php endforeach; wp_reset_postdata(); ?>
 			</div>

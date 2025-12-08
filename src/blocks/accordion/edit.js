@@ -10,30 +10,244 @@ import {
 	InspectorControls,
 } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
-import { Button, SelectControl } from '@wordpress/components';
-import { useEffect } from '@wordpress/element';
+import { Button } from '@wordpress/components';
+import { useEffect, useRef, useState } from '@wordpress/element';
+import apiFetch from '@wordpress/api-fetch';
 import { AccordionSidebar } from './sidebar';
-import { fontIcons } from '../../utilities/font_icon';
+import { IconPicker } from '../../components/icon/IconPicker';
 
 const AccordionEdit = ({ attributes, setAttributes, clientId }) => {
-	const { accordionStyle, allowMultiple, items, accordionId, iconPosition, iconType, firstItemOpen } = attributes;
+	const { accordionStyle, allowMultiple, items, accordionId, iconPosition, iconType, firstItemOpen, mode, postType, selectedTaxonomies } = attributes;
+	const previousItemsLengthRef = useRef(items?.length || 0);
+	const previousFirstItemOpenRef = useRef(firstItemOpen);
+	const previousClientIdRef = useRef(clientId);
+	const previousModeRef = useRef(mode);
+	const [hoveredItemIndex, setHoveredItemIndex] = useState(null);
+	const [iconPickerOpen, setIconPickerOpen] = useState(null); // itemId -> isOpen
+	const [isLoadingPosts, setIsLoadingPosts] = useState(false);
+	const previousPostTypeRef = useRef(postType);
+	const previousSelectedTaxonomiesRef = useRef(JSON.stringify(selectedTaxonomies || {}));
 
-	// Generate unique accordion ID if not set
+	// Generate unique accordion ID based on clientId (always regenerate to ensure uniqueness)
 	useEffect(() => {
-		if (!accordionId) {
-			const uniqueId = `accordion-${clientId.replace(/[^a-z0-9]/gi, '')}`;
-			setAttributes({ accordionId: uniqueId });
+		// Always generate ID based on clientId to ensure uniqueness even when block is duplicated
+		const clientIdPrefix = clientId.replace(/[^a-z0-9]/gi, '');
+		const expectedAccordionId = `accordion-${clientIdPrefix}`;
+		
+		// Always update if ID doesn't match current clientId
+		if (accordionId !== expectedAccordionId) {
+			setAttributes({ accordionId: expectedAccordionId });
 		}
 	}, [clientId, accordionId, setAttributes]);
 
+	// Ensure all item IDs are unique and contain clientId
+	useEffect(() => {
+		if (!items || items.length === 0) {
+			previousClientIdRef.current = clientId;
+			return;
+		}
+		
+		const clientIdPrefix = clientId.replace(/[^a-z0-9]/gi, '');
+		
+		// Check if clientId changed or if any item ID doesn't contain current clientId prefix
+		const clientIdChanged = previousClientIdRef.current !== clientId;
+		const hasInvalidIds = items.some(item => !item.id || !item.id.includes(clientIdPrefix));
+		
+		// Only update if clientId changed or IDs are invalid
+		if (!clientIdChanged && !hasInvalidIds) {
+			return; // All IDs are valid and clientId hasn't changed
+		}
+		
+		// Regenerate IDs for items that don't match current clientId
+		const baseTime = Date.now();
+		const updatedItems = items.map((item, index) => {
+			if (!item.id || !item.id.includes(clientIdPrefix)) {
+				// Use baseTime + index + random to ensure uniqueness
+				const randomSuffix = Math.floor(Math.random() * 1000);
+				return {
+					...item,
+					id: `item-${clientIdPrefix}-${baseTime}-${index}-${randomSuffix}`,
+				};
+			}
+			return item;
+		});
+		
+		setAttributes({ items: updatedItems });
+		previousClientIdRef.current = clientId;
+	}, [clientId, items, setAttributes]);
+
+	// Fetch posts from API when mode is 'post'
+	useEffect(() => {
+		console.log('[Accordion] useEffect triggered:', { mode, postType, selectedTaxonomies });
+		
+		if (mode !== 'post' || !postType) {
+			console.log('[Accordion] Skipping fetch - mode is not post or postType is empty');
+			previousModeRef.current = mode;
+			previousPostTypeRef.current = postType;
+			previousSelectedTaxonomiesRef.current = JSON.stringify(selectedTaxonomies || {});
+			return;
+		}
+
+		// Проверяем, изменились ли postType или selectedTaxonomies
+		const postTypeChanged = previousPostTypeRef.current !== postType;
+		const taxonomiesChanged = previousSelectedTaxonomiesRef.current !== JSON.stringify(selectedTaxonomies || {});
+		const modeChangedToPost = previousModeRef.current !== mode && mode === 'post';
+
+		console.log('[Accordion] Change detection:', {
+			postTypeChanged,
+			taxonomiesChanged,
+			modeChangedToPost,
+			previousPostType: previousPostTypeRef.current,
+			currentPostType: postType,
+			previousMode: previousModeRef.current,
+			currentMode: mode
+		});
+
+		// Если ничего не изменилось и это не первая загрузка, не делаем запрос
+		if (!postTypeChanged && !taxonomiesChanged && !modeChangedToPost && previousPostTypeRef.current) {
+			console.log('[Accordion] No changes detected, skipping fetch');
+			return;
+		}
+
+		const fetchPosts = async () => {
+			console.log('[Accordion] Starting to fetch posts for:', postType);
+			setIsLoadingPosts(true);
+			try {
+				// Получаем информацию о типе записи для правильного endpoint
+				let endpoint = 'posts'; // по умолчанию
+				try {
+					const postTypeInfo = await apiFetch({ path: `/wp/v2/types/${postType}` });
+					console.log('[Accordion] Post type info:', postTypeInfo);
+					if (postTypeInfo && postTypeInfo.rest_base) {
+						endpoint = postTypeInfo.rest_base;
+					} else if (postType === 'post') {
+						endpoint = 'posts';
+					} else {
+						endpoint = postType;
+					}
+				} catch (error) {
+					console.warn('[Accordion] Could not fetch post type info, using default:', error);
+					// Fallback: используем стандартную логику
+					endpoint = postType === 'post' ? 'posts' : postType;
+				}
+				
+				console.log('[Accordion] Using endpoint:', endpoint);
+				let queryParams = `per_page=100&orderby=date&order=desc&_embed`;
+
+				// Добавляем фильтры по таксономиям
+				if (selectedTaxonomies && Object.keys(selectedTaxonomies).length > 0) {
+					try {
+						const taxonomiesData = await apiFetch({
+							path: `/codeweber-gutenberg-blocks/v1/taxonomies/${postType}`,
+						});
+
+						const taxonomyMap = {};
+						if (taxonomiesData && Array.isArray(taxonomiesData)) {
+							taxonomiesData.forEach((tax) => {
+								taxonomyMap[tax.slug] = tax.rest_base || tax.slug;
+							});
+						}
+
+						Object.keys(selectedTaxonomies).forEach((taxonomySlug) => {
+							const termIds = selectedTaxonomies[taxonomySlug];
+							if (termIds && termIds.length > 0) {
+								const restBase = taxonomyMap[taxonomySlug] || taxonomySlug;
+								let paramName = restBase;
+								
+								// Стандартные таксономии
+								if (taxonomySlug === 'category') paramName = 'categories';
+								else if (taxonomySlug === 'post_tag') paramName = 'tags';
+								
+								queryParams += `&${paramName}=${termIds.join(',')}`;
+							}
+						});
+					} catch (error) {
+						console.error('[Accordion] Error fetching taxonomies:', error);
+					}
+				}
+
+				const apiPath = `/wp/v2/${endpoint}?${queryParams}`;
+				console.log('[Accordion] Fetching from API:', apiPath);
+				
+				const fetchedPosts = await apiFetch({
+					path: apiPath,
+				});
+				
+				console.log('[Accordion] Fetched posts:', fetchedPosts?.length || 0);
+				console.log('[Accordion] First post sample:', fetchedPosts?.[0]);
+				
+				// Если получили ошибку или пустой массив, проверяем доступность endpoint
+				if (!Array.isArray(fetchedPosts)) {
+					console.error('[Accordion] API returned non-array:', fetchedPosts);
+					throw new Error('API returned invalid response');
+				}
+				
+				const postsToUse = Array.isArray(fetchedPosts) ? fetchedPosts.slice(0, 10) : [];
+
+				// Генерируем items из постов
+				const clientIdPrefix = clientId.replace(/[^a-z0-9]/gi, '');
+				const baseTime = Date.now();
+				const generatedItems = postsToUse.map((post, index) => {
+					// Извлекаем контент из excerpt или content
+					let content = '';
+					if (post.excerpt && post.excerpt.rendered) {
+						content = post.excerpt.rendered;
+					} else if (post.content && post.content.rendered) {
+						// Берем первые 200 символов из content
+						const textContent = post.content.rendered.replace(/<[^>]*>/g, '');
+						content = textContent.substring(0, 200) + (textContent.length > 200 ? '...' : '');
+					}
+
+					return {
+						id: `item-${clientIdPrefix}-${baseTime}-${index}-${post.id}`,
+						title: post.title?.rendered || post.title || __('Untitled', 'codeweber-gutenberg-blocks'),
+						content: content || __('No content available', 'codeweber-gutenberg-blocks'),
+						icon: '',
+						isOpen: firstItemOpen && index === 0,
+					};
+				});
+
+				console.log('[Accordion] Generated items:', generatedItems.length);
+				setAttributes({ items: generatedItems });
+				previousModeRef.current = mode;
+				previousPostTypeRef.current = postType;
+				previousSelectedTaxonomiesRef.current = JSON.stringify(selectedTaxonomies || {});
+			} catch (error) {
+				console.error('[Accordion] Error fetching posts:', error);
+			} finally {
+				setIsLoadingPosts(false);
+			}
+		};
+
+		fetchPosts();
+	}, [mode, postType, selectedTaxonomies, clientId, firstItemOpen, setAttributes]);
+
 	// Ensure first item open (others closed) when option enabled
 	useEffect(() => {
-		if (!firstItemOpen || !items?.length) return;
+		if (!firstItemOpen || !items?.length) {
+			previousFirstItemOpenRef.current = firstItemOpen;
+			previousItemsLengthRef.current = items?.length || 0;
+			return;
+		}
+		
+		// Only update if items length changed or firstItemOpen toggled
+		const itemsLengthChanged = previousItemsLengthRef.current !== items.length;
+		const firstItemOpenToggled = previousFirstItemOpenRef.current !== firstItemOpen;
+		
+		if (!itemsLengthChanged && !firstItemOpenToggled) {
+			// Check if already in correct state
+			const needsUpdate = items.some((item, idx) => item.isOpen !== (idx === 0));
+			if (!needsUpdate) return;
+		}
+		
 		const updated = items.map((item, idx) => ({
 			...item,
 			isOpen: idx === 0,
 		}));
+		
 		setAttributes({ items: updated });
+		previousItemsLengthRef.current = items.length;
+		previousFirstItemOpenRef.current = firstItemOpen;
 	}, [firstItemOpen, items, setAttributes]);
 
 	const updateItem = (index, field, value) => {
@@ -150,12 +364,30 @@ const AccordionEdit = ({ attributes, setAttributes, clientId }) => {
 			</InspectorControls>
 
 			<div {...blockProps}>
+				{isLoadingPosts && (
+					<div style={{ padding: '20px', textAlign: 'center' }}>
+						{__('Loading posts...', 'codeweber-gutenberg-blocks')}
+					</div>
+				)}
+				{!isLoadingPosts && items.length === 0 && mode === 'post' && (
+					<div style={{ padding: '20px', textAlign: 'center' }}>
+						{__('No posts found. Please select a post type and check your filters.', 'codeweber-gutenberg-blocks')}
+					</div>
+				)}
 				{items.map((item, index) => {
 					const headingId = `heading-${item.id}`;
 					const collapseId = `collapse-${item.id}`;
 
+					const isHovered = hoveredItemIndex === index;
+					
 					return (
-						<div key={item.id} className={getItemClasses(item, index)}>
+						<div 
+							key={item.id} 
+							className={`${getItemClasses(item, index)} accordion-item-wrapper p-0${accordionStyle === 'simple' ? ' mt-0' : ''}`} 
+							style={{ width: '100%', maxWidth: '100%', position: 'relative' }}
+							onMouseEnter={() => setHoveredItemIndex(index)}
+							onMouseLeave={() => setHoveredItemIndex(null)}
+						>
 							<div className="card-header" id={headingId}>
 								<button
 									className={getButtonClasses(item, index)}
@@ -170,27 +402,130 @@ const AccordionEdit = ({ attributes, setAttributes, clientId }) => {
 									}}
 									style={{ pointerEvents: 'auto', cursor: 'pointer' }}
 								>
-									{accordionStyle === 'icon' && item.icon && (
-										<span>
-											<i className={item.icon}></i>
+									{accordionStyle === 'icon' && (
+										<span 
+											className="icon"
+											onClick={mode === 'custom' ? (e) => {
+												e.stopPropagation();
+												setIconPickerOpen(item.id);
+											} : undefined}
+											style={{ cursor: mode === 'custom' ? 'pointer' : 'default' }}
+											title={mode === 'custom' ? __('Click to change icon', 'codeweber-gutenberg-blocks') : ''}
+										>
+											<i className={item.icon || 'uil uil-plus'}></i>
 										</span>
 									)}
-									<RichText
-										tagName="span"
-										value={item.title}
-										onChange={(value) => updateItem(index, 'title', value)}
-										placeholder={__('Enter title...', 'codeweber-gutenberg-blocks')}
-										withoutInteractiveFormatting
-									/>
+									{mode === 'custom' ? (
+										<RichText
+											tagName="span"
+											value={item.title}
+											onChange={(value) => updateItem(index, 'title', value)}
+											placeholder={__('Enter title...', 'codeweber-gutenberg-blocks')}
+											withoutInteractiveFormatting
+										/>
+									) : (
+										<span dangerouslySetInnerHTML={{ __html: item.title }} />
+									)}
 								</button>
 							</div>
+							
+							{/* Item Controls - Absolute positioned, visible on hover - только в режиме Custom */}
+							{mode === 'custom' && (
+							<div 
+								className="accordion-item-controls"
+								style={{
+									position: 'absolute',
+									top: '-18px',
+									right: '8px',
+									left: 'auto',
+									bottom: 'auto',
+									display: 'flex',
+									gap: '4px',
+									alignItems: 'center',
+									opacity: isHovered ? 1 : 0,
+									visibility: isHovered ? 'visible' : 'hidden',
+									transition: 'opacity 0.2s ease, visibility 0.2s ease',
+									background: '#fff',
+									padding: '4px',
+									borderRadius: '4px',
+									boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+									zIndex: 10,
+									pointerEvents: isHovered ? 'auto' : 'none',
+									margin: 0,
+									width: 'auto',
+									height: 'auto'
+								}}
+							>
+								<div
+									role="button"
+									tabIndex={0}
+									className={`accordion-control-btn ${index === 0 ? 'disabled' : ''}`}
+									onClick={(e) => {
+										e.stopPropagation();
+										if (index !== 0) moveItem(index, 'up');
+									}}
+									onKeyDown={(e) => {
+										if (e.key === 'Enter' || e.key === ' ') {
+											e.preventDefault();
+											e.stopPropagation();
+											if (index !== 0) moveItem(index, 'up');
+										}
+									}}
+									aria-label={__('Move up', 'codeweber-gutenberg-blocks')}
+									title={__('Move up', 'codeweber-gutenberg-blocks')}
+								>
+									<span className="dashicons dashicons-arrow-up-alt2"></span>
+								</div>
+								<div
+									role="button"
+									tabIndex={0}
+									className={`accordion-control-btn ${index === items.length - 1 ? 'disabled' : ''}`}
+									onClick={(e) => {
+										e.stopPropagation();
+										if (index !== items.length - 1) moveItem(index, 'down');
+									}}
+									onKeyDown={(e) => {
+										if (e.key === 'Enter' || e.key === ' ') {
+											e.preventDefault();
+											e.stopPropagation();
+											if (index !== items.length - 1) moveItem(index, 'down');
+										}
+									}}
+									aria-label={__('Move down', 'codeweber-gutenberg-blocks')}
+									title={__('Move down', 'codeweber-gutenberg-blocks')}
+								>
+									<span className="dashicons dashicons-arrow-down-alt2"></span>
+								</div>
+								<div
+									role="button"
+									tabIndex={0}
+									className={`accordion-control-btn accordion-control-delete ${items.length === 1 ? 'disabled' : ''}`}
+									onClick={(e) => {
+										e.stopPropagation();
+										if (items.length !== 1) removeItem(index);
+									}}
+									onKeyDown={(e) => {
+										if (e.key === 'Enter' || e.key === ' ') {
+											e.preventDefault();
+											e.stopPropagation();
+											if (items.length !== 1) removeItem(index);
+										}
+									}}
+									aria-label={__('Remove', 'codeweber-gutenberg-blocks')}
+									title={__('Remove', 'codeweber-gutenberg-blocks')}
+								>
+									<span className="dashicons dashicons-trash"></span>
+								</div>
+							</div>
+							)}
 							<div
 								id={collapseId}
 								className={getCollapseClasses(item, index)}
 								aria-labelledby={headingId}
-								data-bs-parent={!allowMultiple ? `#${accordionId}` : undefined}
+								{...(allowMultiple ? {} : { 'data-bs-parent': `#${accordionId}` })}
 							>
-								<div className="card-body">
+							<div className="card-body">
+								{mode === 'custom' ? (
 									<RichText
 										tagName="p"
 										value={item.content}
@@ -200,65 +535,52 @@ const AccordionEdit = ({ attributes, setAttributes, clientId }) => {
 											'codeweber-gutenberg-blocks'
 										)}
 									/>
-								</div>
-							</div>
-
-							{/* Item Controls */}
-							<div
-								style={{
-									display: 'flex',
-									gap: '8px',
-									marginTop: '8px',
-									padding: '8px',
-									background: '#f0f0f0',
-									borderRadius: '4px',
-								}}
-							>
-								{accordionStyle === 'icon' && (
-									<SelectControl
-										label={__('Icon', 'codeweber-gutenberg-blocks')}
-										value={item.icon}
-										options={[
-											{ label: __('None', 'codeweber-gutenberg-blocks'), value: '' },
-											...fontIcons,
-										]}
-										onChange={(value) => updateItem(index, 'icon', value)}
-										style={{ flex: 1 }}
-									/>
+								) : (
+									<p dangerouslySetInnerHTML={{ __html: item.content }} />
 								)}
-								<Button
-									isSmall
-									onClick={() => moveItem(index, 'up')}
-									disabled={index === 0}
-								>
-									↑
-								</Button>
-								<Button
-									isSmall
-									onClick={() => moveItem(index, 'down')}
-									disabled={index === items.length - 1}
-								>
-									↓
-								</Button>
-								<Button
-									isSmall
-									isDestructive
-									onClick={() => removeItem(index)}
-									disabled={items.length === 1}
-								>
-									{__('Remove', 'codeweber-gutenberg-blocks')}
-								</Button>
+							</div>
 							</div>
 						</div>
 					);
 				})}
 
-				{/* Add Item Button */}
-				<div style={{ marginTop: '16px' }}>
-					<Button isPrimary onClick={addItem}>
-						{__('+ Add Accordion Item', 'codeweber-gutenberg-blocks')}
-					</Button>
-				</div>
+				{/* Add Item Button - только в режиме Custom */}
+				{mode === 'custom' && (
+					<div style={{ marginTop: '16px' }}>
+						<Button isPrimary onClick={addItem}>
+							{__('+ Add Accordion Item', 'codeweber-gutenberg-blocks')}
+						</Button>
+					</div>
+				)}
+
+				{/* Icon Pickers for each item - только в режиме Custom */}
+				{mode === 'custom' && items.map((item, index) => {
+					// Извлекаем имя иконки из класса (например, "uil uil-windows" -> "windows")
+					const getIconName = (iconClass) => {
+						if (!iconClass) return '';
+						const match = iconClass.match(/uil-([^\s]+)/);
+						return match ? match[1] : '';
+					};
+
+					return (
+						<IconPicker
+							key={`icon-picker-${item.id}`}
+							isOpen={iconPickerOpen === item.id}
+							onClose={() => setIconPickerOpen(null)}
+							onSelect={(result) => {
+								// Извлекаем iconName и сохраняем как класс иконки
+								const iconClass = result.iconName ? `uil uil-${result.iconName}` : '';
+								updateItem(index, 'icon', iconClass);
+							}}
+							selectedIcon={getIconName(item.icon)}
+							selectedType="font"
+							initialTab="font"
+							allowFont={true}
+							allowSvgLineal={false}
+							allowSvgSolid={false}
+						/>
+					);
+				})}
 			</div>
 		</>
 	);

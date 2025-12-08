@@ -9,49 +9,130 @@
 
 .wp-block-codeweber-blocks-accordion {
 	.accordion-wrapper {
-		.accordion-item {
+		.accordion-item-wrapper {
 			// Visual borders for editor only
 			border: 1px solid #ddd;
 			border-radius: 0.25rem;
 			margin-bottom: 0.5rem;
+			position: relative;
 
 			&:last-child {
 				margin-bottom: 0;
 			}
-		}
 
-		.card-header {
-			.accordion-button {
-				// Basic editor visualization
-				width: 100%;
-				text-align: left;
-				cursor: pointer;
-				display: flex;
-				align-items: center;
-				gap: 0.5rem;
+			.card-header {
+				.accordion-button {
+					// Basic editor visualization
+					width: 100%;
+					text-align: left;
+					cursor: pointer;
+					display: flex;
+					align-items: center;
+					gap: 0.5rem;
 
-				// Focus state for editor accessibility
-				&:focus {
-					outline: 1px solid #0073aa;
-					outline-offset: -1px;
-				}
+					// Focus state for editor accessibility
+					&:focus {
+						outline: 1px solid #0073aa;
+						outline-offset: -1px;
+					}
 
-				// Simple arrow indicator for editor (theme handles real icons)
-				&::after {
-					margin-left: auto;
-					content: '';
-					width: 0;
-					height: 0;
-					border-left: 5px solid transparent;
-					border-right: 5px solid transparent;
-					border-top: 5px solid currentColor;
-					transition: transform 0.3s ease;
-				}
+					// Simple arrow indicator for editor (theme handles real icons)
+					&::after {
+						margin-left: auto;
+						content: '';
+						width: 0;
+						height: 0;
+						border-left: 5px solid transparent;
+						border-right: 5px solid transparent;
+						border-top: 5px solid currentColor;
+						transition: transform 0.3s ease;
+					}
 
-				&:not(.collapsed)::after {
-					transform: rotate(180deg);
+					&:not(.collapsed)::after {
+						transform: rotate(180deg);
+					}
 				}
 			}
+
+			// Item Controls - Absolute positioned, visible on hover
+			.accordion-item-controls {
+				position: absolute;
+				top: 8px;
+				right: 8px;
+				left: auto;
+				bottom: auto;
+				display: flex;
+				gap: 4px;
+				align-items: center;
+				opacity: 0;
+				visibility: hidden;
+				transition: opacity 0.2s ease, visibility 0.2s ease;
+				background: #fff;
+				padding: 4px;
+				border-radius: 4px;
+				box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+				z-index: 10;
+				pointer-events: none;
+				margin: 0;
+				width: auto;
+				height: auto;
+
+				.accordion-control-btn {
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					width: 32px;
+					height: 32px;
+					padding: 0;
+					margin: 0;
+					cursor: pointer;
+					border: none;
+					background: transparent;
+					border-radius: 2px;
+					transition: background-color 0.2s ease;
+
+					&:hover:not(.disabled) {
+						background-color: rgba(0, 0, 0, 0.05);
+					}
+
+					&.disabled {
+						opacity: 0.4;
+						cursor: not-allowed;
+						pointer-events: none;
+					}
+
+					&.accordion-control-delete:hover:not(.disabled) {
+						background-color: rgba(220, 50, 47, 0.1);
+					}
+
+					.dashicons {
+						width: 16px;
+						height: 16px;
+						font-size: 16px;
+						line-height: 1;
+					}
+
+					&.accordion-control-delete .dashicons {
+						color: #dc322f;
+					}
+				}
+			}
+
+			// Make controls visible and interactive when wrapper is hovered
+			&:hover .accordion-item-controls {
+				opacity: 1;
+				visibility: visible;
+				pointer-events: auto;
+			}
+		}
+
+		.accordion-item {
+			// Remove borders from inner item (handled by wrapper)
+			border: none;
+			border-radius: 0;
+			margin-bottom: 0;
+			width: 100% !important;
+			max-width: 100% !important;
 		}
 
 		.accordion-collapse {

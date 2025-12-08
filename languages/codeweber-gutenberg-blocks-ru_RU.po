@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Codeweber Gutenberg Blocks\n"
 "POT-Creation-Date: 2025-12-04T14:31:54Z\n"
-"PO-Revision-Date: 2025-12-06 11:41+0000\n"
+"PO-Revision-Date: 2025-12-08 12:16+0000\n"
 "Last-Translator: Codeweber\n"
 "Language-Team: Русский\n"
 "Language: ru_RU\n"
@@ -276,7 +276,7 @@ msgstr "ID колонок"
 
 #: src/blocks/feature/edit.js:129
 msgid "Feature"
-msgstr "Фича"
+msgstr "Преимущества"
 
 #: src/components/icon/IconControl.js:66
 msgid "Icon"
@@ -300,15 +300,15 @@ msgstr "Введите заголовок..."
 
 #: src/blocks/feature/edit.js:519
 msgid "Feature 1"
-msgstr "Фича 1"
+msgstr "Тип 1"
 
 #: src/blocks/feature/edit.js:535
 msgid "Feature 2"
-msgstr "Фича 2"
+msgstr "Тип 2"
 
 #: src/blocks/feature/edit.js:551
 msgid "Feature 3"
-msgstr "Фича 3"
+msgstr "Тип 3"
 
 #: src/blocks/feature/edit.js:630
 msgid "Enable Button"
@@ -1728,10 +1728,6 @@ msgid "Enable links to client posts (disabled by default)"
 msgstr "Включить ссылки на записи клиентов (по умолчанию отключено)"
 
 #: src/blocks/post-grid/controls/MainControl.js
-msgid "Image Size"
-msgstr "Размер изображения"
-
-#: src/blocks/post-grid/controls/MainControl.js
 msgid "Select the size for featured images."
 msgstr "Выберите размер для изображений записей."
 
@@ -1748,16 +1744,9 @@ msgid "Template"
 msgstr "Шаблон"
 
 #: src/components/post-grid-template/PostGridTemplateControl.js
-msgid "Default"
-msgstr "По умолчанию"
-
-#: src/components/post-grid-template/PostGridTemplateControl.js
 msgid "Simple layout with figure overlay and post header/footer"
-msgstr "Простая компоновка с наложением изображения и заголовком/подвалом записи"
-
-#: src/components/post-grid-template/PostGridTemplateControl.js
-msgid "Card"
-msgstr "Карточка"
+msgstr ""
+"Простая компоновка с наложением изображения и заголовком/подвалом записи"
 
 #: src/components/post-grid-template/PostGridTemplateControl.js
 msgid "Card layout with shadow and card body"
@@ -1840,10 +1829,6 @@ msgid "Date"
 msgstr "Дата"
 
 #: src/components/post-sort/PostSortControl.js
-msgid "Title"
-msgstr "Заголовок"
-
-#: src/components/post-sort/PostSortControl.js
 msgid "Modified Date"
 msgstr "Дата изменения"
 
@@ -1900,10 +1885,6 @@ msgid "Show All"
 msgstr "Показать все"
 
 #: src/components/load-more/LoadMoreControl.js
-msgid "Button"
-msgstr "Кнопка"
-
-#: src/components/load-more/LoadMoreControl.js
 msgid "Link"
 msgstr "Ссылка"
 
@@ -1944,14 +1925,6 @@ msgid "Number of items loaded when clicking the button"
 msgstr "Количество элементов, загружаемых при клике на кнопку"
 
 #: src/blocks/post-grid/controls/LayoutControl.js
-msgid "Grid"
-msgstr "Сетка"
-
-#: src/blocks/post-grid/controls/LayoutControl.js
-msgid "Slider"
-msgstr "Слайдер"
-
-#: src/blocks/post-grid/controls/LayoutControl.js
 msgid "Col Classes"
 msgstr "Классы Col"
 
@@ -1964,32 +1937,12 @@ msgid "Loading posts..."
 msgstr "Загрузка записей..."
 
 #: src/blocks/post-grid/edit.js
-msgid "No posts found. Please select a post type and ensure there are published posts."
-msgstr "Записи не найдены. Пожалуйста, выберите тип записи и убедитесь, что есть опубликованные записи."
-
-#: src/blocks/post-grid/render.php
-msgid "Show More"
-msgstr "Показать еще"
-
-#: src/blocks/post-grid/render.php
-msgid "Load More"
-msgstr "Загрузить еще"
-
-#: src/blocks/post-grid/render.php
-msgid "Show More Items"
-msgstr "Показать больше"
-
-#: src/blocks/post-grid/render.php
-msgid "More Posts"
-msgstr "Еще записи"
-
-#: src/blocks/post-grid/render.php
-msgid "View All"
-msgstr "Смотреть все"
-
-#: src/blocks/post-grid/render.php
-msgid "Show All"
-msgstr "Показать все"
+msgid ""
+"No posts found. Please select a post type and ensure there are published "
+"posts."
+msgstr ""
+"Записи не найдены. Пожалуйста, выберите тип записи и убедитесь, что есть "
+"опубликованные записи."
 
 #: src/blocks/post-grid/render.php
 msgid "No posts found."
@@ -1998,26 +1951,6 @@ msgstr "Записи не найдены."
 #: src/blocks/post-grid/sidebar.js
 msgid "Main"
 msgstr "Основное"
-
-#: src/blocks/post-grid/sidebar.js
-msgid "Layout"
-msgstr "Компоновка"
-
-#: src/blocks/post-grid/sidebar.js
-msgid "Effects"
-msgstr "Эффекты"
-
-#: src/blocks/post-grid/sidebar.js
-msgid "Settings"
-msgstr "Настройки"
-
-#: src/blocks/post-grid/sidebar.js
-msgid "Load More"
-msgstr "Загрузить еще"
-
-#: src/components/gap/GapControl.js
-msgid "Gap Type"
-msgstr "Тип Gap"
 
 #: src/components/grid-control/GridControl.js
 msgid "No Gap Classes"
@@ -2051,15 +1984,7 @@ msgstr "Размер Gap-X"
 msgid "Gap-Y Size"
 msgstr "Размер Gap-Y"
 
-#: src/components/responsive-control/ResponsiveDropdown.js
-msgid "None"
-msgstr "Нет"
-
 #: src/components/video-url/VideoURLControl.js
-msgid "Loading poster..."
-msgstr "Загрузка постера..."
-
-#: src/blocks/media/controls/MediaControl.js
 msgid "Loading poster..."
 msgstr "Загрузка постера..."
 
@@ -2075,10 +2000,6 @@ msgstr "Например: me-4, mb-3 и др."
 msgid "For example: pe-none, mb-5"
 msgstr "Например: pe-none, mb-5"
 
-#: src/blocks/icon/sidebar.js
-msgid "For example: pe-none, mb-5"
-msgstr "Например: pe-none, mb-5"
-
 #: settings/options_page/restapi.php
 msgid "JSON decoding error"
 msgstr "Ошибка декодирования JSON"
@@ -2087,18 +2008,142 @@ msgstr "Ошибка декодирования JSON"
 msgid "Error reading JSON: "
 msgstr "Ошибка при чтении JSON: "
 
-#: settings/options_page/pages/page_2.php
-msgid "Error reading JSON: "
-msgstr "Ошибка при чтении JSON: "
-
-#: settings/options_page/pages/page_2.php
-msgid "Save Changes"
-msgstr "Сохранить изменения"
-
 #: settings/options_page/options.php
 msgid "Plugin Settings"
 msgstr "Настройки плагина"
 
-#: settings/options_page/class-options-tabs.php
+#: src/blocks/accordion/index.js
+msgid "Accordion"
+msgstr "Аккордеон"
+
+#: src/blocks/accordion/index.js
+msgid ""
+"Bootstrap accordion with multiple items. Supports simple, background, and "
+"icon styles."
+msgstr ""
+"Bootstrap аккордеон с несколькими элементами. Поддерживает простой, фоновый "
+"и иконный стили."
+
+#: src/blocks/accordion/index.js
+msgid "accordion"
+msgstr "аккордеон"
+
+#: src/blocks/accordion/index.js
+msgid "collapse"
+msgstr "сворачивание"
+
+#: src/blocks/accordion/index.js
+msgid "faq"
+msgstr "часто задаваемые вопросы"
+
+#: src/blocks/accordion/index.js
+msgid "tabs"
+msgstr "вкладки"
+
+#: src/blocks/accordion/sidebar.js
+msgid "Accordion Settings"
+msgstr "Настройки аккордеона"
+
+#: src/blocks/accordion/sidebar.js
+msgid "Accordion Style"
+msgstr "Стиль аккордеона"
+
+#: src/blocks/accordion/sidebar.js
+msgid "Simple"
+msgstr "Простой"
+
+#: src/blocks/accordion/sidebar.js
+msgid "Icon Position"
+msgstr "Позиция иконки"
+
+#: src/blocks/accordion/sidebar.js
+msgid "Right"
+msgstr "Справа"
+
+#: src/blocks/accordion/sidebar.js
+msgid "Type 1"
+msgstr "Тип 1"
+
+#: src/blocks/accordion/sidebar.js
+msgid "Type 2"
+msgstr "Тип 2"
+
+#: src/blocks/accordion/sidebar.js
+msgid "Type 3"
+msgstr "Тип 3"
+
+#: src/blocks/accordion/sidebar.js
+msgid "Allow Multiple Items Open"
+msgstr "Разрешить открытие нескольких элементов"
+
+#: src/blocks/accordion/sidebar.js
+msgid "When enabled, multiple accordion items can be open at the same time."
+msgstr "При включении несколько элементов аккордеона могут быть открыты одновременно."
+
+#: src/blocks/accordion/sidebar.js
+msgid "Open first item by default"
+msgstr "Открывать первый элемент по умолчанию"
+
+#: src/blocks/accordion/sidebar.js
+msgid "When enabled, the first item is forced open (others closed)."
+msgstr "При включении первый элемент принудительно открыт (остальные закрыты)."
+
+#: src/blocks/accordion/edit.js
+msgid "New Item"
+msgstr "Новый элемент"
+
+#: src/blocks/accordion/edit.js
+msgid "Add your content here..."
+msgstr "Добавьте ваш контент здесь..."
+
+#: src/blocks/accordion/edit.js
+msgid "Click to change icon"
+msgstr "Нажмите, чтобы изменить иконку"
+
+#: src/blocks/accordion/edit.js
+msgid "Enter content..."
+msgstr "Введите содержимое..."
+
+#: src/blocks/accordion/edit.js
+msgid "Move up"
+msgstr "Переместить вверх"
+
+#: src/blocks/accordion/edit.js
+msgid "Move down"
+msgstr "Переместить вниз"
+
+#: src/blocks/accordion/edit.js
+msgid "+ Add Accordion Item"
+msgstr "+ Добавить элемент аккордеона"
+
+#: src/blocks/accordion/sidebar.js
+msgid "Data Source"
+msgstr "Источник данных"
+
+#: src/blocks/accordion/sidebar.js
+msgid "Custom"
+msgstr "Вручную"
+
+#: src/blocks/accordion/sidebar.js
+msgid "Post"
+msgstr "Записи"
+
+#: src/blocks/accordion/sidebar.js
+msgid "Select the post type to generate accordion items from"
+msgstr "Выберите тип записи для генерации элементов аккордеона"
+
+#: src/blocks/accordion/edit.js
+msgid "Loading posts..."
+msgstr "Загрузка записей..."
+
+#: src/blocks/accordion/edit.js
+msgid "No posts found. Please select a post type and check your filters."
+msgstr "Записи не найдены. Пожалуйста, выберите тип записи и проверьте фильтры."
+
+#: src/blocks/accordion/edit.js
 msgid "Untitled"
 msgstr "Без названия"
+
+#: src/blocks/accordion/edit.js
+msgid "No content available"
+msgstr "Контент недоступен"

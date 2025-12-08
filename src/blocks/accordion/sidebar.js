@@ -12,9 +12,10 @@ import {
 	ToggleControl,
 	SelectControl,
 } from '@wordpress/components';
+import { PostTypeTaxonomyControl } from '../../components/post-type-taxonomy/PostTypeTaxonomyControl';
 
 export const AccordionSidebar = ({ attributes, setAttributes }) => {
-	const { accordionStyle, allowMultiple, iconPosition, iconType, firstItemOpen } = attributes;
+	const { accordionStyle, allowMultiple, iconPosition, iconType, firstItemOpen, mode, postType, selectedTaxonomies } = attributes;
 
 	const handleStyleChange = (style) => {
 		setAttributes({ accordionStyle: style });
@@ -29,15 +30,47 @@ export const AccordionSidebar = ({ attributes, setAttributes }) => {
 			title={__('Accordion Settings', 'codeweber-gutenberg-blocks')}
 			className="custom-panel-body"
 		>
+			{/* Mode Selection */}
+			<div className="component-sidebar-title">
+				<label>{__('Data Source', 'codeweber-gutenberg-blocks')}</label>
+			</div>
+			<div className="button-group-sidebar_33">
+				{[
+					{ label: __('Custom', 'codeweber-gutenberg-blocks'), value: 'custom' },
+					{ label: __('Post', 'codeweber-gutenberg-blocks'), value: 'post' },
+				].map((modeOption) => (
+					<Button
+						key={modeOption.value}
+						isPrimary={(mode || 'custom') === modeOption.value}
+						onClick={() => setAttributes({ mode: modeOption.value })}
+					>
+						{modeOption.label}
+					</Button>
+				))}
+			</div>
+
+			{/* Post Type Selection - показываем только в режиме Post */}
+			{mode === 'post' && (
+				<div style={{ marginTop: '16px' }}>
+					<PostTypeTaxonomyControl
+						postType={postType || ''}
+						selectedTaxonomies={selectedTaxonomies || {}}
+						onPostTypeChange={(value) => setAttributes({ postType: value })}
+						onTaxonomyChange={(value) => setAttributes({ selectedTaxonomies: value })}
+						help={__('Select the post type to generate accordion items from', 'codeweber-gutenberg-blocks')}
+					/>
+				</div>
+			)}
+
 			{/* Accordion Style */}
 			<div className="component-sidebar-title">
 				<label>{__('Accordion Style', 'codeweber-gutenberg-blocks')}</label>
 			</div>
 			<div className="accordion-style-controls button-group-sidebar_33">
 				{[
-					{ label: 'Simple', value: 'simple' },
-					{ label: 'Card', value: 'background' },
-					{ label: 'Icon', value: 'icon' },
+					{ label: __('Simple', 'codeweber-gutenberg-blocks'), value: 'simple' },
+					{ label: __('Card', 'codeweber-gutenberg-blocks'), value: 'background' },
+					{ label: __('Icon', 'codeweber-gutenberg-blocks'), value: 'icon' },
 				].map((style) => (
 					<Button
 						key={style.value}
@@ -68,25 +101,29 @@ export const AccordionSidebar = ({ attributes, setAttributes }) => {
 				))}
 			</div>
 
-			{/* Icon Type */}
-			<div className="component-sidebar-title">
-				<label>{__('Icon Type', 'codeweber-gutenberg-blocks')}</label>
-			</div>
-			<div className="button-group-sidebar_33">
-				{[
-					{ label: __('Type 1', 'codeweber-gutenberg-blocks'), value: 'type-1' },
-					{ label: __('Type 2', 'codeweber-gutenberg-blocks'), value: 'type-2' },
-					{ label: __('Type 3', 'codeweber-gutenberg-blocks'), value: 'type-3' },
-				].map((type) => (
-					<Button
-						key={type.value}
-						isPrimary={(iconType || 'type-1') === type.value}
-						onClick={() => setAttributes({ iconType: type.value })}
-					>
-						{type.label}
-					</Button>
-				))}
-			</div>
+			{/* Icon Type - показываем только если стиль не Icon */}
+			{accordionStyle !== 'icon' && (
+				<>
+					<div className="component-sidebar-title">
+						<label>{__('Icon Type', 'codeweber-gutenberg-blocks')}</label>
+					</div>
+					<div className="button-group-sidebar_33">
+						{[
+							{ label: __('Type 1', 'codeweber-gutenberg-blocks'), value: 'type-1' },
+							{ label: __('Type 2', 'codeweber-gutenberg-blocks'), value: 'type-2' },
+							{ label: __('Type 3', 'codeweber-gutenberg-blocks'), value: 'type-3' },
+						].map((type) => (
+							<Button
+								key={type.value}
+								isPrimary={(iconType || 'type-1') === type.value}
+								onClick={() => setAttributes({ iconType: type.value })}
+							>
+								{type.label}
+							</Button>
+						))}
+					</div>
+				</>
+			)}
 
 			{/* Allow Multiple Open */}
 			<ToggleControl

@@ -63,6 +63,9 @@ const SvgIconPreview = ({ iconName, style, isSelected, onClick }) => (
  * @param {string} props.selectedIcon - Текущая выбранная иконка
  * @param {string} props.selectedType - Тип: 'font', 'svg-lineal', 'svg-solid'
  * @param {string} props.initialTab - Начальная вкладка
+ * @param {boolean} props.allowFont - Разрешить вкладку Font Icons (по умолчанию true)
+ * @param {boolean} props.allowSvgLineal - Разрешить вкладку SVG Lineal (по умолчанию true)
+ * @param {boolean} props.allowSvgSolid - Разрешить вкладку SVG Solid (по умолчанию true)
  */
 export const IconPicker = ({
 	isOpen,
@@ -71,9 +74,26 @@ export const IconPicker = ({
 	selectedIcon = '',
 	selectedType = 'font',
 	initialTab = 'font',
+	allowFont = true,
+	allowSvgLineal = true,
+	allowSvgSolid = true,
 }) => {
 	const [searchTerm, setSearchTerm] = useState('');
-	const [activeTab, setActiveTab] = useState(initialTab);
+	
+	// Убеждаемся, что initialTab соответствует одной из разрешенных вкладок
+	const getValidInitialTab = () => {
+		const allTabs = [
+			{ name: 'font', allowed: allowFont },
+			{ name: 'svg-lineal', allowed: allowSvgLineal },
+			{ name: 'svg-solid', allowed: allowSvgSolid },
+		];
+		const allowedTabs = allTabs.filter(tab => tab.allowed);
+		if (allowedTabs.length === 0) return 'font'; // Fallback
+		const validTab = allowedTabs.find(tab => tab.name === initialTab);
+		return validTab ? validTab.name : allowedTabs[0].name;
+	};
+	
+	const [activeTab, setActiveTab] = useState(getValidInitialTab());
 
 	// Фильтрация Font Icons
 	const filteredFontIcons = useMemo(() => {
@@ -125,27 +145,51 @@ export const IconPicker = ({
 		onClose();
 	};
 
-	// Табы
-	const tabs = [
+	// Табы - фильтруем в зависимости от разрешений
+	const allTabs = [
 		{
 			name: 'font',
 			title: __('Font Icons', 'codeweber-gutenberg-blocks'),
 			className: 'icon-picker-tab',
+			allowed: allowFont,
 		},
 		{
 			name: 'svg-lineal',
 			title: __('SVG Lineal', 'codeweber-gutenberg-blocks'),
 			className: 'icon-picker-tab',
+			allowed: allowSvgLineal,
 		},
 		{
 			name: 'svg-solid',
 			title: __('SVG Solid', 'codeweber-gutenberg-blocks'),
 			className: 'icon-picker-tab',
+			allowed: allowSvgSolid,
 		},
 	];
+	
+	const tabs = allTabs.filter(tab => tab.allowed);
 
 	if (!isOpen) {
 		return null;
+	}
+
+	// Если нет доступных вкладок, показываем сообщение
+	if (tabs.length === 0) {
+		return (
+			<Modal
+				title={__('Select Icon', 'codeweber-gutenberg-blocks')}
+				onRequestClose={onClose}
+				className="icon-picker-modal"
+				isFullScreen={false}
+			>
+				<p>{__('No icon tabs available', 'codeweber-gutenberg-blocks')}</p>
+				<div className="icon-picker-footer">
+					<Button variant="tertiary" onClick={onClose}>
+						{__('Close', 'codeweber-gutenberg-blocks')}
+					</Button>
+				</div>
+			</Modal>
+		);
 	}
 
 	return (

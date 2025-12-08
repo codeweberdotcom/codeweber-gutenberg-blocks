@@ -1,0 +1,55 @@
+// Post Type Taxonomy Control Editor Styles
+// Переопределение глобальных стилей WordPress для компонента
+// Используем точно такой же селектор, как в WordPress, но с нашим классом для переопределения
+.block-editor-block-inspector .cwgb-post-type-taxonomy-control.block-editor-html-element-control:where(:not(:last-child)),
+.block-editor-block-inspector .cwgb-post-type-taxonomy-control.block-editor-image-size-control:where(:not(:last-child)),
+.block-editor-block-inspector .cwgb-post-type-taxonomy-control.components-base-control:where(:not(:last-child)),
+.block-editor-block-inspector .cwgb-post-type-taxonomy-control.components-radio-control:where(:not(:last-child)) {
+	margin-bottom: 0 !important;
+}
+
+.block-editor-block-inspector .cwgb-post-type-taxonomy-control .block-editor-html-element-control:where(:not(:last-child)),
+.block-editor-block-inspector .cwgb-post-type-taxonomy-control .block-editor-image-size-control:where(:not(:last-child)),
+.block-editor-block-inspector .cwgb-post-type-taxonomy-control .components-base-control:where(:not(:last-child)),
+.block-editor-block-inspector .cwgb-post-type-taxonomy-control .components-radio-control:where(:not(:last-child)) {
+	margin-bottom: 0 !important;
+}
+
+.block-editor-block-inspector .cwgb-post-type-taxonomy-control__select.block-editor-html-element-control:where(:not(:last-child)),
+.block-editor-block-inspector .cwgb-post-type-taxonomy-control__select.block-editor-image-size-control:where(:not(:last-child)),
+.block-editor-block-inspector .cwgb-post-type-taxonomy-control__select.components-base-control:where(:not(:last-child)),
+.block-editor-block-inspector .cwgb-post-type-taxonomy-control__select.components-radio-control:where(:not(:last-child)) {
+	margin-bottom: 0 !important;
+}
+
+.block-editor-block-inspector .cwgb-post-type-taxonomy-control__select .block-editor-html-element-control:where(:not(:last-child)),
+.block-editor-block-inspector .cwgb-post-type-taxonomy-control__select .block-editor-image-size-control:where(:not(:last-child)),
+.block-editor-block-inspector .cwgb-post-type-taxonomy-control__select .components-base-control:where(:not(:last-child)),
+.block-editor-block-inspector .cwgb-post-type-taxonomy-control__select .components-radio-control:where(:not(:last-child)) {
+	margin-bottom: 0 !important;
+}
+
+// Дополнительные селекторы с более высокой специфичностью для гарантированного переопределения
+.block-editor-block-inspector .cwgb-post-type-taxonomy-control.components-base-control:where(:not(:last-child)),
+.block-editor-block-inspector .cwgb-post-type-taxonomy-control__select.components-base-control:where(:not(:last-child)),
+.block-editor-block-inspector .cwgb-post-type-taxonomy-control .components-base-control:where(:not(:last-child)),
+.block-editor-block-inspector .cwgb-post-type-taxonomy-control__select .components-base-control:where(:not(:last-child)) {
+	margin-bottom: 0 !important;
+}
+
+// Общий стиль для контейнера
+.block-editor-block-inspector .cwgb-post-type-taxonomy-control {
+	margin-bottom: 0 !important;
+	
+	&__select {
+		margin-bottom: 0 !important;
+		
+		.components-base-control {
+			margin-bottom: 0 !important;
+		}
+	}
+	
+	.components-base-control {
+		margin-bottom: 0 !important;
+	}
+}

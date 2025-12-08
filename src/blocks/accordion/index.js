@@ -1,4 +1,5 @@
 import { registerBlockType } from '@wordpress/blocks';
+import { __ } from '@wordpress/i18n';
 import './style.scss';
 import './editor.scss';
 
@@ -16,5 +17,13 @@ import Save from './save';
 
 registerBlockType(metadata, {
 	edit: Edit,
-	save: Save
+	save: Save,
+	title: __('Accordion', 'codeweber-gutenberg-blocks'),
+	description: __('Bootstrap accordion with multiple items. Supports simple, background, and icon styles.', 'codeweber-gutenberg-blocks'),
+	keywords: [
+		__('accordion', 'codeweber-gutenberg-blocks'),
+		__('collapse', 'codeweber-gutenberg-blocks'),
+		__('faq', 'codeweber-gutenberg-blocks'),
+		__('tabs', 'codeweber-gutenberg-blocks'),
+	],
 });

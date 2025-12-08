@@ -278,7 +278,7 @@ export default function Save({ attributes }) {
 								</div>
 								
 								{hasMoreImages && (
-									<div style={{ textAlign: 'center', marginTop: '2rem' }}>
+									<div className="text-center mt-5">
 										<button 
 											className="btn btn-primary cwgb-load-more-btn"
 											data-loading-text="Loading..."

@@ -7,6 +7,7 @@ import { LinkTypeSelector } from '../../utilities/link_type';
 import { ButtonSidebar } from '../button/sidebar';
 import { getClassNames } from '../button/buttonclass';
 import { __ } from '@wordpress/i18n';
+import { useState } from '@wordpress/element';
 
 
 // Функция для обработки иконки
@@ -39,14 +40,33 @@ const ButtonEdit = ({ attributes, setAttributes }) => {
 		DataBsTarget,
 	} = attributes;
 
+	const [iconPickerOpen, setIconPickerOpen] = useState(false);
+
 	const onChangeButtonContent = (newContent) =>
 		setAttributes({ ButtonContent: newContent });
 
 	const buttonClass = getClassNames(attributes);
 
-	const getIconComponent = (iconClass) => {
+	// Извлекаем имя иконки из класса (например, "uil uil-windows" -> "windows")
+	const getIconName = (iconClass) => {
+		if (!iconClass) return '';
+		const match = iconClass.match(/uil-([^\s]+)/);
+		return match ? match[1] : '';
+	};
+
+	const getIconComponent = (iconClass, onClick) => {
 		if (!iconClass) return null;
-		return <i className={iconClass}></i>;
+		return (
+			<i 
+				className={iconClass}
+				onClick={onClick ? (e) => {
+					e.stopPropagation();
+					onClick();
+				} : undefined}
+				style={onClick ? { cursor: 'pointer' } : {}}
+				title={onClick ? __('Click to change icon', 'codeweber-gutenberg-blocks') : ''}
+			></i>
+		);
 	};
 
 	const shouldHideText =
@@ -73,6 +93,8 @@ const ButtonEdit = ({ attributes, setAttributes }) => {
 					<ButtonSidebar
 						attributes={attributes}
 						setAttributes={setAttributes}
+						iconPickerOpen={iconPickerOpen}
+						setIconPickerOpen={setIconPickerOpen}
 					/>
 				</InspectorControls>
 				{ButtonType === 'social' ? (

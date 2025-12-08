@@ -323,17 +323,8 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 							</div>
 						))}
 						{loadMoreEnable && displayMode === 'grid' && images.length > (loadMoreInitialCount || images.length) && (
-							<div style={{ 
-								width: '100%', 
-								textAlign: 'center', 
-								marginTop: '20px',
-								padding: '8px',
-								backgroundColor: '#f0f0f0',
-								borderRadius: '4px',
-								fontSize: '12px',
-								color: '#666'
-							}}>
-								{__('Load More будет работать на фронтенде', 'codeweber-gutenberg-blocks')}
+							<div className="text-center mt-5 p-2 bg-light rounded small text-muted">
+								{__('Load More will work on the frontend', 'codeweber-gutenberg-blocks')}
 							</div>
 						)}
 					</div>

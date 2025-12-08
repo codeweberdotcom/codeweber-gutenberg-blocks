@@ -77,6 +77,7 @@ const AccordionEdit = ({ attributes, setAttributes, clientId }) => {
 	}, [clientId, items, setAttributes]);
 
 	// Fetch posts from API when mode is 'post'
+	// В режиме Post ВСЕГДА загружаем данные через REST API, игнорируя сохраненные items
 	useEffect(() => {
 		console.log('[Accordion] useEffect triggered:', { mode, postType, selectedTaxonomies });
 		
@@ -103,71 +104,43 @@ const AccordionEdit = ({ attributes, setAttributes, clientId }) => {
 			currentMode: mode
 		});
 
-		// Если ничего не изменилось и это не первая загрузка, не делаем запрос
-		if (!postTypeChanged && !taxonomiesChanged && !modeChangedToPost && previousPostTypeRef.current) {
-			console.log('[Accordion] No changes detected, skipping fetch');
-			return;
-		}
+		// В режиме Post ВСЕГДА загружаем свежие данные через REST API при каждом монтировании компонента
+		// Это гарантирует, что редактор всегда показывает актуальные данные из базы,
+		// даже если есть сохраненные items (которые могут быть устаревшими)
+		// 
+		// Игнорируем сохраненные items, так как они могут быть устаревшими
+		// Загружаем данные при:
+		// 1. Первой загрузке (previousPostTypeRef.current пустой)
+		// 2. Изменении режима на Post
+		// 3. Изменении postType
+		// 4. Изменении таксономий
+		// 5. ИЛИ всегда в режиме Post (для актуальности данных)
+		
+		// В режиме Post ВСЕГДА загружаем данные при каждом монтировании компонента
+		// Это гарантирует, что редактор всегда показывает актуальные данные из базы,
+		// даже если есть сохраненные items (которые могут быть устаревшими)
+		// 
+		// Игнорируем сохраненные items, так как они могут быть устаревшими
+		// Загружаем данные при:
+		// 1. Первой загрузке (previousPostTypeRef.current пустой)
+		// 2. Изменении режима на Post
+		// 3. Изменении postType
+		// 4. Изменении таксономий
+		// 5. ИЛИ всегда в режиме Post (для актуальности данных)
+		
+		// В режиме Post ВСЕГДА загружаем данные при каждом монтировании компонента
+		// Это гарантирует, что редактор всегда показывает актуальные данные из базы,
+		// даже если есть сохраненные items (которые могут быть устаревшими)
+		// Игнорируем сохраненные items, так как они могут быть устаревшими
+		console.log('[Accordion] Post mode - always fetching fresh data from database (ignoring saved items)');
 
 		const fetchPosts = async () => {
 			console.log('[Accordion] Starting to fetch posts for:', postType);
 			setIsLoadingPosts(true);
 			try {
-				// Получаем информацию о типе записи для правильного endpoint
-				let endpoint = 'posts'; // по умолчанию
-				try {
-					const postTypeInfo = await apiFetch({ path: `/wp/v2/types/${postType}` });
-					console.log('[Accordion] Post type info:', postTypeInfo);
-					if (postTypeInfo && postTypeInfo.rest_base) {
-						endpoint = postTypeInfo.rest_base;
-					} else if (postType === 'post') {
-						endpoint = 'posts';
-					} else {
-						endpoint = postType;
-					}
-				} catch (error) {
-					console.warn('[Accordion] Could not fetch post type info, using default:', error);
-					// Fallback: используем стандартную логику
-					endpoint = postType === 'post' ? 'posts' : postType;
-				}
-				
-				console.log('[Accordion] Using endpoint:', endpoint);
-				let queryParams = `per_page=100&orderby=date&order=desc&_embed`;
-
-				// Добавляем фильтры по таксономиям
-				if (selectedTaxonomies && Object.keys(selectedTaxonomies).length > 0) {
-					try {
-						const taxonomiesData = await apiFetch({
-							path: `/codeweber-gutenberg-blocks/v1/taxonomies/${postType}`,
-						});
-
-						const taxonomyMap = {};
-						if (taxonomiesData && Array.isArray(taxonomiesData)) {
-							taxonomiesData.forEach((tax) => {
-								taxonomyMap[tax.slug] = tax.rest_base || tax.slug;
-							});
-						}
-
-						Object.keys(selectedTaxonomies).forEach((taxonomySlug) => {
-							const termIds = selectedTaxonomies[taxonomySlug];
-							if (termIds && termIds.length > 0) {
-								const restBase = taxonomyMap[taxonomySlug] || taxonomySlug;
-								let paramName = restBase;
-								
-								// Стандартные таксономии
-								if (taxonomySlug === 'category') paramName = 'categories';
-								else if (taxonomySlug === 'post_tag') paramName = 'tags';
-								
-								queryParams += `&${paramName}=${termIds.join(',')}`;
-							}
-						});
-					} catch (error) {
-						console.error('[Accordion] Error fetching taxonomies:', error);
-					}
-				}
-
-				const apiPath = `/wp/v2/${endpoint}?${queryParams}`;
-				console.log('[Accordion] Fetching from API:', apiPath);
+				// Используем наш кастомный endpoint, который использует WP_Query (как в render.php)
+				const apiPath = `/codeweber-gutenberg-blocks/v1/accordion-posts?post_type=${postType}&selected_taxonomies=${encodeURIComponent(JSON.stringify(selectedTaxonomies || {}))}`;
+				console.log('[Accordion] Fetching from WP_Query endpoint:', apiPath);
 				
 				const fetchedPosts = await apiFetch({
 					path: apiPath,
@@ -176,32 +149,20 @@ const AccordionEdit = ({ attributes, setAttributes, clientId }) => {
 				console.log('[Accordion] Fetched posts:', fetchedPosts?.length || 0);
 				console.log('[Accordion] First post sample:', fetchedPosts?.[0]);
 				
-				// Если получили ошибку или пустой массив, проверяем доступность endpoint
+				// Если получили ошибку или пустой массив
 				if (!Array.isArray(fetchedPosts)) {
 					console.error('[Accordion] API returned non-array:', fetchedPosts);
 					throw new Error('API returned invalid response');
 				}
-				
-				const postsToUse = Array.isArray(fetchedPosts) ? fetchedPosts.slice(0, 10) : [];
 
-				// Генерируем items из постов
+				// Генерируем items из постов (данные уже обработаны на сервере через WP_Query)
 				const clientIdPrefix = clientId.replace(/[^a-z0-9]/gi, '');
 				const baseTime = Date.now();
-				const generatedItems = postsToUse.map((post, index) => {
-					// Извлекаем контент из excerpt или content
-					let content = '';
-					if (post.excerpt && post.excerpt.rendered) {
-						content = post.excerpt.rendered;
-					} else if (post.content && post.content.rendered) {
-						// Берем первые 200 символов из content
-						const textContent = post.content.rendered.replace(/<[^>]*>/g, '');
-						content = textContent.substring(0, 200) + (textContent.length > 200 ? '...' : '');
-					}
-
+				const generatedItems = fetchedPosts.map((post, index) => {
 					return {
 						id: `item-${clientIdPrefix}-${baseTime}-${index}-${post.id}`,
-						title: post.title?.rendered || post.title || __('Untitled', 'codeweber-gutenberg-blocks'),
-						content: content || __('No content available', 'codeweber-gutenberg-blocks'),
+						title: post.title || __('Untitled', 'codeweber-gutenberg-blocks'),
+						content: post.content || __('No content available', 'codeweber-gutenberg-blocks'),
 						icon: '',
 						isOpen: firstItemOpen && index === 0,
 					};
@@ -374,7 +335,8 @@ const AccordionEdit = ({ attributes, setAttributes, clientId }) => {
 						{__('No posts found. Please select a post type and check your filters.', 'codeweber-gutenberg-blocks')}
 					</div>
 				)}
-				{items.map((item, index) => {
+				{/* В режиме Post показываем items только если они загружены, в режиме Custom - всегда */}
+				{(mode === 'post' ? (items.length > 0 && !isLoadingPosts) : true) && items.map((item, index) => {
 					const headingId = `heading-${item.id}`;
 					const collapseId = `collapse-${item.id}`;
 
@@ -424,7 +386,8 @@ const AccordionEdit = ({ attributes, setAttributes, clientId }) => {
 											withoutInteractiveFormatting
 										/>
 									) : (
-										<span dangerouslySetInnerHTML={{ __html: item.title }} />
+										// В режиме Post - только чтение, как на фронтенде
+										<span>{item.title}</span>
 									)}
 								</button>
 							</div>
@@ -536,7 +499,8 @@ const AccordionEdit = ({ attributes, setAttributes, clientId }) => {
 										)}
 									/>
 								) : (
-									<p dangerouslySetInnerHTML={{ __html: item.content }} />
+									// В режиме Post - только чтение, как на фронтенде
+									<p>{item.content}</p>
 								)}
 							</div>
 							</div>

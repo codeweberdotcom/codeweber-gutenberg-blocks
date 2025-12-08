@@ -777,7 +777,7 @@ if (!function_exists('render_post_grid_item')) {
 			</div>
 			
 			<?php if ($load_more_enable && $has_more) : ?>
-				<div style="text-align: center; margin-top: 20px;">
+				<div class="text-center mt-5">
 					<?php if ($load_more_type === 'link') : ?>
 						<a href="#" class="hover cwgb-load-more-btn" data-load-more="true">
 							<?php echo esc_html($load_more_text); ?>

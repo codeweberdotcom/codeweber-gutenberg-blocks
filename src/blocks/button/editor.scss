@@ -37,8 +37,15 @@ a.wp-block.wp-block-codeweber-blocks-button.btn {
 	justify-content: center;
 }
 
+.button-group-sidebar_100 button.components-button {
+	border: 1px solid #007cba;
+	width: 100%;
+	justify-content: center;
+}
+
 .button-group-sidebar_33,
-.button-group-sidebar_50 {
+.button-group-sidebar_50,
+.button-group-sidebar_100 {
 	margin-bottom: 20px;
 }
 

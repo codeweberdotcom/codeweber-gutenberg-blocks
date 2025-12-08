@@ -58,6 +58,10 @@ msgstr "Вариант ссылки"
 msgid "Link Text Color"
 msgstr "Цвет текста ссылки"
 
+#: src/blocks/button/sidebar.js
+msgid "Icon Position"
+msgstr "Позиция иконки"
+
 #: src/blocks/button/sidebar.js:466
 msgid "Left Icon"
 msgstr "Левая иконка"
@@ -65,6 +69,14 @@ msgstr "Левая иконка"
 #: src/blocks/button/sidebar.js:474
 msgid "Right Icon"
 msgstr "Правая иконка"
+
+#: src/blocks/button/sidebar.js
+msgid "Left"
+msgstr "Слева"
+
+#: src/blocks/button/sidebar.js
+msgid "Right"
+msgstr "Справа"
 
 #: src/blocks/button/sidebar.js:483
 msgid "Icon Class"
@@ -2147,3 +2159,107 @@ msgstr "Без названия"
 #: src/blocks/accordion/edit.js
 msgid "No content available"
 msgstr "Контент недоступен"
+
+#: src/blocks/lists/index.js
+msgid "Lists"
+msgstr "Списки"
+
+#: src/blocks/lists/index.js
+msgid "Custom lists with icons, colors, and columns. Supports Custom and Post modes."
+msgstr "Пользовательские списки с иконками, цветами и колонками. Поддерживает режимы Custom и Post."
+
+#: src/blocks/lists/index.js
+msgid "list"
+msgstr "список"
+
+#: src/blocks/lists/index.js
+msgid "lists"
+msgstr "списки"
+
+#: src/blocks/lists/index.js
+msgid "ul"
+msgstr "ul"
+
+#: src/blocks/lists/index.js
+msgid "icon"
+msgstr "иконка"
+
+#: src/blocks/lists/index.js
+msgid "columns"
+msgstr "колонки"
+
+#: src/blocks/lists/sidebar.js
+msgid "Lists Settings"
+msgstr "Настройки списков"
+
+#: src/blocks/lists/sidebar.js
+msgid "Select the post type to generate list items from"
+msgstr "Выберите тип записи для генерации элементов списка"
+
+#: src/blocks/lists/sidebar.js
+msgid "List Type"
+msgstr "Тип списка"
+
+#: src/blocks/lists/sidebar.js
+msgid "Unordered"
+msgstr "Маркированный"
+
+#: src/blocks/lists/sidebar.js
+msgid "Bullet Color"
+msgstr "Цвет маркера"
+
+#: src/blocks/lists/sidebar.js
+msgid "Bullet Background"
+msgstr "Фон маркера"
+
+#: src/blocks/lists/sidebar.js
+msgid "Enable background color for bullet icons"
+msgstr "Включить цвет фона для иконок маркеров"
+
+#: src/blocks/lists/sidebar.js
+msgid "Text Color"
+msgstr "Цвет текста"
+
+#: src/blocks/lists/sidebar.js
+msgid "Columns Layout"
+msgstr "Макет колонок"
+
+#: src/blocks/lists/sidebar.js
+msgid "Block Settings"
+msgstr "Настройки блока"
+
+#: src/blocks/lists/edit.js
+msgid "Loading posts..."
+msgstr "Загрузка записей..."
+
+#: src/blocks/lists/edit.js
+msgid "No posts found. Please select a post type and check your filters."
+msgstr "Записи не найдены. Пожалуйста, выберите тип записи и проверьте фильтры."
+
+#: src/blocks/lists/edit.js
+msgid "New list item"
+msgstr "Новый элемент списка"
+
+#: src/blocks/lists/edit.js
+msgid "Enter list item..."
+msgstr "Введите элемент списка..."
+
+#: src/blocks/lists/edit.js
+msgid "Move up"
+msgstr "Переместить вверх"
+
+#: src/blocks/lists/edit.js
+msgid "Move down"
+msgstr "Переместить вниз"
+
+#: src/blocks/lists/edit.js
+msgid "Remove"
+msgstr "Удалить"
+
+#: src/blocks/lists/edit.js
+msgid "+ Add List Item"
+msgstr "+ Добавить элемент списка"
+
+#: src/blocks/lists/render.php
+msgid "No items found."
+msgstr "Элементы не найдены."

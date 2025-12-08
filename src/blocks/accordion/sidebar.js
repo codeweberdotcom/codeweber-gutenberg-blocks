@@ -149,3 +149,4 @@ export const AccordionSidebar = ({ attributes, setAttributes }) => {
 		</PanelBody>
 	);
 };
+

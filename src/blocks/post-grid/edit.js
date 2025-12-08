@@ -114,8 +114,30 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 			try {
 				const orderByParam = orderBy || 'date';
 				const orderParam = order || 'desc';
-				// Исправляем endpoint для типа 'post' - должно быть 'posts' (множественное число)
-				const endpoint = postType === 'post' ? 'posts' : postType;
+				
+				// Получаем правильный REST API endpoint для типа записи
+				// Сначала пытаемся получить rest_base из типа записи
+				let endpoint = postType;
+				try {
+					const postTypeData = await apiFetch({
+						path: `/wp/v2/types/${postType}`,
+					});
+					// Используем rest_base если он есть, иначе используем postType
+					if (postTypeData && postTypeData.rest_base) {
+						endpoint = postTypeData.rest_base;
+					} else {
+						// Fallback для стандартных типов
+						if (postType === 'post') {
+							endpoint = 'posts';
+						}
+					}
+				} catch (error) {
+					// Если не удалось получить данные типа, используем fallback
+					console.warn('Post Grid: Could not fetch post type data, using fallback:', error);
+					if (postType === 'post') {
+						endpoint = 'posts';
+					}
+				}
 				
 				// Формируем параметры для фильтрации по таксономиям
 				let queryParams = `per_page=${postsPerPage || 6}&orderby=${orderByParam}&order=${orderParam}&_embed`;
@@ -172,7 +194,16 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 
 				console.log('Post Grid: Fetched posts:', fetchedPosts);
 				console.log('Post Grid: Post type:', postType);
+				console.log('Post Grid: Endpoint used:', endpoint);
 				console.log('Post Grid: Posts count:', fetchedPosts?.length || 0);
+				
+				// Проверяем, что получили массив
+				if (!Array.isArray(fetchedPosts)) {
+					console.error('Post Grid: Expected array but got:', typeof fetchedPosts, fetchedPosts);
+					setPosts([]);
+					setIsLoading(false);
+					return;
+				}
 
 				// Преобразуем посты в формат изображений для ImageSimpleRender
 				const postsAsImages = fetchedPosts.map((post) => {
@@ -493,7 +524,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 							</div>
 						))}
 						{hasMorePosts && (
-							<div style={{ textAlign: 'center', marginTop: '20px' }}>
+							<div className="text-center mt-5">
 								{loadMoreType === 'link' ? (
 									<a 
 										href="#" 

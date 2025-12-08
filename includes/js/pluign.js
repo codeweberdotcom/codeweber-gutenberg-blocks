@@ -28,7 +28,6 @@
 			)) {
 				link.removeAttribute('target');
 				link.removeAttribute('rel');
-				console.log('🔧 Fixed GLightbox link:', link.href);
 			}
 		});
 	}
@@ -49,7 +48,6 @@
 				zoomable: false,
 				autoplayVideos: true,
 			});
-			console.log('✅ Custom GLightbox initialized for video buttons');
 		}
 	}
 	

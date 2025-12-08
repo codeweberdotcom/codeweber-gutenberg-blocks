@@ -1,0 +1,91 @@
+/**
+ * Lists Block - Editor Styles
+ *
+ * @package CodeWeber Gutenberg Blocks
+ * 
+ * NOTE: These styles are ONLY for the Gutenberg editor visualization.
+ * Frontend styles are handled by theme's typography styles
+ */
+
+.wp-block-codeweber-blocks-lists {
+	position: relative;
+
+	// List styles for editor
+	ul {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+
+		li {
+			position: relative;
+			padding: 0.5rem 0;
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+
+			span {
+				display: inline-flex;
+				align-items: center;
+			}
+
+			i {
+				font-size: 1rem;
+			}
+		}
+	}
+
+	// Item Controls - Absolute positioned, visible on hover
+	.lists-item-controls {
+		position: absolute;
+		right: 10px;
+		top: -18px;
+		display: flex;
+		gap: 4px;
+		z-index: 10;
+		opacity: 0;
+		visibility: hidden;
+		transition: opacity 0.2s ease, visibility 0.2s ease;
+		background: #fff;
+		padding: 4px;
+		border-radius: 4px;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		pointer-events: none;
+
+		button {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 28px;
+			height: 28px;
+			padding: 0;
+			margin: 0;
+			cursor: pointer;
+			border: 1px solid #ddd;
+			background: #fff;
+			border-radius: 2px;
+			transition: background-color 0.2s ease;
+
+			&:hover:not(:disabled) {
+				background-color: rgba(0, 0, 0, 0.05);
+			}
+
+			&:disabled {
+				opacity: 0.4;
+				cursor: not-allowed;
+			}
+
+			&.is-destructive:hover:not(:disabled) {
+				background-color: rgba(220, 50, 47, 0.1);
+				border-color: #dc322f;
+			}
+		}
+	}
+
+	// Make controls visible when list item is hovered
+	li:hover .lists-item-controls {
+		opacity: 1;
+		visibility: visible;
+		pointer-events: auto;
+	}
+}
+

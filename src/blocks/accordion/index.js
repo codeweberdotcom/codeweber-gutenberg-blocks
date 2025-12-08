@@ -27,3 +27,4 @@ registerBlockType(metadata, {
 		__('tabs', 'codeweber-gutenberg-blocks'),
 	],
 });
+

@@ -78,8 +78,6 @@ export const IconPicker = ({
 	allowSvgLineal = true,
 	allowSvgSolid = true,
 }) => {
-	const [searchTerm, setSearchTerm] = useState('');
-	
 	// Убеждаемся, что initialTab соответствует одной из разрешенных вкладок
 	const getValidInitialTab = () => {
 		const allTabs = [
@@ -93,6 +91,7 @@ export const IconPicker = ({
 		return validTab ? validTab.name : allowedTabs[0].name;
 	};
 	
+	const [searchTerm, setSearchTerm] = useState('');
 	const [activeTab, setActiveTab] = useState(getValidInitialTab());
 
 	// Фильтрация Font Icons
@@ -145,34 +144,28 @@ export const IconPicker = ({
 		onClose();
 	};
 
-	// Табы - фильтруем в зависимости от разрешений
-	const allTabs = [
+	// Табы
+	const tabs = [
 		{
 			name: 'font',
 			title: __('Font Icons', 'codeweber-gutenberg-blocks'),
 			className: 'icon-picker-tab',
-			allowed: allowFont,
 		},
 		{
 			name: 'svg-lineal',
 			title: __('SVG Lineal', 'codeweber-gutenberg-blocks'),
 			className: 'icon-picker-tab',
-			allowed: allowSvgLineal,
 		},
 		{
 			name: 'svg-solid',
 			title: __('SVG Solid', 'codeweber-gutenberg-blocks'),
 			className: 'icon-picker-tab',
-			allowed: allowSvgSolid,
 		},
 	];
-	
-	const tabs = allTabs.filter(tab => tab.allowed);
 
 	if (!isOpen) {
 		return null;
 	}
-
 	// Если нет доступных вкладок, показываем сообщение
 	if (tabs.length === 0) {
 		return (
@@ -191,6 +184,7 @@ export const IconPicker = ({
 			</Modal>
 		);
 	}
+
 
 	return (
 		<Modal

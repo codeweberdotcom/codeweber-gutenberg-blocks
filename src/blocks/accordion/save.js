@@ -9,6 +9,12 @@ import { Fragment } from '@wordpress/element';
 
 const AccordionSave = ({ attributes }) => {
 	const { accordionStyle, allowMultiple, items, accordionId, iconPosition, iconType, mode } = attributes;
+	
+	// Если режим "Post", возвращаем null - будет использоваться PHP render
+	// Для режима Custom возвращаем HTML, который будет сохранен в базе данных
+	if (mode === 'post') {
+		return null;
+	}
 
 	// Get accordion classes
 	const getAccordionClasses = () => {
@@ -112,3 +118,4 @@ const AccordionSave = ({ attributes }) => {
 };
 
 export default AccordionSave;
+

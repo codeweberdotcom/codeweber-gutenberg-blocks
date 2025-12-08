@@ -12,10 +12,11 @@ import {
 	ComboboxControl,
 	SelectControl,
 } from '@wordpress/components';
+import { IconPicker } from '../../components/icon/IconPicker';
 
 
 
-export const ButtonSidebar = ({ attributes, setAttributes }) => {
+export const ButtonSidebar = ({ attributes, setAttributes, iconPickerOpen, setIconPickerOpen }) => {
 	const {
 		ButtonSize,
 		ButtonColor,
@@ -30,7 +31,17 @@ export const ButtonSidebar = ({ attributes, setAttributes }) => {
 		LinkColor,
 		HoverType,
 		LinkTextColor,
+		LeftIcon,
+		RightIcon,
+		CircleIcon,
 	} = attributes;
+
+	// Извлекаем имя иконки из класса (например, "uil uil-windows" -> "windows")
+	const getIconName = (iconClass) => {
+		if (!iconClass) return '';
+		const match = iconClass.match(/uil-([^\s]+)/);
+		return match ? match[1] : '';
+	};
 
 	// Условие для ограничения отображения кнопок Outline, Gradient и Outline Gradient
 	const isRestrictedType = ['expand', 'social', 'play'].includes(ButtonType);
@@ -260,11 +271,11 @@ const handleIconChange = (type, value) => {
 					</div>
 					<div className="button-size-controls button-group-sidebar_33">
 						{[
-							{ label: 'Ex Small', value: 'btn-xs' },
-							{ label: 'Small', value: 'btn-sm' },
-							{ label: 'Medium', value: '' },
-							{ label: 'Large', value: 'btn-lg' },
-							{ label: 'Ex Large', value: 'btn-elg' },
+							{ label: 'ExSm', value: 'btn-xs' },
+							{ label: 'Sm', value: 'btn-sm' },
+							{ label: 'Md', value: '' },
+							{ label: 'Lg', value: 'btn-lg' },
+							{ label: 'ExLg', value: 'btn-elg' },
 						].map((size) => (
 							<Button
 								key={size.value}
@@ -316,21 +327,18 @@ const handleIconChange = (type, value) => {
 							{__('Button Style', 'codeweber-gutenberg-blocks')}
 						</label>
 					</div>
+					{/* Основные стили кнопок (50% ширины) */}
 					<div className="button-style-buttons button-group-sidebar_50">
 						{[
 							{ label: 'Solid', value: 'solid' },
 							{ label: 'Soft', value: 'soft' },
-							// Отображаем кнопки Outline, Gradient и Outline Gradient только если не выбран ограниченный тип
+							// Отображаем кнопки Outline и Gradient только если не выбран ограниченный тип
 							...(!isRestrictedType
 								? [
 										{ label: 'Outline', value: 'outline' },
 										{
 											label: 'Gradient',
 											value: 'gradient',
-										},
-										{
-											label: 'Outline Gradient',
-											value: 'outline-gradient',
 										},
 								  ]
 								: []),
@@ -346,6 +354,19 @@ const handleIconChange = (type, value) => {
 							</Button>
 						))}
 					</div>
+					{/* Outline Gradient на всю ширину */}
+					{!isRestrictedType && (
+						<div className="button-style-buttons button-group-sidebar_100">
+							<Button
+								isPrimary={ButtonStyle === 'outline-gradient'}
+								onClick={() =>
+									handleButtonStyleChange('outline-gradient')
+								}
+							>
+								Outline Gradient
+							</Button>
+						</div>
+					)}
 				</div>
 			)}
 
@@ -463,7 +484,7 @@ const handleIconChange = (type, value) => {
 							isPrimary={ButtonIconPosition === 'left'}
 							onClick={() => handleIconChange('position', 'left')} // Используем универсальный обработчик
 						>
-							{__('Left Icon', 'codeweber-gutenberg-blocks')}
+							{__('Left', 'codeweber-gutenberg-blocks')}
 						</Button>
 						<Button
 							isPrimary={ButtonIconPosition === 'right'}
@@ -471,20 +492,69 @@ const handleIconChange = (type, value) => {
 								handleIconChange('position', 'right')
 							} // Используем универсальный обработчик
 						>
-							{__('Right Icon', 'codeweber-gutenberg-blocks')}
+							{__('Right', 'codeweber-gutenberg-blocks')}
 						</Button>
 					</div>
 				</>
 			)}
 
-			{/* Иконка круга */}
+			{/* Иконка круга - выбор через IconPicker */}
 			{(ButtonType === 'circle' || ButtonType === 'icon') && (
-				<SelectControl
-					label={__('Icon Class', 'codeweber-gutenberg-blocks')}
-					value={IconClass}
-					options={fontIcons}
-					onChange={(newIcon) => handleIconChange('icon', newIcon)} // Универсальный обработчик
-				/>
+				<>
+					<div className="component-sidebar-title">
+						<label>
+							{__('Icon Class', 'codeweber-gutenberg-blocks')}
+						</label>
+					</div>
+					<Button
+						isPrimary
+						onClick={() => setIconPickerOpen(true)}
+						style={{ width: '100%', marginBottom: '12px' }}
+					>
+						{__('Select Icon', 'codeweber-gutenberg-blocks')}
+					</Button>
+					{IconClass && (
+						<div style={{ marginTop: '8px', padding: '8px', background: '#f0f0f1', borderRadius: '4px', fontSize: '12px' }}>
+							<strong>{__('Current icon:', 'codeweber-gutenberg-blocks')}</strong> {IconClass}
+						</div>
+					)}
+					<IconPicker
+						isOpen={iconPickerOpen}
+						onClose={() => setIconPickerOpen(false)}
+						onSelect={(result) => {
+							// Извлекаем iconName и сохраняем как класс иконки
+							const iconClass = result.iconName ? `uil uil-${result.iconName}` : '';
+							
+							// Определяем, какую иконку обновлять в зависимости от типа и позиции
+							if (ButtonType === 'circle') {
+								setAttributes({ 
+									IconClass: iconClass,
+									CircleIcon: iconClass 
+								});
+							} else if (ButtonType === 'icon') {
+								if (ButtonIconPosition === 'left') {
+									setAttributes({ 
+										IconClass: iconClass,
+										LeftIcon: iconClass,
+										RightIcon: ''
+									});
+								} else if (ButtonIconPosition === 'right') {
+									setAttributes({ 
+										IconClass: iconClass,
+										RightIcon: iconClass,
+										LeftIcon: ''
+									});
+								}
+							}
+						}}
+						selectedIcon={getIconName(IconClass)}
+						selectedType="font"
+						initialTab="font"
+						allowFont={true}
+						allowSvgLineal={false}
+						allowSvgSolid={false}
+					/>
+				</>
 			)}
 
 			{/* Социальные иконки */}

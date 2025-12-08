@@ -31,6 +31,12 @@ class Plugin {
 		
 		// Enqueue frontend scripts
 		add_action('wp_enqueue_scripts', __CLASS__ . '::gutenbergBlocksExternalLibraries');
+		
+		// Фильтр для условного рендеринга аккордеона (перехватываем до рендеринга)
+		add_filter('pre_render_block', __CLASS__ . '::pre_render_accordion_block', 10, 2);
+		
+		// Фильтр для условного рендеринга списков (перехватываем до рендеринга)
+		add_filter('pre_render_block', __CLASS__ . '::pre_render_lists_block', 10, 2);
 	}
 
 	public static function init(): void {
@@ -47,6 +53,9 @@ class Plugin {
 		
 		// Register REST API endpoint for taxonomies and terms
 		add_action('rest_api_init', __CLASS__ . '::register_taxonomies_endpoint');
+		
+		// Register REST API endpoint for accordion posts (using WP_Query)
+		add_action('rest_api_init', __CLASS__ . '::register_accordion_posts_endpoint');
 		
 		// Load JavaScript translations after scripts are enqueued
 		add_action('enqueue_block_editor_assets', __CLASS__ . '::loadJSTranslations', 100);
@@ -94,6 +103,7 @@ class Plugin {
 		'columns',
 		'heading-subtitle',
 		'icon',
+		'lists',
 		'media',
 		'paragraph',
 		'card',
@@ -101,6 +111,99 @@ class Plugin {
 		'image-simple',
 		'post-grid',
 	];
+	}
+
+	/**
+	 * Pre-render accordion block conditionally based on mode
+	 * Always uses PHP render for both modes (Post and Custom)
+	 */
+	public static function pre_render_accordion_block($pre_render, $parsed_block) {
+		// Проверяем, что это блок accordion
+		if (!isset($parsed_block['blockName']) || $parsed_block['blockName'] !== 'codeweber-blocks/accordion') {
+			return $pre_render;
+		}
+		
+		// Отладка
+		if (defined('WP_DEBUG') && WP_DEBUG) {
+			error_log('[Accordion Pre-Render] Block detected, attrs: ' . print_r($parsed_block['attrs'] ?? [], true));
+		}
+		
+		// Всегда используем PHP render (он обрабатывает оба режима)
+		$render_path = self::getBasePath() . '/build/blocks/accordion/render.php';
+		if (file_exists($render_path)) {
+			// Передаем атрибуты и блок в render.php
+			$attributes = $parsed_block['attrs'] ?? [];
+			$content = $parsed_block['innerHTML'] ?? '';
+			$block_instance = new \WP_Block($parsed_block);
+			
+			// Отладка
+			if (defined('WP_DEBUG') && WP_DEBUG) {
+				error_log('[Accordion Pre-Render] Render path exists: ' . $render_path);
+				error_log('[Accordion Pre-Render] Attributes: ' . print_r($attributes, true));
+				error_log('[Accordion Pre-Render] Mode: ' . ($attributes['mode'] ?? 'not set'));
+			}
+			
+			// Передаем переменные в область видимости render.php
+			extract([
+				'attributes' => $attributes,
+				'content' => $content,
+				'block' => $block_instance,
+			], EXTR_SKIP);
+			
+			ob_start();
+			// Передаем переменные в render.php
+			require $render_path;
+			$rendered = ob_get_clean();
+			
+			// Отладка
+			if (defined('WP_DEBUG') && WP_DEBUG) {
+				error_log('[Accordion Pre-Render] Rendered output length: ' . strlen($rendered));
+				error_log('[Accordion Pre-Render] Rendered output preview: ' . substr($rendered, 0, 200));
+			}
+			
+			return $rendered;
+		} else {
+			if (defined('WP_DEBUG') && WP_DEBUG) {
+				error_log('[Accordion Pre-Render] Render path NOT found: ' . $render_path);
+			}
+		}
+		
+		return $pre_render;
+	}
+
+	/**
+	 * Pre-render lists block conditionally based on mode
+	 * Always uses PHP render for both modes (Post and Custom)
+	 */
+	public static function pre_render_lists_block($pre_render, $parsed_block) {
+		// Проверяем, что это блок lists
+		if (!isset($parsed_block['blockName']) || $parsed_block['blockName'] !== 'codeweber-blocks/lists') {
+			return $pre_render;
+		}
+		
+		// Всегда используем PHP render (он обрабатывает оба режима)
+		$render_path = self::getBasePath() . '/build/blocks/lists/render.php';
+		if (file_exists($render_path)) {
+			// Передаем атрибуты и блок в render.php
+			$attributes = $parsed_block['attrs'] ?? [];
+			$content = $parsed_block['innerHTML'] ?? '';
+			$block_instance = new \WP_Block($parsed_block);
+			
+			// Передаем переменные в область видимости render.php
+			extract([
+				'attributes' => $attributes,
+				'content' => $content,
+				'block' => $block_instance,
+			], EXTR_SKIP);
+			
+			ob_start();
+			require $render_path;
+			$rendered = ob_get_clean();
+			
+			return $rendered;
+		}
+		
+		return $pre_render;
 	}
 
 	public static function gutenbergBlocksInit(): void {
@@ -405,6 +508,126 @@ class Plugin {
 		}
 
 		return new \WP_REST_Response($result, 200);
+	}
+
+	/**
+	 * Register REST API endpoint for accordion posts (using WP_Query)
+	 */
+	public static function register_accordion_posts_endpoint() {
+		register_rest_route('codeweber-gutenberg-blocks/v1', '/accordion-posts', [
+			'methods' => 'GET',
+			'callback' => __CLASS__ . '::get_accordion_posts_callback',
+			'permission_callback' => '__return_true',
+			'args' => [
+				'post_type' => [
+					'required' => true,
+					'sanitize_callback' => 'sanitize_key',
+				],
+				'selected_taxonomies' => [
+					'required' => false,
+					'type' => 'string',
+					'default' => '{}',
+				],
+			],
+		]);
+	}
+
+	/**
+	 * REST API callback for getting posts for accordion (using WP_Query like render.php)
+	 */
+	public static function get_accordion_posts_callback($request) {
+		$post_type = $request->get_param('post_type');
+		$selected_taxonomies_json = $request->get_param('selected_taxonomies');
+		
+		if (empty($post_type)) {
+			return new \WP_Error('missing_post_type', 'Post type is required', ['status' => 400]);
+		}
+
+		// Парсим selected_taxonomies из JSON
+		$selected_taxonomies = [];
+		if (!empty($selected_taxonomies_json)) {
+			$decoded = json_decode($selected_taxonomies_json, true);
+			if (is_array($decoded)) {
+				$selected_taxonomies = $decoded;
+			}
+		}
+
+		// Используем тот же WP_Query, что и в render.php
+		$queryArgs = array(
+			'post_type' => $post_type,
+			'posts_per_page' => 10,
+			'post_status' => 'publish',
+			'orderby' => 'date',
+			'order' => 'DESC',
+		);
+
+		// Добавляем фильтрацию по таксономиям, если выбраны термины
+		if (!empty($selected_taxonomies) && is_array($selected_taxonomies)) {
+			$taxQuery = array('relation' => 'AND');
+			
+			foreach ($selected_taxonomies as $taxonomySlug => $termIds) {
+				if (!empty($termIds) && is_array($termIds)) {
+					$taxQuery[] = array(
+						'taxonomy' => $taxonomySlug,
+						'field' => 'term_id',
+						'terms' => array_map('intval', $termIds),
+						'operator' => 'IN',
+					);
+				}
+			}
+			
+			if (count($taxQuery) > 1) { // Если есть хотя бы одна таксономия с терминами
+				$queryArgs['tax_query'] = $taxQuery;
+			}
+		}
+
+		// Выполняем запрос
+		$query = new \WP_Query($queryArgs);
+		
+		$posts = [];
+		
+		if ($query->have_posts()) {
+			$index = 0;
+			while ($query->have_posts()) {
+				$query->the_post();
+				$postId = get_the_ID();
+				
+				// Получаем контент поста (как в render.php)
+				$postTitle = get_the_title();
+				$postContent = '';
+				
+				// Пытаемся получить excerpt
+				if (has_excerpt()) {
+					$postContent = get_the_excerpt();
+				} else {
+					// Берем первые 200 символов из content
+					$content = get_the_content();
+					$content = strip_tags($content);
+					$content = str_replace('&nbsp;', ' ', $content);
+					$content = trim($content);
+					$postContent = mb_substr($content, 0, 200);
+					if (mb_strlen($content) > 200) {
+						$postContent .= '...';
+					}
+				}
+				
+				// Если контент пустой, используем заглушку
+				if (empty($postContent)) {
+					$postContent = __('No content available', 'codeweber-gutenberg-blocks');
+				}
+				
+				$posts[] = array(
+					'id' => $postId,
+					'title' => $postTitle,
+					'content' => $postContent,
+				);
+				
+				$index++;
+			}
+			wp_reset_postdata();
+		}
+
+		return new \WP_REST_Response($posts, 200);
 	}
 
 	/**

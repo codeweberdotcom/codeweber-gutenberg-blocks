@@ -141,7 +141,7 @@ export const IconSidebar = ({ attributes, setAttributes }) => {
 
 										<BaseControl
 											label={__('Additional wrapper classes', 'codeweber-gutenberg-blocks')}
-											help={__('Например: pe-none, mb-5', 'codeweber-gutenberg-blocks')}
+											help={__('For example: pe-none, mb-5', 'codeweber-gutenberg-blocks')}
 										>
 											<input
 												type="text"

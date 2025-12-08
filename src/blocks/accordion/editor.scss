@@ -1,0 +1,102 @@
+/**
+ * Accordion Block - Editor Styles
+ *
+ * @package CodeWeber Gutenberg Blocks
+ * 
+ * NOTE: These styles are ONLY for the Gutenberg editor visualization.
+ * Frontend styles are handled by theme's _accordion.scss
+ */
+
+.wp-block-codeweber-blocks-accordion {
+	.accordion-wrapper {
+		.accordion-item {
+			// Visual borders for editor only
+			border: 1px solid #ddd;
+			border-radius: 0.25rem;
+			margin-bottom: 0.5rem;
+
+			&:last-child {
+				margin-bottom: 0;
+			}
+		}
+
+		.card-header {
+			.accordion-button {
+				// Basic editor visualization
+				width: 100%;
+				text-align: left;
+				cursor: pointer;
+				display: flex;
+				align-items: center;
+				gap: 0.5rem;
+
+				// Focus state for editor accessibility
+				&:focus {
+					outline: 1px solid #0073aa;
+					outline-offset: -1px;
+				}
+
+				// Simple arrow indicator for editor (theme handles real icons)
+				&::after {
+					margin-left: auto;
+					content: '';
+					width: 0;
+					height: 0;
+					border-left: 5px solid transparent;
+					border-right: 5px solid transparent;
+					border-top: 5px solid currentColor;
+					transition: transform 0.3s ease;
+				}
+
+				&:not(.collapsed)::after {
+					transform: rotate(180deg);
+				}
+			}
+		}
+
+		.accordion-collapse {
+			&:not(.show) {
+				display: none;
+			}
+		}
+
+		.card-body {
+			// Visual separator for editor
+			border-top: 1px solid #ddd;
+		}
+
+		// Simple style (plain) - editor visualization
+		&.plain .accordion-item {
+			border: none;
+
+			.card-header .accordion-button {
+				border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+			}
+		}
+
+		// Background style - editor visualization
+		&:not(.plain) .accordion-item {
+			.card-header .accordion-button {
+				background-color: rgba(0, 0, 0, 0.03);
+				border-radius: 0.25rem 0.25rem 0 0;
+
+				&:not(.collapsed) {
+					background-color: rgba(0, 0, 0, 0.05);
+				}
+			}
+		}
+
+		// Icon style - editor visualization
+		&.icon .accordion-item {
+			.card-header .accordion-button {
+				span {
+					margin-right: 0.5rem;
+
+					i {
+						font-size: 1.25rem;
+					}
+				}
+			}
+		}
+	}
+}

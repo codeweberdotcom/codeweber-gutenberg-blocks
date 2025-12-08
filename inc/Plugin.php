@@ -87,6 +87,7 @@ class Plugin {
 
 	public static function getBlocksName(): array {
 	return [
+		'accordion',
 		'button',
 		'section',
 		'column',
@@ -138,6 +139,7 @@ class Plugin {
 		// Загружаем переводы для всех скриптов блоков
 		// WordPress автоматически генерирует handle: {namespace}-{block-name}-editor-script
 		$blocks = [
+			'accordion',
 			'media',
 			'image-simple',
 			'button',

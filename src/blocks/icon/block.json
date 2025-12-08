@@ -5,8 +5,8 @@
 	"title": "Icon",
 	"category": "codeweber-gutenberg-blocks",
 	"icon": "star-filled",
-	"description": "Универсальный блок иконки. Поддерживает Font Icons (Unicons), SVG иконки и кастомные SVG.",
-	"keywords": ["icon", "svg", "unicons", "иконка"],
+	"description": "Universal icon block. Supports Font Icons (Unicons), SVG icons and custom SVG.",
+	"keywords": ["icon", "svg", "unicons"],
 	"supports": {
 		"html": false,
 		"customClassName": false,

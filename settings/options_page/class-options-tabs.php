@@ -139,7 +139,7 @@ class Options_Tabs
 	{
 		$file_content = file_get_contents($file_path);
 		preg_match('/\/\/\s*Tab\s*Title:\s*(.*)/', $file_content, $matches);
-		return isset($matches[1]) ? trim($matches[1]) : __('Без названия', 'codeweber-blocks');
+		return isset($matches[1]) ? trim($matches[1]) : __('Untitled', 'codeweber-gutenberg-blocks');
 	}
 }
 

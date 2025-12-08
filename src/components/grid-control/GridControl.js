@@ -48,11 +48,11 @@ export const GridControl = ({
 	// Генерируем классы gap для отображения
 	// Собираем все классы для всех заполненных breakpoints
 	const gapClasses = getGapClasses(attributes, attributePrefix);
-	const gapClassesString = gapClasses.length > 0 ? gapClasses.join(' ') : __('Нет классов Gap', 'codeweber-gutenberg-blocks');
+	const gapClassesString = gapClasses.length > 0 ? gapClasses.join(' ') : __('No Gap Classes', 'codeweber-gutenberg-blocks');
 	
 	// Генерируем классы row-cols для отображения
 	const rowColsClasses = getRowColsClasses(attributes, attributePrefix);
-	const rowColsClassesString = rowColsClasses.length > 0 ? rowColsClasses.join(' ') : __('Нет классов Row Cols', 'codeweber-gutenberg-blocks');
+	const rowColsClassesString = rowColsClasses.length > 0 ? rowColsClasses.join(' ') : __('No Row Cols Classes', 'codeweber-gutenberg-blocks');
 
 	return (
 		<>
@@ -76,7 +76,7 @@ export const GridControl = ({
 							textTransform: 'uppercase', 
 							color: '#757575' 
 						}}>
-							{__('Классы Row Cols', 'codeweber-gutenberg-blocks')}:
+							{__('Row Cols Classes', 'codeweber-gutenberg-blocks')}:
 						</div>
 						<div style={{ wordBreak: 'break-word' }}>
 							{rowColsClassesString}
@@ -100,12 +100,12 @@ export const GridControl = ({
 			{/* Gap Settings */}
 			{showGap && (
 				<PanelBody
-					title={gapLabel || __('Настройки Gap', 'codeweber-gutenberg-blocks')}
+					title={gapLabel || __('Gap Settings', 'codeweber-gutenberg-blocks')}
 					initialOpen={false}
 				>
 					<div style={{ marginBottom: '16px' }}>
 						<div style={{ marginBottom: '8px', fontSize: '11px', fontWeight: '500', textTransform: 'uppercase', color: '#1e1e1e' }}>
-							{__('Тип Gap', 'codeweber-gutenberg-blocks')}
+							{__('Gap Type', 'codeweber-gutenberg-blocks')}
 						</div>
 						<ButtonGroup style={{ display: 'flex', width: '100%' }}>
 							<Button
@@ -149,7 +149,7 @@ export const GridControl = ({
 							textTransform: 'uppercase', 
 							color: '#757575' 
 						}}>
-							{__('Классы Gap', 'codeweber-gutenberg-blocks')}:
+							{__('Gap Classes', 'codeweber-gutenberg-blocks')}:
 						</div>
 						<div style={{ wordBreak: 'break-word' }}>
 							{gapClassesString}
@@ -165,7 +165,7 @@ export const GridControl = ({
 								attributePrefix: `${attributePrefix}Gap`,
 								onChange: setAttributes,
 								variant: 'dropdown',
-								label: __('Размер Gap', 'codeweber-gutenberg-blocks'),
+								label: __('Gap Size', 'codeweber-gutenberg-blocks'),
 								tooltip: __('Spacing between grid items (both axes)', 'codeweber-gutenberg-blocks'),
 								customOptions: {
 									default: ['', '0', '1', '2', '3', '4', '5', '6'],
@@ -189,7 +189,7 @@ export const GridControl = ({
 								attributePrefix: `${attributePrefix}GapX`,
 								onChange: setAttributes,
 								variant: 'dropdown',
-								label: __('Размер Gap-X', 'codeweber-gutenberg-blocks'),
+								label: __('Gap-X Size', 'codeweber-gutenberg-blocks'),
 								tooltip: __('Horizontal spacing between grid items', 'codeweber-gutenberg-blocks'),
 								customOptions: {
 									default: ['', '0', '1', '2', '3', '4', '5', '6'],
@@ -213,7 +213,7 @@ export const GridControl = ({
 								attributePrefix: `${attributePrefix}GapY`,
 								onChange: setAttributes,
 								variant: 'dropdown',
-								label: __('Размер Gap-Y', 'codeweber-gutenberg-blocks'),
+								label: __('Gap-Y Size', 'codeweber-gutenberg-blocks'),
 								tooltip: __('Vertical spacing between grid items', 'codeweber-gutenberg-blocks'),
 								customOptions: {
 									default: ['', '0', '1', '2', '3', '4', '5', '6'],

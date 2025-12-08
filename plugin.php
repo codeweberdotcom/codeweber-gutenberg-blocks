@@ -50,7 +50,7 @@ add_action('init', __NAMESPACE__ . '\Plugin::init', 20);
 // Загрузка переводов для JavaScript
 add_action('init', function() {
 	$blocks = [
-		'button', 'card', 'column', 'columns', 'feature', 
+		'accordion', 'button', 'card', 'column', 'columns', 'feature', 
 		'heading-subtitle', 'icon', 'image-simple', 'paragraph', 'section'
 	];
 	

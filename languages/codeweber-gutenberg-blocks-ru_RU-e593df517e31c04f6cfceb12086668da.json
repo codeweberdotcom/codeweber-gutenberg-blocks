@@ -157,7 +157,7 @@
         "Тип сетки"
       ],
       "Layout": [
-        "Макет"
+        "Компоновка"
       ],
       "Gap": [
         "Gap"
@@ -802,7 +802,7 @@
         "Вертикальный"
       ],
       "Gap Type": [
-        "Тип промежутка"
+        "Тип Gap"
       ],
       "Enable Title": [
         "Включить заголовок"
@@ -1256,6 +1256,234 @@
       ],
       "Select Document": [
         "Выбрать документ"
+      ],
+      "Post Type": [
+        "Тип записи"
+      ],
+      "Select the post type to display": [
+        "Выберите тип записи для отображения"
+      ],
+      "Posts Per Page": [
+        "Записей на странице"
+      ],
+      "Number of posts to display": [
+        "Количество записей для отображения"
+      ],
+      "Enable Links": [
+        "Включить ссылки"
+      ],
+      "Enable links to client posts (disabled by default)": [
+        "Включить ссылки на записи клиентов (по умолчанию отключено)"
+      ],
+      "Select the size for featured images.": [
+        "Выберите размер для изображений записей."
+      ],
+      "Filter by Taxonomies": [
+        "Фильтр по таксономиям"
+      ],
+      "No terms available.": [
+        "Нет доступных терминов."
+      ],
+      "Template": [
+        "Шаблон"
+      ],
+      "Simple layout with figure overlay and post header/footer": [
+        "Простая компоновка с наложением изображения и заголовком/подвалом записи"
+      ],
+      "Card layout with shadow and card body": [
+        "Компоновка карточки с тенью и телом карточки"
+      ],
+      "Card Content": [
+        "Контент карточки"
+      ],
+      "Card with excerpt and footer": [
+        "Карточка с отрывком и подвалом"
+      ],
+      "Slider": [
+        "Слайдер"
+      ],
+      "Slider layout with category on image and excerpt": [
+        "Компоновка слайдера с категорией на изображении и отрывком"
+      ],
+      "Default Clickable": [
+        "По умолчанию кликабельный"
+      ],
+      "Fully clickable card with lift effect": [
+        "Полностью кликабельная карточка с эффектом подъема"
+      ],
+      "Overlay 5": [
+        "Наложение 5"
+      ],
+      "Overlay effect with 90% opacity and bottom overlay for date": [
+        "Эффект наложения с непрозрачностью 90% и нижним наложением для даты"
+      ],
+      "Client Simple": [
+        "Клиент простой"
+      ],
+      "Simple logo for Swiper slider": [
+        "Простой логотип для слайдера Swiper"
+      ],
+      "Client Grid": [
+        "Сетка клиентов"
+      ],
+      "Logo in figure with adaptive padding for Grid layout": [
+        "Логотип в figure с адаптивными отступами для сетки"
+      ],
+      "Client Card": [
+        "Карточка клиента"
+      ],
+      "Logo in card with shadow for Grid with cards": [
+        "Логотип в карточке с тенью для сетки с карточками"
+      ],
+      "Sort By": [
+        "Сортировать по"
+      ],
+      "Select how to sort the posts": [
+        "Выберите способ сортировки записей"
+      ],
+      "Order": [
+        "Порядок"
+      ],
+      "Select sort direction": [
+        "Выберите направление сортировки"
+      ],
+      "Date": [
+        "Дата"
+      ],
+      "Modified Date": [
+        "Дата изменения"
+      ],
+      "Comment Count": [
+        "Количество комментариев"
+      ],
+      "Random": [
+        "Случайно"
+      ],
+      "ID": [
+        "ID"
+      ],
+      "Author": [
+        "Автор"
+      ],
+      "Menu Order": [
+        "Порядок меню"
+      ],
+      "Descending": [
+        "По убыванию"
+      ],
+      "Ascending": [
+        "По возрастанию"
+      ],
+      "Show More": [
+        "Показать еще"
+      ],
+      "Load More": [
+        "Загрузить еще"
+      ],
+      "Show More Items": [
+        "Показать больше"
+      ],
+      "More Posts": [
+        "Еще записи"
+      ],
+      "View All": [
+        "Смотреть все"
+      ],
+      "Show All": [
+        "Показать все"
+      ],
+      "Link": [
+        "Ссылка"
+      ],
+      "How many items to display": [
+        "Сколько элементов отображать"
+      ],
+      "Number of items displayed initially": [
+        "Количество элементов, отображаемых изначально"
+      ],
+      "Enable \"Show More\" button": [
+        "Включить кнопку \"Показать еще\""
+      ],
+      "Element Type": [
+        "Тип элемента"
+      ],
+      "Select element type: button or link": [
+        "Выберите тип элемента: кнопка или ссылка"
+      ],
+      "Button/Link Text": [
+        "Текст кнопки/ссылки"
+      ],
+      "Select text for button or link": [
+        "Выберите текст для кнопки или ссылки"
+      ],
+      "How many items to load": [
+        "Сколько элементов загружать"
+      ],
+      "Number of items loaded when clicking the button": [
+        "Количество элементов, загружаемых при клике на кнопку"
+      ],
+      "Col Classes": [
+        "Классы Col"
+      ],
+      "No Col Classes": [
+        "Нет классов Col"
+      ],
+      "Loading posts...": [
+        "Загрузка записей..."
+      ],
+      "No posts found. Please select a post type and ensure there are published posts.": [
+        "Записи не найдены. Пожалуйста, выберите тип записи и убедитесь, что есть опубликованные записи."
+      ],
+      "No posts found.": [
+        "Записи не найдены."
+      ],
+      "Main": [
+        "Основное"
+      ],
+      "No Gap Classes": [
+        "Нет классов Gap"
+      ],
+      "No Row Cols Classes": [
+        "Нет классов Row Cols"
+      ],
+      "Row Cols Classes": [
+        "Классы Row Cols"
+      ],
+      "Gap Settings": [
+        "Настройки Gap"
+      ],
+      "Gap Classes": [
+        "Классы Gap"
+      ],
+      "Gap Size": [
+        "Размер Gap"
+      ],
+      "Gap-X Size": [
+        "Размер Gap-X"
+      ],
+      "Gap-Y Size": [
+        "Размер Gap-Y"
+      ],
+      "Loading poster...": [
+        "Загрузка постера..."
+      ],
+      "Enter button text...": [
+        "Введите текст кнопки..."
+      ],
+      "For example: me-4, mb-3, etc.": [
+        "Например: me-4, mb-3 и др."
+      ],
+      "For example: pe-none, mb-5": [
+        "Например: pe-none, mb-5"
+      ],
+      "JSON decoding error": [
+        "Ошибка декодирования JSON"
+      ],
+      "Error reading JSON: ": [
+        "Ошибка при чтении JSON: "
+      ],
+      "Plugin Settings": [
+        "Настройки плагина"
       ]
     }
   }

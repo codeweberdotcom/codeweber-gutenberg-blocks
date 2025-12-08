@@ -151,7 +151,7 @@
 
 		"PhoneType": {
 		           "type": "string",
-		           "default": "сustom"
+		           "default": "custom"
 		       },
 			"PhoneNumber": {
 		           "type": "string",

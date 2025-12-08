@@ -175,7 +175,7 @@ export const VideoURLControl = ({
 						borderRadius: '50%',
 						animation: 'spin 0.6s linear infinite'
 					}}></span>
-					{__('Загрузка постера...', 'codeweber-gutenberg-blocks')}
+					{__('Loading poster...', 'codeweber-gutenberg-blocks')}
 				</div>
 			)}
 		</>

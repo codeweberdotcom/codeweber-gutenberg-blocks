@@ -6,7 +6,7 @@
 	"category": "codeweber-gutenberg-blocks",
 	"icon": "editor-paragraph",
 	"description": "Paragraph block with advanced typography controls.",
-	"keywords": ["paragraph", "text", "p", "параграф"],
+	"keywords": ["paragraph", "text", "p"],
 	"supports": {
 		"html": false,
 		"className": false,

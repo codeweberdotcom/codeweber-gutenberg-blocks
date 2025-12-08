@@ -1702,3 +1702,403 @@ msgstr "Выбрать HTML"
 #: src/utilities/link_type.js
 msgid "Select Document"
 msgstr "Выбрать документ"
+
+#: src/blocks/post-grid/controls/MainControl.js
+msgid "Post Type"
+msgstr "Тип записи"
+
+#: src/blocks/post-grid/controls/MainControl.js
+msgid "Select the post type to display"
+msgstr "Выберите тип записи для отображения"
+
+#: src/blocks/post-grid/controls/MainControl.js
+msgid "Posts Per Page"
+msgstr "Записей на странице"
+
+#: src/blocks/post-grid/controls/MainControl.js
+msgid "Number of posts to display"
+msgstr "Количество записей для отображения"
+
+#: src/blocks/post-grid/controls/MainControl.js
+msgid "Enable Links"
+msgstr "Включить ссылки"
+
+#: src/blocks/post-grid/controls/MainControl.js
+msgid "Enable links to client posts (disabled by default)"
+msgstr "Включить ссылки на записи клиентов (по умолчанию отключено)"
+
+#: src/blocks/post-grid/controls/MainControl.js
+msgid "Image Size"
+msgstr "Размер изображения"
+
+#: src/blocks/post-grid/controls/MainControl.js
+msgid "Select the size for featured images."
+msgstr "Выберите размер для изображений записей."
+
+#: src/components/taxonomy-filter/TaxonomyFilterControl.js
+msgid "Filter by Taxonomies"
+msgstr "Фильтр по таксономиям"
+
+#: src/components/taxonomy-filter/TaxonomyFilterControl.js
+msgid "No terms available."
+msgstr "Нет доступных терминов."
+
+#: src/components/post-grid-template/PostGridTemplateControl.js
+msgid "Template"
+msgstr "Шаблон"
+
+#: src/components/post-grid-template/PostGridTemplateControl.js
+msgid "Default"
+msgstr "По умолчанию"
+
+#: src/components/post-grid-template/PostGridTemplateControl.js
+msgid "Simple layout with figure overlay and post header/footer"
+msgstr "Простая компоновка с наложением изображения и заголовком/подвалом записи"
+
+#: src/components/post-grid-template/PostGridTemplateControl.js
+msgid "Card"
+msgstr "Карточка"
+
+#: src/components/post-grid-template/PostGridTemplateControl.js
+msgid "Card layout with shadow and card body"
+msgstr "Компоновка карточки с тенью и телом карточки"
+
+#: src/components/post-grid-template/PostGridTemplateControl.js
+msgid "Card Content"
+msgstr "Контент карточки"
+
+#: src/components/post-grid-template/PostGridTemplateControl.js
+msgid "Card with excerpt and footer"
+msgstr "Карточка с отрывком и подвалом"
+
+#: src/components/post-grid-template/PostGridTemplateControl.js
+msgid "Slider"
+msgstr "Слайдер"
+
+#: src/components/post-grid-template/PostGridTemplateControl.js
+msgid "Slider layout with category on image and excerpt"
+msgstr "Компоновка слайдера с категорией на изображении и отрывком"
+
+#: src/components/post-grid-template/PostGridTemplateControl.js
+msgid "Default Clickable"
+msgstr "По умолчанию кликабельный"
+
+#: src/components/post-grid-template/PostGridTemplateControl.js
+msgid "Fully clickable card with lift effect"
+msgstr "Полностью кликабельная карточка с эффектом подъема"
+
+#: src/components/post-grid-template/PostGridTemplateControl.js
+msgid "Overlay 5"
+msgstr "Наложение 5"
+
+#: src/components/post-grid-template/PostGridTemplateControl.js
+msgid "Overlay effect with 90% opacity and bottom overlay for date"
+msgstr "Эффект наложения с непрозрачностью 90% и нижним наложением для даты"
+
+#: src/components/post-grid-template/PostGridTemplateControl.js
+msgid "Client Simple"
+msgstr "Клиент простой"
+
+#: src/components/post-grid-template/PostGridTemplateControl.js
+msgid "Simple logo for Swiper slider"
+msgstr "Простой логотип для слайдера Swiper"
+
+#: src/components/post-grid-template/PostGridTemplateControl.js
+msgid "Client Grid"
+msgstr "Сетка клиентов"
+
+#: src/components/post-grid-template/PostGridTemplateControl.js
+msgid "Logo in figure with adaptive padding for Grid layout"
+msgstr "Логотип в figure с адаптивными отступами для сетки"
+
+#: src/components/post-grid-template/PostGridTemplateControl.js
+msgid "Client Card"
+msgstr "Карточка клиента"
+
+#: src/components/post-grid-template/PostGridTemplateControl.js
+msgid "Logo in card with shadow for Grid with cards"
+msgstr "Логотип в карточке с тенью для сетки с карточками"
+
+#: src/components/post-sort/PostSortControl.js
+msgid "Sort By"
+msgstr "Сортировать по"
+
+#: src/components/post-sort/PostSortControl.js
+msgid "Select how to sort the posts"
+msgstr "Выберите способ сортировки записей"
+
+#: src/components/post-sort/PostSortControl.js
+msgid "Order"
+msgstr "Порядок"
+
+#: src/components/post-sort/PostSortControl.js
+msgid "Select sort direction"
+msgstr "Выберите направление сортировки"
+
+#: src/components/post-sort/PostSortControl.js
+msgid "Date"
+msgstr "Дата"
+
+#: src/components/post-sort/PostSortControl.js
+msgid "Title"
+msgstr "Заголовок"
+
+#: src/components/post-sort/PostSortControl.js
+msgid "Modified Date"
+msgstr "Дата изменения"
+
+#: src/components/post-sort/PostSortControl.js
+msgid "Comment Count"
+msgstr "Количество комментариев"
+
+#: src/components/post-sort/PostSortControl.js
+msgid "Random"
+msgstr "Случайно"
+
+#: src/components/post-sort/PostSortControl.js
+msgid "ID"
+msgstr "ID"
+
+#: src/components/post-sort/PostSortControl.js
+msgid "Author"
+msgstr "Автор"
+
+#: src/components/post-sort/PostSortControl.js
+msgid "Menu Order"
+msgstr "Порядок меню"
+
+#: src/components/post-sort/PostSortControl.js
+msgid "Descending"
+msgstr "По убыванию"
+
+#: src/components/post-sort/PostSortControl.js
+msgid "Ascending"
+msgstr "По возрастанию"
+
+#: src/components/load-more/LoadMoreControl.js
+msgid "Show More"
+msgstr "Показать еще"
+
+#: src/components/load-more/LoadMoreControl.js
+msgid "Load More"
+msgstr "Загрузить еще"
+
+#: src/components/load-more/LoadMoreControl.js
+msgid "Show More Items"
+msgstr "Показать больше"
+
+#: src/components/load-more/LoadMoreControl.js
+msgid "More Posts"
+msgstr "Еще записи"
+
+#: src/components/load-more/LoadMoreControl.js
+msgid "View All"
+msgstr "Смотреть все"
+
+#: src/components/load-more/LoadMoreControl.js
+msgid "Show All"
+msgstr "Показать все"
+
+#: src/components/load-more/LoadMoreControl.js
+msgid "Button"
+msgstr "Кнопка"
+
+#: src/components/load-more/LoadMoreControl.js
+msgid "Link"
+msgstr "Ссылка"
+
+#: src/components/load-more/LoadMoreControl.js
+msgid "How many items to display"
+msgstr "Сколько элементов отображать"
+
+#: src/components/load-more/LoadMoreControl.js
+msgid "Number of items displayed initially"
+msgstr "Количество элементов, отображаемых изначально"
+
+#: src/components/load-more/LoadMoreControl.js
+msgid "Enable \"Show More\" button"
+msgstr "Включить кнопку \"Показать еще\""
+
+#: src/components/load-more/LoadMoreControl.js
+msgid "Element Type"
+msgstr "Тип элемента"
+
+#: src/components/load-more/LoadMoreControl.js
+msgid "Select element type: button or link"
+msgstr "Выберите тип элемента: кнопка или ссылка"
+
+#: src/components/load-more/LoadMoreControl.js
+msgid "Button/Link Text"
+msgstr "Текст кнопки/ссылки"
+
+#: src/components/load-more/LoadMoreControl.js
+msgid "Select text for button or link"
+msgstr "Выберите текст для кнопки или ссылки"
+
+#: src/components/load-more/LoadMoreControl.js
+msgid "How many items to load"
+msgstr "Сколько элементов загружать"
+
+#: src/components/load-more/LoadMoreControl.js
+msgid "Number of items loaded when clicking the button"
+msgstr "Количество элементов, загружаемых при клике на кнопку"
+
+#: src/blocks/post-grid/controls/LayoutControl.js
+msgid "Grid"
+msgstr "Сетка"
+
+#: src/blocks/post-grid/controls/LayoutControl.js
+msgid "Slider"
+msgstr "Слайдер"
+
+#: src/blocks/post-grid/controls/LayoutControl.js
+msgid "Col Classes"
+msgstr "Классы Col"
+
+#: src/blocks/post-grid/controls/LayoutControl.js
+msgid "No Col Classes"
+msgstr "Нет классов Col"
+
+#: src/blocks/post-grid/edit.js
+msgid "Loading posts..."
+msgstr "Загрузка записей..."
+
+#: src/blocks/post-grid/edit.js
+msgid "No posts found. Please select a post type and ensure there are published posts."
+msgstr "Записи не найдены. Пожалуйста, выберите тип записи и убедитесь, что есть опубликованные записи."
+
+#: src/blocks/post-grid/render.php
+msgid "Show More"
+msgstr "Показать еще"
+
+#: src/blocks/post-grid/render.php
+msgid "Load More"
+msgstr "Загрузить еще"
+
+#: src/blocks/post-grid/render.php
+msgid "Show More Items"
+msgstr "Показать больше"
+
+#: src/blocks/post-grid/render.php
+msgid "More Posts"
+msgstr "Еще записи"
+
+#: src/blocks/post-grid/render.php
+msgid "View All"
+msgstr "Смотреть все"
+
+#: src/blocks/post-grid/render.php
+msgid "Show All"
+msgstr "Показать все"
+
+#: src/blocks/post-grid/render.php
+msgid "No posts found."
+msgstr "Записи не найдены."
+
+#: src/blocks/post-grid/sidebar.js
+msgid "Main"
+msgstr "Основное"
+
+#: src/blocks/post-grid/sidebar.js
+msgid "Layout"
+msgstr "Компоновка"
+
+#: src/blocks/post-grid/sidebar.js
+msgid "Effects"
+msgstr "Эффекты"
+
+#: src/blocks/post-grid/sidebar.js
+msgid "Settings"
+msgstr "Настройки"
+
+#: src/blocks/post-grid/sidebar.js
+msgid "Load More"
+msgstr "Загрузить еще"
+
+#: src/components/gap/GapControl.js
+msgid "Gap Type"
+msgstr "Тип Gap"
+
+#: src/components/grid-control/GridControl.js
+msgid "No Gap Classes"
+msgstr "Нет классов Gap"
+
+#: src/components/grid-control/GridControl.js
+msgid "No Row Cols Classes"
+msgstr "Нет классов Row Cols"
+
+#: src/components/grid-control/GridControl.js
+msgid "Row Cols Classes"
+msgstr "Классы Row Cols"
+
+#: src/components/grid-control/GridControl.js
+msgid "Gap Settings"
+msgstr "Настройки Gap"
+
+#: src/components/grid-control/GridControl.js
+msgid "Gap Classes"
+msgstr "Классы Gap"
+
+#: src/components/grid-control/GridControl.js
+msgid "Gap Size"
+msgstr "Размер Gap"
+
+#: src/components/grid-control/GridControl.js
+msgid "Gap-X Size"
+msgstr "Размер Gap-X"
+
+#: src/components/grid-control/GridControl.js
+msgid "Gap-Y Size"
+msgstr "Размер Gap-Y"
+
+#: src/components/responsive-control/ResponsiveDropdown.js
+msgid "None"
+msgstr "Нет"
+
+#: src/components/video-url/VideoURLControl.js
+msgid "Loading poster..."
+msgstr "Загрузка постера..."
+
+#: src/blocks/media/controls/MediaControl.js
+msgid "Loading poster..."
+msgstr "Загрузка постера..."
+
+#: src/blocks/button/edit.js
+msgid "Enter button text..."
+msgstr "Введите текст кнопки..."
+
+#: src/components/icon/IconControl.js
+msgid "For example: me-4, mb-3, etc."
+msgstr "Например: me-4, mb-3 и др."
+
+#: src/components/icon/IconControl.js
+msgid "For example: pe-none, mb-5"
+msgstr "Например: pe-none, mb-5"
+
+#: src/blocks/icon/sidebar.js
+msgid "For example: pe-none, mb-5"
+msgstr "Например: pe-none, mb-5"
+
+#: settings/options_page/restapi.php
+msgid "JSON decoding error"
+msgstr "Ошибка декодирования JSON"
+
+#: settings/options_page/register_fields.php
+msgid "Error reading JSON: "
+msgstr "Ошибка при чтении JSON: "
+
+#: settings/options_page/pages/page_2.php
+msgid "Error reading JSON: "
+msgstr "Ошибка при чтении JSON: "
+
+#: settings/options_page/pages/page_2.php
+msgid "Save Changes"
+msgstr "Сохранить изменения"
+
+#: settings/options_page/options.php
+msgid "Plugin Settings"
+msgstr "Настройки плагина"
+
+#: settings/options_page/class-options-tabs.php
+msgid "Untitled"
+msgstr "Без названия"

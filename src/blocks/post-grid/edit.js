@@ -67,6 +67,8 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		blockClass,
 		loadMoreEnable,
 		loadMoreInitialCount,
+		loadMoreText = 'show-more',
+		loadMoreType = 'button',
 		template = 'default',
 		enableLink = false,
 		selectedTaxonomies = {},
@@ -418,6 +420,19 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		]
 	);
 
+	// Предустановленные тексты для кнопки/ссылки Load More
+	const loadMoreTexts = {
+		'show-more': __('Show More', 'codeweber-gutenberg-blocks'),
+		'load-more': __('Load More', 'codeweber-gutenberg-blocks'),
+		'show-more-items': __('Show More Items', 'codeweber-gutenberg-blocks'),
+		'more-posts': __('More Posts', 'codeweber-gutenberg-blocks'),
+		'view-all': __('View All', 'codeweber-gutenberg-blocks'),
+		'show-all': __('Show All', 'codeweber-gutenberg-blocks'),
+	};
+	
+	const loadMoreTextValue = loadMoreTexts[loadMoreText] || loadMoreTexts['show-more'];
+	const hasMorePosts = loadMoreEnable && posts.length > (loadMoreInitialCount || posts.length);
+
 	return (
 		<>
 			<PostGridSidebar attributes={attributes} setAttributes={setAttributes} />
@@ -477,18 +492,28 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 								)}
 							</div>
 						))}
-						{loadMoreEnable && posts.length > (loadMoreInitialCount || posts.length) && (
-							<div style={{ 
-								width: '100%', 
-								textAlign: 'center', 
-								marginTop: '20px',
-								padding: '8px',
-								backgroundColor: '#f0f0f0',
-								borderRadius: '4px',
-								fontSize: '12px',
-								color: '#666'
-							}}>
-								{__('Load More будет работать на фронтенде', 'codeweber-gutenberg-blocks')}
+						{hasMorePosts && (
+							<div style={{ textAlign: 'center', marginTop: '20px' }}>
+								{loadMoreType === 'link' ? (
+									<a 
+										href="#" 
+										className="hover cwgb-load-more-btn" 
+										onClick={(e) => e.preventDefault()}
+										style={{ pointerEvents: 'none', cursor: 'default' }}
+									>
+										{loadMoreTextValue}
+									</a>
+								) : (
+									<button 
+										className="btn btn-primary cwgb-load-more-btn" 
+										type="button"
+										onClick={(e) => e.preventDefault()}
+										disabled
+										style={{ pointerEvents: 'none', cursor: 'default' }}
+									>
+										{loadMoreTextValue}
+									</button>
+								)}
 							</div>
 						)}
 					</div>

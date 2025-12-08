@@ -13,6 +13,11 @@ if (!defined('ABSPATH')) {
 	exit;
 }
 
+// Убеждаемся, что текстовый домен загружен для переводов
+// Получаем путь к плагину относительно render.php
+$plugin_path = dirname(dirname(dirname(dirname(__FILE__))));
+load_plugin_textdomain('codeweber-gutenberg-blocks', false, basename($plugin_path) . '/languages/');
+
 $display_mode = isset($attributes['displayMode']) ? $attributes['displayMode'] : 'grid';
 $post_type = isset($attributes['postType']) ? $attributes['postType'] : 'post';
 $posts_per_page = isset($attributes['postsPerPage']) ? (int) $attributes['postsPerPage'] : 6;

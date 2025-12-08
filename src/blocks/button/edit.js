@@ -130,7 +130,7 @@ const ButtonEdit = ({ attributes, setAttributes }) => {
 								tagName="span"
 								value={ButtonContent}
 								onChange={onChangeButtonContent}
-								placeholder="Введите текст кнопки..."
+								placeholder={__('Enter button text...', 'codeweber-gutenberg-blocks')}
 								className="button-content"
 							/>
 						)}

@@ -15,7 +15,7 @@ export const iconSvgSizes = [
 	{ value: 'xs', label: 'XS (~29px)' },
 	{ value: 'sm', label: 'SM (~35px)' },
 	{ value: 'md', label: 'MD (~42px)' },
-	{ value: 'lg', label: 'LG (48px) — по умолчанию' },
+	{ value: 'lg', label: 'LG (48px) — default' },
 ];
 
 /**
@@ -23,10 +23,10 @@ export const iconSvgSizes = [
  * Классы добавляются к icon-svg
  */
 export const svgIconStyles = [
-	{ value: 'lineal', label: 'Lineal (контурные)' },
-	{ value: 'solid', label: 'Solid (заливка)' },
-	{ value: 'solid-mono', label: 'Solid Mono (одноцветные)' },
-	{ value: 'solid-duo', label: 'Solid Duo (двухцветные)' },
+	{ value: 'lineal', label: 'Lineal (outline)' },
+	{ value: 'solid', label: 'Solid (filled)' },
+	{ value: 'solid-mono', label: 'Solid Mono (monochrome)' },
+	{ value: 'solid-duo', label: 'Solid Duo (two-color)' },
 ];
 
 /**
@@ -34,7 +34,7 @@ export const svgIconStyles = [
  * Классы text-{color}
  */
 export const iconColors = [
-	{ value: '', label: 'Без цвета' },
+	{ value: '', label: 'No Color' },
 	{ value: 'primary', label: 'Primary' },
 	{ value: 'aqua', label: 'Aqua' },
 	{ value: 'green', label: 'Green' },
@@ -81,7 +81,7 @@ export const iconDuoColors = [
  * Формула: 0.05rem * число (при root 20px ≈ {число}px)
  */
 export const iconFontSizes = [
-	{ value: '', label: 'По умолчанию (наследует)' },
+	{ value: '', label: 'Default (inherits)' },
 	{ value: 'fs-14', label: '14px' },
 	{ value: 'fs-16', label: '16px' },
 	{ value: 'fs-18', label: '18px' },
@@ -98,10 +98,10 @@ export const iconFontSizes = [
  * Типы иконок
  */
 export const iconTypes = [
-	{ value: 'none', label: 'Без иконки' },
+	{ value: 'none', label: 'No Icon' },
 	{ value: 'font', label: 'Font Icon (Unicons)' },
 	{ value: 'svg', label: 'SVG Icon' },
-	{ value: 'custom', label: 'Кастомный SVG' },
+	{ value: 'custom', label: 'Custom SVG' },
 ];
 
 /**

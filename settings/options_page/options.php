@@ -26,8 +26,8 @@ if (!defined('ABSPATH')) {
 function add_settings_page()
 {
 	add_menu_page(
-		'Настройки плагина',    // Название страницы
-		'Настройки плагина',    // Название в меню
+		__('Plugin Settings', 'codeweber-gutenberg-blocks'),    // Название страницы
+		__('Plugin Settings', 'codeweber-gutenberg-blocks'),    // Название в меню
 		'manage_options',       // Права доступа
 		'gutenberg_blocks_settings', // Слаг страницы
 		__NAMESPACE__ . '\settings_page', // Функция для отображения страницы

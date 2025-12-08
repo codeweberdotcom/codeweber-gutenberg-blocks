@@ -35,7 +35,7 @@ export const GapControl = ({
 		<>
 			<div className="mb-3">
 				<div className="component-sidebar-title">
-					<label>{__('Тип Gap', 'codeweber-gutenberg-blocks')}</label>
+					<label>{__('Gap Type', 'codeweber-gutenberg-blocks')}</label>
 				</div>
 				<ButtonGroup>
 					{GAP_TYPE_OPTIONS.map((option) => (

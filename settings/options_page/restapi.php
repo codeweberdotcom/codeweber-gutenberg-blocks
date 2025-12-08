@@ -20,7 +20,7 @@ function get_custom_option()
 
 	// Проверяем, успешно ли декодирован JSON
 	if ($options === null) {
-		return new WP_Error('json_error', 'Ошибка декодирования JSON', ['status' => 500]);
+		return new WP_Error('json_error', __('JSON decoding error', 'codeweber-gutenberg-blocks'), ['status' => 500]);
 	}
 
 	// Массив для результатов

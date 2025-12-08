@@ -320,7 +320,7 @@ export const IconControl = ({
 			{iconType !== 'none' && (iconName || svgIcon || customSvgUrl) && (
 				<BaseControl
 					label={__('Additional icon class', 'codeweber-gutenberg-blocks')}
-					help={__('Например: me-4, mb-3 и др.', 'codeweber-gutenberg-blocks')}
+					help={__('For example: me-4, mb-3, etc.', 'codeweber-gutenberg-blocks')}
 				>
 					<input
 						type="text"
@@ -406,7 +406,7 @@ export const IconControl = ({
 
 							<BaseControl
 								label={__('Additional wrapper classes', 'codeweber-gutenberg-blocks')}
-								help={__('Например: pe-none, mb-5', 'codeweber-gutenberg-blocks')}
+								help={__('For example: pe-none, mb-5', 'codeweber-gutenberg-blocks')}
 							>
 								<input
 									type="text"

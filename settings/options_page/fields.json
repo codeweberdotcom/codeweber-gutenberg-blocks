@@ -1,9 +1,9 @@
 {
-  "company_name": "Название компании",
+  "company_name": "Company Name",
   "phones": {
-  "phone_number": "Телефон",
-	"phone_number_2": "Телефон 2",
-	"phone_number_3": "Телефон 3"
+  "phone_number": "Phone",
+	"phone_number_2": "Phone 2",
+	"phone_number_3": "Phone 3"
   },
 	"email": "Email"
 }

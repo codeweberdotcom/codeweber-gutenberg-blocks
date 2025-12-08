@@ -1,0 +1,71 @@
+{
+	"apiVersion": 2,
+	"name": "codeweber-blocks/accordion",
+	"version": "0.1.0",
+	"title": "Accordion",
+	"category": "codeweber-gutenberg-blocks",
+	"icon": "editor-ul",
+	"description": "Bootstrap accordion with multiple items. Supports simple, background, and icon styles.",
+	"keywords": ["accordion", "collapse", "faq", "tabs"],
+	"supports": {
+		"html": false,
+		"customClassName": true,
+		"anchor": true
+	},
+	"attributes": {
+		"accordionStyle": {
+			"type": "string",
+			"default": "simple"
+		},
+		"iconType": {
+			"type": "string",
+			"default": "type-1"
+		},
+		"firstItemOpen": {
+			"type": "boolean",
+			"default": false
+		},
+		"iconPosition": {
+			"type": "string",
+			"default": "left"
+		},
+		"allowMultiple": {
+			"type": "boolean",
+			"default": false
+		},
+		"items": {
+			"type": "array",
+			"default": [
+				{
+					"id": "item-1",
+					"title": "Professional Design",
+					"content": "Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Cras mattis consectetur purus sit amet fermentum. Praesent commodo cursus magna, vel.",
+					"icon": "",
+					"isOpen": true
+				},
+				{
+					"id": "item-2",
+					"title": "Top-Notch Support",
+					"content": "Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Cras mattis consectetur purus sit amet fermentum. Praesent commodo cursus magna, vel.",
+					"icon": "",
+					"isOpen": false
+				},
+				{
+					"id": "item-3",
+					"title": "Header and Slider Options",
+					"content": "Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Cras mattis consectetur purus sit amet fermentum. Praesent commodo cursus magna, vel.",
+					"icon": "",
+					"isOpen": false
+				}
+			]
+		},
+		"accordionId": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"textdomain": "codeweber-blocks",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
+}

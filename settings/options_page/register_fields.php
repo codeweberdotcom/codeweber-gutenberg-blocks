@@ -42,7 +42,7 @@ function register_page_settings()
 				);
 			}
 		} else {
-			error_log('Ошибка при чтении JSON: ' . json_last_error_msg());
+			error_log(__('Error reading JSON: ', 'codeweber-gutenberg-blocks') . json_last_error_msg());
 		}
 	} else {
 		error_log('JSON файл не найден по пути: ' . $json_file);

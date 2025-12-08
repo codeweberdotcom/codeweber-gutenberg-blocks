@@ -18,7 +18,7 @@ if (file_exists($json_file)) {
 	// Проверяем, что JSON распознан корректно
 	if (json_last_error() !== JSON_ERROR_NONE) {
 		$fields = [];
-		error_log('Ошибка при чтении JSON: ' . json_last_error_msg());
+		error_log(__('Error reading JSON: ', 'codeweber-gutenberg-blocks') . json_last_error_msg());
 	}
 }
 
@@ -75,7 +75,7 @@ foreach ($fields as $field_key => $field_label) {
 	</div>
 
 	<p class="submit">
-		<input type="submit" name="submit" id="submit" class="btn btn-blue btn-sm" value="<?php echo esc_attr(__('Сохранить изменения', 'codeweber-blocks')); ?>">
+		<input type="submit" name="submit" id="submit" class="btn btn-blue btn-sm" value="<?php echo esc_attr(__('Save Changes', 'codeweber-gutenberg-blocks')); ?>">
 	</p>
 </form>
 

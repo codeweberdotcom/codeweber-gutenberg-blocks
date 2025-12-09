@@ -1,0 +1,60 @@
+{
+	"apiVersion": 2,
+	"name": "codeweber-blocks/tabs",
+	"version": "0.1.0",
+	"title": "Tabs",
+	"category": "codeweber-gutenberg-blocks",
+	"icon": "admin-page",
+	"description": "Bootstrap tabs with multiple items. Supports basic and pills styles with icons.",
+	"keywords": ["tabs", "tab", "navigation", "nav"],
+	"supports": {
+		"html": false,
+		"customClassName": true,
+		"anchor": true
+	},
+	"attributes": {
+		"tabStyle": {
+			"type": "string",
+			"default": "basic"
+		},
+		"activeTab": {
+			"type": "number",
+			"default": 0
+		},
+		"items": {
+			"type": "array",
+			"default": [
+				{
+					"id": "tab-1",
+					"title": "Tab 1",
+					"icon": ""
+				},
+				{
+					"id": "tab-2",
+					"title": "Tab 2",
+					"icon": ""
+				}
+			]
+		},
+		"tabsId": {
+			"type": "string",
+			"default": ""
+		},
+		"tabsClass": {
+			"type": "string",
+			"default": ""
+		},
+		"tabsData": {
+			"type": "string",
+			"default": ""
+		},
+		"innerBlocksByTab": {
+			"type": "object",
+			"default": {}
+		}
+	},
+	"textdomain": "codeweber-gutenberg-blocks",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
+}

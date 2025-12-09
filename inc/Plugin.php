@@ -110,6 +110,7 @@ class Plugin {
 		'feature',
 		'image-simple',
 		'post-grid',
+		'tabs',
 	];
 	}
 

@@ -2263,3 +2263,75 @@ msgstr "+ Добавить элемент списка"
 #: src/blocks/lists/render.php
 msgid "No items found."
 msgstr "Элементы не найдены."
+
+#: src/blocks/tabs/index.js
+msgid "Tabs"
+msgstr "Вкладки"
+
+#: src/blocks/tabs/index.js
+msgid "Bootstrap tabs with multiple items. Supports basic and pills styles with icons."
+msgstr "Вкладки Bootstrap с несколькими элементами. Поддерживает стили basic и pills с иконками."
+
+#: src/blocks/tabs/index.js
+msgid "tabs"
+msgstr "вкладки"
+
+#: src/blocks/tabs/index.js
+msgid "tab"
+msgstr "вкладка"
+
+#: src/blocks/tabs/index.js
+msgid "navigation"
+msgstr "навигация"
+
+#: src/blocks/tabs/index.js
+msgid "nav"
+msgstr "нав"
+
+#: src/blocks/tabs/sidebar.js
+msgid "Tabs Settings"
+msgstr "Настройки вкладок"
+
+#: src/blocks/tabs/sidebar.js
+msgid "Tab Style"
+msgstr "Стиль вкладки"
+
+#: src/blocks/tabs/sidebar.js
+msgid "Basic"
+msgstr "Базовый"
+
+#: src/blocks/tabs/sidebar.js
+msgid "Pills"
+msgstr "Пилюли"
+
+#: src/blocks/tabs/sidebar.js
+msgid "Tabs ID"
+msgstr "ID вкладок"
+
+#: src/blocks/tabs/sidebar.js
+msgid "Tabs Class"
+msgstr "Класс вкладок"
+
+#: src/blocks/tabs/sidebar.js
+msgid "Tabs Data"
+msgstr "Данные вкладок"
+
+#: src/blocks/tabs/edit.js
+msgid "New Tab"
+msgstr "Новая вкладка"
+
+#: src/blocks/tabs/edit.js
+msgid "Tab title..."
+msgstr "Заголовок вкладки..."
+
+#: src/blocks/tabs/edit.js
+msgid "+ Add Tab"
+msgstr "+ Добавить вкладку"
+
+#: src/blocks/tabs/edit.js
+msgid "Click to change icon"
+msgstr "Нажмите, чтобы изменить иконку"
+
+#: src/blocks/tabs/edit.js
+msgid "Click to add icon"
+msgstr "Нажмите, чтобы добавить иконку"

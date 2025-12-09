@@ -22,7 +22,6 @@ const AccordionEdit = ({ attributes, setAttributes, clientId }) => {
 	const previousFirstItemOpenRef = useRef(firstItemOpen);
 	const previousClientIdRef = useRef(clientId);
 	const previousModeRef = useRef(mode);
-	const [hoveredItemIndex, setHoveredItemIndex] = useState(null);
 	const [iconPickerOpen, setIconPickerOpen] = useState(null); // itemId -> isOpen
 	const [isLoadingPosts, setIsLoadingPosts] = useState(false);
 	const previousPostTypeRef = useRef(postType);
@@ -339,16 +338,12 @@ const AccordionEdit = ({ attributes, setAttributes, clientId }) => {
 				{(mode === 'post' ? (items.length > 0 && !isLoadingPosts) : true) && items.map((item, index) => {
 					const headingId = `heading-${item.id}`;
 					const collapseId = `collapse-${item.id}`;
-
-					const isHovered = hoveredItemIndex === index;
 					
 					return (
 						<div 
 							key={item.id} 
 							className={`${getItemClasses(item, index)} accordion-item-wrapper p-0${accordionStyle === 'simple' ? ' mt-0' : ''}`} 
 							style={{ width: '100%', maxWidth: '100%', position: 'relative' }}
-							onMouseEnter={() => setHoveredItemIndex(index)}
-							onMouseLeave={() => setHoveredItemIndex(null)}
 						>
 							<div className="card-header" id={headingId}>
 								<button
@@ -394,92 +389,42 @@ const AccordionEdit = ({ attributes, setAttributes, clientId }) => {
 							
 							{/* Item Controls - Absolute positioned, visible on hover - только в режиме Custom */}
 							{mode === 'custom' && (
-							<div 
-								className="accordion-item-controls"
-								style={{
-									position: 'absolute',
-									top: '-18px',
-									right: '8px',
-									left: 'auto',
-									bottom: 'auto',
-									display: 'flex',
-									gap: '4px',
-									alignItems: 'center',
-									opacity: isHovered ? 1 : 0,
-									visibility: isHovered ? 'visible' : 'hidden',
-									transition: 'opacity 0.2s ease, visibility 0.2s ease',
-									background: '#fff',
-									padding: '4px',
-									borderRadius: '4px',
-									boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-									zIndex: 10,
-									pointerEvents: isHovered ? 'auto' : 'none',
-									margin: 0,
-									width: 'auto',
-									height: 'auto'
-								}}
-							>
-								<div
-									role="button"
-									tabIndex={0}
-									className={`accordion-control-btn ${index === 0 ? 'disabled' : ''}`}
-									onClick={(e) => {
-										e.stopPropagation();
-										if (index !== 0) moveItem(index, 'up');
-									}}
-									onKeyDown={(e) => {
-										if (e.key === 'Enter' || e.key === ' ') {
-											e.preventDefault();
+								<div className="accordion-item-controls">
+									<Button
+										isSmall
+										onClick={(e) => {
 											e.stopPropagation();
-											if (index !== 0) moveItem(index, 'up');
-										}
-									}}
-									aria-label={__('Move up', 'codeweber-gutenberg-blocks')}
-									title={__('Move up', 'codeweber-gutenberg-blocks')}
-								>
-									<span className="dashicons dashicons-arrow-up-alt2"></span>
-								</div>
-								<div
-									role="button"
-									tabIndex={0}
-									className={`accordion-control-btn ${index === items.length - 1 ? 'disabled' : ''}`}
-									onClick={(e) => {
-										e.stopPropagation();
-										if (index !== items.length - 1) moveItem(index, 'down');
-									}}
-									onKeyDown={(e) => {
-										if (e.key === 'Enter' || e.key === ' ') {
-											e.preventDefault();
+											moveItem(index, 'up');
+										}}
+										disabled={index === 0}
+										title={__('Move up', 'codeweber-gutenberg-blocks')}
+									>
+										↑
+									</Button>
+									<Button
+										isSmall
+										onClick={(e) => {
 											e.stopPropagation();
-											if (index !== items.length - 1) moveItem(index, 'down');
-										}
-									}}
-									aria-label={__('Move down', 'codeweber-gutenberg-blocks')}
-									title={__('Move down', 'codeweber-gutenberg-blocks')}
-								>
-									<span className="dashicons dashicons-arrow-down-alt2"></span>
-								</div>
-								<div
-									role="button"
-									tabIndex={0}
-									className={`accordion-control-btn accordion-control-delete ${items.length === 1 ? 'disabled' : ''}`}
-									onClick={(e) => {
-										e.stopPropagation();
-										if (items.length !== 1) removeItem(index);
-									}}
-									onKeyDown={(e) => {
-										if (e.key === 'Enter' || e.key === ' ') {
-											e.preventDefault();
+											moveItem(index, 'down');
+										}}
+										disabled={index === items.length - 1}
+										title={__('Move down', 'codeweber-gutenberg-blocks')}
+									>
+										↓
+									</Button>
+									<Button
+										isSmall
+										isDestructive
+										onClick={(e) => {
 											e.stopPropagation();
-											if (items.length !== 1) removeItem(index);
-										}
-									}}
-									aria-label={__('Remove', 'codeweber-gutenberg-blocks')}
-									title={__('Remove', 'codeweber-gutenberg-blocks')}
-								>
-									<span className="dashicons dashicons-trash"></span>
+											removeItem(index);
+										}}
+										disabled={items.length === 1}
+										title={__('Remove', 'codeweber-gutenberg-blocks')}
+									>
+										×
+									</Button>
 								</div>
-							</div>
 							)}
 							<div
 								id={collapseId}

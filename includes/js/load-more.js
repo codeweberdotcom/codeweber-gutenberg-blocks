@@ -2,6 +2,7 @@
  * Load More functionality
  * 
  * Handles AJAX-based content loading with "Show More" button
+ * Uses Fetch system (admin-ajax.php) from theme, with fallback to REST API
  * Automatically reinitializes theme.init after content is loaded
  * 
  * @package CodeWeber Gutenberg Blocks
@@ -52,7 +53,20 @@
 
 				// Show loading state
 				const originalText = button.textContent || button.innerText;
-				const isLoadingText = button.dataset.loadingText || 'Loading...';
+				// Получаем переведенный текст из data-атрибута или из локализованного объекта
+				let isLoadingText = button.dataset.loadingText;
+				if (!isLoadingText && typeof cwgbLoadMore !== 'undefined' && cwgbLoadMore.loadingText) {
+					isLoadingText = cwgbLoadMore.loadingText;
+				}
+				// Если все еще нет текста, используем переведенный из локализации или fallback
+				if (!isLoadingText) {
+					// Пытаемся получить из локализованного объекта
+					if (typeof cwgbLoadMore !== 'undefined' && cwgbLoadMore.loadingText) {
+						isLoadingText = cwgbLoadMore.loadingText;
+					} else {
+						isLoadingText = 'Loading...'; // Fallback
+					}
+				}
 				
 				// Для кнопок используем disabled, для ссылок - pointer-events
 				if (button.tagName === 'BUTTON') {
@@ -64,40 +78,73 @@
 					button.textContent = isLoadingText;
 				}
 
-				// Use REST API endpoint
-				const apiUrl = cwgbLoadMore?.restUrl || '/wp-json/codeweber-gutenberg-blocks/v1/load-more';
+				// Use Fetch system (admin-ajax.php) instead of REST API
+				// Check if Fetch system is available, fallback to REST API if not
+				const useFetch = typeof fetch_vars !== 'undefined' && fetch_vars.ajaxurl;
+				const apiUrl = useFetch ? fetch_vars.ajaxurl : (cwgbLoadMore?.restUrl || '/wp-json/codeweber-gutenberg-blocks/v1/load-more');
 				
 				// Логирование для отладки
 				console.log('Load More: Sending request', {
+					method: useFetch ? 'Fetch (admin-ajax)' : 'REST API',
 					block_id: blockId,
 					block_type: blockType,
 					offset: currentOffset,
 					count: loadCount,
 					has_attributes: !!blockAttributes,
-					attributes_length: blockAttributes ? blockAttributes.length : 0
+					attributes_length: blockAttributes ? blockAttributes.length : 0,
+					container_offset: container.dataset.currentOffset,
+					container_count: container.dataset.loadCount
 				});
 
-				// Кодируем block_attributes для передачи в JSON
-				const requestBody = {
-					block_id: blockId,
-					block_type: blockType,
-					block_attributes: blockAttributes, // Уже строка JSON из data-атрибута
-					offset: currentOffset,
-					count: loadCount,
-					post_id: postId
-				};
+				// Prepare request based on method
+				let fetchOptions;
+				
+				if (useFetch) {
+					// Use Fetch system (FormData)
+					const formData = new FormData();
+					formData.append('action', 'fetch_action');
+					formData.append('actionType', 'loadMoreItems');
+					formData.append('params', JSON.stringify({
+						block_id: blockId,
+						block_type: blockType,
+						block_attributes: blockAttributes,
+						offset: currentOffset,
+						count: loadCount,
+						post_id: postId
+					}));
+					
+					fetchOptions = {
+						method: 'POST',
+						body: formData
+					};
+				} else {
+					// Fallback to REST API (JSON)
+					const requestBody = {
+						block_id: blockId,
+						block_type: blockType,
+						block_attributes: blockAttributes,
+						offset: currentOffset,
+						count: loadCount,
+						post_id: postId
+					};
+					
+					fetchOptions = {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+							'X-WP-Nonce': cwgbLoadMore?.nonce || ''
+						},
+						body: JSON.stringify(requestBody)
+					};
+				}
 
-				fetch(apiUrl, {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-						'X-WP-Nonce': cwgbLoadMore?.nonce || ''
-					},
-					body: JSON.stringify(requestBody)
-				})
+				fetch(apiUrl, fetchOptions)
 				.then(response => {
 					console.log('Load More: Response status', response.status, response.statusText);
-					if (!response.ok) {
+					
+					// For Fetch system (admin-ajax.php), response is always 200, errors are in JSON
+					// For REST API, check response.ok
+					if (!useFetch && !response.ok) {
 						return response.text().then(text => {
 							console.error('Load More: Error response', text);
 							try {
@@ -113,12 +160,21 @@
 				.then(data => {
 					console.log('Load More: Response data', data);
 					
-					// WordPress REST API может возвращать данные напрямую или в обертке
-					// Проверяем оба варианта
-					const responseData = data.data || data;
-					const success = data.success !== undefined ? data.success : (responseData && (responseData.html !== undefined || responseData.has_more !== undefined));
+					// Handle both Fetch system format (status/data) and REST API format (success/data)
+					let responseData;
+					let success;
 					
-					console.log('Load More: Parsed response', { success, responseData });
+					if (useFetch) {
+						// Fetch system format: { status: 'success', data: {...} }
+						responseData = data.data || {};
+						success = data.status === 'success';
+					} else {
+						// REST API format: { success: true, data: {...} }
+						responseData = data.data || data;
+						success = data.success !== undefined ? data.success : (responseData && (responseData.html !== undefined || responseData.has_more !== undefined));
+					}
+					
+					console.log('Load More: Parsed response', { success, responseData, method: useFetch ? 'Fetch' : 'REST API' });
 					
 					if (success && responseData) {
 						// Insert new content
@@ -163,7 +219,39 @@
 						}
 
 						// Update offset
-						container.dataset.currentOffset = responseData.offset || (currentOffset + loadCount);
+						const newOffset = responseData.offset || (currentOffset + loadCount);
+						container.dataset.currentOffset = newOffset;
+						// Подсчитываем количество загруженных элементов
+						let loadedItemsCount = 0;
+						if (responseData.html) {
+							// Для Post Grid ищем <article> теги
+							const articleMatches = responseData.html.match(/<article/g);
+							if (articleMatches) {
+								loadedItemsCount = articleMatches.length;
+							} else {
+								// Для Image Simple ищем <figure> теги или <div> с изображениями
+								const figureMatches = responseData.html.match(/<figure/g);
+								if (figureMatches) {
+									loadedItemsCount = figureMatches.length;
+								} else {
+									// Подсчитываем количество div с классом col-* (для grid)
+									const divMatches = responseData.html.match(/<div[^>]*class="[^"]*col-/g);
+									if (divMatches) {
+										loadedItemsCount = divMatches.length;
+									}
+								}
+							}
+						}
+						
+						console.log('Load More: Offset updated', {
+							old_offset: currentOffset,
+							new_offset: newOffset,
+							response_offset: responseData.offset,
+							calculated_offset: currentOffset + loadCount,
+							loaded_items: loadedItemsCount,
+							expected_count: loadCount,
+							has_more: responseData.has_more
+						});
 
 						// Hide button if no more items
 						if (!responseData.has_more) {
@@ -180,7 +268,10 @@
 						}
 					} else {
 						console.error('Load More: Invalid response structure', data);
-						throw new Error(data.message || responseData?.message || 'Failed to load more items');
+						const errorMessage = useFetch 
+							? (data.message || 'Failed to load more items')
+							: (data.message || responseData?.message || 'Failed to load more items');
+						throw new Error(errorMessage);
 					}
 				})
 				.catch(error => {

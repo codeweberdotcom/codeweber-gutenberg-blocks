@@ -30,6 +30,20 @@
 				link.removeAttribute('rel');
 			}
 		});
+		
+		// Remove target="_blank" from tel: and mailto: links
+		const telLinks = document.querySelectorAll('a[href^="tel:"]');
+		const mailtoLinks = document.querySelectorAll('a[href^="mailto:"]');
+		
+		telLinks.forEach(link => {
+			link.removeAttribute('target');
+			link.removeAttribute('rel');
+		});
+		
+		mailtoLinks.forEach(link => {
+			link.removeAttribute('target');
+			link.removeAttribute('rel');
+		});
 	}
 	
 	function initCustomGLightbox() {

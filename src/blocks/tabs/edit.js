@@ -17,17 +17,63 @@ import { useSelect, useDispatch } from '@wordpress/data';
 import { TabsSidebar } from './sidebar';
 import { IconPicker } from '../../components/icon/IconPicker';
 
-const ALLOWED_BLOCKS = ['core/paragraph', 'core/heading', 'core/image', 'core/list', 'core/quote', 'core/code', 'core/preformatted', 'core/pullquote', 'core/verse', 'core/table', 'core/columns', 'core/group'];
+const ALLOWED_BLOCKS = [
+	// Core WordPress blocks
+	'core/paragraph',
+	'core/heading',
+	'core/image',
+	'core/list',
+	'core/quote',
+	'core/code',
+	'core/preformatted',
+	'core/pullquote',
+	'core/verse',
+	'core/table',
+	'core/columns',
+	'core/group',
+	'core/spacer',
+	'core/separator',
+	'core/embed',
+	'core/video',
+	'core/audio',
+	'core/file',
+	'core/gallery',
+	'core/cover',
+	'core/media-text',
+	'core/buttons',
+	'core/shortcode',
+	// Codeweber blocks
+	'codeweber-blocks/accordion',
+	'codeweber-blocks/button',
+	'codeweber-blocks/section',
+	'codeweber-blocks/column',
+	'codeweber-blocks/columns',
+	'codeweber-blocks/heading-subtitle',
+	'codeweber-blocks/icon',
+	'codeweber-blocks/lists',
+	'codeweber-blocks/media',
+	'codeweber-blocks/paragraph',
+	'codeweber-blocks/card',
+	'codeweber-blocks/feature',
+	'codeweber-blocks/image-simple',
+	'codeweber-blocks/post-grid',
+	'codeweber-blocks/tabs',
+];
 
 const TabsEdit = ({ attributes, setAttributes, clientId }) => {
-	const { tabStyle, activeTab, items, tabsId, tabsClass, tabsData } = attributes;
+	const { tabStyle, tabRounded, tabAlignment, tabBackground, activeTab, items, tabsId, tabsClass, tabsData } = attributes;
 	const previousClientIdRef = useRef(clientId);
 	const [iconPickerOpen, setIconPickerOpen] = useState(null); // itemId -> isOpen
 	
-	// Get inner blocks for current tab
+	// Get inner blocks for current tab and subscribe to changes
 	const { getBlocks } = useSelect((select) => ({
 		getBlocks: select('core/block-editor').getBlocks,
 	}));
+	
+	// Get current blocks to trigger re-render when they change
+	const currentBlocks = useSelect((select) => {
+		return select('core/block-editor').getBlocks(clientId);
+	}, [clientId]);
 	
 	const { replaceInnerBlocks } = useDispatch('core/block-editor');
 	
@@ -61,46 +107,92 @@ const TabsEdit = ({ attributes, setAttributes, clientId }) => {
 	}, [items]);
 	
 	// Load innerBlocks for active tab on mount and when activeTab changes
+	const previousActiveTabRef = useRef(activeTab);
 	useEffect(() => {
 		if (!items || items.length === 0 || activeTab >= items.length) return;
 		
-		const activeTabId = items[activeTab].id;
-		const innerBlocksByTab = attributes.innerBlocksByTab || {};
-		const tabInnerBlocks = innerBlocksByTab[activeTabId] || [];
-		
-		// Only replace if current blocks are different
-		const currentBlocks = getBlocks(clientId);
-		if (JSON.stringify(currentBlocks) !== JSON.stringify(tabInnerBlocks)) {
-			replaceInnerBlocks(clientId, tabInnerBlocks, false);
-			previousInnerBlocksRef.current = tabInnerBlocks;
-		}
-	}, [activeTab, items, clientId, attributes.innerBlocksByTab]);
-	
-	// Save current innerBlocks when they change
-	const previousInnerBlocksRef = useRef([]);
-	useEffect(() => {
-		if (!items || items.length === 0 || activeTab >= items.length) return;
-		
-		const currentBlocks = getBlocks(clientId);
-		const blocksChanged = JSON.stringify(currentBlocks) !== JSON.stringify(previousInnerBlocksRef.current);
-		
-		if (blocksChanged) {
+		// Only load blocks when activeTab actually changes (not on every render)
+		if (previousActiveTabRef.current !== activeTab) {
 			const activeTabId = items[activeTab].id;
 			const innerBlocksByTab = attributes.innerBlocksByTab || {};
-			const updatedInnerBlocks = {
-				...innerBlocksByTab,
-				[activeTabId]: currentBlocks,
-			};
-			setAttributes({ innerBlocksByTab: updatedInnerBlocks });
-			previousInnerBlocksRef.current = currentBlocks;
+			const tabInnerBlocks = innerBlocksByTab[activeTabId] || [];
+			
+			// Save current tab's blocks before switching
+			if (previousActiveTabRef.current >= 0 && previousActiveTabRef.current < items.length) {
+				const previousTabId = items[previousActiveTabRef.current].id;
+				const currentBlocks = getBlocks(clientId);
+				const innerBlocksByTab = attributes.innerBlocksByTab || {};
+				const updatedInnerBlocks = {
+					...innerBlocksByTab,
+					[previousTabId]: currentBlocks,
+				};
+				setAttributes({ innerBlocksByTab: updatedInnerBlocks });
+			}
+			
+			// Load new tab's blocks
+			replaceInnerBlocks(clientId, tabInnerBlocks, false);
+			previousInnerBlocksRef.current = tabInnerBlocks;
+			previousActiveTabRef.current = activeTab;
+			isInitialLoadRef.current = true; // Mark as initial load after tab switch
 		}
-	}, [activeTab, items, clientId, attributes.innerBlocksByTab]);
+	}, [activeTab, items, clientId, replaceInnerBlocks]);
+	
+	// Save current innerBlocks when they change - debounced to avoid conflicts
+	const previousInnerBlocksRef = useRef([]);
+	const saveTimeoutRef = useRef(null);
+	const isInitialLoadRef = useRef(true);
+	
+	// Subscribe to block changes and save automatically
+	useEffect(() => {
+		if (!items || items.length === 0 || activeTab >= items.length) return;
+		
+		// Skip initial load (blocks are loaded from innerBlocksByTab)
+		if (isInitialLoadRef.current) {
+			isInitialLoadRef.current = false;
+			previousInnerBlocksRef.current = currentBlocks || [];
+			return;
+		}
+		
+		const blocksChanged = JSON.stringify(currentBlocks) !== JSON.stringify(previousInnerBlocksRef.current);
+		
+		if (blocksChanged && currentBlocks) {
+			// Clear previous timeout
+			if (saveTimeoutRef.current) {
+				clearTimeout(saveTimeoutRef.current);
+			}
+			
+			// Debounce saving to avoid conflicts during editing
+			saveTimeoutRef.current = setTimeout(() => {
+				const activeTabId = items[activeTab].id;
+				const innerBlocksByTab = attributes.innerBlocksByTab || {};
+				const blocksToSave = getBlocks(clientId);
+				const updatedInnerBlocks = {
+					...innerBlocksByTab,
+					[activeTabId]: blocksToSave,
+				};
+				setAttributes({ innerBlocksByTab: updatedInnerBlocks });
+				previousInnerBlocksRef.current = blocksToSave;
+			}, 500); // 500ms debounce
+		}
+		
+		return () => {
+			if (saveTimeoutRef.current) {
+				clearTimeout(saveTimeoutRef.current);
+			}
+		};
+	}, [currentBlocks, getBlocks, clientId, activeTab, items, attributes.innerBlocksByTab, setAttributes]);
 	
 	// Save current innerBlocks when switching tabs
 	const handleTabSwitch = (newActiveTab) => {
 		if (newActiveTab === activeTab || newActiveTab >= items.length) return;
 		
-		// Save current innerBlocks to previous tab
+		// Clear any pending save timeout
+		if (saveTimeoutRef.current) {
+			clearTimeout(saveTimeoutRef.current);
+			saveTimeoutRef.current = null;
+		}
+		
+		// Save current innerBlocks to previous tab immediately
 		const currentBlocks = getBlocks(clientId);
 		const activeTabId = items[activeTab].id;
 		const innerBlocksByTab = attributes.innerBlocksByTab || {};
@@ -113,6 +205,7 @@ const TabsEdit = ({ attributes, setAttributes, clientId }) => {
 		const newTabId = items[newActiveTab].id;
 		const newTabInnerBlocks = updatedInnerBlocks[newTabId] || [];
 		
+		// Update state and blocks
 		setAttributes({ 
 			innerBlocksByTab: updatedInnerBlocks,
 			activeTab: newActiveTab,
@@ -120,6 +213,7 @@ const TabsEdit = ({ attributes, setAttributes, clientId }) => {
 		
 		replaceInnerBlocks(clientId, newTabInnerBlocks, false);
 		previousInnerBlocksRef.current = newTabInnerBlocks;
+		previousActiveTabRef.current = newActiveTab;
 	};
 
 	// Generate unique tabs ID based on clientId
@@ -226,17 +320,43 @@ const TabsEdit = ({ attributes, setAttributes, clientId }) => {
 	};
 
 	const switchTab = (index) => {
-		setAttributes({ activeTab: index });
+		handleTabSwitch(index);
 	};
 
 	// Get tabs classes
 	const getTabsClasses = () => {
 		const classes = ['nav', 'nav-tabs'];
+		
 		if (tabStyle === 'basic') {
 			classes.push('nav-tabs-basic');
 		} else if (tabStyle === 'pills') {
 			classes.push('nav-pills');
+		} else if (tabStyle === 'fanny') {
+			classes.push('nav-tabs-fanny');
+			// Always force width-auto for fanny style
+			classes.push('width-auto');
+			
+			// Tab rounded classes
+			if (tabRounded) {
+				// custom class for targeting + bootstrap rounded utility
+				classes.push(`tab-${tabRounded}`);
+				classes.push(tabRounded); // e.g. rounded, rounded-0, rounded-pill
+			}
+			
+			// Tab alignment classes
+			if (tabAlignment === 'center') {
+				classes.push('mx-auto');
+			} else if (tabAlignment === 'right') {
+				classes.push('ms-auto');
+			}
+			// Left is default, no class needed
+			
+			// Tab background classes
+			if (tabBackground === true) {
+				classes.push('bg-white', 'p-1', 'shadow-xl');
+			}
 		}
+		
 		if (tabsClass) {
 			classes.push(tabsClass);
 		}
@@ -277,18 +397,92 @@ const TabsEdit = ({ attributes, setAttributes, clientId }) => {
 				{/* Tabs Navigation */}
 				<ul className={getTabsClasses()} role="tablist">
 					{items.map((item, index) => (
-						<li key={item.id} className="nav-item">
-							<a
+						<li key={item.id} className="nav-item" style={{ position: 'relative' }}>
+							{/* Item Controls - Inside each tab */}
+							<div
+								className="tabs-item-controls"
+								style={{
+									position: 'absolute',
+									top: '-18px',
+									right: '8px',
+									display: 'flex',
+									gap: '4px',
+									opacity: 0.7,
+									zIndex: 10,
+								}}
+							>
+								<Button
+									isSmall
+									onClick={(e) => {
+										e.stopPropagation();
+										moveItem(index, 'up');
+									}}
+									disabled={index === 0}
+									title={__('Move left', 'codeweber-gutenberg-blocks')}
+								>
+									←
+								</Button>
+								<Button
+									isSmall
+									onClick={(e) => {
+										e.stopPropagation();
+										moveItem(index, 'down');
+									}}
+									disabled={index === items.length - 1}
+									title={__('Move right', 'codeweber-gutenberg-blocks')}
+								>
+									→
+								</Button>
+								<Button
+									isSmall
+									isDestructive
+									onClick={(e) => {
+										e.stopPropagation();
+										removeItem(index);
+									}}
+									disabled={items.length === 1}
+									title={__('Remove', 'codeweber-gutenberg-blocks')}
+								>
+									×
+								</Button>
+							</div>
+							
+							<button
+								type="button"
 								className={`nav-link ${index === activeTab ? 'active' : ''}`}
-								href={`#${item.id}`}
 								role="tab"
 								aria-selected={index === activeTab}
 								aria-controls={item.id}
 								onClick={(e) => {
-									e.preventDefault();
-									switchTab(index);
+									// Only switch tab if not clicking on RichText, icon, or controls
+									const target = e.target;
+									const isRichText = target.closest('[contenteditable="true"]') || target.closest('.rich-text');
+									const isIcon = target.closest('i') || target.closest('span[title*="icon"]');
+									const isControls = target.closest('.tabs-item-controls');
+									
+									if (!isRichText && !isIcon && !isControls) {
+										e.preventDefault();
+										switchTab(index);
+									}
 								}}
-								style={{ cursor: 'pointer' }}
+								onMouseDown={(e) => {
+									// Prevent default only if not clicking on RichText, icon, or controls
+									const target = e.target;
+									const isRichText = target.closest('[contenteditable="true"]') || target.closest('.rich-text');
+									const isIcon = target.closest('i') || target.closest('span[title*="icon"]');
+									const isControls = target.closest('.tabs-item-controls');
+									
+									if (!isRichText && !isIcon && !isControls) {
+										e.preventDefault();
+									}
+								}}
+								style={{ 
+									cursor: 'pointer',
+									border: 'none',
+									background: 'transparent',
+									width: '100%',
+									textAlign: 'left'
+								}}
 							>
 								{item.icon && (
 									<span
@@ -296,6 +490,7 @@ const TabsEdit = ({ attributes, setAttributes, clientId }) => {
 											e.stopPropagation();
 											setIconPickerOpen(item.id);
 										}}
+										onMouseDown={(e) => e.stopPropagation()}
 										style={{ cursor: 'pointer', marginRight: item.title ? '0.5rem' : '0' }}
 										title={__('Click to change icon', 'codeweber-gutenberg-blocks')}
 									>
@@ -308,6 +503,7 @@ const TabsEdit = ({ attributes, setAttributes, clientId }) => {
 											e.stopPropagation();
 											setIconPickerOpen(item.id);
 										}}
+										onMouseDown={(e) => e.stopPropagation()}
 										style={{ cursor: 'pointer', marginRight: item.title ? '0.5rem' : '0', opacity: 0.5 }}
 										title={__('Click to add icon', 'codeweber-gutenberg-blocks')}
 									>
@@ -320,9 +516,14 @@ const TabsEdit = ({ attributes, setAttributes, clientId }) => {
 									onChange={(value) => updateItem(index, 'title', value)}
 									placeholder={__('Tab title...', 'codeweber-gutenberg-blocks')}
 									withoutInteractiveFormatting
-									onClick={(e) => e.stopPropagation()}
+									onClick={(e) => {
+										e.stopPropagation();
+									}}
+									onMouseDown={(e) => {
+										e.stopPropagation();
+									}}
 								/>
-							</a>
+							</button>
 						</li>
 					))}
 				</ul>
@@ -339,7 +540,12 @@ const TabsEdit = ({ attributes, setAttributes, clientId }) => {
 								id={item.id}
 								role="tabpanel"
 								aria-labelledby={`tab-${item.id}`}
-								style={{ display: isActive ? 'block' : 'none' }}
+								style={{ 
+									display: isActive ? 'block' : 'none',
+									pointerEvents: isActive ? 'auto' : 'none',
+									position: 'relative',
+									zIndex: isActive ? 1 : 0
+								}}
 							>
 								{isActive && (
 									<InnerBlocks
@@ -358,48 +564,6 @@ const TabsEdit = ({ attributes, setAttributes, clientId }) => {
 						{__('+ Add Tab', 'codeweber-gutenberg-blocks')}
 					</Button>
 				</div>
-
-				{/* Item Controls - Show on hover */}
-				{items.map((item, index) => (
-					<div
-						key={`controls-${item.id}`}
-						style={{
-							position: 'absolute',
-							top: '-18px',
-							right: `${8 + (items.length - index - 1) * 120}px`,
-							display: 'flex',
-							gap: '4px',
-							opacity: 0.7,
-							zIndex: 10,
-						}}
-					>
-						<Button
-							isSmall
-							onClick={() => moveItem(index, 'up')}
-							disabled={index === 0}
-							title={__('Move up', 'codeweber-gutenberg-blocks')}
-						>
-							↑
-						</Button>
-						<Button
-							isSmall
-							onClick={() => moveItem(index, 'down')}
-							disabled={index === items.length - 1}
-							title={__('Move down', 'codeweber-gutenberg-blocks')}
-						>
-							↓
-						</Button>
-						<Button
-							isSmall
-							isDestructive
-							onClick={() => removeItem(index)}
-							disabled={items.length === 1}
-							title={__('Remove', 'codeweber-gutenberg-blocks')}
-						>
-							×
-						</Button>
-					</div>
-				))}
 
 				{/* Icon Pickers for each tab */}
 				{items.map((item, index) => (
@@ -425,3 +589,4 @@ const TabsEdit = ({ attributes, setAttributes, clientId }) => {
 };
 
 export default TabsEdit;
+

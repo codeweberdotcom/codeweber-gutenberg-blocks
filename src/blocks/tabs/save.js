@@ -8,16 +8,42 @@ import { useBlockProps } from '@wordpress/block-editor';
 import { serialize } from '@wordpress/blocks';
 
 const TabsSave = ({ attributes }) => {
-	const { tabStyle, items, tabsId, tabsClass, tabsData, innerBlocksByTab } = attributes;
+	const { tabStyle, tabRounded, tabAlignment, tabBackground, items, tabsId, tabsClass, tabsData, innerBlocksByTab } = attributes;
 
 	// Get tabs classes
 	const getTabsClasses = () => {
 		const classes = ['nav', 'nav-tabs'];
+		
 		if (tabStyle === 'basic') {
 			classes.push('nav-tabs-basic');
 		} else if (tabStyle === 'pills') {
 			classes.push('nav-pills');
+		} else if (tabStyle === 'fanny') {
+			classes.push('nav-tabs-fanny');
+			// Always force width-auto for fanny style
+			classes.push('width-auto');
+			
+			// Tab rounded classes
+			if (tabRounded) {
+				// custom class for targeting + bootstrap rounded utility
+				classes.push(`tab-${tabRounded}`);
+				classes.push(tabRounded); // e.g. rounded, rounded-0, rounded-pill
+			}
+			
+			// Tab alignment classes
+			if (tabAlignment === 'center') {
+				classes.push('mx-auto');
+			} else if (tabAlignment === 'right') {
+				classes.push('ms-auto');
+			}
+			// Left is default, no class needed
+			
+			// Tab background classes
+			if (tabBackground === true) {
+				classes.push('bg-white', 'p-1', 'shadow-xl');
+			}
 		}
+		
 		if (tabsClass) {
 			classes.push(tabsClass);
 		}
@@ -85,3 +111,4 @@ const TabsSave = ({ attributes }) => {
 };
 
 export default TabsSave;
+

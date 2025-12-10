@@ -1,4 +1,5 @@
 import { useBlockProps, RichText } from '@wordpress/block-editor';
+import { RawHTML } from '@wordpress/element';
 import { getClassNames } from '../button/buttonclass'; // Путь к функции getClassNames
 
 // Функция для обработки иконки
@@ -20,6 +21,9 @@ const ButtonSave = ({ attributes }) => {
 		anchor,
 		LinkUrl,
 		LinkType,
+		PostId,
+		PostType,
+		PageId,
 		ButtonContent,
 		ButtonType,
 		ButtonSize,
@@ -51,8 +55,10 @@ const ButtonSave = ({ attributes }) => {
 	const hasBsToggle = DataBsToggle && DataBsToggle.trim() !== '';
 	const hasBsTarget = DataBsTarget && DataBsTarget.trim() !== '';
 	
-	// Don't add target="_blank" if using GLightbox (video, image, pdf, iframe) or Bootstrap modals
-	const shouldNotOpenInNewTab = hasGlightbox || hasBsToggle;
+	// Don't add target="_blank" if using GLightbox (video, image, pdf, iframe), Bootstrap modals, or tel/mailto links
+	const isTelLink = LinkUrl && LinkUrl.startsWith('tel:');
+	const isMailtoLink = LinkUrl && LinkUrl.startsWith('mailto:');
+	const shouldNotOpenInNewTab = hasGlightbox || hasBsToggle || isTelLink || isMailtoLink;
 	
 	// Check if this is a video link (VK, Rutube, YouTube, Vimeo)
 	const isVideoLink = LinkType === 'vkvideo' || LinkType === 'rutube' || 
@@ -63,6 +69,22 @@ const ButtonSave = ({ attributes }) => {
 	let hiddenIframe = null;
 	let finalHref = LinkUrl;
 	let finalGlightbox = DataGlightbox;
+	
+	// Если LinkType === 'post' и LinkUrl пустой, но есть PostId, формируем URL из PostId
+	if (LinkType === 'post' && (!LinkUrl || LinkUrl === '#' || LinkUrl === '') && PostId) {
+		// Формируем URL по ID записи (это fallback, в идеале LinkUrl должен быть заполнен)
+		// Но на фронтенде мы не можем использовать get_permalink, поэтому формируем простой URL
+		// В реальности WordPress автоматически обработает такой URL
+		if (PostType === 'page') {
+			finalHref = `?page_id=${PostId}`;
+		} else if (PostType === 'post') {
+			finalHref = `?p=${PostId}`;
+		} else if (PostType) {
+			finalHref = `?post_type=${PostType}&p=${PostId}`;
+		} else {
+			finalHref = `?p=${PostId}`;
+		}
+	}
 	
 	if (isVideoLink && LinkUrl) {
 		const videoId = generateVideoId(LinkUrl, LinkType);
@@ -146,12 +168,13 @@ const ButtonSave = ({ attributes }) => {
 					{getIconComponent(CircleIcon)}
 					{getIconComponent(SocialIcon)}
 
-					{!shouldHideText && (
-						<RichText.Content
-							tagName="span"
-							value={ButtonContent}
-							className="button-content"
-						/>
+					{!shouldHideText && ButtonType === 'expand' && (
+						<span>
+							<RawHTML>{ButtonContent}</RawHTML>
+						</span>
+					)}
+					{!shouldHideText && ButtonType !== 'expand' && (
+						<RawHTML>{ButtonContent}</RawHTML>
 					)}
 
 					{getIconComponent(RightIcon)}

@@ -37,6 +37,9 @@ class Plugin {
 		
 		// Фильтр для условного рендеринга списков (перехватываем до рендеринга)
 		add_filter('pre_render_block', __CLASS__ . '::pre_render_lists_block', 10, 2);
+		
+		// Фильтр для условного рендеринга аватара (перехватываем до рендеринга)
+		add_filter('pre_render_block', __CLASS__ . '::pre_render_avatar_block', 10, 2);
 	}
 
 	public static function init(): void {
@@ -92,11 +95,19 @@ class Plugin {
 			GUTENBERG_BLOCKS_VERSION,
 			true
 		);
+		
+		// Pass plugin URL to JavaScript for placeholder image via inline script
+		wp_add_inline_script(
+			'codeweber-blocks-scrollcue-init',
+			'window.codeweberBlocksData = window.codeweberBlocksData || {}; window.codeweberBlocksData.pluginUrl = ' . wp_json_encode(self::getBaseUrl()) . ';',
+			'before'
+		);
 	}
 
 	public static function getBlocksName(): array {
 	return [
 		'accordion',
+		'avatar',
 		'button',
 		'section',
 		'column',
@@ -207,6 +218,44 @@ class Plugin {
 		return $pre_render;
 	}
 
+	/**
+	 * Pre-render avatar block conditionally based on avatarType
+	 * Uses PHP render when avatarType is 'user' to get fresh user data
+	 */
+	public static function pre_render_avatar_block($pre_render, $parsed_block) {
+		// Проверяем, что это блок avatar
+		if (!isset($parsed_block['blockName']) || $parsed_block['blockName'] !== 'codeweber-blocks/avatar') {
+			return $pre_render;
+		}
+		
+		$attributes = $parsed_block['attrs'] ?? [];
+		$avatar_type = $attributes['avatarType'] ?? 'letters';
+		
+		// Используем PHP render только для режима 'user'
+		if ($avatar_type === 'user') {
+			$render_path = self::getBasePath() . '/build/blocks/avatar/render.php';
+			if (file_exists($render_path)) {
+				$content = $parsed_block['innerHTML'] ?? '';
+				$block_instance = new \WP_Block($parsed_block);
+				
+				// Передаем переменные в область видимости render.php
+				extract([
+					'attributes' => $attributes,
+					'content' => $content,
+					'block' => $block_instance,
+				], EXTR_SKIP);
+				
+				ob_start();
+				require $render_path;
+				$rendered = ob_get_clean();
+				
+				return $rendered;
+			}
+		}
+		
+		return $pre_render;
+	}
+
 	public static function gutenbergBlocksInit(): void {
 		$blocks_path = self::getBasePath() . '/build/blocks/';
 		$lang_path = self::getBasePath() . '/languages';
@@ -297,10 +346,16 @@ class Plugin {
 		);
 		
 		// Load More functionality
+		// Dependencies: fetch-handler from theme (if available) for Fetch system support
+		$dependencies = [];
+		if (wp_script_is('fetch-handler', 'registered')) {
+			$dependencies[] = 'fetch-handler';
+		}
+		
 		wp_enqueue_script(
 			'codeweber-blocks-load-more',
 			GUTENBERG_BLOCKS_INC_URL . 'js/load-more.js',
-			[],
+			$dependencies,
 			GUTENBERG_BLOCKS_VERSION,
 			TRUE
 		);
@@ -309,6 +364,7 @@ class Plugin {
 		wp_localize_script('codeweber-blocks-load-more', 'cwgbLoadMore', [
 			'restUrl' => rest_url('codeweber-gutenberg-blocks/v1/load-more'),
 			'nonce' => wp_create_nonce('wp_rest'),
+			'loadingText' => esc_html__('Loading...', 'codeweber-gutenberg-blocks'),
 		]);
 	}
 

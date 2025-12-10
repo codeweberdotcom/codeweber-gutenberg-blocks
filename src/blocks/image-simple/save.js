@@ -1,4 +1,5 @@
 import { useBlockProps } from '@wordpress/block-editor';
+import { __ } from '@wordpress/i18n';
 import { ImageSimpleRender } from '../../components/image/ImageSimpleRender';
 import { 
 	SwiperSlider, 
@@ -281,7 +282,7 @@ export default function Save({ attributes }) {
 									<div className="text-center mt-5">
 										<button 
 											className="btn btn-primary cwgb-load-more-btn"
-											data-loading-text="Loading..."
+											data-loading-text={__('Loading...', 'codeweber-gutenberg-blocks')}
 										>
 											{loadMoreText || 'Show More'}
 										</button>

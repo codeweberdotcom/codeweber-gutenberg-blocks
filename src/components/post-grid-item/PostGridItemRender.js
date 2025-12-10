@@ -21,7 +21,19 @@ export const PostGridItemRender = ({
 	const postLink = post.linkUrl || '#';
 	const postTitle = post.title || '';
 	const postDescription = post.description || '';
-	const imageUrl = getImageUrl(post, imageSize);
+	let imageUrl = getImageUrl(post, imageSize);
+	
+	// Если изображения нет, используем placeholder
+	if (!imageUrl) {
+		let placeholderUrl = '/wp-content/plugins/codeweber-gutenberg-blocks/placeholder.jpg';
+		if (window.codeweberBlocksData?.pluginUrl) {
+			const pluginUrl = window.codeweberBlocksData.pluginUrl;
+			placeholderUrl = pluginUrl.endsWith('/') ? `${pluginUrl}placeholder.jpg` : `${pluginUrl}/placeholder.jpg`;
+		} else if (window.location && window.location.origin) {
+			placeholderUrl = `${window.location.origin}/wp-content/plugins/codeweber-gutenberg-blocks/placeholder.jpg`;
+		}
+		imageUrl = placeholderUrl;
+	}
 	
 	// Ограничиваем заголовок до 56 символов
 	let titleLimited = postTitle ? postTitle.replace(/<[^>]*>/g, '') : '';
@@ -73,7 +85,124 @@ export const PostGridItemRender = ({
 		return null;
 	};
 
-	if (template === 'card') {
+	// Проверяем testimonials ПЕРВЫМ, чтобы избежать конфликта имен шаблонов
+	if (postType === 'testimonials') {
+		// Testimonials templates
+		const testimonialText = post.text || post.meta?._testimonial_text || postDescription || '';
+		const authorName = post.authorName || post.meta?._testimonial_author_name || '';
+		const authorRole = post.authorRole || post.meta?._testimonial_author_role || '';
+		const company = post.company || post.meta?._testimonial_company || '';
+		const rating = post.rating || parseInt(post.meta?._testimonial_rating || '5');
+		const ratingClass = post.ratingClass || ['', 'one', 'two', 'three', 'four', 'five'][rating] || 'five';
+		const avatarUrl = post.avatarUrl || imageUrl;
+		
+		// Ограничиваем текст отзыва
+		let textLimited = testimonialText.replace(/<[^>]*>/g, '');
+		textLimited = textLimited.replace(/\s+/g, ' ').trim();
+		if (textLimited.length > 150) {
+			textLimited = textLimited.substring(0, 150) + '...';
+		}
+		
+		if (template === 'card') {
+			// Testimonial Card template (Sandbox style with colored backgrounds)
+			const bgColors = ['bg-pale-yellow', 'bg-pale-red', 'bg-pale-leaf', 'bg-pale-blue'];
+			const colorIndex = (post.id || 0) % bgColors.length;
+			const bgColor = bgColors[colorIndex];
+			
+			return (
+				<div className={`card ${bgColor}`}>
+					<div className="card-body">
+						<blockquote className="icon mb-0">
+							<p>{textLimited || testimonialText || __('Testimonial text', 'codeweber-gutenberg-blocks')}</p>
+							<div className="blockquote-details">
+								<div className="info p-0">
+									{authorName && <h5 className="mb-1">{authorName}</h5>}
+									{authorRole && <p className="mb-0">{authorRole}</p>}
+									{company && <p className="mb-0 text-muted small">{company}</p>}
+								</div>
+							</div>
+						</blockquote>
+					</div>
+				</div>
+			);
+		} else if (template === 'blockquote') {
+			// Testimonial Blockquote template
+			return (
+				<div className="card shadow-lg">
+					<div className="card-body">
+						{rating > 0 && (
+							<span className={`ratings ${ratingClass} mb-3`}></span>
+						)}
+						<blockquote className="icon mb-0">
+							<p>{textLimited || testimonialText || __('Testimonial text', 'codeweber-gutenberg-blocks')}</p>
+							<div className="blockquote-details">
+								<div className={`info ${avatarUrl ? 'ps-0' : ''}`}>
+									{authorName && <h5 className="mb-1">{authorName}</h5>}
+									{authorRole && <p className="mb-0">{authorRole}</p>}
+									{company && <p className="mb-0 text-muted small">{company}</p>}
+								</div>
+							</div>
+						</blockquote>
+					</div>
+				</div>
+			);
+		} else if (template === 'icon') {
+			// Testimonial Icon template (simple blockquote with icon, without rating)
+			return (
+				<div className="item-inner">
+					<div className="card">
+						<div className="card-body">
+							<blockquote className="icon mb-0">
+								<p>{textLimited || testimonialText || __('Testimonial text', 'codeweber-gutenberg-blocks')}</p>
+								<div className="blockquote-details">
+									{avatarUrl && (
+										<img 
+											className="rounded-circle w-12" 
+											src={avatarUrl} 
+											alt={authorName || postTitle} 
+										/>
+									)}
+									<div className="info">
+										{authorName && <h5 className="mb-1">{authorName}</h5>}
+										{authorRole && <p className="mb-0">{authorRole}</p>}
+										{company && <p className="mb-0 text-muted small">{company}</p>}
+									</div>
+								</div>
+							</blockquote>
+						</div>
+					</div>
+				</div>
+			);
+		} else {
+			// Testimonial Default template
+			return (
+				<div className="card h-100">
+					<div className="card-body">
+						{rating > 0 && (
+							<span className={`ratings ${ratingClass} mb-3`}></span>
+						)}
+						<blockquote className="icon mb-0">
+							<p>{textLimited || testimonialText || __('Testimonial text', 'codeweber-gutenberg-blocks')}</p>
+							<div className="blockquote-details">
+								{avatarUrl && (
+									<img 
+										className="rounded-circle w-12" 
+										src={avatarUrl} 
+										alt={authorName || postTitle} 
+									/>
+								)}
+								<div className="info">
+									{authorName && <h5 className="mb-1">{authorName}</h5>}
+									{authorRole && <p className="mb-0">{authorRole}</p>}
+									{company && <p className="mb-0 text-muted small">{company}</p>}
+								</div>
+							</div>
+						</blockquote>
+					</div>
+				</div>
+			);
+		}
+	} else if (template === 'card') {
 		// Card template
 		return (
 			<article className="h-100 mb-6">

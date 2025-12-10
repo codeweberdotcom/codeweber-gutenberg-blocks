@@ -80,6 +80,8 @@ const ButtonEdit = ({ attributes, setAttributes }) => {
 	const hasBsToggle = DataBsToggle && DataBsToggle.trim() !== '';
 	const hasBsTarget = DataBsTarget && DataBsTarget.trim() !== '';
 
+	// Вызываем useBlockProps всегда, чтобы соблюдать правила React Hooks
+	const blockProps = useBlockProps({ className: buttonClass, id: anchor });
 
 	return (
 		<>
@@ -125,8 +127,11 @@ const ButtonEdit = ({ attributes, setAttributes }) => {
 					</nav>
 				) : (
 					<a
-						{...useBlockProps({ className: buttonClass, id: anchor })}
-						style={{ width: 'auto', pointerEvents: 'auto', cursor: 'default' }}
+						{...blockProps}
+						style={{
+							pointerEvents: 'auto',
+							cursor: 'default'
+						}}
 						href="#"
 						// Применяем сгенерированный класс
 						onClick={(event) => {

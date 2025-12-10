@@ -47,6 +47,9 @@ add_action('init', __NAMESPACE__ . '\Plugin::perInit', 0);
 add_action('init', __NAMESPACE__ . '\Plugin::init', 20);
 //add_action('admin_init', __NAMESPACE__ . '\Admin::init');
 
+// Подключаем REST API для опций и телефонов (подключаем рано, чтобы REST API зарегистрировался)
+require_once plugin_dir_path(__FILE__) . 'settings/options_page/restapi.php';
+
 // Загрузка переводов для JavaScript
 add_action('init', function() {
 	$blocks = [
@@ -90,11 +93,6 @@ add_filter('loco_file_written', function($path) {
 	}
 	return $path;
 });
-
-
-
-// Подключаем файл страницы опций
-require_once plugin_dir_path(__FILE__) . 'settings/options_page/options.php';
 
 
 

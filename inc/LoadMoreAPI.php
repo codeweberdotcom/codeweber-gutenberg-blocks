@@ -111,7 +111,7 @@ class LoadMoreAPI {
 	 * @param int $count Number of items to load
 	 * @return array
 	 */
-	private function load_more_image_simple($block_attributes_json, $offset, $count) {
+	public function load_more_image_simple($block_attributes_json, $offset, $count) {
 		// block_attributes_json приходит как строка JSON из JavaScript
 		// Может быть уже закодирован в URL или нет, в зависимости от того, как передается
 		$attributes = null;
@@ -380,7 +380,7 @@ class LoadMoreAPI {
 	 * @param int $count Number of items to load
 	 * @return array
 	 */
-	private function load_more_post_grid($block_attributes_json, $offset, $count) {
+	public function load_more_post_grid($block_attributes_json, $offset, $count) {
 		// Декодируем атрибуты
 		$attributes = json_decode($block_attributes_json, true);
 		
@@ -410,7 +410,8 @@ class LoadMoreAPI {
 
 		// Получаем параметры запроса
 		$post_type = $attributes['postType'] ?? 'post';
-		$posts_per_page = isset($attributes['postsPerPage']) ? (int) $attributes['postsPerPage'] : 6;
+		// Используем переданный $count вместо postsPerPage для AJAX загрузки
+		$posts_per_page = $count; // Это количество элементов для загрузки (loadMoreLoadMoreCount)
 		$order_by = $attributes['orderBy'] ?? 'date';
 		$order = $attributes['order'] ?? 'desc';
 		$image_size = $attributes['imageSize'] ?? 'full';
@@ -423,7 +424,7 @@ class LoadMoreAPI {
 		// Запрос постов
 		$args = array(
 			'post_type' => $post_type,
-			'posts_per_page' => $posts_per_page,
+			'posts_per_page' => $posts_per_page, // Используем $count (loadMoreLoadMoreCount)
 			'post_status' => 'publish',
 			'orderby' => $order_by,
 			'order' => $order,
@@ -470,27 +471,34 @@ class LoadMoreAPI {
 		
 		// Генерируем HTML используя функцию render_post_grid_item из render.php
 		$html = '';
+		
 		foreach ($query->posts as $post) {
 			setup_postdata($post);
 			
+			// get_post_image_url всегда возвращает URL (либо изображение, либо placeholder)
 			$image_url = $this->get_post_image_url($post, $image_size);
-			if (!$image_url) {
-				continue;
-			}
 			
 			// Используем ту же логику рендеринга, что и в render.php
 			$html .= $this->render_post_grid_item_ajax($post, $attributes, $image_url, $image_size, $grid_type, $col_classes);
 		}
 		wp_reset_postdata();
 
-		$has_more = ($offset + count($query->posts)) < $query->found_posts;
+		// Обновляем offset с учетом всех обработанных постов
+		$processed_count = count($query->posts);
+		$new_offset = $offset + $processed_count;
+		
+		// Проверяем, есть ли еще посты для загрузки
+		$has_more = $new_offset < $query->found_posts;
+		
+		// Логирование для отладки
+		error_log('LoadMoreAPI Post Grid: offset=' . $offset . ', count=' . $count . ', found_posts=' . $query->found_posts . ', processed=' . $processed_count . ', loaded=' . $processed_count . ', new_offset=' . $new_offset);
 
 		return [
 			'success' => true,
 			'data' => [
 				'html' => $html,
 				'has_more' => $has_more,
-				'offset' => $offset + count($query->posts)
+				'offset' => $new_offset
 			]
 		];
 	}
@@ -612,11 +620,12 @@ class LoadMoreAPI {
 	private function get_post_image_url($post, $image_size = 'full') {
 		$thumbnail_id = get_post_thumbnail_id($post->ID);
 		if (!$thumbnail_id) {
-			return '';
+			// Используем placeholder если изображения нет (как в render.php)
+			return GUTENBERG_BLOCKS_URL . 'placeholder.jpg';
 		}
 		
 		$image = wp_get_attachment_image_src($thumbnail_id, $image_size);
-		return $image ? $image[0] : '';
+		return $image ? $image[0] : (GUTENBERG_BLOCKS_URL . 'placeholder.jpg');
 	}
 
 	/**

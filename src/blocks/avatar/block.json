@@ -1,0 +1,118 @@
+{
+	"apiVersion": 2,
+	"name": "codeweber-blocks/avatar",
+	"version": "0.1.0",
+	"title": "Avatar",
+	"category": "codeweber-gutenberg-blocks",
+	"icon": "admin-users",
+	"description": "Avatar block with letters or image. Supports different sizes and color styles.",
+	"keywords": ["avatar", "profile", "image", "letters"],
+	"supports": {
+		"html": false,
+		"customClassName": true,
+		"anchor": true,
+		"align": ["left", "center", "right"]
+	},
+	"attributes": {
+		"avatarType": {
+			"type": "string",
+			"default": "custom"
+		},
+		"letters": {
+			"type": "string",
+			"default": "AB"
+		},
+		"bgColor": {
+			"type": "string",
+			"default": "primary"
+		},
+		"textColor": {
+			"type": "string",
+			"default": "white"
+		},
+		"size": {
+			"type": "string",
+			"default": "15"
+		},
+		"imageId": {
+			"type": "number",
+			"default": 0
+		},
+		"imageUrl": {
+			"type": "string",
+			"default": ""
+		},
+		"imageAlt": {
+			"type": "string",
+			"default": ""
+		},
+		"showName": {
+			"type": "boolean",
+			"default": false
+		},
+		"name": {
+			"type": "string",
+			"default": ""
+		},
+		"position": {
+			"type": "string",
+			"default": ""
+		},
+		"nameLink": {
+			"type": "string",
+			"default": ""
+		},
+		"userId": {
+			"type": "number",
+			"default": 0
+		},
+		"blockAlign": {
+			"type": "string",
+			"default": ""
+		},
+		"blockClass": {
+			"type": "string",
+			"default": ""
+		},
+		"blockData": {
+			"type": "string",
+			"default": ""
+		},
+		"blockId": {
+			"type": "string",
+			"default": ""
+		},
+		"spacingType": {
+			"type": "string",
+			"default": "padding"
+		},
+		"spacingXs": {
+			"type": "string",
+			"default": ""
+		},
+		"spacingSm": {
+			"type": "string",
+			"default": ""
+		},
+		"spacingMd": {
+			"type": "string",
+			"default": ""
+		},
+		"spacingLg": {
+			"type": "string",
+			"default": ""
+		},
+		"spacingXl": {
+			"type": "string",
+			"default": ""
+		},
+		"spacingXxl": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"textdomain": "codeweber-gutenberg-blocks",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
+}

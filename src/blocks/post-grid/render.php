@@ -150,9 +150,16 @@ $grid_classes = get_post_grid_container_classes($attributes, $grid_type);
 $col_classes = get_post_grid_col_classes($attributes, $grid_type);
 
 	// Query posts
+	// Если Load More включен, запрашиваем только initialCount постов для начальной загрузки
+	// Остальные посты будут загружаться через AJAX
+	// Иначе используем стандартный posts_per_page
+	$query_posts_per_page = $load_more_enable 
+		? $load_more_initial_count // Запрашиваем только начальное количество
+		: $posts_per_page;
+	
 	$args = array(
 		'post_type' => $post_type,
-		'posts_per_page' => $posts_per_page,
+		'posts_per_page' => $query_posts_per_page,
 		'post_status' => 'publish',
 		'orderby' => $order_by,
 		'order' => $order,
@@ -214,22 +221,24 @@ if ($block_data) {
 }
 
 // Determine which posts to show initially
-$posts_to_show = $load_more_enable 
-	? array_slice($query->posts, 0, $load_more_initial_count)
-	: $query->posts;
+// Если Load More включен, мы уже запросили только initialCount постов, поэтому показываем все
+$posts_to_show = $query->posts;
 
-$has_more = $load_more_enable && count($query->posts) > $load_more_initial_count;
+// Проверяем, есть ли еще посты для загрузки
+// Сравниваем общее количество найденных постов с уже загруженными
+$has_more = $load_more_enable && $query->found_posts > $load_more_initial_count;
 
 // Helper function to get image URL
 if (!function_exists('get_post_image_url')) {
 	function get_post_image_url($post, $image_size = 'full') {
 		$thumbnail_id = get_post_thumbnail_id($post->ID);
 		if (!$thumbnail_id) {
-			return '';
+			// Используем placeholder если изображения нет
+			return GUTENBERG_BLOCKS_URL . 'placeholder.jpg';
 		}
 		
 		$image = wp_get_attachment_image_src($thumbnail_id, $image_size);
-		return $image ? $image[0] : '';
+		return $image ? $image[0] : GUTENBERG_BLOCKS_URL . 'placeholder.jpg';
 	}
 }
 
@@ -423,6 +432,52 @@ if (!function_exists('render_post_grid_item')) {
 					'image_size' => $image_size,
 					'enable_link' => isset($attributes['enableLink']) ? (bool) $attributes['enableLink'] : false,
 				];
+			} elseif ($post_type === 'testimonials') {
+				// Специальная обработка для testimonials
+				$display_settings = [
+					'show_title' => false,
+					'show_date' => false,
+					'show_category' => false,
+					'show_comments' => false,
+					'title_length' => 0,
+					'excerpt_length' => 0,
+					'title_tag' => 'h2',
+					'title_class' => '',
+				];
+				
+				// Определяем шаблон для testimonials
+				// Если шаблон начинается с "testimonial-", используем его
+				// Иначе используем default для testimonials
+				$testimonial_template = 'default';
+				if (strpos($template, 'testimonial-') === 0) {
+					$testimonial_template = str_replace('testimonial-', '', $template);
+				} elseif (in_array($template, ['default', 'card', 'blockquote', 'icon'])) {
+					// Если указан один из стандартных шаблонов testimonials, используем его
+					$testimonial_template = $template;
+				}
+				
+				$template_args = [
+					'image_size' => $image_size,
+					'show_rating' => isset($attributes['showRating']) ? (bool) $attributes['showRating'] : true,
+					'show_company' => isset($attributes['showCompany']) ? (bool) $attributes['showCompany'] : false,
+					'bg_color' => isset($attributes['bgColor']) ? $attributes['bgColor'] : '', // Для card шаблона
+					'shadow' => isset($attributes['shadow']) ? (bool) $attributes['shadow'] : true, // Для blockquote шаблона
+				];
+				
+				// Используем шаблон testimonials
+				$html = cw_render_post_card($post, $testimonial_template, $display_settings, $template_args);
+				
+				// Если функция вернула не пустую строку, используем её
+				if (!empty($html) && trim($html) !== '') {
+					// Добавляем обертку с col-* классами только для grid режима (не swiper) и только для classic grid
+					if (!$is_swiper && $grid_type === 'classic' && !empty($col_classes)) {
+						$html = '<div class="' . esc_attr($col_classes) . '">' . $html . '</div>';
+					}
+					
+					return $html;
+				}
+				
+				// Если функция вернула пустую строку, продолжаем с fallback ниже
 			} else {
 				// Настройки отображения для обычных постов
 				$display_settings = [
@@ -722,17 +777,8 @@ if (!function_exists('render_post_grid_item')) {
 					<div class="<?php echo esc_attr($wrapper_classes); ?>">
 						<?php foreach ($query->posts as $post) : setup_postdata($post); ?>
 							<?php
-							// Для шаблонов, использующих cw_render_post_card, проверка изображения не обязательна
+							// get_post_image_url всегда возвращает URL (либо изображение, либо placeholder)
 							$image_url = get_post_image_url($post, $image_size);
-							
-							// Если используется cw_render_post_card, пропускаем проверку изображения
-							$post_card_templates_path = get_template_directory() . '/functions/post-card-templates.php';
-							$use_new_system = file_exists($post_card_templates_path) && function_exists('cw_render_post_card');
-							
-							// Пропускаем только если не используется новая система И нет изображения
-							if (!$use_new_system && !$image_url) {
-								continue;
-							}
 							
 							$slide_class = 'swiper-slide';
 							if ($template === 'client-simple') {
@@ -755,18 +801,8 @@ if (!function_exists('render_post_grid_item')) {
 			<div class="cwgb-load-more-items <?php echo esc_attr($grid_classes); ?>">
 				<?php foreach ($posts_to_show as $post) : setup_postdata($post); ?>
 					<?php
-					// Для шаблонов, использующих cw_render_post_card, проверка изображения не обязательна
-					// так как функция сама обработает отсутствие изображения
+					// get_post_image_url всегда возвращает URL (либо изображение, либо placeholder)
 					$image_url = get_post_image_url($post, $image_size);
-					
-					// Если используется cw_render_post_card, пропускаем проверку изображения
-					$post_card_templates_path = get_template_directory() . '/functions/post-card-templates.php';
-					$use_new_system = file_exists($post_card_templates_path) && function_exists('cw_render_post_card');
-					
-					// Пропускаем только если не используется новая система И нет изображения
-					if (!$use_new_system && !$image_url) {
-						continue;
-					}
 					
 					$item_html = render_post_grid_item($post, $attributes, $image_url, $image_size, $grid_type, $col_classes);
 					if (!empty($item_html) && trim($item_html) !== '') {
@@ -779,11 +815,11 @@ if (!function_exists('render_post_grid_item')) {
 			<?php if ($load_more_enable && $has_more) : ?>
 				<div class="text-center mt-5">
 					<?php if ($load_more_type === 'link') : ?>
-						<a href="#" class="hover cwgb-load-more-btn" data-load-more="true">
+						<a href="#" class="hover cwgb-load-more-btn" data-load-more="true" data-loading-text="<?php echo esc_attr(__('Loading...', 'codeweber-gutenberg-blocks')); ?>">
 							<?php echo esc_html($load_more_text); ?>
 						</a>
 					<?php else : ?>
-						<button class="btn btn-primary cwgb-load-more-btn" type="button">
+						<button class="btn btn-primary cwgb-load-more-btn" type="button" data-loading-text="<?php echo esc_attr(__('Loading...', 'codeweber-gutenberg-blocks')); ?>">
 							<?php echo esc_html($load_more_text); ?>
 						</button>
 					<?php endif; ?>

@@ -52,10 +52,44 @@ const CLIENT_TEMPLATES = [
 	},
 ];
 
+const TESTIMONIAL_TEMPLATES = [
+	{
+		value: 'default',
+		label: __('Default', 'codeweber-gutenberg-blocks'),
+		description: __('Basic testimonial card with rating, text, avatar and author', 'codeweber-gutenberg-blocks'),
+	},
+	{
+		value: 'card',
+		label: __('Card', 'codeweber-gutenberg-blocks'),
+		description: __('Card with colored backgrounds (Sandbox style)', 'codeweber-gutenberg-blocks'),
+	},
+	{
+		value: 'blockquote',
+		label: __('Blockquote', 'codeweber-gutenberg-blocks'),
+		description: __('Block with quote and icon', 'codeweber-gutenberg-blocks'),
+	},
+	{
+		value: 'icon',
+		label: __('Icon', 'codeweber-gutenberg-blocks'),
+		description: __('Simple blockquote with icon, without rating', 'codeweber-gutenberg-blocks'),
+	},
+];
+
 export const PostGridTemplateControl = ({ value, onChange, postType = 'post' }) => {
 	// Определяем какие шаблоны показывать в зависимости от типа записи
-	const templates = postType === 'clients' ? CLIENT_TEMPLATES : POST_TEMPLATES;
-	const defaultTemplate = postType === 'clients' ? 'client-simple' : 'default';
+	let templates;
+	let defaultTemplate;
+	
+	if (postType === 'clients') {
+		templates = CLIENT_TEMPLATES;
+		defaultTemplate = 'client-simple';
+	} else if (postType === 'testimonials') {
+		templates = TESTIMONIAL_TEMPLATES;
+		defaultTemplate = 'default';
+	} else {
+		templates = POST_TEMPLATES;
+		defaultTemplate = 'default';
+	}
 	
 	const selectedTemplate = templates.find(t => t.value === value) || templates[0];
 

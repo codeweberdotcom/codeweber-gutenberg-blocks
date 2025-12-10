@@ -1,0 +1,22 @@
+/**
+ * Avatar Block - Editor Styles
+ *
+ * @package CodeWeber Gutenberg Blocks
+ */
+
+.wp-block-codeweber-blocks-avatar {
+	.cwgb-avatar-block {
+		display: inline-block;
+	}
+
+	.cwgb-avatar-placeholder {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-width: 60px;
+		min-height: 60px;
+		border: 2px dashed #ccc;
+		border-radius: 50%;
+		background: #f9f9f9;
+	}
+}

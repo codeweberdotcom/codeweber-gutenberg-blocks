@@ -1,9 +1,21 @@
 <?php
-// Регистрируем REST API маршрут
+if (!defined('ABSPATH')) {
+	exit; // Защита от прямого доступа
+}
+
+// Регистрируем REST API маршруты
 add_action('rest_api_init', function () {
+	// Общий endpoint для опций
 	register_rest_route('wp/v2', '/options', [
 		'methods' => 'GET',
 		'callback' => 'get_custom_option',
+		'permission_callback' => '__return_true'
+	]);
+	
+	// Отдельный endpoint для получения телефонов из Redux
+	register_rest_route('wp/v2', '/phones', [
+		'methods' => 'GET',
+		'callback' => 'get_redux_phones_api',
 		'permission_callback' => '__return_true'
 	]);
 });
@@ -26,16 +38,12 @@ function get_custom_option()
 	// Массив для результатов
 	$result = [];
 
-	// Добавляем данные телефонов
+	// Добавляем данные телефонов из Redux
+	$result['phones'] = get_redux_phones();
+	
+	// Добавляем остальные опции
 	foreach ($options as $key => $default_value) {
-		if ($key === 'phones' && is_array($default_value)) {
-			$phones = [];
-			foreach ($default_value as $phone_key => $phone_default) {
-				$phone_value = get_option($phone_key, $phone_default);
-				$phones[$phone_key] = $phone_value;
-			}
-			$result['phones'] = $phones;
-		} else {
+		if ($key !== 'phones') {
 			$value = get_option($key, $default_value);
 			$result[$key] = $value;
 		}
@@ -114,6 +122,74 @@ function get_modals()
 	}
 
 	return $modals;
+}
+
+/**
+ * REST API callback для получения телефонов
+ * 
+ * @return array Массив телефонов
+ */
+function get_redux_phones_api()
+{
+	$phones = get_redux_phones();
+	return $phones;
+}
+
+/**
+ * Получить все заполненные телефоны из Redux
+ * 
+ * @return array Массив телефонов в формате ['phone_01' => '+74951234567', ...]
+ */
+function get_redux_phones()
+{
+	// Проверяем, доступен ли Redux
+	if (!class_exists('Redux')) {
+		return [];
+	}
+
+	global $opt_name;
+	
+	// Если $opt_name не определен, используем значение по умолчанию из темы
+	if (empty($opt_name)) {
+		$opt_name = 'redux_demo';
+	}
+	
+	// Массив для хранения заполненных телефонов
+	$phones = [];
+	
+	// Список полей телефонов в Redux
+	$phone_fields = ['phone_01', 'phone_02', 'phone_03', 'phone_04', 'phone_05'];
+	
+	// Получаем каждый телефон из Redux
+	foreach ($phone_fields as $phone_field) {
+		$phone_value = Redux::get_option($opt_name, $phone_field);
+		
+		// Добавляем только если телефон заполнен
+		if (!empty($phone_value) && trim($phone_value) !== '') {
+			$phone_raw = trim($phone_value);
+			
+			// Очищаем номер телефона, удаляя все символы кроме цифр
+			try {
+				if (function_exists('cleanNumber')) {
+					$phone_cleaned = cleanNumber($phone_raw);
+				} else {
+					// Если функция недоступна, используем простую очистку
+					$phone_cleaned = preg_replace('/\D/', '', $phone_raw);
+				}
+				
+				// Добавляем только если очистка прошла успешно
+				if (!empty($phone_cleaned)) {
+					$phones[$phone_field] = $phone_cleaned;
+				}
+			} catch (Exception $e) {
+				// В случае ошибки добавляем исходное значение
+				error_log('Error cleaning phone number: ' . $e->getMessage());
+				$phones[$phone_field] = $phone_raw;
+			}
+		}
+	}
+	
+	return $phones;
 }
 
 

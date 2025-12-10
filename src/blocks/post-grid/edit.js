@@ -82,7 +82,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		'data-block': clientId,
 	});
 
-	// Автоматически меняем template и imageSize при смене postType на clients
+	// Автоматически меняем template и imageSize при смене postType на clients или testimonials
 	useEffect(() => {
 		if (postType === 'clients') {
 			const updates = {};
@@ -97,9 +97,18 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 			if (Object.keys(updates).length > 0) {
 				setAttributes(updates);
 			}
-		} else if (postType && postType !== 'clients') {
-			// Если переключились с clients на другой тип, меняем template на default если был client шаблон
-			if (template && template.startsWith('client-')) {
+		} else if (postType === 'testimonials') {
+			const updates = {};
+			// Если template не является testimonial шаблоном, меняем на default
+			if (!template || (!template.startsWith('testimonial-') && !['default', 'card', 'blockquote', 'icon'].includes(template))) {
+				updates.template = 'default';
+			}
+			if (Object.keys(updates).length > 0) {
+				setAttributes(updates);
+			}
+		} else if (postType && postType !== 'clients' && postType !== 'testimonials') {
+			// Если переключились с clients или testimonials на другой тип, меняем template на default
+			if (template && (template.startsWith('client-') || template.startsWith('testimonial-') || ['card', 'blockquote', 'icon'].includes(template))) {
 				setAttributes({ template: 'default' });
 			}
 		}
@@ -188,6 +197,13 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 					}
 				}
 				
+				// Для testimonials добавляем _embed для получения метаполей и связанных данных
+				if (postType === 'testimonials') {
+					queryParams += '&_embed=1';
+				} else {
+					queryParams += '&_embed=wp:featuredmedia';
+				}
+				
 				const fetchedPosts = await apiFetch({
 					path: `/wp/v2/${endpoint}?${queryParams}`,
 				});
@@ -217,7 +233,14 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 					const imageSizes = featuredMedia?.media_details?.sizes || {};
 					
 					// Если нет featured image, используем placeholder
-					const placeholderUrl = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect fill="%23ddd" width="400" height="300"/%3E%3Ctext fill="%23999" font-family="sans-serif" font-size="18" dy="10.5" font-weight="bold" x="50%25" y="50%25" text-anchor="middle"%3ENo Image%3C/text%3E%3C/svg%3E';
+					// Получаем URL плагина из window (если передан) или используем относительный путь
+					let placeholderUrl = '/wp-content/plugins/codeweber-gutenberg-blocks/placeholder.jpg';
+					if (window.codeweberBlocksData?.pluginUrl) {
+						const pluginUrl = window.codeweberBlocksData.pluginUrl;
+						placeholderUrl = pluginUrl.endsWith('/') ? `${pluginUrl}placeholder.jpg` : `${pluginUrl}/placeholder.jpg`;
+					} else if (window.location && window.location.origin) {
+						placeholderUrl = `${window.location.origin}/wp-content/plugins/codeweber-gutenberg-blocks/placeholder.jpg`;
+					}
 					const finalImageUrl = imageUrl || placeholderUrl;
 					
 					// Обрабатываем заголовок: убираем HTML-теги и ограничиваем до 56 символов
@@ -249,6 +272,68 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 						linkUrl = post.company_url;
 					}
 					
+					// Для testimonials получаем дополнительные данные из метаполей
+					let testimonialData = {};
+					if (postType === 'testimonials') {
+						// Получаем данные testimonials из meta (через REST API поля)
+						// Метаполя регистрируются через register_rest_field и доступны напрямую
+						const testimonialText = post._testimonial_text || post.meta?._testimonial_text || '';
+						
+						// Автор
+						const authorType = post._testimonial_author_type || post.meta?._testimonial_author_type || 'custom';
+						let authorName = '';
+						let authorRole = '';
+						let avatarUrl = '';
+						
+						if (authorType === 'user') {
+							const userId = post._testimonial_author_user_id || post.meta?._testimonial_author_user_id;
+							if (userId) {
+								// Для пользователей используем данные из _embedded если доступны
+								const embedded = post._embedded || {};
+								if (embedded['author'] && embedded['author'][0]) {
+									const user = embedded['author'][0];
+									authorName = user.name || '';
+									authorRole = post._testimonial_author_role || post.meta?._testimonial_author_role || '';
+									avatarUrl = user.avatar_urls?.['96'] || '';
+								} else {
+									authorName = titleText; // Fallback на заголовок поста
+									authorRole = post._testimonial_author_role || post.meta?._testimonial_author_role || '';
+								}
+							}
+						} else {
+							authorName = post._testimonial_author_name || post.meta?._testimonial_author_name || titleText;
+							authorRole = post._testimonial_author_role || post.meta?._testimonial_author_role || '';
+							const avatarId = post._testimonial_avatar || post.meta?._testimonial_avatar;
+							if (avatarId) {
+								// Пытаемся получить URL аватара из _embedded
+								const embedded = post._embedded || {};
+								if (embedded['wp:attachment'] && Array.isArray(embedded['wp:attachment'])) {
+									const avatarMedia = embedded['wp:attachment'].find(item => item.id === parseInt(avatarId));
+									if (avatarMedia) {
+										avatarUrl = avatarMedia.source_url || '';
+									}
+								}
+							}
+						}
+						
+						// Рейтинг
+						const rating = parseInt(post._testimonial_rating || post.meta?._testimonial_rating || '5');
+						const ratingClass = ['', 'one', 'two', 'three', 'four', 'five'][rating] || 'five';
+						
+						// Компания
+						const company = post._testimonial_company || post.meta?._testimonial_company || '';
+						
+						testimonialData = {
+							text: testimonialText || excerptText, // Используем excerpt если нет текста
+							authorName: authorName,
+							authorRole: authorRole,
+							company: company,
+							rating: rating,
+							ratingClass: ratingClass,
+							avatarUrl: avatarUrl || finalImageUrl, // Используем featured image если нет аватара
+						};
+					}
+					
 					const postData = {
 						id: imageId || post.id,
 						url: finalImageUrl, // Всегда должен быть заполнен
@@ -258,6 +343,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 						caption: '',
 						description: excerptText,
 						linkUrl: linkUrl,
+						...testimonialData, // Добавляем данные testimonials если есть
 					};
 
 					console.log('Post Grid: Post data:', postData);
@@ -487,7 +573,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 								key={`${post.id}-${index}-${hoverEffectsKey}-${imageSize}`}
 								className={gridType === 'classic' ? getColClasses() : ''}
 							>
-								{['default', 'card', 'card-content', 'slider', 'default-clickable', 'overlay-5', 'client-simple', 'client-grid', 'client-card'].includes(template) ? (
+								{['default', 'card', 'card-content', 'slider', 'default-clickable', 'overlay-5', 'client-simple', 'client-grid', 'client-card', 'blockquote', 'icon'].includes(template) || (postType === 'testimonials' && ['default', 'card', 'blockquote', 'icon'].includes(template)) ? (
 									<PostGridItemRender
 										post={post}
 										template={template}
@@ -559,7 +645,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 								key={`${post.id}-${index}-${hoverEffectsKey}-${imageSize}-${template}`}
 								className={template === 'client-simple' ? 'px-5' : ''}
 							>
-								{['default', 'card', 'card-content', 'slider', 'default-clickable', 'overlay-5', 'client-simple', 'client-grid', 'client-card'].includes(template) ? (
+								{['default', 'card', 'card-content', 'slider', 'default-clickable', 'overlay-5', 'client-simple', 'client-grid', 'client-card', 'blockquote', 'icon'].includes(template) || (postType === 'testimonials' && ['default', 'card', 'blockquote', 'icon'].includes(template)) ? (
 									<PostGridItemRender
 										post={post}
 										template={template}

@@ -27,3 +27,4 @@ registerBlockType(metadata, {
 		__('nav', 'codeweber-gutenberg-blocks'),
 	],
 });
+

@@ -25,19 +25,56 @@
 		}
 	}
 
-	// Controls for tabs
-	.tabs-controls {
-		position: absolute;
-		top: -18px;
-		right: 8px;
-		display: flex;
-		gap: 4px;
-		opacity: 0.7;
-		z-index: 10;
+	// Controls for tabs - inside each nav-item
+	.nav-item {
+		position: relative;
 
-		button {
-			padding: 4px 8px;
-			font-size: 12px;
+		.tabs-item-controls {
+			opacity: 0 !important;
+			visibility: hidden !important;
+			transition: opacity 0.2s ease, visibility 0.2s ease;
+			pointer-events: none !important;
+			background: #fff !important;
+			padding: 4px !important;
+			border-radius: 4px !important;
+			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+			border: 1px solid #ddd !important;
+
+			button {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				width: 28px;
+				height: 28px;
+				padding: 0;
+				margin: 0;
+				cursor: pointer;
+				border: 1px solid #ddd;
+				background: #fff;
+				border-radius: 2px;
+				transition: background-color 0.2s ease;
+				font-size: 14px;
+
+				&:hover:not(:disabled) {
+					background-color: rgba(0, 0, 0, 0.05);
+				}
+
+				&:disabled {
+					opacity: 0.4;
+					cursor: not-allowed;
+				}
+
+				&.is-destructive:hover:not(:disabled) {
+					background-color: rgba(220, 50, 47, 0.1);
+					border-color: #dc322f;
+				}
+			}
+		}
+
+		&:hover .tabs-item-controls {
+			opacity: 1 !important;
+			visibility: visible !important;
+			pointer-events: auto !important;
 		}
 	}
 
@@ -46,3 +83,4 @@
 		margin-top: 1rem;
 	}
 }
+

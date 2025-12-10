@@ -86,6 +86,18 @@ msgstr "Класс иконки"
 msgid "Social Icon Class"
 msgstr "Класс соц. иконки"
 
+#: src/blocks/button/sidebar.js:400
+msgid "Gradient Color"
+msgstr "Градиентный цвет"
+
+#: src/blocks/button/sidebar.js:518
+msgid "Current icon:"
+msgstr "Текущая иконка:"
+
+#: src/blocks/button/sidebar.js:579
+msgid "Social Icon Style"
+msgstr "Стиль соц. иконки"
+
 #: src/components/gap/GapControl.js:5
 msgid "General"
 msgstr "Общие"
@@ -1699,6 +1711,30 @@ msgstr "Выбрать телефон"
 msgid "Select Post"
 msgstr "Выбрать запись"
 
+#: src/utilities/link_type.js:1098
+msgid "Select Post Type"
+msgstr "Выбрать тип записи"
+
+#: src/utilities/link_type.js:1105
+msgid "No post types found"
+msgstr "Типы записей не найдены"
+
+#: src/utilities/link_type.js:1108
+msgid "Select the type of post to display"
+msgstr "Выберите тип записи для отображения"
+
+#: src/utilities/link_type.js:1130
+msgid "No posts found"
+msgstr "Записи не найдены"
+
+#: src/utilities/link_type.js:1070
+msgid "Loading phones..."
+msgstr "Загрузка телефонов..."
+
+#: src/utilities/link_type.js:1076
+msgid "No phones found"
+msgstr "Телефоны не найдены"
+
 #: src/utilities/link_type.js
 msgid "Select Page"
 msgstr "Выбрать страницу"
@@ -2335,3 +2371,219 @@ msgstr "Нажмите, чтобы изменить иконку"
 #: src/blocks/tabs/edit.js
 msgid "Click to add icon"
 msgstr "Нажмите, чтобы добавить иконку"
+
+#: src/blocks/tabs/sidebar.js
+msgid "Fanny"
+msgstr "Fanny"
+
+#: src/blocks/tabs/sidebar.js
+msgid "Tab Rounded"
+msgstr "Скругление вкладок"
+
+#: src/blocks/tabs/sidebar.js
+msgid "None"
+msgstr "Нет"
+
+#: src/blocks/tabs/sidebar.js
+msgid "Rounded"
+msgstr "Скруглено"
+
+#: src/blocks/tabs/sidebar.js
+msgid "Rounded 0"
+msgstr "Скруглено 0"
+
+#: src/blocks/tabs/sidebar.js
+msgid "Rounded Pill"
+msgstr "Скруглено Pill"
+
+#: src/blocks/tabs/sidebar.js
+msgid "Tab Alignment"
+msgstr "Выравнивание вкладок"
+
+#: src/blocks/tabs/sidebar.js
+msgid "Left"
+msgstr "Слева"
+
+#: src/blocks/tabs/sidebar.js
+msgid "Center"
+msgstr "По центру"
+
+#: src/blocks/tabs/sidebar.js
+msgid "Right"
+msgstr "Справа"
+
+#: src/blocks/tabs/sidebar.js
+msgid "Enable Background"
+msgstr "Включить фон"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Avatar Settings"
+msgstr "Настройки аватара"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Avatar Type"
+msgstr "Тип аватара"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Letters"
+msgstr "Буквы"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Image"
+msgstr "Изображение"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Enter letters to display (e.g., AB, TC, CH)"
+msgstr "Введите буквы для отображения (например, AB, TC, CH)"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Background Color"
+msgstr "Цвет фона"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Text Color"
+msgstr "Цвет текста"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Avatar Image"
+msgstr "Изображение аватара"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Size"
+msgstr "Размер"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Size from 1 to 25 (w-1 to w-25, h-1 to h-25)"
+msgstr "Размер от 1 до 25 (w-1 до w-25, h-1 до h-25)"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Avatar ID"
+msgstr "ID аватара"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Avatar Class"
+msgstr "Класс аватара"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Avatar Data"
+msgstr "Данные аватара"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Pale Primary"
+msgstr "Бледный основной"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Soft Primary"
+msgstr "Мягкий основной"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Secondary"
+msgstr "Вторичный"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Success"
+msgstr "Успех"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Danger"
+msgstr "Опасность"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Warning"
+msgstr "Предупреждение"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Info"
+msgstr "Информация"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Light"
+msgstr "Светлый"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Dark"
+msgstr "Темный"
+
+#: src/blocks/avatar/edit.js
+msgid "Select Image"
+msgstr "Выбрать изображение"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Name & Position"
+msgstr "Имя и должность"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Show Name & Position"
+msgstr "Показать имя и должность"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Name"
+msgstr "Имя"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Enter name"
+msgstr "Введите имя"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Position"
+msgstr "Должность"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Enter position/job title"
+msgstr "Введите должность/название должности"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Name Link (URL)"
+msgstr "Ссылка на имя (URL)"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Optional: URL for name link"
+msgstr "Необязательно: URL для ссылки на имя"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Leave empty if name should not be a link"
+msgstr "Оставьте пустым, если имя не должно быть ссылкой"
+
+#: src/blocks/avatar/sidebar.js
+msgid "User"
+msgstr "Пользователь"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Select User"
+msgstr "Выбрать пользователя"
+
+#: src/blocks/avatar/sidebar.js
+msgid "— Select User —"
+msgstr "— Выбрать пользователя —"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Loading users..."
+msgstr "Загрузка пользователей..."
+
+#: src/blocks/avatar/edit.js
+msgid "Select a user"
+msgstr "Выбрать пользователя"
+
+#: src/blocks/avatar/edit.js
+msgid "Loading..."
+msgstr "Загрузка..."
+
+#: src/blocks/avatar/sidebar.js
+msgid "Custom"
+msgstr "Кастомный"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Used when image is not uploaded"
+msgstr "Используется, когда изображение не загружено"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Additional Data"
+msgstr "Дополнительные данные"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Show Additional Data"
+msgstr "Показать дополнительные данные"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Enable to show name and position"
+msgstr "Включить для отображения имени и должности"

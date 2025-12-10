@@ -4,9 +4,11 @@ import {
 	TextControl,
 	Button,
 	PanelBody,
+	Spinner,
 } from '@wordpress/components';
 import { MediaUpload } from '@wordpress/block-editor';
 import { useState, useEffect } from '@wordpress/element';
+import apiFetch from '@wordpress/api-fetch';
 import { VideoURLControl } from '../components/video-url/VideoURLControl';
 import { parseVKVideoURL, parseRutubeVideoURL } from './videoUrlParsers';
 
@@ -15,6 +17,7 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 		LinkType,
 		LinkUrl,
 		PostId,
+		PostType,
 		PageId,
 		CF7ID,
 		ModalID,
@@ -41,41 +44,182 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 	const [cf7Forms, setCf7Forms] = useState([]);
 	const [modals, setModals] = useState([]);
 	const [htmlPosts, setHtmlPosts] = useState([]);
-	const [documentPosts, setDocumentPosts] = useState([]);
+		const [documentPosts, setDocumentPosts] = useState([]);
 	const [isLoadingCF7, setIsLoadingCF7] = useState(true);
 	const [phones, setPhones] = useState([]);
+	const [isLoadingPhones, setIsLoadingPhones] = useState(false);
+	const [postTypes, setPostTypes] = useState([]);
+	const [isLoadingPostTypes, setIsLoadingPostTypes] = useState(false);
+	const [isLoadingPosts, setIsLoadingPosts] = useState(false);
+
+	// Устанавливаем начальное состояние загрузки для телефонов
+	useEffect(() => {
+		if (LinkType === 'phone' && PhoneType === 'contacts') {
+			setIsLoadingPhones(true);
+		}
+	}, [LinkType, PhoneType]);
 
 	// Получаем базовый URL сайта с использованием глобальной переменной WordPress
 	const sitelinkurl = wpApiSettings.root.replace('/wp-json/', '');
 
-	// Функция для загрузки телефонов
+	// Функция для загрузки телефонов из Redux через кастомный REST API
 	const fetchPhoneNumbers = async () => {
-		const response = await fetch(`${sitelinkurl}/wp-json/wp/v2/options`);
-		const data = await response.json();
-		const phoneNumbers = data.phones || {};
-		const phoneOptions = Object.entries(phoneNumbers).map(
-			([id, phone]) => ({
-				label: phone,
-				value: phone,
-			})
-		);
-		setPhones(phoneOptions);
+		setIsLoadingPhones(true);
+		try {
+			const response = await fetch(`${wpApiSettings.root}wp/v2/phones`);
+			if (!response.ok) {
+				throw new Error(`Failed to fetch phones: ${response.status} ${response.statusText}`);
+			}
+			const phoneNumbers = await response.json();
+			
+			// Проверяем, что phoneNumbers является объектом
+			if (!phoneNumbers || typeof phoneNumbers !== 'object') {
+				console.warn('Invalid phone numbers response:', phoneNumbers);
+				setPhones([]);
+				return;
+			}
+			
+			// phoneNumbers уже является объектом вида { 'phone_01': '+74951234567', ... }
+			const phoneOptions = Object.entries(phoneNumbers).map(
+				([id, phone]) => ({
+					label: phone,
+					value: phone,
+				})
+			);
+			
+			console.log('Loaded phones:', phoneOptions);
+			setPhones(phoneOptions);
+		} catch (error) {
+			console.error('Error fetching phones:', error);
+			setPhones([]);
+		} finally {
+			setIsLoadingPhones(false);
+		}
+	};
+
+	// Функция для загрузки типов записей
+	const fetchPostTypes = async () => {
+		setIsLoadingPostTypes(true);
+		try {
+			const types = await apiFetch({ path: '/wp/v2/types' });
+			const postTypeOptions = Object.keys(types)
+				.filter((key) => {
+					// Стандартные системные типы WordPress
+					const excluded = [
+						'attachment',
+						'wp_block',
+						'wp_template',
+						'wp_template_part',
+						'wp_navigation',
+						'nav_menu_item',
+						'wp_global_styles',
+						'wp_font_family',
+						'wp_font_face',
+					];
+					// Кастомные типы записей темы, которые нужно исключить
+					const excludedCustom = [
+						'html_blocks',
+						'modal',
+						'header',
+						'footer',
+						'page-header',
+					];
+					
+					// Исключаем по ключу
+					if (excluded.includes(key) || excludedCustom.includes(key)) {
+						return false;
+					}
+					
+					// Фильтрация по названию
+					const typeName = (types[key].name || '').toLowerCase();
+					const excludedNamePatterns = [
+						'элементы меню',
+						'меню навигации',
+						'глобальные стили',
+						'семейства шрифтов',
+						'гарнитуры шрифта',
+						'хедер',
+						'футер',
+						'заголовки',
+						'page header',
+						'page headers',
+						'модальные окна',
+						'modal',
+						'html блоки',
+						'html blocks',
+						'rm content editor',
+						'content editor',
+					];
+					
+					if (excludedNamePatterns.some(pattern => typeName.includes(pattern.toLowerCase()))) {
+						return false;
+					}
+					
+					return true;
+				})
+				.map((key) => ({
+					label: types[key].name || key,
+					value: key,
+				}));
+
+			setPostTypes(postTypeOptions);
+		} catch (error) {
+			console.error('Error fetching post types:', error);
+			setPostTypes([]);
+		} finally {
+			setIsLoadingPostTypes(false);
+		}
+	};
+
+	// Функция для загрузки записей выбранного типа
+	const fetchPostsByType = async (postType) => {
+		if (!postType) {
+			setPosts([]);
+			return;
+		}
+		
+		setIsLoadingPosts(true);
+		try {
+			// Получаем правильный REST API endpoint для типа записи
+			let endpoint = postType;
+			
+			// Для стандартных типов используем правильный rest_base
+			if (postType === 'post') {
+				endpoint = 'posts';
+			} else if (postType === 'page') {
+				endpoint = 'pages';
+			} else {
+				// Для кастомных типов получаем rest_base из данных типа
+				try {
+					const postTypeData = await apiFetch({
+						path: `/wp/v2/types/${postType}`,
+					});
+					if (postTypeData && postTypeData.rest_base) {
+						endpoint = postTypeData.rest_base;
+					}
+				} catch (error) {
+					console.warn('Could not fetch post type data, using postType as endpoint:', error);
+					// Оставляем endpoint как postType
+				}
+			}
+			
+			// Запрашиваем записи с полями id и title, чтобы получить базовую информацию
+			const response = await fetch(`${wpApiSettings.root}wp/v2/${endpoint}?per_page=100&_fields=id,title,link,slug`);
+			if (!response.ok) {
+				throw new Error(`Failed to fetch posts: ${response.status} ${response.statusText}`);
+			}
+			const data = await response.json();
+			setPosts(data);
+		} catch (error) {
+			console.error('Error fetching posts:', error);
+			setPosts([]);
+		} finally {
+			setIsLoadingPosts(false);
+		}
 	};
 
 	// Загрузка постов, страниц, модальных окон и HTML с использованием WordPress REST API
 	useEffect(() => {
-		const fetchPosts = async () => {
-			const response = await fetch(`${wpApiSettings.root}wp/v2/posts`);
-			const data = await response.json();
-			setPosts(data);
-		};
-
-		const fetchPages = async () => {
-			const response = await fetch(`${wpApiSettings.root}wp/v2/pages`);
-			const data = await response.json();
-			setPages(data);
-		};
-
 		const fetchCF7Forms = async () => {
 			const response = await fetch(
 				`${sitelinkurl}/wp-json/wp/v2/options`
@@ -117,9 +261,14 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 
 		// Загрузка данных в зависимости от типа ссылки
 		if (LinkType === 'post') {
-			fetchPosts();
-		} else if (LinkType === 'page') {
-			fetchPages();
+			// Загружаем типы записей при выборе типа ссылки "post"
+			if (postTypes.length === 0) {
+				fetchPostTypes();
+			}
+			// Если уже выбран тип записей, загружаем записи этого типа
+			if (PostType) {
+				fetchPostsByType(PostType);
+			}
 		} else if (LinkType === 'cf7') {
 			fetchCF7Forms();
 		} else if (LinkType === 'modal') {
@@ -127,13 +276,16 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 		} else if (LinkType === 'html') {
 			fetchHtmlPosts();
 		} else if (LinkType === 'phone') {
-			fetchPhoneNumbers();
+			// Загружаем телефоны заранее, чтобы они были готовы при выборе 'contacts'
+			if (PhoneType === 'contacts') {
+				fetchPhoneNumbers();
+			}
 		} else if (LinkType === 'document') {
 			fetchDocumentPosts();
 		}
 
 
-	}, [LinkType,  sitelinkurl]);
+	}, [LinkType, PostType, sitelinkurl]);
 
 	// Автоматический выбор первого модального окна, если ModalID пустой
 	useEffect(() => {
@@ -196,6 +348,7 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 			setAttributes({
 				LinkUrl: '',
 				PostId: '',
+				PostType: '',
 				PageId: '',
 				CF7ID: '',
 				ModalID: '',
@@ -207,7 +360,7 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 				DataBsToggle: '',
 				DataBsTarget: '',
 			});
-		} else if (newLinkType === 'page') {
+		} else if (newLinkType === 'cf7') {
 			setAttributes({
 				LinkUrl: '',
 				PostId: '',
@@ -449,25 +602,108 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 		}
 	};
 
-	const handlePostSelect = (selectedPostId) => {
-		setAttributes({ PostId: selectedPostId });
-		const selectedPost = posts.find(
-			(post) => post.id === parseInt(selectedPostId)
-		);
-		if (selectedPost) {
-			setAttributes({ LinkUrl: selectedPost.link });
-		}
+	const handlePostTypeChange = (selectedPostType) => {
+		setAttributes({ PostType: selectedPostType, PostId: '' });
+		// Загружаем записи выбранного типа
+		fetchPostsByType(selectedPostType);
 	};
 
-	const handlePageSelect = (selectedPageId) => {
-		setAttributes({ PageId: selectedPageId });
-		const selectedPage = pages.find(
-			(page) => page.id === parseInt(selectedPageId)
-		);
-		if (selectedPage) {
-			setAttributes({ LinkUrl: selectedPage.link });
+	const handlePostSelect = async (selectedPostId) => {
+		if (!selectedPostId || !PostType) {
+			return;
 		}
+		
+		setAttributes({ PostId: selectedPostId });
+		
+		// Ищем запись в уже загруженных
+		const selectedPost = posts.find(
+			(post) => {
+				const postId = String(post.id);
+				const selectedId = String(selectedPostId);
+				return postId === selectedId || post.id == selectedPostId;
+			}
+		);
+		
+		// Если запись найдена и есть link, используем его
+		if (selectedPost && selectedPost.link) {
+			setAttributes({ LinkUrl: selectedPost.link });
+			return;
+		}
+		
+		// Определяем правильный endpoint для типа записи
+		let endpoint = PostType;
+		if (PostType === 'post') {
+			endpoint = 'posts';
+		} else if (PostType === 'page') {
+			endpoint = 'pages';
+		} else {
+			// Для кастомных типов получаем rest_base
+			try {
+				const postTypeData = await apiFetch({
+					path: `/wp/v2/types/${PostType}`,
+				});
+				if (postTypeData && postTypeData.rest_base) {
+					endpoint = postTypeData.rest_base;
+				}
+			} catch (error) {
+				console.warn('Could not fetch post type data:', error);
+			}
+		}
+		
+		// Если link нет, запрашиваем конкретную запись по ID для получения правильного URL
+		try {
+			const response = await fetch(`${wpApiSettings.root}wp/v2/${endpoint}/${selectedPostId}?_fields=id,link`);
+			if (response.ok) {
+				const postData = await response.json();
+				if (postData.link) {
+					setAttributes({ LinkUrl: postData.link });
+					return;
+				}
+			}
+		} catch (error) {
+			console.warn('Error fetching post permalink:', error);
+		}
+		
+		// Если ничего не получилось, формируем URL по ID
+		// Это fallback, который всегда сработает
+		const baseUrl = wpApiSettings.root.replace('/wp-json/', '');
+		let postUrl;
+		
+		if (PostType === 'post') {
+			postUrl = `${baseUrl}?p=${selectedPostId}`;
+		} else if (PostType === 'page') {
+			postUrl = `${baseUrl}?page_id=${selectedPostId}`;
+		} else {
+			// Для кастомных типов записей
+			postUrl = `${baseUrl}?post_type=${PostType}&p=${selectedPostId}`;
+		}
+		
+		setAttributes({ LinkUrl: postUrl });
 	};
+
+	// Автоматический выбор записи, если она единственная
+	useEffect(() => {
+		// Выполняем только если:
+		// 1. Тип ссылки - "post"
+		// 2. Выбран тип записей (PostType)
+		// 3. Записи загружены (не загружаются)
+		// 4. Записей ровно одна
+		// 5. PostId еще не установлен или пустой
+		if (
+			LinkType === 'post' &&
+			PostType &&
+			!isLoadingPosts &&
+			posts.length === 1 &&
+			(!PostId || PostId === '')
+		) {
+			const singlePost = posts[0];
+			const postId = String(singlePost.id);
+			
+			// Автоматически выбираем единственную запись
+			handlePostSelect(postId);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [LinkType, PostType, isLoadingPosts, posts.length, PostId]);
 
 const handleCF7Select = (selectedCF7Id) => {
 	setAttributes({
@@ -622,12 +858,9 @@ const handleHtml5VideoChange = (newUrl) => {
 				value={LinkType}
 				options={[
 					{ label: __('External', 'codeweber-gutenberg-blocks'), value: 'external' },
-					{ label: __('Page', 'codeweber-gutenberg-blocks'), value: 'page' },
 					{ label: __('Post', 'codeweber-gutenberg-blocks'), value: 'post' },
 					{ label: __('CF7', 'codeweber-gutenberg-blocks'), value: 'cf7' },
 					{ label: __('Modal', 'codeweber-gutenberg-blocks'), value: 'modal' },
-					{ label: __('HTML', 'codeweber-gutenberg-blocks'), value: 'html' },
-					{ label: __('Document', 'codeweber-gutenberg-blocks'), value: 'document' },
 					{ label: __('Phone', 'codeweber-gutenberg-blocks'), value: 'phone' },
 					{ label: __('PDF', 'codeweber-gutenberg-blocks'), value: 'pdf' },
 					{ label: __('Image', 'codeweber-gutenberg-blocks'), value: 'image' },
@@ -830,55 +1063,77 @@ const handleHtml5VideoChange = (newUrl) => {
 						)}
 
 						{PhoneType === 'contacts' && (
-							<SelectControl
-								label={__('Select Phone', 'codeweber-gutenberg-blocks')}
-								value={PhoneNumber}
-								options={phones}
-								onChange={(newPhone) => {
-									setAttributes({
-										PhoneNumber: newPhone,
-									});
-									setAttributes({
-										LinkUrl: `tel:${newPhone}`,
-									});
-									setAttributes({
-										DataValue: ``,
-									});
-								}}
-							/>
+							<>
+								{isLoadingPhones ? (
+									<div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+										<Spinner />
+										<span>{__('Loading phones...', 'codeweber-gutenberg-blocks')}</span>
+									</div>
+								) : (
+									<SelectControl
+										label={__('Select Phone', 'codeweber-gutenberg-blocks')}
+										value={PhoneNumber}
+										options={phones.length > 0 ? phones : [{ label: __('No phones found', 'codeweber-gutenberg-blocks'), value: '' }]}
+										onChange={(newPhone) => {
+											setAttributes({
+												PhoneNumber: newPhone,
+											});
+											setAttributes({
+												LinkUrl: `tel:${newPhone}`,
+											});
+											setAttributes({
+												DataValue: ``,
+											});
+										}}
+									/>
+								)}
+							</>
 						)}
 					</>
 				)}
 
-				{LinkType === 'post' &&
-					(posts.length > 0 ? (
+				{LinkType === 'post' && (
+					<>
 						<SelectControl
-							label={__('Select Post', 'codeweber-gutenberg-blocks')}
-							value={PostId}
-							options={posts.map((post) => ({
-								label: post.title.rendered,
-								value: post.id,
-							}))}
-							onChange={handlePostSelect}
+							label={__('Select Post Type', 'codeweber-gutenberg-blocks')}
+							value={PostType}
+							options={
+								isLoadingPostTypes
+									? [{ label: __('Loading...', 'codeweber-gutenberg-blocks'), value: '' }]
+									: postTypes.length > 0
+									? postTypes
+									: [{ label: __('No post types found', 'codeweber-gutenberg-blocks'), value: '' }]
+							}
+							onChange={handlePostTypeChange}
+							help={__('Select the type of post to display', 'codeweber-gutenberg-blocks')}
 						/>
-					) : (
-						<p>Post not found</p> // Выводим сообщение, если постов нет
-					))}
 
-				{LinkType === 'page' &&
-					(pages.length > 0 ? (
-						<SelectControl
-							label={__('Select Page', 'codeweber-gutenberg-blocks')}
-							value={PageId}
-							options={pages.map((page) => ({
-								label: page.title.rendered,
-								value: page.id,
-							}))}
-							onChange={handlePageSelect}
-						/>
-					) : (
-						<p>Page not found</p> // Выводим сообщение, если страниц нет
-					))}
+						{PostType && (
+							<>
+								{isLoadingPosts ? (
+									<div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '16px' }}>
+										<Spinner />
+										<span>{__('Loading posts...', 'codeweber-gutenberg-blocks')}</span>
+									</div>
+								) : posts.length > 0 ? (
+									<SelectControl
+										label={__('Select Post', 'codeweber-gutenberg-blocks')}
+										value={PostId}
+										options={posts.map((post) => ({
+											label: post.title.rendered,
+											value: String(post.id), // Приводим к строке для консистентности
+										}))}
+										onChange={handlePostSelect}
+									/>
+								) : (
+									<p style={{ marginTop: '16px' }}>
+										{__('No posts found', 'codeweber-gutenberg-blocks')}
+									</p>
+								)}
+							</>
+						)}
+					</>
+				)}
 
 				{LinkType === 'cf7' &&
 					(cf7Forms.length > 0 ? (
@@ -908,46 +1163,6 @@ const handleHtml5VideoChange = (newUrl) => {
 						/>
 					) : (
 						<p>Modal not found</p> // Выводим сообщение, если модальных окон нет
-					))}
-
-				{LinkType === 'html' &&
-					(htmlPosts.length > 0 ? (
-						<SelectControl
-							label={__('Select HTML', 'codeweber-gutenberg-blocks')}
-							value={HtmlID}
-							options={htmlPosts.map((htmlPost) => ({
-								label: htmlPost.title.rendered,
-								value: htmlPost.id,
-							}))}
-							onChange={handleHtmlSelect}
-						/>
-					) : (
-						<p>HTML not found</p> // Выводим сообщение, если HTML контента нет
-					))}
-
-				{LinkType === 'document' &&
-					(documentPosts.length > 0 ? (
-						<SelectControl
-							label={__('Select Document', 'codeweber-gutenberg-blocks')}
-							value={DocumentID}
-							options={documentPosts.map((documentPost) => {
-								// Извлекаем расширение файла из URL
-								const fileUrl =
-									documentPost.meta?._new_documents_file ||
-									'';
-								const fileExtension = fileUrl
-									? fileUrl.split('.').pop()
-									: 'file not found'; // Извлекаем расширение
-
-								return {
-									label: `${documentPost.title.rendered} - ${fileExtension}`, // Добавляем расширение к названию
-									value: documentPost.id,
-								};
-							})}
-							onChange={handleDocumentSelect}
-						/>
-					) : (
-						<p>Document not found</p> // Выводим сообщение, если документов нет
 					))}
 			</PanelBody>
 		</>

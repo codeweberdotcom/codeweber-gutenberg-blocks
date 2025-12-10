@@ -85,6 +85,10 @@
             "type": "string",
             "default": ""
         },
+		"PostType": {
+            "type": "string",
+            "default": ""
+        },
 		"CF7ID": {
             "type": "string",
             "default": ""

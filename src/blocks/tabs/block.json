@@ -17,6 +17,18 @@
 			"type": "string",
 			"default": "basic"
 		},
+		"tabRounded": {
+			"type": "string",
+			"default": ""
+		},
+		"tabAlignment": {
+			"type": "string",
+			"default": "left"
+		},
+		"tabBackground": {
+			"type": "boolean",
+			"default": false
+		},
 		"activeTab": {
 			"type": "number",
 			"default": 0
@@ -58,3 +70,4 @@
 	"editorStyle": "file:./index.css",
 	"style": "file:./style-index.css"
 }
+

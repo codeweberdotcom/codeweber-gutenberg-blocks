@@ -17,12 +17,6 @@
 		list-style: none;
 
 		li {
-			position: relative;
-			padding: 0.5rem 0;
-			display: flex;
-			align-items: center;
-			gap: 0.5rem;
-
 			span {
 				display: inline-flex;
 				align-items: center;
@@ -88,4 +82,5 @@
 		pointer-events: auto;
 	}
 }
+
 

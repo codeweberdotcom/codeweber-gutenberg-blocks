@@ -1,17 +1,112 @@
 /* Editor стили для блока Button */
 
 /* Исправляем ширину кнопки в редакторе (wp-block по умолчанию width: 100%) */
-.block-editor-block-list__layout .wp-block.wp-block-codeweber-blocks-button,
-.editor-styles-wrapper .block-editor-block-list__layout .wp-block-codeweber-blocks-button,
-a.block-editor-block-list__block.wp-block.wp-block-codeweber-blocks-button,
-a.wp-block.wp-block-codeweber-blocks-button.btn {
-	width: auto !important;
-	max-width: 100% !important;
+/* Исключаем типы circle и play */
+.block-editor-block-list__layout .wp-block.wp-block-codeweber-blocks-button:not(.btn-circle):not(.btn-play),
+.editor-styles-wrapper .block-editor-block-list__layout .wp-block-codeweber-blocks-button:not(.btn-circle):not(.btn-play),
+a.block-editor-block-list__block.wp-block.wp-block-codeweber-blocks-button:not(.btn-circle):not(.btn-play),
+a.wp-block.wp-block-codeweber-blocks-button.btn:not(.btn-circle):not(.btn-play) {
 	display: inline-block !important;
 }
 
 /* Еще более специфичный селектор */
 .block-editor-block-list__layout > .wp-block-codeweber-blocks-button.wp-block {
+}
+
+/* Перебиваем width: 100% !important от .wp-block для типов circle и play */
+/* Базовый размер .btn-circle */
+.block-editor-block-list__layout .wp-block.wp-block-codeweber-blocks-button.btn.btn-circle,
+.editor-styles-wrapper .block-editor-block-list__layout .wp-block.wp-block-codeweber-blocks-button.btn.btn-circle,
+a.block-editor-block-list__block.wp-block.wp-block-codeweber-blocks-button.btn.btn-circle,
+a.wp-block.wp-block-codeweber-blocks-button.btn.btn-circle {
+	width: 2.2rem !important;
+	height: 2.2rem !important;
+}
+
+/* Extra маленький размер .btn-circle.btn-xs */
+.block-editor-block-list__layout .wp-block.wp-block-codeweber-blocks-button.btn.btn-circle.btn-xs,
+.editor-styles-wrapper .block-editor-block-list__layout .wp-block.wp-block-codeweber-blocks-button.btn.btn-circle.btn-xs,
+a.block-editor-block-list__block.wp-block.wp-block-codeweber-blocks-button.btn.btn-circle.btn-xs,
+a.wp-block.wp-block-codeweber-blocks-button.btn.btn-circle.btn-xs {
+	width: 1.4rem !important;
+	height: 1.4rem !important;
+}
+
+/* Маленький размер .btn-circle.btn-sm */
+.block-editor-block-list__layout .wp-block.wp-block-codeweber-blocks-button.btn.btn-circle.btn-sm,
+.editor-styles-wrapper .block-editor-block-list__layout .wp-block.wp-block-codeweber-blocks-button.btn.btn-circle.btn-sm,
+a.block-editor-block-list__block.wp-block.wp-block-codeweber-blocks-button.btn.btn-circle.btn-sm,
+a.wp-block.wp-block-codeweber-blocks-button.btn.btn-circle.btn-sm {
+	width: 1.8rem !important;
+	height: 1.8rem !important;
+}
+
+/* Большой размер .btn-circle.btn-lg */
+.block-editor-block-list__layout .wp-block.wp-block-codeweber-blocks-button.btn.btn-circle.btn-lg,
+.editor-styles-wrapper .block-editor-block-list__layout .wp-block.wp-block-codeweber-blocks-button.btn.btn-circle.btn-lg,
+a.block-editor-block-list__block.wp-block.wp-block-codeweber-blocks-button.btn.btn-circle.btn-lg,
+a.wp-block.wp-block-codeweber-blocks-button.btn.btn-circle.btn-lg {
+	width: 3rem !important;
+	height: 3rem !important;
+}
+
+/* Extra большой размер .btn-circle.btn-elg */
+.block-editor-block-list__layout .wp-block.wp-block-codeweber-blocks-button.btn.btn-circle.btn-elg,
+.editor-styles-wrapper .block-editor-block-list__layout .wp-block.wp-block-codeweber-blocks-button.btn.btn-circle.btn-elg,
+a.block-editor-block-list__block.wp-block.wp-block-codeweber-blocks-button.btn.btn-circle.btn-elg,
+a.wp-block.wp-block-codeweber-blocks-button.btn.btn-circle.btn-elg {
+	width: 4rem !important;
+	height: 4rem !important;
+}
+
+/* Размер .btn-circle.btn-play */
+.block-editor-block-list__layout .wp-block.wp-block-codeweber-blocks-button.btn.btn-circle.btn-play,
+.editor-styles-wrapper .block-editor-block-list__layout .wp-block.wp-block-codeweber-blocks-button.btn.btn-circle.btn-play,
+a.block-editor-block-list__block.wp-block.wp-block-codeweber-blocks-button.btn.btn-circle.btn-play,
+a.wp-block.wp-block-codeweber-blocks-button.btn.btn-circle.btn-play {
+	width: 3.5rem !important;
+	height: 3.5rem !important;
+}
+
+/* Добавляем width: auto для типов кнопок solid, icon, expand, link */
+/* Используем очень специфичные селекторы чтобы перебить width: 100% !important от wp-block */
+/* Для типа solid: btn но не btn-circle, btn-expand, btn-icon, btn-play */
+.block-editor-block-list__layout .wp-block.wp-block-codeweber-blocks-button.btn:not(.btn-circle):not(.btn-expand):not(.btn-icon):not(.btn-play),
+.editor-styles-wrapper .block-editor-block-list__layout .wp-block.wp-block-codeweber-blocks-button.btn:not(.btn-circle):not(.btn-expand):not(.btn-icon):not(.btn-play),
+a.block-editor-block-list__block.wp-block.wp-block-codeweber-blocks-button.btn:not(.btn-circle):not(.btn-expand):not(.btn-icon):not(.btn-play),
+a.wp-block.wp-block-codeweber-blocks-button.btn:not(.btn-circle):not(.btn-expand):not(.btn-icon):not(.btn-play) {
+	width: auto !important;
+}
+
+/* Для типа icon: btn-icon */
+.block-editor-block-list__layout .wp-block.wp-block-codeweber-blocks-button.btn-icon,
+.editor-styles-wrapper .block-editor-block-list__layout .wp-block.wp-block-codeweber-blocks-button.btn-icon,
+a.block-editor-block-list__block.wp-block.wp-block-codeweber-blocks-button.btn-icon,
+a.wp-block.wp-block-codeweber-blocks-button.btn-icon {
+	width: auto !important;
+}
+
+/* Для типа expand: btn-expand */
+.block-editor-block-list__layout .wp-block.wp-block-codeweber-blocks-button.btn-expand,
+.editor-styles-wrapper .block-editor-block-list__layout .wp-block.wp-block-codeweber-blocks-button.btn-expand,
+a.block-editor-block-list__block.wp-block.wp-block-codeweber-blocks-button.btn-expand,
+a.wp-block.wp-block-codeweber-blocks-button.btn-expand {
+	width: auto !important;
+}
+
+/* Для типа link: hover, hover-2, hover-3 */
+.block-editor-block-list__layout .wp-block.wp-block-codeweber-blocks-button.hover:not(.btn),
+.editor-styles-wrapper .block-editor-block-list__layout .wp-block.wp-block-codeweber-blocks-button.hover:not(.btn),
+a.block-editor-block-list__block.wp-block.wp-block-codeweber-blocks-button.hover:not(.btn),
+a.wp-block.wp-block-codeweber-blocks-button.hover:not(.btn),
+.block-editor-block-list__layout .wp-block.wp-block-codeweber-blocks-button.hover-2:not(.btn),
+.editor-styles-wrapper .block-editor-block-list__layout .wp-block.wp-block-codeweber-blocks-button.hover-2:not(.btn),
+a.block-editor-block-list__block.wp-block.wp-block-codeweber-blocks-button.hover-2:not(.btn),
+a.wp-block.wp-block-codeweber-blocks-button.hover-2:not(.btn),
+.block-editor-block-list__layout .wp-block.wp-block-codeweber-blocks-button.hover-3:not(.btn),
+.editor-styles-wrapper .block-editor-block-list__layout .wp-block.wp-block-codeweber-blocks-button.hover-3:not(.btn),
+a.block-editor-block-list__block.wp-block.wp-block-codeweber-blocks-button.hover-3:not(.btn),
+a.wp-block.wp-block-codeweber-blocks-button.hover-3:not(.btn) {
 	width: auto !important;
 }
 

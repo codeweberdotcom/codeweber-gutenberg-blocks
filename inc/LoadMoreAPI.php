@@ -741,6 +741,83 @@ class LoadMoreAPI {
 					'image_size' => $image_size,
 					'enable_link' => isset($attributes['enableLink']) ? (bool) $attributes['enableLink'] : false,
 				];
+			} elseif ($post_type === 'documents') {
+				// Специальная обработка для documents
+				// Для documents всегда используем только шаблон document-card
+				$display_settings = [
+					'show_title' => true,
+					'show_date' => true,
+					'show_category' => false,
+					'show_comments' => false,
+					'title_length' => 56,
+					'excerpt_length' => 40,
+					'title_tag' => 'h2',
+					'title_class' => '',
+				];
+				
+				// Настройки шаблона для documents (overlay-5 стиль)
+				$template_args = [
+					'image_size' => $image_size,
+					'hover_classes' => 'overlay overlay-5',
+					'border_radius' => isset($attributes['borderRadius']) ? $attributes['borderRadius'] : 'rounded',
+					'show_figcaption' => true,
+				];
+				
+				// Для documents всегда используем только шаблон document-card
+				$html = cw_render_post_card($post, 'document-card', $display_settings, $template_args);
+				
+				// Если функция вернула не пустую строку, используем её
+				if (!empty($html) && trim($html) !== '') {
+					// Добавляем обертку для grid режима (не swiper)
+					if (!$is_swiper) {
+						// Для classic grid добавляем обертку с col-* классами
+						if ($grid_type === 'classic' && !empty($col_classes)) {
+							$html = '<div class="' . esc_attr($col_classes) . '">' . $html . '</div>';
+						}
+						// Для columns-grid добавляем обертку с классом col (row-cols-* работает на контейнере)
+						elseif ($grid_type === 'columns-grid') {
+							$html = '<div class="col">' . $html . '</div>';
+						}
+					}
+					
+					return $html;
+				}
+			} elseif ($post_type === 'faq') {
+				// Специальная обработка для FAQ
+				$display_settings = [
+					'show_title' => true,
+					'show_date' => false,
+					'show_category' => false,
+					'show_comments' => false,
+					'title_length' => 0,
+					'excerpt_length' => 80, // Показываем ответ FAQ
+					'title_tag' => 'h4',
+					'title_class' => '',
+				];
+				
+				$template_args = [
+					'image_size' => $image_size,
+				];
+				
+				// Используем шаблон default для FAQ
+				$html = cw_render_post_card($post, 'default', $display_settings, $template_args);
+				
+				// Если функция вернула не пустую строку, используем её
+				if (!empty($html) && trim($html) !== '') {
+					// Добавляем обертку для grid режима (не swiper)
+					if (!$is_swiper) {
+						// Для classic grid добавляем обертку с col-* классами
+						if ($grid_type === 'classic' && !empty($col_classes)) {
+							$html = '<div class="' . esc_attr($col_classes) . '">' . $html . '</div>';
+						}
+						// Для columns-grid добавляем обертку с классом col (row-cols-* работает на контейнере)
+						elseif ($grid_type === 'columns-grid') {
+							$html = '<div class="col">' . $html . '</div>';
+						}
+					}
+					
+					return $html;
+				}
 			} else {
 				// Настройки отображения для обычных постов
 				$display_settings = [
@@ -784,12 +861,18 @@ class LoadMoreAPI {
 				];
 			}
 			
-			// В режиме Swiper (slider) НИКОГДА не добавляем col-* классы
+			// В режиме Swiper (slider) НИКОГДА не добавляем обертку
 			$html = cw_render_post_card($post, $template, $display_settings, $template_args);
-			// Добавляем обертку с col-* классами только для grid режима (не swiper) и только для classic grid
-			// Для client шаблонов также не добавляем col-* в swiper режиме
-			if (!$is_swiper && $grid_type === 'classic' && !empty($col_classes)) {
-				$html = '<div class="' . esc_attr($col_classes) . '">' . $html . '</div>';
+			// Добавляем обертку для grid режима (не swiper)
+			if (!$is_swiper) {
+				// Для classic grid добавляем обертку с col-* классами
+				if ($grid_type === 'classic' && !empty($col_classes)) {
+					$html = '<div class="' . esc_attr($col_classes) . '">' . $html . '</div>';
+				}
+				// Для columns-grid добавляем обертку с классом col (row-cols-* работает на контейнере)
+				elseif ($grid_type === 'columns-grid') {
+					$html = '<div class="col">' . $html . '</div>';
+				}
 			}
 			
 			return $html;
@@ -828,9 +911,16 @@ class LoadMoreAPI {
 		
 		if ($template === 'card') {
 			// Card template
-			// В режиме Swiper не добавляем col-* классы
-			if (!$is_swiper && $grid_type === 'classic' && !empty($col_classes)) {
-				$html .= '<div class="' . esc_attr($col_classes) . '">';
+			// В режиме Swiper не добавляем обертку
+			if (!$is_swiper) {
+				// Для classic grid добавляем обертку с col-* классами
+				if ($grid_type === 'classic' && !empty($col_classes)) {
+					$html .= '<div class="' . esc_attr($col_classes) . '">';
+				}
+				// Для columns-grid добавляем обертку с классом col
+				elseif ($grid_type === 'columns-grid') {
+					$html .= '<div class="col">';
+				}
 			}
 			$html .= '<article>';
 			$html .= '<div class="card shadow-lg">';
@@ -883,12 +973,29 @@ class LoadMoreAPI {
 			$html .= '</div>'; // card-body
 			$html .= '</div>'; // card
 			$html .= '</article>';
-			$html .= '</div>';
+			// В режиме Swiper не закрываем обертку
+			if (!$is_swiper) {
+				// Для classic grid закрываем обертку с col-* классами
+				if ($grid_type === 'classic' && !empty($col_classes)) {
+					$html .= '</div>';
+				}
+				// Для columns-grid закрываем обертку
+				elseif ($grid_type === 'columns-grid') {
+					$html .= '</div>';
+				}
+			}
 		} else {
 			// Default template
-			// В режиме Swiper не добавляем col-* классы
-			if (!$is_swiper && $grid_type === 'classic' && !empty($col_classes)) {
-				$html .= '<div class="' . esc_attr($col_classes) . '">';
+			// В режиме Swiper не добавляем обертку
+			if (!$is_swiper) {
+				// Для classic grid добавляем обертку с col-* классами
+				if ($grid_type === 'classic' && !empty($col_classes)) {
+					$html .= '<div class="' . esc_attr($col_classes) . '">';
+				}
+				// Для columns-grid добавляем обертку с классом col
+				elseif ($grid_type === 'columns-grid') {
+					$html .= '<div class="col">';
+				}
 			}
 			$html .= '<article>';
 			
@@ -939,9 +1046,16 @@ class LoadMoreAPI {
 			$html .= '</ul>';
 			$html .= '</div>';
 			$html .= '</article>';
-			// В режиме Swiper не закрываем div с col-* классами
-			if (!$is_swiper && $grid_type === 'classic' && !empty($col_classes)) {
-				$html .= '</div>';
+			// В режиме Swiper не закрываем обертку
+			if (!$is_swiper) {
+				// Для classic grid закрываем обертку с col-* классами
+				if ($grid_type === 'classic' && !empty($col_classes)) {
+					$html .= '</div>';
+				}
+				// Для columns-grid закрываем обертку
+				elseif ($grid_type === 'columns-grid') {
+					$html .= '</div>';
+				}
 			}
 		}
 		

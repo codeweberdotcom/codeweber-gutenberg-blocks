@@ -85,3 +85,5 @@ fetch(fetch_vars.ajaxurl, { method: 'POST', body: formData })
 
 **Полный план:** `LOAD_MORE_FETCH_INTEGRATION_PLAN.md`
 
+
+

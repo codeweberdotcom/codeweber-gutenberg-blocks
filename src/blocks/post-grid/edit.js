@@ -106,9 +106,28 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 			if (Object.keys(updates).length > 0) {
 				setAttributes(updates);
 			}
-		} else if (postType && postType !== 'clients' && postType !== 'testimonials') {
-			// Если переключились с clients или testimonials на другой тип, меняем template на default
-			if (template && (template.startsWith('client-') || template.startsWith('testimonial-') || ['card', 'blockquote', 'icon'].includes(template))) {
+		} else if (postType === 'documents') {
+			const updates = {};
+			// Для documents используем document-card по умолчанию, если шаблон не установлен
+			// Поддерживаем оба шаблона: document-card и document-card-download
+			if (!template || (template !== 'document-card' && template !== 'document-card-download')) {
+				updates.template = 'document-card';
+			}
+			if (Object.keys(updates).length > 0) {
+				setAttributes(updates);
+			}
+		} else if (postType === 'faq') {
+			const updates = {};
+			// Для FAQ используем default по умолчанию, если шаблон не установлен
+			if (!template || template !== 'default') {
+				updates.template = 'default';
+			}
+			if (Object.keys(updates).length > 0) {
+				setAttributes(updates);
+			}
+		} else if (postType && postType !== 'clients' && postType !== 'testimonials' && postType !== 'documents' && postType !== 'faq') {
+			// Если переключились с clients, testimonials, documents или faq на другой тип, меняем template на default
+			if (template && (template.startsWith('client-') || template.startsWith('testimonial-') || template === 'document-card' || template === 'document-card-download' || ['card', 'blockquote', 'icon'].includes(template))) {
 				setAttributes({ template: 'default' });
 			}
 		}
@@ -272,6 +291,12 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 						linkUrl = post.company_url;
 					}
 					
+					// Для documents получаем URL файла документа из метаполя
+					let documentFileUrl = '';
+					if (postType === 'documents') {
+						documentFileUrl = post._document_file || post.meta?._document_file || '';
+					}
+					
 					// Для testimonials получаем дополнительные данные из метаполей
 					let testimonialData = {};
 					if (postType === 'testimonials') {
@@ -343,6 +368,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 						caption: '',
 						description: excerptText,
 						linkUrl: linkUrl,
+						documentFile: documentFileUrl, // URL файла документа для documents
 						...testimonialData, // Добавляем данные testimonials если есть
 					};
 
@@ -434,10 +460,14 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 	// Переинициализация Swiper при изменении настроек и загрузке постов
 	useEffect(() => {
 		if (typeof window === 'undefined' || !window.theme) return;
-		if (displayMode !== 'swiper') return;
 		if (isLoading || posts.length === 0) return; // Не инициализируем во время загрузки или если нет постов
 
-		destroySwiper('.cwgb-post-grid-block .swiper');
+		const blockElement = document.querySelector(`.cwgb-post-grid-block[data-block="${clientId}"]`);
+		if (!blockElement) return;
+
+		if (displayMode === 'swiper') {
+			destroySwiper('.cwgb-post-grid-block .swiper');
+		}
 
 		const timer = setTimeout(() => {
 			try {
@@ -445,6 +475,11 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 					console.log('✅ Swiper reinitialized (post-grid)');
 				}
 				
+				// Очистка старых span.bg перед реинициализацией overlay
+				const oldBgSpans = blockElement.querySelectorAll('.overlay > a > span.bg, .overlay > span > span.bg');
+				oldBgSpans.forEach(span => span.remove());
+				
+				// Overlay для effectType === 'overlay'
 				if (effectType === 'overlay' && typeof window.theme?.imageHoverOverlay === 'function') {
 					window.theme.imageHoverOverlay();
 				}
@@ -463,7 +498,9 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 
 		return () => {
 			clearTimeout(timer);
-			destroySwiper('.cwgb-post-grid-block .swiper');
+			if (displayMode === 'swiper') {
+				destroySwiper('.cwgb-post-grid-block .swiper');
+			}
 		};
 	}, [
 		displayMode,
@@ -506,6 +543,82 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		posts, // Добавляем posts для переинициализации при загрузке новых записей
 		isLoading, // Добавляем isLoading для контроля состояния загрузки
 		template, // Добавляем template для переинициализации при изменении шаблона
+	]);
+
+	// Инициализация overlay для шаблонов, которые используют классы overlay (overlay-5, document-card и т.д.)
+	useEffect(() => {
+		if (typeof window === 'undefined' || !window.theme) return;
+		if (isLoading || posts.length === 0) return; // Не инициализируем во время загрузки или если нет постов
+
+		// Шаблоны, которые используют классы overlay
+		const overlayTemplates = ['overlay-5', 'document-card', 'document-card-download'];
+		
+		// Проверяем, используется ли один из overlay шаблонов
+		if (!overlayTemplates.includes(template)) {
+			return;
+		}
+
+		const timer = setTimeout(() => {
+			try {
+				// Очистка старых span.bg перед реинициализацией overlay
+				// Ограничиваем поиск только внутри текущего блока
+				const blockElement = document.querySelector(`.cwgb-post-grid-block[data-block="${clientId}"]`);
+				if (blockElement) {
+					const oldBgSpans = blockElement.querySelectorAll('.overlay > a > span.bg, .overlay > span > span.bg');
+					oldBgSpans.forEach(span => span.remove());
+
+					// Очистка старых ripple элементов перед реинициализацией
+					const oldRipples = blockElement.querySelectorAll('.a-ripple');
+					oldRipples.forEach(ripple => ripple.remove());
+
+					// Сбрасываем флаг инициализации ripple для кнопок внутри блока
+					const rippleButtons = blockElement.querySelectorAll('.has-ripple');
+					rippleButtons.forEach(button => {
+						// Удаляем старые обработчики событий, если они были сохранены
+						if (button._rippleHandler) {
+							button.removeEventListener('click', button._rippleHandler);
+							button.removeEventListener('mouseenter', button._rippleHandler);
+							delete button._rippleHandler;
+						}
+						// Сбрасываем флаг инициализации
+						delete button.dataset.rippleInitialized;
+					});
+
+					// Инициализируем overlay для элементов внутри блока
+					const overlayElements = blockElement.querySelectorAll('.overlay > a, .overlay > span');
+					overlayElements.forEach(overlay => {
+						// Проверяем, есть ли уже span.bg
+						if (!overlay.querySelector('span.bg')) {
+							const overlayBg = document.createElement('span');
+							overlayBg.className = 'bg';
+							overlay.appendChild(overlayBg);
+						}
+					});
+
+					// Инициализируем ripple эффект для кнопок внутри блока
+					if (typeof window.custom?.rippleEffect === 'function') {
+						window.custom.rippleEffect();
+					}
+				} else if (typeof window.theme?.imageHoverOverlay === 'function') {
+					// Fallback: если блок не найден, используем стандартную функцию
+					window.theme.imageHoverOverlay();
+				}
+			} catch (error) {
+				console.error('Overlay initialization failed (post-grid):', error);
+			}
+		}, 300);
+
+		return () => {
+			clearTimeout(timer);
+		};
+	}, [
+		template,
+		posts,
+		isLoading,
+		clientId,
+		imageSize,
+		borderRadius,
+		postType,
 	]);
 
 	// Получаем конфигурацию Swiper из атрибутов
@@ -571,9 +684,9 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 						).map((post, index) => (
 							<div 
 								key={`${post.id}-${index}-${hoverEffectsKey}-${imageSize}`}
-								className={gridType === 'classic' ? getColClasses() : ''}
+								className={gridType === 'classic' ? getColClasses() : (gridType === 'columns-grid' ? 'col' : '')}
 							>
-								{['default', 'card', 'card-content', 'slider', 'default-clickable', 'overlay-5', 'client-simple', 'client-grid', 'client-card', 'blockquote', 'icon'].includes(template) || (postType === 'testimonials' && ['default', 'card', 'blockquote', 'icon'].includes(template)) ? (
+								{['default', 'card', 'card-content', 'slider', 'default-clickable', 'overlay-5', 'client-simple', 'client-grid', 'client-card', 'blockquote', 'icon', 'document-card', 'document-card-download'].includes(template) || (postType === 'testimonials' && ['default', 'card', 'blockquote', 'icon'].includes(template)) || (postType === 'documents' && ['document-card', 'document-card-download'].includes(template)) || (postType === 'faq' && template === 'default') ? (
 									<PostGridItemRender
 										post={post}
 										template={template}
@@ -645,7 +758,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 								key={`${post.id}-${index}-${hoverEffectsKey}-${imageSize}-${template}`}
 								className={template === 'client-simple' ? 'px-5' : ''}
 							>
-								{['default', 'card', 'card-content', 'slider', 'default-clickable', 'overlay-5', 'client-simple', 'client-grid', 'client-card', 'blockquote', 'icon'].includes(template) || (postType === 'testimonials' && ['default', 'card', 'blockquote', 'icon'].includes(template)) ? (
+								{['default', 'card', 'card-content', 'slider', 'default-clickable', 'overlay-5', 'client-simple', 'client-grid', 'client-card', 'blockquote', 'icon', 'document-card', 'document-card-download'].includes(template) || (postType === 'testimonials' && ['default', 'card', 'blockquote', 'icon'].includes(template)) || (postType === 'documents' && ['document-card', 'document-card-download'].includes(template)) || (postType === 'faq' && template === 'default') ? (
 									<PostGridItemRender
 										post={post}
 										template={template}

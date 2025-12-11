@@ -354,3 +354,5 @@ add_image_size('custom_size', 800, 600, true);
 
 
 
+
+

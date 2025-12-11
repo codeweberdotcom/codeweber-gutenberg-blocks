@@ -590,3 +590,5 @@ const TabsEdit = ({ attributes, setAttributes, clientId }) => {
 
 export default TabsEdit;
 
+
+

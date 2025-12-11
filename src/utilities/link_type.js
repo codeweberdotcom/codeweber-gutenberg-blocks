@@ -28,6 +28,7 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 		VimeoID,
 		RutubeID,
 		DocumentID,
+		DocumentAction,
 		VKID,
 		ButtonType,
 		LeftIcon,
@@ -515,8 +516,9 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 				RutubeID: '',
 				VKID: '',
 				DocumentID: '',
+				DocumentAction: 'download',
 				DataGlightbox: '',
-				DataGallery: 'document',
+				DataGallery: '',
 				DataBsToggle: '',
 				DataBsTarget: '',
 			});
@@ -705,6 +707,27 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [LinkType, PostType, isLoadingPosts, posts.length, PostId]);
 
+	// Автоматический выбор документа, если он единственный
+	useEffect(() => {
+		// Выполняем только если:
+		// 1. Тип ссылки - "document"
+		// 2. Документы загружены
+		// 3. Документов ровно один
+		// 4. DocumentID еще не установлен или пустой
+		if (
+			LinkType === 'document' &&
+			documentPosts.length === 1 &&
+			(!DocumentID || DocumentID === '')
+		) {
+			const singleDocument = documentPosts[0];
+			const documentId = String(singleDocument.id);
+			
+			// Автоматически выбираем единственный документ
+			handleDocumentSelect(documentId);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [LinkType, documentPosts.length, DocumentID]);
+
 const handleCF7Select = (selectedCF7Id) => {
 	setAttributes({
 		CF7ID: selectedCF7Id,
@@ -736,24 +759,52 @@ const handleHtmlSelect = (selectedHtmlId) => {
 };
 
 const handleDocumentSelect = async (selectedDocumentId) => {
+	if (!selectedDocumentId) {
+		return;
+	}
+
 	setAttributes({ DocumentID: selectedDocumentId });
 
-	try {
-		// Отправляем запрос к REST API
-		const response = await fetch(
-			`${wpApiSettings.root}wp/v2/documents/${selectedDocumentId}`
-		);
-		if (!response.ok) {
-			throw new Error(`Ошибка HTTP: ${response.status}`);
-		}
-		const documentData = await response.json();
-		const fileUrl = documentData.meta?._new_documents_file || '';
+	// Обновляем атрибуты в зависимости от выбранного действия
+	// Используем текущее значение DocumentAction или значение по умолчанию 'download'
+	const action = DocumentAction || 'download';
+	
+	if (action === 'download') {
 		setAttributes({
 			DataValue: `doc-${selectedDocumentId}`,
-			LinkUrl: fileUrl || 'javascript:void(0)',
+			LinkUrl: 'javascript:void(0)',
+			DataBsToggle: 'download',
+			DataBsTarget: '',
 		});
-	} catch (error) {
-		console.error(error);
+	} else if (action === 'email') {
+		setAttributes({
+			DataValue: `doc-${selectedDocumentId}`,
+			LinkUrl: 'javascript:void(0)',
+			DataBsToggle: 'modal',
+			DataBsTarget: 'modal',
+		});
+	}
+};
+
+const handleDocumentActionChange = (newAction) => {
+	setAttributes({ DocumentAction: newAction });
+	// Если документ уже выбран, обновляем атрибуты
+	if (DocumentID) {
+		if (newAction === 'download') {
+			setAttributes({
+				DataValue: `doc-${DocumentID}`,
+				LinkUrl: 'javascript:void(0)',
+				DataBsToggle: 'download',
+				DataBsTarget: '',
+			});
+		} else if (newAction === 'email') {
+			setAttributes({
+				DataValue: `doc-${DocumentID}`,
+				LinkUrl: 'javascript:void(0)',
+				DataBsToggle: 'modal',
+				DataBsTarget: 'modal',
+			});
+		}
 	}
 };
 
@@ -869,6 +920,7 @@ const handleHtml5VideoChange = (newUrl) => {
 					{ label: __('Vimeo', 'codeweber-gutenberg-blocks'), value: 'vimeo' },
 					{ label: __('Rutube', 'codeweber-gutenberg-blocks'), value: 'rutube' },
 					{ label: __('VK Video', 'codeweber-gutenberg-blocks'), value: 'vk' },
+					{ label: __('Document', 'codeweber-gutenberg-blocks'), value: 'document' },
 				]}
 					onChange={handleLinkTypeChange}
 				/>
@@ -1164,6 +1216,43 @@ const handleHtml5VideoChange = (newUrl) => {
 					) : (
 						<p>Modal not found</p> // Выводим сообщение, если модальных окон нет
 					))}
+
+				{LinkType === 'document' && (
+					<>
+						<div className="component-sidebar-title">
+							<label>
+								{__('Document Action', 'codeweber-gutenberg-blocks')}
+							</label>
+						</div>
+						<div className="document-action-controls button-group-sidebar_50">
+							<Button
+								isPrimary={DocumentAction === 'download'}
+								onClick={() => handleDocumentActionChange('download')}
+							>
+								{__('Download', 'codeweber-gutenberg-blocks')}
+							</Button>
+							<Button
+								isPrimary={DocumentAction === 'email'}
+								onClick={() => handleDocumentActionChange('email')}
+							>
+								{__('Send to Email', 'codeweber-gutenberg-blocks')}
+							</Button>
+						</div>
+						{documentPosts.length > 0 ? (
+							<SelectControl
+								label={__('Select Document', 'codeweber-gutenberg-blocks')}
+								value={DocumentID}
+								options={documentPosts.map((doc) => ({
+									label: doc.title.rendered,
+									value: String(doc.id),
+								}))}
+								onChange={handleDocumentSelect}
+							/>
+						) : (
+							<p>{__('No documents found', 'codeweber-gutenberg-blocks')}</p>
+						)}
+					</>
+				)}
 			</PanelBody>
 		</>
 	);

@@ -33,17 +33,35 @@
       "Link Text Color": [
         "Цвет текста ссылки"
       ],
+      "Icon Position": [
+        "Позиция иконки"
+      ],
       "Left Icon": [
         "Левая иконка"
       ],
       "Right Icon": [
         "Правая иконка"
       ],
+      "Left": [
+        "Слева"
+      ],
+      "Right": [
+        "Справа"
+      ],
       "Icon Class": [
         "Класс иконки"
       ],
       "Social Icon Class": [
         "Класс соц. иконки"
+      ],
+      "Gradient Color": [
+        "Градиентный цвет"
+      ],
+      "Current icon:": [
+        "Текущая иконка:"
+      ],
+      "Social Icon Style": [
+        "Стиль соц. иконки"
       ],
       "General": [
         "Общие"
@@ -55,7 +73,7 @@
         "Отступы"
       ],
       "Position": [
-        "Позиция"
+        "Должность"
       ],
       "Background": [
         "Фон"
@@ -385,7 +403,7 @@
         "Сверху справа"
       ],
       "Center": [
-        "Центр"
+        "По центру"
       ],
       "Caption Padding": [
         "Отступ подписи"
@@ -397,7 +415,7 @@
         "Тип курсора"
       ],
       "Dark": [
-        "Тёмный"
+        "Темный"
       ],
       "Light": [
         "Светлый"
@@ -518,9 +536,6 @@
       ],
       "Below": [
         "Снизу"
-      ],
-      "Left": [
-        "Слева"
       ],
       "Pagination Style": [
         "Стиль пагинации"
@@ -1177,7 +1192,7 @@
         "Страница"
       ],
       "Post": [
-        "Запись"
+        "Записи"
       ],
       "CF7": [
         "CF7"
@@ -1244,6 +1259,24 @@
       ],
       "Select Post": [
         "Выбрать запись"
+      ],
+      "Select Post Type": [
+        "Выбрать тип записи"
+      ],
+      "No post types found": [
+        "Типы записей не найдены"
+      ],
+      "Select the type of post to display": [
+        "Выберите тип записи для отображения"
+      ],
+      "No posts found": [
+        "Записи не найдены"
+      ],
+      "Loading phones...": [
+        "Загрузка телефонов..."
+      ],
+      "No phones found": [
+        "Телефоны не найдены"
       ],
       "Select Page": [
         "Выбрать страницу"
@@ -1512,12 +1545,6 @@
       "Simple": [
         "Простой"
       ],
-      "Icon Position": [
-        "Позиция иконки"
-      ],
-      "Right": [
-        "Справа"
-      ],
       "Type 1": [
         "Тип 1"
       ],
@@ -1559,6 +1586,285 @@
       ],
       "+ Add Accordion Item": [
         "+ Добавить элемент аккордеона"
+      ],
+      "Data Source": [
+        "Источник данных"
+      ],
+      "Custom": [
+        "Кастомный"
+      ],
+      "Select the post type to generate accordion items from": [
+        "Выберите тип записи для генерации элементов аккордеона"
+      ],
+      "No posts found. Please select a post type and check your filters.": [
+        "Записи не найдены. Пожалуйста, выберите тип записи и проверьте фильтры."
+      ],
+      "No content available": [
+        "Контент недоступен"
+      ],
+      "Lists": [
+        "Списки"
+      ],
+      "Custom lists with icons, colors, and columns. Supports Custom and Post modes.": [
+        "Пользовательские списки с иконками, цветами и колонками. Поддерживает режимы Custom и Post."
+      ],
+      "list": [
+        "список"
+      ],
+      "lists": [
+        "списки"
+      ],
+      "ul": [
+        "ul"
+      ],
+      "icon": [
+        "иконка"
+      ],
+      "columns": [
+        "колонки"
+      ],
+      "Lists Settings": [
+        "Настройки списков"
+      ],
+      "Select the post type to generate list items from": [
+        "Выберите тип записи для генерации элементов списка"
+      ],
+      "List Type": [
+        "Тип списка"
+      ],
+      "Unordered": [
+        "Маркированный"
+      ],
+      "Bullet Color": [
+        "Цвет маркера"
+      ],
+      "Bullet Background": [
+        "Фон маркера"
+      ],
+      "Enable background color for bullet icons": [
+        "Включить цвет фона для иконок маркеров"
+      ],
+      "Columns Layout": [
+        "Макет колонок"
+      ],
+      "Block Settings": [
+        "Настройки блока"
+      ],
+      "New list item": [
+        "Новый элемент списка"
+      ],
+      "Enter list item...": [
+        "Введите элемент списка..."
+      ],
+      "+ Add List Item": [
+        "+ Добавить элемент списка"
+      ],
+      "No items found.": [
+        "Элементы не найдены."
+      ],
+      "Tabs": [
+        "Вкладки"
+      ],
+      "Bootstrap tabs with multiple items. Supports basic and pills styles with icons.": [
+        "Вкладки Bootstrap с несколькими элементами. Поддерживает стили basic и pills с иконками."
+      ],
+      "tab": [
+        "вкладка"
+      ],
+      "navigation": [
+        "навигация"
+      ],
+      "nav": [
+        "нав"
+      ],
+      "Tabs Settings": [
+        "Настройки вкладок"
+      ],
+      "Tab Style": [
+        "Стиль вкладки"
+      ],
+      "Basic": [
+        "Базовый"
+      ],
+      "Pills": [
+        "Пилюли"
+      ],
+      "Tabs ID": [
+        "ID вкладок"
+      ],
+      "Tabs Class": [
+        "Класс вкладок"
+      ],
+      "Tabs Data": [
+        "Данные вкладок"
+      ],
+      "New Tab": [
+        "Новая вкладка"
+      ],
+      "Tab title...": [
+        "Заголовок вкладки..."
+      ],
+      "+ Add Tab": [
+        "+ Добавить вкладку"
+      ],
+      "Click to add icon": [
+        "Нажмите, чтобы добавить иконку"
+      ],
+      "Fanny": [
+        "Fanny"
+      ],
+      "Tab Rounded": [
+        "Скругление вкладок"
+      ],
+      "Rounded": [
+        "Скруглено"
+      ],
+      "Rounded 0": [
+        "Скруглено 0"
+      ],
+      "Rounded Pill": [
+        "Скруглено Pill"
+      ],
+      "Tab Alignment": [
+        "Выравнивание вкладок"
+      ],
+      "Enable Background": [
+        "Включить фон"
+      ],
+      "Avatar Settings": [
+        "Настройки аватара"
+      ],
+      "Avatar Type": [
+        "Тип аватара"
+      ],
+      "Letters": [
+        "Буквы"
+      ],
+      "Enter letters to display (e.g., AB, TC, CH)": [
+        "Введите буквы для отображения (например, AB, TC, CH)"
+      ],
+      "Avatar Image": [
+        "Изображение аватара"
+      ],
+      "Size from 1 to 25 (w-1 to w-25, h-1 to h-25)": [
+        "Размер от 1 до 25 (w-1 до w-25, h-1 до h-25)"
+      ],
+      "Avatar ID": [
+        "ID аватара"
+      ],
+      "Avatar Class": [
+        "Класс аватара"
+      ],
+      "Avatar Data": [
+        "Данные аватара"
+      ],
+      "Pale Primary": [
+        "Бледный основной"
+      ],
+      "Soft Primary": [
+        "Мягкий основной"
+      ],
+      "Secondary": [
+        "Вторичный"
+      ],
+      "Success": [
+        "Успех"
+      ],
+      "Danger": [
+        "Опасность"
+      ],
+      "Warning": [
+        "Предупреждение"
+      ],
+      "Info": [
+        "Информация"
+      ],
+      "Name & Position": [
+        "Имя и должность"
+      ],
+      "Show Name & Position": [
+        "Показать имя и должность"
+      ],
+      "Name": [
+        "Имя"
+      ],
+      "Enter name": [
+        "Введите имя"
+      ],
+      "Enter position/job title": [
+        "Введите должность/название должности"
+      ],
+      "Name Link (URL)": [
+        "Ссылка на имя (URL)"
+      ],
+      "Optional: URL for name link": [
+        "Необязательно: URL для ссылки на имя"
+      ],
+      "Leave empty if name should not be a link": [
+        "Оставьте пустым, если имя не должно быть ссылкой"
+      ],
+      "User": [
+        "Пользователь"
+      ],
+      "Select User": [
+        "Выбрать пользователя"
+      ],
+      "— Select User —": [
+        "— Выбрать пользователя —"
+      ],
+      "Loading users...": [
+        "Загрузка пользователей..."
+      ],
+      "Select a user": [
+        "Выбрать пользователя"
+      ],
+      "Loading...": [
+        "Загрузка..."
+      ],
+      "Used when image is not uploaded": [
+        "Используется, когда изображение не загружено"
+      ],
+      "Additional Data": [
+        "Дополнительные данные"
+      ],
+      "Show Additional Data": [
+        "Показать дополнительные данные"
+      ],
+      "Enable to show name and position": [
+        "Включить для отображения имени и должности"
+      ],
+      "Document Action": [
+        "Действие с документом"
+      ],
+      "Download": [
+        "Скачать"
+      ],
+      "Send to Email": [
+        "Отправить на Email"
+      ],
+      "No documents found": [
+        "Документы не найдены"
+      ],
+      "Document Card": [
+        "Карточка документа"
+      ],
+      "Card layout with email button for documents": [
+        "Компоновка карточки с кнопкой email для документов"
+      ],
+      "Document Card Download": [
+        "Карточка документа (загрузка)"
+      ],
+      "Card layout with AJAX download button for documents": [
+        "Компоновка карточки с AJAX кнопкой загрузки для документов"
+      ],
+      "Images Per Row": [
+        "Изображений в ряду"
+      ],
+      "Gap сетки": [
+        "Gap сетки"
+      ],
+      "Number of columns at each breakpoint": [
+        "Количество колонок на каждой точке останова"
       ]
     }
   }

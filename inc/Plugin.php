@@ -360,6 +360,11 @@ class Plugin {
 			TRUE
 		);
 		
+		// Убеждаемся, что переводы загружены перед локализацией
+		if (!is_textdomain_loaded('codeweber-gutenberg-blocks')) {
+			self::loadTextDomain();
+		}
+		
 		// Localize script for Load More
 		wp_localize_script('codeweber-blocks-load-more', 'cwgbLoadMore', [
 			'restUrl' => rest_url('codeweber-gutenberg-blocks/v1/load-more'),

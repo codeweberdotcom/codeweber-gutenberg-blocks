@@ -54,7 +54,8 @@
 				// Show loading state
 				const originalText = button.textContent || button.innerText;
 				// Получаем переведенный текст из data-атрибута или из локализованного объекта
-				let isLoadingText = button.dataset.loadingText;
+				// Используем getAttribute для надежного чтения data-атрибута
+				let isLoadingText = button.getAttribute('data-loading-text') || button.dataset.loadingText;
 				if (!isLoadingText && typeof cwgbLoadMore !== 'undefined' && cwgbLoadMore.loadingText) {
 					isLoadingText = cwgbLoadMore.loadingText;
 				}

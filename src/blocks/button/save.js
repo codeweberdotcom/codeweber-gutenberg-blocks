@@ -119,7 +119,12 @@ const ButtonSave = ({ attributes }) => {
 	
 	// Add Bootstrap attrs
 	if (hasBsToggle) linkProps['data-bs-toggle'] = DataBsToggle;
-	if (hasBsTarget) linkProps['data-bs-target'] = `#${DataBsTarget}`;
+	if (hasBsTarget) {
+		// Если DataBsTarget уже содержит #, не добавляем его повторно
+		// Если DataBsTarget равен "modal", добавляем #
+		const target = DataBsTarget.startsWith('#') ? DataBsTarget : `#${DataBsTarget}`;
+		linkProps['data-bs-target'] = target;
+	}
 	
 	// IMPORTANT: Don't add target/rel for GLightbox links to prevent opening in new tab
 	if (!shouldNotOpenInNewTab) {

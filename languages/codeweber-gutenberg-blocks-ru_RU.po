@@ -2587,3 +2587,60 @@ msgstr "Показать дополнительные данные"
 #: src/blocks/avatar/sidebar.js
 msgid "Enable to show name and position"
 msgstr "Включить для отображения имени и должности"
+
+#: src/blocks/button/edit.js
+msgid "Click to change icon"
+msgstr "Нажмите, чтобы изменить иконку"
+
+#: src/blocks/button/sidebar.js
+msgid "Select Icon"
+msgstr "Выбрать иконку"
+
+#: src/utilities/link_type.js
+msgid "Document Action"
+msgstr "Действие с документом"
+
+#: src/utilities/link_type.js
+msgid "Download"
+msgstr "Скачать"
+
+#: src/utilities/link_type.js
+#: src/components/post-grid-item/PostGridItemRender.js
+msgid "Send to Email"
+msgstr "Отправить на Email"
+
+#: src/utilities/link_type.js
+msgid "No documents found"
+msgstr "Документы не найдены"
+
+#: src/components/post-grid-template/PostGridTemplateControl.js
+msgid "Document Card"
+msgstr "Карточка документа"
+
+#: src/components/post-grid-template/PostGridTemplateControl.js
+msgid "Card layout with email button for documents"
+msgstr "Компоновка карточки с кнопкой email для документов"
+
+#: src/components/post-grid-template/PostGridTemplateControl.js
+msgid "Document Card Download"
+msgstr "Карточка документа (загрузка)"
+
+#: src/components/post-grid-template/PostGridTemplateControl.js
+msgid "Card layout with AJAX download button for documents"
+msgstr "Компоновка карточки с AJAX кнопкой загрузки для документов"
+
+#: src/blocks/post-grid/controls/LayoutControl.js
+msgid "Images Per Row"
+msgstr "Изображений в ряду"
+
+#: src/blocks/post-grid/controls/LayoutControl.js
+msgid "Gap сетки"
+msgstr "Gap сетки"
+
+#: src/blocks/post-grid/controls/LayoutControl.js
+msgid "Number of columns at each breakpoint"
+msgstr "Количество колонок на каждой точке останова"
+
+#: src/blocks/post-grid/render.php
+msgid "Loading..."
+msgstr "Загрузка..."

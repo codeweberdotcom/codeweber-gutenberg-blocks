@@ -18,6 +18,11 @@ const createGapOptions = (type, breakpoint = '') => {
 		{ value: '3', label: `${fullPrefix}-3` },
 		{ value: '4', label: `${fullPrefix}-4` },
 		{ value: '5', label: `${fullPrefix}-5` },
+		{ value: '6', label: `${fullPrefix}-6` },
+		{ value: '7', label: `${fullPrefix}-7` },
+		{ value: '8', label: `${fullPrefix}-8` },
+		{ value: '9', label: `${fullPrefix}-9` },
+		{ value: '10', label: `${fullPrefix}-10` },
 	];
 };
 

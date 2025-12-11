@@ -121,6 +121,10 @@
             "type": "string",
             "default": ""
         },
+		"DocumentAction": {
+            "type": "string",
+            "default": "download"
+        },
 		"Anchor": {
 			"type": "string",
 			"default": ""

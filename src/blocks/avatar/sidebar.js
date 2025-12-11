@@ -425,3 +425,5 @@ export const AvatarSidebar = ({ attributes, setAttributes }) => {
 		</TabPanel>
 	);
 };
+
+

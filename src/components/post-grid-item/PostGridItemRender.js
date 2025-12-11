@@ -85,6 +85,41 @@ export const PostGridItemRender = ({
 		return null;
 	};
 
+	// Проверяем FAQ ПЕРВЫМ, чтобы избежать конфликта имен шаблонов
+	if (postType === 'faq') {
+		// FAQ templates
+		const faqTitle = postTitle || '';
+		const faqContent = postDescription || post.content || '';
+		
+		// Ограничиваем текст ответа
+		let contentLimited = faqContent.replace(/<[^>]*>/g, '');
+		contentLimited = contentLimited.replace(/\s+/g, ' ').trim();
+		if (contentLimited.length > 80) {
+			contentLimited = contentLimited.substring(0, 80) + '...';
+		}
+		
+		if (template === 'default') {
+			// FAQ Default template
+			return (
+				<div className="d-flex flex-row">
+					<div>
+						<span className="icon btn btn-sm btn-circle btn-primary pe-none me-5">
+							<i className="uil uil-comment-exclamation"></i>
+						</span>
+					</div>
+					<div>
+						{faqTitle && (
+							<h4 className="mb-0">{faqTitle}</h4>
+						)}
+						{contentLimited && (
+							<p className="mb-0">{contentLimited}</p>
+						)}
+					</div>
+				</div>
+			);
+		}
+	}
+	
 	// Проверяем testimonials ПЕРВЫМ, чтобы избежать конфликта имен шаблонов
 	if (postType === 'testimonials') {
 		// Testimonials templates
@@ -136,11 +171,28 @@ export const PostGridItemRender = ({
 						<blockquote className="icon mb-0">
 							<p>{textLimited || testimonialText || __('Testimonial text', 'codeweber-gutenberg-blocks')}</p>
 							<div className="blockquote-details">
-								<div className={`info ${avatarUrl ? 'ps-0' : ''}`}>
-									{authorName && <h5 className="mb-1">{authorName}</h5>}
-									{authorRole && <p className="mb-0">{authorRole}</p>}
-									{company && <p className="mb-0 text-muted small">{company}</p>}
-								</div>
+								{avatarUrl ? (
+									<div className="d-flex align-items-center">
+										<figure className="user-avatar">
+											<img 
+												className="rounded-circle" 
+												src={avatarUrl} 
+												alt={authorName || postTitle} 
+											/>
+										</figure>
+										<div>
+											{authorName && <div className="h6 mb-0">{authorName}</div>}
+											{authorRole && <span className="post-meta fs-15">{authorRole}</span>}
+											{company && <span className="post-meta fs-15 text-muted">{company}</span>}
+										</div>
+									</div>
+								) : (
+									<div className="info p-0">
+										{authorName && <h5 className="mb-1">{authorName}</h5>}
+										{authorRole && <p className="mb-0">{authorRole}</p>}
+										{company && <p className="mb-0 text-muted small">{company}</p>}
+									</div>
+								)}
 							</div>
 						</blockquote>
 					</div>
@@ -149,27 +201,35 @@ export const PostGridItemRender = ({
 		} else if (template === 'icon') {
 			// Testimonial Icon template (simple blockquote with icon, without rating)
 			return (
-				<div className="item-inner">
-					<div className="card">
-						<div className="card-body">
-							<blockquote className="icon mb-0">
-								<p>{textLimited || testimonialText || __('Testimonial text', 'codeweber-gutenberg-blocks')}</p>
-								<div className="blockquote-details">
-									{avatarUrl && (
-										<img 
-											className="rounded-circle w-12" 
-											src={avatarUrl} 
-											alt={authorName || postTitle} 
-										/>
-									)}
+				<div className="card">
+					<div className="card-body">
+						<blockquote className="icon mb-0">
+							<p>{textLimited || testimonialText || __('Testimonial text', 'codeweber-gutenberg-blocks')}</p>
+							<div className="blockquote-details">
+								{avatarUrl ? (
+									<div className="d-flex align-items-center">
+										<figure className="user-avatar">
+											<img 
+												className="rounded-circle" 
+												src={avatarUrl} 
+												alt={authorName || postTitle} 
+											/>
+										</figure>
+										<div>
+											{authorName && <div className="h6 mb-0">{authorName}</div>}
+											{authorRole && <span className="post-meta fs-15">{authorRole}</span>}
+											{company && <span className="post-meta fs-15 text-muted">{company}</span>}
+										</div>
+									</div>
+								) : (
 									<div className="info">
 										{authorName && <h5 className="mb-1">{authorName}</h5>}
 										{authorRole && <p className="mb-0">{authorRole}</p>}
 										{company && <p className="mb-0 text-muted small">{company}</p>}
 									</div>
-								</div>
-							</blockquote>
-						</div>
+								)}
+							</div>
+						</blockquote>
 					</div>
 				</div>
 			);
@@ -184,18 +244,28 @@ export const PostGridItemRender = ({
 						<blockquote className="icon mb-0">
 							<p>{textLimited || testimonialText || __('Testimonial text', 'codeweber-gutenberg-blocks')}</p>
 							<div className="blockquote-details">
-								{avatarUrl && (
-									<img 
-										className="rounded-circle w-12" 
-										src={avatarUrl} 
-										alt={authorName || postTitle} 
-									/>
+								{avatarUrl ? (
+									<div className="d-flex align-items-center">
+										<figure className="user-avatar">
+											<img 
+												className="rounded-circle" 
+												src={avatarUrl} 
+												alt={authorName || postTitle} 
+											/>
+										</figure>
+										<div>
+											{authorName && <div className="h6 mb-0">{authorName}</div>}
+											{authorRole && <span className="post-meta fs-15">{authorRole}</span>}
+											{company && <span className="post-meta fs-15 text-muted">{company}</span>}
+										</div>
+									</div>
+								) : (
+									<div className="info">
+										{authorName && <h5 className="mb-1">{authorName}</h5>}
+										{authorRole && <p className="mb-0">{authorRole}</p>}
+										{company && <p className="mb-0 text-muted small">{company}</p>}
+									</div>
 								)}
-								<div className="info">
-									{authorName && <h5 className="mb-1">{authorName}</h5>}
-									{authorRole && <p className="mb-0">{authorRole}</p>}
-									{company && <p className="mb-0 text-muted small">{company}</p>}
-								</div>
 							</div>
 						</blockquote>
 					</div>
@@ -382,7 +452,6 @@ export const PostGridItemRender = ({
 					<a href={isEditor ? '#' : postLink} onClick={isEditor ? (e) => e.preventDefault() : undefined}>
 						<div className="bottom-overlay post-meta fs-16 justify-content-between position-absolute zindex-1 d-flex flex-column h-100 w-100 p-5">
 							<div className="d-flex w-100 justify-content-end">
-								<span className="post-date badge bg-primary rounded-pill">{__('Date', 'codeweber-gutenberg-blocks')}</span>
 							</div>
 							<h2 className="h5 mb-0">{titleLimited}</h2>
 						</div>
@@ -398,6 +467,101 @@ export const PostGridItemRender = ({
 									{__('Read more', 'codeweber-gutenberg-blocks')}
 								</a>
 							</div>
+						</div>
+					</figcaption>
+				</figure>
+			</article>
+		);
+	} else if (template === 'document-card') {
+		// Document Card template - на основе overlay-5, но с кнопкой загрузки
+		const excerptLimited = descriptionLimited.length > 116 ? descriptionLimited.substring(0, 113) + '...' : descriptionLimited;
+		const documentCardClasses = `overlay overlay-5 ${borderRadius || 'rounded'}`;
+		
+		// Получаем URL файла документа (если есть в данных поста)
+		const documentFileUrl = post.documentFile || post.meta?.document_file || '';
+		const documentFileName = documentFileUrl ? documentFileUrl.split('/').pop() : '';
+		
+		return (
+			<article>
+				<figure className={documentCardClasses}>
+					<a href={isEditor ? '#' : postLink} onClick={isEditor ? (e) => e.preventDefault() : undefined}>
+						<div className="bottom-overlay post-meta fs-16 justify-content-between position-absolute zindex-1 d-flex flex-column h-100 w-100 p-5">
+							<div className="d-flex w-100 justify-content-end">
+							</div>
+							<h2 className="h5 mb-0">{titleLimited}</h2>
+						</div>
+						<img src={imageUrl} alt={post.alt || postTitle} className={borderRadius || 'rounded'} />
+					</a>
+					<figcaption className="p-5">
+						<div className="post-body from-left">
+							{excerptLimited && (
+								<p className="mb-3">{excerptLimited}</p>
+							)}
+							{documentFileUrl ? (
+								<a 
+									href={documentFileUrl} 
+									download={documentFileName}
+									target="_blank"
+									className="btn btn-primary btn-icon btn-icon-start btn-sm d-flex"
+									onClick={isEditor ? (e) => e.preventDefault() : undefined}
+								>
+									<i className="uil uil-envelope fs-15"></i>
+									<span>{__('Send to Email', 'codeweber-gutenberg-blocks')}</span>
+								</a>
+							) : (
+								<a href={isEditor ? '#' : postLink} className="hover-4 link-body label-s text-charcoal-blue me-4 post-read-more" onClick={isEditor ? (e) => e.preventDefault() : undefined}>
+									{__('Read more', 'codeweber-gutenberg-blocks')}
+								</a>
+							)}
+						</div>
+					</figcaption>
+				</figure>
+			</article>
+		);
+	} else if (template === 'document-card-download') {
+		// Document Card Download template - на основе overlay-5, с AJAX кнопкой загрузки
+		const excerptLimited = descriptionLimited.length > 116 ? descriptionLimited.substring(0, 113) + '...' : descriptionLimited;
+		const documentCardClasses = `overlay overlay-5 ${borderRadius || 'rounded'}`;
+		
+		// Получаем ID поста для AJAX загрузки
+		const postId = post.id || post.ID || '';
+		
+		// Получаем URL файла документа (если есть в данных поста)
+		const documentFileUrl = post.documentFile || post.meta?.document_file || '';
+		
+		return (
+			<article>
+				<figure className={documentCardClasses}>
+					<a href={isEditor ? '#' : postLink} onClick={isEditor ? (e) => e.preventDefault() : undefined}>
+						<div className="bottom-overlay post-meta fs-16 justify-content-between position-absolute zindex-1 d-flex flex-column h-100 w-100 p-5">
+							<div className="d-flex w-100 justify-content-end">
+							</div>
+							<h2 className="h5 mb-0">{titleLimited}</h2>
+						</div>
+						<img src={imageUrl} alt={post.alt || postTitle} className={borderRadius || 'rounded'} />
+					</a>
+					<figcaption className="p-5">
+						<div className="post-body from-left">
+							{excerptLimited && (
+								<p className="mb-3">{excerptLimited}</p>
+							)}
+							{documentFileUrl && postId ? (
+								<a 
+									href="javascript:void(0)"
+									className="btn btn-primary btn-icon btn-icon-start btn-sm d-flex"
+									data-bs-toggle="download"
+									data-value={`doc-${postId}`}
+									data-loading-text={__('Loading...', 'codeweber-gutenberg-blocks')}
+									onClick={isEditor ? (e) => e.preventDefault() : undefined}
+								>
+									<i className="uil uil-import fs-15"></i>
+									<span className="ms-1">{__('Download', 'codeweber-gutenberg-blocks')}</span>
+								</a>
+							) : (
+								<a href={isEditor ? '#' : postLink} className="hover-4 link-body label-s text-charcoal-blue me-4 post-read-more" onClick={isEditor ? (e) => e.preventDefault() : undefined}>
+									{__('Read more', 'codeweber-gutenberg-blocks')}
+								</a>
+							)}
 						</div>
 					</figcaption>
 				</figure>

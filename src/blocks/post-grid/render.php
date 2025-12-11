@@ -14,9 +14,13 @@ if (!defined('ABSPATH')) {
 }
 
 // Убеждаемся, что текстовый домен загружен для переводов
-// Получаем путь к плагину относительно render.php
-$plugin_path = dirname(dirname(dirname(dirname(__FILE__))));
-load_plugin_textdomain('codeweber-gutenberg-blocks', false, basename($plugin_path) . '/languages/');
+$plugin_file = dirname(dirname(dirname(dirname(__FILE__)))) . '/plugin.php';
+if (file_exists($plugin_file)) {
+	$plugin_dir = plugin_dir_path($plugin_file);
+	$plugin_basename = basename($plugin_dir);
+	// Загружаем переводы принудительно
+	load_plugin_textdomain('codeweber-gutenberg-blocks', false, $plugin_basename . '/languages/');
+}
 
 $display_mode = isset($attributes['displayMode']) ? $attributes['displayMode'] : 'grid';
 $post_type = isset($attributes['postType']) ? $attributes['postType'] : 'post';
@@ -466,12 +470,80 @@ if (!function_exists('render_post_grid_item')) {
 				
 				// Используем шаблон testimonials
 				$html = cw_render_post_card($post, $testimonial_template, $display_settings, $template_args);
+			} elseif ($post_type === 'documents') {
+				// Специальная обработка для documents
+				// Поддерживаем оба шаблона: document-card и document-card-download
+				$display_settings = [
+					'show_title' => true,
+					'show_date' => true,
+					'show_category' => false,
+					'show_comments' => false,
+					'title_length' => 56,
+					'excerpt_length' => 40,
+					'title_tag' => 'h2',
+					'title_class' => '',
+				];
+				
+				// Настройки шаблона для documents (overlay-5 стиль)
+				$template_args = [
+					'image_size' => $image_size,
+					'hover_classes' => 'overlay overlay-5',
+					'border_radius' => isset($attributes['borderRadius']) ? $attributes['borderRadius'] : 'rounded',
+					'show_figcaption' => true,
+				];
+				
+				// Определяем шаблон для documents (document-card или document-card-download)
+				$document_template = ($template === 'document-card-download') ? 'card_download' : 'card';
+				$html = cw_render_post_card($post, $document_template, $display_settings, $template_args);
 				
 				// Если функция вернула не пустую строку, используем её
 				if (!empty($html) && trim($html) !== '') {
-					// Добавляем обертку с col-* классами только для grid режима (не swiper) и только для classic grid
-					if (!$is_swiper && $grid_type === 'classic' && !empty($col_classes)) {
-						$html = '<div class="' . esc_attr($col_classes) . '">' . $html . '</div>';
+					// Добавляем обертку для grid режима (не swiper)
+					if (!$is_swiper) {
+						// Для classic grid добавляем обертку с col-* классами
+						if ($grid_type === 'classic' && !empty($col_classes)) {
+							$html = '<div class="' . esc_attr($col_classes) . '">' . $html . '</div>';
+						}
+						// Для columns-grid добавляем обертку с классом col (row-cols-* работает на контейнере)
+						elseif ($grid_type === 'columns-grid') {
+							$html = '<div class="col">' . $html . '</div>';
+						}
+					}
+					
+					return $html;
+				}
+			} elseif ($post_type === 'faq') {
+				// Специальная обработка для FAQ
+				$display_settings = [
+					'show_title' => true,
+					'show_date' => false,
+					'show_category' => false,
+					'show_comments' => false,
+					'title_length' => 0,
+					'excerpt_length' => 80, // Показываем ответ FAQ
+					'title_tag' => 'h4',
+					'title_class' => '',
+				];
+				
+				$template_args = [
+					'image_size' => $image_size,
+				];
+				
+				// Используем шаблон default для FAQ
+				$html = cw_render_post_card($post, 'default', $display_settings, $template_args);
+				
+				// Если функция вернула не пустую строку, используем её
+				if (!empty($html) && trim($html) !== '') {
+					// Добавляем обертку для grid режима (не swiper)
+					if (!$is_swiper) {
+						// Для classic grid добавляем обертку с col-* классами
+						if ($grid_type === 'classic' && !empty($col_classes)) {
+							$html = '<div class="' . esc_attr($col_classes) . '">' . $html . '</div>';
+						}
+						// Для columns-grid добавляем обертку с классом col (row-cols-* работает на контейнере)
+						elseif ($grid_type === 'columns-grid') {
+							$html = '<div class="col">' . $html . '</div>';
+						}
 					}
 					
 					return $html;
@@ -526,10 +598,16 @@ if (!function_exists('render_post_grid_item')) {
 			
 			// Если функция вернула не пустую строку, используем её
 			if (!empty($html) && trim($html) !== '') {
-				// Добавляем обертку с col-* классами только для grid режима (не swiper) и только для classic grid
-				// Для client шаблонов также не добавляем col-* в swiper режиме
-				if (!$is_swiper && $grid_type === 'classic' && !empty($col_classes)) {
-					$html = '<div class="' . esc_attr($col_classes) . '">' . $html . '</div>';
+				// Добавляем обертку для grid режима (не swiper)
+				if (!$is_swiper) {
+					// Для classic grid добавляем обертку с col-* классами
+					if ($grid_type === 'classic' && !empty($col_classes)) {
+						$html = '<div class="' . esc_attr($col_classes) . '">' . $html . '</div>';
+					}
+					// Для columns-grid добавляем обертку с классом col (row-cols-* работает на контейнере)
+					elseif ($grid_type === 'columns-grid') {
+						$html = '<div class="col">' . $html . '</div>';
+					}
 				}
 				
 				return $html;
@@ -583,9 +661,16 @@ if (!function_exists('render_post_grid_item')) {
 		
 		if ($template === 'card') {
 			// Card template
-			// В режиме Swiper не добавляем col-* классы
-			if (!$is_swiper && $grid_type === 'classic' && !empty($col_classes)) {
-				$html .= '<div class="' . esc_attr($col_classes) . '">';
+			// В режиме Swiper не добавляем обертку
+			if (!$is_swiper) {
+				// Для classic grid добавляем обертку с col-* классами
+				if ($grid_type === 'classic' && !empty($col_classes)) {
+					$html .= '<div class="' . esc_attr($col_classes) . '">';
+				}
+				// Для columns-grid добавляем обертку с классом col
+				elseif ($grid_type === 'columns-grid') {
+					$html .= '<div class="col">';
+				}
 			}
 			$html .= '<article>';
 			$html .= '<div class="card shadow-lg">';
@@ -638,15 +723,29 @@ if (!function_exists('render_post_grid_item')) {
 			$html .= '</div>'; // card-body
 			$html .= '</div>'; // card
 			$html .= '</article>';
-			// В режиме Swiper не закрываем div с col-* классами
-			if (!$is_swiper && $grid_type === 'classic' && !empty($col_classes)) {
-				$html .= '</div>';
+			// В режиме Swiper не закрываем обертку
+			if (!$is_swiper) {
+				// Для classic grid закрываем обертку с col-* классами
+				if ($grid_type === 'classic' && !empty($col_classes)) {
+					$html .= '</div>';
+				}
+				// Для columns-grid закрываем обертку
+				elseif ($grid_type === 'columns-grid') {
+					$html .= '</div>';
+				}
 			}
 		} else {
 			// Default template
-			// В режиме Swiper не добавляем col-* классы
-			if (!$is_swiper && $grid_type === 'classic' && !empty($col_classes)) {
-				$html .= '<div class="' . esc_attr($col_classes) . '">';
+			// В режиме Swiper не добавляем обертку
+			if (!$is_swiper) {
+				// Для classic grid добавляем обертку с col-* классами
+				if ($grid_type === 'classic' && !empty($col_classes)) {
+					$html .= '<div class="' . esc_attr($col_classes) . '">';
+				}
+				// Для columns-grid добавляем обертку с классом col
+				elseif ($grid_type === 'columns-grid') {
+					$html .= '<div class="col">';
+				}
 			}
 			$html .= '<article>';
 			
@@ -697,9 +796,16 @@ if (!function_exists('render_post_grid_item')) {
 			$html .= '</ul>';
 			$html .= '</div>';
 			$html .= '</article>';
-			// В режиме Swiper не закрываем div с col-* классами
-			if (!$is_swiper && $grid_type === 'classic' && !empty($col_classes)) {
-				$html .= '</div>';
+			// В режиме Swiper не закрываем обертку
+			if (!$is_swiper) {
+				// Для classic grid закрываем обертку с col-* классами
+				if ($grid_type === 'classic' && !empty($col_classes)) {
+					$html .= '</div>';
+				}
+				// Для columns-grid закрываем обертку
+				elseif ($grid_type === 'columns-grid') {
+					$html .= '</div>';
+				}
 			}
 		}
 		
@@ -812,14 +918,17 @@ if (!function_exists('render_post_grid_item')) {
 				<?php endforeach; wp_reset_postdata(); ?>
 			</div>
 			
-			<?php if ($load_more_enable && $has_more) : ?>
+			<?php if ($load_more_enable && $has_more) : 
+				// Получаем переведенный текст для Loading
+				$loading_text = __('Loading...', 'codeweber-gutenberg-blocks');
+			?>
 				<div class="text-center mt-5">
 					<?php if ($load_more_type === 'link') : ?>
-						<a href="#" class="hover cwgb-load-more-btn" data-load-more="true" data-loading-text="<?php echo esc_attr(__('Loading...', 'codeweber-gutenberg-blocks')); ?>">
+						<a href="#" class="hover cwgb-load-more-btn" data-load-more="true" data-loading-text="<?php echo esc_attr($loading_text); ?>">
 							<?php echo esc_html($load_more_text); ?>
 						</a>
 					<?php else : ?>
-						<button class="btn btn-primary cwgb-load-more-btn" type="button" data-loading-text="<?php echo esc_attr(__('Loading...', 'codeweber-gutenberg-blocks')); ?>">
+						<button class="btn btn-primary cwgb-load-more-btn" type="button" data-loading-text="<?php echo esc_attr($loading_text); ?>">
 							<?php echo esc_html($load_more_text); ?>
 						</button>
 					<?php endif; ?>

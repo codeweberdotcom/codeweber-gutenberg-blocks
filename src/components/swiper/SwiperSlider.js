@@ -202,6 +202,7 @@ export const destroySwiper = (selector = null) => {
  * @param {Array} props.children - Slide content (array of React elements)
  * @param {Object} props.config - Swiper configuration
  * @param {string} props.className - Additional classes for container
+ * @param {string} props.wrapperClassName - Additional classes for swiper-wrapper
  * @param {string} props.uniqueKey - Unique key for forcing reinitialization
  * @returns {JSX.Element} Swiper structure
  */
@@ -209,13 +210,19 @@ export const SwiperSlider = ({
 	children = [],
 	config = {},
 	className = '',
+	wrapperClassName = '',
 	uniqueKey = '',
 }) => {
 	const containerClasses = `${getSwiperContainerClasses(config)} ${className}`.trim();
 	const dataAttrs = getSwiperDataAttributes(config);
 	
 	// Add ticker class to wrapper for continuous scrolling when itemsAuto is enabled
-	const wrapperClasses = config.itemsAuto ? 'swiper-wrapper ticker' : 'swiper-wrapper';
+	// Also add wrapperClassName from Settings tab
+	let wrapperClasses = config.itemsAuto ? 'swiper-wrapper ticker' : 'swiper-wrapper';
+	if (wrapperClassName) {
+		wrapperClasses += ' ' + wrapperClassName;
+	}
+	wrapperClasses = wrapperClasses.trim();
 
 	return (
 		<div key={uniqueKey} className={containerClasses} {...dataAttrs}>
@@ -237,9 +244,18 @@ export const SwiperSlider = ({
  * @param {string} props.className - Additional classes
  * @returns {JSX.Element} Slide wrapper
  */
-export const SwiperSlide = ({ children, className = '' }) => {
+export const SwiperSlide = ({ children, className = '', slideClassName = '' }) => {
+	let slideClasses = 'swiper-slide';
+	if (className) {
+		slideClasses += ' ' + className;
+	}
+	if (slideClassName) {
+		slideClasses += ' ' + slideClassName;
+	}
+	slideClasses = slideClasses.trim();
+	
 	return (
-		<div className={`swiper-slide ${className}`.trim()}>
+		<div className={slideClasses}>
 			{children}
 		</div>
 	);

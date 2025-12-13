@@ -15,6 +15,7 @@ const loadBlocks = async () => {
         import('./blocks/media/index'),
         import('./blocks/image-simple/index'),
         import('./blocks/accordion/index'),
+        import('./blocks/label-plus/index'),
     ];
 
     await Promise.all(blocks);

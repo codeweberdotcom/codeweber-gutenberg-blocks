@@ -106,6 +106,8 @@ export const LayoutControl = ({ attributes, setAttributes }) => {
 		swiperContainerType,
 		swiperItemsAuto,
 		swiperCentered,
+		swiperWrapperClass,
+		swiperSlideClass,
 	} = attributes;
 
 	// Helper для label с tooltip
@@ -557,6 +559,24 @@ export const LayoutControl = ({ attributes, setAttributes }) => {
 							</Button>
 						</ButtonGroup>
 					</div>
+
+					<h3 style={{ marginTop: '16px', marginBottom: '12px', fontSize: '14px', fontWeight: 'bold' }}>
+						{__('Classes', 'codeweber-gutenberg-blocks')}
+					</h3>
+
+					<TextControl
+						label={__('Swiper Wrapper Class', 'codeweber-gutenberg-blocks')}
+						value={swiperWrapperClass || ''}
+						onChange={(value) => setAttributes({ swiperWrapperClass: value })}
+						help={__('Class will be applied to swiper-wrapper element', 'codeweber-gutenberg-blocks')}
+					/>
+
+					<TextControl
+						label={__('Swiper Slide Class', 'codeweber-gutenberg-blocks')}
+						value={swiperSlideClass || ''}
+						onChange={(value) => setAttributes({ swiperSlideClass: value })}
+						help={__('Class will be applied to all swiper-slide elements', 'codeweber-gutenberg-blocks')}
+					/>
 				</>
 			)}
 		</>

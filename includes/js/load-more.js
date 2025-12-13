@@ -12,6 +12,38 @@
 	'use strict';
 
 	/**
+	 * Apply button radius class from theme to Load More buttons
+	 */
+	function applyButtonRadiusClass() {
+		// Получаем класс скругления кнопки из темы через REST API
+		fetch('/wp-json/codeweber/v1/styles')
+			.then(response => response.json())
+			.catch(() => ({}))
+			.then(styles => {
+				const buttonRadiusClass = styles?.button_radius_class || '';
+				
+				if (!buttonRadiusClass) {
+					return;
+				}
+				
+				// Применяем класс ко всем кнопкам Load More на странице
+				const loadMoreButtons = document.querySelectorAll('.cwgb-load-more-btn');
+				loadMoreButtons.forEach(button => {
+					if (button.tagName === 'BUTTON') {
+						// Добавляем класс скругления к кнопке
+						const trimmedClass = buttonRadiusClass.trim();
+						if (trimmedClass && !button.classList.contains(trimmedClass)) {
+							button.classList.add(trimmedClass);
+						}
+					}
+				});
+			})
+			.catch(() => {
+				// Если API недоступен, продолжаем без класса
+			});
+	}
+
+	/**
 	 * Initialize Load More functionality
 	 */
 	function initLoadMore() {
@@ -20,6 +52,9 @@
 		if (loadMoreButtons.length === 0) {
 			return;
 		}
+
+		// Применяем класс скругления к существующим кнопкам
+		applyButtonRadiusClass();
 
 		loadMoreButtons.forEach(button => {
 			// Skip if already initialized
@@ -198,6 +233,9 @@
 								// Reinitialize theme components для контейнера с новыми элементами
 								// Передаем контейнер для более точной инициализации
 								reinitializeTheme(container);
+								
+								// Применяем класс скругления к кнопке (на случай, если она была обновлена)
+								applyButtonRadiusClass();
 								
 								// Прокрутка к первому новому элементу (как в теме Codeweber)
 								// Получаем первый новый элемент после добавления в DOM

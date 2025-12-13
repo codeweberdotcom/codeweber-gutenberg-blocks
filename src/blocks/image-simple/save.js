@@ -68,6 +68,9 @@ export default function Save({ attributes }) {
 		loadMoreInitialCount,
 		loadMoreLoadMoreCount,
 		loadMoreText,
+		loadMoreType,
+		loadMoreButtonSize,
+		loadMoreButtonStyle,
 	} = attributes;
 
 	// Функция для получения классов контейнера
@@ -278,16 +281,62 @@ export default function Save({ attributes }) {
 									))}
 								</div>
 								
-								{hasMoreImages && (
-									<div className="text-center mt-5">
-										<button 
-											className="btn btn-primary cwgb-load-more-btn"
-											data-loading-text={__('Loading...', 'codeweber-gutenberg-blocks')}
-										>
-											{loadMoreText || 'Show More'}
-										</button>
-									</div>
-								)}
+								{hasMoreImages && (() => {
+									// Предустановленные тексты для кнопки/ссылки Load More
+									const loadMoreTexts = {
+										'show-more': __('Show More', 'codeweber-gutenberg-blocks'),
+										'load-more': __('Load More', 'codeweber-gutenberg-blocks'),
+										'show-more-items': __('Show More Items', 'codeweber-gutenberg-blocks'),
+										'more-posts': __('More Posts', 'codeweber-gutenberg-blocks'),
+										'view-all': __('View All', 'codeweber-gutenberg-blocks'),
+										'show-all': __('Show All', 'codeweber-gutenberg-blocks'),
+									};
+									
+									const loadMoreTextKey = loadMoreText || 'show-more';
+									const loadMoreTextValue = loadMoreTexts[loadMoreTextKey] || loadMoreTexts['show-more'];
+									const loadMoreElementType = loadMoreType || 'button';
+									const loadingText = __('Loading...', 'codeweber-gutenberg-blocks');
+									
+									// Строим класс кнопки
+									const buttonClasses = ['btn', 'cwgb-load-more-btn'];
+									
+									// Добавляем стиль кнопки (solid или outline)
+									if (loadMoreButtonStyle === 'outline') {
+										buttonClasses.push('btn-outline-primary');
+									} else {
+										buttonClasses.push('btn-primary');
+									}
+									
+									// Добавляем размер кнопки
+									if (loadMoreButtonSize) {
+										buttonClasses.push(loadMoreButtonSize);
+									}
+									
+									const buttonClassName = buttonClasses.join(' ');
+									
+									return (
+										<div className="text-center mt-5">
+											{loadMoreElementType === 'link' ? (
+												<a 
+													href="#" 
+													className="hover cwgb-load-more-btn"
+													data-load-more="true"
+													data-loading-text={loadingText}
+												>
+													{loadMoreTextValue}
+												</a>
+											) : (
+												<button 
+													className={buttonClassName}
+													type="button"
+													data-loading-text={loadingText}
+												>
+													{loadMoreTextValue}
+												</button>
+											)}
+										</div>
+									);
+								})()}
 							</div>
 						);
 					}

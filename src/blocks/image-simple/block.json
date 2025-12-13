@@ -352,6 +352,18 @@
     "loadMoreText": {
       "type": "string",
       "default": "show-more"
+    },
+    "loadMoreType": {
+      "type": "string",
+      "default": "button"
+    },
+    "loadMoreButtonSize": {
+      "type": "string",
+      "default": ""
+    },
+    "loadMoreButtonStyle": {
+      "type": "string",
+      "default": "solid"
     }
   }
 }

@@ -70,7 +70,10 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		loadMoreEnable,
 		loadMoreInitialCount,
 		loadMoreLoadMoreCount,
-		loadMoreText,
+		loadMoreText = 'show-more',
+		loadMoreType = 'button',
+		loadMoreButtonSize,
+		loadMoreButtonStyle = 'solid',
 	} = attributes;
 
 	const blockProps = useBlockProps({
@@ -322,11 +325,64 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 								/>
 							</div>
 						))}
-						{loadMoreEnable && displayMode === 'grid' && images.length > (loadMoreInitialCount || images.length) && (
-							<div className="text-center mt-5 p-2 bg-light rounded small text-muted">
-								{__('Load More will work on the frontend', 'codeweber-gutenberg-blocks')}
-							</div>
-						)}
+						{(() => {
+							// Предустановленные тексты для кнопки/ссылки Load More
+							const loadMoreTexts = {
+								'show-more': __('Show More', 'codeweber-gutenberg-blocks'),
+								'load-more': __('Load More', 'codeweber-gutenberg-blocks'),
+								'show-more-items': __('Show More Items', 'codeweber-gutenberg-blocks'),
+								'more-posts': __('More Posts', 'codeweber-gutenberg-blocks'),
+								'view-all': __('View All', 'codeweber-gutenberg-blocks'),
+								'show-all': __('Show All', 'codeweber-gutenberg-blocks'),
+							};
+							
+							const loadMoreTextValue = loadMoreTexts[loadMoreText] || loadMoreTexts['show-more'];
+							const hasMoreImages = loadMoreEnable && displayMode === 'grid' && loadMoreInitialCount > 0 && images.length > loadMoreInitialCount;
+							
+							if (!hasMoreImages) return null;
+							
+							// Строим класс кнопки
+							const buttonClasses = ['btn', 'cwgb-load-more-btn'];
+							
+							// Добавляем стиль кнопки (solid или outline)
+							if (loadMoreButtonStyle === 'outline') {
+								buttonClasses.push('btn-outline-primary');
+							} else {
+								buttonClasses.push('btn-primary');
+							}
+							
+							// Добавляем размер кнопки
+							if (loadMoreButtonSize) {
+								buttonClasses.push(loadMoreButtonSize);
+							}
+							
+							const buttonClassName = buttonClasses.join(' ');
+							
+							return (
+								<div className="text-center pt-5 w-100">
+									{loadMoreType === 'link' ? (
+										<a 
+											href="#" 
+											className="hover cwgb-load-more-btn" 
+											onClick={(e) => e.preventDefault()}
+											style={{ pointerEvents: 'none', cursor: 'default' }}
+										>
+											{loadMoreTextValue}
+										</a>
+									) : (
+										<button 
+											className={buttonClassName}
+											type="button"
+											onClick={(e) => e.preventDefault()}
+											disabled
+											style={{ pointerEvents: 'none', cursor: 'default' }}
+										>
+											{loadMoreTextValue}
+										</button>
+									)}
+								</div>
+							);
+						})()}
 					</div>
 				) : displayMode === 'swiper' ? (
 					// Режим Swiper - используем компонент SwiperSlider

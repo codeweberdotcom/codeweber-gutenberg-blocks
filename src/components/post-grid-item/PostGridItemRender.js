@@ -272,7 +272,312 @@ export const PostGridItemRender = ({
 				</div>
 			);
 		}
-	} else if (template === 'card') {
+	}
+	
+	// Проверяем staff post type
+	if (postType === 'staff') {
+		const staffName = post.title || post.meta?._staff_name || '';
+		const staffSurname = post.meta?._staff_surname || '';
+		const fullName = staffName && staffSurname ? `${staffName} ${staffSurname}` : staffName || postTitle;
+		// Проверяем и прямое свойство post.position, и meta._staff_position
+		const position = post.position || post.meta?._staff_position || '';
+		// Проверяем и прямое свойство post.company, и meta._staff_company
+		const company = post.company || post.meta?._staff_company || '';
+		const description = post.description || '';
+		
+		if (template === 'circle') {
+			// Staff Circle template - соответствует circle.php
+			const cardRadius = borderRadius || '';
+			const cardClasses = `card h-100 lift${cardRadius ? ' ' + cardRadius : ''}`;
+			const avatarSize = 'w-15';
+			
+			// Badge класс для компании
+			let badgeClass = 'badge badge-lg bg-gray-300 mb-0 rounded-pill';
+			// В редакторе не можем вызвать getThemeButton, используем rounded-pill по умолчанию
+			badgeClass += ' rounded-pill';
+			
+			const cardContent = (
+				<div className={cardClasses}>
+					<div className="card-body">
+						{imageUrl && (
+							<img 
+								className={`rounded-circle ${avatarSize} mb-4`}
+								src={imageUrl}
+								srcSet={`${imageUrl} 2x`}
+								alt={post.alt || fullName}
+							/>
+						)}
+						{fullName && (
+							<h3 className="h4 mb-1">{fullName}</h3>
+						)}
+						{position && (
+							<div className="meta mb-1">{position}</div>
+						)}
+						{company && (
+							<div className={badgeClass}>{company}</div>
+						)}
+						{description && (
+							<p className="mb-2">{descriptionLimited || description}</p>
+						)}
+					</div>
+				</div>
+			);
+			
+			// В редакторе не оборачиваем в ссылку
+			if (isEditor) {
+				return cardContent;
+			}
+			
+			// На фронтенде оборачиваем в ссылку
+			return (
+				<a 
+					href={postLink} 
+					className="text-decoration-none link-body h-100 d-block"
+				>
+					{cardContent}
+				</a>
+			);
+		} else if (template === 'card') {
+			// Staff Card template
+			const bgColors = ['bg-soft-blue', 'bg-soft-red', 'bg-soft-green', 'bg-soft-violet'];
+			const colorIndex = (post.id || post.ID || 0) % bgColors.length;
+			const bgColor = bgColors[colorIndex];
+			const cardRadius = borderRadius || '';
+			
+			return (
+				<>
+					{enableLink ? (
+						<a 
+							href={isEditor ? '#' : postLink} 
+							className="text-decoration-none link-body"
+							onClick={isEditor ? (e) => e.preventDefault() : undefined}
+						>
+							<div className={`position-relative`}>
+								<div className={`shape rounded ${bgColor} rellax d-md-block`} style={{bottom: '-0.75rem', right: '-0.75rem', width: '98%', height: '98%', zIndex: 0}}></div>
+								<div className={`card h-100 lift${cardRadius ? ' ' + cardRadius : ''}`}>
+									{imageUrl && (
+										<figure className={`card-img-top${cardRadius ? ' ' + cardRadius : ''}`}>
+											<img 
+												className={`img-fluid${cardRadius ? ' ' + cardRadius : ''}`}
+												src={imageUrl}
+												srcSet={`${imageUrl} 2x`}
+												alt={post.alt || fullName}
+											/>
+										</figure>
+									)}
+									<div className="card-body px-6 py-5">
+										{fullName && (
+											<h4 className="mb-1">{fullName}</h4>
+										)}
+										{position && (
+											<p className="mb-0">{position}</p>
+										)}
+									</div>
+								</div>
+							</div>
+						</a>
+					) : (
+						<div className={`position-relative`}>
+							<div className={`shape rounded ${bgColor} rellax d-md-block`} style={{bottom: '-0.75rem', right: '-0.75rem', width: '98%', height: '98%', zIndex: 0}}></div>
+							<div className={`card h-100 lift${cardRadius ? ' ' + cardRadius : ''}`}>
+								{imageUrl && (
+									<figure className={`card-img-top${cardRadius ? ' ' + cardRadius : ''}`}>
+										<img 
+											className={`img-fluid${cardRadius ? ' ' + cardRadius : ''}`}
+											src={imageUrl}
+											srcSet={`${imageUrl} 2x`}
+											alt={post.alt || fullName}
+										/>
+									</figure>
+								)}
+								<div className="card-body px-6 py-5">
+									{fullName && (
+										<h4 className="mb-1">{fullName}</h4>
+									)}
+									{position && (
+										<p className="mb-0">{position}</p>
+									)}
+								</div>
+							</div>
+						</div>
+					)}
+				</>
+			);
+		} else if (template === 'circle_center') {
+			// Staff Circle Center template - соответствует circle_center.php
+			const cardRadius = borderRadius || '';
+			const cardClasses = `card h-100 lift${cardRadius ? ' ' + cardRadius : ''}`;
+			const avatarSize = 'w-20';
+			
+			// Badge класс для компании
+			let badgeClass = 'badge badge-lg bg-gray-300 mb-0 rounded-pill';
+			badgeClass += ' rounded-pill';
+			
+			const cardContent = (
+				<div className={cardClasses}>
+					<div className="card-body">
+						{imageUrl && (
+							<img 
+								className={`rounded-circle mx-auto ${avatarSize} mb-4`}
+								src={imageUrl}
+								srcSet={`${imageUrl} 2x`}
+								alt={post.alt || fullName}
+							/>
+						)}
+						{fullName && (
+							<h3 className="h4 mb-1">{fullName}</h3>
+						)}
+						{position && (
+							<div className="meta mb-1">{position}</div>
+						)}
+						{company && (
+							<div className={badgeClass}>{company}</div>
+						)}
+						{description && (
+							<p className="mb-2">{descriptionLimited || description}</p>
+						)}
+					</div>
+				</div>
+			);
+			
+			// В редакторе не оборачиваем в ссылку
+			if (isEditor) {
+				return cardContent;
+			}
+			
+			// На фронтенде оборачиваем в ссылку
+			return (
+				<a 
+					href={postLink} 
+					className="text-decoration-none link-body h-100 d-block"
+				>
+					{cardContent}
+				</a>
+			);
+		} else if (template === 'circle_center_alt') {
+			// Staff Circle Center Alt template - соответствует circle_center_alt.php
+			const avatarSize = 'w-20';
+			
+			// Badge класс для компании
+			let badgeClass = 'badge badge-lg bg-gray-300 mb-0 rounded-pill';
+			badgeClass += ' rounded-pill';
+			
+			const cardContent = (
+				<div className="text-center">
+					{imageUrl && (
+						<>
+							{!isEditor && (
+								<a href={postLink} className="d-inline-block">
+									<img 
+										className={`rounded-circle mx-auto lift ${avatarSize} mb-4`}
+										src={imageUrl}
+										srcSet={`${imageUrl} 2x`}
+										alt={post.alt || fullName}
+									/>
+								</a>
+							)}
+							{isEditor && (
+								<img 
+									className={`rounded-circle mx-auto lift ${avatarSize} mb-4`}
+									src={imageUrl}
+									srcSet={`${imageUrl} 2x`}
+									alt={post.alt || fullName}
+								/>
+							)}
+						</>
+					)}
+					{fullName && (
+						<h3 className="h4 mb-1">{fullName}</h3>
+					)}
+					{position && (
+						<div className="meta mb-1">{position}</div>
+					)}
+					{company && (
+						<div className={badgeClass}>{company}</div>
+					)}
+					{description && (
+						<p className="mb-2">{descriptionLimited || description}</p>
+					)}
+					{/* Социальные иконки отображаются только на фронтенде через PHP шаблон */}
+					{isEditor && (
+						<div className="mt-3 mb-5">
+							<nav className="nav social social-muted justify-content-center text-center mb-0">
+								<a href="#"><i className="uil uil-twitter"></i></a>
+								<a href="#"><i className="uil uil-facebook-f"></i></a>
+								<a href="#"><i className="uil uil-instagram"></i></a>
+							</nav>
+						</div>
+					)}
+				</div>
+			);
+			
+			return cardContent;
+		} else {
+			// Staff Default template
+			const cardRadius = borderRadius || '';
+			const cardClasses = `card h-100${cardRadius ? ' ' + cardRadius : ''}`;
+			
+			return (
+				<>
+					{enableLink ? (
+						<a 
+							href={isEditor ? '#' : postLink} 
+							className="text-decoration-none link-body h-100 d-block"
+							onClick={isEditor ? (e) => e.preventDefault() : undefined}
+						>
+							<div className={cardClasses}>
+								{imageUrl && (
+									<figure className={`card-img-top${cardRadius ? ' ' + cardRadius : ''}`}>
+										<img 
+											className={`img-fluid${cardRadius ? ' ' + cardRadius : ''}`}
+											src={imageUrl}
+											srcSet={`${imageUrl} 2x`}
+											alt={post.alt || fullName}
+										/>
+									</figure>
+								)}
+								<div className="card-body px-6 py-5">
+									{fullName && (
+										<h4 className="mb-1">{fullName}</h4>
+									)}
+									{position && (
+										<p className="mb-0">{position}</p>
+									)}
+								</div>
+							</div>
+						</a>
+					) : (
+						<div className={cardClasses}>
+							{imageUrl && (
+								<figure className={`card-img-top${cardRadius ? ' ' + cardRadius : ''}`}>
+									<img 
+										className={`img-fluid${cardRadius ? ' ' + cardRadius : ''}`}
+										src={imageUrl}
+										srcSet={`${imageUrl} 2x`}
+										alt={post.alt || fullName}
+									/>
+								</figure>
+							)}
+							<div className="card-body px-6 py-5">
+								{fullName && (
+									<h4 className="mb-1">{fullName}</h4>
+								)}
+								{position && (
+									<p className="mb-0">{position}</p>
+								)}
+							</div>
+						</div>
+					)}
+				</>
+			);
+		}
+		
+		// Если дошли сюда, значит шаблон для staff не распознан - возвращаем null
+		return null;
+	}
+	
+	// Проверяем обычные шаблоны ПОСЛЕ проверки postType
+	if (template === 'card') {
 		// Card template
 		return (
 			<article className="h-100 mb-6">

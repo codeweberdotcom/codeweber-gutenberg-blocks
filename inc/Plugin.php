@@ -59,6 +59,9 @@ class Plugin {
 		
 		// Register REST API endpoint for accordion posts (using WP_Query)
 		add_action('rest_api_init', __CLASS__ . '::register_accordion_posts_endpoint');
+
+		// Register REST API endpoint for theme style classes (button/card radius)
+		add_action('rest_api_init', [StyleAPI::class, 'register_routes']);
 		
 		// Load JavaScript translations after scripts are enqueued
 		add_action('enqueue_block_editor_assets', __CLASS__ . '::loadJSTranslations', 100);
@@ -122,6 +125,7 @@ class Plugin {
 		'image-simple',
 		'post-grid',
 		'tabs',
+		'label-plus',
 	];
 	}
 

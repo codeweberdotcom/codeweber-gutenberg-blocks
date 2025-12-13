@@ -16,7 +16,7 @@ import { getRowColsClasses, getGapClasses } from '../../components/grid-control'
 import apiFetch from '@wordpress/api-fetch';
 
 export default function Edit({ attributes, setAttributes, clientId }) {
-	const {
+		const {
 		displayMode = 'grid',
 		postType,
 		postsPerPage,
@@ -54,6 +54,8 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		swiperContainerType,
 		swiperItemsAuto,
 		swiperCentered,
+		swiperWrapperClass,
+		swiperSlideClass,
 		borderRadius,
 		enableLightbox,
 		lightboxGallery,
@@ -69,6 +71,8 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		loadMoreInitialCount,
 		loadMoreText = 'show-more',
 		loadMoreType = 'button',
+		loadMoreButtonSize,
+		loadMoreButtonStyle = 'solid',
 		template = 'default',
 		enableLink = false,
 		selectedTaxonomies = {},
@@ -125,8 +129,18 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 			if (Object.keys(updates).length > 0) {
 				setAttributes(updates);
 			}
-		} else if (postType && postType !== 'clients' && postType !== 'testimonials' && postType !== 'documents' && postType !== 'faq') {
-			// Если переключились с clients, testimonials, documents или faq на другой тип, меняем template на default
+		} else if (postType === 'staff') {
+			const updates = {};
+			// Для staff используем default по умолчанию, если шаблон не установлен
+			// Поддерживаем шаблоны: default, card, circle, circle_center, circle_center_alt
+			if (!template || !['default', 'card', 'circle', 'circle_center', 'circle_center_alt'].includes(template)) {
+				updates.template = 'default';
+			}
+			if (Object.keys(updates).length > 0) {
+				setAttributes(updates);
+			}
+		} else if (postType && postType !== 'clients' && postType !== 'testimonials' && postType !== 'documents' && postType !== 'faq' && postType !== 'staff') {
+			// Если переключились с clients, testimonials, documents, faq или staff на другой тип, меняем template на default
 			if (template && (template.startsWith('client-') || template.startsWith('testimonial-') || template === 'document-card' || template === 'document-card-download' || ['card', 'blockquote', 'icon'].includes(template))) {
 				setAttributes({ template: 'default' });
 			}
@@ -359,6 +373,26 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 						};
 					}
 					
+					// Для staff получаем дополнительные данные из метаполей
+					let staffData = {};
+					if (postType === 'staff') {
+						const staffPosition = post._staff_position || post.meta?._staff_position || '';
+						const staffCompany = post._staff_company || post.meta?._staff_company || '';
+						const staffName = post._staff_name || post.meta?._staff_name || '';
+						const staffSurname = post._staff_surname || post.meta?._staff_surname || '';
+						
+						staffData = {
+							position: staffPosition,
+							company: staffCompany,
+							meta: {
+								_staff_position: staffPosition,
+								_staff_company: staffCompany,
+								_staff_name: staffName,
+								_staff_surname: staffSurname,
+							},
+						};
+					}
+					
 					const postData = {
 						id: imageId || post.id,
 						url: finalImageUrl, // Всегда должен быть заполнен
@@ -370,6 +404,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 						linkUrl: linkUrl,
 						documentFile: documentFileUrl, // URL файла документа для documents
 						...testimonialData, // Добавляем данные testimonials если есть
+						...staffData, // Добавляем данные staff если есть
 					};
 
 					console.log('Post Grid: Post data:', postData);
@@ -428,6 +463,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 			return `row ${gapClassesStr}`.trim();
 		}
 	};
+
 
 	// Функция для генерации классов col-* из gridColumns* атрибутов (для Classic Grid)
 	const getColClasses = () => {
@@ -661,7 +697,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 	};
 	
 	const loadMoreTextValue = loadMoreTexts[loadMoreText] || loadMoreTexts['show-more'];
-	const hasMorePosts = loadMoreEnable && posts.length > (loadMoreInitialCount || posts.length);
+	const hasMorePosts = loadMoreEnable && displayMode === 'grid' && loadMoreInitialCount > 0 && posts.length > loadMoreInitialCount;
 
 	return (
 		<>
@@ -686,7 +722,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 								key={`${post.id}-${index}-${hoverEffectsKey}-${imageSize}`}
 								className={gridType === 'classic' ? getColClasses() : (gridType === 'columns-grid' ? 'col' : '')}
 							>
-								{['default', 'card', 'card-content', 'slider', 'default-clickable', 'overlay-5', 'client-simple', 'client-grid', 'client-card', 'blockquote', 'icon', 'document-card', 'document-card-download'].includes(template) || (postType === 'testimonials' && ['default', 'card', 'blockquote', 'icon'].includes(template)) || (postType === 'documents' && ['document-card', 'document-card-download'].includes(template)) || (postType === 'faq' && template === 'default') ? (
+								{['default', 'card', 'card-content', 'slider', 'default-clickable', 'overlay-5', 'client-simple', 'client-grid', 'client-card', 'blockquote', 'icon', 'document-card', 'document-card-download', 'circle', 'circle_center', 'circle_center_alt'].includes(template) || (postType === 'testimonials' && ['default', 'card', 'blockquote', 'icon'].includes(template)) || (postType === 'documents' && ['document-card', 'document-card-download'].includes(template)) || (postType === 'faq' && template === 'default') || (postType === 'staff' && ['default', 'card', 'circle', 'circle_center', 'circle_center_alt'].includes(template)) ? (
 									<PostGridItemRender
 										post={post}
 										template={template}
@@ -722,43 +758,64 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 								)}
 							</div>
 						))}
-						{hasMorePosts && (
-							<div className="text-center mt-5">
-								{loadMoreType === 'link' ? (
-									<a 
-										href="#" 
-										className="hover cwgb-load-more-btn" 
-										onClick={(e) => e.preventDefault()}
-										style={{ pointerEvents: 'none', cursor: 'default' }}
-									>
-										{loadMoreTextValue}
-									</a>
-								) : (
-									<button 
-										className="btn btn-primary cwgb-load-more-btn" 
-										type="button"
+						{hasMorePosts && (() => {
+							// Строим класс кнопки
+							const buttonClasses = ['btn', 'cwgb-load-more-btn'];
+							
+							// Добавляем стиль кнопки (solid или outline)
+							if (loadMoreButtonStyle === 'outline') {
+								buttonClasses.push('btn-outline-primary');
+							} else {
+								buttonClasses.push('btn-primary');
+							}
+							
+							// Добавляем размер кнопки
+							if (loadMoreButtonSize) {
+								buttonClasses.push(loadMoreButtonSize);
+							}
+							
+							const buttonClassName = buttonClasses.join(' ');
+							
+							return (
+								<div className="text-center pt-5 w-100">
+									{loadMoreType === 'link' ? (
+										<a 
+											href="#" 
+											className="hover cwgb-load-more-btn" 
+											onClick={(e) => e.preventDefault()}
+											style={{ pointerEvents: 'none', cursor: 'default' }}
+										>
+											{loadMoreTextValue}
+										</a>
+									) : (
+										<button 
+											className={buttonClassName}
+											type="button"
 										onClick={(e) => e.preventDefault()}
 										disabled
 										style={{ pointerEvents: 'none', cursor: 'default' }}
 									>
 										{loadMoreTextValue}
 									</button>
-								)}
+									)}
 							</div>
-						)}
+						);
+						})()}
 					</div>
 				) : displayMode === 'swiper' ? (
 					<SwiperSlider 
 						config={swiperConfig} 
 						className={template === 'client-simple' ? `clients ${blockClass || ''}`.trim() : (blockClass || '')}
+						wrapperClassName={swiperWrapperClass || ''}
 						uniqueKey={`${swiperUniqueKey}-${imageSize}-${template}`}
 					>
 						{posts.map((post, index) => (
 							<SwiperSlide 
 								key={`${post.id}-${index}-${hoverEffectsKey}-${imageSize}-${template}`}
 								className={template === 'client-simple' ? 'px-5' : ''}
+								slideClassName={swiperSlideClass || ''}
 							>
-								{['default', 'card', 'card-content', 'slider', 'default-clickable', 'overlay-5', 'client-simple', 'client-grid', 'client-card', 'blockquote', 'icon', 'document-card', 'document-card-download'].includes(template) || (postType === 'testimonials' && ['default', 'card', 'blockquote', 'icon'].includes(template)) || (postType === 'documents' && ['document-card', 'document-card-download'].includes(template)) || (postType === 'faq' && template === 'default') ? (
+								{['default', 'card', 'card-content', 'slider', 'default-clickable', 'overlay-5', 'client-simple', 'client-grid', 'client-card', 'blockquote', 'icon', 'document-card', 'document-card-download', 'circle', 'circle_center', 'circle_center_alt'].includes(template) || (postType === 'testimonials' && ['default', 'card', 'blockquote', 'icon'].includes(template)) || (postType === 'documents' && ['document-card', 'document-card-download'].includes(template)) || (postType === 'faq' && template === 'default') || (postType === 'staff' && ['default', 'card', 'circle', 'circle_center', 'circle_center_alt'].includes(template)) ? (
 									<PostGridItemRender
 										post={post}
 										template={template}

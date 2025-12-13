@@ -8,7 +8,7 @@
  */
 
 import { __ } from '@wordpress/i18n';
-import { ToggleControl, RangeControl, SelectControl } from '@wordpress/components';
+import { ToggleControl, RangeControl, SelectControl, Button } from '@wordpress/components';
 
 export const LoadMoreControl = ({ attributes, setAttributes, attributePrefix = 'loadMore' }) => {
 	const getAttr = (suffix) => attributes[`${attributePrefix}${suffix}`];
@@ -18,6 +18,8 @@ export const LoadMoreControl = ({ attributes, setAttributes, attributePrefix = '
 	const loadMoreCount = getAttr('LoadMoreCount') || 6;
 	const loadMoreText = getAttr('Text') || 'show-more';
 	const loadMoreType = getAttr('Type') || 'button';
+	const loadMoreButtonSize = getAttr('ButtonSize') || '';
+	const loadMoreButtonStyle = getAttr('ButtonStyle') || 'solid';
 
 	// Предустановленные тексты для кнопки/ссылки
 	const textOptions = [
@@ -84,6 +86,61 @@ export const LoadMoreControl = ({ attributes, setAttributes, attributePrefix = '
 						max={50}
 						help={__('Number of items loaded when clicking the button', 'codeweber-gutenberg-blocks')}
 					/>
+
+					{loadMoreType === 'button' && (
+						<>
+							{/* Размер кнопки */}
+							<div style={{ marginTop: '16px' }}>
+								<div style={{ marginBottom: '8px' }}>
+									<label style={{ display: 'block', marginBottom: '8px' }}>
+										{__('Button Size', 'codeweber-gutenberg-blocks')}
+									</label>
+								</div>
+								<div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+									{[
+										{ label: 'ExSm', value: 'btn-xs' },
+										{ label: 'Sm', value: 'btn-sm' },
+										{ label: 'Md', value: '' },
+										{ label: 'Lg', value: 'btn-lg' },
+										{ label: 'ExLg', value: 'btn-elg' },
+									].map((size) => (
+										<Button
+											key={size.value}
+											isPrimary={loadMoreButtonSize === size.value}
+											onClick={() => setAttributes({ [`${attributePrefix}ButtonSize`]: size.value })}
+											isSmall
+										>
+											{size.label}
+										</Button>
+									))}
+								</div>
+							</div>
+
+							{/* Стиль кнопки */}
+							<div style={{ marginTop: '16px' }}>
+								<div style={{ marginBottom: '8px' }}>
+									<label style={{ display: 'block', marginBottom: '8px' }}>
+										{__('Button Style', 'codeweber-gutenberg-blocks')}
+									</label>
+								</div>
+								<div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+									{[
+										{ label: __('Solid', 'codeweber-gutenberg-blocks'), value: 'solid' },
+										{ label: __('Outline', 'codeweber-gutenberg-blocks'), value: 'outline' },
+									].map((style) => (
+										<Button
+											key={style.value}
+											isPrimary={loadMoreButtonStyle === style.value}
+											onClick={() => setAttributes({ [`${attributePrefix}ButtonStyle`]: style.value })}
+											isSmall
+										>
+											{style.label}
+										</Button>
+									))}
+								</div>
+							</div>
+						</>
+					)}
 				</>
 			)}
 		</>

@@ -1,0 +1,113 @@
+{
+    "apiVersion": 2,
+    "name": "codeweber-blocks/label-plus",
+    "title": "Label+",
+    "category": "codeweber-gutenberg-blocks",
+    "description": "Floating label card with icon, counter and text.",
+    "icon": "id-alt",
+    "supports": {
+        "html": false,
+        "anchor": true
+    },
+    "attributes": {
+        "counterText": {
+            "type": "string",
+            "default": "25000+"
+        },
+        "labelText": {
+            "type": "string",
+            "default": "Happy Clients"
+        },
+        "positionBottom": {
+            "type": "string",
+            "default": "10%"
+        },
+        "positionRight": {
+            "type": "string",
+            "default": "-3%"
+        },
+        "cardRadiusClass": {
+            "type": "string",
+            "default": ""
+        },
+        "iconType": {
+            "type": "string",
+            "default": "font"
+        },
+        "iconName": {
+            "type": "string",
+            "default": "users-alt"
+        },
+        "svgIcon": {
+            "type": "string",
+            "default": ""
+        },
+        "svgStyle": {
+            "type": "string",
+            "default": "lineal"
+        },
+        "iconSize": {
+            "type": "string",
+            "default": "md"
+        },
+        "iconFontSize": {
+            "type": "string",
+            "default": "fs-20"
+        },
+        "iconColor": {
+            "type": "string",
+            "default": "primary"
+        },
+        "iconColor2": {
+            "type": "string",
+            "default": ""
+        },
+        "iconClass": {
+            "type": "string",
+            "default": ""
+        },
+        "iconWrapper": {
+            "type": "boolean",
+            "default": true
+        },
+        "iconWrapperStyle": {
+            "type": "string",
+            "default": "btn-circle"
+        },
+        "iconBtnSize": {
+            "type": "string",
+            "default": ""
+        },
+        "iconBtnVariant": {
+            "type": "string",
+            "default": "soft"
+        },
+        "showCounterClass": {
+            "type": "boolean",
+            "default": false
+        },
+        "blockClass": {
+            "type": "string",
+            "default": ""
+        },
+        "blockData": {
+            "type": "string",
+            "default": ""
+        },
+        "blockId": {
+            "type": "string",
+            "default": ""
+        },
+        "customSvgUrl": {
+            "type": "string",
+            "default": ""
+        },
+        "customSvgId": {
+            "type": "number",
+            "default": null
+        }
+    },
+    "editorScript": "file:./index.js",
+    "editorStyle": "file:./index.css"
+}
+

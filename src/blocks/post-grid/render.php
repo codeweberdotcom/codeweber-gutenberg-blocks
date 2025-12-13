@@ -69,6 +69,8 @@ $load_more_initial_count = isset($attributes['loadMoreInitialCount']) ? (int) $a
 $load_more_load_more_count = isset($attributes['loadMoreLoadMoreCount']) ? (int) $attributes['loadMoreLoadMoreCount'] : 6;
 $load_more_text_key = isset($attributes['loadMoreText']) ? $attributes['loadMoreText'] : 'show-more';
 $load_more_type = isset($attributes['loadMoreType']) ? $attributes['loadMoreType'] : 'button';
+$load_more_button_size = isset($attributes['loadMoreButtonSize']) ? $attributes['loadMoreButtonSize'] : '';
+$load_more_button_style = isset($attributes['loadMoreButtonStyle']) ? $attributes['loadMoreButtonStyle'] : 'solid';
 
 // Предустановленные тексты для кнопки/ссылки
 $load_more_texts = [
@@ -460,12 +462,17 @@ if (!function_exists('render_post_grid_item')) {
 					$testimonial_template = $template;
 				}
 				
+				// Проверяем, включен ли lift эффект
+				$simple_effect = isset($attributes['simpleEffect']) ? $attributes['simpleEffect'] : 'none';
+				$enable_lift = ($simple_effect === 'lift');
+				
 				$template_args = [
 					'image_size' => $image_size,
 					'show_rating' => isset($attributes['showRating']) ? (bool) $attributes['showRating'] : true,
 					'show_company' => isset($attributes['showCompany']) ? (bool) $attributes['showCompany'] : false,
 					'bg_color' => isset($attributes['bgColor']) ? $attributes['bgColor'] : '', // Для card шаблона
 					'shadow' => isset($attributes['shadow']) ? (bool) $attributes['shadow'] : true, // Для blockquote шаблона
+					'enable_lift' => $enable_lift, // Передаем enable_lift для добавления класса lift
 				];
 				
 				// Используем шаблон testimonials
@@ -531,6 +538,98 @@ if (!function_exists('render_post_grid_item')) {
 				
 				// Используем шаблон default для FAQ
 				$html = cw_render_post_card($post, 'default', $display_settings, $template_args);
+				
+				// Если функция вернула не пустую строку, используем её
+				if (!empty($html) && trim($html) !== '') {
+					// Добавляем обертку для grid режима (не swiper)
+					if (!$is_swiper) {
+						// Для classic grid добавляем обертку с col-* классами
+						if ($grid_type === 'classic' && !empty($col_classes)) {
+							$html = '<div class="' . esc_attr($col_classes) . '">' . $html . '</div>';
+						}
+						// Для columns-grid добавляем обертку с классом col (row-cols-* работает на контейнере)
+						elseif ($grid_type === 'columns-grid') {
+							$html = '<div class="col">' . $html . '</div>';
+						}
+					}
+					
+					return $html;
+				}
+				
+				// Если функция вернула пустую строку, продолжаем с fallback ниже
+			} elseif ($post_type === 'staff') {
+				// Специальная обработка для staff
+				$display_settings = [
+					'show_title' => true,
+					'show_date' => false,
+					'show_category' => false,
+					'show_comments' => false,
+					'title_length' => 0,
+					'excerpt_length' => 0,
+					'title_tag' => 'h4',
+					'title_class' => '',
+				];
+				
+				// Размер изображения по умолчанию для staff
+				if ($image_size === 'full' || empty($image_size)) {
+					$image_size = 'codeweber_staff';
+				}
+				
+				// Определяем шаблон для staff
+				// Если шаблон начинается с "staff-", используем его
+				// Иначе используем default для staff
+				$staff_template = 'default';
+				if (strpos($template, 'staff-') === 0) {
+					$staff_template = str_replace('staff-', '', $template);
+				} elseif (in_array($template, ['default', 'card', 'circle', 'circle_center', 'circle_center_alt'])) {
+					// Если указан один из стандартных шаблонов staff, используем его
+					$staff_template = $template;
+				}
+				
+				// Проверяем, включен ли lift эффект
+				$simple_effect = isset($attributes['simpleEffect']) ? $attributes['simpleEffect'] : 'none';
+				$enable_lift = ($simple_effect === 'lift');
+				
+				// Для circle шаблона всегда используем w-15, для circle_center и circle_center_alt - w-20
+				$avatar_size = 'w-15';
+				if (in_array($staff_template, ['circle_center', 'circle_center_alt'])) {
+					$avatar_size = 'w-20';
+				}
+				if (isset($attributes['avatarSize']) && !empty($attributes['avatarSize'])) {
+					$avatar_size = $attributes['avatarSize'];
+				}
+				
+				// Для staff по умолчанию enable_link = true (если явно не установлено false)
+				// Для circle и circle_center шаблонов всегда включаем ссылку на всей карточке
+				// Для circle_center_alt ссылка на изображении
+				$enable_link_staff = true;
+				if (!in_array($staff_template, ['circle', 'circle_center', 'circle_center_alt']) && isset($attributes['enableLink'])) {
+					$enable_link_staff = (bool) $attributes['enableLink'];
+				}
+				
+				// Для circle_center_alt по умолчанию показываем социальные иконки
+				$show_social_staff = false;
+				if ($staff_template === 'circle_center_alt') {
+					$show_social_staff = true; // По умолчанию для circle_center_alt
+					if (isset($attributes['showSocial'])) {
+						$show_social_staff = (bool) $attributes['showSocial'];
+					}
+				} else {
+					$show_social_staff = isset($attributes['showSocial']) ? (bool) $attributes['showSocial'] : false;
+				}
+				
+				$template_args = [
+					'image_size' => $image_size,
+					'show_description' => isset($attributes['showDescription']) ? (bool) $attributes['showDescription'] : false,
+					'show_social' => $show_social_staff,
+					'enable_link' => $enable_link_staff, // Для circle шаблона всегда true
+					'enable_lift' => $enable_lift,
+					'avatar_size' => $avatar_size, // Для circle шаблона всегда w-15 по умолчанию
+					'bg_color' => isset($attributes['bgColor']) ? $attributes['bgColor'] : '', // Для card шаблона
+				];
+				
+				// Используем шаблон staff
+				$html = cw_render_post_card($post, $staff_template, $display_settings, $template_args);
 				
 				// Если функция вернула не пустую строку, используем её
 				if (!empty($html) && trim($html) !== '') {
@@ -877,6 +976,15 @@ if (!function_exists('render_post_grid_item')) {
 			// Add ticker class to wrapper for continuous scrolling when itemsAuto is enabled
 			$items_auto = isset($attributes['swiperItemsAuto']) ? $attributes['swiperItemsAuto'] : false;
 			$wrapper_classes = $items_auto ? 'swiper-wrapper ticker' : 'swiper-wrapper';
+			
+			// Add swiper-wrapper class from Settings tab
+			$swiper_wrapper_class = isset($attributes['swiperWrapperClass']) ? $attributes['swiperWrapperClass'] : '';
+			if (!empty($swiper_wrapper_class)) {
+				$wrapper_classes .= ' ' . esc_attr($swiper_wrapper_class);
+			}
+			
+			// Get swiper-slide class from Settings tab
+			$swiper_slide_class = isset($attributes['swiperSlideClass']) ? $attributes['swiperSlideClass'] : '';
 			?>
 			<div class="<?php echo esc_attr(trim($swiper_container_classes)); ?>"<?php echo $swiper_data_attrs_str . $swiper_settings_str; ?>>
 				<div class="swiper">
@@ -889,6 +997,10 @@ if (!function_exists('render_post_grid_item')) {
 							$slide_class = 'swiper-slide';
 							if ($template === 'client-simple') {
 								$slide_class .= ' px-5';
+							}
+							// Add swiper-slide class from Settings tab
+							if (!empty($swiper_slide_class)) {
+								$slide_class .= ' ' . esc_attr($swiper_slide_class);
 							}
 							?>
 							<?php
@@ -921,6 +1033,31 @@ if (!function_exists('render_post_grid_item')) {
 			<?php if ($load_more_enable && $has_more) : 
 				// Получаем переведенный текст для Loading
 				$loading_text = __('Loading...', 'codeweber-gutenberg-blocks');
+				
+				// Получаем класс скругления кнопки из темы
+				$button_radius_class = function_exists('getThemeButton') ? getThemeButton() : '';
+				
+				// Строим класс кнопки
+				$button_classes = ['btn', 'cwgb-load-more-btn'];
+				
+				// Добавляем стиль кнопки (solid или outline)
+				if ($load_more_button_style === 'outline') {
+					$button_classes[] = 'btn-outline-primary';
+				} else {
+					$button_classes[] = 'btn-primary';
+				}
+				
+				// Добавляем размер кнопки
+				if (!empty($load_more_button_size)) {
+					$button_classes[] = esc_attr($load_more_button_size);
+				}
+				
+				// Добавляем класс скругления из темы
+				if (!empty($button_radius_class)) {
+					$button_classes[] = esc_attr(trim($button_radius_class));
+				}
+				
+				$button_class_string = implode(' ', $button_classes);
 			?>
 				<div class="text-center mt-5">
 					<?php if ($load_more_type === 'link') : ?>
@@ -928,7 +1065,7 @@ if (!function_exists('render_post_grid_item')) {
 							<?php echo esc_html($load_more_text); ?>
 						</a>
 					<?php else : ?>
-						<button class="btn btn-primary cwgb-load-more-btn" type="button" data-loading-text="<?php echo esc_attr($loading_text); ?>">
+						<button class="<?php echo esc_attr($button_class_string); ?>" type="button" data-loading-text="<?php echo esc_attr($loading_text); ?>">
 							<?php echo esc_html($load_more_text); ?>
 						</button>
 					<?php endif; ?>

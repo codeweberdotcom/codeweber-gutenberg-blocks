@@ -97,6 +97,34 @@ const FAQ_TEMPLATES = [
 	},
 ];
 
+const STAFF_TEMPLATES = [
+	{
+		value: 'default',
+		label: __('Default', 'codeweber-gutenberg-blocks'),
+		description: __('Basic staff card with image, name and position', 'codeweber-gutenberg-blocks'),
+	},
+	{
+		value: 'card',
+		label: __('Card', 'codeweber-gutenberg-blocks'),
+		description: __('Card with colored backgrounds (Sandbox style)', 'codeweber-gutenberg-blocks'),
+	},
+	{
+		value: 'circle',
+		label: __('Circle', 'codeweber-gutenberg-blocks'),
+		description: __('Circular avatar with social links', 'codeweber-gutenberg-blocks'),
+	},
+	{
+		value: 'circle_center',
+		label: __('Circle Center', 'codeweber-gutenberg-blocks'),
+		description: __('Circular avatar centered with social links', 'codeweber-gutenberg-blocks'),
+	},
+	{
+		value: 'circle_center_alt',
+		label: __('Circle Center Alt', 'codeweber-gutenberg-blocks'),
+		description: __('Circular avatar centered with link on image and social links', 'codeweber-gutenberg-blocks'),
+	},
+];
+
 export const PostGridTemplateControl = ({ value, onChange, postType = 'post' }) => {
 	// Определяем какие шаблоны показывать в зависимости от типа записи
 	let templates;
@@ -113,6 +141,9 @@ export const PostGridTemplateControl = ({ value, onChange, postType = 'post' }) 
 		defaultTemplate = 'document-card';
 	} else if (postType === 'faq') {
 		templates = FAQ_TEMPLATES;
+		defaultTemplate = 'default';
+	} else if (postType === 'staff') {
+		templates = STAFF_TEMPLATES;
 		defaultTemplate = 'default';
 	} else {
 		templates = POST_TEMPLATES;

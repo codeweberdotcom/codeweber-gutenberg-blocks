@@ -259,6 +259,14 @@
       "type": "string",
       "default": "button"
     },
+    "loadMoreButtonSize": {
+      "type": "string",
+      "default": ""
+    },
+    "loadMoreButtonStyle": {
+      "type": "string",
+      "default": "solid"
+    },
     "template": {
       "type": "string",
       "default": "default"
@@ -370,6 +378,14 @@
     "swiperCentered": {
       "type": "boolean",
       "default": false
+    },
+    "swiperWrapperClass": {
+      "type": "string",
+      "default": ""
+    },
+    "swiperSlideClass": {
+      "type": "string",
+      "default": ""
     },
     "selectedTaxonomies": {
       "type": "object",

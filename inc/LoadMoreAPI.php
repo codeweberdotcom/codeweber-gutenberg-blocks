@@ -818,6 +818,149 @@ class LoadMoreAPI {
 					
 					return $html;
 				}
+			} elseif ($post_type === 'staff') {
+				// Специальная обработка для staff
+				$display_settings = [
+					'show_title' => true,
+					'show_date' => false,
+					'show_category' => false,
+					'show_comments' => false,
+					'title_length' => 0,
+					'excerpt_length' => 0,
+					'title_tag' => 'h4',
+					'title_class' => '',
+				];
+				
+				// Размер изображения по умолчанию для staff
+				if ($image_size === 'full' || empty($image_size)) {
+					$image_size = 'codeweber_staff';
+				}
+				
+				// Определяем шаблон для staff
+				$staff_template = 'default';
+				if (strpos($template, 'staff-') === 0) {
+					$staff_template = str_replace('staff-', '', $template);
+				} elseif (in_array($template, ['default', 'card', 'circle', 'circle_center', 'circle_center_alt'])) {
+					$staff_template = $template;
+				}
+				
+				// Проверяем, включен ли lift эффект
+				$simple_effect = isset($attributes['simpleEffect']) ? $attributes['simpleEffect'] : 'none';
+				$enable_lift = ($simple_effect === 'lift');
+				
+				// Для circle шаблона всегда используем w-15, для circle_center и circle_center_alt - w-20
+				$avatar_size = 'w-15';
+				if (in_array($staff_template, ['circle_center', 'circle_center_alt'])) {
+					$avatar_size = 'w-20';
+				}
+				if (isset($attributes['avatarSize']) && !empty($attributes['avatarSize'])) {
+					$avatar_size = $attributes['avatarSize'];
+				}
+				
+				// Для staff по умолчанию enable_link = true (если явно не установлено false)
+				// Для circle и circle_center шаблонов всегда включаем ссылку на всей карточке
+				// Для circle_center_alt ссылка на изображении
+				$enable_link_staff = true;
+				if (!in_array($staff_template, ['circle', 'circle_center', 'circle_center_alt']) && isset($attributes['enableLink'])) {
+					$enable_link_staff = (bool) $attributes['enableLink'];
+				}
+				
+				// Для circle_center_alt по умолчанию показываем социальные иконки
+				$show_social_staff = false;
+				if ($staff_template === 'circle_center_alt') {
+					$show_social_staff = true; // По умолчанию для circle_center_alt
+					if (isset($attributes['showSocial'])) {
+						$show_social_staff = (bool) $attributes['showSocial'];
+					}
+				} else {
+					$show_social_staff = isset($attributes['showSocial']) ? (bool) $attributes['showSocial'] : false;
+				}
+				
+				$template_args = [
+					'image_size' => $image_size,
+					'show_description' => isset($attributes['showDescription']) ? (bool) $attributes['showDescription'] : false,
+					'show_social' => $show_social_staff,
+					'enable_link' => $enable_link_staff, // Для circle шаблона всегда true
+					'enable_lift' => $enable_lift,
+					'avatar_size' => $avatar_size,
+					'bg_color' => isset($attributes['bgColor']) ? $attributes['bgColor'] : '',
+				];
+				
+				// Используем шаблон staff
+				$html = cw_render_post_card($post, $staff_template, $display_settings, $template_args);
+				
+				// Если функция вернула не пустую строку, используем её
+				if (!empty($html) && trim($html) !== '') {
+					// Добавляем обертку для grid режима (не swiper)
+					if (!$is_swiper) {
+						// Для classic grid добавляем обертку с col-* классами
+						if ($grid_type === 'classic' && !empty($col_classes)) {
+							$html = '<div class="' . esc_attr($col_classes) . '">' . $html . '</div>';
+						}
+						// Для columns-grid добавляем обертку с классом col (row-cols-* работает на контейнере)
+						elseif ($grid_type === 'columns-grid') {
+							$html = '<div class="col">' . $html . '</div>';
+						}
+					}
+					
+					return $html;
+				}
+			} elseif ($post_type === 'testimonials') {
+				// Специальная обработка для testimonials
+				$display_settings = [
+					'show_title' => false,
+					'show_date' => false,
+					'show_category' => false,
+					'show_comments' => false,
+					'title_length' => 0,
+					'excerpt_length' => 0,
+					'title_tag' => 'h2',
+					'title_class' => '',
+				];
+				
+				// Определяем шаблон для testimonials
+				// Если шаблон начинается с "testimonial-", используем его
+				// Иначе используем default для testimonials
+				$testimonial_template = 'default';
+				if (strpos($template, 'testimonial-') === 0) {
+					$testimonial_template = str_replace('testimonial-', '', $template);
+				} elseif (in_array($template, ['default', 'card', 'blockquote', 'icon'])) {
+					// Если указан один из стандартных шаблонов testimonials, используем его
+					$testimonial_template = $template;
+				}
+				
+				// Проверяем, включен ли lift эффект
+				$simple_effect = isset($attributes['simpleEffect']) ? $attributes['simpleEffect'] : 'none';
+				$enable_lift = ($simple_effect === 'lift');
+				
+				$template_args = [
+					'image_size' => $image_size,
+					'show_rating' => isset($attributes['showRating']) ? (bool) $attributes['showRating'] : true,
+					'show_company' => isset($attributes['showCompany']) ? (bool) $attributes['showCompany'] : false,
+					'bg_color' => isset($attributes['bgColor']) ? $attributes['bgColor'] : '', // Для card шаблона
+					'shadow' => isset($attributes['shadow']) ? (bool) $attributes['shadow'] : true, // Для blockquote шаблона
+					'enable_lift' => $enable_lift, // Передаем enable_lift для добавления класса lift
+				];
+				
+				// Используем шаблон testimonials
+				$html = cw_render_post_card($post, $testimonial_template, $display_settings, $template_args);
+				
+				// Если функция вернула не пустую строку, используем её
+				if (!empty($html) && trim($html) !== '') {
+					// Добавляем обертку для grid режима (не swiper)
+					if (!$is_swiper) {
+						// Для classic grid добавляем обертку с col-* классами
+						if ($grid_type === 'classic' && !empty($col_classes)) {
+							$html = '<div class="' . esc_attr($col_classes) . '">' . $html . '</div>';
+						}
+						// Для columns-grid добавляем обертку с классом col (row-cols-* работает на контейнере)
+						elseif ($grid_type === 'columns-grid') {
+							$html = '<div class="col">' . $html . '</div>';
+						}
+					}
+					
+					return $html;
+				}
 			} else {
 				// Настройки отображения для обычных постов
 				$display_settings = [

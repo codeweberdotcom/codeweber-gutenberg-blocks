@@ -126,6 +126,8 @@ class Plugin {
 		'post-grid',
 		'tabs',
 		'label-plus',
+		'form',
+		'form-field',
 	];
 	}
 

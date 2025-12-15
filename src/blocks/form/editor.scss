@@ -1,0 +1,27 @@
+/**
+ * Form Block - Editor Styles
+ */
+
+.codeweber-form-block {
+    padding: 20px;
+    border: 1px dashed #ccc;
+    border-radius: 4px;
+    margin: 10px 0;
+
+    .form-preview {
+        h4 {
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .form-fields-preview {
+            margin-bottom: 20px;
+        }
+
+        .form-submit-preview {
+            margin-top: 20px;
+        }
+    }
+}
+
+

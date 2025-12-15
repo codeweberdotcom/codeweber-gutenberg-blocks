@@ -1,0 +1,89 @@
+{
+    "apiVersion": 2,
+    "name": "codeweber-blocks/form",
+    "version": "0.1.0",
+    "title": "Form",
+    "category": "codeweber-gutenberg-blocks",
+    "icon": "feedback",
+    "description": "Create contact forms with various field types",
+    "supports": {
+        "html": false,
+        "customClassName": true,
+        "anchor": true,
+        "innerBlocks": true
+    },
+    "attributes": {
+        "formId": {
+            "type": "string",
+            "default": ""
+        },
+        "formName": {
+            "type": "string",
+            "default": "Contact Form"
+        },
+        "recipientEmail": {
+            "type": "string",
+            "default": ""
+        },
+        "senderEmail": {
+            "type": "string",
+            "default": ""
+        },
+        "senderName": {
+            "type": "string",
+            "default": ""
+        },
+        "subject": {
+            "type": "string",
+            "default": ""
+        },
+        "successMessage": {
+            "type": "string",
+            "default": "Thank you! Your message has been sent."
+        },
+        "errorMessage": {
+            "type": "string",
+            "default": "An error occurred. Please try again."
+        },
+        "enableCaptcha": {
+            "type": "boolean",
+            "default": false
+        },
+        "captchaType": {
+            "type": "string",
+            "default": "honeypot"
+        },
+        "enableRateLimit": {
+            "type": "boolean",
+            "default": true
+        },
+        "rateLimitCount": {
+            "type": "number",
+            "default": 5
+        },
+        "rateLimitPeriod": {
+            "type": "number",
+            "default": 60
+        },
+        "submitButtonText": {
+            "type": "string",
+            "default": "Send Message"
+        },
+        "submitButtonClass": {
+            "type": "string",
+            "default": "btn btn-primary"
+        },
+        "formFields": {
+            "type": "array",
+            "default": []
+        }
+    },
+    "allowedBlocks": [
+        "codeweber-blocks/form-field"
+    ],
+    "textdomain": "codeweber-blocks",
+    "editorScript": "file:./index.js",
+    "editorStyle": "file:./index.css",
+    "style": "file:./style-index.css"
+}
+

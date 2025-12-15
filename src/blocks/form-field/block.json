@@ -1,0 +1,79 @@
+{
+    "apiVersion": 2,
+    "name": "codeweber-blocks/form-field",
+    "version": "0.1.0",
+    "title": "Form Field",
+    "category": "codeweber-gutenberg-blocks",
+    "icon": "edit",
+    "description": "Add form field (text, email, textarea, etc.)",
+    "parent": ["codeweber-blocks/form"],
+    "supports": {
+        "html": false,
+        "customClassName": true,
+        "reusable": false
+    },
+    "attributes": {
+        "fieldType": {
+            "type": "string",
+            "default": "text"
+        },
+        "fieldName": {
+            "type": "string",
+            "default": ""
+        },
+        "fieldLabel": {
+            "type": "string",
+            "default": ""
+        },
+        "placeholder": {
+            "type": "string",
+            "default": ""
+        },
+        "isRequired": {
+            "type": "boolean",
+            "default": false
+        },
+        "maxLength": {
+            "type": "number",
+            "default": 0
+        },
+        "minLength": {
+            "type": "number",
+            "default": 0
+        },
+        "width": {
+            "type": "string",
+            "default": "col-12"
+        },
+        "validationType": {
+            "type": "string",
+            "default": "none"
+        },
+        "accept": {
+            "type": "string",
+            "default": ""
+        },
+        "multiple": {
+            "type": "boolean",
+            "default": false
+        },
+        "options": {
+            "type": "array",
+            "default": []
+        },
+        "defaultValue": {
+            "type": "string",
+            "default": ""
+        },
+        "helpText": {
+            "type": "string",
+            "default": ""
+        }
+    },
+    "textdomain": "codeweber-blocks",
+    "editorScript": "file:./index.js",
+    "editorStyle": "file:./index.css",
+    "style": "file:./style-index.css"
+}
+
+

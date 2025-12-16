@@ -20,7 +20,7 @@ export const normalizeColumnsData = (value = '') => {
 };
 
 export const getColumnsClassNames = (attrs = {}, mode = 'save') => {
-	const classes = ['naviddev-columns'];
+	const classes = [];
 	const {
 		columnsType,
 		columnsClass,
@@ -32,19 +32,19 @@ export const getColumnsClassNames = (attrs = {}, mode = 'save') => {
 		columnsPosition,
 		columnsCount,
 	} = attrs;
-	
+
 	// Добавляем кастомный класс
 	if (columnsClass) {
 		classes.push(columnsClass.trim());
 	}
-	
+
 	// Используем getGridClasses для row-cols, gap и spacing
 	// Для Classic Grid не передаем fallbackRowCols, чтобы не генерировались row-cols-* классы
 	const gridClasses = getGridClasses(attrs, 'columns', {
 		fallbackRowCols: columnsType === 'columns-grid' && columnsCount ? String(columnsCount) : null,
 	});
 	classes.push(gridClasses);
-	
+
 	// Старые gutter классы (для обратной совместимости)
 	if (columnsGutterX) {
 		classes.push(`gx-${columnsGutterX}`);
@@ -52,7 +52,7 @@ export const getColumnsClassNames = (attrs = {}, mode = 'save') => {
 	if (columnsGutterY) {
 		classes.push(`gy-${columnsGutterY}`);
 	}
-	
+
 	// Позиционирование
 	if (columnsAlignItems) {
 		classes.push(columnsAlignItems.trim());
@@ -66,7 +66,7 @@ export const getColumnsClassNames = (attrs = {}, mode = 'save') => {
 	if (columnsPosition) {
 		classes.push(columnsPosition.trim());
 	}
-	
+
 	// Класс для редактора (для визуального отображения колонок)
 	if (mode === 'edit' && columnsType === 'classic' && columnsCount) {
 		classes.push(`columns-${columnsCount}`);

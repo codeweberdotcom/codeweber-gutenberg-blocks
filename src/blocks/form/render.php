@@ -92,7 +92,8 @@ if (class_exists('CodeweberFormsRenderer')) {
         }
     }
     
-    // Извлекаем поля из innerBlocks (если еще не получены из атрибутов)
+    // Извлекаем поля и кнопки из innerBlocks (если еще не получены из атрибутов)
+    $submit_buttons = [];
     if (empty($fields) && !empty($inner_blocks)) {
         foreach ($inner_blocks as $inner_block) {
             // inner_block может быть массивом или объектом WP_Block
@@ -101,6 +102,11 @@ if (class_exists('CodeweberFormsRenderer')) {
                     $field_attrs = $inner_block['attrs'] ?? [];
                     if (!empty($field_attrs)) {
                         $fields[] = $field_attrs;
+                    }
+                } elseif (isset($inner_block['blockName']) && $inner_block['blockName'] === 'codeweber-blocks/submit-button') {
+                    $button_attrs = $inner_block['attrs'] ?? [];
+                    if (!empty($button_attrs)) {
+                        $submit_buttons[] = $button_attrs;
                     }
                 }
                 // Рекурсивно обрабатываем вложенные блоки
@@ -111,17 +117,27 @@ if (class_exists('CodeweberFormsRenderer')) {
                             if (!empty($field_attrs)) {
                                 $fields[] = $field_attrs;
                             }
+                        } elseif (isset($nested_block['blockName']) && $nested_block['blockName'] === 'codeweber-blocks/submit-button') {
+                            $button_attrs = $nested_block['attrs'] ?? [];
+                            if (!empty($button_attrs)) {
+                                $submit_buttons[] = $button_attrs;
+                            }
                         }
                     }
                 }
             } elseif (is_object($inner_block)) {
                 if (method_exists($inner_block, 'get_name')) {
-                    if ($inner_block->get_name() === 'codeweber-blocks/form-field') {
+                    $block_name = $inner_block->get_name();
+                    if ($block_name === 'codeweber-blocks/form-field') {
                         $fields[] = $inner_block->get_attributes();
+                    } elseif ($block_name === 'codeweber-blocks/submit-button') {
+                        $submit_buttons[] = $inner_block->get_attributes();
                     }
                 } elseif (property_exists($inner_block, 'name')) {
                     if ($inner_block->name === 'codeweber-blocks/form-field') {
                         $fields[] = $inner_block->attributes ?? [];
+                    } elseif ($inner_block->name === 'codeweber-blocks/submit-button') {
+                        $submit_buttons[] = $inner_block->attributes ?? [];
                     }
                 }
             }
@@ -182,6 +198,7 @@ if (class_exists('CodeweberFormsRenderer')) {
     $form_config = [
         'fields' => $fields,
         'settings' => $attributes,
+        'submit_buttons' => $submit_buttons,
     ];
     
     $renderer = new CodeweberFormsRenderer();

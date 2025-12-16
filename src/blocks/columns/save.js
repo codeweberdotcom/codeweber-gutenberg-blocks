@@ -1,12 +1,12 @@
-import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
+import { InnerBlocks } from '@wordpress/block-editor';
 import { getColumnsClassNames, normalizeColumnsId, normalizeColumnsData } from './utils';
 
 const ColumnsSave = ({ attributes }) => {
 	const { columnsId, columnsData } = attributes;
-	const blockProps = useBlockProps.save({
+	const blockProps = {
 		className: getColumnsClassNames(attributes, 'save'),
 		id: normalizeColumnsId(columnsId) || undefined,
-	});
+	};
 
 	return (
 		<div {...blockProps} {...normalizeColumnsData(columnsData)}>

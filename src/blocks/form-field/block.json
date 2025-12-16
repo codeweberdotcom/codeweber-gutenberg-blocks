@@ -45,6 +45,46 @@
             "type": "string",
             "default": "col-12"
         },
+        "fieldColumns": {
+            "type": "string",
+            "default": "12"
+        },
+        "fieldColumnsXs": {
+            "type": "string",
+            "default": ""
+        },
+        "fieldColumnsSm": {
+            "type": "string",
+            "default": ""
+        },
+        "fieldColumnsMd": {
+            "type": "string",
+            "default": ""
+        },
+        "fieldColumnsLg": {
+            "type": "string",
+            "default": ""
+        },
+        "fieldColumnsXl": {
+            "type": "string",
+            "default": ""
+        },
+        "fieldColumnsXxl": {
+            "type": "string",
+            "default": ""
+        },
+        "blockClass": {
+            "type": "string",
+            "default": ""
+        },
+        "blockData": {
+            "type": "string",
+            "default": ""
+        },
+        "blockId": {
+            "type": "string",
+            "default": ""
+        },
         "validationType": {
             "type": "string",
             "default": "none"
@@ -68,12 +108,17 @@
         "helpText": {
             "type": "string",
             "default": ""
+        },
+        "consents": {
+            "type": "array",
+            "default": []
         }
     },
     "textdomain": "codeweber-blocks",
     "editorScript": "file:./index.js",
     "editorStyle": "file:./index.css",
-    "style": "file:./style-index.css"
+    "style": "file:./style-index.css",
+    "render": "file:./render.php"
 }
 
 

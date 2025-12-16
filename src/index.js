@@ -18,6 +18,7 @@ const loadBlocks = async () => {
         import('./blocks/label-plus/index'),
         import('./blocks/form/index'),
         import('./blocks/form-field/index'),
+        import('./blocks/submit-button/index'),
     ];
 
     await Promise.all(blocks);

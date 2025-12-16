@@ -87,7 +87,7 @@ export const getColumnStyles = (attrs = {}) => {
 };
 
 export const getColumnClassNames = (attrs = {}) => {
-	const classes = ['naviddev-column'];
+	const classes = [];
 	const {
 		columnClass,
 		columnAlignItems,
@@ -133,7 +133,7 @@ export const getAdaptiveClasses = (attrs = {}) => {
 	// "" (None) = 'col' (растягивается)
 	// "auto" = 'col-auto' (по контенту)
 	// "3" = 'col-3' (фиксированная ширина)
-	
+
 	if (columnColXs !== undefined && columnColXs !== null) {
 		if (columnColXs === '') {
 			classes.push('col');
@@ -143,7 +143,7 @@ export const getAdaptiveClasses = (attrs = {}) => {
 			classes.push(`col-${columnColXs}`);
 		}
 	}
-	
+
 	if (columnColSm !== undefined && columnColSm !== null && columnColSm !== '') {
 		classes.push(columnColSm === 'auto' ? 'col-sm-auto' : `col-sm-${columnColSm}`);
 	}

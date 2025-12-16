@@ -10,7 +10,7 @@ import { PositioningControl } from '../../components/layout/PositioningControl';
 import { BlockMetaFields } from '../../components/block-meta/BlockMetaFields';
 import { ResponsiveControl, createColumnWidthConfig } from '../../components/responsive-control';
 import { SpacingControl } from '../../components/spacing/SpacingControl';
-import { getColumnClassNames, normalizeColumnId } from './utils';
+import { getColumnClassNames, normalizeColumnId, getAdaptiveClasses } from './utils';
 
 // Tab icon with native title tooltip
 const TabIcon = ({ icon, label }) => (
@@ -97,6 +97,38 @@ const ColumnEdit = ({ attributes, setAttributes }) => {
 							)}
 							{tab.name === 'adaptive' && (
 								<div style={{ padding: '16px' }}>
+									{/* Отображение классов Column Width */}
+									{(() => {
+										const columnWidthClasses = getAdaptiveClasses(attributes);
+										const columnWidthClassesString = columnWidthClasses.length > 0
+											? columnWidthClasses.join(' ')
+											: __('No Column Width Classes', 'codeweber-gutenberg-blocks');
+
+										return (
+											<div style={{
+												marginBottom: '16px',
+												padding: '8px 12px',
+												backgroundColor: 'rgb(240, 240, 241)',
+												borderRadius: '4px',
+												fontSize: '12px',
+												fontFamily: 'monospace',
+												color: 'rgb(30, 30, 30)'
+											}}>
+												<div style={{
+													marginBottom: '4px',
+													fontSize: '11px',
+													fontWeight: '500',
+													textTransform: 'uppercase',
+													color: 'rgb(117, 117, 117)'
+												}}>
+													{__('Column Width Classes', 'codeweber-gutenberg-blocks')}:
+												</div>
+												<div style={{ wordBreak: 'break-word' }}>
+													{columnWidthClassesString}
+												</div>
+											</div>
+										);
+									})()}
 									<ResponsiveControl
 										{...createColumnWidthConfig(attributes, setAttributes, 'dropdown')}
 									/>

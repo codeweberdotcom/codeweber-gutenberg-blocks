@@ -19,6 +19,13 @@ export default function Save({ attributes }) {
 		maxLength,
 		minLength,
 		width,
+		fieldColumns,
+		fieldColumnsXs,
+		fieldColumnsSm,
+		fieldColumnsMd,
+		fieldColumnsLg,
+		fieldColumnsXl,
+		fieldColumnsXxl,
 		validationType,
 		accept,
 		multiple,
@@ -27,12 +34,38 @@ export default function Save({ attributes }) {
 		helpText,
 	} = attributes;
 
+	// For consents_block, return null to use server-side render.php
+	if (fieldType === 'consents_block') {
+		return null;
+	}
+
 	if (!fieldName) {
 		return null;
 	}
 
+	// Генерируем классы col-* из fieldColumns* атрибутов
+	const getColClasses = () => {
+		const colClasses = [];
+		
+		// Если есть fieldColumns* атрибуты, используем их
+		if (fieldColumns || fieldColumnsXs || fieldColumnsSm || fieldColumnsMd || fieldColumnsLg || fieldColumnsXl || fieldColumnsXxl) {
+			if (fieldColumns) colClasses.push(`col-${fieldColumns}`);
+			if (fieldColumnsXs) colClasses.push(`col-${fieldColumnsXs}`);
+			if (fieldColumnsSm) colClasses.push(`col-sm-${fieldColumnsSm}`);
+			if (fieldColumnsMd) colClasses.push(`col-md-${fieldColumnsMd}`);
+			if (fieldColumnsLg) colClasses.push(`col-lg-${fieldColumnsLg}`);
+			if (fieldColumnsXl) colClasses.push(`col-xl-${fieldColumnsXl}`);
+			if (fieldColumnsXxl) colClasses.push(`col-xxl-${fieldColumnsXxl}`);
+			
+			return colClasses.length > 0 ? colClasses.join(' ') : 'col-12';
+		}
+		
+		// Fallback на старый атрибут width для обратной совместимости
+		return width || 'col-12';
+	};
+
 	const blockProps = useBlockProps.save({
-		className: `form-field-wrapper ${width || 'col-12'}`,
+		className: `form-field-wrapper ${getColClasses()}`,
 	});
 
 	const fieldId = `field-${fieldName}`;

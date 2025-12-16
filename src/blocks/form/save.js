@@ -1,19 +1,21 @@
 /**
  * Form Block Save Component
- * 
+ *
  * Saves form HTML with innerBlocks
- * 
+ *
  * @package CodeWeber Gutenberg Blocks
  */
 
 import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
+import { getGapClasses } from '../../components/grid-control';
 
 export default function Save({ attributes }) {
 	const {
 		formId,
 		formName,
-		submitButtonText,
-		submitButtonClass,
+		blockClass,
+		blockData,
+		blockId,
 	} = attributes;
 
 	// Используем стабильный ID: если formId задан - используем его
@@ -25,28 +27,80 @@ export default function Save({ attributes }) {
 		className: 'codeweber-form-wrapper',
 	});
 
+	// Формируем классы для формы
+	const formClasses = ['codeweber-form'];
+	if (blockClass) {
+		formClasses.push(blockClass);
+	}
+
+	// Формируем ID для формы (приоритет: blockId > formIdAttr)
+	const formElementId = blockId || `form-${formIdAttr}`;
+
+	// Формируем data-атрибуты из blockData
+	const getDataAttrs = () => {
+		if (!blockData) {
+			return {};
+		}
+		try {
+			const parsedData = JSON.parse(blockData);
+			const dataAttrs = {};
+			Object.keys(parsedData).forEach(key => {
+				// В React/JSX data-атрибуты должны быть в camelCase или через строки
+				dataAttrs[`data-${key}`] = parsedData[key];
+			});
+			return dataAttrs;
+		} catch (e) {
+			// Если не JSON, используем как есть
+			return { 'data-custom': blockData };
+		}
+	};
+
+	const dataAttrs = getDataAttrs();
+
+	// Получаем классы Gap
+	const gapClasses = getGapClasses(attributes, 'form');
+	const rowClasses = ['row', ...gapClasses].filter(Boolean);
+	// Если нет gap классов, используем дефолтный g-4
+	let rowClassName = rowClasses.length > 1 ? rowClasses.join(' ') : 'row g-4';
+
+	// Добавляем классы выравнивания к элементу с row (для фронтенда)
+	const {
+		formAlignItems,
+		formJustifyContent,
+		formTextAlign,
+		formPosition,
+	} = attributes;
+
+	const alignmentClasses = [];
+	if (formAlignItems) {
+		alignmentClasses.push(formAlignItems.trim());
+	}
+	if (formJustifyContent) {
+		alignmentClasses.push('d-flex', formJustifyContent.trim());
+	}
+	if (formTextAlign) {
+		alignmentClasses.push(formTextAlign.trim());
+	}
+	if (formPosition) {
+		alignmentClasses.push(formPosition.trim());
+	}
+
+	rowClassName = [rowClassName, ...alignmentClasses].filter(Boolean).join(' ');
+
 	return (
 		<div {...blockProps}>
 			<form
-				id={`form-${formIdAttr}`}
-				className="codeweber-form"
+				id={formElementId}
+				className={formClasses.join(' ')}
 				data-form-id={formIdAttr}
+				{...dataAttrs}
 				method="post"
 				encType="multipart/form-data"
 			>
 				<input type="hidden" name="form_id" value={formIdAttr} />
 				<div className="form-messages" style={{ display: 'none' }}></div>
-				<div className="row g-4">
+				<div className={rowClassName}>
 					<InnerBlocks.Content />
-				</div>
-				<div className="form-submit-wrapper mt-4">
-					<button
-						type="submit"
-						className={submitButtonClass || 'btn btn-primary'}
-						data-loading-text="Sending..."
-					>
-						{submitButtonText || 'Send Message'}
-					</button>
 				</div>
 			</form>
 		</div>

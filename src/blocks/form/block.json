@@ -65,21 +65,130 @@
             "type": "number",
             "default": 60
         },
-        "submitButtonText": {
-            "type": "string",
-            "default": "Send Message"
-        },
-        "submitButtonClass": {
-            "type": "string",
-            "default": "btn btn-primary"
-        },
         "formFields": {
             "type": "array",
             "default": []
+        },
+        "blockClass": {
+            "type": "string",
+            "default": ""
+        },
+        "blockData": {
+            "type": "string",
+            "default": ""
+        },
+        "blockId": {
+            "type": "string",
+            "default": ""
+        },
+        "formGapType": {
+            "type": "string",
+            "default": "general"
+        },
+        "formGap": {
+            "type": "string",
+            "default": "4"
+        },
+        "formGapXs": {
+            "type": "string",
+            "default": ""
+        },
+        "formGapSm": {
+            "type": "string",
+            "default": ""
+        },
+        "formGapMd": {
+            "type": "string",
+            "default": ""
+        },
+        "formGapLg": {
+            "type": "string",
+            "default": ""
+        },
+        "formGapXl": {
+            "type": "string",
+            "default": ""
+        },
+        "formGapXxl": {
+            "type": "string",
+            "default": ""
+        },
+        "formGapX": {
+            "type": "string",
+            "default": ""
+        },
+        "formGapXXs": {
+            "type": "string",
+            "default": ""
+        },
+        "formGapXSm": {
+            "type": "string",
+            "default": ""
+        },
+        "formGapXMd": {
+            "type": "string",
+            "default": ""
+        },
+        "formGapXLg": {
+            "type": "string",
+            "default": ""
+        },
+        "formGapXXl": {
+            "type": "string",
+            "default": ""
+        },
+        "formGapXXxl": {
+            "type": "string",
+            "default": ""
+        },
+        "formGapY": {
+            "type": "string",
+            "default": ""
+        },
+        "formGapYXs": {
+            "type": "string",
+            "default": ""
+        },
+        "formGapYSm": {
+            "type": "string",
+            "default": ""
+        },
+        "formGapYMd": {
+            "type": "string",
+            "default": ""
+        },
+        "formGapYLg": {
+            "type": "string",
+            "default": ""
+        },
+        "formGapYXl": {
+            "type": "string",
+            "default": ""
+        },
+        "formGapYXxl": {
+            "type": "string",
+            "default": ""
+        },
+        "formAlignItems": {
+            "type": "string",
+            "default": ""
+        },
+        "formJustifyContent": {
+            "type": "string",
+            "default": ""
+        },
+        "formTextAlign": {
+            "type": "string",
+            "default": ""
+        },
+        "formPosition": {
+            "type": "string",
+            "default": ""
         }
     },
     "allowedBlocks": [
-        "codeweber-blocks/form-field"
+        "codeweber-blocks/form-field",
+        "codeweber-blocks/submit-button"
     ],
     "textdomain": "codeweber-blocks",
     "editorScript": "file:./index.js",

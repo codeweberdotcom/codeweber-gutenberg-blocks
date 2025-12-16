@@ -2,6 +2,136 @@
  * Form Block - Editor Styles
  */
 
+@use 'sass:math';
+
+$default-gutter-x: 1.5rem;
+$default-gutter-y: 0;
+
+$grid-breakpoints: (
+	'': null,
+	'sm': 576px,
+	'md': 768px,
+	'lg': 992px,
+	'xl': 1200px,
+	'xxl': 1400px
+);
+
+$gutter-scale: (
+	0: 0,
+	1: 0.25rem,
+	2: 0.5rem,
+	3: 0.75rem,
+	4: 1rem,
+	5: 1.25rem,
+	6: 1.5rem,
+	7: 1.75rem,
+	8: 2rem,
+	9: 2.25rem,
+	10: 2.5rem,
+	11: 3rem,
+	12: 3.5rem,
+	13: 4rem,
+	14: 4.5rem,
+	15: 5rem,
+	16: 6rem,
+	17: 7rem,
+	18: 8rem,
+	19: 9rem,
+	20: 10rem,
+	21: 12.5rem,
+	22: 15rem,
+	23: 17.5rem,
+	24: 20rem,
+	25: 22.5rem
+);
+
+@mixin gutter-classes($infix) {
+	@each $key, $value in $gutter-scale {
+		.form-fields-preview.row.g#{$infix}-#{$key},
+		.form-fields-preview.row.gx#{$infix}-#{$key} {
+			--bs-gutter-x: #{$value};
+		}
+
+		.form-fields-preview.row.g#{$infix}-#{$key},
+		.form-fields-preview.row.gy#{$infix}-#{$key} {
+			--bs-gutter-y: #{$value};
+		}
+	}
+}
+
+// Стили для row контейнера в редакторе
+.form-fields-preview.row > .block-editor-inner-blocks > .block-editor-block-list__layout {
+	--bs-gutter-x: #{$default-gutter-x};
+	--bs-gutter-y: #{$default-gutter-y};
+	display: flex;
+	flex-wrap: wrap;
+	width: 100%;
+	margin-right: calc(-0.5 * var(--bs-gutter-x));
+	margin-left: calc(-0.5 * var(--bs-gutter-x));
+	margin-top: calc(-1 * var(--bs-gutter-y));
+}
+
+.form-fields-preview.row .block-editor-inner-blocks,
+.form-fields-preview.row .block-editor-inner-blocks > .block-editor-block-list__layout {
+	display: contents;
+}
+
+.form-fields-preview.row > .block-editor-inner-blocks > .block-editor-block-list__layout > .block-editor-block-list__block {
+	padding-right: calc(var(--bs-gutter-x) * 0.5);
+	padding-left: calc(var(--bs-gutter-x) * 0.5);
+	margin-top: var(--bs-gutter-y);
+	min-height: 1px;
+}
+
+// Применяем gutter классы для разных breakpoints
+@each $breakpoint, $min-width in $grid-breakpoints {
+	$infix: if($breakpoint == '', '', '-#{$breakpoint}');
+
+	@if $min-width == null {
+		@include gutter-classes($infix);
+	} @else {
+		@media (min-width: $min-width) {
+			@include gutter-classes($infix);
+		}
+	}
+}
+
+// Стили для col-* классов в редакторе
+@function col-percentage($cols) {
+	@return math.div(100%, 12) * $cols;
+}
+
+@mixin apply-col-classes($selector, $breakpoint: '') {
+	$infix: if($breakpoint == '', '', '-#{$breakpoint}');
+	
+	@for $i from 1 through 12 {
+		.form-fields-preview.row > .block-editor-inner-blocks > .block-editor-block-list__layout > .block-editor-block-list__block.col#{$infix}-#{$i} {
+			flex: 0 0 col-percentage($i) !important;
+			max-width: col-percentage($i) !important;
+			width: auto !important;
+		}
+	}
+	
+	// Для col-auto
+	.form-fields-preview.row > .block-editor-inner-blocks > .block-editor-block-list__layout > .block-editor-block-list__block.col#{$infix}-auto {
+		flex: 0 0 auto !important;
+		width: auto !important;
+		max-width: none !important;
+	}
+}
+
+// Базовые классы col-* (без префикса) - применяются всегда
+@include apply-col-classes('');
+
+// Responsive классы - обернуты в media queries
+@each $breakpoint, $min-width in $grid-breakpoints {
+	@if $min-width != null {
+		@media (min-width: $min-width) {
+			@include apply-col-classes('', $breakpoint);
+		}
+	}
+}
+
 .codeweber-form-block {
     padding: 20px;
     border: 1px dashed #ccc;

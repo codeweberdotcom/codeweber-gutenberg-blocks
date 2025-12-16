@@ -2546,6 +2546,10 @@ msgstr "Название формы"
 msgid "Form ID"
 msgstr "ID формы"
 
+#: src/blocks/form/edit.js:98
+msgid "Form ID is assigned automatically from the CPT Form ID and cannot be changed here."
+msgstr "ID формы автоматически присваивается из ID записи CPT Форма и не может быть изменен здесь."
+
 #: src/blocks/form/edit.js:79
 msgid "Leave empty to auto-generate"
 msgstr "Оставьте пустым для автоматической генерации"
@@ -2774,6 +2778,10 @@ msgstr "Несколько файлов"
 msgid "Field Width"
 msgstr "Ширина поля"
 
+#: src/blocks/form-field/edit.js:332
+msgid "Advanced"
+msgstr "Дополнительно"
+
 #: src/blocks/form-field/edit.js:315
 msgid "Default Value"
 msgstr "Значение по умолчанию"
@@ -2785,6 +2793,50 @@ msgstr "Текст подсказки"
 #: src/blocks/form-field/edit.js:323
 msgid "Additional help text below the field"
 msgstr "Дополнительный текст подсказки под полем"
+
+#: src/blocks/form-field/edit.js:100
+msgid "Replace existing label text with default text for this document?"
+msgstr "Заменить существующий текст метки на текст по умолчанию для этого документа?"
+
+#: src/blocks/form-field/edit.js:144
+msgid "I agree to the {document_title_url}"
+msgstr "Я согласен с {document_title_url}"
+
+#: src/blocks/form-field/edit.js:330
+msgid "Consents"
+msgstr "Согласия"
+
+#: src/blocks/form-field/edit.js:332
+msgid "Add consent checkboxes to your form. Each consent can have a custom label with placeholders for document links."
+msgstr "Добавьте чекбоксы согласия в вашу форму. Каждое согласие может иметь пользовательскую метку с плейсхолдерами для ссылок на документы."
+
+#: src/blocks/form-field/edit.js:338
+msgid "Consent"
+msgstr "Согласие"
+
+#: src/blocks/form-field/edit.js:342
+msgid "Label Text"
+msgstr "Текст метки"
+
+#: src/blocks/form-field/edit.js:345
+msgid "I agree to the {document_title}"
+msgstr "Я согласен с {document_title}"
+
+#: src/blocks/form-field/edit.js:346
+msgid "You can use placeholders: {document_url}, {document_title}, {document_title_url}, {form_id}"
+msgstr "Вы можете использовать плейсхолдеры: {document_url}, {document_title}, {document_title_url}, {form_id}"
+
+#: src/blocks/form-field/edit.js:353
+msgid "— Select —"
+msgstr "— Выбрать —"
+
+#: src/blocks/form-field/edit.js:370
+msgid "Required (form cannot be submitted without this consent)"
+msgstr "Обязательно (форма не может быть отправлена без этого согласия)"
+
+#: src/blocks/form-field/edit.js:392
+msgid "+ Add Consent"
+msgstr "+ Добавить согласие"
 
 #: src/blocks/form-field/block.json:5
 msgid "Form Field"

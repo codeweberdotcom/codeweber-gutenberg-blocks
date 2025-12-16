@@ -128,6 +128,7 @@ class Plugin {
 		'label-plus',
 		'form',
 		'form-field',
+		'submit-button',
 	];
 	}
 

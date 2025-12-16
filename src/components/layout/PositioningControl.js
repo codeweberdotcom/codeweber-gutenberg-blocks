@@ -2,55 +2,84 @@ import { __ } from '@wordpress/i18n';
 import { PanelBody, ButtonGroup, Button } from '@wordpress/components';
 
 const ALIGN_ITEMS_OPTIONS = [
-	{ value: '', label: __('Default', 'codeweber-gutenberg-blocks') },
-	{ value: 'align-items-start', label: __('Start', 'codeweber-gutenberg-blocks') },
-	{ value: 'align-items-center', label: __('Center', 'codeweber-gutenberg-blocks') },
-	{ value: 'align-items-end', label: __('End', 'codeweber-gutenberg-blocks') },
-	{ value: 'align-items-stretch', label: __('Stretch', 'codeweber-gutenberg-blocks') },
+	{ value: '', label: __('No', 'codeweber-gutenberg-blocks') },
+	{ value: 'align-items-start', label: 'Start' },
+	{ value: 'align-items-center', label: 'Center' },
+	{ value: 'align-items-end', label: 'End' },
+	{ value: 'align-items-stretch', label: 'Stretch' },
 ];
 
 const JUSTIFY_CONTENT_OPTIONS = [
-	{ value: '', label: __('Default', 'codeweber-gutenberg-blocks') },
-	{ value: 'justify-content-start', label: __('Start', 'codeweber-gutenberg-blocks') },
-	{ value: 'justify-content-center', label: __('Center', 'codeweber-gutenberg-blocks') },
-	{ value: 'justify-content-end', label: __('End', 'codeweber-gutenberg-blocks') },
-	{ value: 'justify-content-between', label: __('Between', 'codeweber-gutenberg-blocks') },
-	{ value: 'justify-content-around', label: __('Around', 'codeweber-gutenberg-blocks') },
-	{ value: 'justify-content-evenly', label: __('Evenly', 'codeweber-gutenberg-blocks') },
+	{ value: '', label: __('No', 'codeweber-gutenberg-blocks') },
+	{ value: 'justify-content-start', label: 'Start' },
+	{ value: 'justify-content-center', label: 'Center' },
+	{ value: 'justify-content-end', label: 'End' },
+	{ value: 'justify-content-between', label: 'Between' },
+	{ value: 'justify-content-around', label: 'Around' },
+	{ value: 'justify-content-evenly', label: 'Evenly' },
 ];
 
 const TEXT_ALIGN_OPTIONS = [
-	{ value: '', label: __('Default', 'codeweber-gutenberg-blocks') },
-	{ value: 'text-start', label: __('Start', 'codeweber-gutenberg-blocks') },
-	{ value: 'text-center', label: __('Center', 'codeweber-gutenberg-blocks') },
-	{ value: 'text-end', label: __('End', 'codeweber-gutenberg-blocks') },
+	{ value: '', label: __('No', 'codeweber-gutenberg-blocks') },
+	{ value: 'text-start', label: 'Start' },
+	{ value: 'text-center', label: 'Center' },
+	{ value: 'text-end', label: 'End' },
 ];
 
 const POSITION_OPTIONS = [
-	{ value: '', label: __('Static', 'codeweber-gutenberg-blocks') },
-	{ value: 'position-relative', label: __('Relative', 'codeweber-gutenberg-blocks') },
-	{ value: 'position-absolute', label: __('Absolute', 'codeweber-gutenberg-blocks') },
-	{ value: 'position-fixed', label: __('Fixed', 'codeweber-gutenberg-blocks') },
+	{ value: '', label: 'Static' },
+	{ value: 'position-relative', label: 'Relative' },
+	{ value: 'position-absolute', label: 'Absolute' },
+	{ value: 'position-fixed', label: 'Fixed' },
 ];
 
-const renderGroup = (label, value, onChange, options) => (
-	<div className="mb-3">
-		<div className="component-sidebar-title">
-			<label>{label}</label>
+const renderGroup = (label, value, onChange, options) => {
+	const classValue = value || __('No class', 'codeweber-gutenberg-blocks');
+
+	return (
+		<div className="mb-3">
+			<div className="component-sidebar-title">
+				<label>{label}</label>
+			</div>
+			{/* Отображение класса под заголовком */}
+			{value && (
+				<div style={{
+					marginBottom: '16px',
+					padding: '8px 12px',
+					backgroundColor: 'rgb(240, 240, 241)',
+					borderRadius: '4px',
+					fontSize: '12px',
+					fontFamily: 'monospace',
+					color: 'rgb(30, 30, 30)'
+				}}>
+					<div style={{
+						marginBottom: '4px',
+						fontSize: '11px',
+						fontWeight: '500',
+						textTransform: 'uppercase',
+						color: 'rgb(117, 117, 117)'
+					}}>
+						{__('Class', 'codeweber-gutenberg-blocks')}:
+					</div>
+					<div style={{ wordBreak: 'break-word' }}>
+						{classValue}
+					</div>
+				</div>
+			)}
+			<ButtonGroup>
+				{options.map((option) => (
+					<Button
+						key={option.value || 'default'}
+						isPrimary={value === option.value}
+						onClick={() => onChange(option.value)}
+					>
+						{option.label}
+					</Button>
+				))}
+			</ButtonGroup>
 		</div>
-		<ButtonGroup>
-			{options.map((option) => (
-				<Button
-					key={option.value || 'default'}
-					isPrimary={value === option.value}
-					onClick={() => onChange(option.value)}
-				>
-					{option.label}
-				</Button>
-			))}
-		</ButtonGroup>
-	</div>
-);
+	);
+};
 
 export const PositioningControl = ({
 	title = __('Align', 'codeweber-gutenberg-blocks'),

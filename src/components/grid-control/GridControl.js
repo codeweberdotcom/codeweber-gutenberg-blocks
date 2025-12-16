@@ -1,11 +1,11 @@
 /**
  * GridControl - универсальный компонент для настройки адаптивных сеток
- * 
+ *
  * Включает:
  * - Адаптивные колонки (row-cols-*)
  * - Адаптивные gap (g-*, gx-*, gy-*)
  * - Адаптивные spacing (p-*, m-*)
- * 
+ *
  * @package CodeWeber Gutenberg Blocks
  */
 
@@ -16,7 +16,7 @@ import { getGapClasses, getRowColsClasses } from './helpers';
 
 /**
  * GridControl Component
- * 
+ *
  * @param {Object} props
  * @param {Object} props.attributes - Атрибуты блока
  * @param {Function} props.setAttributes - Функция setAttributes
@@ -41,15 +41,15 @@ export const GridControl = ({
 }) => {
 	// Получаем атрибуты с учетом префикса
 	const getAttr = (suffix) => attributes[`${attributePrefix}${suffix}`];
-	
+
 	const gapType = getAttr('GapType') || 'general';
 	const spacingType = getAttr('SpacingType') || 'padding';
-	
+
 	// Генерируем классы gap для отображения
 	// Собираем все классы для всех заполненных breakpoints
 	const gapClasses = getGapClasses(attributes, attributePrefix);
 	const gapClassesString = gapClasses.length > 0 ? gapClasses.join(' ') : __('No Gap Classes', 'codeweber-gutenberg-blocks');
-	
+
 	// Генерируем классы row-cols для отображения
 	const rowColsClasses = getRowColsClasses(attributes, attributePrefix);
 	const rowColsClassesString = rowColsClasses.length > 0 ? rowColsClasses.join(' ') : __('No Row Cols Classes', 'codeweber-gutenberg-blocks');
@@ -60,21 +60,21 @@ export const GridControl = ({
 			{showRowCols && (
 				<div style={{ marginBottom: '16px' }}>
 					{/* Отображение классов row-cols - над ResponsiveControl */}
-					<div style={{ 
-						marginBottom: '16px', 
-						padding: '8px 12px', 
-						backgroundColor: '#f0f0f1', 
+					<div style={{
+						marginBottom: '16px',
+						padding: '8px 12px',
+						backgroundColor: '#f0f0f1',
 						borderRadius: '4px',
 						fontSize: '12px',
 						fontFamily: 'monospace',
 						color: '#1e1e1e'
 					}}>
-						<div style={{ 
-							marginBottom: '4px', 
-							fontSize: '11px', 
-							fontWeight: '500', 
-							textTransform: 'uppercase', 
-							color: '#757575' 
+						<div style={{
+							marginBottom: '4px',
+							fontSize: '11px',
+							fontWeight: '500',
+							textTransform: 'uppercase',
+							color: '#757575'
 						}}>
 							{__('Row Cols Classes', 'codeweber-gutenberg-blocks')}:
 						</div>
@@ -82,7 +82,7 @@ export const GridControl = ({
 							{rowColsClassesString}
 						</div>
 					</div>
-					
+
 					<ResponsiveControl
 						{...createBreakpointsConfig({
 							type: 'columns',
@@ -99,10 +99,7 @@ export const GridControl = ({
 
 			{/* Gap Settings */}
 			{showGap && (
-				<PanelBody
-					title={gapLabel || __('Gap Settings', 'codeweber-gutenberg-blocks')}
-					initialOpen={false}
-				>
+				<div>
 					<div style={{ marginBottom: '16px' }}>
 						<div style={{ marginBottom: '8px', fontSize: '11px', fontWeight: '500', textTransform: 'uppercase', color: '#1e1e1e' }}>
 							{__('Gap Type', 'codeweber-gutenberg-blocks')}
@@ -131,23 +128,23 @@ export const GridControl = ({
 							</Button>
 						</ButtonGroup>
 					</div>
-					
+
 					{/* Отображение классов gap - все типы одновременно */}
-					<div style={{ 
-						marginBottom: '16px', 
-						padding: '8px 12px', 
-						backgroundColor: '#f0f0f1', 
+					<div style={{
+						marginBottom: '16px',
+						padding: '8px 12px',
+						backgroundColor: '#f0f0f1',
 						borderRadius: '4px',
 						fontSize: '12px',
 						fontFamily: 'monospace',
 						color: '#1e1e1e'
 					}}>
-						<div style={{ 
-							marginBottom: '4px', 
-							fontSize: '11px', 
-							fontWeight: '500', 
-							textTransform: 'uppercase', 
-							color: '#757575' 
+						<div style={{
+							marginBottom: '4px',
+							fontSize: '11px',
+							fontWeight: '500',
+							textTransform: 'uppercase',
+							color: '#757575'
 						}}>
 							{__('Gap Classes', 'codeweber-gutenberg-blocks')}:
 						</div>
@@ -227,15 +224,12 @@ export const GridControl = ({
 							})}
 						/>
 					)}
-				</PanelBody>
+				</div>
 			)}
 
 			{/* Spacing Settings */}
 			{showSpacing && (
-				<PanelBody
-					title={spacingLabel || __('Spacing Settings', 'codeweber-gutenberg-blocks')}
-					initialOpen={false}
-				>
+				<div>
 					<SelectControl
 						label={__('Spacing Type', 'codeweber-gutenberg-blocks')}
 						value={spacingType}
@@ -267,7 +261,7 @@ export const GridControl = ({
 							},
 						})}
 					/>
-				</PanelBody>
+				</div>
 			)}
 		</>
 	);

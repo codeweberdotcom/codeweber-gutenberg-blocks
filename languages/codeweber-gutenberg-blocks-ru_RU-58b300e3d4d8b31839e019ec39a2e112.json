@@ -1875,6 +1875,9 @@
       "Form ID": [
         "ID формы"
       ],
+      "Form ID is assigned automatically from the CPT Form ID and cannot be changed here.": [
+        "ID формы автоматически присваивается из ID записи CPT Форма и не может быть изменен здесь."
+      ],
       "Leave empty to auto-generate": [
         "Оставьте пустым для автоматической генерации"
       ],
@@ -2046,6 +2049,9 @@
       "Field Width": [
         "Ширина поля"
       ],
+      "Advanced": [
+        "Дополнительно"
+      ],
       "Default Value": [
         "Значение по умолчанию"
       ],
@@ -2054,6 +2060,39 @@
       ],
       "Additional help text below the field": [
         "Дополнительный текст подсказки под полем"
+      ],
+      "Replace existing label text with default text for this document?": [
+        "Заменить существующий текст метки на текст по умолчанию для этого документа?"
+      ],
+      "I agree to the {document_title_url}": [
+        "Я согласен с {document_title_url}"
+      ],
+      "Consents": [
+        "Согласия"
+      ],
+      "Add consent checkboxes to your form. Each consent can have a custom label with placeholders for document links.": [
+        "Добавьте чекбоксы согласия в вашу форму. Каждое согласие может иметь пользовательскую метку с плейсхолдерами для ссылок на документы."
+      ],
+      "Consent": [
+        "Согласие"
+      ],
+      "Label Text": [
+        "Текст метки"
+      ],
+      "I agree to the {document_title}": [
+        "Я согласен с {document_title}"
+      ],
+      "You can use placeholders: {document_url}, {document_title}, {document_title_url}, {form_id}": [
+        "Вы можете использовать плейсхолдеры: {document_url}, {document_title}, {document_title_url}, {form_id}"
+      ],
+      "— Select —": [
+        "— Выбрать —"
+      ],
+      "Required (form cannot be submitted without this consent)": [
+        "Обязательно (форма не может быть отправлена без этого согласия)"
+      ],
+      "+ Add Consent": [
+        "+ Добавить согласие"
       ],
       "Form Field": [
         "Поле формы"

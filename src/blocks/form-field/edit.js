@@ -53,7 +53,7 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 	// Генерируем классы col-* из fieldColumns* атрибутов (как в save.js)
 	const getColClasses = () => {
 		const colClasses = [];
-		
+
 		// Если есть fieldColumns* атрибуты, используем их
 		if (fieldColumns || fieldColumnsXs || fieldColumnsSm || fieldColumnsMd || fieldColumnsLg || fieldColumnsXl || fieldColumnsXxl) {
 			if (fieldColumns) colClasses.push(`col-${fieldColumns}`);
@@ -63,10 +63,10 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 			if (fieldColumnsLg) colClasses.push(`col-lg-${fieldColumnsLg}`);
 			if (fieldColumnsXl) colClasses.push(`col-xl-${fieldColumnsXl}`);
 			if (fieldColumnsXxl) colClasses.push(`col-xxl-${fieldColumnsXxl}`);
-			
+
 			return colClasses.length > 0 ? colClasses.join(' ') : 'col-12';
 		}
-		
+
 		// Fallback на старый атрибут width для обратной совместимости
 		return width || 'col-12';
 	};
@@ -141,7 +141,7 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 		// Check current label before async operation
 		const currentConsents = consents || [];
 		const currentLabel = currentConsents[consentIndex]?.label || '';
-		
+
 		if (currentLabel.trim()) {
 			if (!window.confirm(__('Replace existing label text with default text for this document?', 'codeweber-gutenberg-blocks'))) {
 				return; // Don't update if user cancels
@@ -161,7 +161,7 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 			const formData = new FormData();
 			formData.append('action', 'codeweber_forms_get_default_label');
 			formData.append('document_id', documentId);
-			
+
 			// Get nonce - use REST API nonce for AJAX
 			let nonce = '';
 			if (window.wpApiSettings?.nonce) {
@@ -180,9 +180,9 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 
 			// Get AJAX URL (available in WordPress admin/Gutenberg editor)
 			const ajaxUrl = window.ajaxurl || (window.wpApiSettings?.root ? window.wpApiSettings.root.replace('/wp-json/', '/wp-admin/admin-ajax.php') : '/wp-admin/admin-ajax.php');
-			
+
 			console.log('Getting default label for document:', documentId, 'nonce:', nonce ? 'present' : 'missing');
-			
+
 			const ajaxResponse = await fetch(ajaxUrl, {
 				method: 'POST',
 				body: formData,
@@ -200,18 +200,18 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 			// This ensures we're working with the latest consents, including any document_id changes
 			setAttributes((currentAttributes) => {
 				const currentConsents = currentAttributes.consents || [];
-				
+
 				// Check if consent at this index exists
 				if (currentConsents[consentIndex]) {
 					const currentConsent = currentConsents[consentIndex];
 					const updatedConsents = [...currentConsents];
-					
+
 					// Preserve all existing fields, only update the label
 					// This is crucial: we must preserve document_id and all other fields
 					const updatedConsent = {
 						...currentConsent, // Preserve document_id, required, and all other fields
 					};
-					
+
 					if (ajaxResponse?.success && ajaxResponse?.data?.label) {
 						console.log('Updating label with:', ajaxResponse.data.label);
 						updatedConsent.label = ajaxResponse.data.label;
@@ -224,11 +224,11 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 							.replace('{document_title_url}', `<a href="${docLink}">${docTitle}</a>`);
 						updatedConsent.label = defaultLabel;
 					}
-					
+
 					updatedConsents[consentIndex] = updatedConsent;
-					
+
 					console.log('Updated consent:', updatedConsent);
-					
+
 					return { consents: updatedConsents };
 				} else {
 					console.warn('Consent index does not exist:', consentIndex);
@@ -408,7 +408,7 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 
 	// Tab icon component
 	const TabIcon = ({ icon, label }) => (
-		<span 
+		<span
 			title={label}
 			style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
 		>
@@ -417,7 +417,7 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 	);
 
 	// Define tabs based on field type
-	const tabs = fieldType === 'consents_block' 
+	const tabs = fieldType === 'consents_block'
 		? [
 			{ name: 'consents', title: <TabIcon icon={cog} label={__('Consents', 'codeweber-gutenberg-blocks')} /> },
 			{ name: 'layout', title: <TabIcon icon={grid} label={__('Layout', 'codeweber-gutenberg-blocks')} /> },
@@ -441,13 +441,13 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 									<p className="description" style={{ marginBottom: '15px' }}>
 										{__('Add consent checkboxes to your form. Each consent can have a custom label with placeholders for document links.', 'codeweber-gutenberg-blocks')}
 									</p>
-									
+
 									{(consents || []).map((consent, index) => (
 										<div key={index} style={{ border: '1px solid #ddd', padding: '15px', marginBottom: '15px', background: '#f9f9f9' }}>
 											<p style={{ marginTop: 0, fontWeight: 'bold' }}>
 												{__('Consent', 'codeweber-gutenberg-blocks')} #{index + 1}
 											</p>
-											
+
 											<div>
 												<TextControl
 													label={
@@ -470,7 +470,7 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 													disabled={loadingLabels[index]}
 												/>
 											</div>
-											
+
 											<SelectControl
 												label={__('Select Document', 'codeweber-gutenberg-blocks')}
 												value={String(consent.document_id || '')}
@@ -493,13 +493,13 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 												}}
 												disabled={loadingDocuments}
 											/>
-											
+
 											<ToggleControl
 												label={__('Required (form cannot be submitted without this consent)', 'codeweber-gutenberg-blocks')}
 												checked={consent.required || false}
 												onChange={(value) => updateConsent(index, 'required', value)}
 											/>
-											
+
 											<Button
 												isDestructive
 												isSmall
@@ -510,7 +510,7 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 											</Button>
 										</div>
 									))}
-									
+
 									<Button
 										isPrimary
 										isSmall

@@ -2550,6 +2550,34 @@ msgstr "ID формы"
 msgid "Form ID is assigned automatically from the CPT Form ID and cannot be changed here."
 msgstr "ID формы автоматически присваивается из ID записи CPT Форма и не может быть изменен здесь."
 
+#: src/blocks/form/edit.js:144
+msgid "Form Type"
+msgstr "Тип формы"
+
+#: src/blocks/form/edit.js:148
+msgid "Regular Form"
+msgstr "Обычная форма"
+
+#: src/blocks/form/edit.js:149
+msgid "Newsletter Subscription"
+msgstr "Подписка на рассылку"
+
+#: src/blocks/form/edit.js:150
+msgid "Testimonial Form"
+msgstr "Форма отзыва"
+
+#: src/blocks/form/edit.js:151
+msgid "Resume Form"
+msgstr "Форма резюме"
+
+#: src/blocks/form/edit.js:152
+msgid "Callback Request"
+msgstr "Запрос обратного звонка"
+
+#: src/blocks/form/edit.js:154
+msgid "Select the type of form. This determines how the form is processed."
+msgstr "Выберите тип формы. Это определяет способ обработки формы."
+
 #: src/blocks/form/edit.js:79
 msgid "Leave empty to auto-generate"
 msgstr "Оставьте пустым для автоматической генерации"

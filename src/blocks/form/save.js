@@ -13,6 +13,7 @@ export default function Save({ attributes }) {
 	const {
 		formId,
 		formName,
+		formType,
 		blockClass,
 		blockData,
 		blockId,
@@ -86,6 +87,7 @@ export default function Save({ attributes }) {
 				id={formElementId}
 				className={formClasses.join(' ')}
 				data-form-id={formIdAttr}
+				data-form-type={formType || 'form'}
 				{...dataAttrs}
 				method="post"
 				encType="multipart/form-data"

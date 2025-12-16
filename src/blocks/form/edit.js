@@ -33,6 +33,7 @@ const FormEdit = ({ attributes, setAttributes, clientId }) => {
 	const {
 		formId,
 		formName,
+		formType,
 		recipientEmail,
 		senderEmail,
 		senderName,
@@ -129,6 +130,19 @@ const FormEdit = ({ attributes, setAttributes, clientId }) => {
 							{/* FORM TAB */}
 							{tab.name === 'form' && (
 								<PanelBody title={__('Form Settings', 'codeweber-gutenberg-blocks')} initialOpen={true}>
+									<SelectControl
+										label={__('Form Type', 'codeweber-gutenberg-blocks')}
+										value={formType || 'form'}
+										options={[
+											{ label: __('Regular Form', 'codeweber-gutenberg-blocks'), value: 'form' },
+											{ label: __('Newsletter Subscription', 'codeweber-gutenberg-blocks'), value: 'newsletter' },
+											{ label: __('Testimonial Form', 'codeweber-gutenberg-blocks'), value: 'testimonial' },
+											{ label: __('Resume Form', 'codeweber-gutenberg-blocks'), value: 'resume' },
+											{ label: __('Callback Request', 'codeweber-gutenberg-blocks'), value: 'callback' },
+										]}
+										onChange={(value) => setAttributes({ formType: value })}
+										help={__('Select the type of form. This determines how the form is processed.', 'codeweber-gutenberg-blocks')}
+									/>
 									<TextControl
 										label={__('Form Name', 'codeweber-gutenberg-blocks')}
 										value={formName}

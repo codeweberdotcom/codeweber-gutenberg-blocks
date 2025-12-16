@@ -1,8 +1,8 @@
 /**
  * Form Field Block Save Component
- * 
+ *
  * Saves form field HTML
- * 
+ *
  * @package CodeWeber Gutenberg Blocks
  */
 
@@ -46,7 +46,7 @@ export default function Save({ attributes }) {
 	// Генерируем классы col-* из fieldColumns* атрибутов
 	const getColClasses = () => {
 		const colClasses = [];
-		
+
 		// Если есть fieldColumns* атрибуты, используем их
 		if (fieldColumns || fieldColumnsXs || fieldColumnsSm || fieldColumnsMd || fieldColumnsLg || fieldColumnsXl || fieldColumnsXxl) {
 			if (fieldColumns) colClasses.push(`col-${fieldColumns}`);
@@ -56,10 +56,10 @@ export default function Save({ attributes }) {
 			if (fieldColumnsLg) colClasses.push(`col-lg-${fieldColumnsLg}`);
 			if (fieldColumnsXl) colClasses.push(`col-xl-${fieldColumnsXl}`);
 			if (fieldColumnsXxl) colClasses.push(`col-xxl-${fieldColumnsXxl}`);
-			
+
 			return colClasses.length > 0 ? colClasses.join(' ') : 'col-12';
 		}
-		
+
 		// Fallback на старый атрибут width для обратной совместимости
 		return width || 'col-12';
 	};

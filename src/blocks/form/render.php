@@ -1,9 +1,9 @@
 <?php
 /**
  * Form Block - Server-side render
- * 
+ *
  * @package CodeWeber Gutenberg Blocks
- * 
+ *
  * @var array    $attributes Block attributes.
  * @var string   $content    Block default content.
  * @var WP_Block $block      Block instance.
@@ -34,10 +34,10 @@ if (!empty($form_id) && is_numeric($form_id)) {
 if (class_exists('CodeweberFormsRenderer')) {
     // Парсим innerBlocks для получения полей
     $fields = [];
-    
+
     // Получаем innerBlocks из parsed_block (переданного через extract)
     $inner_blocks = [];
-    
+
     // Способ 1: Из атрибутов блока (основной способ для блоков с save: null)
     if (!empty($attributes['formFields']) && is_array($attributes['formFields'])) {
         // Поля сохранены в атрибутах блока
@@ -51,7 +51,7 @@ if (class_exists('CodeweberFormsRenderer')) {
     elseif (is_object($block) && property_exists($block, 'inner_blocks')) {
         // $block->inner_blocks это WP_Block_List, нужно преобразовать в массив
         $block_inner_blocks = $block->inner_blocks;
-        
+
         if (!empty($block_inner_blocks)) {
             // Преобразуем WP_Block_List в массив parsed_block структур
             foreach ($block_inner_blocks as $inner_block_obj) {
@@ -61,7 +61,7 @@ if (class_exists('CodeweberFormsRenderer')) {
             }
         }
     }
-    
+
     // Способ 3: Парсим из сохраненного контента поста (если innerBlocks пусты)
     // Это критично, так как при save: null innerBlocks не сохраняются в HTML
     if (empty($inner_blocks)) {
@@ -69,7 +69,7 @@ if (class_exists('CodeweberFormsRenderer')) {
         if ($post && !empty($post->post_content)) {
             // Парсим все блоки из контента поста
             $all_blocks = parse_blocks($post->post_content);
-            
+
             // Рекурсивная функция для поиска блока формы и его innerBlocks
             $find_form_block = function($blocks) use (&$find_form_block) {
                 foreach ($blocks as $block_item) {
@@ -87,11 +87,11 @@ if (class_exists('CodeweberFormsRenderer')) {
                 }
                 return [];
             };
-            
+
             $inner_blocks = $find_form_block($all_blocks);
         }
     }
-    
+
     // Извлекаем поля и кнопки из innerBlocks (если еще не получены из атрибутов)
     $submit_buttons = [];
     if (empty($fields) && !empty($inner_blocks)) {
@@ -143,7 +143,7 @@ if (class_exists('CodeweberFormsRenderer')) {
             }
         }
     }
-    
+
     // Если поля не найдены, пытаемся получить через $block->inner_blocks
     if (empty($fields) && is_object($block)) {
         // Используем внутренний метод WP_Block для получения innerBlocks
@@ -152,17 +152,17 @@ if (class_exists('CodeweberFormsRenderer')) {
             $property = $reflection->getProperty('inner_blocks');
             $property->setAccessible(true);
             $block_inner_blocks = $property->getValue($block);
-            
+
             if (!empty($block_inner_blocks)) {
                 foreach ($block_inner_blocks as $inner_block_obj) {
                     if (is_object($inner_block_obj)) {
-                        $block_name = method_exists($inner_block_obj, 'get_name') 
-                            ? $inner_block_obj->get_name() 
+                        $block_name = method_exists($inner_block_obj, 'get_name')
+                            ? $inner_block_obj->get_name()
                             : (property_exists($inner_block_obj, 'name') ? $inner_block_obj->name : '');
-                        
+
                         if ($block_name === 'codeweber-blocks/form-field') {
-                            $attrs = method_exists($inner_block_obj, 'get_attributes') 
-                                ? $inner_block_obj->get_attributes() 
+                            $attrs = method_exists($inner_block_obj, 'get_attributes')
+                                ? $inner_block_obj->get_attributes()
                                 : (property_exists($inner_block_obj, 'attributes') ? $inner_block_obj->attributes : []);
                             if (!empty($attrs)) {
                                 $fields[] = $attrs;
@@ -173,7 +173,7 @@ if (class_exists('CodeweberFormsRenderer')) {
             }
         }
     }
-    
+
     // Отладка (если включен WP_DEBUG)
     if (defined('WP_DEBUG') && WP_DEBUG) {
         error_log('[Form Render] Fields count: ' . count($fields));
@@ -188,19 +188,27 @@ if (class_exists('CodeweberFormsRenderer')) {
         }
         error_log('[Form Render] Fields: ' . print_r($fields, true));
     }
-    
+
     // Временная отладка в HTML (удалить после исправления)
     if (empty($fields) && current_user_can('manage_options')) {
         $debug_info = '<!-- Form Debug: Fields=' . count($fields) . ', InnerBlocks=' . count($inner_blocks) . ', HasParsedBlock=' . (isset($parsed_block) ? 'yes' : 'no') . ' -->';
         echo $debug_info;
     }
-    
+
+    // НОВОЕ: Извлекаем тип формы из атрибутов блока
+    $form_type = isset($attributes['formType']) ? $attributes['formType'] : null;
+
     $form_config = [
         'fields' => $fields,
         'settings' => $attributes,
         'submit_buttons' => $submit_buttons,
     ];
-    
+
+    // НОВОЕ: Добавляем тип формы в конфигурацию
+    if ($form_type) {
+        $form_config['type'] = $form_type;
+    }
+
     $renderer = new CodeweberFormsRenderer();
     echo $renderer->render($form_id ?: uniqid('form_'), $form_config);
 } else {

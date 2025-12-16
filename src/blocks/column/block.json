@@ -85,6 +85,10 @@
 			"type": "string",
 			"default": ""
 		},
+		"columnCol": {
+			"type": "string",
+			"default": ""
+		},
 		"columnColXs": {
 			"type": "string",
 			"default": ""
@@ -143,5 +147,3 @@
 	"editorStyle": "file:./index.css",
 	"style": "file:./style-index.css"
 }
-
-

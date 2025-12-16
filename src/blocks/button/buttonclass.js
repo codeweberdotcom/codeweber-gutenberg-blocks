@@ -157,5 +157,3 @@ export const getClassNames = (attributes) => {
 	// Объединяем массив классов в строку
 	return classes.join(' ');
 };
-
-

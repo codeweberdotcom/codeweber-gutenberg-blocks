@@ -1878,6 +1878,27 @@
       "Form ID is assigned automatically from the CPT Form ID and cannot be changed here.": [
         "ID формы автоматически присваивается из ID записи CPT Форма и не может быть изменен здесь."
       ],
+      "Form Type": [
+        "Тип формы"
+      ],
+      "Regular Form": [
+        "Обычная форма"
+      ],
+      "Newsletter Subscription": [
+        "Подписка на рассылку"
+      ],
+      "Testimonial Form": [
+        "Форма отзыва"
+      ],
+      "Resume Form": [
+        "Форма резюме"
+      ],
+      "Callback Request": [
+        "Запрос обратного звонка"
+      ],
+      "Select the type of form. This determines how the form is processed.": [
+        "Выберите тип формы. Это определяет способ обработки формы."
+      ],
       "Leave empty to auto-generate": [
         "Оставьте пустым для автоматической генерации"
       ],

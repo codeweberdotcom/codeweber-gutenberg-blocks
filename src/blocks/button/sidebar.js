@@ -13,6 +13,7 @@ import {
 	SelectControl,
 } from '@wordpress/components';
 import { IconPicker } from '../../components/icon/IconPicker';
+import apiFetch from '@wordpress/api-fetch';
 
 
 
@@ -524,22 +525,22 @@ const handleIconChange = (type, value) => {
 						onSelect={(result) => {
 							// Извлекаем iconName и сохраняем как класс иконки
 							const iconClass = result.iconName ? `uil uil-${result.iconName}` : '';
-							
+
 							// Определяем, какую иконку обновлять в зависимости от типа и позиции
 							if (ButtonType === 'circle') {
-								setAttributes({ 
+								setAttributes({
 									IconClass: iconClass,
-									CircleIcon: iconClass 
+									CircleIcon: iconClass
 								});
 							} else if (ButtonType === 'icon') {
 								if (ButtonIconPosition === 'left') {
-									setAttributes({ 
+									setAttributes({
 										IconClass: iconClass,
 										LeftIcon: iconClass,
 										RightIcon: ''
 									});
 								} else if (ButtonIconPosition === 'right') {
-									setAttributes({ 
+									setAttributes({
 										IconClass: iconClass,
 										RightIcon: iconClass,
 										LeftIcon: ''
@@ -608,5 +609,3 @@ const handleIconChange = (type, value) => {
 		</PanelBody>
 	);
 };
-
-

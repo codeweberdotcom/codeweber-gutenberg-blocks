@@ -5,8 +5,6 @@
  */
 
 import { registerBlockType } from '@wordpress/blocks';
-import { addFilter } from '@wordpress/hooks';
-import { select } from '@wordpress/data';
 import './style.scss';
 import './editor.scss';
 
@@ -20,50 +18,7 @@ registerBlockType(metadata.name, {
 	save: Save,
 });
 
-// Check if current post type is codeweber_form
-const isFormCPT = () => {
-	try {
-		const postType = select('core/editor')?.getCurrentPostType();
-		return postType === 'codeweber_form';
-	} catch (e) {
-		return false;
-	}
-};
-
-// Ensure the block is visible in the inserter only when inside codeweber_form CPT
-// Use getBlockType filter to dynamically modify block settings
-addFilter(
-	'blocks.getBlockType',
-	'codeweber-blocks/submit-button/inserter-visibility',
-	(blockType, name) => {
-		if (name === 'codeweber-blocks/submit-button' && blockType) {
-			return {
-				...blockType,
-				supports: {
-					...blockType.supports,
-					inserter: isFormCPT(),
-				},
-			};
-		}
-		return blockType;
-	}
-);
-
-// Also ensure it's visible in registerBlockType for initial registration
-addFilter(
-	'blocks.registerBlockType',
-	'codeweber-blocks/submit-button/inserter-visibility-register',
-	(settings, name) => {
-		if (name === 'codeweber-blocks/submit-button') {
-			return {
-				...settings,
-				supports: {
-					...settings.supports,
-					inserter: isFormCPT(),
-				},
-			};
-		}
-		return settings;
-	}
-);
+// Ограничение видимости блока выполняется через PHP фильтры
+// в codeweber-forms-gutenberg-restrictions.php
+// JavaScript фильтры здесь не нужны, так как они могут конфликтовать с PHP фильтрами
 

@@ -184,6 +184,10 @@
         "formPosition": {
             "type": "string",
             "default": ""
+        },
+        "formType": {
+            "type": "string",
+            "default": "form"
         }
     },
     "allowedBlocks": [

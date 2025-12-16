@@ -126,6 +126,7 @@ export const getColumnClassNames = (attrs = {}, mode = 'save') => {
 export const getAdaptiveClasses = (attrs = {}) => {
 	const classes = [];
 	const {
+		columnCol,
 		columnColXs,
 		columnColSm,
 		columnColMd,
@@ -147,10 +148,21 @@ export const getAdaptiveClasses = (attrs = {}) => {
 		(columnColXl !== undefined && columnColXl !== null && columnColXl !== '') ||
 		(columnColXxl !== undefined && columnColXxl !== null && columnColXxl !== '');
 
+	// Обрабатываем Base (columnCol) - базовый класс без breakpoint префикса
+	if (columnCol !== undefined && columnCol !== null && columnCol !== '') {
+		if (columnCol === 'auto') {
+			classes.push('col-auto');
+		} else {
+			classes.push(`col-${columnCol}`);
+		}
+	}
+
+	// Обрабатываем XS
 	if (columnColXs !== undefined && columnColXs !== null) {
 		if (columnColXs === '') {
 			// Добавляем класс 'col' только если это НЕ Classic Grid (т.е. Columns Grid режим)
-			if (!hasClassicGridBreakpoint) {
+			// и если Base (columnCol) не задан
+			if (!hasClassicGridBreakpoint && (columnCol === undefined || columnCol === null || columnCol === '')) {
 				classes.push('col');
 			}
 		} else if (columnColXs === 'auto') {
@@ -160,6 +172,7 @@ export const getAdaptiveClasses = (attrs = {}) => {
 		}
 	}
 
+	// Обрабатываем остальные breakpoints
 	if (columnColSm !== undefined && columnColSm !== null && columnColSm !== '') {
 		classes.push(columnColSm === 'auto' ? 'col-sm-auto' : `col-sm-${columnColSm}`);
 	}

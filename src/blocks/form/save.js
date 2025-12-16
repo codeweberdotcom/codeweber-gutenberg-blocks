@@ -64,25 +64,18 @@ export default function Save({ attributes }) {
 	let rowClassName = rowClasses.length > 1 ? rowClasses.join(' ') : 'row g-4';
 
 	// Добавляем классы выравнивания к элементу с row (для фронтенда)
-	const {
-		formAlignItems,
-		formJustifyContent,
-		formTextAlign,
-		formPosition,
-	} = attributes;
-
 	const alignmentClasses = [];
-	if (formAlignItems) {
-		alignmentClasses.push(formAlignItems.trim());
+	if (attributes.formAlignItems) {
+		alignmentClasses.push(attributes.formAlignItems.trim());
 	}
-	if (formJustifyContent) {
-		alignmentClasses.push('d-flex', formJustifyContent.trim());
+	if (attributes.formJustifyContent) {
+		alignmentClasses.push('d-flex', attributes.formJustifyContent.trim());
 	}
-	if (formTextAlign) {
-		alignmentClasses.push(formTextAlign.trim());
+	if (attributes.formTextAlign) {
+		alignmentClasses.push(attributes.formTextAlign.trim());
 	}
-	if (formPosition) {
-		alignmentClasses.push(formPosition.trim());
+	if (attributes.formPosition) {
+		alignmentClasses.push(attributes.formPosition.trim());
 	}
 
 	rowClassName = [rowClassName, ...alignmentClasses].filter(Boolean).join(' ');

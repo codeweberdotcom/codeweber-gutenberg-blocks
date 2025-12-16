@@ -3,7 +3,7 @@
 namespace Codeweber\Blocks;
 
 /**
- * REST API: Theme style values (card/button radius)
+ * REST API: Theme style values (card/button/form radius)
  */
 class StyleAPI {
 	/**
@@ -27,10 +27,12 @@ class StyleAPI {
 	public static function get_styles() {
 		$card_radius   = function_exists('getThemeCardImageRadius') ? getThemeCardImageRadius() : '';
 		$button_radius = function_exists('getThemeButton') ? getThemeButton() : '';
+		$form_radius   = function_exists('getThemeFormRadius') ? getThemeFormRadius() : '';
 
 		return [
 			'card_radius_class'   => $card_radius,
 			'button_radius_class' => $button_radius,
+			'form_radius_class'   => $form_radius,
 		];
 	}
 }

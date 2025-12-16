@@ -266,6 +266,9 @@ class Plugin {
 		$blocks_path = self::getBasePath() . '/build/blocks/';
 		$lang_path = self::getBasePath() . '/languages';
 		
+		// Фильтр для перевода метаданных блоков (title, description)
+		add_filter('block_type_metadata_settings', [__CLASS__, 'translate_block_metadata'], 10, 2);
+		
 		foreach (self::getBlocksName() as $block_name) {
 			$block_type = register_block_type($blocks_path . $block_name);
 			
@@ -289,6 +292,28 @@ class Plugin {
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Translate block metadata (title, description) from block.json
+	 */
+	public static function translate_block_metadata($settings, $metadata) {
+		// Переводим только блоки нашего плагина
+		if (!isset($metadata['name']) || strpos($metadata['name'], 'codeweber-blocks/') !== 0) {
+			return $settings;
+		}
+		
+		// Переводим title
+		if (isset($settings['title']) && !empty($settings['title'])) {
+			$settings['title'] = __($settings['title'], 'codeweber-gutenberg-blocks');
+		}
+		
+		// Переводим description
+		if (isset($settings['description']) && !empty($settings['description'])) {
+			$settings['description'] = __($settings['description'], 'codeweber-gutenberg-blocks');
+		}
+		
+		return $settings;
 	}
 	
 	/**

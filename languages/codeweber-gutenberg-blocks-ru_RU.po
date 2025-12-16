@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Codeweber Gutenberg Blocks\n"
 "POT-Creation-Date: 2025-12-04T14:31:54Z\n"
-"PO-Revision-Date: 2025-12-16 08:27+0000\n"
+"PO-Revision-Date: 2025-12-16 11:26+0000\n"
 "Last-Translator: Codeweber\n"
 "Language-Team: Русский\n"
 "Language: ru_RU\n"
@@ -2629,3 +2629,167 @@ msgstr "Контактная форма"
 #: src/blocks/form/render.php:190
 msgid "Forms module is not active."
 msgstr "Модуль форм не активен."
+
+#: src/blocks/form-field/edit.js:41
+msgid "Tel"
+msgstr "Телефон"
+
+#: src/blocks/form-field/edit.js:43
+msgid "Textarea"
+msgstr "Текстовая область"
+
+#: src/blocks/form-field/edit.js:45
+msgid "Radio"
+msgstr "Радиокнопка"
+
+#: src/blocks/form-field/edit.js:46
+msgid "Checkbox"
+msgstr "Чекбокс"
+
+#: src/blocks/form-field/edit.js:47
+msgid "File"
+msgstr "Файл"
+
+#: src/blocks/form-field/edit.js:49
+msgid "Time"
+msgstr "Время"
+
+#: src/blocks/form-field/edit.js:50
+msgid "Number"
+msgstr "Число"
+
+#: src/blocks/form-field/edit.js:51
+msgid "Hidden"
+msgstr "Скрытое поле"
+
+#: src/blocks/form-field/edit.js:52
+msgid "Consents block"
+msgstr "Блок согласий"
+
+#: src/blocks/form-field/edit.js:57
+msgid "Full Width (col-12)"
+msgstr "Полная ширина (col-12)"
+
+#: src/blocks/form-field/edit.js:58
+msgid "Half Width (col-md-6)"
+msgstr "Половина ширины (col-md-6)"
+
+#: src/blocks/form-field/edit.js:59
+msgid "Third Width (col-md-4)"
+msgstr "Треть ширины (col-md-4)"
+
+#: src/blocks/form-field/edit.js:60
+msgid "Quarter Width (col-md-3)"
+msgstr "Четверть ширины (col-md-3)"
+
+#: src/blocks/form-field/edit.js:89
+msgid "Select option..."
+msgstr "Выберите опцию..."
+
+#: src/blocks/form-field/edit.js:135
+msgid "Option"
+msgstr "Опция"
+
+#: src/blocks/form-field/edit.js:154
+msgid "File Upload"
+msgstr "Загрузка файла"
+
+#: src/blocks/form-field/edit.js:163
+msgid "Hidden Field"
+msgstr "Скрытое поле"
+
+#: src/blocks/form-field/edit.js:170
+msgid "Consents Block"
+msgstr "Блок согласий"
+
+#: src/blocks/form-field/edit.js:172
+msgid "This field outputs consents configured below the form."
+msgstr "Это поле выводит согласия, настроенные под формой."
+
+#: src/blocks/form-field/edit.js:199
+msgid "Field Settings"
+msgstr "Настройки поля"
+
+#: src/blocks/form-field/edit.js:201
+msgid "Field Type"
+msgstr "Тип поля"
+
+#: src/blocks/form-field/edit.js:207
+msgid "Field Name"
+msgstr "Имя поля"
+
+#: src/blocks/form-field/edit.js:210
+msgid "Unique field identifier (e.g., name, email)"
+msgstr "Уникальный идентификатор поля (например, name, email)"
+
+#: src/blocks/form-field/edit.js:233
+msgid "Field Label"
+msgstr "Метка поля"
+
+#: src/blocks/form-field/edit.js:226
+msgid "Required Field"
+msgstr "Обязательное поле"
+
+#: src/blocks/form-field/edit.js:251
+msgid "Validation"
+msgstr "Валидация"
+
+#: src/blocks/form-field/edit.js:234
+msgid "Min Length"
+msgstr "Минимальная длина"
+
+#: src/blocks/form-field/edit.js:240
+msgid "Max Length"
+msgstr "Максимальная длина"
+
+#: src/blocks/form-field/edit.js:246
+msgid "Validation Type"
+msgstr "Тип валидации"
+
+#: src/blocks/form-field/edit.js:261
+msgid "Options (one per line, format: label|value)"
+msgstr "Опции (по одной на строку, формат: label|value)"
+
+#: src/blocks/form-field/edit.js:275
+msgid "Example: Option 1|value1"
+msgstr "Пример: Опция 1|value1"
+
+#: src/blocks/form-field/edit.js:281
+msgid "File Settings"
+msgstr "Настройки файла"
+
+#: src/blocks/form-field/edit.js:283
+msgid "Accept"
+msgstr "Принимаемые типы"
+
+#: src/blocks/form-field/edit.js:286
+msgid "File types: .pdf,.doc,.docx or image/*"
+msgstr "Типы файлов: .pdf,.doc,.docx или image/*"
+
+#: src/blocks/form-field/edit.js:289
+msgid "Multiple Files"
+msgstr "Несколько файлов"
+
+#: src/blocks/form-field/edit.js:298
+msgid "Field Width"
+msgstr "Ширина поля"
+
+#: src/blocks/form-field/edit.js:315
+msgid "Default Value"
+msgstr "Значение по умолчанию"
+
+#: src/blocks/form-field/edit.js:320
+msgid "Help Text"
+msgstr "Текст подсказки"
+
+#: src/blocks/form-field/edit.js:323
+msgid "Additional help text below the field"
+msgstr "Дополнительный текст подсказки под полем"
+
+#: src/blocks/form-field/block.json:5
+msgid "Form Field"
+msgstr "Поле формы"
+
+#: src/blocks/form-field/block.json:8
+msgid "Add form field (text, email, textarea, etc.)"
+msgstr "Добавить поле формы (текст, email, текстовая область и т.д.)"

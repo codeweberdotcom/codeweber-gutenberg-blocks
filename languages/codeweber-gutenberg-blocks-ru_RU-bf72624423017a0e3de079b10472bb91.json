@@ -1937,6 +1937,129 @@
       ],
       "Forms module is not active.": [
         "Модуль форм не активен."
+      ],
+      "Tel": [
+        "Телефон"
+      ],
+      "Textarea": [
+        "Текстовая область"
+      ],
+      "Radio": [
+        "Радиокнопка"
+      ],
+      "Checkbox": [
+        "Чекбокс"
+      ],
+      "File": [
+        "Файл"
+      ],
+      "Time": [
+        "Время"
+      ],
+      "Number": [
+        "Число"
+      ],
+      "Hidden": [
+        "Скрытое поле"
+      ],
+      "Consents block": [
+        "Блок согласий"
+      ],
+      "Full Width (col-12)": [
+        "Полная ширина (col-12)"
+      ],
+      "Half Width (col-md-6)": [
+        "Половина ширины (col-md-6)"
+      ],
+      "Third Width (col-md-4)": [
+        "Треть ширины (col-md-4)"
+      ],
+      "Quarter Width (col-md-3)": [
+        "Четверть ширины (col-md-3)"
+      ],
+      "Select option...": [
+        "Выберите опцию..."
+      ],
+      "Option": [
+        "Опция"
+      ],
+      "File Upload": [
+        "Загрузка файла"
+      ],
+      "Hidden Field": [
+        "Скрытое поле"
+      ],
+      "Consents Block": [
+        "Блок согласий"
+      ],
+      "This field outputs consents configured below the form.": [
+        "Это поле выводит согласия, настроенные под формой."
+      ],
+      "Field Settings": [
+        "Настройки поля"
+      ],
+      "Field Type": [
+        "Тип поля"
+      ],
+      "Field Name": [
+        "Имя поля"
+      ],
+      "Unique field identifier (e.g., name, email)": [
+        "Уникальный идентификатор поля (например, name, email)"
+      ],
+      "Field Label": [
+        "Метка поля"
+      ],
+      "Required Field": [
+        "Обязательное поле"
+      ],
+      "Validation": [
+        "Валидация"
+      ],
+      "Min Length": [
+        "Минимальная длина"
+      ],
+      "Max Length": [
+        "Максимальная длина"
+      ],
+      "Validation Type": [
+        "Тип валидации"
+      ],
+      "Options (one per line, format: label|value)": [
+        "Опции (по одной на строку, формат: label|value)"
+      ],
+      "Example: Option 1|value1": [
+        "Пример: Опция 1|value1"
+      ],
+      "File Settings": [
+        "Настройки файла"
+      ],
+      "Accept": [
+        "Принимаемые типы"
+      ],
+      "File types: .pdf,.doc,.docx or image/*": [
+        "Типы файлов: .pdf,.doc,.docx или image/*"
+      ],
+      "Multiple Files": [
+        "Несколько файлов"
+      ],
+      "Field Width": [
+        "Ширина поля"
+      ],
+      "Default Value": [
+        "Значение по умолчанию"
+      ],
+      "Help Text": [
+        "Текст подсказки"
+      ],
+      "Additional help text below the field": [
+        "Дополнительный текст подсказки под полем"
+      ],
+      "Form Field": [
+        "Поле формы"
+      ],
+      "Add form field (text, email, textarea, etc.)": [
+        "Добавить поле формы (текст, email, текстовая область и т.д.)"
       ]
     }
   }

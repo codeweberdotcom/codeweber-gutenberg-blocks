@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Codeweber Gutenberg Blocks\n"
 "POT-Creation-Date: 2025-12-04T14:31:54Z\n"
-"PO-Revision-Date: 2025-12-08 11:06+0000\n"
+"PO-Revision-Date: 2025-12-16 11:15+0000\n"
 "Last-Translator: Codeweber\n"
 "Language-Team: Русский\n"
 "Language: ru_RU\n"
@@ -58,6 +58,10 @@ msgstr "Вариант ссылки"
 msgid "Link Text Color"
 msgstr "Цвет текста ссылки"
 
+#: src/blocks/button/sidebar.js
+msgid "Icon Position"
+msgstr "Позиция иконки"
+
 #: src/blocks/button/sidebar.js:466
 msgid "Left Icon"
 msgstr "Левая иконка"
@@ -66,6 +70,14 @@ msgstr "Левая иконка"
 msgid "Right Icon"
 msgstr "Правая иконка"
 
+#: src/blocks/button/sidebar.js
+msgid "Left"
+msgstr "Слева"
+
+#: src/blocks/button/sidebar.js
+msgid "Right"
+msgstr "Справа"
+
 #: src/blocks/button/sidebar.js:483
 msgid "Icon Class"
 msgstr "Класс иконки"
@@ -73,6 +85,18 @@ msgstr "Класс иконки"
 #: src/blocks/button/sidebar.js:493
 msgid "Social Icon Class"
 msgstr "Класс соц. иконки"
+
+#: src/blocks/button/sidebar.js:400
+msgid "Gradient Color"
+msgstr "Градиентный цвет"
+
+#: src/blocks/button/sidebar.js:518
+msgid "Current icon:"
+msgstr "Текущая иконка:"
+
+#: src/blocks/button/sidebar.js:579
+msgid "Social Icon Style"
+msgstr "Стиль соц. иконки"
 
 #: src/components/gap/GapControl.js:5
 msgid "General"
@@ -714,10 +738,6 @@ msgstr "Позиция навигации"
 #: src/blocks/image-simple/controls/LayoutControl.js:431
 msgid "Below"
 msgstr "Снизу"
-
-#: src/blocks/image-simple/controls/LayoutControl.js:438
-msgid "Left"
-msgstr "Слева"
 
 #: src/blocks/image-simple/controls/LayoutControl.js:445
 msgid "Pagination Style"
@@ -1687,6 +1707,30 @@ msgstr "Выбрать телефон"
 msgid "Select Post"
 msgstr "Выбрать запись"
 
+#: src/utilities/link_type.js:1098
+msgid "Select Post Type"
+msgstr "Выбрать тип записи"
+
+#: src/utilities/link_type.js:1105
+msgid "No post types found"
+msgstr "Типы записей не найдены"
+
+#: src/utilities/link_type.js:1108
+msgid "Select the type of post to display"
+msgstr "Выберите тип записи для отображения"
+
+#: src/utilities/link_type.js:1130
+msgid "No posts found"
+msgstr "Записи не найдены"
+
+#: src/utilities/link_type.js:1070
+msgid "Loading phones..."
+msgstr "Загрузка телефонов..."
+
+#: src/utilities/link_type.js:1076
+msgid "No phones found"
+msgstr "Телефоны не найдены"
+
 #: src/utilities/link_type.js
 msgid "Select Page"
 msgstr "Выбрать страницу"
@@ -2017,8 +2061,12 @@ msgid "Accordion"
 msgstr "Аккордеон"
 
 #: src/blocks/accordion/index.js
-msgid "Bootstrap accordion with multiple items. Supports simple, background, and icon styles."
-msgstr "Bootstrap аккордеон с несколькими элементами. Поддерживает простой, фоновый и иконный стили."
+msgid ""
+"Bootstrap accordion with multiple items. Supports simple, background, and "
+"icon styles."
+msgstr ""
+"Bootstrap аккордеон с несколькими элементами. Поддерживает простой, фоновый "
+"и иконный стили."
 
 #: src/blocks/accordion/index.js
 msgid "accordion"
@@ -2049,30 +2097,6 @@ msgid "Simple"
 msgstr "Простой"
 
 #: src/blocks/accordion/sidebar.js
-msgid "Card"
-msgstr "Карточка"
-
-#: src/blocks/accordion/sidebar.js
-msgid "Icon"
-msgstr "Иконка"
-
-#: src/blocks/accordion/sidebar.js
-msgid "Icon Position"
-msgstr "Позиция иконки"
-
-#: src/blocks/accordion/sidebar.js
-msgid "Left"
-msgstr "Слева"
-
-#: src/blocks/accordion/sidebar.js
-msgid "Right"
-msgstr "Справа"
-
-#: src/blocks/accordion/sidebar.js
-msgid "Icon Type"
-msgstr "Тип иконки"
-
-#: src/blocks/accordion/sidebar.js
 msgid "Type 1"
 msgstr "Тип 1"
 
@@ -2090,7 +2114,8 @@ msgstr "Разрешить открытие нескольких элемент�
 
 #: src/blocks/accordion/sidebar.js
 msgid "When enabled, multiple accordion items can be open at the same time."
-msgstr "При включении несколько элементов аккордеона могут быть открыты одновременно."
+msgstr ""
+"При включении несколько элементов аккордеона могут быть открыты одновременно."
 
 #: src/blocks/accordion/sidebar.js
 msgid "Open first item by default"
@@ -2113,10 +2138,6 @@ msgid "Click to change icon"
 msgstr "Нажмите, чтобы изменить иконку"
 
 #: src/blocks/accordion/edit.js
-msgid "Enter title..."
-msgstr "Введите заголовок..."
-
-#: src/blocks/accordion/edit.js
 msgid "Enter content..."
 msgstr "Введите содержимое..."
 
@@ -2129,9 +2150,638 @@ msgid "Move down"
 msgstr "Переместить вниз"
 
 #: src/blocks/accordion/edit.js
-msgid "Remove"
-msgstr "Удалить"
-
-#: src/blocks/accordion/edit.js
 msgid "+ Add Accordion Item"
 msgstr "+ Добавить элемент аккордеона"
+
+#: src/blocks/accordion/sidebar.js
+msgid "Data Source"
+msgstr "Источник данных"
+
+#: src/blocks/accordion/sidebar.js
+msgid "Custom"
+msgstr "Вручную"
+
+#: src/blocks/accordion/sidebar.js
+msgid "Select the post type to generate accordion items from"
+msgstr "Выберите тип записи для генерации элементов аккордеона"
+
+#: src/blocks/accordion/edit.js
+msgid "No posts found. Please select a post type and check your filters."
+msgstr ""
+"Записи не найдены. Пожалуйста, выберите тип записи и проверьте фильтры."
+
+#: src/blocks/accordion/edit.js
+msgid "No content available"
+msgstr "Контент недоступен"
+
+#: src/blocks/lists/index.js
+msgid "Lists"
+msgstr "Списки"
+
+#: src/blocks/lists/index.js
+msgid ""
+"Custom lists with icons, colors, and columns. Supports Custom and Post modes."
+msgstr ""
+"Пользовательские списки с иконками, цветами и колонками. Поддерживает режимы "
+"Custom и Post."
+
+#: src/blocks/lists/index.js
+msgid "list"
+msgstr "список"
+
+#: src/blocks/lists/index.js
+msgid "lists"
+msgstr "списки"
+
+#: src/blocks/lists/index.js
+msgid "ul"
+msgstr "ul"
+
+#: src/blocks/lists/index.js
+msgid "icon"
+msgstr "иконка"
+
+#: src/blocks/lists/index.js
+msgid "columns"
+msgstr "колонки"
+
+#: src/blocks/lists/sidebar.js
+msgid "Lists Settings"
+msgstr "Настройки списков"
+
+#: src/blocks/lists/sidebar.js
+msgid "Select the post type to generate list items from"
+msgstr "Выберите тип записи для генерации элементов списка"
+
+#: src/blocks/lists/sidebar.js
+msgid "List Type"
+msgstr "Тип списка"
+
+#: src/blocks/lists/sidebar.js
+msgid "Unordered"
+msgstr "Маркированный"
+
+#: src/blocks/lists/sidebar.js
+msgid "Bullet Color"
+msgstr "Цвет маркера"
+
+#: src/blocks/lists/sidebar.js
+msgid "Bullet Background"
+msgstr "Фон маркера"
+
+#: src/blocks/lists/sidebar.js
+msgid "Enable background color for bullet icons"
+msgstr "Включить цвет фона для иконок маркеров"
+
+#: src/blocks/lists/sidebar.js
+msgid "Columns Layout"
+msgstr "Макет колонок"
+
+#: src/blocks/lists/sidebar.js
+msgid "Block Settings"
+msgstr "Настройки блока"
+
+#: src/blocks/lists/edit.js
+msgid "New list item"
+msgstr "Новый элемент списка"
+
+#: src/blocks/lists/edit.js
+msgid "Enter list item..."
+msgstr "Введите элемент списка..."
+
+#: src/blocks/lists/edit.js
+msgid "+ Add List Item"
+msgstr "+ Добавить элемент списка"
+
+#: src/blocks/lists/render.php
+msgid "No items found."
+msgstr "Элементы не найдены."
+
+#: src/blocks/tabs/index.js
+msgid "Tabs"
+msgstr "Вкладки"
+
+#: src/blocks/tabs/index.js
+msgid ""
+"Bootstrap tabs with multiple items. Supports basic and pills styles with "
+"icons."
+msgstr ""
+"Вкладки Bootstrap с несколькими элементами. Поддерживает стили basic и pills "
+"с иконками."
+
+#: src/blocks/tabs/index.js
+msgid "tab"
+msgstr "вкладка"
+
+#: src/blocks/tabs/index.js
+msgid "navigation"
+msgstr "навигация"
+
+#: src/blocks/tabs/index.js
+msgid "nav"
+msgstr "нав"
+
+#: src/blocks/tabs/sidebar.js
+msgid "Tabs Settings"
+msgstr "Настройки вкладок"
+
+#: src/blocks/tabs/sidebar.js
+msgid "Tab Style"
+msgstr "Стиль вкладки"
+
+#: src/blocks/tabs/sidebar.js
+msgid "Basic"
+msgstr "Базовый"
+
+#: src/blocks/tabs/sidebar.js
+msgid "Pills"
+msgstr "Пилюли"
+
+#: src/blocks/tabs/sidebar.js
+msgid "Tabs ID"
+msgstr "ID вкладок"
+
+#: src/blocks/tabs/sidebar.js
+msgid "Tabs Class"
+msgstr "Класс вкладок"
+
+#: src/blocks/tabs/sidebar.js
+msgid "Tabs Data"
+msgstr "Данные вкладок"
+
+#: src/blocks/tabs/edit.js
+msgid "New Tab"
+msgstr "Новая вкладка"
+
+#: src/blocks/tabs/edit.js
+msgid "Tab title..."
+msgstr "Заголовок вкладки..."
+
+#: src/blocks/tabs/edit.js
+msgid "+ Add Tab"
+msgstr "+ Добавить вкладку"
+
+#: src/blocks/tabs/edit.js
+msgid "Click to add icon"
+msgstr "Нажмите, чтобы добавить иконку"
+
+#: src/blocks/tabs/sidebar.js
+msgid "Fanny"
+msgstr "Fanny"
+
+#: src/blocks/tabs/sidebar.js
+msgid "Tab Rounded"
+msgstr "Скругление вкладок"
+
+#: src/blocks/tabs/sidebar.js
+msgid "Rounded"
+msgstr "Скруглено"
+
+#: src/blocks/tabs/sidebar.js
+msgid "Rounded 0"
+msgstr "Скруглено 0"
+
+#: src/blocks/tabs/sidebar.js
+msgid "Rounded Pill"
+msgstr "Скруглено Pill"
+
+#: src/blocks/tabs/sidebar.js
+msgid "Tab Alignment"
+msgstr "Выравнивание вкладок"
+
+#: src/blocks/tabs/sidebar.js
+msgid "Enable Background"
+msgstr "Включить фон"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Avatar Settings"
+msgstr "Настройки аватара"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Avatar Type"
+msgstr "Тип аватара"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Letters"
+msgstr "Буквы"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Enter letters to display (e.g., AB, TC, CH)"
+msgstr "Введите буквы для отображения (например, AB, TC, CH)"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Avatar Image"
+msgstr "Изображение аватара"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Size from 1 to 25 (w-1 to w-25, h-1 to h-25)"
+msgstr "Размер от 1 до 25 (w-1 до w-25, h-1 до h-25)"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Avatar ID"
+msgstr "ID аватара"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Avatar Class"
+msgstr "Класс аватара"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Avatar Data"
+msgstr "Данные аватара"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Pale Primary"
+msgstr "Бледный основной"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Soft Primary"
+msgstr "Мягкий основной"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Secondary"
+msgstr "Вторичный"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Success"
+msgstr "Успех"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Danger"
+msgstr "Опасность"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Warning"
+msgstr "Предупреждение"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Info"
+msgstr "Информация"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Name & Position"
+msgstr "Имя и должность"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Show Name & Position"
+msgstr "Показать имя и должность"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Name"
+msgstr "Имя"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Enter name"
+msgstr "Введите имя"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Enter position/job title"
+msgstr "Введите должность/название должности"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Name Link (URL)"
+msgstr "Ссылка на имя (URL)"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Optional: URL for name link"
+msgstr "Необязательно: URL для ссылки на имя"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Leave empty if name should not be a link"
+msgstr "Оставьте пустым, если имя не должно быть ссылкой"
+
+#: src/blocks/avatar/sidebar.js
+msgid "User"
+msgstr "Пользователь"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Select User"
+msgstr "Выбрать пользователя"
+
+#: src/blocks/avatar/sidebar.js
+msgid "— Select User —"
+msgstr "— Выбрать пользователя —"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Loading users..."
+msgstr "Загрузка пользователей..."
+
+#: src/blocks/avatar/edit.js
+msgid "Select a user"
+msgstr "Выбрать пользователя"
+
+#: src/blocks/avatar/edit.js
+msgid "Loading..."
+msgstr "Загрузка..."
+
+#: src/blocks/avatar/sidebar.js
+msgid "Used when image is not uploaded"
+msgstr "Используется, когда изображение не загружено"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Additional Data"
+msgstr "Дополнительные данные"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Show Additional Data"
+msgstr "Показать дополнительные данные"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Enable to show name and position"
+msgstr "Включить для отображения имени и должности"
+
+#: src/utilities/link_type.js
+msgid "Document Action"
+msgstr "Действие с документом"
+
+#: src/utilities/link_type.js
+msgid "Download"
+msgstr "Скачать"
+
+#: src/utilities/link_type.js
+#: src/components/post-grid-item/PostGridItemRender.js
+msgid "Send to Email"
+msgstr "Отправить на Email"
+
+#: src/utilities/link_type.js
+msgid "No documents found"
+msgstr "Документы не найдены"
+
+#: src/components/post-grid-template/PostGridTemplateControl.js
+msgid "Document Card"
+msgstr "Карточка документа"
+
+#: src/components/post-grid-template/PostGridTemplateControl.js
+msgid "Card layout with email button for documents"
+msgstr "Компоновка карточки с кнопкой email для документов"
+
+#: src/components/post-grid-template/PostGridTemplateControl.js
+msgid "Document Card Download"
+msgstr "Карточка документа (загрузка)"
+
+#: src/components/post-grid-template/PostGridTemplateControl.js
+msgid "Card layout with AJAX download button for documents"
+msgstr "Компоновка карточки с AJAX кнопкой загрузки для документов"
+
+#: src/blocks/post-grid/controls/LayoutControl.js
+msgid "Images Per Row"
+msgstr "Изображений в ряду"
+
+#: src/blocks/post-grid/controls/LayoutControl.js
+msgid "Gap сетки"
+msgstr "Gap сетки"
+
+#: src/blocks/post-grid/controls/LayoutControl.js
+msgid "Number of columns at each breakpoint"
+msgstr "Количество колонок на каждой точке останова"
+
+#: src/blocks/form/edit.js:69
+msgid "Form Settings"
+msgstr "Настройки формы"
+
+#: src/blocks/form/edit.js:71
+msgid "Form Name"
+msgstr "Название формы"
+
+#: src/blocks/form/edit.js:76
+msgid "Form ID"
+msgstr "ID формы"
+
+#: src/blocks/form/edit.js:79
+msgid "Leave empty to auto-generate"
+msgstr "Оставьте пустым для автоматической генерации"
+
+#: src/blocks/form/edit.js:83
+msgid "Email Settings"
+msgstr "Настройки электронной почты"
+
+#: src/blocks/form/edit.js:85
+msgid "Recipient Email"
+msgstr "Email получателя"
+
+#: src/blocks/form/edit.js:89
+msgid "Email address to receive form submissions"
+msgstr "Адрес электронной почты для получения отправленных форм"
+
+#: src/blocks/form/edit.js:92
+msgid "Sender Email"
+msgstr "Email отправителя"
+
+#: src/blocks/form/edit.js:98
+msgid "Sender Name"
+msgstr "Имя отправителя"
+
+#: src/blocks/form/edit.js:103
+msgid "Email Subject"
+msgstr "Тема письма"
+
+#: src/blocks/form/edit.js:109
+msgid "Messages"
+msgstr "Сообщения"
+
+#: src/blocks/form/edit.js:111
+msgid "Success Message"
+msgstr "Сообщение об успехе"
+
+#: src/blocks/form/edit.js:116
+msgid "Error Message"
+msgstr "Сообщение об ошибке"
+
+#: src/blocks/form/edit.js:122
+msgid "Security"
+msgstr "Безопасность"
+
+#: src/blocks/form/edit.js:124
+msgid "Enable Captcha"
+msgstr "Включить капчу"
+
+#: src/blocks/form/edit.js:130
+msgid "Captcha Type"
+msgstr "Тип капчи"
+
+#: src/blocks/form/edit.js:133
+msgid "Honeypot"
+msgstr "Honeypot"
+
+#: src/blocks/form/edit.js:139
+msgid "Enable Rate Limiting"
+msgstr "Включить ограничение частоты"
+
+#: src/blocks/form/edit.js:146
+msgid "Max Submissions"
+msgstr "Максимум отправок"
+
+#: src/blocks/form/edit.js:152
+msgid "Time Period (seconds)"
+msgstr "Временной период (секунды)"
+
+#: src/blocks/form/edit.js:161
+msgid "Submit Button"
+msgstr "Кнопка отправки"
+
+#: src/blocks/form/edit.js:171
+msgid "Bootstrap classes: btn btn-primary"
+msgstr "Классы Bootstrap: btn btn-primary"
+
+#: src/blocks/form/edit.js:178
+msgid "Contact Form"
+msgstr "Контактная форма"
+
+#: src/blocks/form/render.php:190
+msgid "Forms module is not active."
+msgstr "Модуль форм не активен."
+
+#: src/blocks/form-field/edit.js:41
+msgid "Tel"
+msgstr "Телефон"
+
+#: src/blocks/form-field/edit.js:43
+msgid "Textarea"
+msgstr "Текстовая область"
+
+#: src/blocks/form-field/edit.js:45
+msgid "Radio"
+msgstr "Радиокнопка"
+
+#: src/blocks/form-field/edit.js:46
+msgid "Checkbox"
+msgstr "Чекбокс"
+
+#: src/blocks/form-field/edit.js:47
+msgid "File"
+msgstr "Файл"
+
+#: src/blocks/form-field/edit.js:49
+msgid "Time"
+msgstr "Время"
+
+#: src/blocks/form-field/edit.js:50
+msgid "Number"
+msgstr "Число"
+
+#: src/blocks/form-field/edit.js:51
+msgid "Hidden"
+msgstr "Скрытое поле"
+
+#: src/blocks/form-field/edit.js:52
+msgid "Consents block"
+msgstr "Блок согласий"
+
+#: src/blocks/form-field/edit.js:57
+msgid "Full Width (col-12)"
+msgstr "Полная ширина (col-12)"
+
+#: src/blocks/form-field/edit.js:58
+msgid "Half Width (col-md-6)"
+msgstr "Половина ширины (col-md-6)"
+
+#: src/blocks/form-field/edit.js:59
+msgid "Third Width (col-md-4)"
+msgstr "Треть ширины (col-md-4)"
+
+#: src/blocks/form-field/edit.js:60
+msgid "Quarter Width (col-md-3)"
+msgstr "Четверть ширины (col-md-3)"
+
+#: src/blocks/form-field/edit.js:89
+msgid "Select option..."
+msgstr "Выберите опцию..."
+
+#: src/blocks/form-field/edit.js:135
+msgid "Option"
+msgstr "Опция"
+
+#: src/blocks/form-field/edit.js:154
+msgid "File Upload"
+msgstr "Загрузка файла"
+
+#: src/blocks/form-field/edit.js:163
+msgid "Hidden Field"
+msgstr "Скрытое поле"
+
+#: src/blocks/form-field/edit.js:170
+msgid "Consents Block"
+msgstr "Блок согласий"
+
+#: src/blocks/form-field/edit.js:172
+msgid "This field outputs consents configured below the form."
+msgstr "Это поле выводит согласия, настроенные под формой."
+
+#: src/blocks/form-field/edit.js:199
+msgid "Field Settings"
+msgstr "Настройки поля"
+
+#: src/blocks/form-field/edit.js:201
+msgid "Field Type"
+msgstr "Тип поля"
+
+#: src/blocks/form-field/edit.js:207
+msgid "Field Name"
+msgstr "Имя поля"
+
+#: src/blocks/form-field/edit.js:210
+msgid "Unique field identifier (e.g., name, email)"
+msgstr "Уникальный идентификатор поля (например, name, email)"
+
+#: src/blocks/form-field/edit.js:226
+msgid "Required Field"
+msgstr "Обязательное поле"
+
+#: src/blocks/form-field/edit.js:234
+msgid "Min Length"
+msgstr "Минимальная длина"
+
+#: src/blocks/form-field/edit.js:240
+msgid "Max Length"
+msgstr "Максимальная длина"
+
+#: src/blocks/form-field/edit.js:246
+msgid "Validation Type"
+msgstr "Тип валидации"
+
+#: src/blocks/form-field/edit.js:261
+msgid "Options (one per line, format: label|value)"
+msgstr "Опции (по одной на строку, формат: label|value)"
+
+#: src/blocks/form-field/edit.js:275
+msgid "Example: Option 1|value1"
+msgstr "Пример: Опция 1|value1"
+
+#: src/blocks/form-field/edit.js:281
+msgid "File Settings"
+msgstr "Настройки файла"
+
+#: src/blocks/form-field/edit.js:283
+msgid "Accept"
+msgstr "Принимаемые типы"
+
+#: src/blocks/form-field/edit.js:286
+msgid "File types: .pdf,.doc,.docx or image/*"
+msgstr "Типы файлов: .pdf,.doc,.docx или image/*"
+
+#: src/blocks/form-field/edit.js:289
+msgid "Multiple Files"
+msgstr "Несколько файлов"
+
+#: src/blocks/form-field/edit.js:298
+msgid "Field Width"
+msgstr "Ширина поля"
+
+#: src/blocks/form-field/edit.js:315
+msgid "Default Value"
+msgstr "Значение по умолчанию"
+
+#: src/blocks/form-field/edit.js:320
+msgid "Help Text"
+msgstr "Текст подсказки"
+
+#: src/blocks/form-field/edit.js:323
+msgid "Additional help text below the field"
+msgstr "Дополнительный текст подсказки под полем"
+
+#: src/blocks/form-field/block.json:5
+msgid "Form Field"
+msgstr "Поле формы"
+
+#: src/blocks/form-field/block.json:8
+msgid "Add form field (text, email, textarea, etc.)"
+msgstr "Добавить поле формы (текст, email, текстовая область и т.д.)"

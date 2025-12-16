@@ -1714,3 +1714,215 @@ msgstr ""
 #: src/blocks/form/render.php:190
 msgid "Forms module is not active."
 msgstr ""
+
+#: src/blocks/form-field/edit.js:39
+msgid "Text"
+msgstr ""
+
+#: src/blocks/form-field/edit.js:40
+msgid "Email"
+msgstr ""
+
+#: src/blocks/form-field/edit.js:41
+msgid "Tel"
+msgstr ""
+
+#: src/blocks/form-field/edit.js:42
+msgid "URL"
+msgstr ""
+
+#: src/blocks/form-field/edit.js:43
+msgid "Textarea"
+msgstr ""
+
+#: src/blocks/form-field/edit.js:44
+msgid "Select"
+msgstr ""
+
+#: src/blocks/form-field/edit.js:45
+msgid "Radio"
+msgstr ""
+
+#: src/blocks/form-field/edit.js:46
+msgid "Checkbox"
+msgstr ""
+
+#: src/blocks/form-field/edit.js:47
+msgid "File"
+msgstr ""
+
+#: src/blocks/form-field/edit.js:48
+msgid "Date"
+msgstr ""
+
+#: src/blocks/form-field/edit.js:49
+msgid "Time"
+msgstr ""
+
+#: src/blocks/form-field/edit.js:50
+msgid "Number"
+msgstr ""
+
+#: src/blocks/form-field/edit.js:51
+msgid "Hidden"
+msgstr ""
+
+#: src/blocks/form-field/edit.js:52
+msgid "Consents block"
+msgstr ""
+
+#: src/blocks/form-field/edit.js:57
+msgid "Full Width (col-12)"
+msgstr ""
+
+#: src/blocks/form-field/edit.js:58
+msgid "Half Width (col-md-6)"
+msgstr ""
+
+#: src/blocks/form-field/edit.js:59
+msgid "Third Width (col-md-4)"
+msgstr ""
+
+#: src/blocks/form-field/edit.js:60
+msgid "Quarter Width (col-md-3)"
+msgstr ""
+
+#: src/blocks/form-field/edit.js:79
+msgid "Field Label"
+msgstr ""
+
+#: src/blocks/form-field/edit.js:89
+msgid "Select option..."
+msgstr ""
+
+#: src/blocks/form-field/edit.js:135
+msgid "Option"
+msgstr ""
+
+#: src/blocks/form-field/edit.js:154
+msgid "File Upload"
+msgstr ""
+
+#: src/blocks/form-field/edit.js:163
+msgid "Hidden Field"
+msgstr ""
+
+#: src/blocks/form-field/edit.js:170
+msgid "Consents Block"
+msgstr ""
+
+#: src/blocks/form-field/edit.js:172
+msgid "This field outputs consents configured below the form."
+msgstr ""
+
+#: src/blocks/form-field/edit.js:199
+msgid "Field Settings"
+msgstr ""
+
+#: src/blocks/form-field/edit.js:201
+msgid "Field Type"
+msgstr ""
+
+#: src/blocks/form-field/edit.js:207
+msgid "Field Name"
+msgstr ""
+
+#: src/blocks/form-field/edit.js:210
+msgid "Unique field identifier (e.g., name, email)"
+msgstr ""
+
+#: src/blocks/form-field/edit.js:214
+msgid "Field Label"
+msgstr ""
+
+#: src/blocks/form-field/edit.js:220
+msgid "Placeholder"
+msgstr ""
+
+#: src/blocks/form-field/edit.js:226
+msgid "Required Field"
+msgstr ""
+
+#: src/blocks/form-field/edit.js:232
+msgid "Validation"
+msgstr ""
+
+#: src/blocks/form-field/edit.js:234
+msgid "Min Length"
+msgstr ""
+
+#: src/blocks/form-field/edit.js:240
+msgid "Max Length"
+msgstr ""
+
+#: src/blocks/form-field/edit.js:246
+msgid "Validation Type"
+msgstr ""
+
+#: src/blocks/form-field/edit.js:249
+msgid "None"
+msgstr ""
+
+#: src/blocks/form-field/edit.js:252
+msgid "Phone"
+msgstr ""
+
+#: src/blocks/form-field/edit.js:259
+msgid "Options"
+msgstr ""
+
+#: src/blocks/form-field/edit.js:261
+msgid "Options (one per line, format: label|value)"
+msgstr ""
+
+#: src/blocks/form-field/edit.js:275
+msgid "Example: Option 1|value1"
+msgstr ""
+
+#: src/blocks/form-field/edit.js:281
+msgid "File Settings"
+msgstr ""
+
+#: src/blocks/form-field/edit.js:283
+msgid "Accept"
+msgstr ""
+
+#: src/blocks/form-field/edit.js:286
+msgid "File types: .pdf,.doc,.docx or image/*"
+msgstr ""
+
+#: src/blocks/form-field/edit.js:289
+msgid "Multiple Files"
+msgstr ""
+
+#: src/blocks/form-field/edit.js:296
+msgid "Layout"
+msgstr ""
+
+#: src/blocks/form-field/edit.js:298
+msgid "Field Width"
+msgstr ""
+
+#: src/blocks/form-field/edit.js:313
+msgid "Advanced"
+msgstr ""
+
+#: src/blocks/form-field/edit.js:315
+msgid "Default Value"
+msgstr ""
+
+#: src/blocks/form-field/edit.js:320
+msgid "Help Text"
+msgstr ""
+
+#: src/blocks/form-field/edit.js:323
+msgid "Additional help text below the field"
+msgstr ""
+
+#: src/blocks/form-field/block.json:5
+msgid "Form Field"
+msgstr ""
+
+#: src/blocks/form-field/block.json:8
+msgid "Add form field (text, email, textarea, etc.)"
+msgstr ""

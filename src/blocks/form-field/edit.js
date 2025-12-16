@@ -49,6 +49,7 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 		{ label: __('Time', 'codeweber-blocks'), value: 'time' },
 		{ label: __('Number', 'codeweber-blocks'), value: 'number' },
 		{ label: __('Hidden', 'codeweber-blocks'), value: 'hidden' },
+		{ label: __('Consents block', 'codeweber-blocks'), value: 'consents_block' },
 	];
 
 	// Bootstrap grid классы
@@ -160,6 +161,15 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 				return (
 					<div className="text-muted small">
 						{__('Hidden Field', 'codeweber-blocks')}: {fieldName || 'field_name'}
+					</div>
+				);
+			
+			case 'consents_block':
+				return (
+					<div className="text-muted small p-3 border rounded bg-light">
+						<strong>{__('Consents Block', 'codeweber-blocks')}</strong>
+						<br />
+						<small>{__('This field outputs consents configured below the form.', 'codeweber-blocks')}</small>
 					</div>
 				);
 			

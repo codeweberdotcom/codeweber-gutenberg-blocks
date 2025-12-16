@@ -16,7 +16,11 @@ export default function Save({ attributes }) {
 		submitButtonClass,
 	} = attributes;
 
-	const formIdAttr = formId || `form_${Date.now()}`;
+	// Используем стабильный ID: если formId задан - используем его
+	// Если не задан, используем стабильный идентификатор на основе formName
+	// Это предотвращает генерацию случайного ID при каждом сохранении
+	// В CPT формах formId должен быть всегда задан (ID поста)
+	const formIdAttr = formId || (formName ? `form-${formName.toLowerCase().replace(/\s+/g, '-')}` : 'form-block');
 	const blockProps = useBlockProps.save({
 		className: 'codeweber-form-wrapper',
 	});

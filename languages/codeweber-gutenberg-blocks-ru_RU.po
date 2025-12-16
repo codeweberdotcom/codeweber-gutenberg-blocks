@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Codeweber Gutenberg Blocks\n"
 "POT-Creation-Date: 2025-12-04T14:31:54Z\n"
-"PO-Revision-Date: 2025-12-11 09:08+0000\n"
+"PO-Revision-Date: 2025-12-16 08:27+0000\n"
 "Last-Translator: Codeweber\n"
 "Language-Team: Русский\n"
 "Language: ru_RU\n"
@@ -2533,3 +2533,99 @@ msgstr "Gap сетки"
 #: src/blocks/post-grid/controls/LayoutControl.js
 msgid "Number of columns at each breakpoint"
 msgstr "Количество колонок на каждой точке останова"
+
+#: src/blocks/form/edit.js:69
+msgid "Form Settings"
+msgstr "Настройки формы"
+
+#: src/blocks/form/edit.js:71
+msgid "Form Name"
+msgstr "Название формы"
+
+#: src/blocks/form/edit.js:76
+msgid "Form ID"
+msgstr "ID формы"
+
+#: src/blocks/form/edit.js:79
+msgid "Leave empty to auto-generate"
+msgstr "Оставьте пустым для автоматической генерации"
+
+#: src/blocks/form/edit.js:83
+msgid "Email Settings"
+msgstr "Настройки электронной почты"
+
+#: src/blocks/form/edit.js:85
+msgid "Recipient Email"
+msgstr "Email получателя"
+
+#: src/blocks/form/edit.js:89
+msgid "Email address to receive form submissions"
+msgstr "Адрес электронной почты для получения отправленных форм"
+
+#: src/blocks/form/edit.js:92
+msgid "Sender Email"
+msgstr "Email отправителя"
+
+#: src/blocks/form/edit.js:98
+msgid "Sender Name"
+msgstr "Имя отправителя"
+
+#: src/blocks/form/edit.js:103
+msgid "Email Subject"
+msgstr "Тема письма"
+
+#: src/blocks/form/edit.js:109
+msgid "Messages"
+msgstr "Сообщения"
+
+#: src/blocks/form/edit.js:111
+msgid "Success Message"
+msgstr "Сообщение об успехе"
+
+#: src/blocks/form/edit.js:116
+msgid "Error Message"
+msgstr "Сообщение об ошибке"
+
+#: src/blocks/form/edit.js:122
+msgid "Security"
+msgstr "Безопасность"
+
+#: src/blocks/form/edit.js:124
+msgid "Enable Captcha"
+msgstr "Включить капчу"
+
+#: src/blocks/form/edit.js:130
+msgid "Captcha Type"
+msgstr "Тип капчи"
+
+#: src/blocks/form/edit.js:133
+msgid "Honeypot"
+msgstr "Honeypot"
+
+#: src/blocks/form/edit.js:139
+msgid "Enable Rate Limiting"
+msgstr "Включить ограничение частоты"
+
+#: src/blocks/form/edit.js:146
+msgid "Max Submissions"
+msgstr "Максимум отправок"
+
+#: src/blocks/form/edit.js:152
+msgid "Time Period (seconds)"
+msgstr "Временной период (секунды)"
+
+#: src/blocks/form/edit.js:161
+msgid "Submit Button"
+msgstr "Кнопка отправки"
+
+#: src/blocks/form/edit.js:171
+msgid "Bootstrap classes: btn btn-primary"
+msgstr "Классы Bootstrap: btn btn-primary"
+
+#: src/blocks/form/edit.js:178
+msgid "Contact Form"
+msgstr "Контактная форма"
+
+#: src/blocks/form/render.php:190
+msgid "Forms module is not active."
+msgstr "Модуль форм не активен."

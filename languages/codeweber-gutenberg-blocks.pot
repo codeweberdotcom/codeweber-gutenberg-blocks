@@ -1598,3 +1598,119 @@ msgstr ""
 #: src/utilities/link_type.js:992
 msgid "Select Modal"
 msgstr ""
+
+#: src/blocks/form/edit.js:69
+msgid "Form Settings"
+msgstr ""
+
+#: src/blocks/form/edit.js:71
+msgid "Form Name"
+msgstr ""
+
+#: src/blocks/form/edit.js:76
+msgid "Form ID"
+msgstr ""
+
+#: src/blocks/form/edit.js:79
+msgid "Leave empty to auto-generate"
+msgstr ""
+
+#: src/blocks/form/edit.js:83
+msgid "Email Settings"
+msgstr ""
+
+#: src/blocks/form/edit.js:85
+msgid "Recipient Email"
+msgstr ""
+
+#: src/blocks/form/edit.js:89
+msgid "Email address to receive form submissions"
+msgstr ""
+
+#: src/blocks/form/edit.js:92
+msgid "Sender Email"
+msgstr ""
+
+#: src/blocks/form/edit.js:98
+msgid "Sender Name"
+msgstr ""
+
+#: src/blocks/form/edit.js:103
+msgid "Email Subject"
+msgstr ""
+
+#: src/blocks/form/edit.js:109
+msgid "Messages"
+msgstr ""
+
+#: src/blocks/form/edit.js:111
+msgid "Success Message"
+msgstr ""
+
+#: src/blocks/form/edit.js:116
+msgid "Error Message"
+msgstr ""
+
+#: src/blocks/form/edit.js:122
+msgid "Security"
+msgstr ""
+
+#: src/blocks/form/edit.js:124
+msgid "Enable Captcha"
+msgstr ""
+
+#: src/blocks/form/edit.js:130
+msgid "Captcha Type"
+msgstr ""
+
+#: src/blocks/form/edit.js:133
+msgid "Honeypot"
+msgstr ""
+
+#: src/blocks/form/edit.js:139
+msgid "Enable Rate Limiting"
+msgstr ""
+
+#: src/blocks/form/edit.js:146
+msgid "Max Submissions"
+msgstr ""
+
+#: src/blocks/form/edit.js:152
+msgid "Time Period (seconds)"
+msgstr ""
+
+#: src/blocks/form/edit.js:161
+msgid "Submit Button"
+msgstr ""
+
+#: src/blocks/form/edit.js:163
+msgid "Button Text"
+msgstr ""
+
+#: src/blocks/form/edit.js:168
+msgid "Button Classes"
+msgstr ""
+
+#: src/blocks/form/edit.js:171
+msgid "Bootstrap classes: btn btn-primary"
+msgstr ""
+
+#: src/blocks/form/edit.js:178
+msgid "Contact Form"
+msgstr ""
+
+#: src/blocks/form/edit.js:186
+msgid "Name"
+msgstr ""
+
+#: src/blocks/form/edit.js:192
+msgid "Email"
+msgstr ""
+
+#: src/blocks/form/edit.js:198
+msgid "Message"
+msgstr ""
+
+#: src/blocks/form/render.php:190
+msgid "Forms module is not active."
+msgstr ""

@@ -187,6 +187,6 @@ if (class_exists('CodeweberFormsRenderer')) {
     $renderer = new CodeweberFormsRenderer();
     echo $renderer->render($form_id ?: uniqid('form_'), $form_config);
 } else {
-    echo '<p>' . __('Forms module is not active.', 'codeweber-blocks') . '</p>';
+    echo '<p>' . __('Forms module is not active.', 'codeweber-gutenberg-blocks') . '</p>';
 }
 

@@ -1865,6 +1865,78 @@
       ],
       "Number of columns at each breakpoint": [
         "Количество колонок на каждой точке останова"
+      ],
+      "Form Settings": [
+        "Настройки формы"
+      ],
+      "Form Name": [
+        "Название формы"
+      ],
+      "Form ID": [
+        "ID формы"
+      ],
+      "Leave empty to auto-generate": [
+        "Оставьте пустым для автоматической генерации"
+      ],
+      "Email Settings": [
+        "Настройки электронной почты"
+      ],
+      "Recipient Email": [
+        "Email получателя"
+      ],
+      "Email address to receive form submissions": [
+        "Адрес электронной почты для получения отправленных форм"
+      ],
+      "Sender Email": [
+        "Email отправителя"
+      ],
+      "Sender Name": [
+        "Имя отправителя"
+      ],
+      "Email Subject": [
+        "Тема письма"
+      ],
+      "Messages": [
+        "Сообщения"
+      ],
+      "Success Message": [
+        "Сообщение об успехе"
+      ],
+      "Error Message": [
+        "Сообщение об ошибке"
+      ],
+      "Security": [
+        "Безопасность"
+      ],
+      "Enable Captcha": [
+        "Включить капчу"
+      ],
+      "Captcha Type": [
+        "Тип капчи"
+      ],
+      "Honeypot": [
+        "Honeypot"
+      ],
+      "Enable Rate Limiting": [
+        "Включить ограничение частоты"
+      ],
+      "Max Submissions": [
+        "Максимум отправок"
+      ],
+      "Time Period (seconds)": [
+        "Временной период (секунды)"
+      ],
+      "Submit Button": [
+        "Кнопка отправки"
+      ],
+      "Bootstrap classes: btn btn-primary": [
+        "Классы Bootstrap: btn btn-primary"
+      ],
+      "Contact Form": [
+        "Контактная форма"
+      ],
+      "Forms module is not active.": [
+        "Модуль форм не активен."
       ]
     }
   }

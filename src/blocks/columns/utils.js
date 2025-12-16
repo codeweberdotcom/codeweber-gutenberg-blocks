@@ -21,6 +21,10 @@ export const normalizeColumnsData = (value = '') => {
 
 export const getColumnsClassNames = (attrs = {}, mode = 'save') => {
 	const classes = [];
+	// Добавляем класс для редактора (нужен для CSS стилей)
+	if (mode === 'edit') {
+		classes.push('naviddev-columns');
+	}
 	const {
 		columnsType,
 		columnsClass,
@@ -74,5 +78,3 @@ export const getColumnsClassNames = (attrs = {}, mode = 'save') => {
 
 	return classes.filter(Boolean).join(' ');
 };
-
-

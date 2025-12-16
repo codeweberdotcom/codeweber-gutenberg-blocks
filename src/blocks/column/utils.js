@@ -86,8 +86,12 @@ export const getColumnStyles = (attrs = {}) => {
 	return undefined;
 };
 
-export const getColumnClassNames = (attrs = {}) => {
+export const getColumnClassNames = (attrs = {}, mode = 'save') => {
 	const classes = [];
+	// Добавляем класс для редактора (нужен для CSS стилей)
+	if (mode === 'edit') {
+		classes.push('naviddev-column');
+	}
 	const {
 		columnClass,
 		columnAlignItems,
@@ -130,13 +134,25 @@ export const getAdaptiveClasses = (attrs = {}) => {
 		columnColXxl,
 	} = attrs;
 
-	// "" (None) = 'col' (растягивается)
+	// "" (None) = 'col' (растягивается) - только в режиме Columns Grid
 	// "auto" = 'col-auto' (по контенту)
 	// "3" = 'col-3' (фиксированная ширина)
 
+	// Проверяем, есть ли хотя бы один непустой breakpoint кроме Xs
+	// Если есть - это Classic Grid, и класс 'col' не должен добавляться
+	const hasClassicGridBreakpoint =
+		(columnColSm !== undefined && columnColSm !== null && columnColSm !== '') ||
+		(columnColMd !== undefined && columnColMd !== null && columnColMd !== '') ||
+		(columnColLg !== undefined && columnColLg !== null && columnColLg !== '') ||
+		(columnColXl !== undefined && columnColXl !== null && columnColXl !== '') ||
+		(columnColXxl !== undefined && columnColXxl !== null && columnColXxl !== '');
+
 	if (columnColXs !== undefined && columnColXs !== null) {
 		if (columnColXs === '') {
-			classes.push('col');
+			// Добавляем класс 'col' только если это НЕ Classic Grid (т.е. Columns Grid режим)
+			if (!hasClassicGridBreakpoint) {
+				classes.push('col');
+			}
 		} else if (columnColXs === 'auto') {
 			classes.push('col-auto');
 		} else {
@@ -192,5 +208,3 @@ export const getSpacingClasses = (attrs = {}) => {
 
 	return classes;
 };
-
-

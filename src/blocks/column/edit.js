@@ -51,7 +51,7 @@ const ColumnEdit = ({ attributes, setAttributes }) => {
 	} = attributes;
 
 	const blockProps = useBlockProps({
-		className: getColumnClassNames(attributes),
+		className: getColumnClassNames(attributes, 'edit'),
 		id: normalizeColumnId(columnId) || undefined,
 	});
 
@@ -163,5 +163,3 @@ const ColumnEdit = ({ attributes, setAttributes }) => {
 };
 
 export default ColumnEdit;
-
-

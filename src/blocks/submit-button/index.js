@@ -1,11 +1,12 @@
 /**
  * Submit Button Block
- * 
+ *
  * @package CodeWeber Gutenberg Blocks
  */
 
 import { registerBlockType } from '@wordpress/blocks';
 import { addFilter } from '@wordpress/hooks';
+import { select } from '@wordpress/data';
 import './style.scss';
 import './editor.scss';
 
@@ -19,7 +20,17 @@ registerBlockType(metadata.name, {
 	save: Save,
 });
 
-// Ensure the block is visible in the inserter when inside a form
+// Check if current post type is codeweber_form
+const isFormCPT = () => {
+	try {
+		const postType = select('core/editor')?.getCurrentPostType();
+		return postType === 'codeweber_form';
+	} catch (e) {
+		return false;
+	}
+};
+
+// Ensure the block is visible in the inserter only when inside codeweber_form CPT
 // Use getBlockType filter to dynamically modify block settings
 addFilter(
 	'blocks.getBlockType',
@@ -30,7 +41,7 @@ addFilter(
 				...blockType,
 				supports: {
 					...blockType.supports,
-					inserter: true,
+					inserter: isFormCPT(),
 				},
 			};
 		}
@@ -48,7 +59,7 @@ addFilter(
 				...settings,
 				supports: {
 					...settings.supports,
-					inserter: true,
+					inserter: isFormCPT(),
 				},
 			};
 		}

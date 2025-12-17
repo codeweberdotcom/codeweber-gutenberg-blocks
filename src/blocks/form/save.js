@@ -12,7 +12,6 @@ import { getGapClasses } from '../../components/grid-control';
 export default function Save({ attributes }) {
 	const {
 		formId,
-		formName,
 		formType,
 		blockClass,
 		blockData,
@@ -20,10 +19,8 @@ export default function Save({ attributes }) {
 	} = attributes;
 
 	// Используем стабильный ID: если formId задан - используем его
-	// Если не задан, используем стабильный идентификатор на основе formName
-	// Это предотвращает генерацию случайного ID при каждом сохранении
 	// В CPT формах formId должен быть всегда задан (ID поста)
-	const formIdAttr = formId || (formName ? `form-${formName.toLowerCase().replace(/\s+/g, '-')}` : 'form-block');
+	const formIdAttr = formId || 'form-block';
 	const blockProps = useBlockProps.save({
 		className: 'codeweber-form-wrapper',
 	});

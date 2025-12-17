@@ -72,13 +72,19 @@ if ($field_type === 'newsletter') {
     $button_text_display = !empty($button_text) ? $button_text : __('Join', 'codeweber');
     $button_class_final = trim($button_class . ' ' . $button_radius_class);
 
+    // Для newsletter типа: если стиль кнопки rounded-pill, применяем его к input полю
+    $input_radius_class = $form_radius_class;
+    if (strpos($button_radius_class, 'rounded-pill') !== false) {
+        $input_radius_class = ' rounded-pill';
+    }
+
     ob_start();
     ?>
     <div class="<?php echo esc_attr($width_classes); ?>">
         <div class="input-group form-floating">
             <input
                 type="email"
-                class="form-control required email <?php echo esc_attr($form_radius_class); ?>"
+                class="form-control required email <?php echo esc_attr($input_radius_class); ?>"
                 id="<?php echo esc_attr($field_id); ?>"
                 name="<?php echo esc_attr($field_name_value); ?>"
                 placeholder="<?php echo esc_attr($field_placeholder_display); ?>"

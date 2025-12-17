@@ -15,7 +15,6 @@ if (!defined('ABSPATH')) {
 
 // Получаем атрибуты
 $form_id = isset($attributes['formId']) ? $attributes['formId'] : '';
-$form_name = isset($attributes['formName']) ? $attributes['formName'] : 'Contact Form';
 
 // Если formId - это ID поста CPT, используем его
 if (!empty($form_id) && is_numeric($form_id)) {

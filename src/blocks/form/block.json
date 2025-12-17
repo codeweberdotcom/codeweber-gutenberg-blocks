@@ -17,10 +17,6 @@
             "type": "string",
             "default": ""
         },
-        "formName": {
-            "type": "string",
-            "default": "Contact Form"
-        },
         "recipientEmail": {
             "type": "string",
             "default": ""

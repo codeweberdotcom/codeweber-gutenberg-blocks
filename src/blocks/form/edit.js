@@ -32,7 +32,6 @@ const TabIcon = ({ icon, label }) => (
 const FormEdit = ({ attributes, setAttributes, clientId }) => {
 	const {
 		formId,
-		formName,
 		formType,
 		recipientEmail,
 		senderEmail,
@@ -142,11 +141,6 @@ const FormEdit = ({ attributes, setAttributes, clientId }) => {
 										]}
 										onChange={(value) => setAttributes({ formType: value })}
 										help={__('Select the type of form. This determines how the form is processed.', 'codeweber-gutenberg-blocks')}
-									/>
-									<TextControl
-										label={__('Form Name', 'codeweber-gutenberg-blocks')}
-										value={formName}
-										onChange={(value) => setAttributes({ formName: value })}
 									/>
 									<TextControl
 										label={__('Form ID', 'codeweber-gutenberg-blocks')}
@@ -302,7 +296,7 @@ const FormEdit = ({ attributes, setAttributes, clientId }) => {
 
 			<div {...blockProps}>
 				<div className="form-preview">
-					<h4>{formName || __('Contact Form', 'codeweber-gutenberg-blocks')}</h4>
+					<h4>{__('Contact Form', 'codeweber-gutenberg-blocks')}</h4>
 					{(() => {
 						const gapClasses = getGapClasses(attributes, 'form');
 						const rowClasses = ['row', ...gapClasses].filter(Boolean);

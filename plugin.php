@@ -51,13 +51,13 @@ add_action('init', __NAMESPACE__ . '\Plugin::init', 20);
 require_once plugin_dir_path(__FILE__) . 'settings/options_page/restapi.php';
 
 // Загрузка переводов для JavaScript
-add_action('init', function() {
+	add_action('init', function() {
 	$blocks = [
-		'accordion', 'button', 'card', 'column', 'columns', 'feature', 
+		'accordion', 'banner', 'button', 'card', 'column', 'columns', 'feature',
 		'heading-subtitle', 'icon', 'image-simple', 'paragraph', 'section',
 		'label-plus'
 	];
-	
+
 	foreach ($blocks as $block) {
 		$handle = 'codeweber-blocks-' . $block . '-editor-script';
 		wp_set_script_translations(
@@ -71,7 +71,7 @@ add_action('init', function() {
 // Настройка Loco Translate
 add_filter('loco_plugins_data', function($data) {
 	$plugin_file = plugin_basename(__FILE__);
-	
+
 	// Регистрируем наш плагин в Loco
 	if (!isset($data[$plugin_file])) {
 		$data[$plugin_file] = [
@@ -80,7 +80,7 @@ add_filter('loco_plugins_data', function($data) {
 			'DomainPath' => '/languages',
 		];
 	}
-	
+
 	return $data;
 });
 

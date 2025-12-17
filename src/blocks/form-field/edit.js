@@ -27,6 +27,7 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 		fieldLabel,
 		placeholder,
 		isRequired,
+		showForGuestsOnly,
 		maxLength,
 		minLength,
 		width,
@@ -266,6 +267,9 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 		{ label: __('Number', 'codeweber-gutenberg-blocks'), value: 'number' },
 		{ label: __('Hidden', 'codeweber-gutenberg-blocks'), value: 'hidden' },
 		{ label: __('Consents block', 'codeweber-gutenberg-blocks'), value: 'consents_block' },
+		{ label: __('Rating', 'codeweber-gutenberg-blocks'), value: 'rating' },
+		{ label: __('Author Role (Position)', 'codeweber-gutenberg-blocks'), value: 'author_role' },
+		{ label: __('Company', 'codeweber-gutenberg-blocks'), value: 'company' },
 	];
 
 	// Bootstrap grid классы
@@ -352,6 +356,41 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 								</label>
 							</div>
 						)}
+					</div>
+				);
+
+			case 'rating':
+				return (
+					<div className="testimonial-rating-selector">
+						<label className="form-label d-block mb-3">
+							{fieldLabel || __('Rating', 'codeweber-gutenberg-blocks')}
+							{isRequired && <span className="text-danger"> *</span>}
+						</label>
+						<div className="rating-stars-wrapper d-flex gap-1 align-items-center" style={{ fontSize: '1.25rem', padding: '0.5rem' }}>
+							{['★', '★', '★', '★', '★'].map((star, idx) => (
+								<span key={idx} style={{ color: '#fcc032', cursor: 'pointer' }}>{star}</span>
+							))}
+						</div>
+					</div>
+				);
+
+			case 'author_role':
+			case 'company':
+				// Эти типы рендерятся как обычные text поля
+				return (
+					<div className="form-floating">
+						<input
+							type="text"
+							className="form-control"
+							id={fieldId}
+							placeholder={placeholder || fieldLabel}
+							defaultValue={defaultValue}
+							disabled
+						/>
+						<label htmlFor={fieldId}>
+							{fieldLabel || (fieldType === 'author_role' ? __('Your Position', 'codeweber-gutenberg-blocks') : __('Company', 'codeweber-gutenberg-blocks'))}
+							{isRequired && <span className="text-danger"> *</span>}
+						</label>
 					</div>
 				);
 
@@ -559,7 +598,21 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 											label={__('Field Type', 'codeweber-gutenberg-blocks')}
 											value={fieldType}
 											options={fieldTypes}
-											onChange={(value) => setAttributes({ fieldType: value })}
+											onChange={(value) => {
+												const newAttributes = { fieldType: value };
+												// Автоматически устанавливаем fieldName и fieldLabel для специальных типов
+												if (value === 'author_role') {
+													newAttributes.fieldName = 'role'; // fieldType = 'author_role', но fieldName = 'role'
+													newAttributes.fieldLabel = newAttributes.fieldLabel || __('Your Position', 'codeweber-gutenberg-blocks');
+												} else if (value === 'company') {
+													newAttributes.fieldName = 'company';
+													newAttributes.fieldLabel = newAttributes.fieldLabel || __('Company', 'codeweber-gutenberg-blocks');
+												} else if (value === 'rating') {
+													newAttributes.fieldName = newAttributes.fieldName || 'rating';
+													newAttributes.fieldLabel = newAttributes.fieldLabel || __('Rating', 'codeweber-gutenberg-blocks');
+												}
+												setAttributes(newAttributes);
+											}}
 										/>
 										<TextControl
 											label={__('Field Name', 'codeweber-gutenberg-blocks')}
@@ -584,6 +637,12 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 											label={__('Required Field', 'codeweber-gutenberg-blocks')}
 											checked={isRequired}
 											onChange={(value) => setAttributes({ isRequired: value })}
+										/>
+										<ToggleControl
+											label={__('Show for guests only', 'codeweber-gutenberg-blocks')}
+											checked={showForGuestsOnly || false}
+											onChange={(value) => setAttributes({ showForGuestsOnly: value })}
+											help={__('Field will be shown only for non-logged-in users (guests)', 'codeweber-gutenberg-blocks')}
 										/>
 										{fieldType === 'newsletter' && (
 											<>

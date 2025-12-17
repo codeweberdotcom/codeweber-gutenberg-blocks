@@ -120,6 +120,10 @@
         "buttonClass": {
             "type": "string",
             "default": "btn btn-primary"
+        },
+        "showForGuestsOnly": {
+            "type": "boolean",
+            "default": false
         }
     },
     "textdomain": "codeweber-blocks",

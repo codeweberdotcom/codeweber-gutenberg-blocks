@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Codeweber Gutenberg Blocks\n"
 "POT-Creation-Date: 2025-12-04T14:31:54Z\n"
-"PO-Revision-Date: 2025-12-16 11:26+0000\n"
-"Last-Translator: Codeweber\n"
+"PO-Revision-Date: 2025-12-17 20:11+0000\n"
+"Last-Translator: \n"
 "Language-Team: Русский\n"
 "Language: ru_RU\n"
 "MIME-Version: 1.0\n"
@@ -2547,8 +2547,12 @@ msgid "Form ID"
 msgstr "ID формы"
 
 #: src/blocks/form/edit.js:98
-msgid "Form ID is assigned automatically from the CPT Form ID and cannot be changed here."
-msgstr "ID формы автоматически присваивается из ID записи CPT Форма и не может быть изменен здесь."
+msgid ""
+"Form ID is assigned automatically from the CPT Form ID and cannot be changed "
+"here."
+msgstr ""
+"ID формы автоматически присваивается из ID записи CPT Форма и не может быть "
+"изменен здесь."
 
 #: src/blocks/form/edit.js:144
 msgid "Form Type"
@@ -2824,7 +2828,8 @@ msgstr "Дополнительный текст подсказки под пол
 
 #: src/blocks/form-field/edit.js:100
 msgid "Replace existing label text with default text for this document?"
-msgstr "Заменить существующий текст метки на текст по умолчанию для этого документа?"
+msgstr ""
+"Заменить существующий текст метки на текст по умолчанию для этого документа?"
 
 #: src/blocks/form-field/edit.js:144
 msgid "I agree to the {document_title_url}"
@@ -2835,8 +2840,12 @@ msgid "Consents"
 msgstr "Согласия"
 
 #: src/blocks/form-field/edit.js:332
-msgid "Add consent checkboxes to your form. Each consent can have a custom label with placeholders for document links."
-msgstr "Добавьте чекбоксы согласия в вашу форму. Каждое согласие может иметь пользовательскую метку с плейсхолдерами для ссылок на документы."
+msgid ""
+"Add consent checkboxes to your form. Each consent can have a custom label "
+"with placeholders for document links."
+msgstr ""
+"Добавьте чекбоксы согласия в вашу форму. Каждое согласие может иметь "
+"пользовательскую метку с плейсхолдерами для ссылок на документы."
 
 #: src/blocks/form-field/edit.js:338
 msgid "Consent"
@@ -2851,8 +2860,12 @@ msgid "I agree to the {document_title}"
 msgstr "Я согласен с {document_title}"
 
 #: src/blocks/form-field/edit.js:346
-msgid "You can use placeholders: {document_url}, {document_title}, {document_title_url}, {form_id}"
-msgstr "Вы можете использовать плейсхолдеры: {document_url}, {document_title}, {document_title_url}, {form_id}"
+msgid ""
+"You can use placeholders: {document_url}, {document_title}, "
+"{document_title_url}, {form_id}"
+msgstr ""
+"Вы можете использовать плейсхолдеры: {document_url}, {document_title}, "
+"{document_title_url}, {form_id}"
 
 #: src/blocks/form-field/edit.js:353
 msgid "— Select —"
@@ -2873,3 +2886,28 @@ msgstr "Поле формы"
 #: src/blocks/form-field/block.json:8
 msgid "Add form field (text, email, textarea, etc.)"
 msgstr "Добавить поле формы (текст, email, текстовая область и т.д.)"
+
+#: src/blocks/form-field/edit.js:257
+msgid "Newsletter Email"
+msgstr "Email для рассылки"
+
+#: src/blocks/form-field/edit.js:270
+msgid "Rating"
+msgstr "Рейтинг"
+
+#: src/blocks/form-field/edit.js:271
+msgid "Author Role (Position)"
+msgstr "Роль автора (Должность)"
+
+#: src/blocks/form-field/edit.js:391 src/blocks/form-field/edit.js:606
+msgid "Your Position"
+msgstr "Ваша должность"
+
+#: src/blocks/form-field/edit.js:642
+msgid "Show for guests only"
+msgstr "Показывать только гостям"
+
+#: src/blocks/form-field/edit.js:645
+msgid "Field will be shown only for non-logged-in users (guests)"
+msgstr ""
+"Поле будет отображаться только для неавторизованных пользователей (гостей)"

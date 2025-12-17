@@ -110,6 +110,45 @@ if ($field_type === 'newsletter') {
     return;
 }
 
+// For rating type, we need to render it server-side
+if ($field_type === 'rating' && function_exists('codeweber_testimonial_rating_stars')) {
+    // Get form ID from context or parent block
+    $form_id = 0;
+    if (isset($context['codeweber/formId'])) {
+        $form_id = intval($context['codeweber/formId']);
+    } elseif (isset($block->context['codeweber/formId'])) {
+        $form_id = intval($block->context['codeweber/formId']);
+    } else {
+        // Try to get from current post
+        global $post;
+        if ($post && $post->post_type === 'codeweber_form') {
+            $form_id = $post->ID;
+        }
+    }
+
+    // Get width classes
+    $width_classes = 'col-12';
+    if (!empty($attributes['fieldColumns'])) {
+        $width_classes = 'col-' . esc_attr($attributes['fieldColumns']);
+    } elseif (!empty($attributes['width'])) {
+        $width_classes = esc_attr($attributes['width']);
+    }
+
+    $field_name_rating = !empty($field_name) ? $field_name : 'rating';
+    $field_id_rating = 'field-' . $field_name_rating;
+    $field_label_rating = !empty($field_label) ? $field_label : __('Rating', 'codeweber');
+    $is_required_rating = !empty($attributes['isRequired']);
+
+    ob_start();
+    ?>
+    <div class="<?php echo esc_attr($width_classes); ?>">
+        <?php echo codeweber_testimonial_rating_stars(0, $field_name_rating, $field_id_rating, $is_required_rating); ?>
+    </div>
+    <?php
+    echo ob_get_clean();
+    return;
+}
+
 // For consents_block, we need to render it server-side
 if ($field_type === 'consents_block' && !empty($consents) && function_exists('codeweber_forms_render_consent_checkbox')) {
     // Get form ID from context or parent block
@@ -134,6 +173,24 @@ if ($field_type === 'consents_block' && !empty($consents) && function_exists('co
         $width_classes = esc_attr($attributes['width']);
     }
 
+    // Определяем префикс для согласий на основе типа формы
+    $consents_prefix = 'newsletter_consents'; // По умолчанию
+    if ($form_id > 0) {
+        // Пробуем получить тип формы через CodeweberFormsCore или через мета-данные
+        if (function_exists('CodeweberFormsCore')) {
+            $form_type_for_consents = CodeweberFormsCore::get_form_type($form_id, []);
+            if ($form_type_for_consents === 'testimonial') {
+                $consents_prefix = 'testimonial_consents';
+            }
+        } else {
+            // Fallback: проверяем мета-данные напрямую
+            $form_type_meta = get_post_meta($form_id, '_form_type', true);
+            if ($form_type_meta === 'testimonial') {
+                $consents_prefix = 'testimonial_consents';
+            }
+        }
+    }
+
     ob_start();
     ?>
     <div class="<?php echo esc_attr($width_classes); ?>">
@@ -144,10 +201,10 @@ if ($field_type === 'consents_block' && !empty($consents) && function_exists('co
                 if (empty($consent['label']) || empty($consent['document_id'])) {
                     continue;
                 }
-                // Render consent checkbox
+                // Render consent checkbox with appropriate prefix
                 echo codeweber_forms_render_consent_checkbox(
                     $consent,
-                    'newsletter_consents', // name of the array already processed in universal logic
+                    $consents_prefix, // Используем правильный префикс в зависимости от типа формы
                     $form_id
                 );
             }

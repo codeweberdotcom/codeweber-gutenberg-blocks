@@ -2,6 +2,7 @@ import {
 	useBlockProps,
 	InspectorControls,
 	InnerBlocks,
+	store as blockEditorStore,
 } from '@wordpress/block-editor';
 import {
 	PanelBody,
@@ -13,7 +14,7 @@ import {
 } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { useEffect, useRef } from '@wordpress/element';
-import { useSelect } from '@wordpress/data';
+import { useSelect, useDispatch } from '@wordpress/data';
 import { Icon, cog, inbox, comment, shield, justifySpaceBetween, positionCenter } from '@wordpress/icons';
 import { BlockMetaFields } from '../../components/block-meta/BlockMetaFields';
 import { GridControl, getGapClasses } from '../../components/grid-control';
@@ -85,6 +86,101 @@ const FormEdit = ({ attributes, setAttributes, clientId }) => {
 	const innerBlocks = useSelect((select) => {
 		return select('core/block-editor').getBlocks(clientId);
 	}, [clientId]);
+
+	// Для замены innerBlocks при применении шаблона
+	const { replaceInnerBlocks } = useDispatch(blockEditorStore);
+
+	// Функция для получения шаблона блоков
+	const getTemplateBlocks = () => {
+		if (formType === 'testimonial') {
+			return [
+				['codeweber-blocks/form-field', {
+					fieldType: 'textarea',
+					fieldName: 'testimonial_text',
+					fieldLabel: __('Your Review', 'codeweber-gutenberg-blocks'),
+					isRequired: true,
+				}],
+				['codeweber-blocks/form-field', {
+					fieldType: 'rating',
+					fieldName: 'rating',
+					fieldLabel: __('Rating', 'codeweber-gutenberg-blocks'),
+					isRequired: true,
+				}],
+				['codeweber-blocks/form-field', {
+					fieldType: 'text',
+					fieldName: 'name',
+					fieldLabel: __('Your Name', 'codeweber-gutenberg-blocks'),
+					isRequired: true,
+					showForGuestsOnly: true,
+				}],
+				['codeweber-blocks/form-field', {
+					fieldType: 'email',
+					fieldName: 'author_email',
+					fieldLabel: __('Your Email', 'codeweber-gutenberg-blocks'),
+					isRequired: true,
+					showForGuestsOnly: true,
+				}],
+				['codeweber-blocks/form-field', {
+					fieldType: 'author_role',
+					fieldName: 'role',
+					fieldLabel: __('Your Position', 'codeweber-gutenberg-blocks'),
+				}],
+				['codeweber-blocks/form-field', {
+					fieldType: 'text',
+					fieldName: 'company',
+					fieldLabel: __('Company', 'codeweber-gutenberg-blocks'),
+				}],
+				['codeweber-blocks/form-field', {
+					fieldType: 'consents_block',
+					width: 'col-12',
+				}],
+				['codeweber-blocks/submit-button', {
+					buttonText: __('Submit Review', 'codeweber-gutenberg-blocks'),
+					buttonClass: 'btn btn-primary',
+				}],
+			];
+		}
+
+		// Дефолтный шаблон для обычных форм
+		return [
+			['codeweber-blocks/form-field', {
+				fieldType: 'text',
+				fieldName: 'name',
+				fieldLabel: __('Name', 'codeweber-gutenberg-blocks'),
+				isRequired: true,
+			}],
+			['codeweber-blocks/form-field', {
+				fieldType: 'email',
+				fieldName: 'email',
+				fieldLabel: __('Email', 'codeweber-gutenberg-blocks'),
+				isRequired: true,
+			}],
+			['codeweber-blocks/form-field', {
+				fieldType: 'textarea',
+				fieldName: 'message',
+				fieldLabel: __('Message', 'codeweber-gutenberg-blocks'),
+				isRequired: true,
+			}],
+			['codeweber-blocks/form-field', {
+				fieldType: 'consents_block',
+				width: 'col-12',
+			}],
+			['codeweber-blocks/submit-button', {
+				buttonText: __('Send Message', 'codeweber-gutenberg-blocks'),
+				buttonClass: 'btn btn-primary',
+			}],
+		];
+	};
+
+	// Применяем шаблон при первом создании блока, если блоки пусты
+	const hasAppliedTemplateRef = useRef(false);
+	useEffect(() => {
+		if (innerBlocks.length === 0 && !hasAppliedTemplateRef.current) {
+			const template = getTemplateBlocks();
+			replaceInnerBlocks(clientId, template);
+			hasAppliedTemplateRef.current = true;
+		}
+	}, [innerBlocks.length, clientId, replaceInnerBlocks]);
 
 	// Сохраняем структуру полей в атрибуты при изменении innerBlocks
 	useEffect(() => {
@@ -296,7 +392,7 @@ const FormEdit = ({ attributes, setAttributes, clientId }) => {
 
 			<div {...blockProps}>
 				<div className="form-preview">
-					<h4>{__('Contact Form', 'codeweber-gutenberg-blocks')}</h4>
+					<h4>{formType === 'testimonial' ? __('Testimonial Form', 'codeweber-gutenberg-blocks') : __('Contact Form', 'codeweber-gutenberg-blocks')}</h4>
 					{(() => {
 						const gapClasses = getGapClasses(attributes, 'form');
 						const rowClasses = ['row', ...gapClasses].filter(Boolean);
@@ -319,41 +415,15 @@ const FormEdit = ({ attributes, setAttributes, clientId }) => {
 
 						const finalRowClassName = [rowClassName, ...alignmentClasses].filter(Boolean).join(' ');
 
-						return (
-							<div className={`form-fields-preview ${finalRowClassName}`}>
-								<InnerBlocks
-									allowedBlocks={['codeweber-blocks/form-field', 'codeweber-blocks/submit-button']}
-									template={[
-										['codeweber-blocks/form-field', {
-											fieldType: 'text',
-											fieldName: 'name',
-											fieldLabel: __('Name', 'codeweber-gutenberg-blocks'),
-											isRequired: true,
-										}],
-										['codeweber-blocks/form-field', {
-											fieldType: 'email',
-											fieldName: 'email',
-											fieldLabel: __('Email', 'codeweber-gutenberg-blocks'),
-											isRequired: true,
-										}],
-										['codeweber-blocks/form-field', {
-											fieldType: 'textarea',
-											fieldName: 'message',
-											fieldLabel: __('Message', 'codeweber-gutenberg-blocks'),
-											isRequired: true,
-										}],
-										['codeweber-blocks/form-field', {
-											fieldType: 'consents_block',
-											width: 'col-12',
-										}],
-										['codeweber-blocks/submit-button', {
-											buttonText: __('Send Message', 'codeweber-gutenberg-blocks'),
-											buttonClass: 'btn btn-primary',
-										}],
-									]}
-								/>
-							</div>
-						);
+					return (
+						<div className={`form-fields-preview ${finalRowClassName}`}>
+							<InnerBlocks
+								allowedBlocks={['codeweber-blocks/form-field', 'codeweber-blocks/submit-button']}
+								template={getTemplateBlocks()}
+								templateLock={false}
+							/>
+						</div>
+					);
 					})()}
 				</div>
 			</div>

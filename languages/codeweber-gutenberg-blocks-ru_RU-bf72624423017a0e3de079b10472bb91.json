@@ -2120,6 +2120,24 @@
       ],
       "Add form field (text, email, textarea, etc.)": [
         "Добавить поле формы (текст, email, текстовая область и т.д.)"
+      ],
+      "Newsletter Email": [
+        "Email для рассылки"
+      ],
+      "Rating": [
+        "Рейтинг"
+      ],
+      "Author Role (Position)": [
+        "Роль автора (Должность)"
+      ],
+      "Your Position": [
+        "Ваша должность"
+      ],
+      "Show for guests only": [
+        "Показывать только гостям"
+      ],
+      "Field will be shown only for non-logged-in users (guests)": [
+        "Поле будет отображаться только для неавторизованных пользователей (гостей)"
       ]
     }
   }

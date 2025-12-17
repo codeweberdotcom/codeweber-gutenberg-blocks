@@ -25,19 +25,19 @@ class Plugin {
 	public static function perInit(): void {
 		// block initialization
 		add_action('init',  __CLASS__ . '::gutenbergBlocksInit');
-		
+
 		// Enqueue global editor styles
 		add_action('enqueue_block_editor_assets', __CLASS__ . '::enqueueEditorGlobalStyles');
-		
+
 		// Enqueue frontend scripts
 		add_action('wp_enqueue_scripts', __CLASS__ . '::gutenbergBlocksExternalLibraries');
-		
+
 		// Фильтр для условного рендеринга аккордеона (перехватываем до рендеринга)
 		add_filter('pre_render_block', __CLASS__ . '::pre_render_accordion_block', 10, 2);
-		
+
 		// Фильтр для условного рендеринга списков (перехватываем до рендеринга)
 		add_filter('pre_render_block', __CLASS__ . '::pre_render_lists_block', 10, 2);
-		
+
 		// Фильтр для условного рендеринга аватара (перехватываем до рендеринга)
 		add_filter('pre_render_block', __CLASS__ . '::pre_render_avatar_block', 10, 2);
 	}
@@ -53,32 +53,32 @@ class Plugin {
 
 		// Register REST API endpoint for image sizes
 		add_action('rest_api_init', __CLASS__ . '::register_image_sizes_endpoint');
-		
+
 		// Register REST API endpoint for taxonomies and terms
 		add_action('rest_api_init', __CLASS__ . '::register_taxonomies_endpoint');
-		
+
 		// Register REST API endpoint for accordion posts (using WP_Query)
 		add_action('rest_api_init', __CLASS__ . '::register_accordion_posts_endpoint');
 
 		// Register REST API endpoint for theme style classes (button/card radius)
 		add_action('rest_api_init', [StyleAPI::class, 'register_routes']);
-		
+
 		// Load JavaScript translations after scripts are enqueued
 		add_action('enqueue_block_editor_assets', __CLASS__ . '::loadJSTranslations', 100);
 	}
-	
+
 	public static function initVideoThumbnailAPI(): void {
 		error_log('Plugin::initVideoThumbnailAPI() called');
 		// Initialize Video Thumbnail API - must be called early
 		$api = new VideoThumbnailAPI();
 		error_log('VideoThumbnailAPI instance created: ' . get_class($api));
 	}
-	
+
 	public static function initLoadMoreAPI(): void {
 		// Initialize Load More API
 		$api = new LoadMoreAPI();
 	}
-	
+
 	/**
 	 * Enqueue global editor styles for all blocks
 	 */
@@ -89,7 +89,7 @@ class Plugin {
 			[],
 			GUTENBERG_BLOCKS_VERSION
 		);
-		
+
 		// Enqueue scrollCue init script for editor
 		wp_enqueue_script(
 			'codeweber-blocks-scrollcue-init',
@@ -98,7 +98,7 @@ class Plugin {
 			GUTENBERG_BLOCKS_VERSION,
 			true
 		);
-		
+
 		// Pass plugin URL to JavaScript for placeholder image via inline script
 		wp_add_inline_script(
 			'codeweber-blocks-scrollcue-init',
@@ -111,6 +111,7 @@ class Plugin {
 	return [
 		'accordion',
 		'avatar',
+		'banner',
 		'button',
 		'section',
 		'column',
@@ -129,6 +130,7 @@ class Plugin {
 		'form',
 		'form-field',
 		'submit-button',
+		'divider',
 	];
 	}
 
@@ -141,12 +143,12 @@ class Plugin {
 		if (!isset($parsed_block['blockName']) || $parsed_block['blockName'] !== 'codeweber-blocks/accordion') {
 			return $pre_render;
 		}
-		
+
 		// Отладка
 		if (defined('WP_DEBUG') && WP_DEBUG) {
 			error_log('[Accordion Pre-Render] Block detected, attrs: ' . print_r($parsed_block['attrs'] ?? [], true));
 		}
-		
+
 		// Всегда используем PHP render (он обрабатывает оба режима)
 		$render_path = self::getBasePath() . '/build/blocks/accordion/render.php';
 		if (file_exists($render_path)) {
@@ -154,39 +156,39 @@ class Plugin {
 			$attributes = $parsed_block['attrs'] ?? [];
 			$content = $parsed_block['innerHTML'] ?? '';
 			$block_instance = new \WP_Block($parsed_block);
-			
+
 			// Отладка
 			if (defined('WP_DEBUG') && WP_DEBUG) {
 				error_log('[Accordion Pre-Render] Render path exists: ' . $render_path);
 				error_log('[Accordion Pre-Render] Attributes: ' . print_r($attributes, true));
 				error_log('[Accordion Pre-Render] Mode: ' . ($attributes['mode'] ?? 'not set'));
 			}
-			
+
 			// Передаем переменные в область видимости render.php
 			extract([
 				'attributes' => $attributes,
 				'content' => $content,
 				'block' => $block_instance,
 			], EXTR_SKIP);
-			
+
 			ob_start();
 			// Передаем переменные в render.php
 			require $render_path;
 			$rendered = ob_get_clean();
-			
+
 			// Отладка
 			if (defined('WP_DEBUG') && WP_DEBUG) {
 				error_log('[Accordion Pre-Render] Rendered output length: ' . strlen($rendered));
 				error_log('[Accordion Pre-Render] Rendered output preview: ' . substr($rendered, 0, 200));
 			}
-			
+
 			return $rendered;
 		} else {
 			if (defined('WP_DEBUG') && WP_DEBUG) {
 				error_log('[Accordion Pre-Render] Render path NOT found: ' . $render_path);
 			}
 		}
-		
+
 		return $pre_render;
 	}
 
@@ -199,7 +201,7 @@ class Plugin {
 		if (!isset($parsed_block['blockName']) || $parsed_block['blockName'] !== 'codeweber-blocks/lists') {
 			return $pre_render;
 		}
-		
+
 		// Всегда используем PHP render (он обрабатывает оба режима)
 		$render_path = self::getBasePath() . '/build/blocks/lists/render.php';
 		if (file_exists($render_path)) {
@@ -207,21 +209,21 @@ class Plugin {
 			$attributes = $parsed_block['attrs'] ?? [];
 			$content = $parsed_block['innerHTML'] ?? '';
 			$block_instance = new \WP_Block($parsed_block);
-			
+
 			// Передаем переменные в область видимости render.php
 			extract([
 				'attributes' => $attributes,
 				'content' => $content,
 				'block' => $block_instance,
 			], EXTR_SKIP);
-			
+
 			ob_start();
 			require $render_path;
 			$rendered = ob_get_clean();
-			
+
 			return $rendered;
 		}
-		
+
 		return $pre_render;
 	}
 
@@ -234,49 +236,49 @@ class Plugin {
 		if (!isset($parsed_block['blockName']) || $parsed_block['blockName'] !== 'codeweber-blocks/avatar') {
 			return $pre_render;
 		}
-		
+
 		$attributes = $parsed_block['attrs'] ?? [];
 		$avatar_type = $attributes['avatarType'] ?? 'letters';
-		
+
 		// Используем PHP render только для режима 'user'
 		if ($avatar_type === 'user') {
 			$render_path = self::getBasePath() . '/build/blocks/avatar/render.php';
 			if (file_exists($render_path)) {
 				$content = $parsed_block['innerHTML'] ?? '';
 				$block_instance = new \WP_Block($parsed_block);
-				
+
 				// Передаем переменные в область видимости render.php
 				extract([
 					'attributes' => $attributes,
 					'content' => $content,
 					'block' => $block_instance,
 				], EXTR_SKIP);
-				
+
 				ob_start();
 				require $render_path;
 				$rendered = ob_get_clean();
-				
+
 				return $rendered;
 			}
 		}
-		
+
 		return $pre_render;
 	}
 
 	public static function gutenbergBlocksInit(): void {
 		$blocks_path = self::getBasePath() . '/build/blocks/';
 		$lang_path = self::getBasePath() . '/languages';
-		
+
 		// Фильтр для перевода метаданных блоков (title, description)
 		add_filter('block_type_metadata_settings', [__CLASS__, 'translate_block_metadata'], 10, 2);
-		
+
 		foreach (self::getBlocksName() as $block_name) {
 			$block_type = register_block_type($blocks_path . $block_name);
-			
+
 			// Устанавливаем переводы СРАЗУ после успешной регистрации
 			if ($block_type) {
 				$script_handle = 'codeweber-blocks-' . $block_name . '-editor-script';
-				
+
 				// Проверяем что скрипт действительно зарегистрирован
 				global $wp_scripts;
 				if (isset($wp_scripts->registered[$script_handle])) {
@@ -285,7 +287,7 @@ class Plugin {
 						'codeweber-gutenberg-blocks',
 						$lang_path
 					);
-					
+
 					// Debug log
 					if (defined('WP_DEBUG') && WP_DEBUG) {
 						error_log("[$block_name] Translation setup: " . ($result ? 'SUCCESS' : 'FAILED') . " for $script_handle");
@@ -294,7 +296,7 @@ class Plugin {
 			}
 		}
 	}
-	
+
 	/**
 	 * Translate block metadata (title, description) from block.json
 	 */
@@ -303,20 +305,20 @@ class Plugin {
 		if (!isset($metadata['name']) || strpos($metadata['name'], 'codeweber-blocks/') !== 0) {
 			return $settings;
 		}
-		
+
 		// Переводим title
 		if (isset($settings['title']) && !empty($settings['title'])) {
 			$settings['title'] = __($settings['title'], 'codeweber-gutenberg-blocks');
 		}
-		
+
 		// Переводим description
 		if (isset($settings['description']) && !empty($settings['description'])) {
 			$settings['description'] = __($settings['description'], 'codeweber-gutenberg-blocks');
 		}
-		
+
 		return $settings;
 	}
-	
+
 	/**
 	 * Loads JavaScript translations for Gutenberg blocks.
 	 */
@@ -325,6 +327,7 @@ class Plugin {
 		// WordPress автоматически генерирует handle: {namespace}-{block-name}-editor-script
 		$blocks = [
 			'accordion',
+			'banner',
 			'media',
 			'image-simple',
 			'button',
@@ -338,10 +341,10 @@ class Plugin {
 			'section',
 			'post-grid',
 		];
-		
+
 		foreach ($blocks as $block_name) {
 			$script_handle = 'codeweber-blocks-' . $block_name . '-editor-script';
-			
+
 			// Проверяем что скрипт зарегистрирован
 			if (wp_script_is($script_handle, 'registered') || wp_script_is($script_handle, 'enqueued')) {
 				$result = wp_set_script_translations(
@@ -349,7 +352,7 @@ class Plugin {
 					'codeweber-gutenberg-blocks',
 					self::getBasePath() . '/languages'
 				);
-				
+
 				// Debug
 				if (defined('WP_DEBUG') && WP_DEBUG) {
 					error_log("Translation set for $script_handle: " . ($result ? 'SUCCESS' : 'FAILED'));
@@ -376,14 +379,14 @@ class Plugin {
 			GUTENBERG_BLOCKS_VERSION,
 			TRUE
 		);
-		
+
 		// Load More functionality
 		// Dependencies: fetch-handler from theme (if available) for Fetch system support
 		$dependencies = [];
 		if (wp_script_is('fetch-handler', 'registered')) {
 			$dependencies[] = 'fetch-handler';
 		}
-		
+
 		wp_enqueue_script(
 			'codeweber-blocks-load-more',
 			GUTENBERG_BLOCKS_INC_URL . 'js/load-more.js',
@@ -391,12 +394,12 @@ class Plugin {
 			GUTENBERG_BLOCKS_VERSION,
 			TRUE
 		);
-		
+
 		// Убеждаемся, что переводы загружены перед локализацией
 		if (!is_textdomain_loaded('codeweber-gutenberg-blocks')) {
 			self::loadTextDomain();
 		}
-		
+
 		// Localize script for Load More
 		wp_localize_script('codeweber-blocks-load-more', 'cwgbLoadMore', [
 			'restUrl' => rest_url('codeweber-gutenberg-blocks/v1/load-more'),
@@ -429,16 +432,16 @@ class Plugin {
 		$post_type = $request->get_param('post_type');
 		$image_sizes = [];
 		$all_sizes = [];
-		
+
 		// Получаем все intermediate размеры (исключая удаленные)
 		$intermediate_sizes = get_intermediate_image_sizes();
-		
+
 		// Добавляем стандартные размеры WordPress (если они не удалены)
 		foreach (['thumbnail', 'medium', 'medium_large', 'large'] as $size) {
 			if (in_array($size, $intermediate_sizes)) {
 				$width = get_option($size . '_size_w');
 				$height = get_option($size . '_size_h');
-				
+
 				if ($width || $height) {
 					$all_sizes[$size] = [
 						'width' => $width,
@@ -448,7 +451,7 @@ class Plugin {
 				}
 			}
 		}
-		
+
 		// Добавляем все кастомные размеры из темы
 		if (isset($GLOBALS['_wp_additional_image_sizes'])) {
 			foreach ($GLOBALS['_wp_additional_image_sizes'] as $size_key => $size_info) {
@@ -463,12 +466,12 @@ class Plugin {
 		foreach ($all_sizes as $size_key => $size_info) {
 			$width = isset($size_info['width']) ? intval($size_info['width']) : null;
 			$height = isset($size_info['height']) ? intval($size_info['height']) : null;
-			
+
 			// Пропускаем размеры без параметров
 			if (!$width && !$height) {
 				continue;
 			}
-			
+
 			$size_data = [
 				'value' => $size_key,
 				'label' => ucfirst(str_replace(['_', '-'], ' ', $size_key)),
@@ -479,21 +482,21 @@ class Plugin {
 			// Create label with dimensions
 			if ($width && $height) {
 				$size_data['label'] = sprintf(
-					'%s (%dx%d)', 
-					ucfirst(str_replace(['_', '-'], ' ', $size_key)), 
-					$width, 
+					'%s (%dx%d)',
+					ucfirst(str_replace(['_', '-'], ' ', $size_key)),
+					$width,
 					$height
 				);
 			} elseif ($width) {
 				$size_data['label'] = sprintf(
-					'%s (%dpx width)', 
-					ucfirst(str_replace(['_', '-'], ' ', $size_key)), 
+					'%s (%dpx width)',
+					ucfirst(str_replace(['_', '-'], ' ', $size_key)),
 					$width
 				);
 			} elseif ($height) {
 				$size_data['label'] = sprintf(
-					'%s (%dpx height)', 
-					ucfirst(str_replace(['_', '-'], ' ', $size_key)), 
+					'%s (%dpx height)',
+					ucfirst(str_replace(['_', '-'], ' ', $size_key)),
 					$height
 				);
 			}
@@ -504,7 +507,7 @@ class Plugin {
 		// Если передан post_type, фильтруем размеры по разрешенным для этого типа записи
 		if ($post_type && function_exists('codeweber_get_allowed_image_sizes')) {
 			$allowed_sizes = codeweber_get_allowed_image_sizes($post_type);
-			
+
 			// Если есть разрешенные размеры, фильтруем список
 			if (!empty($allowed_sizes) && is_array($allowed_sizes)) {
 				// Всегда добавляем 'full' в разрешенные размеры
@@ -552,16 +555,16 @@ class Plugin {
 	 */
 	public static function get_taxonomies_callback($request) {
 		$post_type = $request->get_param('post_type');
-		
+
 		if (empty($post_type)) {
 			return new \WP_Error('missing_post_type', 'Post type is required', ['status' => 400]);
 		}
 
 		// Получаем все таксономии для данного типа записи
 		$taxonomies = get_object_taxonomies($post_type, 'objects');
-		
+
 		$result = [];
-		
+
 		foreach ($taxonomies as $taxonomy_slug => $taxonomy) {
 			// Пропускаем скрытые таксономии (но показываем если show_ui = true)
 			if (!$taxonomy->show_ui) {
@@ -591,7 +594,7 @@ class Plugin {
 
 			// Получаем rest_base для REST API (может отличаться от slug)
 			$rest_base = !empty($taxonomy->rest_base) ? $taxonomy->rest_base : $taxonomy_slug;
-			
+
 			$result[] = [
 				'slug' => $taxonomy_slug,
 				'rest_base' => $rest_base,
@@ -632,7 +635,7 @@ class Plugin {
 	public static function get_accordion_posts_callback($request) {
 		$post_type = $request->get_param('post_type');
 		$selected_taxonomies_json = $request->get_param('selected_taxonomies');
-		
+
 		if (empty($post_type)) {
 			return new \WP_Error('missing_post_type', 'Post type is required', ['status' => 400]);
 		}
@@ -658,7 +661,7 @@ class Plugin {
 		// Добавляем фильтрацию по таксономиям, если выбраны термины
 		if (!empty($selected_taxonomies) && is_array($selected_taxonomies)) {
 			$taxQuery = array('relation' => 'AND');
-			
+
 			foreach ($selected_taxonomies as $taxonomySlug => $termIds) {
 				if (!empty($termIds) && is_array($termIds)) {
 					$taxQuery[] = array(
@@ -669,7 +672,7 @@ class Plugin {
 					);
 				}
 			}
-			
+
 			if (count($taxQuery) > 1) { // Если есть хотя бы одна таксономия с терминами
 				$queryArgs['tax_query'] = $taxQuery;
 			}
@@ -677,19 +680,19 @@ class Plugin {
 
 		// Выполняем запрос
 		$query = new \WP_Query($queryArgs);
-		
+
 		$posts = [];
-		
+
 		if ($query->have_posts()) {
 			$index = 0;
 			while ($query->have_posts()) {
 				$query->the_post();
 				$postId = get_the_ID();
-				
+
 				// Получаем контент поста (как в render.php)
 				$postTitle = get_the_title();
 				$postContent = '';
-				
+
 				// Пытаемся получить excerpt
 				if (has_excerpt()) {
 					$postContent = get_the_excerpt();
@@ -704,18 +707,18 @@ class Plugin {
 						$postContent .= '...';
 					}
 				}
-				
+
 				// Если контент пустой, используем заглушку
 				if (empty($postContent)) {
 					$postContent = __('No content available', 'codeweber-gutenberg-blocks');
 				}
-				
+
 				$posts[] = array(
 					'id' => $postId,
 					'title' => $postTitle,
 					'content' => $postContent,
 				);
-				
+
 				$index++;
 			}
 			wp_reset_postdata();
@@ -729,8 +732,8 @@ class Plugin {
 	 */
 	public static function loadTextDomain(): void {
 		load_plugin_textdomain(
-			static::L10N, 
-			false, 
+			static::L10N,
+			false,
 			basename(self::getBasePath()) . '/languages/'
 		);
 	}

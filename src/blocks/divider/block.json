@@ -1,0 +1,58 @@
+{
+	"apiVersion": 2,
+	"name": "codeweber-blocks/divider",
+	"version": "0.1.0",
+	"title": "Divider",
+	"category": "codeweber-gutenberg-blocks",
+	"icon": "minus",
+	"description": "Add dividers to separate sections. Supports borders, waves, and vertical dividers.",
+	"keywords": ["divider", "separator", "border", "wave"],
+	"supports": {
+		"html": false,
+		"customClassName": true,
+		"anchor": true,
+		"align": false
+	},
+	"attributes": {
+		"dividerType": {
+			"type": "string",
+			"default": "border"
+		},
+		"borderStyle": {
+			"type": "string",
+			"default": "simple"
+		},
+		"borderIcon": {
+			"type": "string",
+			"default": ""
+		},
+		"waveType": {
+			"type": "string",
+			"default": "wave-1"
+		},
+		"waveColor": {
+			"type": "string",
+			"default": ""
+		},
+		"marginTop": {
+			"type": "string",
+			"default": "my-8"
+		},
+		"marginBottom": {
+			"type": "string",
+			"default": "my-8"
+		},
+		"blockClass": {
+			"type": "string",
+			"default": ""
+		},
+		"blockId": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"textdomain": "codeweber-blocks",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
+}

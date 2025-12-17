@@ -32,6 +32,22 @@
         "blockId": {
             "type": "string",
             "default": ""
+        },
+        "buttonPosition": {
+            "type": "string",
+            "default": ""
+        },
+        "buttonAlignItems": {
+            "type": "string",
+            "default": ""
+        },
+        "buttonJustifyContent": {
+            "type": "string",
+            "default": ""
+        },
+        "buttonTextAlign": {
+            "type": "string",
+            "default": ""
         }
     },
     "textdomain": "codeweber-blocks",

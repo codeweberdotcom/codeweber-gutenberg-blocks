@@ -112,6 +112,14 @@
         "consents": {
             "type": "array",
             "default": []
+        },
+        "buttonText": {
+            "type": "string",
+            "default": ""
+        },
+        "buttonClass": {
+            "type": "string",
+            "default": "btn btn-primary"
         }
     },
     "textdomain": "codeweber-blocks",

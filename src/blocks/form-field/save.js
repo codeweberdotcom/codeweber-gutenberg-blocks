@@ -32,10 +32,12 @@ export default function Save({ attributes }) {
 		options,
 		defaultValue,
 		helpText,
+		buttonText,
+		buttonClass,
 	} = attributes;
 
-	// For consents_block, return null to use server-side render.php
-	if (fieldType === 'consents_block') {
+	// For consents_block and newsletter, return null to use server-side render.php
+	if (fieldType === 'consents_block' || fieldType === 'newsletter') {
 		return null;
 	}
 
@@ -207,6 +209,47 @@ export default function Save({ attributes }) {
 						name={fieldName}
 						value={defaultValue}
 					/>
+				);
+
+			case 'newsletter':
+				// Получаем класс скругления из темы (если доступен через глобальную переменную)
+				const formRadiusClass = typeof window !== 'undefined' && window.getThemeFormRadius
+					? window.getThemeFormRadius()
+					: 'rounded';
+
+				// Получаем класс кнопки из темы (если доступен)
+				const buttonRadiusClass = typeof window !== 'undefined' && window.getThemeButton
+					? window.getThemeButton()
+					: '';
+
+				// Текст кнопки из атрибутов или по умолчанию
+				const submitButtonText = buttonText || __('Join', 'codeweber-gutenberg-blocks');
+				// Классы кнопки из атрибутов или по умолчанию, с добавлением класса скругления из темы
+				const submitButtonClass = `${buttonClass || 'btn btn-primary'} ${buttonRadiusClass}`.trim();
+
+				return (
+					<div className="input-group form-floating">
+						<input
+							type="email"
+							className={`form-control required email ${formRadiusClass}`}
+							id={fieldId}
+							name={fieldName}
+							placeholder={placeholder || fieldLabel || 'Email Address'}
+							{...(isRequired && { required: true })}
+							{...(maxLength > 0 && { maxLength })}
+							{...(minLength > 0 && { minLength })}
+							autoComplete="off"
+							value={defaultValue || ''}
+						/>
+						<label htmlFor={fieldId}>
+							<RawHTML>{labelContent}</RawHTML>
+						</label>
+						<input
+							type="submit"
+							value={submitButtonText}
+							className={submitButtonClass}
+						/>
+					</div>
 				);
 
 			default:

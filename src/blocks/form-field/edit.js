@@ -44,6 +44,8 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 		defaultValue,
 		helpText,
 		consents = [],
+		buttonText,
+		buttonClass,
 	} = attributes;
 
 	const [legalDocuments, setLegalDocuments] = useState([]);
@@ -251,6 +253,7 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 	const fieldTypes = [
 		{ label: __('Text', 'codeweber-gutenberg-blocks'), value: 'text' },
 		{ label: __('Email', 'codeweber-gutenberg-blocks'), value: 'email' },
+		{ label: __('Newsletter Email', 'codeweber-gutenberg-blocks'), value: 'newsletter' },
 		{ label: __('Tel', 'codeweber-gutenberg-blocks'), value: 'tel' },
 		{ label: __('URL', 'codeweber-gutenberg-blocks'), value: 'url' },
 		{ label: __('Textarea', 'codeweber-gutenberg-blocks'), value: 'textarea' },
@@ -349,6 +352,32 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 								</label>
 							</div>
 						)}
+					</div>
+				);
+
+			case 'newsletter':
+				const previewButtonText = buttonText || __('Join', 'codeweber-gutenberg-blocks');
+				const previewButtonClass = buttonClass || 'btn btn-primary';
+				return (
+					<div className="input-group form-floating">
+						<input
+							type="email"
+							className="form-control required email rounded"
+							id={fieldId}
+							placeholder={placeholder || fieldLabel || __('Email Address', 'codeweber-gutenberg-blocks')}
+							disabled
+							autoComplete="off"
+						/>
+						<label htmlFor={fieldId}>
+							{fieldLabel || __('Email Address', 'codeweber-gutenberg-blocks')}
+							{isRequired && <span className="text-danger"> *</span>}
+						</label>
+						<input
+							type="submit"
+							value={previewButtonText}
+							className={previewButtonClass}
+							disabled
+						/>
 					</div>
 				);
 
@@ -556,6 +585,22 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 											checked={isRequired}
 											onChange={(value) => setAttributes({ isRequired: value })}
 										/>
+										{fieldType === 'newsletter' && (
+											<>
+												<TextControl
+													label={__('Button Text', 'codeweber-gutenberg-blocks')}
+													value={buttonText || ''}
+													onChange={(value) => setAttributes({ buttonText: value })}
+													help={__('Text for the submit button (default: "Join")', 'codeweber-gutenberg-blocks')}
+												/>
+												<TextControl
+													label={__('Button Class', 'codeweber-gutenberg-blocks')}
+													value={buttonClass || 'btn btn-primary'}
+													onChange={(value) => setAttributes({ buttonClass: value })}
+													help={__('CSS classes for the submit button (default: "btn btn-primary")', 'codeweber-gutenberg-blocks')}
+												/>
+											</>
+										)}
 									</PanelBody>
 
 									<PanelBody title={__('Validation', 'codeweber-gutenberg-blocks')} initialOpen={false}>

@@ -2,10 +2,10 @@
     "apiVersion": 2,
     "name": "codeweber-blocks/form",
     "version": "0.1.0",
-    "title": "Form",
+    "title": "Форма",
     "category": "codeweber-gutenberg-blocks",
     "icon": "feedback",
-    "description": "Create contact forms with various field types",
+    "description": "Создавайте контактные формы с разными типами полей",
     "supports": {
         "html": false,
         "customClassName": true,

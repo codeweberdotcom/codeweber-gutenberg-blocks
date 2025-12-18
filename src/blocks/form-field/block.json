@@ -125,9 +125,29 @@
             "type": "string",
             "default": "btn btn-primary"
         },
+        "enableInlineButton": {
+            "type": "boolean",
+            "default": false
+        },
+        "inlineButtonText": {
+            "type": "string",
+            "default": ""
+        },
+        "inlineButtonClass": {
+            "type": "string",
+            "default": "btn btn-primary"
+        },
         "showForGuestsOnly": {
             "type": "boolean",
             "default": false
+        },
+        "phoneMask": {
+            "type": "string",
+            "default": ""
+        },
+        "phoneMaskCaret": {
+            "type": "string",
+            "default": "_"
         }
     },
     "textdomain": "codeweber-blocks",

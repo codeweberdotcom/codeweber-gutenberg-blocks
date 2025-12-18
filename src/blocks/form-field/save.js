@@ -8,6 +8,7 @@
 
 import { useBlockProps } from '@wordpress/block-editor';
 import { RawHTML } from '@wordpress/element';
+import { __ } from '@wordpress/i18n';
 
 export default function Save({ attributes }) {
 	const {
@@ -32,9 +33,14 @@ export default function Save({ attributes }) {
 		options,
 		defaultValue,
 		helpText,
+		phoneMask,
+		phoneMaskCaret,
 		buttonText,
 		buttonClass,
 		fieldClass,
+		enableInlineButton,
+		inlineButtonText,
+		inlineButtonClass,
 	} = attributes;
 
 	// For consents_block and newsletter, return null to use server-side render.php
@@ -78,6 +84,54 @@ export default function Save({ attributes }) {
 	// Рендерим поле в зависимости от типа
 	const renderField = () => {
 		const classNames = (...parts) => parts.filter(Boolean).join(' ').trim();
+		const maskProps = {};
+		const inlineButtonSupportedTypes = ['text', 'email', 'tel', 'url', 'number', 'date', 'time', 'author_role', 'company'];
+		const inlineButtonEnabled = enableInlineButton && inlineButtonSupportedTypes.includes(fieldType) && fieldType !== 'newsletter';
+
+		if (fieldType === 'tel' && phoneMask) {
+			maskProps['data-mask'] = phoneMask;
+			let caretChar = (phoneMaskCaret || '').toString();
+			caretChar = caretChar === '' ? '' : caretChar.slice(0, 1);
+			if (caretChar) {
+				maskProps['data-mask-caret'] = caretChar;
+			}
+		}
+
+		if (inlineButtonEnabled) {
+			const formRadiusClass = typeof window !== 'undefined' && window.getThemeFormRadius
+				? window.getThemeFormRadius()
+				: 'rounded';
+			const buttonRadiusClass = typeof window !== 'undefined' && window.getThemeButton
+				? window.getThemeButton()
+				: '';
+			const submitButtonText = inlineButtonText || __('Send', 'codeweber-gutenberg-blocks');
+			const submitButtonClass = `${inlineButtonClass || 'btn btn-primary'} ${buttonRadiusClass}`.trim();
+
+			return (
+				<div className="input-group form-floating">
+					<input
+						type={fieldType}
+						className={classNames('form-control', formRadiusClass, fieldClass)}
+						id={fieldId}
+						name={fieldName}
+						placeholder={placeholder || fieldLabel}
+						value={defaultValue || ''}
+						{...(isRequired && { required: true })}
+						{...(maxLength > 0 && { maxLength })}
+						{...(minLength > 0 && { minLength })}
+						{...maskProps}
+					/>
+					<label htmlFor={fieldId}>
+						<RawHTML>{labelContent}</RawHTML>
+					</label>
+					<input
+						type="submit"
+						value={submitButtonText}
+						className={submitButtonClass}
+					/>
+				</div>
+			);
+		}
 
 		switch (fieldType) {
 			case 'textarea':
@@ -102,23 +156,21 @@ export default function Save({ attributes }) {
 
 			case 'select':
 				return (
-					<div className="form-floating">
+					<div className="form-select-wrapper mb-4">
 						<select
 							className={classNames('form-select', fieldClass)}
 							id={fieldId}
 							name={fieldName}
+							defaultValue={defaultValue || ''}
 							{...(isRequired && { required: true })}
 						>
-							<option value="">{placeholder || 'Select...'}</option>
+							<option value="">{placeholder || fieldLabel || 'Select...'}</option>
 							{options && options.map((opt, idx) => (
 								<option key={idx} value={opt.value || opt.label}>
 									{opt.label}
 								</option>
 							))}
 						</select>
-						<label htmlFor={fieldId}>
-							<RawHTML>{labelContent}</RawHTML>
-						</label>
 					</div>
 				);
 
@@ -238,7 +290,7 @@ export default function Save({ attributes }) {
 							className={`form-control required email ${formRadiusClass}`}
 							id={fieldId}
 							name={fieldName}
-							placeholder={placeholder || fieldLabel || 'Email Address'}
+							placeholder={placeholder || fieldLabel || __('Email Address', 'codeweber-gutenberg-blocks')}
 							{...(isRequired && { required: true })}
 							{...(maxLength > 0 && { maxLength })}
 							{...(minLength > 0 && { minLength })}
@@ -269,6 +321,7 @@ export default function Save({ attributes }) {
 							{...(isRequired && { required: true })}
 							{...(maxLength > 0 && { maxLength })}
 							{...(minLength > 0 && { minLength })}
+							{...maskProps}
 						/>
 						<label htmlFor={fieldId}>
 							<RawHTML>{labelContent}</RawHTML>

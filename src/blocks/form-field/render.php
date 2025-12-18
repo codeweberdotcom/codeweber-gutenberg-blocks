@@ -66,7 +66,7 @@ if ($field_type === 'newsletter') {
     $field_id = 'field-' . $field_name_value;
 
     // Field label and placeholder
-    $field_label_display = !empty($field_label) ? $field_label : __('Email Address', 'codeweber');
+    $field_label_display = !empty($field_label) ? $field_label : __('Email Address', 'codeweber-gutenberg-blocks');
     $field_placeholder_display = !empty($placeholder) ? $placeholder : $field_label_display;
 
     // Button text
@@ -210,6 +210,51 @@ if ($field_type === 'consents_block' && !empty($consents) && function_exists('co
                 );
             }
             ?>
+        </div>
+    </div>
+    <?php
+    echo ob_get_clean();
+    return;
+}
+
+// Render select with desired markup
+if ($field_type === 'select') {
+    // Get width classes
+    $width_classes = 'col-12';
+    if (!empty($attributes['fieldColumns'])) {
+        $width_classes = 'col-' . esc_attr($attributes['fieldColumns']);
+    } elseif (!empty($attributes['width'])) {
+        $width_classes = esc_attr($attributes['width']);
+    }
+
+    $field_id = 'field-' . ($field_name ?: 'select');
+    $placeholder_text = $placeholder ?: ($field_label ?: __('Select option...', 'codeweber-gutenberg-blocks'));
+
+    ob_start();
+    ?>
+    <div class="<?php echo esc_attr($width_classes); ?>">
+        <div class="form-select-wrapper mb-4">
+            <select
+                class="form-select <?php echo esc_attr($field_class); ?>"
+                id="<?php echo esc_attr($field_id); ?>"
+                name="<?php echo esc_attr($field_name); ?>"
+                <?php echo $is_required ? 'required' : ''; ?>
+            >
+                <option value=""><?php echo esc_html($placeholder_text); ?></option>
+                <?php
+                if (!empty($attributes['options']) && is_array($attributes['options'])) {
+                    foreach ($attributes['options'] as $opt) {
+                        $opt_label = $opt['label'] ?? '';
+                        $opt_value = $opt['value'] ?? $opt_label;
+                        ?>
+                        <option value="<?php echo esc_attr($opt_value); ?>">
+                            <?php echo esc_html($opt_label); ?>
+                        </option>
+                        <?php
+                    }
+                }
+                ?>
+            </select>
         </div>
     </div>
     <?php

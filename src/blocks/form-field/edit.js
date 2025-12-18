@@ -45,14 +45,41 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 		options,
 		defaultValue,
 		helpText,
+		phoneMask,
+		phoneMaskCaret,
 		consents = [],
 		buttonText,
 		buttonClass,
+		enableInlineButton,
+		inlineButtonText,
+		inlineButtonClass,
 	} = attributes;
 
 	const [legalDocuments, setLegalDocuments] = useState([]);
 	const [loadingDocuments, setLoadingDocuments] = useState(false);
 	const [loadingLabels, setLoadingLabels] = useState({}); // Track loading state for each consent label
+	const formatOptionsText = (opts) => {
+		if (!opts || !opts.length) return '';
+		return opts
+			.map((opt) => {
+				const labelPart = opt?.label ?? '';
+				const valuePart = opt?.value ?? '';
+				return valuePart ? `${labelPart}|${valuePart}` : labelPart;
+			})
+			.join('\n');
+	};
+
+	const [optionsText, setOptionsText] = useState(() => formatOptionsText(options));
+
+	const stopEditorHotkeys = (event) => {
+		// Предотвращаем перехват Enter редактором, но не мешаем вводу
+		event.stopPropagation();
+		if (event.nativeEvent?.stopImmediatePropagation) {
+			event.nativeEvent.stopImmediatePropagation();
+		}
+	};
+
+	// Не синхронизируем обратно при каждом обновлении атрибутов, чтобы не сбивать курсор и переносы
 
 	// Генерируем классы col-* из fieldColumns* атрибутов (как в save.js)
 	const getColClasses = () => {
@@ -281,6 +308,9 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 		{ label: __('Quarter Width (col-md-3)', 'codeweber-gutenberg-blocks'), value: 'col-md-3' },
 	];
 
+	const inlineButtonSupportedTypes = ['text', 'email', 'tel', 'url', 'number', 'date', 'time', 'author_role', 'company'];
+	const isInlineButtonSupported = inlineButtonSupportedTypes.includes(fieldType) && fieldType !== 'newsletter';
+
 	// Рендер предпросмотра поля
 	const renderFieldPreview = () => {
 		const fieldId = `field-${fieldName || 'preview'}`;
@@ -306,17 +336,15 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 
 			case 'select':
 				return (
-					<div className="form-floating">
+					<div className="form-select-wrapper mb-4">
 						<select className={controlClass('form-select')} id={fieldId} disabled>
-							<option>{placeholder || __('Select option...', 'codeweber-gutenberg-blocks')}</option>
+							<option value="">
+								{placeholder || fieldLabel || __('Select option...', 'codeweber-gutenberg-blocks')}
+							</option>
 							{options && options.length > 0 && options.map((opt, idx) => (
 								<option key={idx} value={opt.value}>{opt.label}</option>
 							))}
 						</select>
-						<label htmlFor={fieldId}>
-							{fieldLabel || __('Field Label', 'codeweber-gutenberg-blocks')}
-							{isRequired && <span className="text-danger"> *</span>}
-						</label>
 					</div>
 				);
 
@@ -457,6 +485,31 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 				);
 
 			default:
+				if (enableInlineButton && isInlineButtonSupported) {
+					const previewInlineButtonText = inlineButtonText || __('Send', 'codeweber-gutenberg-blocks');
+					const previewInlineButtonClass = inlineButtonClass || 'btn btn-primary';
+					return (
+						<div className="input-group form-floating">
+							<input
+								type={fieldType}
+								className={controlClass('form-control rounded')}
+								id={fieldId}
+								placeholder={placeholder || fieldLabel || __('Value', 'codeweber-gutenberg-blocks')}
+								disabled
+							/>
+							<label htmlFor={fieldId}>
+								{fieldLabel || __('Field Label', 'codeweber-gutenberg-blocks')}
+								{isRequired && <span className="text-danger"> *</span>}
+							</label>
+							<input
+								type="submit"
+								value={previewInlineButtonText}
+								className={previewInlineButtonClass}
+								disabled
+							/>
+						</div>
+					);
+				}
 				return (
 					<div className="form-floating">
 						<input
@@ -667,6 +720,32 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 											onChange={(value) => setAttributes({ showForGuestsOnly: value })}
 											help={__('Field will be shown only for non-logged-in users (guests)', 'codeweber-gutenberg-blocks')}
 										/>
+										{isInlineButtonSupported && (
+											<>
+												<ToggleControl
+													label={__('Inline submit button', 'codeweber-gutenberg-blocks')}
+													checked={!!enableInlineButton}
+													onChange={(value) => setAttributes({ enableInlineButton: value })}
+													help={__('Place a submit button inside this field (newsletter-style layout)', 'codeweber-gutenberg-blocks')}
+												/>
+												{enableInlineButton && (
+													<>
+														<TextControl
+															label={__('Inline button text', 'codeweber-gutenberg-blocks')}
+															value={inlineButtonText || ''}
+															onChange={(value) => setAttributes({ inlineButtonText: value })}
+															placeholder={__('Send', 'codeweber-gutenberg-blocks')}
+														/>
+														<TextControl
+															label={__('Inline button class', 'codeweber-gutenberg-blocks')}
+															value={inlineButtonClass || 'btn btn-primary'}
+															onChange={(value) => setAttributes({ inlineButtonClass: value })}
+															help={__('CSS classes for the inline button', 'codeweber-gutenberg-blocks')}
+														/>
+													</>
+												)}
+											</>
+										)}
 										{fieldType === 'newsletter' && (
 											<>
 												<TextControl
@@ -711,25 +790,74 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 										/>
 									</PanelBody>
 
+									{fieldType === 'tel' && (
+										<PanelBody title={__('Phone mask', 'codeweber-gutenberg-blocks')} initialOpen={false}>
+											<TextControl
+												label={__('Mask', 'codeweber-gutenberg-blocks')}
+												value={phoneMask || ''}
+												onChange={(value) => setAttributes({ phoneMask: value })}
+												help={__('Use "_" as digit placeholder, e.g. +7 (___) ___-__-__', 'codeweber-gutenberg-blocks')}
+											/>
+											<TextControl
+												label={__('Mask caret', 'codeweber-gutenberg-blocks')}
+												value={phoneMaskCaret ?? '_'}
+												onChange={(value) => {
+													const caretChar = (value || '').toString();
+													const normalized = caretChar === '' ? '' : caretChar.slice(0, 1);
+													setAttributes({ phoneMaskCaret: normalized });
+												}}
+												help={__('Single character used instead of "_" in the mask (default "_")', 'codeweber-gutenberg-blocks')}
+											/>
+										</PanelBody>
+									)}
+
 									{(fieldType === 'select' || fieldType === 'radio' || fieldType === 'checkbox') && (
 										<PanelBody title={__('Options', 'codeweber-gutenberg-blocks')} initialOpen={false}>
-											<TextareaControl
-												label={__('Options (one per line, format: label|value)', 'codeweber-gutenberg-blocks')}
-												value={options ? options.map(opt => `${opt.label}|${opt.value}`).join('\n') : ''}
-												onChange={(value) => {
-													const opts = value.split('\n')
-														.filter(line => line.trim())
-														.map(line => {
-															const parts = line.split('|');
-															return {
-																label: parts[0]?.trim() || parts[0] || '',
-																value: parts[1]?.trim() || parts[0]?.trim() || '',
-															};
-														});
-													setAttributes({ options: opts });
-												}}
-												help={__('Example: Option 1|value1', 'codeweber-gutenberg-blocks')}
-											/>
+											<div className="components-base-control">
+												<label className="components-base-control__label">
+													{__('Options (one per line, format: label|value)', 'codeweber-gutenberg-blocks')}
+												</label>
+												<textarea
+													className="components-textarea-control__input"
+													rows={6}
+													value={optionsText}
+													onKeyDown={(event) => {
+														event.stopPropagation();
+														if (event.nativeEvent?.stopImmediatePropagation) {
+															event.nativeEvent.stopImmediatePropagation();
+														}
+													}}
+													onKeyDownCapture={(event) => {
+														event.stopPropagation();
+														if (event.nativeEvent?.stopImmediatePropagation) {
+															event.nativeEvent.stopImmediatePropagation();
+														}
+													}}
+													onChange={(event) => {
+														const value = event.target.value;
+														setOptionsText(value);
+														const opts = value.split('\n')
+															.map((line) => {
+																// Сохраняем возможность иметь пустые value и переносы
+																if (!line) return null;
+																const parts = line.split('|');
+																const labelRaw = parts[0] ?? '';
+																const valueRaw = parts.length > 1 ? parts.slice(1).join('|') : '';
+																if (!labelRaw && !valueRaw) return null;
+																return {
+																	label: labelRaw,
+																	value: valueRaw,
+																};
+															})
+															.filter(Boolean);
+														setAttributes({ options: opts });
+													}}
+													placeholder={__('Example: Option 1|value1', 'codeweber-gutenberg-blocks')}
+												/>
+												<div className="components-base-control__help">
+													{__('Example: Option 1|value1', 'codeweber-gutenberg-blocks')}
+												</div>
+											</div>
 										</PanelBody>
 									)}
 

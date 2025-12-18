@@ -181,19 +181,16 @@ export const BannerSidebar = ({ attributes, setAttributes }) => {
 													placeholder={__('Enter button text...', 'codeweber-gutenberg-blocks')}
 												/>
 											</div>
-											<LinkTypeSelector
-												attributes={{
-													...attributes,
-													LinkType: attributes.buttonLinkType2 || 'external',
-													LinkUrl: buttonUrl2,
-												}}
-												setAttributes={(newAttrs) => {
-													setAttributes({
-														buttonUrl2: newAttrs.LinkUrl || buttonUrl2,
-														buttonLinkType2: newAttrs.LinkType,
-													});
-												}}
-											/>
+											<div className="mb-3">
+												<label>{__('Button 2 URL', 'codeweber-gutenberg-blocks')}</label>
+												<input
+													type="text"
+													className="components-text-control__input"
+													value={buttonUrl2}
+													onChange={(e) => setAttributes({ buttonUrl2: e.target.value })}
+													placeholder={__('Enter URL...', 'codeweber-gutenberg-blocks')}
+												/>
+											</div>
 										</>
 									)}
 								</PanelBody>
@@ -347,3 +344,4 @@ export const BannerSidebar = ({ attributes, setAttributes }) => {
 		</TabPanel>
 	);
 };
+

@@ -73,6 +73,10 @@
             "type": "string",
             "default": ""
         },
+        "fieldClass": {
+            "type": "string",
+            "default": ""
+        },
         "blockClass": {
             "type": "string",
             "default": ""

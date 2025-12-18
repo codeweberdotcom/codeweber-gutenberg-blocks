@@ -26,6 +26,7 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 		fieldName,
 		fieldLabel,
 		placeholder,
+		fieldClass,
 		isRequired,
 		showForGuestsOnly,
 		maxLength,
@@ -283,13 +284,14 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 	// Рендер предпросмотра поля
 	const renderFieldPreview = () => {
 		const fieldId = `field-${fieldName || 'preview'}`;
+		const controlClass = (base) => [base, fieldClass || ''].filter(Boolean).join(' ').trim();
 
 		switch (fieldType) {
 			case 'textarea':
 				return (
 					<div className="form-floating">
 						<textarea
-							className="form-control"
+							className={controlClass('form-control')}
 							id={fieldId}
 							placeholder={placeholder || fieldLabel}
 							disabled
@@ -305,7 +307,7 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 			case 'select':
 				return (
 					<div className="form-floating">
-						<select className="form-select" id={fieldId} disabled>
+						<select className={controlClass('form-select')} id={fieldId} disabled>
 							<option>{placeholder || __('Select option...', 'codeweber-gutenberg-blocks')}</option>
 							{options && options.length > 0 && options.map((opt, idx) => (
 								<option key={idx} value={opt.value}>{opt.label}</option>
@@ -331,7 +333,7 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 								{options.map((opt, idx) => (
 									<div key={idx} className={`form-check ${fieldType === 'radio' ? '' : 'form-check-inline'}`}>
 										<input
-											className={`form-check-input ${fieldType === 'checkbox' ? 'small-checkbox' : ''}`}
+											className={controlClass(`form-check-input ${fieldType === 'checkbox' ? 'small-checkbox' : ''}`)}
 											type={fieldType}
 											name={fieldType === 'radio' ? fieldName : `${fieldName}[]`}
 											id={`${fieldId}-${idx}`}
@@ -346,7 +348,7 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 						) : (
 							<div className="form-check">
 								<input
-									className={`form-check-input ${fieldType === 'checkbox' ? 'small-checkbox' : ''}`}
+									className={controlClass(`form-check-input ${fieldType === 'checkbox' ? 'small-checkbox' : ''}`)}
 									type={fieldType}
 									id={fieldId}
 									disabled
@@ -381,7 +383,7 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 					<div className="form-floating">
 						<input
 							type="text"
-							className="form-control"
+							className={controlClass('form-control')}
 							id={fieldId}
 							placeholder={placeholder || fieldLabel}
 							defaultValue={defaultValue}
@@ -401,7 +403,7 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 					<div className="input-group form-floating">
 						<input
 							type="email"
-							className="form-control required email rounded"
+							className={controlClass('form-control required email rounded')}
 							id={fieldId}
 							placeholder={placeholder || fieldLabel || __('Email Address', 'codeweber-gutenberg-blocks')}
 							disabled
@@ -425,7 +427,7 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 					<div className="form-floating">
 						<input
 							type="file"
-							className="form-control"
+							className={controlClass('form-control')}
 							id={fieldId}
 							accept={accept}
 							multiple={multiple}
@@ -459,7 +461,7 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 					<div className="form-floating">
 						<input
 							type={fieldType}
-							className="form-control"
+							className={controlClass('form-control')}
 							id={fieldId}
 							placeholder={placeholder || fieldLabel}
 							defaultValue={defaultValue}
@@ -600,16 +602,37 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 											options={fieldTypes}
 											onChange={(value) => {
 												const newAttributes = { fieldType: value };
-												// Автоматически устанавливаем fieldName и fieldLabel для специальных типов
-												if (value === 'author_role') {
-													newAttributes.fieldName = 'role'; // fieldType = 'author_role', но fieldName = 'role'
-													newAttributes.fieldLabel = newAttributes.fieldLabel || __('Your Position', 'codeweber-gutenberg-blocks');
-												} else if (value === 'company') {
-													newAttributes.fieldName = 'company';
-													newAttributes.fieldLabel = newAttributes.fieldLabel || __('Company', 'codeweber-gutenberg-blocks');
-												} else if (value === 'rating') {
-													newAttributes.fieldName = newAttributes.fieldName || 'rating';
-													newAttributes.fieldLabel = newAttributes.fieldLabel || __('Rating', 'codeweber-gutenberg-blocks');
+												const defaultNames = {
+													text: 'name',
+													email: 'email',
+													newsletter: 'email',
+													textarea: 'message',
+													tel: 'phone',
+													url: 'website',
+													number: 'number',
+													date: 'date',
+													time: 'time',
+													select: 'option',
+													radio: 'option',
+													checkbox: 'option',
+													file: 'file',
+													hidden: 'hidden_field',
+													consents_block: 'consent',
+													rating: 'rating',
+													author_role: 'role',
+													company: 'company',
+												};
+
+												const mappedName = defaultNames[value];
+												newAttributes.fieldName = mappedName !== undefined ? mappedName : fieldName;
+
+												// Автоматически устанавливаем fieldLabel для специальных типов, только если он пустой
+												if (value === 'author_role' && !fieldLabel) {
+													newAttributes.fieldLabel = __('Your Position', 'codeweber-gutenberg-blocks');
+												} else if (value === 'company' && !fieldLabel) {
+													newAttributes.fieldLabel = __('Company', 'codeweber-gutenberg-blocks');
+												} else if (value === 'rating' && !fieldLabel) {
+													newAttributes.fieldLabel = __('Rating', 'codeweber-gutenberg-blocks');
 												}
 												setAttributes(newAttributes);
 											}}
@@ -771,6 +794,12 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 							{/* SETTINGS TAB */}
 							{tab.name === 'settings' && (
 								<PanelBody>
+									<TextControl
+										label={__('Field CSS Class', 'codeweber-gutenberg-blocks')}
+										value={fieldClass || ''}
+										onChange={(value) => setAttributes({ fieldClass: value })}
+										help={__('Optional class added to the form element', 'codeweber-gutenberg-blocks')}
+									/>
 									<BlockMetaFields
 										attributes={attributes}
 										setAttributes={setAttributes}

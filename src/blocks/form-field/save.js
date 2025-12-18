@@ -34,6 +34,7 @@ export default function Save({ attributes }) {
 		helpText,
 		buttonText,
 		buttonClass,
+		fieldClass,
 	} = attributes;
 
 	// For consents_block and newsletter, return null to use server-side render.php
@@ -76,12 +77,14 @@ export default function Save({ attributes }) {
 
 	// Рендерим поле в зависимости от типа
 	const renderField = () => {
+		const classNames = (...parts) => parts.filter(Boolean).join(' ').trim();
+
 		switch (fieldType) {
 			case 'textarea':
 				return (
 					<div className="form-floating">
 						<textarea
-							className="form-control"
+							className={classNames('form-control', fieldClass)}
 							id={fieldId}
 							name={fieldName}
 							placeholder={placeholder || fieldLabel}
@@ -101,7 +104,7 @@ export default function Save({ attributes }) {
 				return (
 					<div className="form-floating">
 						<select
-							className="form-select"
+							className={classNames('form-select', fieldClass)}
 							id={fieldId}
 							name={fieldName}
 							{...(isRequired && { required: true })}
@@ -128,7 +131,7 @@ export default function Save({ attributes }) {
 						{options && options.map((opt, idx) => (
 							<div key={idx} className="form-check">
 								<input
-									className="form-check-input"
+									className={classNames('form-check-input', fieldClass)}
 									type="radio"
 									id={`${fieldId}-${idx}`}
 									name={fieldName}
@@ -153,7 +156,7 @@ export default function Save({ attributes }) {
 							{options.map((opt, idx) => (
 								<div key={idx} className="form-check">
 									<input
-										className="form-check-input small-checkbox"
+									className={classNames('form-check-input small-checkbox', fieldClass)}
 										type="checkbox"
 										id={`${fieldId}-${idx}`}
 										name={`${fieldName}[]`}
@@ -170,7 +173,7 @@ export default function Save({ attributes }) {
 				return (
 					<div className="form-check">
 						<input
-							className="form-check-input small-checkbox"
+							className={classNames('form-check-input small-checkbox', fieldClass)}
 							type="checkbox"
 							id={fieldId}
 							name={fieldName}
@@ -188,7 +191,7 @@ export default function Save({ attributes }) {
 					<div className="form-floating">
 						<input
 							type="file"
-							className="form-control"
+							className={classNames('form-control', fieldClass)}
 							id={fieldId}
 							name={multiple ? `${fieldName}[]` : fieldName}
 							{...(isRequired && { required: true })}
@@ -205,6 +208,7 @@ export default function Save({ attributes }) {
 				return (
 					<input
 						type="hidden"
+						className={classNames(fieldClass)}
 						id={fieldId}
 						name={fieldName}
 						value={defaultValue}
@@ -257,7 +261,7 @@ export default function Save({ attributes }) {
 					<div className="form-floating">
 						<input
 							type={fieldType}
-							className="form-control"
+							className={classNames('form-control', fieldClass)}
 							id={fieldId}
 							name={fieldName}
 							placeholder={placeholder || fieldLabel}

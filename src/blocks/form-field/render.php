@@ -21,6 +21,7 @@ $placeholder = $attributes['placeholder'] ?? '';
 $is_required = !empty($attributes['isRequired']);
 $button_text = $attributes['buttonText'] ?? '';
 $button_class = $attributes['buttonClass'] ?? 'btn btn-primary';
+$field_class = isset($attributes['fieldClass']) ? trim($attributes['fieldClass']) : '';
 
 // For newsletter type, we need to render it server-side with button
 if ($field_type === 'newsletter') {
@@ -84,7 +85,7 @@ if ($field_type === 'newsletter') {
         <div class="input-group form-floating">
             <input
                 type="email"
-                class="form-control required email <?php echo esc_attr($input_radius_class); ?>"
+                class="form-control required email <?php echo esc_attr(trim($input_radius_class . ' ' . $field_class)); ?>"
                 id="<?php echo esc_attr($field_id); ?>"
                 name="<?php echo esc_attr($field_name_value); ?>"
                 placeholder="<?php echo esc_attr($field_placeholder_display); ?>"
@@ -218,6 +219,7 @@ if ($field_type === 'consents_block' && !empty($consents) && function_exists('co
 
 // For other field types, return null to use save.js
 return null;
+
 
 
 

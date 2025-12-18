@@ -4,6 +4,7 @@ import {
 	InnerBlocks,
 	store as blockEditorStore,
 } from '@wordpress/block-editor';
+import { createBlocksFromInnerBlocksTemplate } from '@wordpress/blocks';
 import {
 	PanelBody,
 	TextControl,
@@ -84,7 +85,7 @@ const FormEdit = ({ attributes, setAttributes, clientId }) => {
 
 	// Получаем innerBlocks для сохранения в атрибуты
 	const innerBlocks = useSelect((select) => {
-		return select('core/block-editor').getBlocks(clientId);
+		return select('core/block-editor').getBlocks(clientId) || [];
 	}, [clientId]);
 
 	// Для замены innerBlocks при применении шаблона
@@ -177,7 +178,8 @@ const FormEdit = ({ attributes, setAttributes, clientId }) => {
 	useEffect(() => {
 		if (innerBlocks.length === 0 && !hasAppliedTemplateRef.current) {
 			const template = getTemplateBlocks();
-			replaceInnerBlocks(clientId, template);
+			const templateBlocks = createBlocksFromInnerBlocksTemplate(template);
+			replaceInnerBlocks(clientId, templateBlocks, false);
 			hasAppliedTemplateRef.current = true;
 		}
 	}, [innerBlocks.length, clientId, replaceInnerBlocks]);

@@ -127,3 +127,4 @@ const renderWaveSVG = (waveType) => {
 };
 
 export default Edit;
+

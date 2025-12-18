@@ -421,3 +421,4 @@ const BannerEdit = ({ attributes, setAttributes }) => {
 };
 
 export default BannerEdit;
+

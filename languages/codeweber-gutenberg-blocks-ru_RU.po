@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Codeweber Gutenberg Blocks\n"
 "POT-Creation-Date: 2025-12-04T14:31:54Z\n"
-"PO-Revision-Date: 2025-12-17 20:11+0000\n"
-"Last-Translator: \n"
+"PO-Revision-Date: 2025-12-19 21:26+0000\n"
+"Last-Translator: Codeweber\n"
 "Language-Team: Русский\n"
 "Language: ru_RU\n"
 "MIME-Version: 1.0\n"
@@ -2912,47 +2912,84 @@ msgid "Field will be shown only for non-logged-in users (guests)"
 msgstr ""
 "Поле будет отображаться только для неавторизованных пользователей (гостей)"
 
-#: src/blocks/form-field/edit.js:74
-#. translators: Default label for text input field
-msgid "Name"
-msgstr "Имя"
-
-#: src/blocks/form-field/edit.js:76
 #. translators: Default label for email input field
+#: src/blocks/form-field/edit.js:76
 msgid "Email Address"
 msgstr "Адрес электронной почты"
 
-#: src/blocks/form-field/edit.js:80
 #. translators: Default label for phone number input field
+#: src/blocks/form-field/edit.js:80
 msgid "Phone Number"
 msgstr "Номер телефона"
 
-#: src/blocks/form-field/edit.js:82
 #. translators: Default label for website URL input field
+#: src/blocks/form-field/edit.js:82
 msgid "Website"
 msgstr "Веб-сайт"
 
-#: src/blocks/form-field/edit.js:84
 #. translators: Default label for textarea field
+#: src/blocks/form-field/edit.js:84
 msgid "Message"
 msgstr "Сообщение"
 
-#: src/blocks/form-field/edit.js:86
 #. translators: Default label for select dropdown field
+#: src/blocks/form-field/edit.js:86
 msgid "Select Option"
 msgstr "Выберите опцию"
 
-#: src/blocks/form-field/edit.js:90
 #. translators: Default label for checkbox field
+#: src/blocks/form-field/edit.js:90
 msgid "I agree"
 msgstr "Я согласен"
 
-#: src/blocks/form-field/save.js:271
-#: src/blocks/form-field/edit.js:548
+#: src/blocks/form-field/save.js:271 src/blocks/form-field/edit.js:548
 msgid "Browse"
 msgstr "Обзор"
 
-#: src/blocks/form-field/save.js:270
-#: src/blocks/form-field/edit.js:547
+#: src/blocks/form-field/save.js:270 src/blocks/form-field/edit.js:547
 msgid "No file selected"
 msgstr "Файл не выбран"
+
+#: includes/js/filepond-init.js:71
+msgid ""
+"Drag & drop your files or <span class=\"filepond--label-action\">"
+"browse</span>"
+msgstr ""
+"Перетащите файлы сюда или <span class=\"filepond--label-action\">"
+"Выберите</span>"
+
+#: includes/js/filepond-init.js:79
+msgid "Upload complete"
+msgstr "Загрузка завершена"
+
+#: includes/js/filepond-init.js:84
+msgid "Tap to undo"
+msgstr "Нажмите, чтобы отменить"
+
+#: inc/Plugin.php:826
+msgid "Maximum number of files: %s. Please remove excess files."
+msgstr "Максимальное количество файлов: %s. Пожалуйста, удалите лишние файлы."
+
+#: inc/Plugin.php:827
+msgid "File is too large. Maximum size: %s"
+msgstr "Файл слишком большой. Максимальный размер: %s"
+
+#: inc/Plugin.php:828
+msgid "Total file size is too large. Maximum: %s"
+msgstr "Общий размер файлов слишком большой. Максимум: %s"
+
+#: inc/Plugin.php:829
+msgid "Error uploading file"
+msgstr "Ошибка при загрузке файла"
+
+#: inc/Plugin.php:830
+msgid "Error adding file"
+msgstr "Ошибка при добавлении файла"
+
+#: inc/Plugin.php:831
+msgid "Maximum number of files: %s. Files removed: %s"
+msgstr "Максимальное количество файлов: %s. Удалено файлов: %s"
+
+#: inc/Plugin.php:832
+msgid "Total file size exceeded. Maximum: %s"
+msgstr "Общий размер файлов превышен. Максимум: %s"

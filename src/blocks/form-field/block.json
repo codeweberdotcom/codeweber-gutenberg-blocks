@@ -152,6 +152,22 @@
         "phoneMaskSoftCaret": {
             "type": "string",
             "default": "_"
+        },
+        "useFilePond": {
+            "type": "boolean",
+            "default": false
+        },
+        "maxFiles": {
+            "type": "number",
+            "default": 0
+        },
+        "maxFileSize": {
+            "type": "string",
+            "default": "10MB"
+        },
+        "maxTotalFileSize": {
+            "type": "string",
+            "default": "100MB"
         }
     },
     "textdomain": "codeweber-gutenberg-blocks",

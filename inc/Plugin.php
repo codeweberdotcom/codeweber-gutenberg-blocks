@@ -40,6 +40,9 @@ class Plugin {
 
 		// Фильтр для условного рендеринга аватара (перехватываем до рендеринга)
 		add_filter('pre_render_block', __CLASS__ . '::pre_render_avatar_block', 10, 2);
+
+		// Фильтр для условной загрузки FilePond для file полей
+		add_filter('pre_render_block', __CLASS__ . '::pre_render_file_field', 10, 2);
 	}
 
 	public static function init(): void {
@@ -757,6 +760,127 @@ class Plugin {
 	 */
 	public static function getBasePath(): string {
 		return dirname(__DIR__);
+	}
+
+	/**
+	 * Enqueue FilePond library and initialization script
+	 */
+	public static function enqueue_filepond() {
+		// Check if already enqueued
+		if (wp_script_is('filepond', 'enqueued')) {
+			// #region agent log
+			$log_dir = dirname(WP_CONTENT_DIR) . '/.cursor';
+			$log_path = $log_dir . '/debug.log';
+			if (!is_dir($log_dir)) {
+				@mkdir($log_dir, 0755, true);
+			}
+			@file_put_contents($log_path, json_encode(['sessionId'=>'debug-session','runId'=>'run1','hypothesisId'=>'A','location'=>'Plugin.php:771','message'=>'FilePond already enqueued','data'=>[],'timestamp'=>time()*1000])."\n", FILE_APPEND);
+			// #endregion
+			return;
+		}
+
+		$css_url = self::getBaseUrl() . '/assets/filepond/filepond.min.css';
+		$js_url = self::getBaseUrl() . '/assets/filepond/filepond.min.js';
+		$init_url = self::getBaseUrl() . '/includes/js/filepond-init.js';
+
+		// #region agent log
+		$log_dir = dirname(WP_CONTENT_DIR) . '/.cursor';
+		$log_path = $log_dir . '/debug.log';
+		if (!is_dir($log_dir)) {
+			@mkdir($log_dir, 0755, true);
+		}
+		@file_put_contents($log_path, json_encode(['sessionId'=>'debug-session','runId'=>'run1','hypothesisId'=>'A','location'=>'Plugin.php:777','message'=>'Enqueueing FilePond scripts','data'=>['cssUrl'=>$css_url,'jsUrl'=>$js_url,'initUrl'=>$init_url,'cssExists'=>file_exists(dirname(__DIR__).'/assets/filepond/filepond.min.css'),'jsExists'=>file_exists(dirname(__DIR__).'/assets/filepond/filepond.min.js')],'timestamp'=>time()*1000])."\n", FILE_APPEND);
+		// #endregion
+
+		// Enqueue FilePond CSS
+		wp_enqueue_style(
+			'filepond',
+			$css_url,
+			[],
+			'4.30.0'
+		);
+
+		// Enqueue FilePond JS
+		wp_enqueue_script(
+			'filepond',
+			$js_url,
+			[],
+			'4.30.0',
+			true
+		);
+
+		// Enqueue FilePond initialization script
+		wp_enqueue_script(
+			'filepond-init',
+			$init_url,
+			['filepond'],
+			GUTENBERG_BLOCKS_VERSION,
+			true
+		);
+
+		// Localize script if needed
+		wp_localize_script('filepond-init', 'filepondSettings', [
+			'uploadUrl' => rest_url('codeweber-forms/v1/upload'),
+			'nonce' => wp_create_nonce('wp_rest'),
+			'translations' => [
+				'labelIdle' => __('Drag & drop your files or <span class="filepond--label-action">browse</span>', 'codeweber-gutenberg-blocks'),
+				'maxFiles' => __('Maximum number of files: %s. Please remove excess files.', 'codeweber-gutenberg-blocks'),
+				'fileTooLarge' => __('File is too large. Maximum size: %s', 'codeweber-gutenberg-blocks'),
+				'totalSizeTooLarge' => __('Total file size is too large. Maximum: %s', 'codeweber-gutenberg-blocks'),
+				'errorUploading' => __('Error uploading file', 'codeweber-gutenberg-blocks'),
+				'errorAddingFile' => __('Error adding file', 'codeweber-gutenberg-blocks'),
+				'filesRemoved' => __('Maximum number of files: %s. Files removed: %s', 'codeweber-gutenberg-blocks'),
+				'totalSizeExceeded' => __('Total file size exceeded. Maximum: %s', 'codeweber-gutenberg-blocks'),
+				'uploadComplete' => __('Upload complete', 'codeweber-gutenberg-blocks'),
+				'tapToUndo' => __('Tap to undo', 'codeweber-gutenberg-blocks'),
+			]
+		]);
+
+		// #region agent log
+		$log_dir = dirname(WP_CONTENT_DIR) . '/.cursor';
+		$log_path = $log_dir . '/debug.log';
+		if (!is_dir($log_dir)) {
+			@mkdir($log_dir, 0755, true);
+		}
+		@file_put_contents($log_path, json_encode(['sessionId'=>'debug-session','runId'=>'run1','hypothesisId'=>'A','location'=>'Plugin.php:805','message'=>'FilePond scripts enqueued','data'=>['scriptEnqueued'=>wp_script_is('filepond','enqueued'),'styleEnqueued'=>wp_style_is('filepond','enqueued'),'initEnqueued'=>wp_script_is('filepond-init','enqueued')],'timestamp'=>time()*1000])."\n", FILE_APPEND);
+		// #endregion
+	}
+
+	/**
+	 * Pre-render file field block to conditionally load FilePond
+	 */
+	public static function pre_render_file_field($pre_render, $parsed_block) {
+		// Check if this is a form-field block
+		if (!isset($parsed_block['blockName']) || $parsed_block['blockName'] !== 'codeweber-blocks/form-field') {
+			return $pre_render;
+		}
+
+		$attrs = $parsed_block['attrs'] ?? [];
+		$fieldType = $attrs['fieldType'] ?? '';
+		$useFilePond = $attrs['useFilePond'] ?? false;
+
+		// Check if this is a file field with FilePond enabled
+		if ($fieldType === 'file' && $useFilePond) {
+			self::enqueue_filepond();
+		}
+
+		// Also check inner blocks (for form blocks containing form-field blocks)
+		if (isset($parsed_block['innerBlocks']) && is_array($parsed_block['innerBlocks'])) {
+			foreach ($parsed_block['innerBlocks'] as $inner_block) {
+				if (isset($inner_block['blockName']) && $inner_block['blockName'] === 'codeweber-blocks/form-field') {
+					$inner_attrs = $inner_block['attrs'] ?? [];
+					$inner_fieldType = $inner_attrs['fieldType'] ?? '';
+					$inner_useFilePond = $inner_attrs['useFilePond'] ?? false;
+
+					if ($inner_fieldType === 'file' && $inner_useFilePond) {
+						self::enqueue_filepond();
+						break; // No need to check further
+					}
+				}
+			}
+		}
+
+		return $pre_render;
 	}
 }
 

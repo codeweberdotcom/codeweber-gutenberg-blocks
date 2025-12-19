@@ -2162,6 +2162,36 @@
       ],
       "No file selected": [
         "Файл не выбран"
+      ],
+      "Drag & drop your files or <span class=\"filepond--label-action\">browse</span>": [
+        "Перетащите файлы сюда или <span class=\"filepond--label-action\">Выберите</span>"
+      ],
+      "Upload complete": [
+        "Загрузка завершена"
+      ],
+      "Tap to undo": [
+        "Нажмите, чтобы отменить"
+      ],
+      "Maximum number of files: %s. Please remove excess files.": [
+        "Максимальное количество файлов: %s. Пожалуйста, удалите лишние файлы."
+      ],
+      "File is too large. Maximum size: %s": [
+        "Файл слишком большой. Максимальный размер: %s"
+      ],
+      "Total file size is too large. Maximum: %s": [
+        "Общий размер файлов слишком большой. Максимум: %s"
+      ],
+      "Error uploading file": [
+        "Ошибка при загрузке файла"
+      ],
+      "Error adding file": [
+        "Ошибка при добавлении файла"
+      ],
+      "Maximum number of files: %s. Files removed: %s": [
+        "Максимальное количество файлов: %s. Удалено файлов: %s"
+      ],
+      "Total file size exceeded. Maximum: %s": [
+        "Общий размер файлов превышен. Максимум: %s"
       ]
     }
   }

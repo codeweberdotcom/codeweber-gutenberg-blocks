@@ -42,6 +42,10 @@ export default function Save({ attributes }) {
 		enableInlineButton,
 		inlineButtonText,
 		inlineButtonClass,
+		useFilePond,
+		maxFiles,
+		maxFileSize,
+		maxTotalFileSize,
 	} = attributes;
 
 	// For consents_block and newsletter, return null to use server-side render.php
@@ -258,24 +262,32 @@ export default function Save({ attributes }) {
 							className={classNames('form-control file-input-hidden', fieldClass)}
 							id={fieldId}
 							name={multiple ? `${fieldName}[]` : fieldName}
+							data-filepond={useFilePond ? 'true' : 'false'}
+							data-max-files={useFilePond && maxFiles ? maxFiles : ''}
+							data-max-file-size={useFilePond && maxFileSize ? maxFileSize : ''}
+							data-max-total-file-size={useFilePond && maxTotalFileSize ? maxTotalFileSize : ''}
 							{...(isRequired && { required: true })}
 							{...(accept && { accept })}
 							{...(multiple && { multiple: true })}
 						/>
-						<input
-							type="text"
-							className={classNames('form-control file-input-display', fieldClass)}
-							id={`${fieldId}-display`}
-							readOnly
-							placeholder={__('No file selected', 'codeweber-gutenberg-blocks')}
-						/>
-						<button
-							type="button"
-							className="btn btn-outline-secondary file-browse-button"
-							data-file-input={fieldId}
-						>
-							{__('Browse', 'codeweber-gutenberg-blocks')}
-						</button>
+						{!useFilePond && (
+							<>
+								<input
+									type="text"
+									className={classNames('form-control file-input-display', fieldClass)}
+									id={`${fieldId}-display`}
+									readOnly
+									placeholder={__('No file selected', 'codeweber-gutenberg-blocks')}
+								/>
+								<button
+									type="button"
+									className="btn btn-outline-secondary file-browse-button"
+									data-file-input={fieldId}
+								>
+									{__('Browse', 'codeweber-gutenberg-blocks')}
+								</button>
+							</>
+						)}
 					</div>
 					</div>
 				);

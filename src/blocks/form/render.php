@@ -208,6 +208,46 @@ if (class_exists('CodeweberFormsRenderer')) {
         $form_config['type'] = $form_type;
     }
 
+    // Проверяем, есть ли file поле с FilePond
+    $has_filepond = false;
+    foreach ($fields as $field) {
+        if (($field['fieldType'] ?? '') === 'file' && !empty($field['useFilePond'])) {
+            $has_filepond = true;
+            // #region agent log
+            $log_dir = dirname(WP_CONTENT_DIR) . '/.cursor';
+            $log_path = $log_dir . '/debug.log';
+            if (!is_dir($log_dir)) {
+                @mkdir($log_dir, 0755, true);
+            }
+            @file_put_contents($log_path, json_encode(['sessionId'=>'debug-session','runId'=>'run1','hypothesisId'=>'A','location'=>'form/render.php:215','message'=>'FilePond field detected in inline form','data'=>['fieldType'=>$field['fieldType']??'','useFilePond'=>$field['useFilePond']??false,'maxFiles'=>$field['maxFiles']??0,'maxFileSize'=>$field['maxFileSize']??'','maxTotalFileSize'=>$field['maxTotalFileSize']??''],'timestamp'=>time()*1000])."\n", FILE_APPEND);
+            // #endregion
+            break;
+        }
+    }
+
+    // Enqueue FilePond if needed
+    if ($has_filepond) {
+        // #region agent log
+        $log_dir = dirname(WP_CONTENT_DIR) . '/.cursor';
+        $log_path = $log_dir . '/debug.log';
+        if (!is_dir($log_dir)) {
+            @mkdir($log_dir, 0755, true);
+        }
+        @file_put_contents($log_path, json_encode(['sessionId'=>'debug-session','runId'=>'run1','hypothesisId'=>'A','location'=>'form/render.php:225','message'=>'Attempting to enqueue FilePond for inline form','data'=>['has_filepond'=>$has_filepond,'class_exists'=>class_exists('\Codeweber\Blocks\Plugin')],'timestamp'=>time()*1000])."\n", FILE_APPEND);
+        // #endregion
+        if (class_exists('\Codeweber\Blocks\Plugin')) {
+            \Codeweber\Blocks\Plugin::enqueue_filepond();
+            // #region agent log
+            $log_dir = dirname(WP_CONTENT_DIR) . '/.cursor';
+            $log_path = $log_dir . '/debug.log';
+            if (!is_dir($log_dir)) {
+                @mkdir($log_dir, 0755, true);
+            }
+            @file_put_contents($log_path, json_encode(['sessionId'=>'debug-session','runId'=>'run1','hypothesisId'=>'A','location'=>'form/render.php:230','message'=>'FilePond enqueued for inline form','data'=>['script_enqueued'=>wp_script_is('filepond','enqueued'),'style_enqueued'=>wp_style_is('filepond','enqueued')],'timestamp'=>time()*1000])."\n", FILE_APPEND);
+            // #endregion
+        }
+    }
+
     $renderer = new CodeweberFormsRenderer();
     echo $renderer->render($form_id ?: uniqid('form_'), $form_config);
 } else {

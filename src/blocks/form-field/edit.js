@@ -54,6 +54,10 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 		enableInlineButton,
 		inlineButtonText,
 		inlineButtonClass,
+		useFilePond,
+		maxFiles,
+		maxFileSize,
+		maxTotalFileSize,
 	} = attributes;
 
 	const [legalDocuments, setLegalDocuments] = useState([]);
@@ -970,6 +974,35 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 												checked={multiple}
 												onChange={(value) => setAttributes({ multiple: value })}
 											/>
+											<ToggleControl
+												label={__('Use FilePond', 'codeweber-gutenberg-blocks')}
+												checked={useFilePond || false}
+												onChange={(value) => setAttributes({ useFilePond: value })}
+												help={__('Enable FilePond for enhanced file upload experience', 'codeweber-gutenberg-blocks')}
+											/>
+											{useFilePond && (
+												<>
+													<TextControl
+														label={__('Max Files', 'codeweber-gutenberg-blocks')}
+														type="number"
+														value={maxFiles || ''}
+														onChange={(value) => setAttributes({ maxFiles: value ? parseInt(value) : 0 })}
+														help={__('Maximum number of files (0 = unlimited)', 'codeweber-gutenberg-blocks')}
+													/>
+													<TextControl
+														label={__('Max File Size', 'codeweber-gutenberg-blocks')}
+														value={maxFileSize || '10MB'}
+														onChange={(value) => setAttributes({ maxFileSize: value })}
+														help={__('Maximum size per file (e.g., 5MB, 500KB)', 'codeweber-gutenberg-blocks')}
+													/>
+													<TextControl
+														label={__('Max Total File Size', 'codeweber-gutenberg-blocks')}
+														value={maxTotalFileSize || '100MB'}
+														onChange={(value) => setAttributes({ maxTotalFileSize: value })}
+														help={__('Maximum total size for all files (e.g., 50MB, 1GB)', 'codeweber-gutenberg-blocks')}
+													/>
+												</>
+											)}
 										</PanelBody>
 									)}
 

@@ -399,7 +399,12 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 			case 'select':
 				return (
 					<div className="form-select-wrapper mb-4">
-						<select className={controlClass('form-select')} id={fieldId} disabled>
+						<select
+							className={controlClass('form-select')}
+							id={fieldId}
+							aria-label={fieldLabel || placeholder || __('Select option', 'codeweber-gutenberg-blocks')}
+							disabled
+						>
 							<option value="">
 								{placeholder || fieldLabel || __('Select option...', 'codeweber-gutenberg-blocks')}
 							</option>
@@ -514,19 +519,37 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 
 			case 'file':
 				return (
-					<div className="form-floating">
+					<div>
+						<label htmlFor={fieldId} className="form-label">
+							{fieldLabel || __('File Upload', 'codeweber-gutenberg-blocks')}
+							{isRequired && <span className="text-danger"> *</span>}
+						</label>
+					<div className="input-group">
 						<input
 							type="file"
-							className={controlClass('form-control')}
+							className={controlClass('form-control file-input-hidden')}
 							id={fieldId}
 							accept={accept}
 							multiple={multiple}
 							disabled
 						/>
-						<label htmlFor={fieldId}>
-							{fieldLabel || __('File Upload', 'codeweber-gutenberg-blocks')}
-							{isRequired && <span className="text-danger"> *</span>}
-						</label>
+						<input
+							type="text"
+							className={controlClass('form-control file-input-display')}
+							id={`${fieldId}-display`}
+							readOnly
+							placeholder={__('No file selected', 'codeweber-gutenberg-blocks')}
+							disabled
+						/>
+						<button
+							type="button"
+							className="btn btn-outline-secondary file-browse-button"
+							data-file-input={fieldId}
+							disabled
+						>
+							{__('Browse', 'codeweber-gutenberg-blocks')}
+						</button>
+					</div>
 					</div>
 				);
 

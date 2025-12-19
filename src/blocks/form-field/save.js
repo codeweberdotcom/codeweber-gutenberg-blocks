@@ -168,10 +168,11 @@ export default function Save({ attributes }) {
 							className={classNames('form-select', fieldClass)}
 							id={fieldId}
 							name={fieldName}
+							aria-label={fieldLabel || placeholder || __('Select option', 'codeweber-gutenberg-blocks')}
 							defaultValue={defaultValue || ''}
 							{...(isRequired && { required: true })}
 						>
-							<option value="">{placeholder || fieldLabel || 'Select...'}</option>
+							<option value="">{placeholder || fieldLabel || __('Select...', 'codeweber-gutenberg-blocks')}</option>
 							{options && options.map((opt, idx) => (
 								<option key={idx} value={opt.value || opt.label}>
 									{opt.label}
@@ -247,19 +248,35 @@ export default function Save({ attributes }) {
 
 			case 'file':
 				return (
-					<div className="form-floating">
+					<div>
+						<label htmlFor={fieldId} className="form-label">
+							<RawHTML>{labelContent}</RawHTML>
+						</label>
+					<div className="input-group">
 						<input
 							type="file"
-							className={classNames('form-control', fieldClass)}
+							className={classNames('form-control file-input-hidden', fieldClass)}
 							id={fieldId}
 							name={multiple ? `${fieldName}[]` : fieldName}
 							{...(isRequired && { required: true })}
 							{...(accept && { accept })}
 							{...(multiple && { multiple: true })}
 						/>
-						<label htmlFor={fieldId}>
-							<RawHTML>{labelContent}</RawHTML>
-						</label>
+						<input
+							type="text"
+							className={classNames('form-control file-input-display', fieldClass)}
+							id={`${fieldId}-display`}
+							readOnly
+							placeholder={__('No file selected', 'codeweber-gutenberg-blocks')}
+						/>
+						<button
+							type="button"
+							className="btn btn-outline-secondary file-browse-button"
+							data-file-input={fieldId}
+						>
+							{__('Browse', 'codeweber-gutenberg-blocks')}
+						</button>
+					</div>
 					</div>
 				);
 

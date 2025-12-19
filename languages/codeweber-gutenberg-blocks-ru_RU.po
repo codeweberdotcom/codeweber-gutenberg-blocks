@@ -2946,3 +2946,13 @@ msgstr "Выберите опцию"
 #. translators: Default label for checkbox field
 msgid "I agree"
 msgstr "Я согласен"
+
+#: src/blocks/form-field/save.js:271
+#: src/blocks/form-field/edit.js:548
+msgid "Browse"
+msgstr "Обзор"
+
+#: src/blocks/form-field/save.js:270
+#: src/blocks/form-field/edit.js:547
+msgid "No file selected"
+msgstr "Файл не выбран"

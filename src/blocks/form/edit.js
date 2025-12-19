@@ -83,6 +83,24 @@ const FormEdit = ({ attributes, setAttributes, clientId }) => {
 		}
 	}, [postId, postType, formId, setAttributes]);
 
+	// Инициализируем дефолтные значения для сообщений, если они пустые
+	useEffect(() => {
+		const defaultSuccessMessage = __('Thank you! Your message has been sent.', 'codeweber-gutenberg-blocks');
+		const defaultErrorMessage = __('An error occurred. Please try again.', 'codeweber-gutenberg-blocks');
+
+		const updates = {};
+		if (!successMessage || successMessage.trim() === '') {
+			updates.successMessage = defaultSuccessMessage;
+		}
+		if (!errorMessage || errorMessage.trim() === '') {
+			updates.errorMessage = defaultErrorMessage;
+		}
+
+		if (Object.keys(updates).length > 0) {
+			setAttributes(updates);
+		}
+	}, []); // Выполняется только при монтировании компонента
+
 	// Получаем innerBlocks для сохранения в атрибуты
 	const innerBlocks = useSelect((select) => {
 		return select('core/block-editor').getBlocks(clientId) || [];
@@ -283,13 +301,15 @@ const FormEdit = ({ attributes, setAttributes, clientId }) => {
 								<PanelBody title={__('Messages', 'codeweber-gutenberg-blocks')} initialOpen={true}>
 									<TextareaControl
 										label={__('Success Message', 'codeweber-gutenberg-blocks')}
-										value={successMessage}
+										value={successMessage || __('Thank you! Your message has been sent.', 'codeweber-gutenberg-blocks')}
 										onChange={(value) => setAttributes({ successMessage: value })}
+										help={__('Message shown after successful form submission', 'codeweber-gutenberg-blocks')}
 									/>
 									<TextareaControl
 										label={__('Error Message', 'codeweber-gutenberg-blocks')}
-										value={errorMessage}
+										value={errorMessage || __('An error occurred. Please try again.', 'codeweber-gutenberg-blocks')}
 										onChange={(value) => setAttributes({ errorMessage: value })}
+										help={__('Message shown when form submission fails', 'codeweber-gutenberg-blocks')}
 									/>
 								</PanelBody>
 							)}

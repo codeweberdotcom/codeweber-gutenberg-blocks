@@ -148,9 +148,13 @@
         "phoneMaskCaret": {
             "type": "string",
             "default": "_"
+        },
+        "phoneMaskSoftCaret": {
+            "type": "string",
+            "default": "_"
         }
     },
-    "textdomain": "codeweber-blocks",
+    "textdomain": "codeweber-gutenberg-blocks",
     "editorScript": "file:./index.js",
     "editorStyle": "file:./index.css",
     "style": "file:./style-index.css",

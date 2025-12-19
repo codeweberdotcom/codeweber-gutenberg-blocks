@@ -47,6 +47,7 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 		helpText,
 		phoneMask,
 		phoneMaskCaret,
+		phoneMaskSoftCaret,
 		consents = [],
 		buttonText,
 		buttonClass,
@@ -58,6 +59,58 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 	const [legalDocuments, setLegalDocuments] = useState([]);
 	const [loadingDocuments, setLoadingDocuments] = useState(false);
 	const [loadingLabels, setLoadingLabels] = useState({}); // Track loading state for each consent label
+
+	/**
+	 * Get default label for field type
+	 * These labels are used as default field labels when creating new form fields.
+	 * All strings are translatable via Loco Translate or WordPress translation files.
+	 *
+	 * @param {string} type - Field type (text, email, tel, etc.)
+	 * @returns {string} Translated default label for the field type
+	 */
+	const getDefaultFieldLabel = (type) => {
+		const defaultLabels = {
+			// translators: Default label for text input field
+			text: __('Name', 'codeweber-gutenberg-blocks'),
+			// translators: Default label for email input field
+			email: __('Email Address', 'codeweber-gutenberg-blocks'),
+			// translators: Default label for newsletter email input field
+			newsletter: __('Email Address', 'codeweber-gutenberg-blocks'),
+			// translators: Default label for phone number input field
+			tel: __('Phone Number', 'codeweber-gutenberg-blocks'),
+			// translators: Default label for website URL input field
+			url: __('Website', 'codeweber-gutenberg-blocks'),
+			// translators: Default label for textarea field
+			textarea: __('Message', 'codeweber-gutenberg-blocks'),
+			// translators: Default label for select dropdown field
+			select: __('Select Option', 'codeweber-gutenberg-blocks'),
+			// translators: Default label for radio button group field
+			radio: __('Select Option', 'codeweber-gutenberg-blocks'),
+			// translators: Default label for checkbox field
+			checkbox: __('I agree', 'codeweber-gutenberg-blocks'),
+			// translators: Default label for file upload field
+			file: __('File Upload', 'codeweber-gutenberg-blocks'),
+			// translators: Default label for date input field
+			date: __('Date', 'codeweber-gutenberg-blocks'),
+			// translators: Default label for time input field
+			time: __('Time', 'codeweber-gutenberg-blocks'),
+			// translators: Default label for number input field
+			number: __('Number', 'codeweber-gutenberg-blocks'),
+			// translators: Default label for hidden field
+			hidden: __('Hidden Field', 'codeweber-gutenberg-blocks'),
+			// translators: Default label for consents block field
+			consents_block: __('Consents', 'codeweber-gutenberg-blocks'),
+			// translators: Default label for rating field
+			rating: __('Rating', 'codeweber-gutenberg-blocks'),
+			// translators: Default label for author role/position field
+			author_role: __('Your Position', 'codeweber-gutenberg-blocks'),
+			// translators: Default label for company field
+			company: __('Company', 'codeweber-gutenberg-blocks'),
+		};
+		// translators: Default fallback label for unknown field type
+		return defaultLabels[type] || __('Field Label', 'codeweber-gutenberg-blocks');
+	};
+
 	const formatOptionsText = (opts) => {
 		if (!opts || !opts.length) return '';
 		return opts
@@ -105,6 +158,15 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 	const blockProps = useBlockProps({
 		className: `form-field-preview ${getColClasses()}`,
 	});
+
+	// Set default label when field is first created or when fieldLabel is empty
+	useEffect(() => {
+		if (fieldType && !fieldLabel) {
+			const defaultLabel = getDefaultFieldLabel(fieldType);
+			setAttributes({ fieldLabel: defaultLabel });
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []); // Only run once on mount
 
 	// Load legal documents when consents_block is selected
 	useEffect(() => {
@@ -679,14 +741,23 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 												const mappedName = defaultNames[value];
 												newAttributes.fieldName = mappedName !== undefined ? mappedName : fieldName;
 
-												// Автоматически устанавливаем fieldLabel для специальных типов, только если он пустой
-												if (value === 'author_role' && !fieldLabel) {
-													newAttributes.fieldLabel = __('Your Position', 'codeweber-gutenberg-blocks');
-												} else if (value === 'company' && !fieldLabel) {
-													newAttributes.fieldLabel = __('Company', 'codeweber-gutenberg-blocks');
-												} else if (value === 'rating' && !fieldLabel) {
-													newAttributes.fieldLabel = __('Rating', 'codeweber-gutenberg-blocks');
+												// Автоматически устанавливаем fieldLabel при смене типа поля
+												// Всегда обновляем на дефолтное значение для нового типа
+												newAttributes.fieldLabel = getDefaultFieldLabel(value);
+
+												// Автоматически устанавливаем настройки phone-mask для типа tel
+												if (value === 'tel') {
+													if (!phoneMask) {
+														newAttributes.phoneMask = '+7 (___) ___-__-__';
+													}
+													if (!phoneMaskCaret) {
+														newAttributes.phoneMaskCaret = '_';
+													}
+													if (!phoneMaskSoftCaret) {
+														newAttributes.phoneMaskSoftCaret = '_';
+													}
 												}
+
 												setAttributes(newAttributes);
 											}}
 										/>
@@ -808,56 +879,58 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 												}}
 												help={__('Single character used instead of "_" in the mask (default "_")', 'codeweber-gutenberg-blocks')}
 											/>
+											<TextControl
+												label={__('Mask soft caret', 'codeweber-gutenberg-blocks')}
+												value={phoneMaskSoftCaret ?? '_'}
+												onChange={(value) => {
+													const softCaretChar = (value || '').toString();
+													const normalized = softCaretChar === '' ? '' : softCaretChar.slice(0, 1);
+													setAttributes({ phoneMaskSoftCaret: normalized });
+												}}
+												help={__('Placeholder symbol in mask pattern (default "_")', 'codeweber-gutenberg-blocks')}
+											/>
 										</PanelBody>
 									)}
 
 									{(fieldType === 'select' || fieldType === 'radio' || fieldType === 'checkbox') && (
 										<PanelBody title={__('Options', 'codeweber-gutenberg-blocks')} initialOpen={false}>
-											<div className="components-base-control">
-												<label className="components-base-control__label">
-													{__('Options (one per line, format: label|value)', 'codeweber-gutenberg-blocks')}
-												</label>
-												<textarea
-													className="components-textarea-control__input"
-													rows={6}
-													value={optionsText}
-													onKeyDown={(event) => {
-														event.stopPropagation();
-														if (event.nativeEvent?.stopImmediatePropagation) {
-															event.nativeEvent.stopImmediatePropagation();
-														}
-													}}
-													onKeyDownCapture={(event) => {
-														event.stopPropagation();
-														if (event.nativeEvent?.stopImmediatePropagation) {
-															event.nativeEvent.stopImmediatePropagation();
-														}
-													}}
-													onChange={(event) => {
-														const value = event.target.value;
-														setOptionsText(value);
-														const opts = value.split('\n')
-															.map((line) => {
-																// Сохраняем возможность иметь пустые value и переносы
-																if (!line) return null;
-																const parts = line.split('|');
-																const labelRaw = parts[0] ?? '';
-																const valueRaw = parts.length > 1 ? parts.slice(1).join('|') : '';
-																if (!labelRaw && !valueRaw) return null;
-																return {
-																	label: labelRaw,
-																	value: valueRaw,
-																};
-															})
-															.filter(Boolean);
-														setAttributes({ options: opts });
-													}}
-													placeholder={__('Example: Option 1|value1', 'codeweber-gutenberg-blocks')}
-												/>
-												<div className="components-base-control__help">
-													{__('Example: Option 1|value1', 'codeweber-gutenberg-blocks')}
-												</div>
-											</div>
+											<TextareaControl
+												label={__('Options (one per line, format: label|value)', 'codeweber-gutenberg-blocks')}
+												value={optionsText}
+												rows={6}
+												onKeyDown={(event) => {
+													event.stopPropagation();
+													if (event.nativeEvent?.stopImmediatePropagation) {
+														event.nativeEvent.stopImmediatePropagation();
+													}
+												}}
+												onKeyDownCapture={(event) => {
+													event.stopPropagation();
+													if (event.nativeEvent?.stopImmediatePropagation) {
+														event.nativeEvent.stopImmediatePropagation();
+													}
+												}}
+												onChange={(value) => {
+													setOptionsText(value);
+													const opts = value.split('\n')
+														.map((line) => {
+															// Сохраняем возможность иметь пустые value и переносы
+															if (!line) return null;
+															const parts = line.split('|');
+															const labelRaw = parts[0] ?? '';
+															const valueRaw = parts.length > 1 ? parts.slice(1).join('|') : '';
+															if (!labelRaw && !valueRaw) return null;
+															return {
+																label: labelRaw,
+																value: valueRaw,
+															};
+														})
+														.filter(Boolean);
+													setAttributes({ options: opts });
+												}}
+												placeholder={__('Example: Option 1|value1', 'codeweber-gutenberg-blocks')}
+												help={__('Example: Option 1|value1', 'codeweber-gutenberg-blocks')}
+											/>
 										</PanelBody>
 									)}
 

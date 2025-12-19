@@ -35,6 +35,7 @@ export default function Save({ attributes }) {
 		helpText,
 		phoneMask,
 		phoneMaskCaret,
+		phoneMaskSoftCaret,
 		buttonText,
 		buttonClass,
 		fieldClass,
@@ -95,6 +96,12 @@ export default function Save({ attributes }) {
 			if (caretChar) {
 				maskProps['data-mask-caret'] = caretChar;
 			}
+			let softCaretChar = (phoneMaskSoftCaret || '').toString();
+			softCaretChar = softCaretChar === '' ? '' : softCaretChar.slice(0, 1);
+			if (softCaretChar) {
+				maskProps['data-mask-soft-caret'] = softCaretChar;
+			}
+			// data-mask-blur не добавляем, так как по умолчанию должно быть false
 		}
 
 		if (inlineButtonEnabled) {
@@ -305,6 +312,35 @@ export default function Save({ attributes }) {
 							value={submitButtonText}
 							className={submitButtonClass}
 						/>
+					</div>
+				);
+
+			case 'rating':
+				const currentRating = parseInt(defaultValue) || 0;
+				return (
+					<div>
+						<label className="form-label d-block mb-2">
+							<RawHTML>{labelContent}</RawHTML>
+						</label>
+						<input
+							type="hidden"
+							id={fieldId}
+							name={fieldName}
+							value={currentRating}
+							{...(isRequired && { required: true })}
+						/>
+						<div className="rating-stars-wrapper d-flex gap-1 align-items-center p-0" data-rating-input={fieldId}>
+							{[1, 2, 3, 4, 5].map((starValue) => (
+								<span
+									key={starValue}
+									className={`rating-star-item ${starValue <= currentRating ? 'active' : ''}`}
+									data-rating={starValue}
+									style={{ cursor: 'pointer' }}
+								>
+									★
+								</span>
+							))}
+						</div>
 					</div>
 				);
 

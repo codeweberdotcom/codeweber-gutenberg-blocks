@@ -2911,3 +2911,38 @@ msgstr "Показывать только гостям"
 msgid "Field will be shown only for non-logged-in users (guests)"
 msgstr ""
 "Поле будет отображаться только для неавторизованных пользователей (гостей)"
+
+#: src/blocks/form-field/edit.js:74
+#. translators: Default label for text input field
+msgid "Name"
+msgstr "Имя"
+
+#: src/blocks/form-field/edit.js:76
+#. translators: Default label for email input field
+msgid "Email Address"
+msgstr "Адрес электронной почты"
+
+#: src/blocks/form-field/edit.js:80
+#. translators: Default label for phone number input field
+msgid "Phone Number"
+msgstr "Номер телефона"
+
+#: src/blocks/form-field/edit.js:82
+#. translators: Default label for website URL input field
+msgid "Website"
+msgstr "Веб-сайт"
+
+#: src/blocks/form-field/edit.js:84
+#. translators: Default label for textarea field
+msgid "Message"
+msgstr "Сообщение"
+
+#: src/blocks/form-field/edit.js:86
+#. translators: Default label for select dropdown field
+msgid "Select Option"
+msgstr "Выберите опцию"
+
+#: src/blocks/form-field/edit.js:90
+#. translators: Default label for checkbox field
+msgid "I agree"
+msgstr "Я согласен"

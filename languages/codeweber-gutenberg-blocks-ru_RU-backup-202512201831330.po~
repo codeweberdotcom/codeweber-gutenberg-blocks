@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Codeweber Gutenberg Blocks\n"
 "POT-Creation-Date: 2025-12-04T14:31:54Z\n"
-"PO-Revision-Date: 2025-12-16 11:14+0000\n"
+"PO-Revision-Date: 2025-12-20 18:30+0000\n"
 "Last-Translator: Codeweber\n"
 "Language-Team: Русский\n"
 "Language: ru_RU\n"
@@ -2546,6 +2546,42 @@ msgstr "Название формы"
 msgid "Form ID"
 msgstr "ID формы"
 
+#: src/blocks/form/edit.js:98
+msgid ""
+"Form ID is assigned automatically from the CPT Form ID and cannot be changed "
+"here."
+msgstr ""
+"ID формы автоматически присваивается из ID записи CPT Форма и не может быть "
+"изменен здесь."
+
+#: src/blocks/form/edit.js:144
+msgid "Form Type"
+msgstr "Тип формы"
+
+#: src/blocks/form/edit.js:148
+msgid "Regular Form"
+msgstr "Обычная форма"
+
+#: src/blocks/form/edit.js:149
+msgid "Newsletter Subscription"
+msgstr "Подписка на рассылку"
+
+#: src/blocks/form/edit.js:150
+msgid "Testimonial Form"
+msgstr "Форма отзыва"
+
+#: src/blocks/form/edit.js:151
+msgid "Resume Form"
+msgstr "Форма резюме"
+
+#: src/blocks/form/edit.js:152
+msgid "Callback Request"
+msgstr "Запрос обратного звонка"
+
+#: src/blocks/form/edit.js:154
+msgid "Select the type of form. This determines how the form is processed."
+msgstr "Выберите тип формы. Это определяет способ обработки формы."
+
 #: src/blocks/form/edit.js:79
 msgid "Leave empty to auto-generate"
 msgstr "Оставьте пустым для автоматической генерации"
@@ -2722,9 +2758,17 @@ msgstr "Имя поля"
 msgid "Unique field identifier (e.g., name, email)"
 msgstr "Уникальный идентификатор поля (например, name, email)"
 
+#: src/blocks/form-field/edit.js:233
+msgid "Field Label"
+msgstr "Метка поля"
+
 #: src/blocks/form-field/edit.js:226
 msgid "Required Field"
 msgstr "Обязательное поле"
+
+#: src/blocks/form-field/edit.js:251
+msgid "Validation"
+msgstr "Валидация"
 
 #: src/blocks/form-field/edit.js:234
 msgid "Min Length"
@@ -2766,6 +2810,10 @@ msgstr "Несколько файлов"
 msgid "Field Width"
 msgstr "Ширина поля"
 
+#: src/blocks/form-field/edit.js:332
+msgid "Advanced"
+msgstr "Дополнительно"
+
 #: src/blocks/form-field/edit.js:315
 msgid "Default Value"
 msgstr "Значение по умолчанию"
@@ -2778,6 +2826,59 @@ msgstr "Текст подсказки"
 msgid "Additional help text below the field"
 msgstr "Дополнительный текст подсказки под полем"
 
+#: src/blocks/form-field/edit.js:100
+msgid "Replace existing label text with default text for this document?"
+msgstr ""
+"Заменить существующий текст метки на текст по умолчанию для этого документа?"
+
+#: src/blocks/form-field/edit.js:144
+msgid "I agree to the {document_title_url}"
+msgstr "Я согласен с {document_title_url}"
+
+#: src/blocks/form-field/edit.js:330
+msgid "Consents"
+msgstr "Согласия"
+
+#: src/blocks/form-field/edit.js:332
+msgid ""
+"Add consent checkboxes to your form. Each consent can have a custom label "
+"with placeholders for document links."
+msgstr ""
+"Добавьте чекбоксы согласия в вашу форму. Каждое согласие может иметь "
+"пользовательскую метку с плейсхолдерами для ссылок на документы."
+
+#: src/blocks/form-field/edit.js:338
+msgid "Consent"
+msgstr "Согласие"
+
+#: src/blocks/form-field/edit.js:342
+msgid "Label Text"
+msgstr "Текст метки"
+
+#: src/blocks/form-field/edit.js:345
+msgid "I agree to the {document_title}"
+msgstr "Я согласен с {document_title}"
+
+#: src/blocks/form-field/edit.js:346
+msgid ""
+"You can use placeholders: {document_url}, {document_title}, "
+"{document_title_url}, {form_id}"
+msgstr ""
+"Вы можете использовать плейсхолдеры: {document_url}, {document_title}, "
+"{document_title_url}, {form_id}"
+
+#: src/blocks/form-field/edit.js:353
+msgid "— Select —"
+msgstr "— Выбрать —"
+
+#: src/blocks/form-field/edit.js:370
+msgid "Required (form cannot be submitted without this consent)"
+msgstr "Обязательно (форма не может быть отправлена без этого согласия)"
+
+#: src/blocks/form-field/edit.js:392
+msgid "+ Add Consent"
+msgstr "+ Добавить согласие"
+
 #: src/blocks/form-field/block.json:5
 msgid "Form Field"
 msgstr "Поле формы"
@@ -2785,3 +2886,127 @@ msgstr "Поле формы"
 #: src/blocks/form-field/block.json:8
 msgid "Add form field (text, email, textarea, etc.)"
 msgstr "Добавить поле формы (текст, email, текстовая область и т.д.)"
+
+#: src/blocks/form-field/edit.js:257
+msgid "Newsletter Email"
+msgstr "Email для рассылки"
+
+#: src/blocks/form-field/edit.js:270
+msgid "Rating"
+msgstr "Рейтинг"
+
+#: src/blocks/form-field/edit.js:271
+msgid "Author Role (Position)"
+msgstr "Роль автора (Должность)"
+
+#: src/blocks/form-field/edit.js:391 src/blocks/form-field/edit.js:606
+msgid "Your Position"
+msgstr "Ваша должность"
+
+#: src/blocks/form-field/edit.js:642
+msgid "Show for guests only"
+msgstr "Показывать только гостям"
+
+#: src/blocks/form-field/edit.js:645
+msgid "Field will be shown only for non-logged-in users (guests)"
+msgstr ""
+"Поле будет отображаться только для неавторизованных пользователей (гостей)"
+
+#. translators: Default label for email input field
+#: src/blocks/form-field/edit.js:76
+msgid "Email Address"
+msgstr "Адрес электронной почты"
+
+#. translators: Default label for phone number input field
+#: src/blocks/form-field/edit.js:80
+msgid "Phone Number"
+msgstr "Номер телефона"
+
+#. translators: Default label for website URL input field
+#: src/blocks/form-field/edit.js:82
+msgid "Website"
+msgstr "Веб-сайт"
+
+#. translators: Default label for textarea field
+#: src/blocks/form-field/edit.js:84
+msgid "Message"
+msgstr "Сообщение"
+
+#. translators: Default label for select dropdown field
+#: src/blocks/form-field/edit.js:86
+msgid "Select Option"
+msgstr "Выберите опцию"
+
+#. translators: Default label for checkbox field
+#: src/blocks/form-field/edit.js:90
+msgid "I agree"
+msgstr "Я согласен"
+
+#: src/blocks/form-field/save.js:271 src/blocks/form-field/edit.js:548
+msgid "Browse"
+msgstr "Обзор"
+
+#: src/blocks/form-field/save.js:270 src/blocks/form-field/edit.js:547
+msgid "No file selected"
+msgstr "Файл не выбран"
+
+#. translators: Default text for inline submit button
+#: src/blocks/form-field/render.php:124
+msgid "Send"
+msgstr "Отправить"
+
+#. translators: Loading text for inline submit button during form submission
+#: src/blocks/form-field/render.php:169
+msgid "Sending..."
+msgstr "Отправка..."
+
+#: includes/js/filepond-init.js:71
+msgid ""
+"Drag & drop your files or <span class=\"filepond--label-action\">"
+"browse</span>"
+msgstr ""
+"<span class=\"filepond--label-action\">Выбрать файлы для загрузки</span>"
+
+#: includes/js/filepond-init.js:79
+msgid "Upload complete"
+msgstr "Загрузка завершена"
+
+#: includes/js/filepond-init.js:84
+msgid "Tap to undo"
+msgstr "Нажмите, чтобы отменить"
+
+#: inc/Plugin.php:835
+msgid "Uploading"
+msgstr "Загрузка"
+
+#: inc/Plugin.php:836
+msgid "tap to cancel"
+msgstr "нажмите, чтобы отменить"
+
+#: inc/Plugin.php:826
+msgid "Maximum number of files: %s. Please remove excess files."
+msgstr "Максимальное количество файлов: %s. Пожалуйста, удалите лишние файлы."
+
+#: inc/Plugin.php:827
+msgid "File is too large. Maximum size: %s"
+msgstr "Файл слишком большой. Максимальный размер: %s"
+
+#: inc/Plugin.php:828
+msgid "Total file size is too large. Maximum: %s"
+msgstr "Общий размер файлов слишком большой. Максимум: %s"
+
+#: inc/Plugin.php:829
+msgid "Error uploading file"
+msgstr "Ошибка при загрузке файла"
+
+#: inc/Plugin.php:830
+msgid "Error adding file"
+msgstr "Ошибка при добавлении файла"
+
+#: inc/Plugin.php:831
+msgid "Maximum number of files: %s. Files removed: %s"
+msgstr "Максимальное количество файлов: %s. Удалено файлов: %s"
+
+#: inc/Plugin.php:832
+msgid "Total file size exceeded. Maximum: %s"
+msgstr "Общий размер файлов превышен. Максимум: %s"

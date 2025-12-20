@@ -43,6 +43,9 @@ class Plugin {
 
 		// Фильтр для условной загрузки FilePond для file полей
 		add_filter('pre_render_block', __CLASS__ . '::pre_render_file_field', 10, 2);
+
+		// Фильтр для условного рендеринга form-field с inline button
+		add_filter('pre_render_block', __CLASS__ . '::pre_render_form_field_inline_button', 10, 2);
 	}
 
 	public static function init(): void {
@@ -859,10 +862,9 @@ class Plugin {
 
 		$attrs = $parsed_block['attrs'] ?? [];
 		$fieldType = $attrs['fieldType'] ?? '';
-		$useFilePond = $attrs['useFilePond'] ?? false;
 
-		// Check if this is a file field with FilePond enabled
-		if ($fieldType === 'file' && $useFilePond) {
+		// FilePond всегда используется для полей типа file
+		if ($fieldType === 'file') {
 			self::enqueue_filepond();
 		}
 
@@ -872,13 +874,112 @@ class Plugin {
 				if (isset($inner_block['blockName']) && $inner_block['blockName'] === 'codeweber-blocks/form-field') {
 					$inner_attrs = $inner_block['attrs'] ?? [];
 					$inner_fieldType = $inner_attrs['fieldType'] ?? '';
-					$inner_useFilePond = $inner_attrs['useFilePond'] ?? false;
+					// FilePond всегда используется для полей типа file
 
-					if ($inner_fieldType === 'file' && $inner_useFilePond) {
+					if ($inner_fieldType === 'file') {
 						self::enqueue_filepond();
 						break; // No need to check further
 					}
 				}
+			}
+		}
+
+		return $pre_render;
+	}
+
+	/**
+	 * Pre-render form-field block with inline button
+	 * Uses PHP render when enableInlineButton is true
+	 */
+	public static function pre_render_form_field_inline_button($pre_render, $parsed_block) {
+		// Check if this is a form-field block
+		if (!isset($parsed_block['blockName']) || $parsed_block['blockName'] !== 'codeweber-blocks/form-field') {
+			return $pre_render;
+		}
+
+		$attributes = $parsed_block['attrs'] ?? [];
+		$enable_inline_button = isset($attributes['enableInlineButton']) && ($attributes['enableInlineButton'] === true || $attributes['enableInlineButton'] === 'true' || $attributes['enableInlineButton'] === 1);
+		$field_type = $attributes['fieldType'] ?? 'text';
+		$inline_button_supported_types = ['text', 'email', 'tel', 'url', 'number', 'date', 'time', 'author_role', 'company'];
+		$inline_button_enabled = $enable_inline_button && in_array($field_type, $inline_button_supported_types) && $field_type !== 'newsletter';
+
+		// #region agent log
+		$log_file = dirname(dirname(WP_CONTENT_DIR)) . '/.cursor/debug.log';
+		$log_entry = json_encode([
+			'sessionId' => 'debug-session',
+			'runId' => 'run1',
+			'hypothesisId' => 'I',
+			'location' => 'Plugin.php:pre_render_form_field_inline_button',
+			'message' => 'pre_render_form_field_inline_button called',
+			'data' => [
+				'enable_inline_button' => $enable_inline_button,
+				'field_type' => $field_type,
+				'inline_button_enabled' => $inline_button_enabled,
+				'enableInlineButton_raw' => $attributes['enableInlineButton'] ?? 'NOT_SET'
+			],
+			'timestamp' => time() * 1000
+		]) . "\n";
+		@file_put_contents($log_file, $log_entry, FILE_APPEND);
+		// #endregion
+
+		// Use PHP render for fields with inline button
+		if ($inline_button_enabled) {
+			$render_path = self::getBasePath() . '/build/blocks/form-field/render.php';
+			if (file_exists($render_path)) {
+				$content = $parsed_block['innerHTML'] ?? '';
+				$block_instance = new \WP_Block($parsed_block);
+
+				// Get context from parent block if available
+				$context = [];
+				if (isset($parsed_block['blockContext'])) {
+					$context = $parsed_block['blockContext'];
+				}
+
+				// Pass variables to render.php scope
+				extract([
+					'attributes' => $attributes,
+					'content' => $content,
+					'block' => $block_instance,
+					'context' => $context,
+				], EXTR_SKIP);
+
+				// #region agent log
+				$log_entry = json_encode([
+					'sessionId' => 'debug-session',
+					'runId' => 'run1',
+					'hypothesisId' => 'J',
+					'location' => 'Plugin.php:pre_render_form_field_inline_button',
+					'message' => 'INLINE BUTTON - calling render.php',
+					'data' => [
+						'render_path' => $render_path,
+						'file_exists' => file_exists($render_path)
+					],
+					'timestamp' => time() * 1000
+				]) . "\n";
+				@file_put_contents($log_file, $log_entry, FILE_APPEND);
+				// #endregion
+
+				ob_start();
+				require $render_path;
+				$rendered = ob_get_clean();
+
+				// #region agent log
+				$log_entry = json_encode([
+					'sessionId' => 'debug-session',
+					'runId' => 'run1',
+					'hypothesisId' => 'K',
+					'location' => 'Plugin.php:pre_render_form_field_inline_button',
+					'message' => 'INLINE BUTTON - render.php output generated',
+					'data' => [
+						'output_length' => strlen($rendered),
+						'output_preview' => substr($rendered, 0, 200)
+					],
+					'timestamp' => time() * 1000
+				]) . "\n";
+				@file_put_contents($log_file, $log_entry, FILE_APPEND);
+				// #endregion
+
+				return $rendered;
 			}
 		}
 

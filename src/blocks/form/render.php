@@ -211,7 +211,8 @@ if (class_exists('CodeweberFormsRenderer')) {
     // Проверяем, есть ли file поле с FilePond
     $has_filepond = false;
     foreach ($fields as $field) {
-        if (($field['fieldType'] ?? '') === 'file' && !empty($field['useFilePond'])) {
+        // FilePond всегда используется для полей типа file
+        if (($field['fieldType'] ?? '') === 'file') {
             $has_filepond = true;
             // #region agent log
             $log_dir = dirname(WP_CONTENT_DIR) . '/.cursor';

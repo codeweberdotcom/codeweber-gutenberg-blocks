@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Codeweber Gutenberg Blocks\n"
 "POT-Creation-Date: 2025-12-04T14:31:54Z\n"
-"PO-Revision-Date: 2025-12-19 21:26+0000\n"
+"PO-Revision-Date: 2025-12-20 18:31+0000\n"
 "Last-Translator: Codeweber\n"
 "Language-Team: Русский\n"
 "Language: ru_RU\n"
@@ -2950,13 +2950,22 @@ msgstr "Обзор"
 msgid "No file selected"
 msgstr "Файл не выбран"
 
+#. translators: Default text for inline submit button
+#: src/blocks/form-field/render.php:124
+msgid "Send"
+msgstr "Отправить"
+
+#. translators: Loading text for inline submit button during form submission
+#: src/blocks/form-field/render.php:169
+msgid "Sending..."
+msgstr "Отправка..."
+
 #: includes/js/filepond-init.js:71
 msgid ""
 "Drag & drop your files or <span class=\"filepond--label-action\">"
 "browse</span>"
 msgstr ""
-"Перетащите файлы сюда или <span class=\"filepond--label-action\">"
-"Выберите</span>"
+"<span class=\"filepond--label-action\">Выбрать файлы для загрузки</span>"
 
 #: includes/js/filepond-init.js:79
 msgid "Upload complete"

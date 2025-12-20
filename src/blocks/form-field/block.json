@@ -153,10 +153,6 @@
             "type": "string",
             "default": "_"
         },
-        "useFilePond": {
-            "type": "boolean",
-            "default": false
-        },
         "maxFiles": {
             "type": "number",
             "default": 0

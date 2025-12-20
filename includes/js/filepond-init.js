@@ -62,12 +62,27 @@
                 return Math.round(value * (multipliers[unit] || 1));
             }
 
+            // Проверяем стиль FilePond (Bootstrap для одиночных файлов или обычный для множественных)
+            const filepondStyle = input.dataset.filepondStyle || 'default';
+            const isBootstrapStyle = filepondStyle === 'bootstrap';
+
             // Get configuration from data attributes
             const config = {
                 allowMultiple: input.hasAttribute('multiple'),
                 acceptedFileTypes: input.accept || null,
                 credits: false, // Disable "Powered by PQINA" credit
             };
+
+            // Для Bootstrap стиля скрываем стандартный UI FilePond
+            if (isBootstrapStyle) {
+                config.stylePanelLayout = 'compact';
+                config.stylePanelAspectRatio = '0';
+                config.styleButtonRemoveItemPosition = 'left';
+                config.styleButtonProcessItemPosition = 'right';
+                config.styleLoadIndicatorPosition = 'right';
+                config.styleProgressIndicatorPosition = 'right';
+                config.styleButtonRemoveItemAlign = false;
+            }
 
             // Add translations for FilePond labels
             var translations = (typeof filepondSettings !== 'undefined' && filepondSettings.translations) ? filepondSettings.translations : {};
@@ -498,6 +513,7 @@
     window.initFilePond = initFilePond;
 
 })();
+
 
 
 

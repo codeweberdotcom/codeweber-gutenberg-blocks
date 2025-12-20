@@ -45,8 +45,7 @@ export default function Save({ attributes }) {
 			className={buttonClass || 'btn btn-primary'}
 			data-loading-text="Sending..."
 		>
-			<i className="uil uil-send fs-13"></i>
-			{buttonText || 'Send Message'}
+			<span>{buttonText || 'Send Message'}</span>
 		</button>
 	);
 

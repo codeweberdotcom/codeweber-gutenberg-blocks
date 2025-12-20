@@ -42,7 +42,6 @@ export default function Save({ attributes }) {
 		enableInlineButton,
 		inlineButtonText,
 		inlineButtonClass,
-		useFilePond,
 		maxFiles,
 		maxFileSize,
 		maxTotalFileSize,
@@ -51,6 +50,54 @@ export default function Save({ attributes }) {
 	// For consents_block and newsletter, return null to use server-side render.php
 	if (fieldType === 'consents_block' || fieldType === 'newsletter') {
 		return null;
+	}
+
+	// For fields with inline button, return null to use server-side render.php (like newsletter)
+	const inlineButtonSupportedTypes = ['text', 'email', 'tel', 'url', 'number', 'date', 'time', 'author_role', 'company'];
+	const inlineButtonEnabled = enableInlineButton && inlineButtonSupportedTypes.includes(fieldType) && fieldType !== 'newsletter';
+	
+	// #region agent log
+	if (typeof window !== 'undefined') {
+		fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({
+				location: 'save.js:57',
+				message: 'save.js inline button check',
+				data: {
+					enableInlineButton: enableInlineButton,
+					fieldType: fieldType,
+					inlineButtonEnabled: inlineButtonEnabled,
+					isSupportedType: inlineButtonSupportedTypes.includes(fieldType)
+				},
+				timestamp: Date.now(),
+				sessionId: 'debug-session',
+				runId: 'run1',
+				hypothesisId: 'G'
+			})
+		}).catch(() => {});
+	}
+	// #endregion
+	
+	if (inlineButtonEnabled) {
+		// #region agent log
+		if (typeof window !== 'undefined') {
+			fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					location: 'save.js:59',
+					message: 'save.js RETURNING NULL for inline button',
+					data: { fieldType, fieldName },
+					timestamp: Date.now(),
+					sessionId: 'debug-session',
+					runId: 'run1',
+					hypothesisId: 'H'
+				})
+			}).catch(() => {});
+		}
+		// #endregion
+		return null; // Use server-side render.php
 	}
 
 	if (!fieldName) {
@@ -90,8 +137,6 @@ export default function Save({ attributes }) {
 	const renderField = () => {
 		const classNames = (...parts) => parts.filter(Boolean).join(' ').trim();
 		const maskProps = {};
-		const inlineButtonSupportedTypes = ['text', 'email', 'tel', 'url', 'number', 'date', 'time', 'author_role', 'company'];
-		const inlineButtonEnabled = enableInlineButton && inlineButtonSupportedTypes.includes(fieldType) && fieldType !== 'newsletter';
 
 		if (fieldType === 'tel' && phoneMask) {
 			maskProps['data-mask'] = phoneMask;
@@ -106,42 +151,6 @@ export default function Save({ attributes }) {
 				maskProps['data-mask-soft-caret'] = softCaretChar;
 			}
 			// data-mask-blur не добавляем, так как по умолчанию должно быть false
-		}
-
-		if (inlineButtonEnabled) {
-			const formRadiusClass = typeof window !== 'undefined' && window.getThemeFormRadius
-				? window.getThemeFormRadius()
-				: 'rounded';
-			const buttonRadiusClass = typeof window !== 'undefined' && window.getThemeButton
-				? window.getThemeButton()
-				: '';
-			const submitButtonText = inlineButtonText || __('Send', 'codeweber-gutenberg-blocks');
-			const submitButtonClass = `${inlineButtonClass || 'btn btn-primary'} ${buttonRadiusClass}`.trim();
-
-			return (
-				<div className="input-group form-floating">
-					<input
-						type={fieldType}
-						className={classNames('form-control', formRadiusClass, fieldClass)}
-						id={fieldId}
-						name={fieldName}
-						placeholder={placeholder || fieldLabel}
-						value={defaultValue || ''}
-						{...(isRequired && { required: true })}
-						{...(maxLength > 0 && { maxLength })}
-						{...(minLength > 0 && { minLength })}
-						{...maskProps}
-					/>
-					<label htmlFor={fieldId}>
-						<RawHTML>{labelContent}</RawHTML>
-					</label>
-					<input
-						type="submit"
-						value={submitButtonText}
-						className={submitButtonClass}
-					/>
-				</div>
-			);
 		}
 
 		switch (fieldType) {
@@ -257,37 +266,20 @@ export default function Save({ attributes }) {
 							<RawHTML>{labelContent}</RawHTML>
 						</label>
 					<div className="input-group">
+						{/* FilePond всегда используется для полей типа file - обычный дизайн */}
 						<input
 							type="file"
-							className={classNames('form-control file-input-hidden', fieldClass)}
+							className={classNames('filepond', fieldClass)}
 							id={fieldId}
 							name={multiple ? `${fieldName}[]` : fieldName}
-							data-filepond={useFilePond ? 'true' : 'false'}
-							data-max-files={useFilePond && maxFiles ? maxFiles : ''}
-							data-max-file-size={useFilePond && maxFileSize ? maxFileSize : ''}
-							data-max-total-file-size={useFilePond && maxTotalFileSize ? maxTotalFileSize : ''}
+							data-filepond="true"
+							data-max-files={multiple && maxFiles ? maxFiles : (!multiple ? '1' : '')}
+							data-max-file-size={maxFileSize ? maxFileSize : ''}
+							data-max-total-file-size={maxTotalFileSize ? maxTotalFileSize : ''}
 							{...(isRequired && { required: true })}
 							{...(accept && { accept })}
 							{...(multiple && { multiple: true })}
 						/>
-						{!useFilePond && (
-							<>
-								<input
-									type="text"
-									className={classNames('form-control file-input-display', fieldClass)}
-									id={`${fieldId}-display`}
-									readOnly
-									placeholder={__('No file selected', 'codeweber-gutenberg-blocks')}
-								/>
-								<button
-									type="button"
-									className="btn btn-outline-secondary file-browse-button"
-									data-file-input={fieldId}
-								>
-									{__('Browse', 'codeweber-gutenberg-blocks')}
-								</button>
-							</>
-						)}
 					</div>
 					</div>
 				);

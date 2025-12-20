@@ -2163,14 +2163,26 @@
       "No file selected": [
         "Файл не выбран"
       ],
+      "Send": [
+        "Отправить"
+      ],
+      "Sending...": [
+        "Отправка..."
+      ],
       "Drag & drop your files or <span class=\"filepond--label-action\">browse</span>": [
-        "Перетащите файлы сюда или <span class=\"filepond--label-action\">Выберите</span>"
+        "<span class=\"filepond--label-action\">Выбрать файлы для загрузки</span>"
       ],
       "Upload complete": [
         "Загрузка завершена"
       ],
       "Tap to undo": [
         "Нажмите, чтобы отменить"
+      ],
+      "Uploading": [
+        "Загрузка"
+      ],
+      "tap to cancel": [
+        "нажмите, чтобы отменить"
       ],
       "Maximum number of files: %s. Please remove excess files.": [
         "Максимальное количество файлов: %s. Пожалуйста, удалите лишние файлы."

@@ -833,6 +833,8 @@ class Plugin {
 				'totalSizeExceeded' => __('Total file size exceeded. Maximum: %s', 'codeweber-gutenberg-blocks'),
 				'uploadComplete' => __('Upload complete', 'codeweber-gutenberg-blocks'),
 				'tapToUndo' => __('Tap to undo', 'codeweber-gutenberg-blocks'),
+				'uploading' => __('Uploading', 'codeweber-gutenberg-blocks'),
+				'tapToCancel' => __('tap to cancel', 'codeweber-gutenberg-blocks'),
 			]
 		]);
 

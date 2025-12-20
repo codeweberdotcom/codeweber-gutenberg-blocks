@@ -2966,6 +2966,14 @@ msgstr "Загрузка завершена"
 msgid "Tap to undo"
 msgstr "Нажмите, чтобы отменить"
 
+#: inc/Plugin.php:835
+msgid "Uploading"
+msgstr "Загрузка"
+
+#: inc/Plugin.php:836
+msgid "tap to cancel"
+msgstr "нажмите, чтобы отменить"
+
 #: inc/Plugin.php:826
 msgid "Maximum number of files: %s. Please remove excess files."
 msgstr "Максимальное количество файлов: %s. Пожалуйста, удалите лишние файлы."

@@ -91,6 +91,16 @@
             } else {
                 config.labelTapToUndo = 'Tap to undo';
             }
+            if (translations.uploading) {
+                config.labelFileProcessing = translations.uploading;
+            } else {
+                config.labelFileProcessing = 'Uploading';
+            }
+            if (translations.tapToCancel) {
+                config.labelTapToCancel = translations.tapToCancel;
+            } else {
+                config.labelTapToCancel = 'tap to cancel';
+            }
 
             // #region agent log
             fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'filepond-init.js:43',message:'Reading data attributes',data:{inputId:input.id,'data-maxFiles':input.dataset.maxFiles,'data-maxFileSize':input.dataset.maxFileSize,'data-maxTotalFileSize':input.dataset.maxTotalFileSize,'hasMultiple':input.hasAttribute('multiple'),'accept':input.accept},timestamp:Date.now(),sessionId:'debug-session','runId':'run1','hypothesisId':'C'})}).catch(()=>{});

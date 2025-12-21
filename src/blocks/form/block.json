@@ -184,8 +184,32 @@
         "formType": {
             "type": "string",
             "default": "form"
-        }
+        },
+        "formTitle": {
+            "type": "string",
+            "default": ""
+        },
+    "formSubtitle": {
+      "type": "string",
+      "default": ""
     },
+    "formTitleTag": {
+      "type": "string",
+      "default": "div"
+    },
+    "formSubtitleTag": {
+      "type": "string",
+      "default": "p"
+    },
+    "formTitleClass": {
+      "type": "string",
+      "default": "h3 text-start"
+    },
+    "formSubtitleClass": {
+      "type": "string",
+      "default": "lead mb-4 text-start"
+    }
+  },
     "allowedBlocks": [
         "codeweber-blocks/form-field",
         "codeweber-blocks/submit-button"

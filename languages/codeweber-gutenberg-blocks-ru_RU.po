@@ -1215,6 +1215,14 @@ msgstr "Стиль Lead"
 msgid "Subtitle Class"
 msgstr "Класс подзаголовка"
 
+#: src/blocks/form/edit.js:297
+msgid "CSS classes for the title element"
+msgstr "CSS классы для заголовка"
+
+#: src/blocks/form/edit.js:315
+msgid "CSS classes for the subtitle element"
+msgstr "CSS классы для подзаголовка"
+
 #: src/components/heading/HeadingTypographyControl.js:185
 msgid "Paragraph Color Type"
 msgstr "Тип цвета параграфа"

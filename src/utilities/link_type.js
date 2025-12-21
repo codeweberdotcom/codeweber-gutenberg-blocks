@@ -260,7 +260,7 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 				}
 				
 				const formOptions = data.map((form) => ({
-					label: form.title?.rendered || form.title || `Form #${form.id}`,
+					label: `${form.id}: ${form.title?.rendered || form.title || `Form #${form.id}`}`,
 					value: String(form.id),
 				}));
 				setCodeweberForms(formOptions);
@@ -282,7 +282,7 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 						const data = await response.json();
 						if (Array.isArray(data)) {
 							const formOptions = data.map((form) => ({
-								label: form.title?.rendered || form.title || `Form #${form.id}`,
+								label: `${form.id}: ${form.title?.rendered || form.title || `Form #${form.id}`}`,
 								value: String(form.id),
 							}));
 							setCodeweberForms(formOptions);

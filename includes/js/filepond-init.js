@@ -13,6 +13,17 @@
      * Initialize FilePond for file inputs
      */
     function initFilePond() {
+        // Log version for debugging cache issues
+        console.log('FilePond Init Script v2.0 loaded at', new Date().toISOString());
+        
+        // #region agent log
+        const allFileInputs = document.querySelectorAll('input[type="file"]');
+        const filepondInputs = document.querySelectorAll('input[type="file"][data-filepond="true"]');
+        const modalContent = document.getElementById('modal-content');
+        const modalFileInputs = modalContent ? modalContent.querySelectorAll('input[type="file"][data-filepond="true"]') : [];
+        fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'filepond-init.js:15',message:'initFilePond called',data:{hasFilePond:typeof FilePond !== 'undefined',allFileInputsCount:allFileInputs.length,filepondInputsCount:filepondInputs.length,modalFileInputsCount:modalFileInputs.length,modalContentExists:!!modalContent,filepondInputsIds:Array.from(filepondInputs).map(i=>i.id),modalFileInputsIds:Array.from(modalFileInputs).map(i=>i.id)},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
+        // #endregion
+        
         // Check if FilePond is loaded
         if (typeof FilePond === 'undefined') {
             // #region agent log
@@ -40,6 +51,10 @@
 
         // Register FilePond plugins if needed
         // FilePond.registerPlugin(...);
+        
+        // #region agent log
+        fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'filepond-init.js:42',message:'Checking FilePond plugins',data:{hasFilePond:typeof FilePond !== 'undefined',hasFileValidatePlugin:typeof FilePondPluginFileValidateType !== 'undefined',FilePondVersion:typeof FilePond !== 'undefined' ? FilePond.version : null},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+        // #endregion
 
         // Initialize FilePond for each input
         fileInputs.forEach(function(input) {
@@ -50,6 +65,9 @@
 
             // Mark as initialized
             input.setAttribute('data-filepond-initialized', 'true');
+            
+            // Сохраняем оригинальный ID, так как FilePond может изменить его
+            const originalInputId = input.id;
 
             // Helper to convert sizes like "10MB" to bytes
             function parseSizeToBytes(sizeStr) {
@@ -69,9 +87,44 @@
             // Get configuration from data attributes
             const config = {
                 allowMultiple: input.hasAttribute('multiple'),
-                acceptedFileTypes: input.accept || null,
                 credits: false, // Disable "Powered by PQINA" credit
+                allowSyncAcceptAttribute: true, // Синхронизировать атрибут accept с внутренним input элементом
             };
+
+            // Обработка acceptedFileTypes - преобразуем строку accept в массив для FilePond
+            if (input.accept) {
+                const acceptValue = input.accept.trim();
+                
+                // #region agent log
+                fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'filepond-init.js:76',message:'Processing accept attribute',data:{inputId:input.id,acceptValue:acceptValue,originalAccept:input.accept},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
+                // #endregion
+                
+                if (acceptValue) {
+                    // Разбиваем по запятой, если есть несколько типов
+                    const types = acceptValue.split(',').map(t => t.trim()).filter(t => t);
+                    
+                    // Преобразуем каждый тип в формат, понятный FilePond
+                    const acceptedTypes = types.map(type => {
+                        // Если это уже MIME-тип (содержит "/"), оставляем как есть
+                        if (type.includes('/')) {
+                            return type;
+                        }
+                        // Если это расширение без точки, добавляем точку
+                        if (!type.startsWith('.')) {
+                            return '.' + type.toLowerCase();
+                        }
+                        // Если уже с точкой, просто приводим к нижнему регистру
+                        return type.toLowerCase();
+                    });
+                    
+                    config.acceptedFileTypes = acceptedTypes;
+                    console.log('FilePond: Accepted file types:', acceptedTypes);
+                    
+                    // #region agent log
+                    fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'filepond-init.js:97',message:'acceptedFileTypes set in config',data:{inputId:input.id,acceptedTypes:acceptedTypes,configAcceptedFileTypes:config.acceptedFileTypes},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
+                    // #endregion
+                }
+            }
 
             // Для Bootstrap стиля скрываем стандартный UI FilePond
             if (isBootstrapStyle) {
@@ -220,11 +273,112 @@
             try {
                 console.log('FilePond: Initializing for input #' + input.id, config);
                 // #region agent log
-                fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'filepond-init.js:108',message:'Calling FilePond.create',data:{inputId:input.id,maxFiles:config.maxFiles,maxFileSize:config.maxFileSize,maxTotalFileSize:config.maxTotalFileSize,allowMultiple:config.allowMultiple,inputVisible:input.offsetParent!==null,inputDisplay:window.getComputedStyle(input).display},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'D'})}).catch(function(){});
+                fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'filepond-init.js:108',message:'Calling FilePond.create',data:{inputId:input.id,maxFiles:config.maxFiles,maxFileSize:config.maxFileSize,maxTotalFileSize:config.maxTotalFileSize,allowMultiple:config.allowMultiple,acceptedFileTypes:config.acceptedFileTypes,hasAcceptedFileTypes:!!config.acceptedFileTypes,inputVisible:input.offsetParent!==null,inputDisplay:window.getComputedStyle(input).display},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'D'})}).catch(function(){});
                 // #endregion
                 const pond = FilePond.create(input, config);
+                
+                // Явно устанавливаем атрибут accept на внутреннем input элементе FilePond
+                // Это нужно для фильтрации файлов в диалоге выбора браузера
+                if (input.accept) {
+                    const acceptValue = input.accept;
+                    
+                    // Функция для установки атрибута accept
+                    const setAcceptAttribute = function(browserInput) {
+                        if (browserInput) {
+                            browserInput.setAttribute('accept', acceptValue);
+                            return true;
+                        }
+                        return false;
+                    };
+                    
+                    // Используем MutationObserver для отслеживания создания внутреннего input элемента
+                    const observer = new MutationObserver(function(mutations) {
+                        mutations.forEach(function(mutation) {
+                            mutation.addedNodes.forEach(function(node) {
+                                if (node.nodeType === 1) { // Element node
+                                    // Проверяем, является ли это input элементом
+                                    if (node.tagName === 'INPUT' && node.type === 'file') {
+                                        if (setAcceptAttribute(node)) {
+                                            observer.disconnect();
+                                        }
+                                    }
+                                    // Также проверяем дочерние элементы
+                                    const fileInput = node.querySelector && node.querySelector('input[type="file"]');
+                                    if (fileInput && setAcceptAttribute(fileInput)) {
+                                        observer.disconnect();
+                                    }
+                                }
+                            });
+                        });
+                    });
+                    
+                    // Наблюдаем за document.body, так как FilePond может добавлять элементы в любое место
+                    if (document.body) {
+                        observer.observe(document.body, {
+                            childList: true,
+                            subtree: true
+                        });
+                    }
+                    
+                    // Также пробуем установить через несколько попыток с задержками
+                    const trySetAccept = function(attempt) {
+                        attempt = attempt || 0;
+                        if (attempt > 10) {
+                            observer.disconnect();
+                            return;
+                        }
+                        
+                        // Пробуем найти input через разные способы
+                        let browserInput = null;
+                        
+                        // Способ 1: через pond.root
+                        if (pond.root) {
+                            browserInput = pond.root.querySelector('input[type="file"]');
+                        }
+                        
+                        // Способ 2: через поиск по aria-controls (FilePond использует это)
+                        if (!browserInput && input.id) {
+                            const ariaControls = 'filepond--assistant-' + input.id.replace(/^field-/, '');
+                            browserInput = document.querySelector('input[aria-controls="' + ariaControls + '"]');
+                        }
+                        
+                        // Способ 3: через поиск по классу filepond--browser
+                        if (!browserInput) {
+                            browserInput = document.querySelector('.filepond--browser');
+                        }
+                        
+                        // Способ 4: через поиск input с ID, содержащим "filepond--browser"
+                        if (!browserInput) {
+                            browserInput = document.querySelector('input[id^="filepond--browser"]');
+                        }
+                        
+                        if (browserInput && setAcceptAttribute(browserInput)) {
+                            observer.disconnect();
+                        } else {
+                            setTimeout(function() {
+                                trySetAccept(attempt + 1);
+                            }, 100);
+                        }
+                    };
+                    
+                    // Начинаем попытки
+                    trySetAccept(0);
+                    
+                    // Останавливаем observer через 2 секунды, если не нашли
+                    setTimeout(function() {
+                        observer.disconnect();
+                    }, 2000);
+                }
+                
+                // #region agent log
+                // Проверяем options после небольшой задержки, так как они могут быть недоступны сразу
+                setTimeout(function() {
+                    const pondOptions = pond.options || {};
+                    fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'filepond-init.js:252',message:'FilePond instance created',data:{inputId:input.id,hasPondOptions:!!pond.options,pondAcceptedFileTypes:pondOptions.acceptedFileTypes,configAcceptedFileTypes:config.acceptedFileTypes,hasFileValidatePlugin:typeof FilePondPluginFileValidateType !== 'undefined'},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(function(){});
+                }, 100);
+                // #endregion
 
-                // Helper function to show alert message (Bootstrap Alert style)
+                // Helper function to show alert message под полем FilePond
                 function showAlertMessage(message, type) {
                     // #region agent log
                     fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'filepond-init.js:130',message:'Attempting to show alert message',data:{message:message,type:type,inputId:input.id},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
@@ -251,31 +405,97 @@
                         iconClass = 'uil uil-exclamation-triangle';
                     }
 
-                    // Create alert container if it doesn't exist
-                    let alertContainer = document.getElementById('cw-alert-container');
-                    if (!alertContainer) {
-                        alertContainer = document.createElement('div');
-                        alertContainer.id = 'cw-alert-container';
-                        alertContainer.className = 'position-fixed top-0 end-0 p-3 cw-alert-container';
-                        alertContainer.style.zIndex = '1090';
-                        alertContainer.style.maxWidth = '400px';
-                        document.body.appendChild(alertContainer);
-                        // #region agent log
-                        fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'filepond-init.js:150',message:'Created new alert container',data:{containerId:alertContainer.id},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-                        // #endregion
+                    // Находим контейнер для сообщений под полем FilePond
+                    let messageContainer = null;
+                    // Используем оригинальный ID input (FilePond может изменить ID)
+                    const containerId = 'filepond-message-' + originalInputId;
+                    messageContainer = document.getElementById(containerId);
+                    
+                    // Если контейнера нет, ищем FilePond root и создаем контейнер
+                    if (!messageContainer) {
+                        // Пробуем разные способы найти FilePond root
+                        let pondRoot = null;
+                        
+                        // Способ 1: через pond.root (если доступен)
+                        if (pond && pond.root) {
+                            pondRoot = pond.root;
+                        }
+                        
+                        // Способ 2: через поиск по оригинальному ID
+                        if (!pondRoot && originalInputId) {
+                            // FilePond создает root с ID, который может быть основан на оригинальном ID
+                            pondRoot = document.querySelector('#' + originalInputId + '.filepond--root') || 
+                                      document.querySelector('#' + originalInputId);
+                            
+                            // Если не нашли по ID, ищем ближайший .filepond--root
+                            if (!pondRoot) {
+                                const originalInput = document.getElementById(originalInputId);
+                                if (originalInput) {
+                                    pondRoot = originalInput.closest('.filepond--root');
+                                }
+                            }
+                        }
+                        
+                        // Способ 3: через поиск по input элементу (FilePond может изменить его ID)
+                        if (!pondRoot && input) {
+                            pondRoot = input.closest('.filepond--root');
+                        }
+                        
+                        // Способ 4: через поиск по родительскому элементу
+                        if (!pondRoot && input && input.parentElement) {
+                            pondRoot = input.parentElement.querySelector('.filepond--root');
+                        }
+                        
+                        // Если нашли root, создаем контейнер
+                        if (pondRoot && pondRoot.parentElement) {
+                            messageContainer = document.createElement('div');
+                            messageContainer.id = containerId;
+                            messageContainer.className = 'filepond-message-container mt-2';
+                            // Вставляем контейнер после FilePond root
+                            if (pondRoot.nextSibling) {
+                                pondRoot.parentElement.insertBefore(messageContainer, pondRoot.nextSibling);
+                            } else {
+                                pondRoot.parentElement.appendChild(messageContainer);
+                            }
+                            console.log('FilePond: Created message container under field', originalInputId, messageContainer);
+                        } else {
+                            console.warn('FilePond: Could not find pondRoot or parentElement for', originalInputId, {
+                                pondRoot: pondRoot,
+                                hasParent: pondRoot ? !!pondRoot.parentElement : false
+                            });
+                        }
                     }
+
+                    // Если все еще нет контейнера (fallback), используем старый способ
+                    if (!messageContainer) {
+                        console.warn('FilePond: Using fallback global alert container for', originalInputId);
+                        let alertContainer = document.getElementById('cw-alert-container');
+                        if (!alertContainer) {
+                            alertContainer = document.createElement('div');
+                            alertContainer.id = 'cw-alert-container';
+                            alertContainer.className = 'position-fixed top-0 end-0 p-3 cw-alert-container';
+                            alertContainer.style.zIndex = '1090';
+                            alertContainer.style.maxWidth = '400px';
+                            document.body.appendChild(alertContainer);
+                        }
+                        messageContainer = alertContainer;
+                    }
+
+                    // Удаляем предыдущие сообщения для этого поля (чтобы показывать только последнее)
+                    const existingAlerts = messageContainer.querySelectorAll('.filepond-alert-message');
+                    existingAlerts.forEach(alert => alert.remove());
 
                     // Create alert element
                     const alertElement = document.createElement('div');
-                    alertElement.className = 'alert ' + alertClass + ' alert-icon alert-dismissible fade show';
+                    alertElement.className = 'alert ' + alertClass + ' alert-icon alert-dismissible fade show filepond-alert-message';
                     alertElement.setAttribute('role', 'alert');
 
                     alertElement.innerHTML = '<i class="' + iconClass + '"></i> ' + message + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
 
-                    alertContainer.appendChild(alertElement);
+                    messageContainer.appendChild(alertElement);
 
                     // #region agent log
-                    fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'filepond-init.js:163',message:'Alert element created and appended',data:{message:message,type:type,alertClass:alertClass},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+                    fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'filepond-init.js:163',message:'Alert element created and appended',data:{message:message,type:type,alertClass:alertClass,containerId:messageContainer.id},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
                     // #endregion
 
                     // Auto-remove after 5 seconds
@@ -335,8 +555,60 @@
                 // Handle file validation and show messages
                 pond.on('addfile', function(error, file) {
                     // #region agent log
-                    fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'filepond-init.js:217',message:'FilePond addfile event triggered',data:{hasError:!!error,error:error,hasErrorBody:error && !!error.body,errorBody:error && error.body,hasFile:!!file,fileName:file && file.filename,fileSize:file && file.fileSize},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
+                    const fileInfo = file ? {
+                        filename: file.filename,
+                        fileSize: file.fileSize,
+                        fileType: file.fileType || file.file?.type,
+                        fileExtension: file.filename ? (file.filename.match(/\.[0-9a-z]+$/i) || [])[0] : null,
+                        fileExtensionLower: file.filename ? (file.filename.match(/\.[0-9a-z]+$/i) || [])[0]?.toLowerCase() : null
+                    } : null;
+                    fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'filepond-init.js:217',message:'FilePond addfile event triggered',data:{hasError:!!error,error:error,hasErrorBody:error && !!error.body,errorBody:error && error.body,errorCode:error && error.code,hasFile:!!file,fileInfo:fileInfo,acceptedFileTypes:config.acceptedFileTypes},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
                     // #endregion
+                    
+                    // Кастомная валидация типов файлов (если плагин FilePondPluginFileValidateType не загружен)
+                    if (!error && file && config.acceptedFileTypes && config.acceptedFileTypes.length > 0) {
+                        const fileExtension = file.filename ? (file.filename.match(/\.[0-9a-z]+$/i) || [])[0]?.toLowerCase() : null;
+                        const fileMimeType = file.fileType || file.file?.type;
+                        
+                        // #region agent log
+                        fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'filepond-init.js:225',message:'Custom file type validation',data:{inputId:input.id,fileExtension:fileExtension,fileMimeType:fileMimeType,acceptedFileTypes:config.acceptedFileTypes,fileName:file.filename},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'E'})}).catch(()=>{});
+                        // #endregion
+                        
+                        let isValidType = false;
+                        
+                        // Проверяем по расширению файла
+                        if (fileExtension) {
+                            isValidType = config.acceptedFileTypes.some(acceptedType => {
+                                // Если acceptedType - это расширение (начинается с точки)
+                                if (acceptedType.startsWith('.')) {
+                                    return acceptedType.toLowerCase() === fileExtension;
+                                }
+                                // Если acceptedType - это MIME-тип
+                                if (acceptedType.includes('/')) {
+                                    return fileMimeType && fileMimeType === acceptedType;
+                                }
+                                return false;
+                            });
+                        }
+                        
+                        // Если тип не подходит, удаляем файл и показываем ошибку
+                        if (!isValidType) {
+                            pond.removeFile(file);
+                            var translations = (typeof filepondSettings !== 'undefined' && filepondSettings.translations) ? filepondSettings.translations : {};
+                            var acceptedTypesStr = config.acceptedFileTypes.join(', ');
+                            var errorMessage = translations.invalidFileType
+                                ? translations.invalidFileType.replace('%s', acceptedTypesStr)
+                                : 'Неподдерживаемый тип файла. Разрешенные типы: ' + acceptedTypesStr;
+                            
+                            // #region agent log
+                            fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'filepond-init.js:250',message:'File type rejected',data:{inputId:input.id,fileExtension:fileExtension,acceptedFileTypes:config.acceptedFileTypes,errorMessage:errorMessage},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'E'})}).catch(()=>{});
+                            // #endregion
+                            
+                            showAlertMessage(errorMessage, 'warning');
+                            return;
+                        }
+                    }
+                    
                     if (error) {
                         console.error('FilePond: Error adding file:', error);
                         // Show message for validation errors
@@ -355,6 +627,12 @@
                                 errorMessage = translations.totalSizeTooLarge
                                     ? translations.totalSizeTooLarge.replace('%s', config.maxTotalFileSize || '100MB')
                                     : 'Общий размер файлов слишком большой. Максимум: ' + (config.maxTotalFileSize || '100MB');
+                            } else if (error.body === 'Invalid file type' || error.body === 'File type not allowed') {
+                                // Обработка ошибки неподдерживаемого типа файла
+                                var acceptedTypesStr = config.acceptedFileTypes ? config.acceptedFileTypes.join(', ') : '';
+                                errorMessage = translations.invalidFileType
+                                    ? translations.invalidFileType.replace('%s', acceptedTypesStr)
+                                    : 'Неподдерживаемый тип файла. Разрешенные типы: ' + acceptedTypesStr;
                             } else {
                                 errorMessage = error.body;
                             }
@@ -513,6 +791,7 @@
     window.initFilePond = initFilePond;
 
 })();
+
 
 
 

@@ -813,11 +813,14 @@ class Plugin {
 		);
 
 		// Enqueue FilePond initialization script
+		// Добавляем timestamp для обхода кеша браузера
+		$init_file_path = self::getBasePath() . '/includes/js/filepond-init.js';
+		$init_version = file_exists($init_file_path) ? filemtime($init_file_path) : GUTENBERG_BLOCKS_VERSION;
 		wp_enqueue_script(
 			'filepond-init',
 			$init_url,
 			['filepond'],
-			GUTENBERG_BLOCKS_VERSION,
+			$init_version,
 			true
 		);
 

@@ -47,14 +47,14 @@ export default function Save({ attributes }) {
 		maxTotalFileSize,
 	} = attributes;
 
-	// For consents_block and newsletter, return null to use server-side render.php
-	if (fieldType === 'consents_block' || fieldType === 'newsletter') {
+	// For consents_block, return null to use server-side render.php
+	if (fieldType === 'consents_block') {
 		return null;
 	}
 
-	// For fields with inline button, return null to use server-side render.php (like newsletter)
+	// For fields with inline button, return null to use server-side render.php
 	const inlineButtonSupportedTypes = ['text', 'email', 'tel', 'url', 'number', 'date', 'time', 'author_role', 'company'];
-	const inlineButtonEnabled = enableInlineButton && inlineButtonSupportedTypes.includes(fieldType) && fieldType !== 'newsletter';
+	const inlineButtonEnabled = enableInlineButton && inlineButtonSupportedTypes.includes(fieldType);
 	
 	// #region agent log
 	if (typeof window !== 'undefined') {
@@ -260,6 +260,29 @@ export default function Save({ attributes }) {
 				);
 
 			case 'file':
+				// Преобразуем accept в формат для HTML атрибута (браузер фильтрует файлы в диалоге)
+				let acceptAttr = accept;
+				if (accept) {
+					// Разбиваем по запятой, если несколько типов
+					const types = accept.split(',').map(t => t.trim()).filter(t => t);
+					
+					// Преобразуем каждый тип
+					const formattedTypes = types.map(type => {
+						// Если это уже MIME-тип (содержит "/"), оставляем как есть
+						if (type.includes('/')) {
+							return type;
+						}
+						// Если это расширение без точки, добавляем точку
+						if (!type.startsWith('.')) {
+							return '.' + type.toLowerCase();
+						}
+						// Если уже с точкой, просто приводим к нижнему регистру
+						return type.toLowerCase();
+					});
+					
+					acceptAttr = formattedTypes.join(',');
+				}
+				
 				return (
 					<div>
 						<label htmlFor={fieldId} className="form-label">
@@ -277,7 +300,7 @@ export default function Save({ attributes }) {
 							data-max-file-size={maxFileSize ? maxFileSize : ''}
 							data-max-total-file-size={maxTotalFileSize ? maxTotalFileSize : ''}
 							{...(isRequired && { required: true })}
-							{...(accept && { accept })}
+							{...(acceptAttr && { accept: acceptAttr })}
 							{...(multiple && { multiple: true })}
 						/>
 					</div>
@@ -293,47 +316,6 @@ export default function Save({ attributes }) {
 						name={fieldName}
 						value={defaultValue}
 					/>
-				);
-
-			case 'newsletter':
-				// Получаем класс скругления из темы (если доступен через глобальную переменную)
-				const formRadiusClass = typeof window !== 'undefined' && window.getThemeFormRadius
-					? window.getThemeFormRadius()
-					: 'rounded';
-
-				// Получаем класс кнопки из темы (если доступен)
-				const buttonRadiusClass = typeof window !== 'undefined' && window.getThemeButton
-					? window.getThemeButton()
-					: '';
-
-				// Текст кнопки из атрибутов или по умолчанию
-				const submitButtonText = buttonText || __('Join', 'codeweber-gutenberg-blocks');
-				// Классы кнопки из атрибутов или по умолчанию, с добавлением класса скругления из темы
-				const submitButtonClass = `${buttonClass || 'btn btn-primary'} ${buttonRadiusClass}`.trim();
-
-				return (
-					<div className="input-group form-floating">
-						<input
-							type="email"
-							className={`form-control required email ${formRadiusClass}`}
-							id={fieldId}
-							name={fieldName}
-							placeholder={placeholder || fieldLabel || __('Email Address', 'codeweber-gutenberg-blocks')}
-							{...(isRequired && { required: true })}
-							{...(maxLength > 0 && { maxLength })}
-							{...(minLength > 0 && { minLength })}
-							autoComplete="off"
-							value={defaultValue || ''}
-						/>
-						<label htmlFor={fieldId}>
-							<RawHTML>{labelContent}</RawHTML>
-						</label>
-						<input
-							type="submit"
-							value={submitButtonText}
-							className={submitButtonClass}
-						/>
-					</div>
 				);
 
 			case 'rating':

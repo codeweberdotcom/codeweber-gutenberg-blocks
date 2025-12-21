@@ -55,7 +55,7 @@ $log_entry = json_encode([
 // Check for inline button BEFORE other checks
 $enable_inline_button = isset($attributes['enableInlineButton']) && ($attributes['enableInlineButton'] === true || $attributes['enableInlineButton'] === 'true' || $attributes['enableInlineButton'] === 1);
 $inline_button_supported_types = ['text', 'email', 'tel', 'url', 'number', 'date', 'time', 'author_role', 'company'];
-$inline_button_enabled = $enable_inline_button && in_array($field_type, $inline_button_supported_types) && $field_type !== 'newsletter';
+$inline_button_enabled = $enable_inline_button && in_array($field_type, $inline_button_supported_types);
 
 // #region agent log
 $log_entry = json_encode([
@@ -100,15 +100,7 @@ if ($inline_button_enabled) {
         $width_classes = esc_attr($attributes['width']);
     }
 
-    // Get form radius class from theme
-    $form_radius_class = '';
-    if (function_exists('getThemeFormRadius')) {
-        $form_radius_class = getThemeFormRadius();
-    } else {
-        $form_radius_class = 'rounded';
-    }
-
-    // Get button radius class from theme
+    // Get button radius class from theme (используем для обоих элементов)
     $button_radius_class = '';
     if (function_exists('getThemeButton')) {
         $button_radius_class = getThemeButton();
@@ -125,11 +117,8 @@ if ($inline_button_enabled) {
     $inline_button_class = !empty($attributes['inlineButtonClass']) ? $attributes['inlineButtonClass'] : 'btn btn-primary';
     $button_class_final = trim($inline_button_class . ' ' . $button_radius_class);
 
-    // Для inline button: если стиль кнопки rounded-pill, применяем его к input полю
-    $input_radius_class = $form_radius_class;
-    if (strpos($button_radius_class, 'rounded-pill') !== false) {
-        $input_radius_class = ' rounded-pill';
-    }
+    // Для inline button: применяем к input тот же класс, что и к кнопке
+    $input_radius_class = $button_radius_class;
 
     // Mask props for tel field
     $mask_attrs = '';
@@ -206,94 +195,6 @@ $log_entry = json_encode([
 ]) . "\n";
 @file_put_contents($log_file, $log_entry, FILE_APPEND);
 // #endregion
-
-// For newsletter type, we need to render it server-side with button
-if ($field_type === 'newsletter') {
-    // Get form ID from context or parent block
-    $form_id = 0;
-    if (isset($context['codeweber/formId'])) {
-        $form_id = intval($context['codeweber/formId']);
-    } elseif (isset($block->context['codeweber/formId'])) {
-        $form_id = intval($block->context['codeweber/formId']);
-    } else {
-        // Try to get from current post
-        global $post;
-        if ($post && $post->post_type === 'codeweber_form') {
-            $form_id = $post->ID;
-        }
-    }
-
-    // Get width classes
-    $width_classes = 'col-12';
-    if (!empty($attributes['fieldColumns'])) {
-        $width_classes = 'col-' . esc_attr($attributes['fieldColumns']);
-    } elseif (!empty($attributes['width'])) {
-        $width_classes = esc_attr($attributes['width']);
-    }
-
-    // Get form radius class from theme
-    $form_radius_class = '';
-    if (function_exists('getThemeFormRadius')) {
-        $form_radius_class = getThemeFormRadius();
-    } else {
-        $form_radius_class = 'rounded';
-    }
-
-    // Get button radius class from theme
-    $button_radius_class = '';
-    if (function_exists('getThemeButton')) {
-        $button_radius_class = getThemeButton();
-    }
-
-    // Field name defaults to 'email' for newsletter
-    $field_name_value = !empty($field_name) ? $field_name : 'email';
-    $field_id = 'field-' . $field_name_value;
-
-    // Field label and placeholder
-    $field_label_display = !empty($field_label) ? $field_label : __('Email Address', 'codeweber-gutenberg-blocks');
-    $field_placeholder_display = !empty($placeholder) ? $placeholder : $field_label_display;
-
-    // Button text
-    $button_text_display = !empty($button_text) ? $button_text : __('Join', 'codeweber');
-    $button_class_final = trim($button_class . ' ' . $button_radius_class);
-
-    // Для newsletter типа: если стиль кнопки rounded-pill, применяем его к input полю
-    $input_radius_class = $form_radius_class;
-    if (strpos($button_radius_class, 'rounded-pill') !== false) {
-        $input_radius_class = ' rounded-pill';
-    }
-
-    ob_start();
-    ?>
-    <div class="<?php echo esc_attr($width_classes); ?>">
-        <div class="input-group form-floating">
-            <input
-                type="email"
-                class="form-control required email <?php echo esc_attr(trim($input_radius_class . ' ' . $field_class)); ?>"
-                id="<?php echo esc_attr($field_id); ?>"
-                name="<?php echo esc_attr($field_name_value); ?>"
-                placeholder="<?php echo esc_attr($field_placeholder_display); ?>"
-                <?php echo $is_required ? 'required' : ''; ?>
-                autocomplete="off"
-            >
-            <label for="<?php echo esc_attr($field_id); ?>">
-                <?php echo esc_html($field_label_display); ?>
-                <?php if ($is_required): ?>
-                    <span class="text-danger">*</span>
-                <?php endif; ?>
-            </label>
-            <input
-                type="submit"
-                value="<?php echo esc_attr($button_text_display); ?>"
-                class="<?php echo esc_attr($button_class_final); ?>"
-                data-loading-text="<?php echo esc_attr(__('Sending...', 'codeweber')); ?>"
-            >
-        </div>
-    </div>
-    <?php
-    echo ob_get_clean();
-    return;
-}
 
 // For rating type, we need to render it server-side
 if ($field_type === 'rating' && function_exists('codeweber_testimonial_rating_stars')) {

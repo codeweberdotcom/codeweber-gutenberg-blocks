@@ -77,8 +77,6 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 			text: __('Name', 'codeweber-gutenberg-blocks'),
 			// translators: Default label for email input field
 			email: __('Email Address', 'codeweber-gutenberg-blocks'),
-			// translators: Default label for newsletter email input field
-			newsletter: __('Email Address', 'codeweber-gutenberg-blocks'),
 			// translators: Default label for phone number input field
 			tel: __('Phone Number', 'codeweber-gutenberg-blocks'),
 			// translators: Default label for website URL input field
@@ -347,7 +345,6 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 	const fieldTypes = [
 		{ label: __('Text', 'codeweber-gutenberg-blocks'), value: 'text' },
 		{ label: __('Email', 'codeweber-gutenberg-blocks'), value: 'email' },
-		{ label: __('Newsletter Email', 'codeweber-gutenberg-blocks'), value: 'newsletter' },
 		{ label: __('Tel', 'codeweber-gutenberg-blocks'), value: 'tel' },
 		{ label: __('URL', 'codeweber-gutenberg-blocks'), value: 'url' },
 		{ label: __('Textarea', 'codeweber-gutenberg-blocks'), value: 'textarea' },
@@ -374,7 +371,7 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 	];
 
 	const inlineButtonSupportedTypes = ['text', 'email', 'tel', 'url', 'number', 'date', 'time', 'author_role', 'company'];
-	const isInlineButtonSupported = inlineButtonSupportedTypes.includes(fieldType) && fieldType !== 'newsletter';
+	const isInlineButtonSupported = inlineButtonSupportedTypes.includes(fieldType);
 
 	// Рендер предпросмотра поля
 	const renderFieldPreview = () => {
@@ -494,65 +491,40 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 					</div>
 				);
 
-			case 'newsletter':
-				const previewButtonText = buttonText || __('Join', 'codeweber-gutenberg-blocks');
-				const previewButtonClass = buttonClass || 'btn btn-primary';
-				return (
-					<div className="input-group form-floating">
-						<input
-							type="email"
-							className={controlClass('form-control required email rounded')}
-							id={fieldId}
-							placeholder={placeholder || fieldLabel || __('Email Address', 'codeweber-gutenberg-blocks')}
-							disabled
-							autoComplete="off"
-						/>
-						<label htmlFor={fieldId}>
-							{fieldLabel || __('Email Address', 'codeweber-gutenberg-blocks')}
-							{isRequired && <span className="text-danger"> *</span>}
-						</label>
-						<input
-							type="submit"
-							value={previewButtonText}
-							className={previewButtonClass}
-							disabled
-						/>
-					</div>
-				);
-
 			case 'file':
+				const fileInfo = [];
+				if (maxFileSize) {
+					fileInfo.push(__('Max file size', 'codeweber-gutenberg-blocks') + ': ' + maxFileSize);
+				}
+				if (maxFiles && multiple) {
+					fileInfo.push(__('Max files', 'codeweber-gutenberg-blocks') + ': ' + maxFiles);
+				} else if (!multiple) {
+					fileInfo.push(__('Single file', 'codeweber-gutenberg-blocks'));
+				}
+				if (accept) {
+					fileInfo.push(__('Accepted types', 'codeweber-gutenberg-blocks') + ': ' + accept);
+				}
+				
 				return (
 					<div>
 						<label htmlFor={fieldId} className="form-label">
 							{fieldLabel || __('File Upload', 'codeweber-gutenberg-blocks')}
 							{isRequired && <span className="text-danger"> *</span>}
 						</label>
-					<div className="input-group">
-						<input
-							type="file"
-							className={controlClass('form-control file-input-hidden')}
-							id={fieldId}
-							accept={accept}
-							multiple={multiple}
-							disabled
-						/>
-						<input
-							type="text"
-							className={controlClass('form-control file-input-display')}
-							id={`${fieldId}-display`}
-							readOnly
-							placeholder={__('No file selected', 'codeweber-gutenberg-blocks')}
-							disabled
-						/>
-						<button
-							type="button"
-							className="btn btn-outline-secondary file-browse-button"
-							data-file-input={fieldId}
-							disabled
-						>
-							{__('Browse', 'codeweber-gutenberg-blocks')}
-						</button>
-					</div>
+						{/* Имитация FilePond в редакторе */}
+						<div className="alert alert-secondary mb-0" role="alert">
+							<div className="d-flex align-items-center">
+								<span className="me-2">📎</span>
+								<div>
+									<strong>{__('File Upload Field', 'codeweber-gutenberg-blocks')}</strong>
+									{fileInfo.length > 0 && (
+										<div className="small text-muted mt-1">
+											{fileInfo.join(' • ')}
+										</div>
+									)}
+								</div>
+							</div>
+						</div>
 					</div>
 				);
 
@@ -746,7 +718,6 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 												const defaultNames = {
 													text: 'name',
 													email: 'email',
-													newsletter: 'email',
 													textarea: 'message',
 													tel: 'phone',
 													url: 'website',
@@ -823,7 +794,7 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 													label={__('Inline submit button', 'codeweber-gutenberg-blocks')}
 													checked={!!enableInlineButton}
 													onChange={(value) => setAttributes({ enableInlineButton: value })}
-													help={__('Place a submit button inside this field (newsletter-style layout)', 'codeweber-gutenberg-blocks')}
+													help={__('Place a submit button inside this field (inline button layout)', 'codeweber-gutenberg-blocks')}
 												/>
 												{enableInlineButton && (
 													<>
@@ -843,49 +814,35 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 												)}
 											</>
 										)}
-										{fieldType === 'newsletter' && (
-											<>
-												<TextControl
-													label={__('Button Text', 'codeweber-gutenberg-blocks')}
-													value={buttonText || ''}
-													onChange={(value) => setAttributes({ buttonText: value })}
-													help={__('Text for the submit button (default: "Join")', 'codeweber-gutenberg-blocks')}
-												/>
-												<TextControl
-													label={__('Button Class', 'codeweber-gutenberg-blocks')}
-													value={buttonClass || 'btn btn-primary'}
-													onChange={(value) => setAttributes({ buttonClass: value })}
-													help={__('CSS classes for the submit button (default: "btn btn-primary")', 'codeweber-gutenberg-blocks')}
-												/>
-											</>
-										)}
 									</PanelBody>
 
-									<PanelBody title={__('Validation', 'codeweber-gutenberg-blocks')} initialOpen={false}>
-										<TextControl
-											label={__('Min Length', 'codeweber-gutenberg-blocks')}
-											type="number"
-											value={minLength || ''}
-											onChange={(value) => setAttributes({ minLength: parseInt(value) || 0 })}
-										/>
-										<TextControl
-											label={__('Max Length', 'codeweber-gutenberg-blocks')}
-											type="number"
-											value={maxLength || ''}
-											onChange={(value) => setAttributes({ maxLength: parseInt(value) || 0 })}
-										/>
-										<SelectControl
-											label={__('Validation Type', 'codeweber-gutenberg-blocks')}
-											value={validationType}
-											options={[
-												{ label: __('None', 'codeweber-gutenberg-blocks'), value: 'none' },
-												{ label: __('Email', 'codeweber-gutenberg-blocks'), value: 'email' },
-												{ label: __('URL', 'codeweber-gutenberg-blocks'), value: 'url' },
-												{ label: __('Phone', 'codeweber-gutenberg-blocks'), value: 'tel' },
-											]}
-											onChange={(value) => setAttributes({ validationType: value })}
-										/>
-									</PanelBody>
+									{fieldType !== 'file' && (
+										<PanelBody title={__('Validation', 'codeweber-gutenberg-blocks')} initialOpen={false}>
+											<TextControl
+												label={__('Min Length', 'codeweber-gutenberg-blocks')}
+												type="number"
+												value={minLength || ''}
+												onChange={(value) => setAttributes({ minLength: parseInt(value) || 0 })}
+											/>
+											<TextControl
+												label={__('Max Length', 'codeweber-gutenberg-blocks')}
+												type="number"
+												value={maxLength || ''}
+												onChange={(value) => setAttributes({ maxLength: parseInt(value) || 0 })}
+											/>
+											<SelectControl
+												label={__('Validation Type', 'codeweber-gutenberg-blocks')}
+												value={validationType}
+												options={[
+													{ label: __('None', 'codeweber-gutenberg-blocks'), value: 'none' },
+													{ label: __('Email', 'codeweber-gutenberg-blocks'), value: 'email' },
+													{ label: __('URL', 'codeweber-gutenberg-blocks'), value: 'url' },
+													{ label: __('Phone', 'codeweber-gutenberg-blocks'), value: 'tel' },
+												]}
+												onChange={(value) => setAttributes({ validationType: value })}
+											/>
+										</PanelBody>
+									)}
 
 									{fieldType === 'tel' && (
 										<PanelBody title={__('Phone mask', 'codeweber-gutenberg-blocks')} initialOpen={false}>

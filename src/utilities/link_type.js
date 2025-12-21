@@ -20,6 +20,7 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 		PostType,
 		PageId,
 		CF7ID,
+		CodeweberFormID,
 		ModalID,
 		HtmlID,
 		PhoneType, // Добавляем PhoneType к атрибутам
@@ -43,10 +44,12 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 	const [posts, setPosts] = useState([]);
 	const [pages, setPages] = useState([]);
 	const [cf7Forms, setCf7Forms] = useState([]);
+	const [codeweberForms, setCodeweberForms] = useState([]);
 	const [modals, setModals] = useState([]);
 	const [htmlPosts, setHtmlPosts] = useState([]);
 		const [documentPosts, setDocumentPosts] = useState([]);
 	const [isLoadingCF7, setIsLoadingCF7] = useState(true);
+	const [isLoadingCodeweberForms, setIsLoadingCodeweberForms] = useState(true);
 	const [phones, setPhones] = useState([]);
 	const [isLoadingPhones, setIsLoadingPhones] = useState(false);
 	const [postTypes, setPostTypes] = useState([]);
@@ -240,6 +243,64 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 			setIsLoadingCF7(false);
 		};
 
+		const fetchCodeweberForms = async () => {
+			try {
+				// Используем apiFetch для правильной авторизации
+				// rest_base установлен как 'codeweber' в CPT регистрации
+				const data = await apiFetch({
+					path: '/wp/v2/codeweber?per_page=100&status=publish&_fields=id,title'
+				});
+				
+				// Проверяем, что data - массив
+				if (!Array.isArray(data)) {
+					console.warn('CodeWeber forms response is not an array:', data);
+					setCodeweberForms([]);
+					setIsLoadingCodeweberForms(false);
+					return;
+				}
+				
+				const formOptions = data.map((form) => ({
+					label: form.title?.rendered || form.title || `Form #${form.id}`,
+					value: String(form.id),
+				}));
+				setCodeweberForms(formOptions);
+
+				if (formOptions.length === 1) {
+					setAttributes({ CodeweberFormID: formOptions[0].value });
+				}
+
+				setIsLoadingCodeweberForms(false);
+			} catch (error) {
+				console.error('Error fetching CodeWeber forms:', error);
+				console.error('Error details:', error.message, error);
+				// Попробуем альтернативный способ через fetch
+				try {
+					const response = await fetch(
+						`${wpApiSettings.root}wp/v2/codeweber?per_page=100&status=publish&_fields=id,title`
+					);
+					if (response.ok) {
+						const data = await response.json();
+						if (Array.isArray(data)) {
+							const formOptions = data.map((form) => ({
+								label: form.title?.rendered || form.title || `Form #${form.id}`,
+								value: String(form.id),
+							}));
+							setCodeweberForms(formOptions);
+							if (formOptions.length === 1) {
+								setAttributes({ CodeweberFormID: formOptions[0].value });
+							}
+						}
+					} else {
+						console.error('Fetch response not OK:', response.status, response.statusText);
+					}
+				} catch (fetchError) {
+					console.error('Fallback fetch also failed:', fetchError);
+				}
+				setCodeweberForms([]);
+				setIsLoadingCodeweberForms(false);
+			}
+		};
+
 		const fetchModals = async () => {
 			const response = await fetch(`${wpApiSettings.root}wp/v2/modal`);
 			const data = await response.json();
@@ -272,6 +333,8 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 			}
 		} else if (LinkType === 'cf7') {
 			fetchCF7Forms();
+		} else if (LinkType === 'cf') {
+			fetchCodeweberForms();
 		} else if (LinkType === 'modal') {
 			fetchModals();
 		} else if (LinkType === 'html') {
@@ -319,6 +382,8 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 				PostId: '',
 				PageId: '',
 				CF7ID: '',
+				CodeweberFormID: '',
+				CodeweberFormID: '',
 				ModalID: '',
 				HtmlID: '',
 				PhoneType: '',
@@ -335,6 +400,7 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 				PostId: '',
 				PageId: '',
 				CF7ID: '',
+				CodeweberFormID: '',
 				ModalID: '',
 				HtmlID: '',
 				PhoneType: 'custom',
@@ -352,6 +418,7 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 				PostType: '',
 				PageId: '',
 				CF7ID: '',
+				CodeweberFormID: '',
 				ModalID: '',
 				HtmlID: '',
 				DataValue: '',
@@ -367,21 +434,25 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 				PostId: '',
 				PageId: '',
 				CF7ID: '',
+				CodeweberFormID: '',
+				CodeweberFormID: '',
 				ModalID: '',
 				HtmlID: '',
 				DataValue: '',
 				DocumentID: '',
 				DataGlightbox: '',
 				DataGallery: '',
-				DataBsToggle: '',
-				DataBsTarget: '',
+				DataBsToggle: 'modal',
+				DataBsTarget: 'modal',
 			});
-		} else if (newLinkType === 'cf7') {
+		} else if (newLinkType === 'cf') {
 			setAttributes({
 				LinkUrl: '',
 				PostId: '',
 				PageId: '',
 				CF7ID: '',
+				CodeweberFormID: '',
+				CodeweberFormID: '',
 				ModalID: '',
 				HtmlID: '',
 				DataValue: '',
@@ -397,6 +468,7 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 				PostId: '',
 				PageId: '',
 				CF7ID: '',
+				CodeweberFormID: '',
 				ModalID: '',
 				HtmlID: '',
 				DataValue: '',
@@ -412,6 +484,7 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 				PostId: '',
 				PageId: '',
 				CF7ID: '',
+				CodeweberFormID: '',
 				ModalID: '',
 				HtmlID: '',
 				DataValue: '',
@@ -427,6 +500,7 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 				PostId: '',
 				PageId: '',
 				CF7ID: '',
+				CodeweberFormID: '',
 				ModalID: '',
 				HtmlID: '',
 				PhoneType: '',
@@ -447,6 +521,7 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 				PostId: '',
 				PageId: '',
 				CF7ID: '',
+				CodeweberFormID: '',
 				ModalID: '',
 				HtmlID: '',
 				PhoneType: '',
@@ -467,6 +542,7 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 				PostId: '',
 				PageId: '',
 				CF7ID: '',
+				CodeweberFormID: '',
 				ModalID: '',
 				HtmlID: '',
 				PhoneType: '',
@@ -487,6 +563,7 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 				PostId: '',
 				PageId: '',
 				CF7ID: '',
+				CodeweberFormID: '',
 				ModalID: '',
 				HtmlID: '',
 				PhoneType: '',
@@ -507,6 +584,7 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 				PostId: '',
 				PageId: '',
 				CF7ID: '',
+				CodeweberFormID: '',
 				ModalID: '',
 				HtmlID: '',
 				PhoneType: '',
@@ -528,6 +606,7 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 				PostId: '',
 				PageId: '',
 				CF7ID: '',
+				CodeweberFormID: '',
 				ModalID: '',
 				HtmlID: '',
 				PhoneType: '',
@@ -548,6 +627,7 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 				PostId: '',
 				PageId: '',
 				CF7ID: '',
+				CodeweberFormID: '',
 				ModalID: '',
 				HtmlID: '',
 				PhoneType: '',
@@ -568,6 +648,7 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 				PostId: '',
 				PageId: '',
 				CF7ID: '',
+				CodeweberFormID: '',
 				ModalID: '',
 				HtmlID: '',
 				PhoneType: '',
@@ -732,6 +813,16 @@ const handleCF7Select = (selectedCF7Id) => {
 	setAttributes({
 		CF7ID: selectedCF7Id,
 		DataValue: `cf7-${selectedCF7Id}`,
+		LinkUrl: 'javascript:void(0)',
+		DataBsToggle: 'modal',
+		DataBsTarget: `modal`,
+	});
+};
+
+const handleCodeweberFormSelect = (selectedFormId) => {
+	setAttributes({
+		CodeweberFormID: selectedFormId,
+		DataValue: `cf-${selectedFormId}`,
 		LinkUrl: 'javascript:void(0)',
 		DataBsToggle: 'modal',
 		DataBsTarget: `modal`,
@@ -911,6 +1002,7 @@ const handleHtml5VideoChange = (newUrl) => {
 					{ label: __('External', 'codeweber-gutenberg-blocks'), value: 'external' },
 					{ label: __('Post', 'codeweber-gutenberg-blocks'), value: 'post' },
 					{ label: __('CF7', 'codeweber-gutenberg-blocks'), value: 'cf7' },
+					{ label: __('Формы', 'codeweber-gutenberg-blocks'), value: 'cf' },
 					{ label: __('Modal', 'codeweber-gutenberg-blocks'), value: 'modal' },
 					{ label: __('Phone', 'codeweber-gutenberg-blocks'), value: 'phone' },
 					{ label: __('PDF', 'codeweber-gutenberg-blocks'), value: 'pdf' },
@@ -1200,6 +1292,26 @@ const handleHtml5VideoChange = (newUrl) => {
 						/>
 					) : (
 						<p>Формы CF7 не найдены</p> // Сообщение о том, что формы отсутствуют
+					))}
+
+				{LinkType === 'cf' &&
+					(isLoadingCodeweberForms ? (
+						<div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+							<Spinner />
+							<span>{__('Loading forms...', 'codeweber-gutenberg-blocks')}</span>
+						</div>
+					) : codeweberForms.length > 0 ? (
+						<SelectControl
+							label={__('Select Form', 'codeweber-gutenberg-blocks')}
+							value={CodeweberFormID}
+							options={codeweberForms.map((form) => ({
+								label: form.label,
+								value: form.value,
+							}))}
+							onChange={handleCodeweberFormSelect}
+						/>
+					) : (
+						<p>{__('No CodeWeber forms found', 'codeweber-gutenberg-blocks')}</p>
 					))}
 
 				{LinkType === 'modal' &&

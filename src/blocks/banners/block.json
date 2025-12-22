@@ -20,6 +20,10 @@
             "type": "string",
             "default": "background"
         },
+        "imagePosition": {
+            "type": "string",
+            "default": "left"
+        },
         "imageId": {
             "type": "number",
             "default": 0

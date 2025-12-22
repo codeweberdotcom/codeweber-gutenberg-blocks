@@ -30,6 +30,7 @@ export const BannersSidebar = ({ attributes, setAttributes }) => {
 	const {
 		bannerType,
 		imageType,
+		imagePosition,
 		imageId,
 		imageUrl,
 		imageAlt,
@@ -161,6 +162,26 @@ export const BannersSidebar = ({ attributes, setAttributes }) => {
 						<>
 							<PanelBody title={__('Image', 'codeweber-gutenberg-blocks')} initialOpen={true}>
 								<div className="mb-3">
+									<div className="component-sidebar-title">
+										<label>{__('Image Position', 'codeweber-gutenberg-blocks')}</label>
+									</div>
+									<ButtonGroup>
+										<button
+											className={`components-button ${imagePosition === 'left' ? 'is-primary' : 'is-secondary'}`}
+											onClick={() => setAttributes({ imagePosition: 'left' })}
+										>
+											{__('Left', 'codeweber-gutenberg-blocks')}
+										</button>
+										<button
+											className={`components-button ${imagePosition === 'right' ? 'is-primary' : 'is-secondary'}`}
+											onClick={() => setAttributes({ imagePosition: 'right' })}
+										>
+											{__('Right', 'codeweber-gutenberg-blocks')}
+										</button>
+									</ButtonGroup>
+								</div>
+
+								<div className="mb-3" style={{ marginTop: '16px' }}>
 									<div className="component-sidebar-title">
 										<label>{__('Image Type', 'codeweber-gutenberg-blocks')}</label>
 									</div>

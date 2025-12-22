@@ -2,9 +2,13 @@ import {
 	useBlockProps,
 	InnerBlocks,
 	InspectorControls,
+	store as blockEditorStore,
 } from '@wordpress/block-editor';
+import { createBlocksFromInnerBlocksTemplate } from '@wordpress/blocks';
 import { BannersSidebar } from './sidebar';
 import { __ } from '@wordpress/i18n';
+import { useEffect, useRef } from '@wordpress/element';
+import { useSelect, useDispatch } from '@wordpress/data';
 import { generateBackgroundClasses, generateTextColorClass } from '../../utilities/class-generators';
 import { ImageSimpleRender } from '../../components/image/ImageSimpleRender';
 import { 
@@ -44,6 +48,7 @@ const BannersEdit = ({ attributes, setAttributes, clientId }) => {
 	const {
 		bannerType,
 		imageType,
+		imagePosition = 'left',
 		imageId,
 		imageUrl,
 		imageAlt,
@@ -92,6 +97,42 @@ const BannersEdit = ({ attributes, setAttributes, clientId }) => {
 	const blockProps = useBlockProps({
 		className: `banners-block banner-${bannerType}`,
 	});
+
+	const { replaceInnerBlocks } = useDispatch(blockEditorStore);
+	const innerBlocks = useSelect(
+		(select) => select(blockEditorStore).getBlocks(clientId) || [],
+		[clientId]
+	);
+
+	// Функция для получения шаблона блоков
+	const getTemplateBlocks = () => {
+		return [
+			['codeweber-gutenberg-blocks/heading-subtitle', {
+				enableTitle: true,
+				enableSubtitle: false,
+				enableText: true,
+				title: 'We bring solutions to make life easier for our customers.',
+				text: 'We have considered our solutions to support every stage of your growth.',
+				titleSize: 'display-1',
+				textClass: 'lead fs-lg mb-7',
+			}],
+			['codeweber-blocks/button', {
+				ButtonContent: 'Get Started',
+				ButtonSize: '',
+			}],
+		];
+	};
+
+	// Применяем шаблон при первом создании блока, если блоки пусты
+	const hasAppliedTemplateRef = useRef(false);
+	useEffect(() => {
+		if (innerBlocks.length === 0 && !hasAppliedTemplateRef.current) {
+			const template = getTemplateBlocks();
+			const templateBlocks = createBlocksFromInnerBlocksTemplate(template);
+			replaceInnerBlocks(clientId, templateBlocks, false);
+			hasAppliedTemplateRef.current = true;
+		}
+	}, [innerBlocks.length, clientId, replaceInnerBlocks]);
 
 	const getSectionClasses = () => {
 		const classes = ['wrapper'];
@@ -203,11 +244,30 @@ const BannersEdit = ({ attributes, setAttributes, clientId }) => {
 
 	// Banner 34 - based on provided HTML
 	const renderBanner34 = () => {
-		const renderLeftColumn = () => {
-			const wrapperClasses = "col-lg-6 position-lg-absolute top-0 start-0 h-100 d-flex align-items-center justify-content-center";
+		const renderImageColumn = () => {
+			const positionClass = imagePosition === 'right' ? 'end-0' : 'start-0';
+			const wrapperClasses = `col-lg-6 position-lg-absolute top-0 ${positionClass} h-100 d-flex align-items-center justify-content-center`;
 			
 			// Используем массив images для обоих режимов
 			const imagesToRender = images || [];
+
+			// Если изображений нет, показываем placeholder
+			if ((imageType === 'image-simple' || imageType === 'background') && (!imagesToRender || imagesToRender.length === 0)) {
+				// Путь к placeholder изображению из темы
+				const placeholderUrl = window.location?.origin 
+					? `${window.location.origin}/wp-content/themes/codeweber/dist/assets/img/photos/about32.jpg`
+					: './assets/img/photos/about32.jpg';
+
+				return (
+					<div className={wrapperClasses}>
+						<div 
+							className="image-wrapper bg-image bg-cover h-100 w-100"
+							data-image-src={placeholderUrl}
+							style={{ backgroundImage: `url(${placeholderUrl})` }}
+						></div>
+					</div>
+				);
+			}
 
 			if ((imageType === 'image-simple' || imageType === 'background') && imagesToRender && imagesToRender.length > 0) {
 				// Для режима background всегда используем imageRenderType='background'
@@ -306,9 +366,12 @@ const BannersEdit = ({ attributes, setAttributes, clientId }) => {
 			return null;
 		};
 
+		const contentColumnClasses = imagePosition === 'right' ? 'col-lg-6' : 'col-lg-6 offset-lg-6';
+		const contentPaddingClasses = imagePosition === 'right' ? 'py-12 py-lg-16 pe-lg-12 py-xxl-18 pe-xxl-16 ps-lg-0' : 'py-12 py-lg-16 ps-lg-12 py-xxl-18 ps-xxl-16 pe-lg-0';
+
 		return (
 		<section className={`${getSectionClasses()} bg-gray position-relative min-vh-60 d-lg-flex align-items-center`} style={getSectionStyles()}>
-			{renderLeftColumn()}
+			{renderImageColumn()}
 			<div className="container position-relative">
 				{videoUrl && (
 					<a href={videoUrl} className="btn btn-circle btn-primary btn-play ripple mx-auto position-absolute d-none d-lg-flex" style={{ top: '50%', left: '50%', transform: 'translate(-50%,-50%)', zIndex: 3 }} data-glightbox data-gallery="desktop-video">
@@ -316,8 +379,8 @@ const BannersEdit = ({ attributes, setAttributes, clientId }) => {
 					</a>
 				)}
 				<div className="row gx-0">
-					<div className="col-lg-6 offset-lg-6">
-						<div className="py-12 py-lg-16 ps-lg-12 py-xxl-18 ps-xxl-16 pe-lg-0 position-relative">
+					<div className={contentColumnClasses}>
+						<div className={`${contentPaddingClasses} position-relative`}>
 							<InnerBlocks
 								allowedBlocks={ALLOWED_CODEWEBER_BLOCKS}
 								templateLock={false}

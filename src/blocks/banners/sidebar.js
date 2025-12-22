@@ -29,6 +29,7 @@ export const BannersSidebar = ({ attributes, setAttributes }) => {
 		imageAlt,
 		backgroundImageId,
 		backgroundImageUrl,
+		backgroundImageSize,
 		backgroundType,
 		backgroundColor,
 		backgroundColorType,
@@ -42,23 +43,70 @@ export const BannersSidebar = ({ attributes, setAttributes }) => {
 	const [availableImageSizes, setAvailableImageSizes] = useState([]);
 	const [imageSize, setImageSize] = useState('');
 
-	// Fetch image sizes when imageId changes
+	// Fetch current background image data when component mounts or backgroundImageId changes
 	useEffect(() => {
-		if (imageId && imageId > 0) {
+		if (backgroundImageId && backgroundImageId > 0) {
 			apiFetch({
-				path: `/wp/v2/media/${imageId}`,
+				path: `/wp/v2/media/${backgroundImageId}`,
 				method: 'GET'
 			}).then((attachment) => {
+				// Get file size
+				if (attachment && attachment.media_details && attachment.media_details.filesize) {
+					const sizeInBytes = attachment.media_details.filesize;
+					if (sizeInBytes < 1024 * 1024) {
+						setImageSize((sizeInBytes / 1024).toFixed(1) + ' KB');
+					} else {
+						setImageSize((sizeInBytes / (1024 * 1024)).toFixed(1) + ' MB');
+					}
+				} else {
+					setImageSize('');
+				}
+				
+				// Get available sizes from media_details
 				if (attachment && attachment.media_details && attachment.media_details.sizes) {
 					const sizes = Object.keys(attachment.media_details.sizes);
-					sizes.push('full');
+					sizes.push('full'); // Always include full size
 					setAvailableImageSizes(sizes);
+				} else {
+					setAvailableImageSizes(['full']);
 				}
 			}).catch(() => {
+				setImageSize('');
 				setAvailableImageSizes([]);
 			});
+		} else {
+			setImageSize('');
+			setAvailableImageSizes([]);
 		}
-	}, [imageId]);
+	}, [backgroundImageId]);
+
+	// Update image URL when backgroundImageSize changes
+	useEffect(() => {
+		if (backgroundImageId && backgroundImageId > 0 && backgroundImageSize) {
+			apiFetch({
+				path: `/wp/v2/media/${backgroundImageId}`,
+				method: 'GET'
+			}).then((attachment) => {
+				let newUrl = attachment.source_url; // Default to full size
+
+				// Check if requested size exists in media_details
+				if (backgroundImageSize !== 'full' && 
+					attachment.media_details && 
+					attachment.media_details.sizes && 
+					attachment.media_details.sizes[backgroundImageSize]) {
+					
+					newUrl = attachment.media_details.sizes[backgroundImageSize].source_url;
+				}
+
+				// Update URL if different
+				if (newUrl !== backgroundImageUrl) {
+					setAttributes({ backgroundImageUrl: newUrl });
+				}
+			}).catch((error) => {
+				console.error('Failed to fetch image data:', error);
+			});
+		}
+	}, [backgroundImageSize, backgroundImageId]);
 
 	const handleImageSelect = (media) => {
 		setAttributes({
@@ -68,12 +116,6 @@ export const BannersSidebar = ({ attributes, setAttributes }) => {
 		});
 	};
 
-	const handleBackgroundImageSelect = (media) => {
-		setAttributes({
-			backgroundImageId: media?.id || 0,
-			backgroundImageUrl: media?.url || '',
-		});
-	};
 
 	const tabs = [
 		{ name: 'layout', title: <TabIcon icon={layoutIcon} label={__('Layout', 'codeweber-gutenberg-blocks')} /> },
@@ -129,41 +171,14 @@ export const BannersSidebar = ({ attributes, setAttributes }) => {
 					)}
 
 					{tab.name === 'background' && (
-						<PanelBody title={__('Background', 'codeweber-gutenberg-blocks')} initialOpen={true}>
+						<div style={{ padding: '16px' }}>
 							<BackgroundSettingsPanel
 								attributes={attributes}
 								setAttributes={setAttributes}
 								allowVideo={bannerType === 'banner-34'}
-								backgroundImageSize={backgroundSize}
+								backgroundImageSize={backgroundImageSize}
+								imageSizeLabel={imageSize}
 								availableImageSizes={availableImageSizes}
-								renderImagePicker={(open) => (
-									<MediaUploadCheck>
-										<MediaUpload
-											onSelect={handleBackgroundImageSelect}
-											allowedTypes={['image']}
-											value={backgroundImageId}
-											render={({ open: openPicker }) => (
-												<>
-													{backgroundImageUrl ? (
-														<div className="mb-3">
-															<img src={backgroundImageUrl} alt="" style={{ maxWidth: '100%', height: 'auto' }} />
-															<button onClick={openPicker} className="components-button is-secondary mt-2" type="button">
-																{__('Replace Image', 'codeweber-gutenberg-blocks')}
-															</button>
-															<button onClick={() => setAttributes({ backgroundImageId: 0, backgroundImageUrl: '' })} className="components-button is-secondary mt-2" type="button">
-																{__('Remove Image', 'codeweber-gutenberg-blocks')}
-															</button>
-														</div>
-													) : (
-														<button onClick={openPicker} className="components-button is-primary" type="button">
-															{__('Select Background Image', 'codeweber-gutenberg-blocks')}
-														</button>
-													)}
-												</>
-											)}
-										/>
-									</MediaUploadCheck>
-								)}
 							/>
 							{bannerType === 'banner-34' && (
 								<div className="mb-3">
@@ -176,7 +191,7 @@ export const BannersSidebar = ({ attributes, setAttributes }) => {
 									/>
 								</div>
 							)}
-						</PanelBody>
+						</div>
 					)}
 
 					{tab.name === 'settings' && (

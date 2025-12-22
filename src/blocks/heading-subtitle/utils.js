@@ -138,6 +138,17 @@ export const createTextTagOptions = () => [
 
 export const createSizeOptions = () => [
     { value: '', label: 'Default' },
+    // Display классы
+    { value: 'display-1', label: 'display-1' },
+    { value: 'display-2', label: 'display-2' },
+    { value: 'display-3', label: 'display-3' },
+    { value: 'display-4', label: 'display-4' },
+    { value: 'display-5', label: 'display-5' },
+    { value: 'display-6', label: 'display-6' },
+    // Lead классы с размерами
+    { value: 'lead fs-lg', label: 'lead fs-lg' },
+    { value: 'lead fs-md', label: 'lead fs-md' },
+    { value: 'lead fs-sm', label: 'lead fs-sm' },
     // H-классы (размеры h1-h6 как классы)
     { value: 'h1', label: 'h1' },
     { value: 'h2', label: 'h2' },

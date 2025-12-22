@@ -40,6 +40,10 @@
             "type": "string",
             "default": ""
         },
+        "backgroundImageSize": {
+            "type": "string",
+            "default": ""
+        },
         "backgroundType": {
             "type": "string",
             "default": "none"

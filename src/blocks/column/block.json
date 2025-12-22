@@ -37,6 +37,10 @@
 			"type": "string",
 			"default": ""
 		},
+		"backgroundImageSize": {
+			"type": "string",
+			"default": ""
+		},
 		"backgroundSize": {
 			"type": "string",
 			"default": ""

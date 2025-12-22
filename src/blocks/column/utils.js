@@ -64,7 +64,7 @@ export const getColumnBackgroundClasses = (attrs = {}) => {
 
 export const getColumnStyles = (attrs = {}) => {
 	const { backgroundType, backgroundImageUrl, backgroundPatternUrl, backgroundSize } = attrs;
-	if (backgroundType === 'image' && backgroundImageUrl) {
+	if (backgroundType === 'image' && backgroundImageUrl && backgroundImageUrl !== 'null' && backgroundImageUrl.trim() !== '') {
 		const size = backgroundSize === 'bg-cover' ? 'cover' : backgroundSize === 'bg-full' ? '100% 100%' : 'auto';
 		return {
 			backgroundImage: `url(${backgroundImageUrl})`,
@@ -74,7 +74,7 @@ export const getColumnStyles = (attrs = {}) => {
 		};
 	}
 
-	if (backgroundType === 'pattern' && backgroundPatternUrl) {
+	if (backgroundType === 'pattern' && backgroundPatternUrl && backgroundPatternUrl !== 'null' && backgroundPatternUrl.trim() !== '') {
 		const size = backgroundSize === 'bg-cover' ? 'cover' : backgroundSize === 'bg-full' ? '100% 100%' : 'auto';
 		return {
 			backgroundImage: `url(${backgroundPatternUrl})`,

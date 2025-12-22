@@ -7,6 +7,32 @@ import { BannersSidebar } from './sidebar';
 import { __ } from '@wordpress/i18n';
 import { generateBackgroundClasses, generateTextColorClass } from '../../utilities/class-generators';
 
+// Все блоки Codeweber Gutenberg Blocks (исключая сам banners, чтобы избежать рекурсии)
+const ALLOWED_CODEWEBER_BLOCKS = [
+	'codeweber-blocks/accordion',
+	'codeweber-blocks/avatar',
+	'codeweber-blocks/banner',
+	'codeweber-blocks/button',
+	'codeweber-blocks/section',
+	'codeweber-blocks/column',
+	'codeweber-blocks/columns',
+	'codeweber-gutenberg-blocks/heading-subtitle',
+	'codeweber-blocks/icon',
+	'codeweber-blocks/lists',
+	'codeweber-blocks/media',
+	'codeweber-blocks/paragraph',
+	'codeweber-blocks/card',
+	'codeweber-blocks/feature',
+	'codeweber-blocks/image-simple',
+	'codeweber-blocks/post-grid',
+	'codeweber-blocks/tabs',
+	'codeweber-blocks/label-plus',
+	'codeweber-blocks/form',
+	'codeweber-blocks/form-field',
+	'codeweber-blocks/submit-button',
+	'codeweber-blocks/divider',
+];
+
 const BannersEdit = ({ attributes, setAttributes }) => {
 	const {
 		bannerType,
@@ -63,7 +89,7 @@ const BannersEdit = ({ attributes, setAttributes }) => {
 					)}
 				</div>
 			)}
-			<div className="container position-relative" data-cue="fadeIn" data-delay="600">
+			<div className="container position-relative">
 				{videoUrl && (
 					<a href={videoUrl} className="btn btn-circle btn-primary btn-play ripple mx-auto position-absolute d-none d-lg-flex" style={{ top: '50%', left: '50%', transform: 'translate(-50%,-50%)', zIndex: 3 }} data-glightbox data-gallery="desktop-video">
 						<i className="icn-caret-right"></i>
@@ -71,9 +97,9 @@ const BannersEdit = ({ attributes, setAttributes }) => {
 				)}
 				<div className="row gx-0">
 					<div className="col-lg-6 offset-lg-6">
-						<div className="py-12 py-lg-16 ps-lg-12 py-xxl-18 ps-xxl-16 pe-lg-0 position-relative" data-cues="slideInDown" data-group="page-title">
+						<div className="py-12 py-lg-16 ps-lg-12 py-xxl-18 ps-xxl-16 pe-lg-0 position-relative">
 							<InnerBlocks
-								allowedBlocks={['codeweber-blocks/heading-subtitle', 'core/heading', 'core/paragraph', 'codeweber-blocks/button', 'codeweber-blocks/paragraph']}
+								allowedBlocks={ALLOWED_CODEWEBER_BLOCKS}
 								templateLock={false}
 							/>
 						</div>

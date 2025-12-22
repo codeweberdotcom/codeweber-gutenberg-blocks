@@ -5,12 +5,15 @@ import {
 } from '@wordpress/block-editor';
 import { TabPanel } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import { Icon, cog, positionCenter, mobile, resizeCornerNE } from '@wordpress/icons';
+import { Icon, cog, positionCenter, mobile, resizeCornerNE, image } from '@wordpress/icons';
+import { useState, useEffect } from '@wordpress/element';
+import apiFetch from '@wordpress/api-fetch';
 import { PositioningControl } from '../../components/layout/PositioningControl';
 import { BlockMetaFields } from '../../components/block-meta/BlockMetaFields';
 import { ResponsiveControl, createColumnWidthConfig } from '../../components/responsive-control';
 import { SpacingControl } from '../../components/spacing/SpacingControl';
-import { getColumnClassNames, normalizeColumnId, getAdaptiveClasses } from './utils';
+import BackgroundSettingsPanel from '../../components/background/BackgroundSettingsPanel';
+import { getColumnClassNames, normalizeColumnId, getAdaptiveClasses, getColumnStyles } from './utils';
 
 // Tab icon with native title tooltip
 const TabIcon = ({ icon, label }) => (
@@ -23,6 +26,7 @@ const tabs = [
 	{ name: 'settings', title: <TabIcon icon={cog} label={__('Settings', 'codeweber-gutenberg-blocks')} /> },
 	{ name: 'align', title: <TabIcon icon={positionCenter} label={__('Position', 'codeweber-gutenberg-blocks')} /> },
 	{ name: 'adaptive', title: <TabIcon icon={mobile} label={__('Responsive', 'codeweber-gutenberg-blocks')} /> },
+	{ name: 'background', title: <TabIcon icon={image} label={__('Background', 'codeweber-gutenberg-blocks')} /> },
 	{ name: 'spacing', title: <TabIcon icon={resizeCornerNE} label={__('Spacing', 'codeweber-gutenberg-blocks')} /> },
 ];
 
@@ -48,11 +52,85 @@ const ColumnEdit = ({ attributes, setAttributes }) => {
 		spacingLg,
 		spacingXl,
 		spacingXxl,
+		backgroundType,
+		backgroundImageId,
+		backgroundImageUrl,
+		backgroundImageSize,
+		backgroundSize,
 	} = attributes;
+
+	const [availableImageSizes, setAvailableImageSizes] = useState([]);
+	const [imageSize, setImageSize] = useState('');
+
+	// Fetch current background image data when component mounts or backgroundImageId changes
+	useEffect(() => {
+		if (backgroundImageId && backgroundImageId > 0) {
+			apiFetch({
+				path: `/wp/v2/media/${backgroundImageId}`,
+				method: 'GET'
+			}).then((attachment) => {
+				// Get file size
+				if (attachment && attachment.media_details && attachment.media_details.filesize) {
+					const sizeInBytes = attachment.media_details.filesize;
+					if (sizeInBytes < 1024 * 1024) {
+						setImageSize((sizeInBytes / 1024).toFixed(1) + ' KB');
+					} else {
+						setImageSize((sizeInBytes / (1024 * 1024)).toFixed(1) + ' MB');
+					}
+				} else {
+					setImageSize('');
+				}
+				
+				// Get available sizes from media_details
+				if (attachment && attachment.media_details && attachment.media_details.sizes) {
+					const sizes = Object.keys(attachment.media_details.sizes);
+					sizes.push('full'); // Always include full size
+					setAvailableImageSizes(sizes);
+				} else {
+					setAvailableImageSizes(['full']);
+				}
+			}).catch(() => {
+				setImageSize('');
+				setAvailableImageSizes([]);
+			});
+		} else {
+			setImageSize('');
+			setAvailableImageSizes([]);
+		}
+	}, [backgroundImageId]);
+
+	// Update image URL when backgroundImageSize changes
+	useEffect(() => {
+		if (backgroundImageId && backgroundImageId > 0 && backgroundImageSize) {
+			apiFetch({
+				path: `/wp/v2/media/${backgroundImageId}`,
+				method: 'GET'
+			}).then((attachment) => {
+				let newUrl = attachment.source_url; // Default to full size
+
+				// Check if requested size exists in media_details
+				if (backgroundImageSize !== 'full' && 
+					attachment.media_details && 
+					attachment.media_details.sizes && 
+					attachment.media_details.sizes[backgroundImageSize]) {
+					
+					newUrl = attachment.media_details.sizes[backgroundImageSize].source_url;
+				}
+
+				// Update URL if different
+				if (newUrl !== backgroundImageUrl) {
+					setAttributes({ backgroundImageUrl: newUrl });
+				}
+			}).catch((error) => {
+				console.error('Failed to fetch image data:', error);
+			});
+		}
+	}, [backgroundImageSize, backgroundImageId]);
 
 	const blockProps = useBlockProps({
 		className: getColumnClassNames(attributes, 'edit'),
 		id: normalizeColumnId(columnId) || undefined,
+		style: getColumnStyles(attributes),
 	});
 
 	return (
@@ -131,6 +209,18 @@ const ColumnEdit = ({ attributes, setAttributes }) => {
 									})()}
 									<ResponsiveControl
 										{...createColumnWidthConfig(attributes, setAttributes, 'dropdown')}
+									/>
+								</div>
+							)}
+							{tab.name === 'background' && (
+								<div style={{ padding: '16px' }}>
+									<BackgroundSettingsPanel
+										attributes={attributes}
+										setAttributes={setAttributes}
+										allowVideo={true}
+										backgroundImageSize={backgroundImageSize}
+										imageSizeLabel={imageSize}
+										availableImageSizes={availableImageSizes}
 									/>
 								</div>
 							)}

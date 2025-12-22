@@ -203,6 +203,7 @@ export const destroySwiper = (selector = null) => {
  * @param {Object} props.config - Swiper configuration
  * @param {string} props.className - Additional classes for container
  * @param {string} props.wrapperClassName - Additional classes for swiper-wrapper
+ * @param {string} props.swiperClassName - Additional classes for swiper element
  * @param {string} props.uniqueKey - Unique key for forcing reinitialization
  * @returns {JSX.Element} Swiper structure
  */
@@ -211,6 +212,7 @@ export const SwiperSlider = ({
 	config = {},
 	className = '',
 	wrapperClassName = '',
+	swiperClassName = '',
 	uniqueKey = '',
 }) => {
 	const containerClasses = `${getSwiperContainerClasses(config)} ${className}`.trim();
@@ -224,9 +226,12 @@ export const SwiperSlider = ({
 	}
 	wrapperClasses = wrapperClasses.trim();
 
+	// Add classes to swiper element
+	const swiperClasses = `swiper ${swiperClassName}`.trim();
+
 	return (
 		<div key={uniqueKey} className={containerClasses} {...dataAttrs}>
-			<div className="swiper">
+			<div className={swiperClasses}>
 				<div className={wrapperClasses}>
 					{children}
 				</div>

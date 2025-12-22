@@ -1,9 +1,14 @@
 import { __ } from '@wordpress/i18n';
-import { PanelBody, SelectControl, TabPanel } from '@wordpress/components';
+import { PanelBody, SelectControl, TabPanel, ButtonGroup } from '@wordpress/components';
 import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
 import { Icon, layout as layoutIcon, image, cog } from '@wordpress/icons';
 import BackgroundSettingsPanel from '../../components/background/BackgroundSettingsPanel';
 import { VideoURLControl } from '../../components/video-url/VideoURLControl';
+import { ImageControl } from '../../components/image/ImageControl';
+import { ImageHoverControl } from '../../components/image-hover/ImageHoverControl';
+import { LightboxControl } from '../../components/lightbox/LightboxControl';
+import { BorderRadiusControl } from '../../components/border-radius';
+import { LayoutControl } from '../image-simple/controls/LayoutControl';
 import { useState, useEffect } from '@wordpress/element';
 import apiFetch from '@wordpress/api-fetch';
 
@@ -24,6 +29,7 @@ const BANNER_TYPES = [
 export const BannersSidebar = ({ attributes, setAttributes }) => {
 	const {
 		bannerType,
+		imageType,
 		imageId,
 		imageUrl,
 		imageAlt,
@@ -38,10 +44,22 @@ export const BannersSidebar = ({ attributes, setAttributes }) => {
 		sectionClass,
 		videoUrl,
 		videoId,
+		images,
+		imageSize,
+		borderRadius,
+		enableLightbox,
+		lightboxGallery,
+		simpleEffect,
+		effectType,
+		tooltipStyle,
+		overlayStyle,
+		overlayGradient,
+		overlayColor,
+		cursorStyle,
 	} = attributes;
 
 	const [availableImageSizes, setAvailableImageSizes] = useState([]);
-	const [imageSize, setImageSize] = useState('');
+	const [backgroundImageSizeLabel, setBackgroundImageSizeLabel] = useState('');
 
 	// Fetch current background image data when component mounts or backgroundImageId changes
 	useEffect(() => {
@@ -54,12 +72,12 @@ export const BannersSidebar = ({ attributes, setAttributes }) => {
 				if (attachment && attachment.media_details && attachment.media_details.filesize) {
 					const sizeInBytes = attachment.media_details.filesize;
 					if (sizeInBytes < 1024 * 1024) {
-						setImageSize((sizeInBytes / 1024).toFixed(1) + ' KB');
+						setBackgroundImageSizeLabel((sizeInBytes / 1024).toFixed(1) + ' KB');
 					} else {
-						setImageSize((sizeInBytes / (1024 * 1024)).toFixed(1) + ' MB');
+						setBackgroundImageSizeLabel((sizeInBytes / (1024 * 1024)).toFixed(1) + ' MB');
 					}
 				} else {
-					setImageSize('');
+					setBackgroundImageSizeLabel('');
 				}
 				
 				// Get available sizes from media_details
@@ -71,11 +89,11 @@ export const BannersSidebar = ({ attributes, setAttributes }) => {
 					setAvailableImageSizes(['full']);
 				}
 			}).catch(() => {
-				setImageSize('');
+				setBackgroundImageSizeLabel('');
 				setAvailableImageSizes([]);
 			});
 		} else {
-			setImageSize('');
+			setBackgroundImageSizeLabel('');
 			setAvailableImageSizes([]);
 		}
 	}, [backgroundImageId]);
@@ -140,34 +158,67 @@ export const BannersSidebar = ({ attributes, setAttributes }) => {
 					)}
 
 					{tab.name === 'images' && (
-						<PanelBody title={__('Image', 'codeweber-gutenberg-blocks')} initialOpen={true}>
-							<MediaUploadCheck>
-								<MediaUpload
-									onSelect={handleImageSelect}
-									allowedTypes={['image']}
-									value={imageId}
-									render={({ open }) => (
-										<>
-											{imageUrl ? (
-												<div className="mb-3">
-													<img src={imageUrl} alt={imageAlt} style={{ maxWidth: '100%', height: 'auto' }} />
-													<button onClick={open} className="components-button is-secondary mt-2" type="button">
-														{__('Replace Image', 'codeweber-gutenberg-blocks')}
-													</button>
-													<button onClick={() => setAttributes({ imageId: 0, imageUrl: '', imageAlt: '' })} className="components-button is-secondary mt-2" type="button">
-														{__('Remove Image', 'codeweber-gutenberg-blocks')}
-													</button>
-												</div>
-											) : (
-												<button onClick={open} className="components-button is-primary" type="button">
-													{__('Select Image', 'codeweber-gutenberg-blocks')}
-												</button>
-											)}
-										</>
-									)}
-								/>
-							</MediaUploadCheck>
-						</PanelBody>
+						<>
+							<PanelBody title={__('Image', 'codeweber-gutenberg-blocks')} initialOpen={true}>
+								<div className="mb-3">
+									<div className="component-sidebar-title">
+										<label>{__('Image Type', 'codeweber-gutenberg-blocks')}</label>
+									</div>
+									<ButtonGroup>
+										<button
+											className={`components-button ${imageType === 'background' ? 'is-primary' : 'is-secondary'}`}
+											onClick={() => setAttributes({ imageType: 'background' })}
+										>
+											{__('Background', 'codeweber-gutenberg-blocks')}
+										</button>
+										<button
+											className={`components-button ${imageType === 'image-simple' ? 'is-primary' : 'is-secondary'}`}
+											onClick={() => setAttributes({ imageType: 'image-simple' })}
+										>
+											{__('Image Simple', 'codeweber-gutenberg-blocks')}
+										</button>
+									</ButtonGroup>
+								</div>
+
+								{(imageType === 'background' || imageType === 'image-simple') && (
+									<>
+										<ImageControl
+											images={images || []}
+											imageSize={imageSize}
+											setAttributes={setAttributes}
+										/>
+										<div className="mb-3" style={{ marginTop: '16px' }}>
+											<BorderRadiusControl
+												value={borderRadius}
+												onChange={(value) => setAttributes({ borderRadius: value })}
+											/>
+										</div>
+										<div className="mb-3" style={{ marginTop: '16px' }}>
+											<ImageHoverControl
+												attributes={attributes}
+												setAttributes={setAttributes}
+											/>
+										</div>
+										<div className="mb-3" style={{ marginTop: '16px' }}>
+											<LightboxControl
+												attributes={attributes}
+												setAttributes={setAttributes}
+											/>
+										</div>
+									</>
+								)}
+							</PanelBody>
+
+							{/* Layout settings for Image - показываем для обоих режимов (background и image-simple) */}
+							<div style={{ marginTop: '16px' }}>
+								<PanelBody title={__('Image Layout', 'codeweber-gutenberg-blocks')} initialOpen={false}>
+									<LayoutControl
+										attributes={attributes}
+										setAttributes={setAttributes}
+									/>
+								</PanelBody>
+							</div>
+						</>
 					)}
 
 					{tab.name === 'background' && (
@@ -177,7 +228,7 @@ export const BannersSidebar = ({ attributes, setAttributes }) => {
 								setAttributes={setAttributes}
 								allowVideo={bannerType === 'banner-34'}
 								backgroundImageSize={backgroundImageSize}
-								imageSizeLabel={imageSize}
+								imageSizeLabel={backgroundImageSizeLabel}
 								availableImageSizes={availableImageSizes}
 							/>
 							{bannerType === 'banner-34' && (

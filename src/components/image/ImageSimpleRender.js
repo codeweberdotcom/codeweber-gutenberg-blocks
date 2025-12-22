@@ -20,6 +20,7 @@ export const ImageSimpleRender = ({
 	overlayGradient,
 	overlayColor,
 	cursorStyle,
+	imageRenderType = 'img', // 'img' или 'background'
 	isEditor = false,
 }) => {
 	if (!image) {
@@ -60,63 +61,104 @@ export const ImageSimpleRender = ({
 	const href = isEditor ? '#' : (image.linkUrl || image.url);
 	const onClickHandler = isEditor ? (e) => e.preventDefault() : undefined;
 
-	// Единая верстка для редактора и фронтенда
-	// Tooltip вариант
-	if (effectType === 'tooltip' && tooltipTitle) {
-		return (
-			<figure className={figureClasses} title={tooltipTitle}>
-				<a href={href} onClick={onClickHandler} {...lightboxAttrs}>
-					<img src={imageUrl} alt={image.alt || ''} />
+	// Рендеринг как background
+	if (imageRenderType === 'background') {
+		const backgroundClasses = `wrapper image-wrapper bg-image bg-cover h-100 ${borderRadius || ''} ${hoverClasses}`.trim();
+		const backgroundDataAttrs = !isEditor 
+			? { 'data-image-src': imageUrl }
+			: {};
+
+		const figureProps = {
+			className: backgroundClasses,
+			...backgroundDataAttrs,
+		};
+		
+		// Добавляем inline стиль ТОЛЬКО в редакторе
+		if (isEditor) {
+			figureProps.style = { backgroundImage: `url(${imageUrl})` };
+		}
+
+		// Если включен lightbox, оборачиваем figure в a
+		if (enableLightbox) {
+			return (
+				<a href={href} onClick={onClickHandler} className="h-100" {...lightboxAttrs}>
+					<figure {...figureProps}></figure>
 				</a>
-			</figure>
+			);
+		}
+
+		// Если lightbox выключен, возвращаем просто figure
+		return (
+			<figure {...figureProps}></figure>
 		);
 	}
 
-	// Overlay вариант
-	if (effectType === 'overlay') {
+	// Рендеринг как img тег (обычный вариант)
+	// Если включен lightbox, оборачиваем figure в a
+	const figureElement = (() => {
+		// Tooltip вариант
+		if (effectType === 'tooltip' && tooltipTitle) {
+			return (
+				<figure className={figureClasses} title={tooltipTitle}>
+					<img src={imageUrl} alt={image.alt || ''} decoding="async" />
+				</figure>
+			);
+		}
+
+		// Overlay вариант
+		if (effectType === 'overlay') {
+			return (
+				<figure className={figureClasses}>
+					<img src={imageUrl} alt={image.alt || ''} decoding="async" />
+					{overlayStyle === 'overlay-4' ? (
+						<figcaption>
+							<div className="from-top mb-0 h2">
+								<span className="mt-5">+</span>
+							</div>
+						</figcaption>
+					) : overlayStyle === 'overlay-2' ? (
+						(image.title || image.caption || image.description) && (
+							<figcaption>
+								<h5 className="from-top mb-1">{image.title || image.caption}</h5>
+								{image.description && <p className="from-bottom mb-0">{image.description}</p>}
+							</figcaption>
+						)
+					) : overlayStyle === 'overlay-3' ? (
+						(image.title || image.caption || image.description) && (
+							<figcaption>
+								<h5 className="from-left mb-1">{image.title || image.caption}</h5>
+								{image.description && <p className="from-left mb-0">{image.description}</p>}
+							</figcaption>
+						)
+					) : (
+						(image.title || image.caption) && (
+							<figcaption>
+								<h5 className="from-top mb-0">{image.title || image.caption}</h5>
+							</figcaption>
+						)
+					)}
+				</figure>
+			);
+		}
+
+		// Простой вариант (cursor, none или только simple эффекты)
 		return (
 			<figure className={figureClasses}>
-				<a href={href} onClick={onClickHandler} {...lightboxAttrs}>
-					<img src={imageUrl} alt={image.alt || ''} />
-				</a>
-				{overlayStyle === 'overlay-4' ? (
-					<figcaption>
-						<div className="from-top mb-0 h2">
-							<span className="mt-5">+</span>
-						</div>
-					</figcaption>
-				) : overlayStyle === 'overlay-2' ? (
-					(image.title || image.caption || image.description) && (
-						<figcaption>
-							<h5 className="from-top mb-1">{image.title || image.caption}</h5>
-							{image.description && <p className="from-bottom mb-0">{image.description}</p>}
-						</figcaption>
-					)
-				) : overlayStyle === 'overlay-3' ? (
-					(image.title || image.caption || image.description) && (
-						<figcaption>
-							<h5 className="from-left mb-1">{image.title || image.caption}</h5>
-							{image.description && <p className="from-left mb-0">{image.description}</p>}
-						</figcaption>
-					)
-				) : (
-					(image.title || image.caption) && (
-						<figcaption>
-							<h5 className="from-top mb-0">{image.title || image.caption}</h5>
-						</figcaption>
-					)
-				)}
+				<img src={imageUrl} alt={image.alt || ''} decoding="async" />
 			</figure>
+		);
+	})();
+
+	// Если включен lightbox, оборачиваем figure в a
+	if (enableLightbox) {
+		return (
+			<a href={href} onClick={onClickHandler} {...lightboxAttrs}>
+				{figureElement}
+			</a>
 		);
 	}
 
-	// Простой вариант (cursor, none или только simple эффекты)
-	return (
-		<figure className={figureClasses}>
-			<a href={href} onClick={onClickHandler} {...lightboxAttrs}>
-				<img src={imageUrl} alt={image.alt || ''} />
-			</a>
-		</figure>
-	);
+	// Если lightbox выключен, возвращаем просто figure
+	return figureElement;
 };
 

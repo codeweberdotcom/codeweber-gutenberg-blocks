@@ -74,10 +74,14 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		loadMoreType = 'button',
 		loadMoreButtonSize,
 		loadMoreButtonStyle = 'solid',
+		imageRenderType = 'img',
 	} = attributes;
 
+	// Для режима background убираем обертку, применяя атрибуты напрямую к контенту
+	const shouldRemoveWrapper = imageRenderType === 'background';
+	
 	const blockProps = useBlockProps({
-		className: `cwgb-image-simple-block ${blockClass}`,
+		className: `cwgb-image-simple-block ${imageRenderType === 'background' ? 'h-100' : ''} ${blockClass}`.trim(),
 		'data-block': clientId,
 	});
 
@@ -265,41 +269,56 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 	// Генерируем уникальный ключ для полной переинициализации при изменении любых параметров
 	const swiperUniqueKey = `swiper-${swiperEffect}-${swiperSpeed}-${swiperItems}-${swiperItemsXs}-${swiperItemsMd}-${swiperItemsXl}-${swiperMargin}-${swiperLoop}-${swiperAutoplay}-${swiperNav}-${swiperDots}-${hoverEffectsKey}-${clientId}`;
 
-	return (
-		<>
-			<ImageSimpleSidebar attributes={attributes} setAttributes={setAttributes} />
-
-			<div {...blockProps}>
-				{images.length === 0 ? (
-					<div className="cwgb-image-placeholder">
-						<img 
-							src="/wp-content/plugins/codeweber-gutenberg-blocks/placeholder.jpg" 
-							alt={__('Placeholder', 'codeweber-gutenberg-blocks')}
-							className="placeholder-image"
-						/>
-					</div>
-				) : displayMode === 'single' ? (
-					// Режим Single - добавляем key с hover эффектами и imageSize для полной переинициализации
-					<div key={`single-${hoverEffectsKey}-${imageSize}`}>
-						<ImageSimpleRender
-							image={images[0]}
-							imageSize={imageSize}
-							borderRadius={borderRadius}
-							enableLightbox={enableLightbox}
-							lightboxGallery={lightboxGallery}
-							simpleEffect={simpleEffect}
-							effectType={effectType}
-							tooltipStyle={tooltipStyle}
-							overlayStyle={overlayStyle}
-							overlayGradient={overlayGradient}
-							overlayColor={overlayColor}
-							cursorStyle={cursorStyle}
-							isEditor={true}
-						/>
-					</div>
-				) : displayMode === 'grid' ? (
-					// Режим Grid - добавляем key с hover эффектами и imageSize для полной переинициализации
-					<div className={getContainerClasses()} key={`grid-${hoverEffectsKey}-${imageSize}`}>
+	// Рендерим контент
+	const renderContent = () => {
+		if (images.length === 0) {
+			const placeholderProps = shouldRemoveWrapper 
+				? { ...blockProps, className: `${blockProps.className || ''} cwgb-image-placeholder`.trim() }
+				: { className: 'cwgb-image-placeholder' };
+			
+			return (
+				<div {...placeholderProps}>
+					<img 
+						src="/wp-content/plugins/codeweber-gutenberg-blocks/placeholder.jpg" 
+						alt={__('Placeholder', 'codeweber-gutenberg-blocks')}
+						className="placeholder-image"
+					/>
+				</div>
+			);
+		} else if (displayMode === 'single') {
+			// Режим Single - добавляем key с hover эффектами и imageSize для полной переинициализации
+			const singleDivProps = shouldRemoveWrapper 
+				? { ...blockProps, key: `single-${hoverEffectsKey}-${imageSize}` }
+				: { key: `single-${hoverEffectsKey}-${imageSize}` };
+			
+			return (
+				<div {...singleDivProps}>
+					<ImageSimpleRender
+						image={images[0]}
+						imageSize={imageSize}
+						borderRadius={borderRadius}
+						enableLightbox={enableLightbox}
+						lightboxGallery={lightboxGallery}
+						simpleEffect={simpleEffect}
+						effectType={effectType}
+						tooltipStyle={tooltipStyle}
+						overlayStyle={overlayStyle}
+						overlayGradient={overlayGradient}
+						overlayColor={overlayColor}
+						cursorStyle={cursorStyle}
+						imageRenderType={imageRenderType}
+						isEditor={true}
+					/>
+				</div>
+			);
+		} else if (displayMode === 'grid') {
+			// Режим Grid - добавляем key с hover эффектами и imageSize для полной переинициализации
+			const gridDivProps = shouldRemoveWrapper
+				? { ...blockProps, className: `${blockProps.className || ''} ${getContainerClasses()}`.trim(), key: `grid-${hoverEffectsKey}-${imageSize}` }
+				: { className: getContainerClasses(), key: `grid-${hoverEffectsKey}-${imageSize}` };
+			
+			return (
+				<div {...gridDivProps}>
 						{(loadMoreEnable && displayMode === 'grid' 
 							? images.slice(0, loadMoreInitialCount || images.length)
 							: images
@@ -321,6 +340,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 									overlayGradient={overlayGradient}
 									overlayColor={overlayColor}
 									cursorStyle={cursorStyle}
+									imageRenderType={imageRenderType}
 									isEditor={true}
 								/>
 							</div>
@@ -384,10 +404,53 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 							);
 						})()}
 					</div>
-				) : displayMode === 'swiper' ? (
-					// Режим Swiper - используем компонент SwiperSlider
+				);
+		} else if (displayMode === 'swiper') {
+			// Режим Swiper - используем компонент SwiperSlider
+			// Для background режима добавляем h-100 к swiper-container и swiper
+			const swiperClassName = imageRenderType === 'background' ? 'h-100' : '';
+			const swiperContainerClassName = imageRenderType === 'background' ? 'h-100' : '';
+			
+			// Для swiper мы не можем применить blockProps к SwiperSlider напрямую,
+			// поэтому оборачиваем его в div только для background режима
+			if (shouldRemoveWrapper) {
+				return (
+					<div {...blockProps}>
+						<SwiperSlider 
+							config={swiperConfig} 
+							className={swiperContainerClassName}
+							swiperClassName={swiperClassName}
+							uniqueKey={`${swiperUniqueKey}-${imageSize}`}
+						>
+							{images.map((image, index) => (
+								<SwiperSlide key={`${index}-${hoverEffectsKey}-${imageSize}`}>
+									<ImageSimpleRender
+										image={image}
+										imageSize={imageSize}
+										borderRadius={borderRadius}
+										enableLightbox={enableLightbox}
+										lightboxGallery={lightboxGallery}
+										simpleEffect={simpleEffect}
+										effectType={effectType}
+										tooltipStyle={tooltipStyle}
+										overlayStyle={overlayStyle}
+										overlayGradient={overlayGradient}
+										overlayColor={overlayColor}
+										cursorStyle={cursorStyle}
+										imageRenderType={imageRenderType}
+										isEditor={true}
+									/>
+								</SwiperSlide>
+							))}
+						</SwiperSlider>
+					</div>
+				);
+			} else {
+				return (
 					<SwiperSlider 
 						config={swiperConfig} 
+						className={swiperContainerClassName}
+						swiperClassName={swiperClassName}
 						uniqueKey={`${swiperUniqueKey}-${imageSize}`}
 					>
 						{images.map((image, index) => (
@@ -405,13 +468,31 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 									overlayGradient={overlayGradient}
 									overlayColor={overlayColor}
 									cursorStyle={cursorStyle}
+									imageRenderType={imageRenderType}
 									isEditor={true}
 								/>
 							</SwiperSlide>
 						))}
 					</SwiperSlider>
-				) : null}
-			</div>
+				);
+			}
+		}
+		return null;
+	};
+
+	const content = renderContent();
+
+	return (
+		<>
+			<ImageSimpleSidebar attributes={attributes} setAttributes={setAttributes} />
+
+			{shouldRemoveWrapper ? (
+				content
+			) : (
+				<div {...blockProps}>
+					{content}
+				</div>
+			)}
 		</>
 	);
 }

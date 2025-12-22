@@ -1,5 +1,5 @@
 import { InspectorControls } from '@wordpress/block-editor';
-import { TabPanel, PanelBody } from '@wordpress/components';
+import { TabPanel, PanelBody, ButtonGroup } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { Icon, image, grid, cog, search, starFilled } from '@wordpress/icons';
 import { ImageControl } from '../../components/image/ImageControl';
@@ -37,6 +37,25 @@ export const ImageSimpleSidebar = ({ attributes, setAttributes }) => {
 						{/* IMAGES TAB */}
 						{tab.name === 'images' && (
 							<PanelBody>
+								<div className="mb-3">
+									<div className="component-sidebar-title">
+										<label>{__('Render Type', 'codeweber-gutenberg-blocks')}</label>
+									</div>
+									<ButtonGroup>
+										<button
+											className={`components-button ${attributes.imageRenderType === 'img' ? 'is-primary' : 'is-secondary'}`}
+											onClick={() => setAttributes({ imageRenderType: 'img' })}
+										>
+											{__('Image Tag', 'codeweber-gutenberg-blocks')}
+										</button>
+										<button
+											className={`components-button ${attributes.imageRenderType === 'background' ? 'is-primary' : 'is-secondary'}`}
+											onClick={() => setAttributes({ imageRenderType: 'background' })}
+										>
+											{__('Background', 'codeweber-gutenberg-blocks')}
+										</button>
+									</ButtonGroup>
+								</div>
 								<ImageControl
 									images={attributes.images}
 									imageSize={attributes.imageSize}

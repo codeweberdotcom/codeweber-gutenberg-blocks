@@ -130,19 +130,34 @@ export const LayoutControl = ({ attributes, setAttributes }) => {
 			<ButtonGroup className="button-group-sidebar_3">
 				<Button
 					isPrimary={displayMode === 'single'}
-					onClick={() => setAttributes({ displayMode: 'single' })}
+					onClick={() => {
+						// #region agent log
+						fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'LayoutControl.js:133',message:'Setting displayMode to single',data:{currentDisplayMode:displayMode},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
+						// #endregion
+						setAttributes({ displayMode: 'single' });
+					}}
 				>
 					{__('Single', 'codeweber-gutenberg-blocks')}
 				</Button>
 				<Button
 					isPrimary={displayMode === 'grid'}
-					onClick={() => setAttributes({ displayMode: 'grid' })}
+					onClick={() => {
+						// #region agent log
+						fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'LayoutControl.js:139',message:'Setting displayMode to grid',data:{currentDisplayMode:displayMode},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
+						// #endregion
+						setAttributes({ displayMode: 'grid' });
+					}}
 				>
 					{__('Grid', 'codeweber-gutenberg-blocks')}
 				</Button>
 				<Button
 					isPrimary={displayMode === 'swiper'}
-					onClick={() => setAttributes({ displayMode: 'swiper' })}
+					onClick={() => {
+						// #region agent log
+						fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'LayoutControl.js:145',message:'Setting displayMode to swiper',data:{currentDisplayMode:displayMode},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
+						// #endregion
+						setAttributes({ displayMode: 'swiper' });
+					}}
 				>
 					{__('Swiper', 'codeweber-gutenberg-blocks')}
 				</Button>

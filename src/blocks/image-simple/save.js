@@ -71,6 +71,7 @@ export default function Save({ attributes }) {
 		loadMoreType,
 		loadMoreButtonSize,
 		loadMoreButtonStyle,
+		imageRenderType = 'img',
 	} = attributes;
 
 	// Функция для получения классов контейнера
@@ -181,20 +182,25 @@ export default function Save({ attributes }) {
 		return dataAttrs;
 	};
 
-	const blockProps = useBlockProps.save({
+	if (images.length === 0) {
+		return null;
+	}
+
+	// Для режима background убираем обертку на фронтенде для всех режимов
+	const shouldRemoveWrapper = imageRenderType === 'background';
+
+	// Создаем blockProps только если нужна обертка
+	const blockProps = shouldRemoveWrapper ? null : useBlockProps.save({
 		className: `cwgb-image-simple-block ${blockClass}`,
 		...(blockId && { id: blockId }),
 		...getDataAttributes(),
 	});
 
-	if (images.length === 0) {
-		return null;
-	}
-
-	return (
-		<div {...blockProps}>
-			{displayMode === 'single' ? (
-				// Режим Single
+	// Рендерим контент для разных режимов
+	const renderContent = () => {
+		if (displayMode === 'single') {
+			// Режим Single
+			return (
 				<ImageSimpleRender
 					image={images[0]}
 					imageSize={imageSize}
@@ -208,9 +214,13 @@ export default function Save({ attributes }) {
 					overlayGradient={overlayGradient}
 					overlayColor={overlayColor}
 					cursorStyle={cursorStyle}
+					imageRenderType={imageRenderType}
 					isEditor={false}
 				/>
-			) : displayMode === 'grid' ? (
+			);
+		} else if (displayMode === 'grid') {
+			// Режим Grid
+			return (
 				// Режим Grid с поддержкой Load More
 				(() => {
 					// Определяем, нужно ли ограничивать количество изображений
@@ -275,6 +285,7 @@ export default function Save({ attributes }) {
 												overlayGradient={overlayGradient}
 												overlayColor={overlayColor}
 												cursorStyle={cursorStyle}
+												imageRenderType={imageRenderType}
 												isEditor={false}
 											/>
 										</div>
@@ -362,6 +373,7 @@ export default function Save({ attributes }) {
 										overlayGradient={overlayGradient}
 										overlayColor={overlayColor}
 										cursorStyle={cursorStyle}
+										imageRenderType={imageRenderType}
 										isEditor={false}
 									/>
 								</div>
@@ -369,9 +381,19 @@ export default function Save({ attributes }) {
 						</div>
 					);
 				})()
-			) : displayMode === 'swiper' ? (
-				// Режим Swiper - используем компонент SwiperSlider
-				<SwiperSlider config={swiperConfig}>
+			);
+		} else if (displayMode === 'swiper') {
+			// Режим Swiper - используем компонент SwiperSlider
+			// Для background режима добавляем h-100 к swiper-container и swiper
+			const swiperClassName = imageRenderType === 'background' ? 'h-100' : '';
+			const swiperContainerClassName = imageRenderType === 'background' ? 'h-100' : '';
+			
+			return (
+				<SwiperSlider 
+					config={swiperConfig}
+					className={swiperContainerClassName}
+					swiperClassName={swiperClassName}
+				>
 					{images.map((image, index) => (
 						<SwiperSlide key={index}>
 							<ImageSimpleRender
@@ -387,12 +409,28 @@ export default function Save({ attributes }) {
 								overlayGradient={overlayGradient}
 								overlayColor={overlayColor}
 								cursorStyle={cursorStyle}
+								imageRenderType={imageRenderType}
 								isEditor={false}
 							/>
 						</SwiperSlide>
 					))}
 				</SwiperSlider>
-			) : null}
+			);
+		}
+		return null;
+	};
+
+	const content = renderContent();
+
+	// Если нужно убрать обертку (background режим), возвращаем контент напрямую
+	if (shouldRemoveWrapper) {
+		return content;
+	}
+
+	// Иначе возвращаем с оберткой
+	return (
+		<div {...blockProps}>
+			{content}
 		</div>
 	);
 }

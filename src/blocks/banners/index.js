@@ -19,9 +19,3 @@ registerBlockType(metadata, {
 	save: Save
 });
 
-
-
-
-
-
-

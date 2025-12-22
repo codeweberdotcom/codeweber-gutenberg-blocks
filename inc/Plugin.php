@@ -118,6 +118,7 @@ class Plugin {
 		'accordion',
 		'avatar',
 		'banner',
+		'banners',
 		'button',
 		'section',
 		'column',
@@ -334,6 +335,7 @@ class Plugin {
 		$blocks = [
 			'accordion',
 			'banner',
+			'banners',
 			'media',
 			'image-simple',
 			'button',

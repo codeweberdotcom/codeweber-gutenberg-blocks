@@ -1,0 +1,77 @@
+{
+    "apiVersion": 2,
+    "name": "codeweber-blocks/banners",
+    "version": "0.1.0",
+    "title": "Banners",
+    "category": "codeweber-gutenberg-blocks",
+    "icon": "cover-image",
+    "description": "Banners block with multiple predefined layouts (Banner 34, etc.)",
+    "supports": {
+        "html": false,
+        "customClassName": true,
+        "anchor": true
+    },
+    "attributes": {
+        "bannerType": {
+            "type": "string",
+            "default": "banner-34"
+        },
+        "imageId": {
+            "type": "number",
+            "default": 0
+        },
+        "imageUrl": {
+            "type": "string",
+            "default": ""
+        },
+        "imageAlt": {
+            "type": "string",
+            "default": ""
+        },
+        "videoUrl": {
+            "type": "string",
+            "default": ""
+        },
+        "backgroundImageId": {
+            "type": "number",
+            "default": 0
+        },
+        "backgroundImageUrl": {
+            "type": "string",
+            "default": ""
+        },
+        "backgroundType": {
+            "type": "string",
+            "default": "none"
+        },
+        "backgroundColor": {
+            "type": "string",
+            "default": "gray"
+        },
+        "backgroundColorType": {
+            "type": "string",
+            "default": "solid"
+        },
+        "backgroundGradient": {
+            "type": "string",
+            "default": "gradient-1"
+        },
+        "backgroundSize": {
+            "type": "string",
+            "default": "bg-cover"
+        },
+        "sectionClass": {
+            "type": "string",
+            "default": ""
+        },
+        "containerClass": {
+            "type": "string",
+            "default": ""
+        }
+    },
+    "textdomain": "codeweber-blocks",
+    "editorScript": "file:./index.js",
+    "editorStyle": "file:./index.css",
+    "style": "file:./style-index.css"
+}
+

@@ -20,6 +20,7 @@ const loadBlocks = async () => {
         import('./blocks/form-field/index'),
         import('./blocks/submit-button/index'),
         import('./blocks/banner/index'),
+        import('./blocks/banners/index'),
     ];
 
     await Promise.all(blocks);

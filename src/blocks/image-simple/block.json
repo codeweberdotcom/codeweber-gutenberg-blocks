@@ -364,6 +364,10 @@
     "loadMoreButtonStyle": {
       "type": "string",
       "default": "solid"
+    },
+    "imageRenderType": {
+      "type": "string",
+      "default": "img"
     }
   }
 }

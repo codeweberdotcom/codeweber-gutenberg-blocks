@@ -119,6 +119,7 @@ const getWrapperClasses = ({
 	if (wrapperStyle === 'btn' || wrapperStyle === 'btn-circle') {
 		classes.push('btn');
 		classes.push('btn-block');
+		classes.push('flex-shrink-0'); // Предотвращаем сжатие в flex-контейнерах
 
 		// Круглая кнопка
 		if (wrapperStyle === 'btn-circle') {

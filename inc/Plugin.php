@@ -117,7 +117,6 @@ class Plugin {
 	return [
 		'accordion',
 		'avatar',
-		'banner',
 		'banners',
 		'button',
 		'section',
@@ -334,7 +333,6 @@ class Plugin {
 		// WordPress автоматически генерирует handle: {namespace}-{block-name}-editor-script
 		$blocks = [
 			'accordion',
-			'banner',
 			'banners',
 			'media',
 			'image-simple',

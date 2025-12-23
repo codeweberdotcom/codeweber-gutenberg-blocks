@@ -244,3 +244,4 @@ export const Banner23 = ({ attributes, isEditor = false, clientId = '' }) => {
 	);
 };
 
+

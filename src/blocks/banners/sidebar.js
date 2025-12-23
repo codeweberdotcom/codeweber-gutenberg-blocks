@@ -24,6 +24,9 @@ const TabIcon = ({ icon, label }) => (
 
 const BANNER_TYPES = [
 	{ label: __('Banner 34', 'codeweber-gutenberg-blocks'), value: 'banner-34' },
+	{ label: __('Banner 3', 'codeweber-gutenberg-blocks'), value: 'banner-3' },
+	{ label: __('Banner 14', 'codeweber-gutenberg-blocks'), value: 'banner-14' },
+	{ label: __('Banner 23', 'codeweber-gutenberg-blocks'), value: 'banner-23' },
 ];
 
 export const BannersSidebar = ({ attributes, setAttributes }) => {

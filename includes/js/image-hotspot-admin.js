@@ -540,9 +540,8 @@
 				hotspotButtonStyle: 'btn-primary',
 				hotspotButtonSize: 'btn-sm',
 				hotspotButtonShape: 'btn-circle',
-				popupStyle: 'tooltip',
-				popupPosition: 'auto',
-				popupTrigger: 'hover'
+				popoverTrigger: 'click',
+				popoverPlacement: 'auto'
 			};
 		},
 		
@@ -551,9 +550,8 @@
 				hotspotButtonStyle: $('#hotspot-button-style').val() || 'btn-primary',
 				hotspotButtonSize: $('#hotspot-button-size').val() || 'btn-sm',
 				hotspotButtonShape: $('#hotspot-button-shape').val() || 'btn-circle',
-				popupStyle: $('#popup-style').val() || 'tooltip',
-				popupPosition: $('#popup-position').val() || 'auto',
-				popupTrigger: $('#popup-trigger').val() || 'hover'
+				popoverTrigger: $('#popover-trigger').val() || 'click',
+				popoverPlacement: $('#popover-placement').val() || 'auto'
 			};
 			
 			$('#cw-hotspot-settings').val(JSON.stringify(settings));

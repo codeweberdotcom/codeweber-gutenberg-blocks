@@ -179,9 +179,8 @@ class ImageHotspotCPT {
 			'hotspotButtonStyle' => 'btn-primary',
 			'hotspotButtonSize' => 'btn-sm',
 			'hotspotButtonShape' => 'btn-circle',
-			'popupStyle' => 'tooltip',
-			'popupPosition' => 'auto',
-			'popupTrigger' => 'hover',
+			'popoverTrigger' => 'click',
+			'popoverPlacement' => 'auto',
 		];
 		$settings_data = wp_parse_args($settings_data, $default_settings);
 		
@@ -257,22 +256,27 @@ class ImageHotspotCPT {
 						</td>
 					</tr>
 					<tr>
-						<th><label for="popup-style"><?php _e('Popup Style', 'codeweber-gutenberg-blocks'); ?></label></th>
+						<th><label for="popover-trigger"><?php _e('Popover Trigger', 'codeweber-gutenberg-blocks'); ?></label></th>
 						<td>
-							<select id="popup-style" name="popup_style" class="cw-hotspot-setting">
-								<option value="tooltip" <?php selected($settings_data['popupStyle'], 'tooltip'); ?>><?php _e('Tooltip', 'codeweber-gutenberg-blocks'); ?></option>
-								<option value="popup" <?php selected($settings_data['popupStyle'], 'popup'); ?>><?php _e('Popup', 'codeweber-gutenberg-blocks'); ?></option>
+							<select id="popover-trigger" name="popover_trigger" class="cw-hotspot-setting">
+								<option value="click" <?php selected($settings_data['popoverTrigger'] ?? 'click', 'click'); ?>><?php _e('Click', 'codeweber-gutenberg-blocks'); ?></option>
+								<option value="hover" <?php selected($settings_data['popoverTrigger'] ?? '', 'hover'); ?>><?php _e('Hover', 'codeweber-gutenberg-blocks'); ?></option>
+								<option value="focus" <?php selected($settings_data['popoverTrigger'] ?? '', 'focus'); ?>><?php _e('Focus', 'codeweber-gutenberg-blocks'); ?></option>
 							</select>
+							<p class="description"><?php _e('Способ открытия Bootstrap Popover', 'codeweber-gutenberg-blocks'); ?></p>
 						</td>
 					</tr>
 					<tr>
-						<th><label for="popup-trigger"><?php _e('Popup Trigger', 'codeweber-gutenberg-blocks'); ?></label></th>
+						<th><label for="popover-placement"><?php _e('Popover Placement', 'codeweber-gutenberg-blocks'); ?></label></th>
 						<td>
-							<select id="popup-trigger" name="popup_trigger" class="cw-hotspot-setting">
-								<option value="hover" <?php selected($settings_data['popupTrigger'] ?? 'hover', 'hover'); ?>><?php _e('Hover (наведение)', 'codeweber-gutenberg-blocks'); ?></option>
-								<option value="click" <?php selected($settings_data['popupTrigger'] ?? '', 'click'); ?>><?php _e('Click (клик)', 'codeweber-gutenberg-blocks'); ?></option>
+							<select id="popover-placement" name="popover_placement" class="cw-hotspot-setting">
+								<option value="auto" <?php selected($settings_data['popoverPlacement'] ?? 'auto', 'auto'); ?>><?php _e('Auto', 'codeweber-gutenberg-blocks'); ?></option>
+								<option value="top" <?php selected($settings_data['popoverPlacement'] ?? '', 'top'); ?>><?php _e('Top', 'codeweber-gutenberg-blocks'); ?></option>
+								<option value="right" <?php selected($settings_data['popoverPlacement'] ?? '', 'right'); ?>><?php _e('Right', 'codeweber-gutenberg-blocks'); ?></option>
+								<option value="bottom" <?php selected($settings_data['popoverPlacement'] ?? '', 'bottom'); ?>><?php _e('Bottom', 'codeweber-gutenberg-blocks'); ?></option>
+								<option value="left" <?php selected($settings_data['popoverPlacement'] ?? '', 'left'); ?>><?php _e('Left', 'codeweber-gutenberg-blocks'); ?></option>
 							</select>
-							<p class="description"><?php _e('Способ открытия popup/tooltip', 'codeweber-gutenberg-blocks'); ?></p>
+							<p class="description"><?php _e('Позиция отображения popover', 'codeweber-gutenberg-blocks'); ?></p>
 						</td>
 					</tr>
 				</table>
@@ -399,13 +403,7 @@ class ImageHotspotCPT {
 			GUTENBERG_BLOCKS_VERSION
 		);
 		
-		wp_enqueue_script(
-			'cw-hotspot-frontend',
-			GUTENBERG_BLOCKS_URL . 'includes/js/image-hotspot-frontend.js',
-			['jquery'],
-			GUTENBERG_BLOCKS_VERSION,
-			true
-		);
+		// Bootstrap Popover будет инициализирован через тему (theme.bsPopovers())
 		
 		// #region agent log
 		$log_file = WP_CONTENT_DIR . '/../.cursor/debug.log';
@@ -536,9 +534,8 @@ class ImageHotspotCPT {
 			'hotspotButtonStyle' => 'btn-primary',
 			'hotspotButtonSize' => 'btn-sm',
 			'hotspotButtonShape' => 'btn-circle',
-			'popupStyle' => 'tooltip',
-			'popupPosition' => 'auto',
-			'popupTrigger' => 'hover', // hover или click
+			'popoverTrigger' => 'click',
+			'popoverPlacement' => 'auto',
 		];
 		$settings_data = wp_parse_args($settings_data, $default_settings);
 		
@@ -561,9 +558,7 @@ class ImageHotspotCPT {
 		ob_start();
 		?>
 		<div class="cw-image-hotspot-container cw-image-hotspot-<?php echo esc_attr($hotspot_id); ?>" 
-		     data-hotspot-id="<?php echo esc_attr($hotspot_id); ?>"
-		     data-popup-style="<?php echo esc_attr($settings_data['popupStyle']); ?>"
-		     data-popup-trigger="<?php echo esc_attr($settings_data['popupTrigger'] ?? 'hover'); ?>">
+		     data-hotspot-id="<?php echo esc_attr($hotspot_id); ?>">
 			<div class="cw-hotspot-annotation-box">
 				<img src="<?php echo esc_url($image_url); ?>" 
 				     class="cw-hotspot-main-image" 
@@ -587,31 +582,33 @@ class ImageHotspotCPT {
 							$shape_classes = $button_shape ? explode(' ', $button_shape) : [];
 							// Добавляем классы темы: hover-scale и lift
 							$theme_classes = ['hover-scale', 'lift'];
+							
+							// Формируем контент для Bootstrap Popover
+							$popover_title = !empty($hotspot['title']) ? esc_html($hotspot['title']) : '';
+							$popover_content = '';
+							if (!empty($hotspot['content'])) {
+								$popover_content .= wp_kses_post($hotspot['content']);
+							}
+							if (!empty($hotspot['link'])) {
+								$popover_content .= '<br><a href="' . esc_url($hotspot['link']) . '" target="' . esc_attr($hotspot['linkTarget'] ?? '_self') . '">' . __('Learn more', 'codeweber-gutenberg-blocks') . '</a>';
+							}
+							$popover_trigger = $settings_data['popoverTrigger'] ?? 'click';
+							$popover_placement = $settings_data['popoverPlacement'] ?? 'auto';
 							?>
-							<span class="btn <?php echo esc_attr(implode(' ', array_merge($theme_classes, $shape_classes, [$button_style, $button_size]))); ?>">
+							<a href="#" 
+							   class="btn <?php echo esc_attr(implode(' ', array_merge($theme_classes, $shape_classes, [$button_style, $button_size]))); ?>"
+							   tabindex="0"
+							   data-bs-toggle="popover"
+							   data-bs-trigger="<?php echo esc_attr($popover_trigger); ?>"
+							   data-bs-placement="<?php echo esc_attr($popover_placement); ?>"
+							   <?php if (!empty($popover_title)): ?>title="<?php echo esc_attr($popover_title); ?>"<?php endif; ?>
+							   data-bs-content="<?php echo esc_attr($popover_content); ?>">
 								<?php if (!empty($point_icon)): ?>
 									<i class="uil uil-<?php echo esc_attr($point_icon); ?>"></i>
 								<?php else: ?>
 									<i class="uil uil-plus"></i>
 								<?php endif; ?>
-							</span>
-							<?php if ($settings_data['popupStyle'] === 'tooltip' || $settings_data['popupStyle'] === 'popup'): ?>
-								<div class="cw-hotspot-popup cw-hotspot-popup-<?php echo esc_attr($settings_data['popupStyle']); ?>">
-									<?php if (!empty($hotspot['title'])): ?>
-										<div class="cw-hotspot-popup-title"><?php echo esc_html($hotspot['title']); ?></div>
-									<?php endif; ?>
-									<?php if (!empty($hotspot['content'])): ?>
-										<div class="cw-hotspot-popup-content"><?php echo wp_kses_post($hotspot['content']); ?></div>
-									<?php endif; ?>
-									<?php if (!empty($hotspot['link'])): ?>
-										<a href="<?php echo esc_url($hotspot['link']); ?>" 
-										   target="<?php echo esc_attr($hotspot['linkTarget'] ?? '_self'); ?>"
-										   class="cw-hotspot-popup-link">
-											<?php _e('Learn more', 'codeweber-gutenberg-blocks'); ?>
-										</a>
-									<?php endif; ?>
-								</div>
-							<?php endif; ?>
+							</a>
 						</div>
 					<?php endforeach; ?>
 				<?php endif; ?>

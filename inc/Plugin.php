@@ -137,6 +137,7 @@ class Plugin {
 		'form-field',
 		'submit-button',
 		'divider',
+		'yandex-map',
 	];
 	}
 
@@ -346,6 +347,7 @@ class Plugin {
 			'paragraph',
 			'section',
 			'post-grid',
+			'yandex-map',
 		];
 
 		foreach ($blocks as $block_name) {

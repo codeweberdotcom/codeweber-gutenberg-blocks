@@ -43,6 +43,9 @@
 add_action('plugins_loaded', __NAMESPACE__ . '\Plugin::loadTextDomain');
 add_action('plugins_loaded', __NAMESPACE__ . '\Plugin::initVideoThumbnailAPI');
 add_action('plugins_loaded', __NAMESPACE__ . '\Plugin::initLoadMoreAPI');
+add_action('plugins_loaded', function() {
+	new ImageHotspotCPT();
+});
 add_action('init', __NAMESPACE__ . '\Plugin::perInit', 0);
 add_action('init', __NAMESPACE__ . '\Plugin::init', 20);
 //add_action('admin_init', __NAMESPACE__ . '\Admin::init');
@@ -55,7 +58,7 @@ require_once plugin_dir_path(__FILE__) . 'settings/options_page/restapi.php';
 	$blocks = [
 		'accordion', 'banners', 'button', 'card', 'column', 'columns', 'feature',
 		'heading-subtitle', 'icon', 'image-simple', 'paragraph', 'section',
-		'label-plus'
+		'label-plus', 'yandex-map'
 	];
 
 	foreach ($blocks as $block) {

@@ -1,0 +1,183 @@
+/* Image Hotspot Frontend Styles */
+
+.cw-image-hotspot-container {
+	position: relative;
+	display: inline-block;
+	max-width: 100%;
+}
+
+.cw-hotspot-annotation-box {
+	position: relative;
+	display: inline-block;
+	max-width: 100%;
+}
+
+.cw-hotspot-main-image {
+	max-width: 100%;
+	height: auto;
+	display: block;
+}
+
+/* Hotspot Points */
+.cw-hotspot-point {
+	position: absolute;
+	z-index: 10;
+	transform: translate(-50%, -50%);
+}
+
+/* Отключаем hover эффекты классов темы в режиме click */
+.cw-hotspot-trigger-click .cw-hotspot-point .btn.hover-scale:hover {
+	transform: translateY(0) !important;
+	overflow: hidden;
+	-webkit-backface-visibility: hidden;
+	-moz-backface-visibility: hidden;
+}
+
+.cw-hotspot-trigger-click .cw-hotspot-point .btn.hover-scale:hover img {
+	transform: none !important;
+	transition: none !important;
+}
+
+.cw-hotspot-trigger-click .cw-hotspot-point .btn.hover-scale:hover * {
+	transform: none !important;
+}
+
+.cw-hotspot-trigger-click .cw-hotspot-point .btn.lift:hover {
+	transform: translateY(0) !important;
+	box-shadow: none !important;
+	-webkit-backface-visibility: hidden;
+	-moz-backface-visibility: hidden;
+	transition: none !important;
+}
+
+/* Отключаем все hover эффекты для кнопок в режиме click (высокая специфичность) */
+.cw-hotspot-trigger-click .cw-hotspot-point .btn:hover {
+	transform: translateY(0) !important;
+	box-shadow: inherit !important;
+}
+
+/* Отключаем hover эффекты от класса .btn темы */
+.cw-hotspot-trigger-click .cw-hotspot-point .btn:not(.btn-link):hover {
+	transform: translateY(0) !important;
+	box-shadow: inherit !important;
+}
+
+/* Убираем pointer-events для hover эффектов в режиме click (дополнительная защита) */
+.cw-hotspot-trigger-click .cw-hotspot-point .btn {
+	pointer-events: auto; /* Оставляем клики рабочими */
+}
+
+.cw-hotspot-point .btn {
+	cursor: pointer;
+	text-decoration: none;
+	pointer-events: auto;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+
+/* Unicons font icons support in buttons */
+.cw-hotspot-point .btn i[class^="uil-"],
+.cw-hotspot-point .btn i[class*=" uil-"] {
+	font-size: inherit;
+	line-height: 1;
+	display: inline-block;
+}
+
+/* Popup Styles */
+.cw-hotspot-popup {
+	position: absolute;
+	background: #fff;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+	padding: 15px;
+	min-width: 200px;
+	max-width: 300px;
+	z-index: 100;
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity 0.3s, visibility 0.3s;
+}
+
+/* Показываем popup при hover (только в режиме hover) */
+.cw-hotspot-trigger-hover .cw-hotspot-point:hover .cw-hotspot-popup,
+.cw-hotspot-point.active .cw-hotspot-popup {
+	opacity: 1;
+	visibility: visible;
+}
+
+/* В режиме click отключаем hover для показа popup */
+.cw-hotspot-trigger-click .cw-hotspot-point:hover .cw-hotspot-popup {
+	opacity: 0 !important;
+	visibility: hidden !important;
+}
+
+/* Tooltip positioning */
+.cw-hotspot-popup-tooltip {
+	bottom: calc(100% + 10px);
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+.cw-hotspot-popup-tooltip::after {
+	content: '';
+	position: absolute;
+	top: 100%;
+	left: 50%;
+	transform: translateX(-50%);
+	border: 6px solid transparent;
+	border-top-color: #fff;
+}
+
+.cw-hotspot-popup-tooltip::before {
+	content: '';
+	position: absolute;
+	top: 100%;
+	left: 50%;
+	transform: translateX(-50%);
+	border: 7px solid transparent;
+	border-top-color: #ddd;
+	margin-top: -1px;
+}
+
+/* Popup content */
+.cw-hotspot-popup-title {
+	font-weight: bold;
+	font-size: 16px;
+	margin-bottom: 8px;
+	color: #333;
+}
+
+.cw-hotspot-popup-content {
+	font-size: 14px;
+	color: #666;
+	line-height: 1.5;
+	margin-bottom: 10px;
+}
+
+.cw-hotspot-popup-link {
+	display: inline-block;
+	color: #007bff;
+	text-decoration: none;
+	font-size: 14px;
+	font-weight: 500;
+}
+
+.cw-hotspot-popup-link:hover {
+	text-decoration: underline;
+}
+
+/* Popup (modal) style */
+.cw-hotspot-popup-popup {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	max-width: 500px;
+	width: 90%;
+	max-height: 80vh;
+	overflow-y: auto;
+	z-index: 10000;
+}
+

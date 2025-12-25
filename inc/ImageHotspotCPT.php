@@ -31,6 +31,12 @@ class ImageHotspotCPT {
 		// Подключаем скрипт для копирования шорткода
 		add_action('admin_footer', [$this, 'enqueue_copy_shortcode_script']);
 		
+		// AJAX для получения типа поста
+		add_action('wp_ajax_get_post_type', [$this, 'ajax_get_post_type']);
+		
+		// Endpoint для загрузки только CSS с определениями иконок
+		add_action('admin_enqueue_scripts', [$this, 'enqueue_unicons_icons_css']);
+		
 		// #region agent log
 		$log_file = WP_CONTENT_DIR . '/../.cursor/debug.log';
 		if (file_exists(dirname($log_file)) || @mkdir(dirname($log_file), 0755, true)) {
@@ -295,21 +301,15 @@ class ImageHotspotCPT {
 			return;
 		}
 		
-		// Unicons CSS (для отображения иконок в админке)
-		wp_enqueue_style(
-			'unicons',
-			'https://unicons.iconscout.com/release/v4.0.0/css/line.css',
-			[],
-			'4.0.0'
-		);
-		
+		// Подключаем стили темы для использования локального шрифта Unicons
 		// Стили
 		wp_enqueue_style(
 			'cw-hotspot-admin',
 			GUTENBERG_BLOCKS_URL . 'includes/css/image-hotspot-admin.css',
-			['unicons'],
+			[],
 			GUTENBERG_BLOCKS_VERSION
 		);
+		
 		
 		// Скрипты
 		wp_enqueue_media(); // WordPress Media Library
@@ -324,10 +324,24 @@ class ImageHotspotCPT {
 		// Получаем список иконок Unicons
 		$icons_list = $this->get_unicons_list();
 		
+		// Подключаем fetch-handler для админки (если еще не подключен)
+		$fetch_script_path = get_template_directory() . '/functions/fetch/assets/js/fetch-handler.js';
+		if (file_exists($fetch_script_path) && !wp_script_is('fetch-handler', 'enqueued')) {
+			wp_enqueue_script(
+				'fetch-handler',
+				get_template_directory_uri() . '/functions/fetch/assets/js/fetch-handler.js',
+				[],
+				filemtime($fetch_script_path),
+				true
+			);
+			wp_localize_script('fetch-handler', 'fetch_vars', [
+				'ajaxurl' => admin_url('admin-ajax.php'),
+			]);
+		}
+		
 		// Локализация
 		wp_localize_script('cw-hotspot-admin', 'cwHotspotAdmin', [
-			'ajaxurl' => admin_url('admin-ajax.php'),
-			'nonce' => wp_create_nonce('cw_hotspot_admin'),
+			'ajaxurl' => admin_url('admin-ajax.php'), // Для совместимости, но используется Fetch система
 			'icons' => $icons_list,
 			'i18n' => [
 				'editPoint' => __('Edit Point', 'codeweber-gutenberg-blocks'),
@@ -339,6 +353,19 @@ class ImageHotspotCPT {
 				'searchIcon' => __('Search icon...', 'codeweber-gutenberg-blocks'),
 				'save' => __('Save', 'codeweber-gutenberg-blocks'),
 				'cancel' => __('Cancel', 'codeweber-gutenberg-blocks'),
+				'contentType' => __('Content Type', 'codeweber-gutenberg-blocks'),
+				'contentTypeText' => __('Text', 'codeweber-gutenberg-blocks'),
+				'contentTypePost' => __('Post', 'codeweber-gutenberg-blocks'),
+				'contentTypeHybrid' => __('Hybrid (Text + Post)', 'codeweber-gutenberg-blocks'),
+				'selectPost' => __('Select Post', 'codeweber-gutenberg-blocks'),
+				'selectPostPlaceholder' => __('-- Select Post --', 'codeweber-gutenberg-blocks'),
+				'selectPostDescription' => __('Post content will be loaded via AJAX when popover opens.', 'codeweber-gutenberg-blocks'),
+				'selectPostType' => __('Select Post Type', 'codeweber-gutenberg-blocks'),
+				'selectPostTypePlaceholder' => __('-- Select Post Type --', 'codeweber-gutenberg-blocks'),
+				'selectPostTypeDescription' => __('First select the type of post (Post, Page, Client, etc.)', 'codeweber-gutenberg-blocks'),
+				'postTemplate' => __('Post Card Template', 'codeweber-gutenberg-blocks'),
+				'postTemplateDescription' => __('Select the template to display the post card.', 'codeweber-gutenberg-blocks'),
+				'contentTextDescription' => __('Enter text or HTML content. This will be displayed instantly from a hidden element.', 'codeweber-gutenberg-blocks'),
 			]
 		]);
 	}
@@ -403,7 +430,18 @@ class ImageHotspotCPT {
 			GUTENBERG_BLOCKS_VERSION
 		);
 		
-		// Bootstrap Popover будет инициализирован через тему (theme.bsPopovers())
+		// Подключаем скрипт фронтенда
+		wp_enqueue_script(
+			'cw-hotspot-frontend',
+			GUTENBERG_BLOCKS_URL . 'includes/js/image-hotspot-frontend.js',
+			['jquery'],
+			GUTENBERG_BLOCKS_VERSION,
+			true
+		);
+		
+		// Fetch система темы уже предоставляет fetch_vars через fetch-handler.js
+		
+		// Bootstrap Popover будет инициализирован через скрипт фронтенда
 		
 		// #region agent log
 		$log_file = WP_CONTENT_DIR . '/../.cursor/debug.log';
@@ -576,32 +614,107 @@ class ImageHotspotCPT {
 						     style="left: <?php echo esc_attr($hotspot['x']); ?>%; top: <?php echo esc_attr($hotspot['y']); ?>%;"
 						     data-x="<?php echo esc_attr($hotspot['x']); ?>"
 						     data-y="<?php echo esc_attr($hotspot['y']); ?>"
-						     data-hotspot-id="<?php echo esc_attr($hotspot['id']); ?>">
+						     data-hotspot-id="<?php echo esc_attr($hotspot['id']); ?>"
+						     data-point-id="<?php echo esc_attr($hotspot['id']); ?>">
 							<?php 
 							// Разбиваем buttonShape на отдельные классы (может быть "btn-block rounded-0")
 							$shape_classes = $button_shape ? explode(' ', $button_shape) : [];
 							// Добавляем классы темы: hover-scale и lift
 							$theme_classes = ['hover-scale', 'lift'];
 							
-							// Формируем контент для Bootstrap Popover
+							// Определяем тип контента
+							$content_type = !empty($hotspot['contentType']) ? $hotspot['contentType'] : 'text';
 							$popover_title = !empty($hotspot['title']) ? esc_html($hotspot['title']) : '';
-							$popover_content = '';
-							if (!empty($hotspot['content'])) {
-								$popover_content .= wp_kses_post($hotspot['content']);
-							}
-							if (!empty($hotspot['link'])) {
-								$popover_content .= '<br><a href="' . esc_url($hotspot['link']) . '" target="' . esc_attr($hotspot['linkTarget'] ?? '_self') . '">' . __('Learn more', 'codeweber-gutenberg-blocks') . '</a>';
-							}
 							$popover_trigger = $settings_data['popoverTrigger'] ?? 'click';
 							$popover_placement = $settings_data['popoverPlacement'] ?? 'auto';
+							
+							// Формируем контент в зависимости от типа
+							$popover_content = '';
+							$use_ajax = false;
+							
+							if ($content_type === 'text') {
+								// Простой текст - храним в скрытом элементе
+								// #region agent log
+								$log_file = WP_CONTENT_DIR . '/../.cursor/debug.log';
+								if (file_exists(dirname($log_file)) || @mkdir(dirname($log_file), 0755, true)) {
+									$log_entry = json_encode([
+										'timestamp' => time() * 1000,
+										'location' => 'ImageHotspotCPT.php:render_shortcode:text',
+										'message' => 'Processing text content type',
+										'data' => ['point_id' => $hotspot['id'], 'has_content' => !empty($hotspot['content']), 'content_length' => isset($hotspot['content']) ? strlen($hotspot['content']) : 0, 'content_preview' => isset($hotspot['content']) ? substr($hotspot['content'], 0, 50) : ''],
+										'sessionId' => 'debug-session',
+										'runId' => 'initial',
+										'hypothesisId' => 'A'
+									]) . "\n";
+									@file_put_contents($log_file, $log_entry, FILE_APPEND);
+								}
+								// #endregion
+								if (!empty($hotspot['content'])) {
+									$popover_content = wp_kses_post($hotspot['content']);
+								}
+								if (!empty($hotspot['link'])) {
+									$popover_content .= '<br><a href="' . esc_url($hotspot['link']) . '" target="' . esc_attr($hotspot['linkTarget'] ?? '_self') . '">' . __('Learn more', 'codeweber-gutenberg-blocks') . '</a>';
+								}
+								// #region agent log
+								if (file_exists(dirname($log_file)) || @mkdir(dirname($log_file), 0755, true)) {
+									$log_entry = json_encode([
+										'timestamp' => time() * 1000,
+										'location' => 'ImageHotspotCPT.php:render_shortcode:text',
+										'message' => 'After processing text content',
+										'data' => ['point_id' => $hotspot['id'], 'popover_content_length' => strlen($popover_content), 'popover_content_preview' => substr($popover_content, 0, 50), 'will_create_hidden' => (!$use_ajax && !empty($popover_content))],
+										'sessionId' => 'debug-session',
+										'runId' => 'initial',
+										'hypothesisId' => 'A'
+									]) . "\n";
+									@file_put_contents($log_file, $log_entry, FILE_APPEND);
+								}
+								// #endregion
+							} elseif ($content_type === 'post' || $content_type === 'hybrid') {
+								// Пост или гибрид - загружаем через AJAX
+								$use_ajax = true;
+								// Для гибрида сохраняем текст в скрытом элементе
+								if ($content_type === 'hybrid' && !empty($hotspot['content'])) {
+									$popover_content = wp_kses_post($hotspot['content']);
+								}
+							}
 							?>
+							<?php if (!$use_ajax && !empty($popover_content)): ?>
+								<!-- Скрытый контейнер с HTML контентом для простого текста -->
+								<?php 
+								// #region agent log
+								$log_file = WP_CONTENT_DIR . '/../.cursor/debug.log';
+								if (file_exists(dirname($log_file)) || @mkdir(dirname($log_file), 0755, true)) {
+									$log_entry = json_encode([
+										'timestamp' => time() * 1000,
+										'location' => 'ImageHotspotCPT.php:render_shortcode:create_hidden',
+										'message' => 'Creating hidden content element',
+										'data' => ['point_id' => $hotspot['id'], 'content_type' => $content_type, 'content_length' => strlen($popover_content)],
+										'sessionId' => 'debug-session',
+										'runId' => 'initial',
+										'hypothesisId' => 'A'
+									]) . "\n";
+									@file_put_contents($log_file, $log_entry, FILE_APPEND);
+								}
+								// #endregion
+								?>
+								<div class="cw-hotspot-popover-content" style="display: none;">
+									<?php echo $popover_content; ?>
+								</div>
+							<?php elseif ($content_type === 'hybrid' && !empty($popover_content)): ?>
+								<!-- Для гибрида сохраняем текст в скрытом элементе -->
+								<div class="cw-hotspot-popover-content" style="display: none;">
+									<?php echo $popover_content; ?>
+								</div>
+							<?php endif; ?>
 							<span class="btn <?php echo esc_attr(implode(' ', array_merge($theme_classes, $shape_classes, [$button_style, $button_size]))); ?>"
 							      tabindex="0"
 							      data-bs-toggle="popover"
 							      data-bs-trigger="<?php echo esc_attr($popover_trigger); ?>"
 							      data-bs-placement="<?php echo esc_attr($popover_placement); ?>"
-							      <?php if (!empty($popover_title)): ?>title="<?php echo esc_attr($popover_title); ?>"<?php endif; ?>
-							      data-bs-content="<?php echo esc_attr($popover_content); ?>">
+							      data-bs-html="true"
+							      data-bs-ajax-load="<?php echo $use_ajax ? 'true' : 'false'; ?>"
+							      <?php if (!empty($popover_title)): ?>data-bs-title="<?php echo esc_attr($popover_title); ?>"<?php endif; ?>
+							      <?php if (!empty($hotspot['popoverWidth'])): ?>data-bs-popover-width="<?php echo esc_attr($hotspot['popoverWidth']); ?>"<?php endif; ?>>
 								<?php if (!empty($point_icon)): ?>
 									<i class="uil uil-<?php echo esc_attr($point_icon); ?>"></i>
 								<?php else: ?>
@@ -676,6 +789,106 @@ class ImageHotspotCPT {
 	}
 	
 	/**
+	 * Загрузить только CSS с определениями иконок Unicons
+	 * Без подключения всего style.css темы, чтобы не сломать верстку админки
+	 */
+	public function enqueue_unicons_icons_css() {
+		$screen = get_current_screen();
+		if (!$screen || $screen->post_type !== 'cw_image_hotspot') {
+			return;
+		}
+		
+		$theme_path = get_template_directory();
+		$theme_uri = get_template_directory_uri();
+		$icons_scss_path = $theme_path . '/src/assets/scss/theme/_icons.scss';
+		
+		if (!file_exists($icons_scss_path)) {
+			return;
+		}
+		
+		$icons_scss_content = file_get_contents($icons_scss_path);
+		$icons_css = '';
+		
+		// Извлекаем блок @font-face для Unicons
+		if (preg_match('/@font-face\s*\{[^}]*font-family:\s*[\'"]Unicons[\'"][^}]*src:[^}]*\}/s', $icons_scss_content, $font_face_match)) {
+			// Заменяем относительные пути на абсолютные URL
+			$font_face_css = preg_replace(
+				'/url\([\'"]?\.\.\/fonts\/unicons\/([^\'"]+)[\'"]?\)/',
+				"url('{$theme_uri}/dist/assets/fonts/unicons/$1')",
+				$font_face_match[0]
+			);
+			$icons_css .= $font_face_css . "\n";
+		}
+		
+		// Извлекаем все определения .uil-*:before построчно
+		// Это более надежный способ для SCSS файлов
+		$lines = explode("\n", $icons_scss_content);
+		$in_icon_block = false;
+		$current_icon_block = '';
+		
+		foreach ($lines as $line) {
+			$trimmed_line = trim($line);
+			
+			// Начало блока иконки: .uil-icon-name:before {
+			if (preg_match('/^\.(uil-[a-zA-Z0-9\-]+):before\s*\{/', $trimmed_line)) {
+				$in_icon_block = true;
+				$current_icon_block = $trimmed_line . "\n";
+				continue;
+			}
+			
+			// Внутри блока иконки
+			if ($in_icon_block) {
+				$current_icon_block .= $trimmed_line . "\n";
+				
+				// Конец блока (закрывающая скобка)
+				if (strpos($trimmed_line, '}') !== false) {
+					$icons_css .= $current_icon_block;
+					$in_icon_block = false;
+					$current_icon_block = '';
+				}
+			}
+		}
+		
+		// Базовые стили для иконок
+		$unicons_font_css = "
+		@font-face {
+			font-family: 'Unicons';
+			src: url('{$theme_uri}/dist/assets/fonts/unicons/Unicons.woff2') format('woff2'),
+				url('{$theme_uri}/dist/assets/fonts/unicons/Unicons.woff') format('woff');
+			font-weight: normal;
+			font-style: normal;
+			font-display: block;
+		}
+		[class^=\"uil-\"],
+		[class*=\" uil-\"] {
+			speak: none;
+			font-style: normal;
+			font-weight: normal;
+			font-variant: normal;
+			text-transform: none;
+			-webkit-font-smoothing: antialiased;
+			-moz-osx-font-smoothing: grayscale;
+			word-spacing: normal;
+			font-family: \"Unicons\" !important;
+		}
+		[class^=\"uil-\"]:before,
+		[class*=\" uil-\"]:before {
+			display: inline-block;
+			font-family: \"Unicons\" !important;
+			font-style: normal;
+			font-weight: normal;
+			font-variant: normal;
+			text-transform: none;
+			line-height: 1;
+			-webkit-font-smoothing: antialiased;
+			-moz-osx-font-smoothing: grayscale;
+		}
+		" . $icons_css;
+		
+		wp_add_inline_style('cw-hotspot-admin', $unicons_font_css);
+	}
+	
+	/**
 	 * Подключить скрипт для копирования шорткода
 	 */
 	public function enqueue_copy_shortcode_script() {
@@ -717,6 +930,28 @@ class ImageHotspotCPT {
 		})(jQuery);
 		</script>
 		<?php
+	}
+	
+	/**
+	 * AJAX: Получить тип поста
+	 */
+	public function ajax_get_post_type() {
+		$post_id = isset($_POST['post_id']) ? intval($_POST['post_id']) : 0;
+		
+		if (!$post_id) {
+			wp_send_json_error(['message' => 'Post ID is required']);
+			return;
+		}
+		
+		$post = get_post($post_id);
+		if (!$post) {
+			wp_send_json_error(['message' => 'Post not found']);
+			return;
+		}
+		
+		wp_send_json_success([
+			'post_type' => $post->post_type
+		]);
 	}
 }
 

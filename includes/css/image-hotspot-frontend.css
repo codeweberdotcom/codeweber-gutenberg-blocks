@@ -84,5 +84,55 @@
 	display: inline-block;
 }
 
-/* Bootstrap Popover styles are handled by the theme */
+/* Bootstrap Popover styles */
+.cw-hotspot-popover .popover {
+	max-width: 400px; /* Увеличиваем максимальную ширину для HTML контента */
+}
+
+/* Индивидуальная ширина popover для каждой точки */
+.popover.cw-hotspot-popover[data-popover-width] {
+	max-width: none;
+}
+
+.popover.cw-hotspot-popover[data-popover-width="auto"] {
+	width: auto;
+}
+
+.popover.cw-hotspot-popover[data-popover-width]:not([data-popover-width="auto"]) {
+	width: var(--popover-width);
+}
+
+.cw-hotspot-popover .popover-body {
+	padding: 1rem;
+}
+
+.cw-hotspot-popover .popover-body img {
+	max-width: 100%;
+	height: auto;
+}
+
+.cw-hotspot-popover .popover-body a {
+	text-decoration: underline;
+}
+
+/* Индикатор загрузки */
+.cw-hotspot-loading {
+	padding: 1rem;
+	text-align: center;
+}
+
+.cw-hotspot-loading .spinner-border {
+	width: 1.5rem;
+	height: 1.5rem;
+	border-width: 0.2em;
+}
+
+/* Контент поста в popover */
+.cw-hotspot-post-content {
+	margin-top: 1rem;
+}
+
+.cw-hotspot-post-content article {
+	margin-bottom: 0;
+}
 

@@ -1,5 +1,29 @@
 /* Image Hotspot Admin Styles */
 
+/* Unicons Font Face - используем локальные шрифты из темы */
+@font-face {
+	font-family: 'Unicons';
+	src: url('../../../../themes/codeweber/dist/assets/fonts/unicons/Unicons.woff2') format('woff2'),
+		url('../../../../themes/codeweber/dist/assets/fonts/unicons/Unicons.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+	font-display: block;
+}
+
+/* Unicons Icon Classes */
+[class^="uil-"],
+[class*=" uil-"] {
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	word-spacing: normal;
+	font-family: "Unicons" !important;
+}
+
 .cw-hotspot-admin-container {
 	padding: 20px 0;
 }
@@ -444,8 +468,8 @@
 /* Unicons font support - используем шрифт из темы через относительный путь от плагина */
 @font-face {
 	font-family: 'Unicons';
-	src: url('../../../../themes/codeweber/src/assets/fonts/unicons/Unicons.woff2') format('woff2'),
-		 url('../../../../themes/codeweber/src/assets/fonts/unicons/Unicons.woff') format('woff');
+	src: url('../../../../themes/codeweber/dist/assets/fonts/unicons/Unicons.woff2') format('woff2'),
+		 url('../../../../themes/codeweber/dist/assets/fonts/unicons/Unicons.woff') format('woff');
 	font-weight: normal;
 	font-style: normal;
 	font-display: block;

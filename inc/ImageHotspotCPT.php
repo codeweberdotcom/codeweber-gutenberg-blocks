@@ -595,20 +595,19 @@ class ImageHotspotCPT {
 							$popover_trigger = $settings_data['popoverTrigger'] ?? 'click';
 							$popover_placement = $settings_data['popoverPlacement'] ?? 'auto';
 							?>
-							<a href="#" 
-							   class="btn <?php echo esc_attr(implode(' ', array_merge($theme_classes, $shape_classes, [$button_style, $button_size]))); ?>"
-							   tabindex="0"
-							   data-bs-toggle="popover"
-							   data-bs-trigger="<?php echo esc_attr($popover_trigger); ?>"
-							   data-bs-placement="<?php echo esc_attr($popover_placement); ?>"
-							   <?php if (!empty($popover_title)): ?>title="<?php echo esc_attr($popover_title); ?>"<?php endif; ?>
-							   data-bs-content="<?php echo esc_attr($popover_content); ?>">
+							<span class="btn <?php echo esc_attr(implode(' ', array_merge($theme_classes, $shape_classes, [$button_style, $button_size]))); ?>"
+							      tabindex="0"
+							      data-bs-toggle="popover"
+							      data-bs-trigger="<?php echo esc_attr($popover_trigger); ?>"
+							      data-bs-placement="<?php echo esc_attr($popover_placement); ?>"
+							      <?php if (!empty($popover_title)): ?>title="<?php echo esc_attr($popover_title); ?>"<?php endif; ?>
+							      data-bs-content="<?php echo esc_attr($popover_content); ?>">
 								<?php if (!empty($point_icon)): ?>
 									<i class="uil uil-<?php echo esc_attr($point_icon); ?>"></i>
 								<?php else: ?>
 									<i class="uil uil-plus"></i>
 								<?php endif; ?>
-							</a>
+							</span>
 						</div>
 					<?php endforeach; ?>
 				<?php endif; ?>

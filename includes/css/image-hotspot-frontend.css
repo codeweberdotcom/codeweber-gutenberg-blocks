@@ -129,13 +129,13 @@
 .cw-hotspot-loading {
 	padding: 1rem;
 	text-align: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 60px;
 }
 
-.cw-hotspot-loading .spinner-border {
-	width: 1.5rem;
-	height: 1.5rem;
-	border-width: 0.2em;
-}
+/* Спиннер из темы уже имеет все необходимые стили через класс .spinner */
 
 /* Контент поста в popover */
 .cw-hotspot-post-content {

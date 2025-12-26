@@ -170,12 +170,18 @@
 			// #endregion
 			
 			// Используем getOrCreateInstance (рекомендуется Bootstrap 5)
+			// Формируем customClass с учетом типа контента для применения CSS сразу
+			let customClass = 'cw-hotspot-popover';
+			if (contentType === 'post' || contentType === 'hybrid') {
+				customClass += ' cw-hotspot-content-' + contentType;
+			}
+			
 			const popoverOptions = {
 				trigger: trigger,
 				placement: placement,
 				html: true,
 				sanitize: false,
-				customClass: 'cw-hotspot-popover'
+				customClass: customClass
 			};
 			
 			// Устанавливаем title - если он пустой, устанавливаем пустую строку, чтобы Bootstrap создал popover
@@ -184,8 +190,8 @@
 			
 			// Устанавливаем начальный контент
 			if (useAjax) {
-				// Для AJAX показываем индикатор загрузки
-				popoverOptions.content = '<div class="cw-hotspot-loading text-center p-3"><span class="spinner-border spinner-border-sm" role="status"></span> Loading...</div>';
+				// Для AJAX показываем индикатор загрузки (используем спиннер из темы, как в yandex map)
+				popoverOptions.content = '<div class="cw-hotspot-loading text-center p-3"><div class="spinner spinner-sm"></div></div>';
 			} else {
 				// Для статического контента берем из скрытого элемента - устанавливаем напрямую как строку
 				// #region agent log
@@ -250,17 +256,12 @@
 				return; // Пропускаем этот элемент, если не удалось создать popover
 			}
 			
-			// Применяем индивидуальную ширину popover и класс типа контента, если они заданы
-			pointElement.addEventListener('shown.bs.popover', () => {
-				const popoverElement = document.querySelector('.popover.cw-hotspot-popover');
-				if (popoverElement) {
-					// Добавляем класс типа контента для применения CSS
-					if (contentType === 'post' || contentType === 'hybrid') {
-						popoverElement.classList.add('cw-hotspot-content-' + contentType);
-					}
-					
-					// Применяем индивидуальную ширину popover, если она задана
-					if (popoverWidth) {
+			// Применяем индивидуальную ширину popover, если она задана
+			// Класс типа контента уже добавлен через customClass при создании popover
+			if (popoverWidth) {
+				pointElement.addEventListener('shown.bs.popover', () => {
+					const popoverElement = document.querySelector('.popover.cw-hotspot-popover');
+					if (popoverElement) {
 						// Устанавливаем data-атрибут для CSS
 						popoverElement.setAttribute('data-popover-width', popoverWidth);
 						
@@ -276,8 +277,8 @@
 							popoverElement.style.maxWidth = popoverWidth;
 						}
 					}
-				}
-			}, { once: false }); // Может срабатывать несколько раз при повторном открытии
+				}, { once: false }); // Может срабатывать несколько раз при повторном открытии
+			}
 			
 			// Добавляем логирование для отслеживания выбранного placement после показа
 			if (placement === 'auto') {
@@ -462,10 +463,10 @@
 							return;
 						}
 						
-						// Показываем индикатор загрузки
+						// Показываем индикатор загрузки (используем спиннер из темы, как в yandex map)
 						try {
 							popover.setContent({
-								'.popover-body': '<div class="cw-hotspot-loading text-center p-3"><span class="spinner-border spinner-border-sm" role="status"></span> Loading...</div>'
+								'.popover-body': '<div class="cw-hotspot-loading text-center p-3"><div class="spinner spinner-sm"></div></div>'
 							});
 							// #region agent log
 							fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-frontend.js:shown.bs.popover',message:'Loading indicator set',data:{pointId:pointId},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'D'})}).catch(()=>{});

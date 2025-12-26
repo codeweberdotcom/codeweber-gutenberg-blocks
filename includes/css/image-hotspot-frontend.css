@@ -121,10 +121,6 @@
 	height: auto;
 }
 
-.cw-hotspot-popover .popover-body a {
-	text-decoration: underline;
-}
-
 /* Индикатор загрузки */
 .cw-hotspot-loading {
 	padding: 1rem;

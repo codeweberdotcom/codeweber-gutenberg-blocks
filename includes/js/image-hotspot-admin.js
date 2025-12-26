@@ -371,6 +371,7 @@
 					currentPoint.postType = $('#cw-hotspot-modal-post-type').val() || '';
 					currentPoint.postTemplate = $('#cw-hotspot-modal-post-template').val() || 'default';
 					currentPoint.popoverWidth = $('#cw-hotspot-modal-popover-width').val() || '';
+					currentPoint.wrapperClass = $('#cw-hotspot-modal-wrapper-class').val() || '';
 					
 					// #region agent log
 					fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-admin.js:save-point',message:'Point data updated',data:{pointId:currentPoint.id,pointIconName:currentPoint.iconName,pointPostId:currentPoint.postId,pointPostType:currentPoint.postType,pointPostTemplate:currentPoint.postTemplate,fullPoint:JSON.stringify(currentPoint)},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'G'})}).catch(()=>{});
@@ -433,6 +434,7 @@
 			$('#cw-hotspot-modal-link').val(point.link || '');
 			$('#cw-hotspot-modal-link-target').val(point.linkTarget || '_self');
 			$('#cw-hotspot-modal-popover-width').val(point.popoverWidth || '');
+			$('#cw-hotspot-modal-wrapper-class').val(point.wrapperClass || '');
 			
 			// Устанавливаем тип контента
 			const contentType = point.contentType || 'text';
@@ -773,6 +775,11 @@
 									<label for="cw-hotspot-modal-popover-width">Popover Width</label>
 									<input type="text" id="cw-hotspot-modal-popover-width" placeholder="e.g., 300px, 50%, auto" />
 									<p class="description">Set custom width for this popover (e.g., 300px, 50%, auto). Leave empty for default width.</p>
+								</div>
+								<div class="form-field">
+									<label for="cw-hotspot-modal-wrapper-class">Wrapper Class</label>
+									<input type="text" id="cw-hotspot-modal-wrapper-class" placeholder="e.g., custom-wrapper, my-class" />
+									<p class="description">Optional CSS class to wrap the popover content. If filled, content will be wrapped in a div with this class.</p>
 								</div>
 							</div>
 							<div class="cw-hotspot-modal-footer">

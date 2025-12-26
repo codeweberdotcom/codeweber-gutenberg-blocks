@@ -627,6 +627,7 @@ class ImageHotspotCPT {
 							$popover_title = !empty($hotspot['title']) ? esc_html($hotspot['title']) : '';
 							$popover_trigger = $settings_data['popoverTrigger'] ?? 'click';
 							$popover_placement = $settings_data['popoverPlacement'] ?? 'auto';
+							$wrapper_class = !empty($hotspot['wrapperClass']) ? esc_attr($hotspot['wrapperClass']) : '';
 
 							// #region agent log
 							$log_file = WP_CONTENT_DIR . '/../.cursor/debug.log';
@@ -723,12 +724,24 @@ class ImageHotspotCPT {
 								// #endregion
 								?>
 								<div class="cw-hotspot-popover-content" style="display: none;">
-									<?php echo $popover_content; ?>
+									<?php if (!empty($wrapper_class)): ?>
+										<div class="<?php echo $wrapper_class; ?>">
+											<?php echo $popover_content; ?>
+										</div>
+									<?php else: ?>
+										<?php echo $popover_content; ?>
+									<?php endif; ?>
 								</div>
 							<?php elseif ($content_type === 'hybrid' && !empty($popover_content)): ?>
 								<!-- Для гибрида сохраняем текст в скрытом элементе -->
 								<div class="cw-hotspot-popover-content" style="display: none;">
-									<?php echo $popover_content; ?>
+									<?php if (!empty($wrapper_class)): ?>
+										<div class="<?php echo $wrapper_class; ?>">
+											<?php echo $popover_content; ?>
+										</div>
+									<?php else: ?>
+										<?php echo $popover_content; ?>
+									<?php endif; ?>
 								</div>
 							<?php endif; ?>
 							<?php

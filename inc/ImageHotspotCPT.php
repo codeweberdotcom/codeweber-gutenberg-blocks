@@ -4,39 +4,39 @@ namespace Codeweber\Blocks;
 
 /**
  * Image Hotspot CPT Registration
- * 
+ *
  * Custom Post Type for storing image hotspot configurations
- * 
+ *
  * @package Codeweber\Blocks
  */
 class ImageHotspotCPT {
-	
+
 	public function __construct() {
 		add_action('init', [$this, 'register_post_type']);
 		add_action('save_post_cw_image_hotspot', [$this, 'save_hotspot_meta'], 10, 3);
-		
+
 		// Регистрация шорткода
 		add_shortcode('cw_image_hotspot', [$this, 'render_shortcode']);
-		
+
 		// Добавляем колонки в список hotspots
 		add_filter('manage_cw_image_hotspot_posts_columns', [$this, 'add_custom_columns']);
 		add_action('manage_cw_image_hotspot_posts_custom_column', [$this, 'fill_custom_columns'], 10, 2);
-		
+
 		// Подключаем скрипты и стили для админки
 		add_action('admin_enqueue_scripts', [$this, 'enqueue_admin_assets']);
-		
+
 		// Добавляем метабокс для редактирования hotspots
 		add_action('add_meta_boxes', [$this, 'add_meta_boxes']);
-		
+
 		// Подключаем скрипт для копирования шорткода
 		add_action('admin_footer', [$this, 'enqueue_copy_shortcode_script']);
-		
+
 		// AJAX для получения типа поста
 		add_action('wp_ajax_get_post_type', [$this, 'ajax_get_post_type']);
-		
+
 		// Endpoint для загрузки только CSS с определениями иконок
 		add_action('admin_enqueue_scripts', [$this, 'enqueue_unicons_icons_css']);
-		
+
 		// #region agent log
 		$log_file = WP_CONTENT_DIR . '/../.cursor/debug.log';
 		if (file_exists(dirname($log_file)) || @mkdir(dirname($log_file), 0755, true)) {
@@ -53,7 +53,7 @@ class ImageHotspotCPT {
 		}
 		// #endregion
 	}
-	
+
 	/**
 	 * Register Custom Post Type for image hotspots
 	 */
@@ -71,7 +71,7 @@ class ImageHotspotCPT {
 			'not_found' => __('No hotspots found', 'codeweber-gutenberg-blocks'),
 			'not_found_in_trash' => __('No hotspots found in trash', 'codeweber-gutenberg-blocks'),
 		];
-		
+
 		$args = [
 			'label' => __('Image Hotspots', 'codeweber-gutenberg-blocks'),
 			'labels' => $labels,
@@ -90,40 +90,40 @@ class ImageHotspotCPT {
 			'supports' => ['title'], // Только заголовок, контент будет в метаполях
 			'can_export' => true,
 		];
-		
+
 		register_post_type('cw_image_hotspot', $args);
 	}
-	
+
 	/**
 	 * Save hotspot meta fields
 	 */
 	public function save_hotspot_meta($post_id, $post, $update) {
 		// Проверка nonce (будет добавлен в метабоксе)
-		if (isset($_POST['cw_hotspot_meta_nonce']) && 
+		if (isset($_POST['cw_hotspot_meta_nonce']) &&
 		    !wp_verify_nonce($_POST['cw_hotspot_meta_nonce'], 'save_hotspot_meta')) {
 			return;
 		}
-		
+
 		// Проверка прав
 		if (!current_user_can('edit_post', $post_id)) {
 			return;
 		}
-		
+
 		// Проверка автосохранения
 		if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
 			return;
 		}
-		
+
 		// Проверка типа поста
 		if ($post->post_type !== 'cw_image_hotspot') {
 			return;
 		}
-		
+
 		// Сохранение изображения
 		if (isset($_POST['_hotspot_image'])) {
 			update_post_meta($post_id, '_hotspot_image', intval($_POST['_hotspot_image']));
 		}
-		
+
 		// Сохранение данных точек (JSON)
 		if (isset($_POST['_hotspot_data'])) {
 			// Валидация JSON
@@ -133,7 +133,7 @@ class ImageHotspotCPT {
 				update_post_meta($post_id, '_hotspot_data', wp_slash($hotspot_data));
 			}
 		}
-		
+
 		// Сохранение настроек стилей
 		if (isset($_POST['_hotspot_settings'])) {
 			$settings = stripslashes($_POST['_hotspot_settings']);
@@ -143,7 +143,7 @@ class ImageHotspotCPT {
 			}
 		}
 	}
-	
+
 	/**
 	 * Добавить метабоксы
 	 */
@@ -157,29 +157,29 @@ class ImageHotspotCPT {
 			'high'
 		);
 	}
-	
+
 	/**
 	 * Рендеринг редактора hotspots
 	 */
 	public function render_hotspot_editor($post) {
 		// Nonce для безопасности
 		wp_nonce_field('save_hotspot_meta', 'cw_hotspot_meta_nonce');
-		
+
 		// Получаем сохраненные данные
 		$image_id = get_post_meta($post->ID, '_hotspot_image', true);
 		$hotspot_data = get_post_meta($post->ID, '_hotspot_data', true);
 		$settings = get_post_meta($post->ID, '_hotspot_settings', true);
-		
+
 		// Парсим JSON или используем пустой массив
 		$hotspots = !empty($hotspot_data) ? json_decode($hotspot_data, true) : [];
 		$settings_data = !empty($settings) ? json_decode($settings, true) : [];
-		
+
 		// Получаем URL изображения
 		$image_url = '';
 		if ($image_id) {
 			$image_url = wp_get_attachment_image_url($image_id, 'full');
 		}
-		
+
 		// Дефолтные настройки
 			$default_settings = [
 			'hotspotButtonStyle' => 'btn-primary',
@@ -189,14 +189,14 @@ class ImageHotspotCPT {
 			'popoverPlacement' => 'auto',
 		];
 		$settings_data = wp_parse_args($settings_data, $default_settings);
-		
+
 		?>
 		<div class="cw-hotspot-admin-container">
 			<!-- Скрытые поля для сохранения -->
 			<input type="hidden" name="_hotspot_image" id="cw-hotspot-image-id" value="<?php echo esc_attr($image_id); ?>" />
 			<input type="hidden" name="_hotspot_data" id="cw-hotspot-data" value="<?php echo esc_attr($hotspot_data ?: '[]'); ?>" />
 			<input type="hidden" name="_hotspot_settings" id="cw-hotspot-settings" value="<?php echo esc_attr(json_encode($settings_data)); ?>" />
-			
+
 			<!-- Кнопки управления -->
 			<div class="cw-hotspot-toolbar" style="margin-bottom: 20px;">
 				<button type="button" class="button button-primary" id="cw-hotspot-upload-image">
@@ -206,15 +206,15 @@ class ImageHotspotCPT {
 					<?php _e('Add Point', 'codeweber-gutenberg-blocks'); ?>
 				</button>
 			</div>
-			
+
 			<!-- Область редактирования -->
 			<div class="cw-hotspot-editor-wrapper" style="position: relative; border: 1px solid #ddd; background: #f9f9f9; min-height: 400px; padding: 20px;">
 				<div class="cw-hotspot-annotation-box" id="cw-hotspot-annotation-box" style="position: relative; display: inline-block;">
 					<?php if ($image_url): ?>
-						<img src="<?php echo esc_url($image_url); ?>" 
-						     class="cw-hotspot-main-image" 
-						     id="cw-hotspot-main-image" 
-						     alt="<?php echo esc_attr($post->post_title); ?>" 
+						<img src="<?php echo esc_url($image_url); ?>"
+						     class="cw-hotspot-main-image"
+						     id="cw-hotspot-main-image"
+						     alt="<?php echo esc_attr($post->post_title); ?>"
 						     style="max-width: 100%; height: auto; display: block;" />
 					<?php else: ?>
 						<div class="cw-hotspot-placeholder" style="padding: 100px; text-align: center; color: #999;">
@@ -223,7 +223,7 @@ class ImageHotspotCPT {
 					<?php endif; ?>
 				</div>
 			</div>
-			
+
 			<!-- Панель настроек -->
 			<div class="cw-hotspot-settings-panel" style="margin-top: 20px; padding: 15px; background: #fff; border: 1px solid #ddd;">
 				<h3><?php _e('Hotspot Settings', 'codeweber-gutenberg-blocks'); ?></h3>
@@ -288,10 +288,10 @@ class ImageHotspotCPT {
 				</table>
 			</div>
 		</div>
-		
+
 		<?php
 	}
-	
+
 	/**
 	 * Подключить скрипты и стили для админки
 	 */
@@ -300,7 +300,7 @@ class ImageHotspotCPT {
 		if (!$screen || $screen->post_type !== 'cw_image_hotspot') {
 			return;
 		}
-		
+
 		// Подключаем стили темы для использования локального шрифта Unicons
 		// Стили
 		wp_enqueue_style(
@@ -309,8 +309,8 @@ class ImageHotspotCPT {
 			[],
 			GUTENBERG_BLOCKS_VERSION
 		);
-		
-		
+
+
 		// Скрипты
 		wp_enqueue_media(); // WordPress Media Library
 		wp_enqueue_script(
@@ -320,10 +320,10 @@ class ImageHotspotCPT {
 			GUTENBERG_BLOCKS_VERSION,
 			true
 		);
-		
+
 		// Получаем список иконок Unicons
 		$icons_list = $this->get_unicons_list();
-		
+
 		// Подключаем fetch-handler для админки (если еще не подключен)
 		$fetch_script_path = get_template_directory() . '/functions/fetch/assets/js/fetch-handler.js';
 		if (file_exists($fetch_script_path) && !wp_script_is('fetch-handler', 'enqueued')) {
@@ -338,7 +338,7 @@ class ImageHotspotCPT {
 				'ajaxurl' => admin_url('admin-ajax.php'),
 			]);
 		}
-		
+
 		// Локализация
 		wp_localize_script('cw-hotspot-admin', 'cwHotspotAdmin', [
 			'ajaxurl' => admin_url('admin-ajax.php'), // Для совместимости, но используется Fetch система
@@ -369,7 +369,7 @@ class ImageHotspotCPT {
 			]
 		]);
 	}
-	
+
 	/**
 	 * Добавить кастомные колонки в список hotspots
 	 */
@@ -384,7 +384,7 @@ class ImageHotspotCPT {
 		}
 		return $new_columns;
 	}
-	
+
 	/**
 	 * Заполнить кастомные колонки
 	 */
@@ -392,7 +392,7 @@ class ImageHotspotCPT {
 		if ($column === 'hotspot_id') {
 			echo '<strong>' . esc_html($post_id) . '</strong>';
 		}
-		
+
 		if ($column === 'shortcode') {
 			$shortcode = '[cw_image_hotspot id="' . esc_attr($post_id) . '"]';
 			?>
@@ -400,9 +400,9 @@ class ImageHotspotCPT {
 				<code style="background: #f0f0f1; padding: 4px 8px; border-radius: 3px; font-size: 12px; font-family: monospace;">
 					<?php echo esc_html($shortcode); ?>
 				</code>
-				<button 
-					type="button" 
-					class="button button-small copy-shortcode-btn" 
+				<button
+					type="button"
+					class="button button-small copy-shortcode-btn"
 					data-shortcode="<?php echo esc_attr($shortcode); ?>"
 					style="height: 24px; line-height: 22px; padding: 0 8px;"
 					title="<?php esc_attr_e('Copy shortcode', 'codeweber-gutenberg-blocks'); ?>"
@@ -413,7 +413,7 @@ class ImageHotspotCPT {
 			<?php
 		}
 	}
-	
+
 	/**
 	 * Рендеринг шорткода на фронтенде
 	 */
@@ -421,7 +421,7 @@ class ImageHotspotCPT {
 		// Помечаем, что шорткод используется (для подключения ассетов)
 		global $cw_image_hotspot_used;
 		$cw_image_hotspot_used = true;
-		
+
 		// Подключаем скрипты и стили (если еще не подключены)
 		wp_enqueue_style(
 			'cw-hotspot-frontend',
@@ -429,7 +429,7 @@ class ImageHotspotCPT {
 			[],
 			GUTENBERG_BLOCKS_VERSION
 		);
-		
+
 		// Подключаем скрипт фронтенда
 		wp_enqueue_script(
 			'cw-hotspot-frontend',
@@ -438,11 +438,11 @@ class ImageHotspotCPT {
 			GUTENBERG_BLOCKS_VERSION,
 			true
 		);
-		
+
 		// Fetch система темы уже предоставляет fetch_vars через fetch-handler.js
-		
+
 		// Bootstrap Popover будет инициализирован через скрипт фронтенда
-		
+
 		// #region agent log
 		$log_file = WP_CONTENT_DIR . '/../.cursor/debug.log';
 		if (file_exists(dirname($log_file)) || @mkdir(dirname($log_file), 0755, true)) {
@@ -458,14 +458,14 @@ class ImageHotspotCPT {
 			@file_put_contents($log_file, $log_entry, FILE_APPEND);
 		}
 		// #endregion
-		
+
 		// Получаем атрибуты шорткода
 		$atts = shortcode_atts([
 			'id' => 0,
 		], $atts, 'cw_image_hotspot');
-		
+
 		$hotspot_id = intval($atts['id']);
-		
+
 		// #region agent log
 		if (file_exists(dirname($log_file)) || @mkdir(dirname($log_file), 0755, true)) {
 			$log_entry = json_encode([
@@ -480,7 +480,7 @@ class ImageHotspotCPT {
 			@file_put_contents($log_file, $log_entry, FILE_APPEND);
 		}
 		// #endregion
-		
+
 		if (!$hotspot_id) {
 			// #region agent log
 			if (file_exists(dirname($log_file)) || @mkdir(dirname($log_file), 0755, true)) {
@@ -498,7 +498,7 @@ class ImageHotspotCPT {
 			// #endregion
 			return '';
 		}
-		
+
 		// Получаем данные hotspot из CPT
 		$post = get_post($hotspot_id);
 		if (!$post || $post->post_type !== 'cw_image_hotspot') {
@@ -518,12 +518,12 @@ class ImageHotspotCPT {
 			// #endregion
 			return '';
 		}
-		
+
 		// Получаем метаданные
 		$image_id = get_post_meta($hotspot_id, '_hotspot_image', true);
 		$hotspot_data = get_post_meta($hotspot_id, '_hotspot_data', true);
 		$settings = get_post_meta($hotspot_id, '_hotspot_settings', true);
-		
+
 		// #region agent log
 		if (file_exists(dirname($log_file)) || @mkdir(dirname($log_file), 0755, true)) {
 			$log_entry = json_encode([
@@ -538,11 +538,11 @@ class ImageHotspotCPT {
 			@file_put_contents($log_file, $log_entry, FILE_APPEND);
 		}
 		// #endregion
-		
+
 		if (!$image_id) {
 			return '';
 		}
-		
+
 		// Получаем URL изображения
 		$image_url = wp_get_attachment_image_url($image_id, 'full');
 		if (!$image_url) {
@@ -562,11 +562,11 @@ class ImageHotspotCPT {
 			// #endregion
 			return '';
 		}
-		
+
 		// Парсим данные точек
 		$hotspots = !empty($hotspot_data) ? json_decode($hotspot_data, true) : [];
 		$settings_data = !empty($settings) ? json_decode($settings, true) : [];
-		
+
 		// Дефолтные настройки
 		$default_settings = [
 			'hotspotButtonStyle' => 'btn-primary',
@@ -576,7 +576,7 @@ class ImageHotspotCPT {
 			'popoverPlacement' => 'auto',
 		];
 		$settings_data = wp_parse_args($settings_data, $default_settings);
-		
+
 		// #region agent log
 		if (file_exists(dirname($log_file)) || @mkdir(dirname($log_file), 0755, true)) {
 			$log_entry = json_encode([
@@ -591,19 +591,19 @@ class ImageHotspotCPT {
 			@file_put_contents($log_file, $log_entry, FILE_APPEND);
 		}
 		// #endregion
-		
+
 		// Рендерим HTML
 		ob_start();
 		?>
-		<div class="cw-image-hotspot-container cw-image-hotspot-<?php echo esc_attr($hotspot_id); ?>" 
+		<div class="cw-image-hotspot-container cw-image-hotspot-<?php echo esc_attr($hotspot_id); ?>"
 		     data-hotspot-id="<?php echo esc_attr($hotspot_id); ?>">
 			<div class="cw-hotspot-annotation-box">
-				<img src="<?php echo esc_url($image_url); ?>" 
-				     class="cw-hotspot-main-image" 
+				<img src="<?php echo esc_url($image_url); ?>"
+				     class="cw-hotspot-main-image"
 				     alt="<?php echo esc_attr($post->post_title); ?>" />
 				<?php if (!empty($hotspots)): ?>
 					<?php foreach ($hotspots as $hotspot): ?>
-						<?php 
+						<?php
 						// Используем глобальные настройки для всех кнопок
 						$point_icon = !empty($hotspot['iconName']) ? $hotspot['iconName'] : 'plus'; // Если иконка не задана, используем plus по умолчанию
 						$button_style = $settings_data['hotspotButtonStyle'] ?? 'btn-primary';
@@ -616,22 +616,47 @@ class ImageHotspotCPT {
 						     data-y="<?php echo esc_attr($hotspot['y']); ?>"
 						     data-hotspot-id="<?php echo esc_attr($hotspot['id']); ?>"
 						     data-point-id="<?php echo esc_attr($hotspot['id']); ?>">
-							<?php 
+							<?php
 							// Разбиваем buttonShape на отдельные классы (может быть "btn-block rounded-0")
 							$shape_classes = $button_shape ? explode(' ', $button_shape) : [];
 							// Добавляем классы темы: hover-scale и lift
 							$theme_classes = ['hover-scale', 'lift'];
-							
+
 							// Определяем тип контента
 							$content_type = !empty($hotspot['contentType']) ? $hotspot['contentType'] : 'text';
 							$popover_title = !empty($hotspot['title']) ? esc_html($hotspot['title']) : '';
 							$popover_trigger = $settings_data['popoverTrigger'] ?? 'click';
 							$popover_placement = $settings_data['popoverPlacement'] ?? 'auto';
-							
+
+							// #region agent log
+							$log_file = WP_CONTENT_DIR . '/../.cursor/debug.log';
+							if (file_exists(dirname($log_file)) || @mkdir(dirname($log_file), 0755, true)) {
+								$log_entry = json_encode([
+									'timestamp' => time() * 1000,
+									'location' => 'ImageHotspotCPT.php:render_shortcode:point_info',
+									'message' => 'Point identification and title check',
+									'data' => [
+										'point_id' => $hotspot['id'] ?? 'missing',
+										'point_has_id' => !empty($hotspot['id']),
+										'point_title' => $hotspot['title'] ?? 'missing',
+										'point_title_empty' => empty($hotspot['title']),
+										'popover_title' => $popover_title,
+										'popover_title_empty' => empty($popover_title),
+										'content_type' => $content_type,
+										'hotspot_keys' => array_keys($hotspot ?? [])
+									],
+									'sessionId' => 'debug-session',
+									'runId' => 'initial',
+									'hypothesisId' => 'A'
+								]) . "\n";
+								@file_put_contents($log_file, $log_entry, FILE_APPEND);
+							}
+							// #endregion
+
 							// Формируем контент в зависимости от типа
 							$popover_content = '';
 							$use_ajax = false;
-							
+
 							if ($content_type === 'text') {
 								// Простой текст - храним в скрытом элементе
 								// #region agent log
@@ -680,7 +705,7 @@ class ImageHotspotCPT {
 							?>
 							<?php if (!$use_ajax && !empty($popover_content)): ?>
 								<!-- Скрытый контейнер с HTML контентом для простого текста -->
-								<?php 
+								<?php
 								// #region agent log
 								$log_file = WP_CONTENT_DIR . '/../.cursor/debug.log';
 								if (file_exists(dirname($log_file)) || @mkdir(dirname($log_file), 0755, true)) {
@@ -706,6 +731,31 @@ class ImageHotspotCPT {
 									<?php echo $popover_content; ?>
 								</div>
 							<?php endif; ?>
+							<?php
+							// #region agent log
+							$log_file = WP_CONTENT_DIR . '/../.cursor/debug.log';
+							if (file_exists(dirname($log_file)) || @mkdir(dirname($log_file), 0755, true)) {
+								$log_entry = json_encode([
+									'timestamp' => time() * 1000,
+									'location' => 'ImageHotspotCPT.php:render_shortcode:before_span',
+									'message' => 'Before rendering span element with title attribute',
+									'data' => [
+										'point_id' => $hotspot['id'] ?? 'missing',
+										'popover_title' => $popover_title,
+										'popover_title_type' => gettype($popover_title),
+										'popover_title_empty' => empty($popover_title),
+										'popover_title_length' => strlen($popover_title),
+										'will_output_title' => !empty($popover_title),
+										'will_output_data_bs_title' => !empty($popover_title)
+									],
+									'sessionId' => 'debug-session',
+									'runId' => 'initial',
+									'hypothesisId' => 'B'
+								]) . "\n";
+								@file_put_contents($log_file, $log_entry, FILE_APPEND);
+							}
+							// #endregion
+							?>
 							<span class="btn <?php echo esc_attr(implode(' ', array_merge($theme_classes, $shape_classes, [$button_style, $button_size]))); ?>"
 							      tabindex="0"
 							      data-bs-toggle="popover"
@@ -713,7 +763,8 @@ class ImageHotspotCPT {
 							      data-bs-placement="<?php echo esc_attr($popover_placement); ?>"
 							      data-bs-html="true"
 							      data-bs-ajax-load="<?php echo $use_ajax ? 'true' : 'false'; ?>"
-							      <?php if (!empty($popover_title)): ?>data-bs-title="<?php echo esc_attr($popover_title); ?>"<?php endif; ?>
+							      data-bs-title="<?php echo esc_attr($popover_title); ?>"
+							      data-content-type="<?php echo esc_attr($content_type); ?>"
 							      <?php if (!empty($hotspot['popoverWidth'])): ?>data-bs-popover-width="<?php echo esc_attr($hotspot['popoverWidth']); ?>"<?php endif; ?>>
 								<?php if (!empty($point_icon)): ?>
 									<i class="uil uil-<?php echo esc_attr($point_icon); ?>"></i>
@@ -728,7 +779,7 @@ class ImageHotspotCPT {
 		</div>
 		<?php
 		$output = ob_get_clean();
-		
+
 		// #region agent log
 		if (file_exists(dirname($log_file)) || @mkdir(dirname($log_file), 0755, true)) {
 			$log_entry = json_encode([
@@ -743,38 +794,38 @@ class ImageHotspotCPT {
 			@file_put_contents($log_file, $log_entry, FILE_APPEND);
 		}
 		// #endregion
-		
+
 		return $output;
 	}
-	
+
 	/**
 	 * Получить список иконок Unicons
 	 */
 	private function get_unicons_list() {
 		// Путь к JS файлу с иконками
 		$icons_file = plugin_dir_path(__DIR__) . 'src/utilities/font_icon.js';
-		
+
 		if (!file_exists($icons_file)) {
 			return [];
 		}
-		
+
 		$content = file_get_contents($icons_file);
-		
+
 		// Извлекаем массив иконок из JS файла
 		// Используем более гибкое регулярное выражение
 		if (!preg_match('/export\s+const\s+fontIcons\s*=\s*\[(.*?)\];/s', $content, $matches)) {
 			return [];
 		}
-		
+
 		if (empty($matches[1])) {
 			return [];
 		}
-		
+
 		$icons = [];
 		// Парсим строки вида { value: 'uil-icon-name', label: 'icon-name' },
 		// Поддерживаем табы, пробелы и переносы строк
 		preg_match_all("/\{\s*value:\s*['\"]([^'\"]+)['\"],\s*label:\s*['\"]([^'\"]+)['\"]\s*\}/", $matches[1], $icon_matches, PREG_SET_ORDER);
-		
+
 		foreach ($icon_matches as $match) {
 			$full_icon_name = $match[1]; // Полное имя с префиксом uil-
 			$icon_name = str_replace('uil-', '', $full_icon_name); // Убираем префикс uil-
@@ -784,10 +835,10 @@ class ImageHotspotCPT {
 				'class' => 'uil uil-' . $icon_name
 			];
 		}
-		
+
 		return $icons;
 	}
-	
+
 	/**
 	 * Загрузить только CSS с определениями иконок Unicons
 	 * Без подключения всего style.css темы, чтобы не сломать верстку админки
@@ -797,18 +848,18 @@ class ImageHotspotCPT {
 		if (!$screen || $screen->post_type !== 'cw_image_hotspot') {
 			return;
 		}
-		
+
 		$theme_path = get_template_directory();
 		$theme_uri = get_template_directory_uri();
 		$icons_scss_path = $theme_path . '/src/assets/scss/theme/_icons.scss';
-		
+
 		if (!file_exists($icons_scss_path)) {
 			return;
 		}
-		
+
 		$icons_scss_content = file_get_contents($icons_scss_path);
 		$icons_css = '';
-		
+
 		// Извлекаем блок @font-face для Unicons
 		if (preg_match('/@font-face\s*\{[^}]*font-family:\s*[\'"]Unicons[\'"][^}]*src:[^}]*\}/s', $icons_scss_content, $font_face_match)) {
 			// Заменяем относительные пути на абсолютные URL
@@ -819,27 +870,27 @@ class ImageHotspotCPT {
 			);
 			$icons_css .= $font_face_css . "\n";
 		}
-		
+
 		// Извлекаем все определения .uil-*:before построчно
 		// Это более надежный способ для SCSS файлов
 		$lines = explode("\n", $icons_scss_content);
 		$in_icon_block = false;
 		$current_icon_block = '';
-		
+
 		foreach ($lines as $line) {
 			$trimmed_line = trim($line);
-			
+
 			// Начало блока иконки: .uil-icon-name:before {
 			if (preg_match('/^\.(uil-[a-zA-Z0-9\-]+):before\s*\{/', $trimmed_line)) {
 				$in_icon_block = true;
 				$current_icon_block = $trimmed_line . "\n";
 				continue;
 			}
-			
+
 			// Внутри блока иконки
 			if ($in_icon_block) {
 				$current_icon_block .= $trimmed_line . "\n";
-				
+
 				// Конец блока (закрывающая скобка)
 				if (strpos($trimmed_line, '}') !== false) {
 					$icons_css .= $current_icon_block;
@@ -848,7 +899,7 @@ class ImageHotspotCPT {
 				}
 			}
 		}
-		
+
 		// Базовые стили для иконок
 		$unicons_font_css = "
 		@font-face {
@@ -884,10 +935,10 @@ class ImageHotspotCPT {
 			-moz-osx-font-smoothing: grayscale;
 		}
 		" . $icons_css;
-		
+
 		wp_add_inline_style('cw-hotspot-admin', $unicons_font_css);
 	}
-	
+
 	/**
 	 * Подключить скрипт для копирования шорткода
 	 */
@@ -904,19 +955,19 @@ class ImageHotspotCPT {
 					e.preventDefault();
 					var $btn = $(this);
 					var shortcode = $btn.data('shortcode');
-					
+
 					var $temp = $('<textarea>');
 					$('body').append($temp);
 					$temp.val(shortcode).select();
-					
+
 					try {
 						document.execCommand('copy');
 						$temp.remove();
-						
+
 						var $originalIcon = $btn.find('.dashicons');
 						$originalIcon.removeClass('dashicons-clipboard').addClass('dashicons-yes-alt');
 						$btn.css('color', '#46b450');
-						
+
 						setTimeout(function() {
 							$originalIcon.removeClass('dashicons-yes-alt').addClass('dashicons-clipboard');
 							$btn.css('color', '');
@@ -931,24 +982,24 @@ class ImageHotspotCPT {
 		</script>
 		<?php
 	}
-	
+
 	/**
 	 * AJAX: Получить тип поста
 	 */
 	public function ajax_get_post_type() {
 		$post_id = isset($_POST['post_id']) ? intval($_POST['post_id']) : 0;
-		
+
 		if (!$post_id) {
 			wp_send_json_error(['message' => 'Post ID is required']);
 			return;
 		}
-		
+
 		$post = get_post($post_id);
 		if (!$post) {
 			wp_send_json_error(['message' => 'Post not found']);
 			return;
 		}
-		
+
 		wp_send_json_success([
 			'post_type' => $post->post_type
 		]);

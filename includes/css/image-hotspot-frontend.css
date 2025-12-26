@@ -106,6 +106,16 @@
 	padding: 1rem;
 }
 
+/* Нулевой padding для типа контента Post */
+.cw-hotspot-popover.cw-hotspot-content-post .popover-body {
+	padding: 0;
+}
+
+/* Нулевой padding для типа контента Hybrid (только для части с постом) */
+.cw-hotspot-popover.cw-hotspot-content-hybrid .popover-body {
+	padding: 0;
+}
+
 .cw-hotspot-popover .popover-body img {
 	max-width: 100%;
 	height: auto;

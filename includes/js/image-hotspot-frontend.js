@@ -93,6 +93,7 @@
 
 			const pointId = getDataAttr(wrapper, 'point-id');
 			const useAjax = getDataAttr(pointElement, 'bs-ajax-load') === 'true';
+			const contentType = getDataAttr(pointElement, 'content-type') || 'text';
 			
 			// Получаем настройки из data-атрибутов
 			const trigger = getDataAttr(pointElement, 'bs-trigger') || 'click';
@@ -177,9 +178,9 @@
 				customClass: 'cw-hotspot-popover'
 			};
 			
-			if (title) {
-				popoverOptions.title = title;
-			}
+			// Устанавливаем title - если он пустой, устанавливаем пустую строку, чтобы Bootstrap создал popover
+			// Bootstrap Popover может не работать, если title вообще не задан
+			popoverOptions.title = title || '';
 			
 			// Устанавливаем начальный контент
 			if (useAjax) {
@@ -233,15 +234,33 @@
 			
 			// Используем getOrCreateInstance (рекомендуется Bootstrap 5 для динамического контента)
 			// #region agent log
-			fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-frontend.js:initHotspotPopovers',message:'Creating popover instance',data:{pointId:pointId,useAjax:useAjax,hasTitle:!!title,placement:placement,popoverWidth:popoverWidth,popoverOptionsContentType:typeof popoverOptions.content,popoverOptionsContentLength:typeof popoverOptions.content === 'string' ? popoverOptions.content.length : 0},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'E'})}).catch(()=>{});
+			fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-frontend.js:initHotspotPopovers',message:'Creating popover instance',data:{pointId:pointId,useAjax:useAjax,hasTitle:!!title,titleValue:title,titleInOptions:popoverOptions.title,placement:placement,popoverWidth:popoverWidth,popoverOptionsContentType:typeof popoverOptions.content,popoverOptionsContentLength:typeof popoverOptions.content === 'string' ? popoverOptions.content.length : 0,popoverOptionsKeys:Object.keys(popoverOptions)},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'E'})}).catch(()=>{});
 			// #endregion
-			const popover = bootstrap.Popover.getOrCreateInstance(pointElement, popoverOptions);
+			let popover;
+			try {
+				popover = bootstrap.Popover.getOrCreateInstance(pointElement, popoverOptions);
+				// #region agent log
+				fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-frontend.js:initHotspotPopovers',message:'Popover instance created successfully',data:{pointId:pointId,popoverExists:!!popover,hasTitle:!!title},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'E'})}).catch(()=>{});
+				// #endregion
+			} catch (e) {
+				// #region agent log
+				fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-frontend.js:initHotspotPopovers',message:'Error creating popover instance',data:{pointId:pointId,error:e.message,errorStack:e.stack,hasTitle:!!title,titleValue:title},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'E'})}).catch(()=>{});
+				// #endregion
+				console.error('Error creating popover:', e);
+				return; // Пропускаем этот элемент, если не удалось создать popover
+			}
 			
-			// Применяем индивидуальную ширину popover, если она задана
-			if (popoverWidth) {
-				pointElement.addEventListener('shown.bs.popover', () => {
-					const popoverElement = document.querySelector('.popover.cw-hotspot-popover');
-					if (popoverElement) {
+			// Применяем индивидуальную ширину popover и класс типа контента, если они заданы
+			pointElement.addEventListener('shown.bs.popover', () => {
+				const popoverElement = document.querySelector('.popover.cw-hotspot-popover');
+				if (popoverElement) {
+					// Добавляем класс типа контента для применения CSS
+					if (contentType === 'post' || contentType === 'hybrid') {
+						popoverElement.classList.add('cw-hotspot-content-' + contentType);
+					}
+					
+					// Применяем индивидуальную ширину popover, если она задана
+					if (popoverWidth) {
 						// Устанавливаем data-атрибут для CSS
 						popoverElement.setAttribute('data-popover-width', popoverWidth);
 						
@@ -257,8 +276,8 @@
 							popoverElement.style.maxWidth = popoverWidth;
 						}
 					}
-				}, { once: false }); // Может срабатывать несколько раз при повторном открытии
-			}
+				}
+			}, { once: false }); // Может срабатывать несколько раз при повторном открытии
 			
 			// Добавляем логирование для отслеживания выбранного placement после показа
 			if (placement === 'auto') {
@@ -279,14 +298,33 @@
 				const contentUpdate = {
 					'.popover-body': staticContent
 				};
-				// Если есть заголовок, устанавливаем его тоже
+				// Если есть заголовок, устанавливаем его тоже, иначе скрываем header
 				if (title) {
 					contentUpdate['.popover-header'] = title;
+				} else {
+					// Если title пустой, скрываем header
+					contentUpdate['.popover-header'] = '';
 				}
 				popover.setContent(contentUpdate);
 				// #region agent log
 				fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-frontend.js:initHotspotPopovers',message:'Forced content via setContent',data:{pointId:pointId,staticContentLength:staticContent.length,hasTitle:!!title,titleValue:title},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'G'})}).catch(()=>{});
 				// #endregion
+			}
+			
+			// Если title пустой, скрываем header после показа popover
+			if (!title) {
+				pointElement.addEventListener('shown.bs.popover', () => {
+					const popoverElement = document.querySelector('.popover.cw-hotspot-popover');
+					if (popoverElement) {
+						const header = popoverElement.querySelector('.popover-header');
+						if (header) {
+							header.style.display = 'none';
+							// #region agent log
+							fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-frontend.js:shown.bs.popover',message:'Header hidden for empty title',data:{pointId:pointId},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'H'})}).catch(()=>{});
+							// #endregion
+						}
+					}
+				}, { once: true });
 			}
 			
 			// #region agent log
@@ -380,6 +418,20 @@
 					}
 				}, { once: true }); // Используем { once: true } для однократного выполнения
 			}
+			
+			// Добавляем обработчик клика для диагностики
+			pointElement.addEventListener('click', (e) => {
+				// #region agent log
+				fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-frontend.js:click',message:'Point clicked',data:{pointId:pointId,hasTitle:!!title,titleValue:title,useAjax:useAjax,hasPopover:!!popover,popoverIsShown:popover?._isShown?.()},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'F'})}).catch(()=>{});
+				// #endregion
+			});
+			
+			// Добавляем обработчик для события show.bs.popover (до показа)
+			pointElement.addEventListener('show.bs.popover', (e) => {
+				// #region agent log
+				fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-frontend.js:show.bs.popover',message:'Popover show event triggered',data:{pointId:pointId,hasTitle:!!title,titleValue:title,useAjax:useAjax},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'F'})}).catch(()=>{});
+				// #endregion
+			});
 			
 			// Если используется AJAX, загружаем контент при показе
 			if (useAjax && hotspotId && pointId) {

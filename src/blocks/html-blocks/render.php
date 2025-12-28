@@ -46,41 +46,9 @@ if (!$html_block_post || $html_block_post->post_type !== 'html_blocks' || $html_
     return;
 }
 
-// Получаем контент поста
-$content = apply_filters('the_content', $html_block_post->post_content);
+// Получаем контент поста без обработки (выводим HTML как есть)
+$content = $html_block_post->post_content;
 
-// Формируем классы
-$classes = ['codeweber-html-blocks'];
-if ($block_class) {
-    $classes[] = $block_class;
-}
-
-// Формируем data атрибуты
-$data_attrs = '';
-if ($block_data) {
-    $data_parts = explode(',', $block_data);
-    foreach ($data_parts as $part) {
-        $part = trim($part);
-        if (strpos($part, '=') !== false) {
-            list($key, $value) = explode('=', $part, 2);
-            $key = trim($key);
-            $value = trim($value);
-            if ($key && $value) {
-                $data_attrs .= ' data-' . esc_attr($key) . '="' . esc_attr($value) . '"';
-            }
-        }
-    }
-}
-
-// Выводим блок
-?>
-<div 
-    class="<?php echo esc_attr(implode(' ', $classes)); ?>"
-    <?php echo $block_id ? 'id="' . esc_attr($block_id) . '"' : ''; ?>
-    <?php echo $data_attrs; ?>
->
-    <div class="html-blocks-content">
-        <?php echo $content; ?>
-    </div>
-</div>
+// Выводим только контент без оберток
+echo $content;
 

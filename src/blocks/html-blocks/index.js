@@ -14,7 +14,7 @@ import metadata from './block.json';
 /**
  * Register: Html Blocks Block
  */
-registerBlockType(metadata.name, {
+registerBlockType(metadata, {
 	edit: Edit,
 	save: () => null, // Используем render.php для рендеринга
 });

@@ -46,6 +46,12 @@ class Plugin {
 
 		// Фильтр для условного рендеринга form-field с inline button
 		add_filter('pre_render_block', __CLASS__ . '::pre_render_form_field_inline_button', 10, 2);
+
+		// Фильтр для рендеринга html-blocks блока
+		add_filter('pre_render_block', __CLASS__ . '::pre_render_html_blocks_block', 10, 2);
+
+		// Фильтр для рендеринга html-blocks блока
+		add_filter('pre_render_block', __CLASS__ . '::pre_render_html_blocks_block', 10, 2);
 	}
 
 	public static function init(): void {
@@ -138,6 +144,7 @@ class Plugin {
 		'submit-button',
 		'divider',
 		'yandex-map',
+		'html-blocks',
 	];
 	}
 
@@ -986,6 +993,42 @@ class Plugin {
 
 				return $rendered;
 			}
+		}
+
+		return $pre_render;
+	}
+
+	/**
+	 * Pre-render html-blocks block
+	 * Always uses PHP render
+	 */
+	public static function pre_render_html_blocks_block($pre_render, $parsed_block) {
+		// Проверяем, что это блок html-blocks
+		if (!isset($parsed_block['blockName']) || $parsed_block['blockName'] !== 'codeweber-blocks/html-blocks') {
+			return $pre_render;
+		}
+
+		// Всегда используем PHP render
+		$render_path = self::getBasePath() . '/build/blocks/html-blocks/render.php';
+		if (file_exists($render_path)) {
+			// Передаем атрибуты и блок в render.php
+			$attributes = $parsed_block['attrs'] ?? [];
+			$content = $parsed_block['innerHTML'] ?? '';
+			$block_instance = new \WP_Block($parsed_block);
+
+			// Передаем переменные в область видимости render.php
+			extract([
+				'attributes' => $attributes,
+				'content' => $content,
+				'block' => $block_instance,
+				'parsed_block' => $parsed_block,
+			], EXTR_SKIP);
+
+			ob_start();
+			require $render_path;
+			$rendered = ob_get_clean();
+
+			return $rendered;
 		}
 
 		return $pre_render;

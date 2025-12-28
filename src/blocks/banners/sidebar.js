@@ -23,10 +23,28 @@ const TabIcon = ({ icon, label }) => (
 );
 
 const BANNER_TYPES = [
-	{ label: __('Banner 34', 'codeweber-gutenberg-blocks'), value: 'banner-34' },
+	{ label: __('Banner 1', 'codeweber-gutenberg-blocks'), value: 'banner-1' },
+	{ label: __('Banner 2', 'codeweber-gutenberg-blocks'), value: 'banner-2' },
 	{ label: __('Banner 3', 'codeweber-gutenberg-blocks'), value: 'banner-3' },
+	{ label: __('Banner 4', 'codeweber-gutenberg-blocks'), value: 'banner-4' },
+	{ label: __('Banner 6', 'codeweber-gutenberg-blocks'), value: 'banner-6' },
+	{ label: __('Banner 7', 'codeweber-gutenberg-blocks'), value: 'banner-7' },
+	{ label: __('Banner 8', 'codeweber-gutenberg-blocks'), value: 'banner-8' },
+	{ label: __('Banner 10', 'codeweber-gutenberg-blocks'), value: 'banner-10' },
+	{ label: __('Banner 11', 'codeweber-gutenberg-blocks'), value: 'banner-11' },
 	{ label: __('Banner 14', 'codeweber-gutenberg-blocks'), value: 'banner-14' },
+	{ label: __('Banner 15', 'codeweber-gutenberg-blocks'), value: 'banner-15' },
+	{ label: __('Banner 16', 'codeweber-gutenberg-blocks'), value: 'banner-16' },
+	{ label: __('Banner 18', 'codeweber-gutenberg-blocks'), value: 'banner-18' },
+	{ label: __('Banner 20', 'codeweber-gutenberg-blocks'), value: 'banner-20' },
 	{ label: __('Banner 23', 'codeweber-gutenberg-blocks'), value: 'banner-23' },
+	{ label: __('Banner 24', 'codeweber-gutenberg-blocks'), value: 'banner-24' },
+	{ label: __('Banner 25', 'codeweber-gutenberg-blocks'), value: 'banner-25' },
+	{ label: __('Banner 27', 'codeweber-gutenberg-blocks'), value: 'banner-27' },
+	{ label: __('Banner 29', 'codeweber-gutenberg-blocks'), value: 'banner-29' },
+	{ label: __('Banner 30', 'codeweber-gutenberg-blocks'), value: 'banner-30' },
+	{ label: __('Banner 32', 'codeweber-gutenberg-blocks'), value: 'banner-32' },
+	{ label: __('Banner 34', 'codeweber-gutenberg-blocks'), value: 'banner-34' },
 ];
 
 export const BannersSidebar = ({ attributes, setAttributes }) => {

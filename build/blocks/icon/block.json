@@ -1,0 +1,110 @@
+{
+  "apiVersion": 2,
+  "name": "codeweber-blocks/icon",
+  "version": "0.1.0",
+  "title": "Icon",
+  "category": "codeweber-gutenberg-blocks",
+  "icon": "star-filled",
+  "description": "Universal icon block. Supports Font Icons (Unicons), SVG icons and custom SVG.",
+  "keywords": [
+    "icon",
+    "svg",
+    "unicons"
+  ],
+  "supports": {
+    "html": false,
+    "customClassName": false,
+    "anchor": true,
+    "align": [
+      "left",
+      "center",
+      "right"
+    ]
+  },
+  "attributes": {
+    "iconType": {
+      "type": "string",
+      "default": "font"
+    },
+    "iconName": {
+      "type": "string",
+      "default": "star"
+    },
+    "svgIcon": {
+      "type": "string",
+      "default": ""
+    },
+    "svgStyle": {
+      "type": "string",
+      "default": "lineal"
+    },
+    "iconSize": {
+      "type": "string",
+      "default": "xs"
+    },
+    "iconFontSize": {
+      "type": "string",
+      "default": "fs-40"
+    },
+    "iconColor": {
+      "type": "string",
+      "default": "primary"
+    },
+    "iconColor2": {
+      "type": "string",
+      "default": ""
+    },
+    "iconClass": {
+      "type": "string",
+      "default": ""
+    },
+    "iconWrapper": {
+      "type": "boolean",
+      "default": false
+    },
+    "iconWrapperStyle": {
+      "type": "string",
+      "default": ""
+    },
+    "iconBtnSize": {
+      "type": "string",
+      "default": ""
+    },
+    "iconBtnVariant": {
+      "type": "string",
+      "default": "soft"
+    },
+    "iconWrapperClass": {
+      "type": "string",
+      "default": ""
+    },
+    "customSvgUrl": {
+      "type": "string",
+      "default": ""
+    },
+    "customSvgId": {
+      "type": "number",
+      "default": 0
+    },
+    "blockAlign": {
+      "type": "string",
+      "default": ""
+    },
+    "blockClass": {
+      "type": "string",
+      "default": ""
+    },
+    "blockData": {
+      "type": "string",
+      "default": ""
+    },
+    "blockId": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "textdomain": "codeweber-blocks",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

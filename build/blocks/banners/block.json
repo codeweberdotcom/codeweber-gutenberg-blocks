@@ -1,0 +1,412 @@
+{
+  "apiVersion": 2,
+  "name": "codeweber-blocks/banners",
+  "version": "0.1.0",
+  "title": "Banners",
+  "category": "codeweber-gutenberg-blocks",
+  "icon": "cover-image",
+  "description": "Banners block with multiple predefined layouts (Banner 34, etc.)",
+  "supports": {
+    "html": false,
+    "customClassName": true,
+    "anchor": true
+  },
+  "attributes": {
+    "bannerType": {
+      "type": "string",
+      "default": "banner-34"
+    },
+    "imageType": {
+      "type": "string",
+      "default": "background"
+    },
+    "imagePosition": {
+      "type": "string",
+      "default": "left"
+    },
+    "imageId": {
+      "type": "number",
+      "default": 0
+    },
+    "imageUrl": {
+      "type": "string",
+      "default": ""
+    },
+    "imageAlt": {
+      "type": "string",
+      "default": ""
+    },
+    "images": {
+      "type": "array",
+      "default": []
+    },
+    "imageSize": {
+      "type": "string",
+      "default": "full"
+    },
+    "borderRadius": {
+      "type": "string",
+      "default": ""
+    },
+    "enableLightbox": {
+      "type": "boolean",
+      "default": true
+    },
+    "lightboxGallery": {
+      "type": "string",
+      "default": "gallery-1"
+    },
+    "simpleEffect": {
+      "type": "string",
+      "default": "none"
+    },
+    "effectType": {
+      "type": "string",
+      "default": "none"
+    },
+    "tooltipStyle": {
+      "type": "string",
+      "default": "itooltip-dark"
+    },
+    "overlayStyle": {
+      "type": "string",
+      "default": "overlay-1"
+    },
+    "overlayGradient": {
+      "type": "string",
+      "default": "gradient-1"
+    },
+    "overlayColor": {
+      "type": "boolean",
+      "default": false
+    },
+    "cursorStyle": {
+      "type": "string",
+      "default": "cursor-dark"
+    },
+    "videoUrl": {
+      "type": "string",
+      "default": ""
+    },
+    "backgroundImageId": {
+      "type": "number",
+      "default": 0
+    },
+    "backgroundImageUrl": {
+      "type": "string",
+      "default": ""
+    },
+    "backgroundImageSize": {
+      "type": "string",
+      "default": ""
+    },
+    "backgroundType": {
+      "type": "string",
+      "default": "none"
+    },
+    "backgroundColor": {
+      "type": "string",
+      "default": "gray"
+    },
+    "backgroundColorType": {
+      "type": "string",
+      "default": "solid"
+    },
+    "backgroundGradient": {
+      "type": "string",
+      "default": "gradient-1"
+    },
+    "backgroundSize": {
+      "type": "string",
+      "default": "bg-cover"
+    },
+    "sectionClass": {
+      "type": "string",
+      "default": ""
+    },
+    "containerClass": {
+      "type": "string",
+      "default": ""
+    },
+    "displayMode": {
+      "type": "string",
+      "default": "single"
+    },
+    "gridType": {
+      "type": "string",
+      "default": "classic"
+    },
+    "gridColumns": {
+      "type": "string",
+      "default": "1"
+    },
+    "gridColumnsXs": {
+      "type": "string",
+      "default": ""
+    },
+    "gridColumnsSm": {
+      "type": "string",
+      "default": ""
+    },
+    "gridColumnsMd": {
+      "type": "string",
+      "default": "3"
+    },
+    "gridColumnsLg": {
+      "type": "string",
+      "default": ""
+    },
+    "gridColumnsXl": {
+      "type": "string",
+      "default": ""
+    },
+    "gridColumnsXxl": {
+      "type": "string",
+      "default": ""
+    },
+    "gridRowCols": {
+      "type": "string",
+      "default": "12"
+    },
+    "gridRowColsSm": {
+      "type": "string",
+      "default": ""
+    },
+    "gridRowColsMd": {
+      "type": "string",
+      "default": "3"
+    },
+    "gridRowColsLg": {
+      "type": "string",
+      "default": ""
+    },
+    "gridRowColsXl": {
+      "type": "string",
+      "default": ""
+    },
+    "gridRowColsXxl": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapType": {
+      "type": "string",
+      "default": "general"
+    },
+    "gridGap": {
+      "type": "string",
+      "default": "3"
+    },
+    "gridGapXs": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapSm": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapMd": {
+      "type": "string",
+      "default": "3"
+    },
+    "gridGapLg": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapXl": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapXxl": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapXXs": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapXSm": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapXMd": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapXLg": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapXXl": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapXXxl": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapYXs": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapYSm": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapYMd": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapYLg": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapYXl": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapYXxl": {
+      "type": "string",
+      "default": ""
+    },
+    "swiperEffect": {
+      "type": "string",
+      "default": "slide"
+    },
+    "swiperItems": {
+      "type": "string",
+      "default": "3"
+    },
+    "swiperItemsXs": {
+      "type": "string",
+      "default": "1"
+    },
+    "swiperItemsSm": {
+      "type": "string",
+      "default": ""
+    },
+    "swiperItemsMd": {
+      "type": "string",
+      "default": "2"
+    },
+    "swiperItemsLg": {
+      "type": "string",
+      "default": ""
+    },
+    "swiperItemsXl": {
+      "type": "string",
+      "default": "3"
+    },
+    "swiperItemsXxl": {
+      "type": "string",
+      "default": ""
+    },
+    "swiperSpeed": {
+      "type": "number",
+      "default": 500
+    },
+    "swiperAutoplay": {
+      "type": "boolean",
+      "default": false
+    },
+    "swiperAutoplayTime": {
+      "type": "number",
+      "default": 5000
+    },
+    "swiperAutoHeight": {
+      "type": "boolean",
+      "default": false
+    },
+    "swiperWatchOverflow": {
+      "type": "boolean",
+      "default": false
+    },
+    "swiperMargin": {
+      "type": "string",
+      "default": "30"
+    },
+    "swiperLoop": {
+      "type": "boolean",
+      "default": false
+    },
+    "swiperNav": {
+      "type": "boolean",
+      "default": true
+    },
+    "swiperDots": {
+      "type": "boolean",
+      "default": true
+    },
+    "swiperDrag": {
+      "type": "boolean",
+      "default": true
+    },
+    "swiperReverse": {
+      "type": "boolean",
+      "default": false
+    },
+    "swiperUpdateResize": {
+      "type": "boolean",
+      "default": true
+    },
+    "swiperNavStyle": {
+      "type": "string",
+      "default": "nav-dark"
+    },
+    "swiperNavPosition": {
+      "type": "string",
+      "default": ""
+    },
+    "swiperDotsStyle": {
+      "type": "string",
+      "default": "dots-over"
+    },
+    "swiperContainerType": {
+      "type": "string",
+      "default": ""
+    },
+    "swiperItemsAuto": {
+      "type": "boolean",
+      "default": false
+    },
+    "swiperCentered": {
+      "type": "boolean",
+      "default": false
+    },
+    "loadMoreEnable": {
+      "type": "boolean",
+      "default": false
+    },
+    "loadMoreInitialCount": {
+      "type": "number",
+      "default": 6
+    },
+    "loadMoreLoadMoreCount": {
+      "type": "number",
+      "default": 3
+    },
+    "loadMoreText": {
+      "type": "string",
+      "default": "show-more"
+    },
+    "loadMoreType": {
+      "type": "string",
+      "default": "button"
+    },
+    "loadMoreButtonSize": {
+      "type": "string",
+      "default": ""
+    },
+    "loadMoreButtonStyle": {
+      "type": "string",
+      "default": "solid"
+    },
+    "imageRenderType": {
+      "type": "string",
+      "default": "img"
+    }
+  },
+  "textdomain": "codeweber-blocks",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

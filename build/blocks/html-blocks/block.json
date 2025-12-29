@@ -1,0 +1,41 @@
+{
+  "apiVersion": 2,
+  "name": "codeweber-blocks/html-blocks",
+  "version": "0.1.0",
+  "title": "Html Blocks",
+  "category": "codeweber-gutenberg-blocks",
+  "icon": "code",
+  "description": "Выберите и отобразите HTML блок из CPT html_blocks",
+  "keywords": [
+    "html",
+    "blocks",
+    "cpt"
+  ],
+  "supports": {
+    "html": false,
+    "customClassName": true,
+    "anchor": true
+  },
+  "attributes": {
+    "selectedBlockId": {
+      "type": "number",
+      "default": 0
+    },
+    "blockClass": {
+      "type": "string",
+      "default": ""
+    },
+    "blockData": {
+      "type": "string",
+      "default": ""
+    },
+    "blockId": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "textdomain": "codeweber-gutenberg-blocks",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

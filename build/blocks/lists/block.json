@@ -1,0 +1,215 @@
+{
+  "apiVersion": 2,
+  "name": "codeweber-blocks/lists",
+  "version": "0.1.0",
+  "title": "Lists",
+  "category": "codeweber-gutenberg-blocks",
+  "icon": "editor-ul",
+  "description": "Custom lists with icons and colors. Supports Custom and Post modes.",
+  "keywords": [
+    "list",
+    "lists",
+    "ul",
+    "icon"
+  ],
+  "supports": {
+    "html": false,
+    "customClassName": true,
+    "anchor": true
+  },
+  "attributes": {
+    "mode": {
+      "type": "string",
+      "default": "custom"
+    },
+    "listType": {
+      "type": "string",
+      "default": "unordered"
+    },
+    "bulletColor": {
+      "type": "string",
+      "default": "primary"
+    },
+    "bulletBg": {
+      "type": "boolean",
+      "default": false
+    },
+    "iconClass": {
+      "type": "string",
+      "default": "uil uil-arrow-right"
+    },
+    "textColor": {
+      "type": "string",
+      "default": ""
+    },
+    "items": {
+      "type": "array",
+      "default": [
+        {
+          "id": "item-1",
+          "text": "Aenean eu leo quam."
+        },
+        {
+          "id": "item-2",
+          "text": "Nullam quis risus eget."
+        },
+        {
+          "id": "item-3",
+          "text": "Donec id elit non mi porta."
+        }
+      ]
+    },
+    "postType": {
+      "type": "string",
+      "default": ""
+    },
+    "selectedTaxonomies": {
+      "type": "object",
+      "default": {}
+    },
+    "enableLinks": {
+      "type": "boolean",
+      "default": false
+    },
+    "postsPerPage": {
+      "type": "number",
+      "default": 10
+    },
+    "orderBy": {
+      "type": "string",
+      "default": "date"
+    },
+    "order": {
+      "type": "string",
+      "default": "desc"
+    },
+    "listClass": {
+      "type": "string",
+      "default": ""
+    },
+    "listId": {
+      "type": "string",
+      "default": ""
+    },
+    "listData": {
+      "type": "string",
+      "default": ""
+    },
+    "gridRowCols": {
+      "type": "string",
+      "default": ""
+    },
+    "gridRowColsSm": {
+      "type": "string",
+      "default": ""
+    },
+    "gridRowColsMd": {
+      "type": "string",
+      "default": ""
+    },
+    "gridRowColsLg": {
+      "type": "string",
+      "default": ""
+    },
+    "gridRowColsXl": {
+      "type": "string",
+      "default": ""
+    },
+    "gridRowColsXxl": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapType": {
+      "type": "string",
+      "default": "general"
+    },
+    "gridGap": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapXs": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapSm": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapMd": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapLg": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapXl": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapXxl": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapX": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapXXs": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapXSm": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapXMd": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapXLg": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapXXl": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapXXxl": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapY": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapYXs": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapYSm": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapYMd": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapYLg": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapYXl": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapYXxl": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "textdomain": "codeweber-gutenberg-blocks",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

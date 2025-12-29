@@ -1,0 +1,316 @@
+{
+  "apiVersion": 3,
+  "name": "codeweber-blocks/feature",
+  "version": "0.1.0",
+  "title": "Feature",
+  "category": "codeweber-gutenberg-blocks",
+  "icon": "star-filled",
+  "description": "Feature block with Icon, Title, Paragraph, and Button. Supports three layout variants.",
+  "keywords": [
+    "feature",
+    "icon",
+    "title",
+    "button",
+    "card"
+  ],
+  "supports": {
+    "html": false,
+    "className": false,
+    "customClassName": false,
+    "anchor": true
+  },
+  "attributes": {
+    "featureLayout": {
+      "type": "string",
+      "default": "vertical"
+    },
+    "iconType": {
+      "type": "string",
+      "default": "font"
+    },
+    "iconName": {
+      "type": "string",
+      "default": "phone-volume"
+    },
+    "svgIcon": {
+      "type": "string",
+      "default": ""
+    },
+    "svgStyle": {
+      "type": "string",
+      "default": "lineal"
+    },
+    "iconSize": {
+      "type": "string",
+      "default": "xs"
+    },
+    "iconFontSize": {
+      "type": "string",
+      "default": ""
+    },
+    "iconColor": {
+      "type": "string",
+      "default": "yellow"
+    },
+    "iconColor2": {
+      "type": "string",
+      "default": ""
+    },
+    "iconClass": {
+      "type": "string",
+      "default": ""
+    },
+    "iconWrapper": {
+      "type": "boolean",
+      "default": true
+    },
+    "iconWrapperStyle": {
+      "type": "string",
+      "default": "btn"
+    },
+    "iconBtnSize": {
+      "type": "string",
+      "default": "btn-lg"
+    },
+    "iconBtnVariant": {
+      "type": "string",
+      "default": "soft"
+    },
+    "iconWrapperClass": {
+      "type": "string",
+      "default": "pe-none mb-5"
+    },
+    "customSvgUrl": {
+      "type": "string",
+      "default": ""
+    },
+    "customSvgId": {
+      "type": "number",
+      "default": 0
+    },
+    "enableTitle": {
+      "type": "boolean",
+      "default": true
+    },
+    "title": {
+      "type": "string",
+      "default": "24/7 Support"
+    },
+    "titleTag": {
+      "type": "string",
+      "default": "h4"
+    },
+    "titleColor": {
+      "type": "string",
+      "default": ""
+    },
+    "titleColorType": {
+      "type": "string",
+      "default": "solid"
+    },
+    "titleSize": {
+      "type": "string",
+      "default": ""
+    },
+    "titleWeight": {
+      "type": "string",
+      "default": ""
+    },
+    "titleTransform": {
+      "type": "string",
+      "default": ""
+    },
+    "titleClass": {
+      "type": "string",
+      "default": ""
+    },
+    "enableParagraph": {
+      "type": "boolean",
+      "default": true
+    },
+    "paragraph": {
+      "type": "string",
+      "default": "Nulla vitae elit libero, a pharetra augue. Donec id elit non mi porta gravida at eget. Fusce dapibus tellus."
+    },
+    "paragraphTag": {
+      "type": "string",
+      "default": "p"
+    },
+    "paragraphColor": {
+      "type": "string",
+      "default": ""
+    },
+    "paragraphColorType": {
+      "type": "string",
+      "default": "solid"
+    },
+    "paragraphSize": {
+      "type": "string",
+      "default": ""
+    },
+    "paragraphWeight": {
+      "type": "string",
+      "default": ""
+    },
+    "paragraphTransform": {
+      "type": "string",
+      "default": ""
+    },
+    "paragraphClass": {
+      "type": "string",
+      "default": "mb-3"
+    },
+    "enableButton": {
+      "type": "boolean",
+      "default": true
+    },
+    "buttonText": {
+      "type": "string",
+      "default": "Learn More"
+    },
+    "buttonUrl": {
+      "type": "string",
+      "default": "#"
+    },
+    "buttonColor": {
+      "type": "string",
+      "default": "yellow"
+    },
+    "buttonClass": {
+      "type": "string",
+      "default": "more hover"
+    },
+    "enableCard": {
+      "type": "boolean",
+      "default": false
+    },
+    "enableCardBody": {
+      "type": "boolean",
+      "default": false
+    },
+    "overflowHidden": {
+      "type": "boolean",
+      "default": false
+    },
+    "h100": {
+      "type": "boolean",
+      "default": false
+    },
+    "borderRadius": {
+      "type": "string",
+      "default": ""
+    },
+    "shadow": {
+      "type": "string",
+      "default": ""
+    },
+    "cardBorder": {
+      "type": "string",
+      "default": ""
+    },
+    "borderColor": {
+      "type": "string",
+      "default": ""
+    },
+    "backgroundType": {
+      "type": "string",
+      "default": "none"
+    },
+    "backgroundColor": {
+      "type": "string",
+      "default": ""
+    },
+    "backgroundColorType": {
+      "type": "string",
+      "default": "solid"
+    },
+    "backgroundGradient": {
+      "type": "string",
+      "default": ""
+    },
+    "backgroundImageId": {
+      "type": "number",
+      "default": 0
+    },
+    "backgroundImageUrl": {
+      "type": "string",
+      "default": ""
+    },
+    "backgroundImageSize": {
+      "type": "string",
+      "default": "full"
+    },
+    "backgroundSize": {
+      "type": "string",
+      "default": ""
+    },
+    "backgroundOverlay": {
+      "type": "string",
+      "default": ""
+    },
+    "backgroundPatternUrl": {
+      "type": "string",
+      "default": ""
+    },
+    "spacingType": {
+      "type": "string",
+      "default": "padding"
+    },
+    "spacingXs": {
+      "type": "string",
+      "default": ""
+    },
+    "spacingSm": {
+      "type": "string",
+      "default": ""
+    },
+    "spacingMd": {
+      "type": "string",
+      "default": ""
+    },
+    "spacingLg": {
+      "type": "string",
+      "default": ""
+    },
+    "spacingXl": {
+      "type": "string",
+      "default": ""
+    },
+    "spacingXxl": {
+      "type": "string",
+      "default": ""
+    },
+    "blockClass": {
+      "type": "string",
+      "default": ""
+    },
+    "blockData": {
+      "type": "string",
+      "default": ""
+    },
+    "blockId": {
+      "type": "string",
+      "default": ""
+    },
+    "animationEnabled": {
+      "type": "boolean",
+      "default": false
+    },
+    "animationType": {
+      "type": "string",
+      "default": ""
+    },
+    "animationDuration": {
+      "type": "number",
+      "default": 1000
+    },
+    "animationDelay": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "textdomain": "codeweber-blocks",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

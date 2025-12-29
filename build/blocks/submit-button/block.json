@@ -1,0 +1,57 @@
+{
+  "apiVersion": 2,
+  "name": "codeweber-blocks/submit-button",
+  "version": "0.1.0",
+  "title": "Submit Button",
+  "category": "codeweber-gutenberg-blocks",
+  "icon": "button",
+  "description": "Submit button for forms",
+  "supports": {
+    "html": false,
+    "customClassName": true,
+    "anchor": false,
+    "inserter": true
+  },
+  "attributes": {
+    "buttonText": {
+      "type": "string",
+      "default": "Send Message"
+    },
+    "buttonClass": {
+      "type": "string",
+      "default": "btn btn-primary"
+    },
+    "blockClass": {
+      "type": "string",
+      "default": ""
+    },
+    "blockData": {
+      "type": "string",
+      "default": ""
+    },
+    "blockId": {
+      "type": "string",
+      "default": ""
+    },
+    "buttonPosition": {
+      "type": "string",
+      "default": ""
+    },
+    "buttonAlignItems": {
+      "type": "string",
+      "default": ""
+    },
+    "buttonJustifyContent": {
+      "type": "string",
+      "default": ""
+    },
+    "buttonTextAlign": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "textdomain": "codeweber-blocks",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

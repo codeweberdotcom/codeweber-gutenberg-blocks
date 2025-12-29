@@ -1,0 +1,115 @@
+{
+  "apiVersion": 2,
+  "name": "codeweber-blocks/swiper",
+  "version": "0.1.0",
+  "title": "Swiper",
+  "category": "codeweber-gutenberg-blocks",
+  "icon": "slides",
+  "description": "Swiper slider with unlimited inner blocks. Each inner block becomes a slide.",
+  "keywords": [
+    "swiper",
+    "slider",
+    "carousel",
+    "slides"
+  ],
+  "supports": {
+    "html": false,
+    "customClassName": true,
+    "anchor": true
+  },
+  "attributes": {
+    "swiperMargin": {
+      "type": "string",
+      "default": "30"
+    },
+    "swiperNav": {
+      "type": "boolean",
+      "default": true
+    },
+    "swiperDots": {
+      "type": "boolean",
+      "default": true
+    },
+    "swiperItemsXl": {
+      "type": "string",
+      "default": "3"
+    },
+    "swiperItemsMd": {
+      "type": "string",
+      "default": "2"
+    },
+    "swiperItemsXs": {
+      "type": "string",
+      "default": "1"
+    },
+    "swiperItems": {
+      "type": "string",
+      "default": "3"
+    },
+    "swiperItemsSm": {
+      "type": "string",
+      "default": ""
+    },
+    "swiperItemsLg": {
+      "type": "string",
+      "default": ""
+    },
+    "swiperItemsXxl": {
+      "type": "string",
+      "default": ""
+    },
+    "swiperEffect": {
+      "type": "string",
+      "default": "slide"
+    },
+    "swiperSpeed": {
+      "type": "number",
+      "default": 500
+    },
+    "swiperLoop": {
+      "type": "boolean",
+      "default": false
+    },
+    "swiperAutoplay": {
+      "type": "boolean",
+      "default": false
+    },
+    "swiperAutoplayTime": {
+      "type": "number",
+      "default": 5000
+    },
+    "swiperContainerType": {
+      "type": "string",
+      "default": ""
+    },
+    "swiperNavStyle": {
+      "type": "string",
+      "default": "nav-dark"
+    },
+    "swiperNavPosition": {
+      "type": "string",
+      "default": ""
+    },
+    "swiperDotsStyle": {
+      "type": "string",
+      "default": "dots-over"
+    },
+    "swiperClass": {
+      "type": "string",
+      "default": ""
+    },
+    "swiperId": {
+      "type": "string",
+      "default": ""
+    },
+    "swiperData": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "textdomain": "codeweber-gutenberg-blocks",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}

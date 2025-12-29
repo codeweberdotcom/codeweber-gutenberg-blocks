@@ -1,0 +1,186 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "codeweber-blocks/yandex-map",
+  "version": "1.0.0",
+  "title": "Yandex Map",
+  "category": "codeweber-gutenberg-blocks",
+  "icon": "location",
+  "description": "Display Yandex Maps with offices or custom markers",
+  "keywords": [
+    "map",
+    "yandex",
+    "карта",
+    "офисы",
+    "markers"
+  ],
+  "supports": {
+    "html": false,
+    "customClassName": false
+  },
+  "textdomain": "codeweber-blocks",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./editor.scss",
+  "style": "file:./style.scss",
+  "render": "file:./render.php",
+  "attributes": {
+    "dataSource": {
+      "type": "string",
+      "default": "offices"
+    },
+    "center": {
+      "type": "object",
+      "default": {
+        "lat": 55.76,
+        "lng": 37.64
+      }
+    },
+    "zoom": {
+      "type": "number",
+      "default": 10
+    },
+    "height": {
+      "type": "number",
+      "default": 500
+    },
+    "mapType": {
+      "type": "string",
+      "default": "yandex#map"
+    },
+    "borderRadius": {
+      "type": "number",
+      "default": 8
+    },
+    "enableScrollZoom": {
+      "type": "boolean",
+      "default": true
+    },
+    "enableDrag": {
+      "type": "boolean",
+      "default": true
+    },
+    "enableDblClickZoom": {
+      "type": "boolean",
+      "default": true
+    },
+    "autoFitBounds": {
+      "type": "boolean",
+      "default": true
+    },
+    "searchControl": {
+      "type": "boolean",
+      "default": false
+    },
+    "geolocationControl": {
+      "type": "boolean",
+      "default": false
+    },
+    "routeButton": {
+      "type": "boolean",
+      "default": false
+    },
+    "showSidebar": {
+      "type": "boolean",
+      "default": false
+    },
+    "sidebarPosition": {
+      "type": "string",
+      "default": "left"
+    },
+    "sidebarTitle": {
+      "type": "string",
+      "default": ""
+    },
+    "showFilters": {
+      "type": "boolean",
+      "default": false
+    },
+    "filterByCity": {
+      "type": "boolean",
+      "default": false
+    },
+    "filterByCategory": {
+      "type": "boolean",
+      "default": false
+    },
+    "clusterer": {
+      "type": "boolean",
+      "default": false
+    },
+    "clustererPreset": {
+      "type": "string",
+      "default": "islands#invertedVioletClusterIcons"
+    },
+    "officesQuery": {
+      "type": "object",
+      "default": {
+        "postsPerPage": -1,
+        "orderBy": "title",
+        "order": "asc",
+        "selectedCities": [],
+        "selectedCategories": []
+      }
+    },
+    "customMarkers": {
+      "type": "array",
+      "default": []
+    },
+    "markerType": {
+      "type": "string",
+      "default": "default"
+    },
+    "markerPreset": {
+      "type": "string",
+      "default": "islands#redDotIcon"
+    },
+    "markerColor": {
+      "type": "string",
+      "default": "#FF0000"
+    },
+    "markerAutoOpenBalloon": {
+      "type": "boolean",
+      "default": false
+    },
+    "balloonMaxWidth": {
+      "type": "number",
+      "default": 300
+    },
+    "balloonCloseButton": {
+      "type": "boolean",
+      "default": true
+    },
+    "balloonFields": {
+      "type": "object",
+      "default": {
+        "showCity": true,
+        "showAddress": true,
+        "showPhone": true,
+        "showWorkingHours": true,
+        "showLink": true,
+        "showDescription": false
+      }
+    },
+    "sidebarFields": {
+      "type": "object",
+      "default": {
+        "showCity": true,
+        "showAddress": false,
+        "showPhone": false,
+        "showWorkingHours": true,
+        "showDescription": true
+      }
+    },
+    "blockClass": {
+      "type": "string",
+      "default": ""
+    },
+    "blockId": {
+      "type": "string",
+      "default": ""
+    },
+    "blockData": {
+      "type": "string",
+      "default": ""
+    }
+  }
+}

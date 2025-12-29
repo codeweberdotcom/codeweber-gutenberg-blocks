@@ -1,0 +1,185 @@
+{
+  "apiVersion": 2,
+  "name": "codeweber-blocks/button",
+  "version": "0.1.0",
+  "title": "Button",
+  "category": "codeweber-gutenberg-blocks",
+  "icon": "button",
+  "description": "Block button with settings. Social type renders multiple social links.",
+  "supports": {
+    "html": false,
+    "customClassName": true,
+    "anchor": true
+  },
+  "attributes": {
+    "ButtonContent": {
+      "type": "string",
+      "default": "Large Button"
+    },
+    "ButtonClass": {
+      "type": "string",
+      "default": "btn btn-lg btn-primary"
+    },
+    "ButtonSize": {
+      "type": "string",
+      "default": "btn-sm"
+    },
+    "ButtonColor": {
+      "type": "string",
+      "default": "primary"
+    },
+    "ButtonGradientColor": {
+      "type": "string",
+      "default": "gradient gradient-1"
+    },
+    "ButtonStyle": {
+      "type": "string",
+      "default": "solid"
+    },
+    "ButtonType": {
+      "type": "string",
+      "default": "solid"
+    },
+    "ButtonShape": {
+      "type": "string",
+      "default": "rounded-0"
+    },
+    "ButtonIconPosition": {
+      "type": "string",
+      "default": "left"
+    },
+    "IconClass": {
+      "type": "string",
+      "default": "uil-angle-right"
+    },
+    "SocialIconClass": {
+      "type": "string",
+      "default": "facebook"
+    },
+    "SocialIconStyle": {
+      "type": "string",
+      "default": "style_1"
+    },
+    "LeftIcon": {
+      "type": "string",
+      "default": ""
+    },
+    "RightIcon": {
+      "type": "string",
+      "default": ""
+    },
+    "LinkType": {
+      "type": "string",
+      "default": "external"
+    },
+    "LinkUrl": {
+      "type": "string",
+      "default": "#",
+      "format": "uri"
+    },
+    "PageId": {
+      "type": "string",
+      "default": ""
+    },
+    "PostId": {
+      "type": "string",
+      "default": ""
+    },
+    "PostType": {
+      "type": "string",
+      "default": ""
+    },
+    "CF7ID": {
+      "type": "string",
+      "default": ""
+    },
+    "CodeweberFormID": {
+      "type": "string",
+      "default": ""
+    },
+    "ModalID": {
+      "type": "string",
+      "default": ""
+    },
+    "HtmlID": {
+      "type": "string",
+      "default": ""
+    },
+    "YoutubeLink": {
+      "type": "string",
+      "default": ""
+    },
+    "VimeoID": {
+      "type": "string",
+      "default": ""
+    },
+    "RutubeID": {
+      "type": "string",
+      "default": ""
+    },
+    "VKID": {
+      "type": "string",
+      "default": ""
+    },
+    "DocumentID": {
+      "type": "string",
+      "default": ""
+    },
+    "DocumentAction": {
+      "type": "string",
+      "default": "download"
+    },
+    "Anchor": {
+      "type": "string",
+      "default": ""
+    },
+    "DataValue": {
+      "type": "string",
+      "default": ""
+    },
+    "DataGlightbox": {
+      "type": "string",
+      "default": ""
+    },
+    "DataGlightboxTitle": {
+      "type": "string",
+      "default": ""
+    },
+    "DataGallery": {
+      "type": "string",
+      "default": ""
+    },
+    "DataBsToggle": {
+      "type": "string",
+      "default": ""
+    },
+    "DataBsTarget": {
+      "type": "string",
+      "default": ""
+    },
+    "PhoneType": {
+      "type": "string",
+      "default": "custom"
+    },
+    "PhoneNumber": {
+      "type": "string",
+      "default": ""
+    },
+    "LinkColor": {
+      "type": "string",
+      "default": "more"
+    },
+    "HoverType": {
+      "type": "string",
+      "default": "hover"
+    },
+    "LinkTextColor": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "textdomain": "codeweber-blocks",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

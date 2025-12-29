@@ -1,0 +1,167 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "codeweber-blocks/media",
+  "version": "1.0.0",
+  "title": "Media",
+  "category": "codeweber-gutenberg-blocks",
+  "icon": "format-image",
+  "description": "Display image or video with effects, masks and lightbox",
+  "keywords": [
+    "image",
+    "video",
+    "mask",
+    "lightbox",
+    "hover"
+  ],
+  "textdomain": "codeweber-gutenberg-blocks",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "supports": {
+    "html": false,
+    "customClassName": true
+  },
+  "attributes": {
+    "mediaType": {
+      "type": "string",
+      "default": "image"
+    },
+    "image": {
+      "type": "object",
+      "default": {
+        "id": 0,
+        "url": "",
+        "sizes": {},
+        "alt": "",
+        "title": "",
+        "caption": "",
+        "description": ""
+      }
+    },
+    "imageSize": {
+      "type": "string",
+      "default": "full"
+    },
+    "imageMask": {
+      "type": "string",
+      "default": "none"
+    },
+    "borderRadius": {
+      "type": "string",
+      "default": ""
+    },
+    "videoType": {
+      "type": "string",
+      "default": "html5"
+    },
+    "videoUrl": {
+      "type": "string",
+      "default": ""
+    },
+    "videoVimeoId": {
+      "type": "string",
+      "default": ""
+    },
+    "videoYoutubeId": {
+      "type": "string",
+      "default": ""
+    },
+    "videoVkId": {
+      "type": "string",
+      "default": ""
+    },
+    "videoRutubeId": {
+      "type": "string",
+      "default": ""
+    },
+    "videoEmbed": {
+      "type": "string",
+      "default": ""
+    },
+    "videoPoster": {
+      "type": "object",
+      "default": {
+        "id": 0,
+        "url": "",
+        "alt": ""
+      }
+    },
+    "videoAutoplay": {
+      "type": "boolean",
+      "default": false
+    },
+    "videoLoop": {
+      "type": "boolean",
+      "default": false
+    },
+    "videoMuted": {
+      "type": "boolean",
+      "default": false
+    },
+    "videoControls": {
+      "type": "boolean",
+      "default": true
+    },
+    "showPlayIcon": {
+      "type": "boolean",
+      "default": true
+    },
+    "simpleEffect": {
+      "type": "string",
+      "default": "none"
+    },
+    "effectType": {
+      "type": "string",
+      "default": "none"
+    },
+    "tooltipStyle": {
+      "type": "string",
+      "default": "itooltip"
+    },
+    "overlayStyle": {
+      "type": "string",
+      "default": "overlay-1"
+    },
+    "overlayGradient": {
+      "type": "boolean",
+      "default": false
+    },
+    "overlayColor": {
+      "type": "string",
+      "default": "primary"
+    },
+    "cursorStyle": {
+      "type": "boolean",
+      "default": false
+    },
+    "enableLightbox": {
+      "type": "boolean",
+      "default": false
+    },
+    "lightboxGallery": {
+      "type": "string",
+      "default": "gallery-1"
+    },
+    "videoLightbox": {
+      "type": "boolean",
+      "default": false
+    },
+    "lightboxUniqueId": {
+      "type": "string",
+      "default": ""
+    },
+    "blockClass": {
+      "type": "string",
+      "default": ""
+    },
+    "blockId": {
+      "type": "string",
+      "default": ""
+    },
+    "blockData": {
+      "type": "string",
+      "default": ""
+    }
+  }
+}

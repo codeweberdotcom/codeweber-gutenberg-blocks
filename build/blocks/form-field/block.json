@@ -1,0 +1,176 @@
+{
+  "apiVersion": 2,
+  "name": "codeweber-blocks/form-field",
+  "version": "0.1.0",
+  "title": "Form Field",
+  "category": "codeweber-gutenberg-blocks",
+  "icon": "edit",
+  "description": "Add form field (text, email, textarea, etc.)",
+  "parent": [
+    "codeweber-blocks/form"
+  ],
+  "supports": {
+    "html": false,
+    "customClassName": true,
+    "reusable": false
+  },
+  "attributes": {
+    "fieldType": {
+      "type": "string",
+      "default": "text"
+    },
+    "fieldName": {
+      "type": "string",
+      "default": ""
+    },
+    "fieldLabel": {
+      "type": "string",
+      "default": ""
+    },
+    "placeholder": {
+      "type": "string",
+      "default": ""
+    },
+    "isRequired": {
+      "type": "boolean",
+      "default": false
+    },
+    "maxLength": {
+      "type": "number",
+      "default": 0
+    },
+    "minLength": {
+      "type": "number",
+      "default": 0
+    },
+    "width": {
+      "type": "string",
+      "default": "col-12"
+    },
+    "fieldColumns": {
+      "type": "string",
+      "default": "12"
+    },
+    "fieldColumnsXs": {
+      "type": "string",
+      "default": ""
+    },
+    "fieldColumnsSm": {
+      "type": "string",
+      "default": ""
+    },
+    "fieldColumnsMd": {
+      "type": "string",
+      "default": ""
+    },
+    "fieldColumnsLg": {
+      "type": "string",
+      "default": ""
+    },
+    "fieldColumnsXl": {
+      "type": "string",
+      "default": ""
+    },
+    "fieldColumnsXxl": {
+      "type": "string",
+      "default": ""
+    },
+    "fieldClass": {
+      "type": "string",
+      "default": ""
+    },
+    "blockClass": {
+      "type": "string",
+      "default": ""
+    },
+    "blockData": {
+      "type": "string",
+      "default": ""
+    },
+    "blockId": {
+      "type": "string",
+      "default": ""
+    },
+    "validationType": {
+      "type": "string",
+      "default": "none"
+    },
+    "accept": {
+      "type": "string",
+      "default": ""
+    },
+    "multiple": {
+      "type": "boolean",
+      "default": false
+    },
+    "options": {
+      "type": "array",
+      "default": []
+    },
+    "defaultValue": {
+      "type": "string",
+      "default": ""
+    },
+    "helpText": {
+      "type": "string",
+      "default": ""
+    },
+    "consents": {
+      "type": "array",
+      "default": []
+    },
+    "buttonText": {
+      "type": "string",
+      "default": ""
+    },
+    "buttonClass": {
+      "type": "string",
+      "default": "btn btn-primary"
+    },
+    "enableInlineButton": {
+      "type": "boolean",
+      "default": false
+    },
+    "inlineButtonText": {
+      "type": "string",
+      "default": ""
+    },
+    "inlineButtonClass": {
+      "type": "string",
+      "default": "btn btn-primary"
+    },
+    "showForGuestsOnly": {
+      "type": "boolean",
+      "default": false
+    },
+    "phoneMask": {
+      "type": "string",
+      "default": ""
+    },
+    "phoneMaskCaret": {
+      "type": "string",
+      "default": "_"
+    },
+    "phoneMaskSoftCaret": {
+      "type": "string",
+      "default": "_"
+    },
+    "maxFiles": {
+      "type": "number",
+      "default": 0
+    },
+    "maxFileSize": {
+      "type": "string",
+      "default": "10MB"
+    },
+    "maxTotalFileSize": {
+      "type": "string",
+      "default": "100MB"
+    }
+  },
+  "textdomain": "codeweber-gutenberg-blocks",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}

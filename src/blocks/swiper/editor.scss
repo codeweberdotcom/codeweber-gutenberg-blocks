@@ -1,0 +1,33 @@
+/**
+ * Swiper Block - Editor Styles
+ *
+ * @package CodeWeber Gutenberg Blocks
+ */
+
+.wp-block-codeweber-blocks-swiper {
+	.swiper-wrapper {
+		// Style for editor
+		display: flex;
+	}
+
+	// Ensure swiper-slide wrappers display correctly
+	.swiper-slide {
+		display: flex;
+		flex-direction: column;
+		flex: 0 0 auto;
+		width: 100%;
+		min-width: 300px;
+	}
+
+	// Ensure inner blocks are displayed as slides in editor
+	.block-editor-block-list__layout {
+		display: flex;
+		flex-wrap: nowrap;
+		width: 100%;
+	}
+
+	.block-editor-block-list__block {
+		width: 100%;
+	}
+}
+

@@ -145,6 +145,7 @@ class Plugin {
 		'divider',
 		'yandex-map',
 		'html-blocks',
+		'swiper',
 	];
 	}
 
@@ -355,6 +356,7 @@ class Plugin {
 			'section',
 			'post-grid',
 			'yandex-map',
+			'swiper',
 		];
 
 		foreach ($blocks as $block_name) {

@@ -1,0 +1,15 @@
+/**
+ * Swiper Block - Frontend Styles
+ *
+ * @package CodeWeber Gutenberg Blocks
+ */
+
+.wp-block-codeweber-blocks-swiper {
+	.swiper-slide {
+		// Ensure slides display properly
+		display: flex;
+		flex-direction: column;
+		height: auto;
+	}
+}
+

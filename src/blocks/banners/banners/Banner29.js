@@ -197,3 +197,4 @@ export const Banner29 = ({ attributes, isEditor = false }) => {
 	);
 };
 
+

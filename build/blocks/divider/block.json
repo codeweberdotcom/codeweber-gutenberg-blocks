@@ -3,7 +3,7 @@
   "name": "codeweber-blocks/divider",
   "version": "0.1.0",
   "title": "Divider",
-  "category": "codeweber-gutenberg-blocks",
+  "category": "codeweber-gutenberg-elements",
   "icon": "minus",
   "description": "Add dividers to separate sections. Supports borders, waves, and vertical dividers.",
   "keywords": [

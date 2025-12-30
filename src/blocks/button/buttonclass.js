@@ -15,6 +15,7 @@ export const getClassNames = (attributes) => {
 		LinkColor,
 		HoverType,
 		LinkTextColor,
+		blockClass,
 	} = attributes;
 
 	// Создаем массив классов
@@ -152,6 +153,11 @@ export const getClassNames = (attributes) => {
 		if (LinkTextColor) {
 			classes.push(`text-${LinkTextColor}`);
 		}
+	}
+
+	// Добавляем пользовательский класс
+	if (blockClass) {
+		classes.push(blockClass.trim());
 	}
 
 	// Объединяем массив классов в строку

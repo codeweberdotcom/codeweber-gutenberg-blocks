@@ -810,6 +810,9 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 	};
 
 	const handlePostSelect = async (selectedPostId) => {
+		// #region agent log
+		fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'link_type.js:794',message:'handlePostSelect called',data:{selectedPostId,PostType},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'C'})}).catch(()=>{});
+		// #endregion
 		if (!selectedPostId || !PostType) {
 			return;
 		}
@@ -825,9 +828,32 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 			}
 		);
 		
-		// Если запись найдена и есть link, используем его
+		// Функция для преобразования полного URL в относительный путь
+		const getRelativePath = (fullUrl) => {
+			if (!fullUrl) return '';
+			try {
+				const url = new URL(fullUrl);
+				const baseUrl = wpApiSettings.root.replace('/wp-json/', '');
+				const baseUrlObj = new URL(baseUrl);
+				// Если домены совпадают, возвращаем только путь
+				if (url.origin === baseUrlObj.origin) {
+					return url.pathname + url.search + url.hash;
+				}
+				// Если домены не совпадают, возвращаем полный URL (внешняя ссылка)
+				return fullUrl;
+			} catch (e) {
+				// Если не удалось распарсить как URL, возвращаем как есть
+				return fullUrl;
+			}
+		};
+		
+		// Если запись найдена и есть link, используем его (преобразуем в относительный путь)
 		if (selectedPost && selectedPost.link) {
-			setAttributes({ LinkUrl: selectedPost.link });
+			const relativeUrl = getRelativePath(selectedPost.link);
+			// #region agent log
+			fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'link_type.js:820',message:'Using post link',data:{originalLink:selectedPost.link,relativeUrl},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'C'})}).catch(()=>{});
+			// #endregion
+			setAttributes({ LinkUrl: relativeUrl });
 			return;
 		}
 		
@@ -857,7 +883,11 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 			if (response.ok) {
 				const postData = await response.json();
 				if (postData.link) {
-					setAttributes({ LinkUrl: postData.link });
+					const relativeUrl = getRelativePath(postData.link);
+					// #region agent log
+					fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'link_type.js:848',message:'Using fetched post link',data:{originalLink:postData.link,relativeUrl},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'C'})}).catch(()=>{});
+					// #endregion
+					setAttributes({ LinkUrl: relativeUrl });
 					return;
 				}
 			}
@@ -865,19 +895,22 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 			console.warn('Error fetching post permalink:', error);
 		}
 		
-		// Если ничего не получилось, формируем URL по ID
+		// Если ничего не получилось, формируем относительный URL по ID
 		// Это fallback, который всегда сработает
-		const baseUrl = wpApiSettings.root.replace('/wp-json/', '');
 		let postUrl;
 		
 		if (PostType === 'post') {
-			postUrl = `${baseUrl}?p=${selectedPostId}`;
+			postUrl = `?p=${selectedPostId}`;
 		} else if (PostType === 'page') {
-			postUrl = `${baseUrl}?page_id=${selectedPostId}`;
+			postUrl = `?page_id=${selectedPostId}`;
 		} else {
 			// Для кастомных типов записей
-			postUrl = `${baseUrl}?post_type=${PostType}&p=${selectedPostId}`;
+			postUrl = `?post_type=${PostType}&p=${selectedPostId}`;
 		}
+		
+		// #region agent log
+		fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'link_type.js:866',message:'Using fallback relative URL',data:{postUrl},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'C'})}).catch(()=>{});
+		// #endregion
 		
 		setAttributes({ LinkUrl: postUrl });
 	};

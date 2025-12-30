@@ -3,7 +3,7 @@
 	"name": "codeweber-blocks/card",
 	"version": "0.1.0",
 	"title": "Card",
-	"category": "codeweber-gutenberg-blocks",
+	"category": "codeweber-gutenberg-elements",
 	"icon": "index-card",
 	"description": "Flexible card container with InnerBlocks support and advanced styling options.",
 	"keywords": ["card", "container", "wrapper"],

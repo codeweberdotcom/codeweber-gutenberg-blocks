@@ -3,7 +3,7 @@
 	"name": "codeweber-blocks/tabs",
 	"version": "0.1.0",
 	"title": "Tabs",
-	"category": "codeweber-gutenberg-blocks",
+	"category": "codeweber-gutenberg-elements",
 	"icon": "admin-page",
 	"description": "Bootstrap tabs with multiple items. Supports basic and pills styles with icons.",
 	"keywords": ["tabs", "tab", "navigation", "nav"],

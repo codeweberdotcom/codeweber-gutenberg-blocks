@@ -45,3 +45,4 @@ export const Banner32 = ({ attributes, isEditor = false }) => {
 };
 
 
+

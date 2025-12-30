@@ -3,7 +3,7 @@
     "name": "codeweber-gutenberg-blocks/heading-subtitle",
     "version": "0.1.0",
     "title": "Title",
-    "category": "codeweber-gutenberg-blocks",
+    "category": "codeweber-gutenberg-elements",
     "icon": "heading",
     "description": "Heading and subtitle block with advanced typography controls.",
     "supports": {

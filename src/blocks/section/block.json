@@ -3,7 +3,7 @@
     "name": "codeweber-blocks/section",
     "version": "0.1.0",
     "title": "Section",
-    "category": "codeweber-gutenberg-blocks",
+    "category": "codeweber-gutenberg-elements",
     "icon": "layout",
     "description": "Section block with background options and inner blocks support.",
     "supports": {

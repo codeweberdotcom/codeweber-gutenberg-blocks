@@ -4,7 +4,7 @@
   "name": "codeweber-blocks/image-simple",
   "version": "1.0.0",
   "title": "Image Simple",
-  "category": "codeweber-gutenberg-blocks",
+  "category": "codeweber-gutenberg-elements",
   "icon": "format-gallery",
   "description": "Image block with gallery, carousel and hover effects (tooltip, overlay, cursor)",
   "keywords": ["image", "gallery", "carousel", "hover", "tooltip", "overlay"],

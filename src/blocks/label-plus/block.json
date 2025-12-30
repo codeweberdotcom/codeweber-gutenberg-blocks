@@ -2,7 +2,7 @@
     "apiVersion": 2,
     "name": "codeweber-blocks/label-plus",
     "title": "Label+",
-    "category": "codeweber-gutenberg-blocks",
+    "category": "codeweber-gutenberg-elements",
     "description": "Floating label card with icon, counter and text.",
     "icon": "id-alt",
     "supports": {

@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:       Codeweber Blocks
+ * Plugin Name:       Codeweber Gutenberg Elements
  * Description:       An addon for Codeweber theme.
  * Requires at least: 6.1
  * Requires PHP:      7.4
@@ -78,7 +78,7 @@ add_filter('loco_plugins_data', function($data) {
 	// Регистрируем наш плагин в Loco
 	if (!isset($data[$plugin_file])) {
 		$data[$plugin_file] = [
-			'Name' => 'Codeweber Blocks',
+			'Name' => 'Codeweber Gutenberg Elements',
 			'TextDomain' => 'codeweber-gutenberg-blocks',
 			'DomainPath' => '/languages',
 		];

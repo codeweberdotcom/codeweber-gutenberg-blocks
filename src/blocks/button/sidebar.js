@@ -13,6 +13,7 @@ import {
 	SelectControl,
 } from '@wordpress/components';
 import { IconPicker } from '../../components/icon/IconPicker';
+import { BlockMetaFields } from '../../components/block-meta/BlockMetaFields';
 import apiFetch from '@wordpress/api-fetch';
 
 
@@ -606,6 +607,22 @@ const handleIconChange = (type, value) => {
 					</div>
 				</>
 			)}
+
+			{/* Block Meta Fields */}
+			<BlockMetaFields
+				attributes={attributes}
+				setAttributes={setAttributes}
+				fieldKeys={{
+					classKey: 'blockClass',
+					dataKey: 'blockData',
+					idKey: 'blockId',
+				}}
+				labels={{
+					classLabel: __('Button Class', 'codeweber-gutenberg-blocks'),
+					dataLabel: __('Button Data', 'codeweber-gutenberg-blocks'),
+					idLabel: __('Button ID', 'codeweber-gutenberg-blocks'),
+				}}
+			/>
 		</PanelBody>
 	);
 };

@@ -38,6 +38,9 @@ const ButtonSave = ({ attributes }) => {
 		DataGallery,
 		DataBsToggle,
 		DataBsTarget,
+		blockClass,
+		blockId,
+		blockData,
 	} = attributes;
 
 	// Генерация класса кнопки
@@ -55,10 +58,9 @@ const ButtonSave = ({ attributes }) => {
 	const hasBsToggle = DataBsToggle && DataBsToggle.trim() !== '';
 	const hasBsTarget = DataBsTarget && DataBsTarget.trim() !== '';
 	
-	// Don't add target="_blank" if using GLightbox (video, image, pdf, iframe), Bootstrap modals, or tel/mailto links
-	const isTelLink = LinkUrl && LinkUrl.startsWith('tel:');
-	const isMailtoLink = LinkUrl && LinkUrl.startsWith('mailto:');
-	const shouldNotOpenInNewTab = hasGlightbox || hasBsToggle || isTelLink || isMailtoLink;
+	// Add target="_blank" only for external links, all other types open on the same page
+	const isExternalLink = LinkType === 'external';
+	const shouldOpenInNewTab = isExternalLink && !hasGlightbox && !hasBsToggle;
 	
 	// Check if this is a video link (VK, Rutube, YouTube, Vimeo)
 	const isVideoLink = LinkType === 'vkvideo' || LinkType === 'rutube' || 
@@ -105,12 +107,33 @@ const ButtonSave = ({ attributes }) => {
 		);
 	}
 	
+	// Parse data attributes from blockData
+	const getDataAttributes = () => {
+		const dataAttrs = {};
+		if (blockData) {
+			blockData.split(',').forEach((pair) => {
+				const [key, value] = pair.split('=').map((s) => s.trim());
+				if (key && value) {
+					dataAttrs[`data-${key}`] = value;
+				}
+			});
+		}
+		return dataAttrs;
+	};
+
+	const dataAttributes = getDataAttributes();
+	
+	// Normalize blockId (remove # if present)
+	const normalizeButtonId = (value = '') => value.replace(/^#/, '').trim();
+	const buttonId = normalizeButtonId(blockId) || anchor || undefined;
+
 	// Build link props manually to have full control
 	const linkProps = {
 		href: finalHref, // Use anchor link for videos
 		className: buttonClass,
-		id: anchor || undefined,
+		id: buttonId,
 		'data-value': DataValue || undefined,
+		...dataAttributes,
 	};
 	
 	// Add GLightbox attrs (use finalGlightbox for videos)
@@ -126,12 +149,11 @@ const ButtonSave = ({ attributes }) => {
 		linkProps['data-bs-target'] = target;
 	}
 	
-	// IMPORTANT: Don't add target/rel for GLightbox links to prevent opening in new tab
-	if (!shouldNotOpenInNewTab) {
+	// Add target="_blank" only for external links
+	if (shouldOpenInNewTab) {
 		linkProps.target = '_blank';
-		linkProps.rel = 'noopener';
+		linkProps.rel = 'noopener noreferrer';
 	}
-	// If shouldNotOpenInNewTab is true, we simply don't set target/rel at all
 
 	return (
 		<>
@@ -145,6 +167,7 @@ const ButtonSave = ({ attributes }) => {
 								? `btn btn-circle ${attributes.ButtonSize} btn-${attributes.SocialIconClass}`
 								: ''
 						}
+						id={buttonId}
 						data-value={DataValue || undefined}
 						{...(hasGlightbox && { 'data-glightbox': DataGlightbox })}
 						{...(hasGallery && { 'data-gallery': DataGallery })}
@@ -152,6 +175,7 @@ const ButtonSave = ({ attributes }) => {
 						{...(hasBsTarget && {
 							'data-bs-target': `#${DataBsTarget}`,
 						})}
+						{...dataAttributes}
 					>
 						<i className={`uil uil-${attributes.SocialIconClass}${attributes.SocialIconClass === 'facebook' ? '-f' : ''}`}></i>
 					</a>

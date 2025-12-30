@@ -1,4 +1,4 @@
-# CodeWeber Gutenberg Blocks · Документация
+# CodeWeber Gutenberg Elements · Документация
 
 > **Версия плагина:** 0.1.0
 > **Требования:** WordPress ≥ 6.1, PHP ≥ 7.4, Node.js ≥ 18

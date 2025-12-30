@@ -3,7 +3,7 @@
   "name": "codeweber-blocks/submit-button",
   "version": "0.1.0",
   "title": "Submit Button",
-  "category": "codeweber-gutenberg-blocks",
+  "category": "codeweber-gutenberg-elements",
   "icon": "button",
   "description": "Submit button for forms",
   "supports": {

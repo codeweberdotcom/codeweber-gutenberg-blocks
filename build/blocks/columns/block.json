@@ -3,7 +3,7 @@
   "name": "codeweber-blocks/columns",
   "version": "0.1.0",
   "title": "Columns",
-  "category": "codeweber-gutenberg-blocks",
+  "category": "codeweber-gutenberg-elements",
   "icon": "columns",
   "description": "Custom columns block with layout controls.",
   "supports": {

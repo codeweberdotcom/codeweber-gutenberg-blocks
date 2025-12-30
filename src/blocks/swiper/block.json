@@ -3,7 +3,7 @@
 	"name": "codeweber-blocks/swiper",
 	"version": "0.1.0",
 	"title": "Swiper",
-	"category": "codeweber-gutenberg-blocks",
+	"category": "codeweber-gutenberg-elements",
 	"icon": "slides",
 	"description": "Swiper slider with unlimited inner blocks. Each inner block becomes a slide.",
 	"keywords": ["swiper", "slider", "carousel", "slides"],
@@ -108,4 +108,5 @@
 	"style": "file:./style-index.css",
 	"render": "file:./render.php"
 }
+
 

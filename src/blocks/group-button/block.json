@@ -1,0 +1,95 @@
+{
+	"apiVersion": 2,
+	"name": "codeweber-blocks/group-button",
+	"version": "0.1.0",
+	"title": "Group Button",
+	"category": "codeweber-gutenberg-blocks",
+	"icon": "button",
+	"description": "Button group wrapper with InnerBlocks support. Allows only button blocks inside.",
+	"keywords": ["button", "group", "buttons", "wrapper"],
+	"supports": {
+		"html": false,
+		"customClassName": false,
+		"anchor": true,
+		"innerBlocks": true
+	},
+	"attributes": {
+		"groupAlignItems": {
+			"type": "string",
+			"default": ""
+		},
+		"groupJustifyContent": {
+			"type": "string",
+			"default": ""
+		},
+		"groupTextAlign": {
+			"type": "string",
+			"default": ""
+		},
+		"groupPosition": {
+			"type": "string",
+			"default": ""
+		},
+		"spacingType": {
+			"type": "string",
+			"default": "padding"
+		},
+		"spacingXs": {
+			"type": "string",
+			"default": ""
+		},
+		"spacingSm": {
+			"type": "string",
+			"default": ""
+		},
+		"spacingMd": {
+			"type": "string",
+			"default": ""
+		},
+		"spacingLg": {
+			"type": "string",
+			"default": ""
+		},
+		"spacingXl": {
+			"type": "string",
+			"default": ""
+		},
+		"spacingXxl": {
+			"type": "string",
+			"default": ""
+		},
+		"animationEnabled": {
+			"type": "boolean",
+			"default": false
+		},
+		"animationType": {
+			"type": "string",
+			"default": ""
+		},
+		"animationDuration": {
+			"type": "number",
+			"default": 1000
+		},
+		"animationDelay": {
+			"type": "number",
+			"default": 0
+		},
+		"blockClass": {
+			"type": "string",
+			"default": ""
+		},
+		"blockData": {
+			"type": "string",
+			"default": ""
+		},
+		"blockId": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"textdomain": "codeweber-gutenberg-blocks",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
+}
+

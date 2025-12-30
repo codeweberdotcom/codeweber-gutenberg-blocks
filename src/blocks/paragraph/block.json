@@ -3,7 +3,7 @@
 	"name": "codeweber-blocks/paragraph",
 	"version": "0.1.0",
 	"title": "Paragraph",
-	"category": "codeweber-gutenberg-blocks",
+	"category": "codeweber-gutenberg-elements",
 	"icon": "editor-paragraph",
 	"description": "Paragraph block with advanced typography controls.",
 	"keywords": ["paragraph", "text", "p"],

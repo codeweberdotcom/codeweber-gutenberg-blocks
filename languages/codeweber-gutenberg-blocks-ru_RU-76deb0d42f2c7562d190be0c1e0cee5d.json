@@ -1,0 +1,1364 @@
+{
+  "locale_data": {
+    "codeweber-gutenberg-blocks": {
+      "": {
+        "domain": "codeweber-gutenberg-blocks",
+        "plural-forms": "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10 >= 2 && n%10<=4 &&(n%100<10||n%100 >= 20)? 1 : 2);",
+        "lang": "ru_RU"
+      },
+      "1 column": [
+        "1 колонка"
+      ],
+      "2 columns": [
+        "2 колонки"
+      ],
+      "3 columns": [
+        "3 колонки"
+      ],
+      "4 columns": [
+        "4 колонки"
+      ],
+      "5 columns": [
+        "5 колонок"
+      ],
+      "6 columns": [
+        "6 колонок"
+      ],
+      "A flexible heading and subtitle block with advanced typography controls.": [
+        "Гибкий блок заголовка и подзаголовка с расширенными настройками типографики."
+      ],
+      "Absolute": [
+        "Абсолютный"
+      ],
+      "Accept": [
+        "Принимаемые типы"
+      ],
+      "Active slide will be centered, not at the beginning of the slider.": [
+        "Активный слайд будет отцентрирован, а не в начале слайдера."
+      ],
+      "Add form field (text, email, textarea, etc.)": [
+        "Добавить поле формы (текст, email, текстовая область и т.д.)"
+      ],
+      "Add Images": [
+        "Добавить изображения"
+      ],
+      "Additional CSS classes": [
+        "Дополнительные CSS классы"
+      ],
+      "Additional help text below the field": [
+        "Дополнительный текст подсказки под полем"
+      ],
+      "Additional icon class": [
+        "Дополнительный класс иконки"
+      ],
+      "Additional wrapper classes": [
+        "Доп. классы обёртки"
+      ],
+      "Adds wrapper for positioning or styling": [
+        "Добавляет обёртку для позиционирования или стилизации"
+      ],
+      "Advanced": [
+        "Дополнительно"
+      ],
+      "Align": [
+        "Выравнивание"
+      ],
+      "Align Items": [
+        "Выравнивание элементов"
+      ],
+      "All Sides": [
+        "Все стороны"
+      ],
+      "Angles": [
+        "Углы"
+      ],
+      "Animation": [
+        "Анимация"
+      ],
+      "Animation Type": [
+        "Тип анимации"
+      ],
+      "Appearance": [
+        "Внешний вид"
+      ],
+      "Around": [
+        "Вокруг"
+      ],
+      "Auto": [
+        "Авто"
+      ],
+      "Auto Height": [
+        "Авто высота"
+      ],
+      "Auto Width": [
+        "Авто ширина"
+      ],
+      "Autoplay": [
+        "Автопроигрывание"
+      ],
+      "Autoplay Time (ms)": [
+        "Время автопроигрывания (мс)"
+      ],
+      "Background": [
+        "Фон"
+      ],
+      "Background Color": [
+        "Цвет фона"
+      ],
+      "Background Color Type": [
+        "Тип цвета фона"
+      ],
+      "Background Gradient": [
+        "Градиент фона"
+      ],
+      "Background Image": [
+        "Фоновое изображение"
+      ],
+      "Background Overlay": [
+        "Наложение фона"
+      ],
+      "Background Settings": [
+        "Настройки фона"
+      ],
+      "Background Type": [
+        "Тип фона"
+      ],
+      "Background Video": [
+        "Видео фон"
+      ],
+      "Below": [
+        "Снизу"
+      ],
+      "Between": [
+        "Между"
+      ],
+      "Block Class": [
+        "Класс блока"
+      ],
+      "Block Data": [
+        "Данные блока"
+      ],
+      "Block ID": [
+        "ID блока"
+      ],
+      "Bootstrap classes: btn btn-primary": [
+        "Классы Bootstrap: btn btn-primary"
+      ],
+      "Border Color": [
+        "Цвет границы"
+      ],
+      "Border Radius": [
+        "Радиус границы"
+      ],
+      "Bottom": [
+        "Низ"
+      ],
+      "Bottom Center": [
+        "Снизу по центру"
+      ],
+      "Bottom Left": [
+        "Снизу слева"
+      ],
+      "Bottom Only": [
+        "Только низ"
+      ],
+      "Bottom Right": [
+        "Снизу справа"
+      ],
+      "Bottom Wave Style": [
+        "Стиль нижней волны"
+      ],
+      "Bounce In": [
+        "Подпрыгивание"
+      ],
+      "Bounce In Down": [
+        "Подпрыгивание сверху"
+      ],
+      "Bounce In Left": [
+        "Подпрыгивание слева"
+      ],
+      "Bounce In Right": [
+        "Подпрыгивание справа"
+      ],
+      "Bounce In Up": [
+        "Подпрыгивание снизу"
+      ],
+      "Button Classes": [
+        "Классы кнопки"
+      ],
+      "Button Color": [
+        "Цвет кнопки"
+      ],
+      "Button Settings": [
+        "Настройки кнопки"
+      ],
+      "Button Shape": [
+        "Форма кнопки"
+      ],
+      "Button Size": [
+        "Размер кнопки"
+      ],
+      "Button Style": [
+        "Стиль кнопки"
+      ],
+      "Button Text": [
+        "Текст кнопки"
+      ],
+      "Button Type": [
+        "Тип кнопки"
+      ],
+      "Button URL": [
+        "URL кнопки"
+      ],
+      "Button Variant": [
+        "Вариант кнопки"
+      ],
+      "Cancel": [
+        "Отмена"
+      ],
+      "Captcha Type": [
+        "Тип капчи"
+      ],
+      "Caption": [
+        "Подпись"
+      ],
+      "Caption Background": [
+        "Фон подписи"
+      ],
+      "Caption Font Size": [
+        "Размер шрифта подписи"
+      ],
+      "Caption Padding": [
+        "Отступ подписи"
+      ],
+      "Caption Position": [
+        "Позиция подписи"
+      ],
+      "Card Border Position": [
+        "Позиция границы карточки"
+      ],
+      "Card Class": [
+        "Класс карточки"
+      ],
+      "Card Data": [
+        "Данные карточки"
+      ],
+      "Card ID": [
+        "ID карточки"
+      ],
+      "Center": [
+        "Центр"
+      ],
+      "Centered Slides": [
+        "Центрировать слайды"
+      ],
+      "Change Icon": [
+        "Изменить иконку"
+      ],
+      "Checkbox": [
+        "Чекбокс"
+      ],
+      "Classic grid": [
+        "Classic grid"
+      ],
+      "Closer": [
+        "Ближе"
+      ],
+      "Color": [
+        "Цвет"
+      ],
+      "Color Combination": [
+        "Комбинация цветов"
+      ],
+      "Color Type": [
+        "Тип цвета"
+      ],
+      "Column align": [
+        "Выравнивание колонки"
+      ],
+      "Column Class": [
+        "Класс колонки"
+      ],
+      "Column Data": [
+        "Данные колонки"
+      ],
+      "Column ID": [
+        "ID колонки"
+      ],
+      "Columns (base)": [
+        "Колонки (база)"
+      ],
+      "Columns align": [
+        "Выравнивание колонок"
+      ],
+      "Columns Class": [
+        "Класс колонок"
+      ],
+      "Columns count": [
+        "Количество колонок"
+      ],
+      "Columns Data": [
+        "Данные колонок"
+      ],
+      "Columns grid": [
+        "Columns grid"
+      ],
+      "Columns ID": [
+        "ID колонок"
+      ],
+      "Columns LG (≥992px)": [
+        "Колонки LG (≥992px)"
+      ],
+      "Columns MD (≥768px)": [
+        "Колонки MD (≥768px)"
+      ],
+      "Columns SM (≥576px)": [
+        "Колонки SM (≥576px)"
+      ],
+      "Columns XL (≥1200px)": [
+        "Колонки XL (≥1200px)"
+      ],
+      "Columns XXL (≥1400px)": [
+        "Колонки XXL (≥1400px)"
+      ],
+      "Comma separated pairs: key=value": [
+        "Пары через запятую: ключ=значение"
+      ],
+      "Company": [
+        "Компания"
+      ],
+      "Consents Block": [
+        "Блок согласий"
+      ],
+      "Consents block": [
+        "Блок согласий"
+      ],
+      "Contact Form": [
+        "Контактная форма"
+      ],
+      "Contacts": [
+        "Контакты"
+      ],
+      "Container": [
+        "Контейнер"
+      ],
+      "Container Align": [
+        "Выравнивание контейнера"
+      ],
+      "Container Class": [
+        "Класс контейнера"
+      ],
+      "Container Settings": [
+        "Настройки контейнера"
+      ],
+      "Container Type": [
+        "Тип контейнера"
+      ],
+      "Content": [
+        "Содержимое"
+      ],
+      "Cover": [
+        "Покрытие"
+      ],
+      "Cursor Type": [
+        "Тип курсора"
+      ],
+      "Custom SVG": [
+        "Кастомный SVG"
+      ],
+      "custom-id": [
+        "custom-id"
+      ],
+      "custom-wrapper classes": [
+        "классы custom-wrapper"
+      ],
+      "Dark": [
+        "Тёмный"
+      ],
+      "Date": [
+        "Дата"
+      ],
+      "Default": [
+        "По умолчанию"
+      ],
+      "Default (with border)": [
+        "По умолчанию (с границей)"
+      ],
+      "Default Value": [
+        "Значение по умолчанию"
+      ],
+      "Default: more hover": [
+        "По умолчанию: more hover"
+      ],
+      "Delay (ms)": [
+        "Задержка (мс)"
+      ],
+      "Display Mode": [
+        "Режим отображения"
+      ],
+      "Dividers": [
+        "Разделители"
+      ],
+      "Down": [
+        "Вниз"
+      ],
+      "Down.End": [
+        "Вниз.Конец"
+      ],
+      "Down.Start": [
+        "Вниз.Начало"
+      ],
+      "Duration (ms)": [
+        "Длительность (мс)"
+      ],
+      "Edit Images": [
+        "Редактировать изображения"
+      ],
+      "Effect": [
+        "Эффект"
+      ],
+      "Effect Type": [
+        "Тип эффекта"
+      ],
+      "Effects": [
+        "Эффекты"
+      ],
+      "Email": [
+        "Основное"
+      ],
+      "Email address to receive form submissions": [
+        "Адрес электронной почты для получения отправленных форм"
+      ],
+      "Email Settings": [
+        "Настройки электронной почты"
+      ],
+      "Email Subject": [
+        "Тема письма"
+      ],
+      "Enable Angled Divider": [
+        "Включить угловой разделитель"
+      ],
+      "Enable Animation": [
+        "Включить анимацию"
+      ],
+      "Enable Autoplay": [
+        "Включить автопроигрывание"
+      ],
+      "Enable Bottom Wave": [
+        "Включить нижнюю волну"
+      ],
+      "Enable Button": [
+        "Включить кнопку"
+      ],
+      "Enable Captcha": [
+        "Включить капчу"
+      ],
+      "Enable Card Body": [
+        "Включить тело карточки"
+      ],
+      "Enable Card Wrapper": [
+        "Включить обертку карточки"
+      ],
+      "Enable continuous loop mode. Slides will loop from last to first seamlessly.": [
+        "Включить режим непрерывного зацикливания. Слайды будут переключаться от последнего к первому плавно."
+      ],
+      "Enable Effect Type": [
+        "Включить тип эффекта"
+      ],
+      "Enable Lightbox": [
+        "Включить Lightbox"
+      ],
+      "Enable Paragraph": [
+        "Включить параграф"
+      ],
+      "Enable Rate Limiting": [
+        "Включить ограничение частоты"
+      ],
+      "Enable Subtitle": [
+        "Включить подзаголовок"
+      ],
+      "Enable Title": [
+        "Включить заголовок"
+      ],
+      "Enable Top Wave": [
+        "Включить верхнюю волну"
+      ],
+      "Enable touch/mouse drag to change slides by swiping with finger or mouse.": [
+        "Включить сенсорное/мышиное перетаскивание для смены слайдов свайпом пальца или мыши."
+      ],
+      "End": [
+        "Конец"
+      ],
+      "End (Right) Only": [
+        "Только конец (справа)"
+      ],
+      "Enter paragraph text...": [
+        "Введите текст параграфа..."
+      ],
+      "Enter paragraph...": [
+        "Введите параграф..."
+      ],
+      "Enter search query to display all icons": [
+        "Введите поисковый запрос для отображения всех иконок"
+      ],
+      "Enter subtitle...": [
+        "Введите подзаголовок..."
+      ],
+      "Enter title...": [
+        "Введите заголовок..."
+      ],
+      "Error Message": [
+        "Сообщение об ошибке"
+      ],
+      "Evenly": [
+        "Равномерно"
+      ],
+      "Example: me-4": [
+        "Например: me-4"
+      ],
+      "Example: Option 1|value1": [
+        "Пример: Опция 1|value1"
+      ],
+      "Example: pe-none": [
+        "Например: pe-none"
+      ],
+      "Extra extra large (xxl) ≥1400px": [
+        "Очень очень большой (xxl) ≥1400px"
+      ],
+      "Extra Large": [
+        "Очень большой"
+      ],
+      "Extra large (xl) ≥1200px": [
+        "Очень большой (xl) ≥1200px"
+      ],
+      "Extra small (xs)": [
+        "Очень маленький (xs)"
+      ],
+      "Fade In": [
+        "Появление"
+      ],
+      "Feature 1": [
+        "Тип 1"
+      ],
+      "Feature 2": [
+        "Тип 2"
+      ],
+      "Feature 3": [
+        "Тип 3"
+      ],
+      "Field Label": [
+        "Метка поля"
+      ],
+      "Field Name": [
+        "Имя поля"
+      ],
+      "Field Settings": [
+        "Настройки поля"
+      ],
+      "Field Type": [
+        "Тип поля"
+      ],
+      "Field Width": [
+        "Ширина поля"
+      ],
+      "File": [
+        "Файл"
+      ],
+      "File Settings": [
+        "Настройки файла"
+      ],
+      "File types: .pdf,.doc,.docx or image/*": [
+        "Типы файлов: .pdf,.doc,.docx или image/*"
+      ],
+      "File Upload": [
+        "Загрузка файла"
+      ],
+      "Fixed": [
+        "Фиксированный"
+      ],
+      "Flip In X": [
+        "Переворот по X"
+      ],
+      "Flip In Y": [
+        "Переворот по Y"
+      ],
+      "Font Icons": [
+        "Font иконки"
+      ],
+      "Form Field": [
+        "Поле формы"
+      ],
+      "Form ID": [
+        "ID формы"
+      ],
+      "Form Name": [
+        "Название формы"
+      ],
+      "Form Settings": [
+        "Настройки формы"
+      ],
+      "Forms module is not active.": [
+        "Модуль форм не активен."
+      ],
+      "Full": [
+        "Полный"
+      ],
+      "Full Width (col-12)": [
+        "Полная ширина (col-12)"
+      ],
+      "Fullscreen Slider": [
+        "Полноэкранный слайдер"
+      ],
+      "Gallery Name": [
+        "Имя галереи"
+      ],
+      "Gap": [
+        "Gap"
+      ],
+      "Gap Type": [
+        "Тип промежутка"
+      ],
+      "Gap X (Horizontal)": [
+        "Gap X"
+      ],
+      "Gap Y (Vertical)": [
+        "Gap Y"
+      ],
+      "General": [
+        "Общие"
+      ],
+      "Gradient": [
+        "Градиент"
+      ],
+      "Grid": [
+        "Сетка"
+      ],
+      "Grid Columns": [
+        "Колонки сетки"
+      ],
+      "Grid Gap X": [
+        "Gap сетки X"
+      ],
+      "Grid Gap Y": [
+        "Gap сетки Y"
+      ],
+      "Grid type": [
+        "Тип сетки"
+      ],
+      "H-100": [
+        "H-100"
+      ],
+      "Half Width (col-md-6)": [
+        "Половина ширины (col-md-6)"
+      ],
+      "Help Text": [
+        "Текст подсказки"
+      ],
+      "Hero Slider": [
+        "Hero слайдер"
+      ],
+      "Hidden": [
+        "Скрытое поле"
+      ],
+      "Hidden Field": [
+        "Скрытое поле"
+      ],
+      "Honeypot": [
+        "Honeypot"
+      ],
+      "Horizontal": [
+        "Горизонтальный"
+      ],
+      "Hover Effect": [
+        "Эффект при наведении"
+      ],
+      "Icon Class": [
+        "Класс иконки"
+      ],
+      "Icon Settings": [
+        "Настройки иконки"
+      ],
+      "Icon Type": [
+        "Тип иконки"
+      ],
+      "Image": [
+        "Изображение"
+      ],
+      "Image Size": [
+        "Размер изображения"
+      ],
+      "Images": [
+        "Изображения"
+      ],
+      "Inverse": [
+        "Инверсный"
+      ],
+      "Items Per View": [
+        "Элементов на экране"
+      ],
+      "Justify Content": [
+        "Выравнивание содержимого"
+      ],
+      "key=value": [
+        "ключ=значение"
+      ],
+      "Large": [
+        "Большой"
+      ],
+      "Large (lg) ≥992px": [
+        "Большой (lg) ≥992px"
+      ],
+      "Layout": [
+        "Макет"
+      ],
+      "Lead Style": [
+        "Стиль Lead"
+      ],
+      "Leave empty to auto-generate": [
+        "Оставьте пустым для автоматической генерации"
+      ],
+      "Left": [
+        "Слева"
+      ],
+      "Left Icon": [
+        "Левая иконка"
+      ],
+      "Light": [
+        "Светлый"
+      ],
+      "Lightbox": [
+        "Lightbox"
+      ],
+      "Link Settings": [
+        "Настройки ссылки"
+      ],
+      "Link Text Color": [
+        "Цвет текста ссылки"
+      ],
+      "Link to RestApi data": [
+        "Ссылка на данные RestApi"
+      ],
+      "Link Type": [
+        "Тип ссылки"
+      ],
+      "Link Variant": [
+        "Вариант ссылки"
+      ],
+      "Loop": [
+        "Зацикливание"
+      ],
+      "Margin": [
+        "Внешний отступ"
+      ],
+      "Margin (px)": [
+        "Отступ (px)"
+      ],
+      "Max Length": [
+        "Максимальная длина"
+      ],
+      "Max Submissions": [
+        "Максимум отправок"
+      ],
+      "Medium (md) ≥768px": [
+        "Средний (md) ≥768px"
+      ],
+      "Message": [
+        "Сообщение"
+      ],
+      "Messages": [
+        "Сообщения"
+      ],
+      "Min Height": [
+        "Мин. высота"
+      ],
+      "Min Length": [
+        "Минимальная длина"
+      ],
+      "Move Down": [
+        "Переместить вниз"
+      ],
+      "Move Up": [
+        "Переместить вверх"
+      ],
+      "Multiple Files": [
+        "Несколько файлов"
+      ],
+      "Name": [
+        "Имя"
+      ],
+      "Navigation": [
+        "Навигация"
+      ],
+      "Navigation Arrows": [
+        "Стрелки навигации"
+      ],
+      "Navigation Position": [
+        "Позиция навигации"
+      ],
+      "Navigation Style": [
+        "Стиль навигации"
+      ],
+      "No icons found": [
+        "Иконки не найдены"
+      ],
+      "No Shadow": [
+        "Без тени"
+      ],
+      "None": [
+        "Нет"
+      ],
+      "Number": [
+        "Число"
+      ],
+      "Option": [
+        "Опция"
+      ],
+      "Options (one per line, format: label|value)": [
+        "Опции (по одной на строку, формат: label|value)"
+      ],
+      "Over": [
+        "Поверх"
+      ],
+      "Overflow Hidden": [
+        "Скрыть переполнение"
+      ],
+      "Overlay": [
+        "Наложение"
+      ],
+      "Overlay Color (Primary)": [
+        "Цвет наложения (Основной)"
+      ],
+      "Overlay Gradient": [
+        "Градиент наложения"
+      ],
+      "Overlay Type": [
+        "Тип наложения"
+      ],
+      "Padding": [
+        "Внутренний отступ"
+      ],
+      "Pagination Dots": [
+        "Точки пагинации"
+      ],
+      "Pagination Style": [
+        "Стиль пагинации"
+      ],
+      "Pale": [
+        "Бледный"
+      ],
+      "Paragraph Color": [
+        "Цвет параграфа"
+      ],
+      "Paragraph Color Type": [
+        "Тип цвета параграфа"
+      ],
+      "Paragraph CSS Class": [
+        "CSS класс параграфа"
+      ],
+      "Paragraph Data": [
+        "Данные параграфа"
+      ],
+      "Paragraph Data Attributes": [
+        "Data атрибуты параграфа"
+      ],
+      "Paragraph ID": [
+        "ID параграфа"
+      ],
+      "Paragraph Size": [
+        "Размер параграфа"
+      ],
+      "Paragraph Tag": [
+        "Тег параграфа"
+      ],
+      "Paragraph Text": [
+        "Текст параграфа"
+      ],
+      "Paragraph Transform": [
+        "Трансформация параграфа"
+      ],
+      "Paragraph Weight": [
+        "Вес параграфа"
+      ],
+      "Pattern": [
+        "Паттерн"
+      ],
+      "Pattern Image": [
+        "Изображение паттерна"
+      ],
+      "Pattern Size": [
+        "Размер паттерна"
+      ],
+      "Phone": [
+        "Телефон"
+      ],
+      "Phone Type": [
+        "Тип телефона"
+      ],
+      "Phones": [
+        "Телефоны"
+      ],
+      "Placeholder": [
+        "Заполнитель"
+      ],
+      "Position": [
+        "Позиция"
+      ],
+      "Position Relative": [
+        "Относительная позиция"
+      ],
+      "Preview classes:": [
+        "Предпросмотр классов:"
+      ],
+      "Primary": [
+        "Основной"
+      ],
+      "Quarter Width (col-md-3)": [
+        "Четверть ширины (col-md-3)"
+      ],
+      "Radio": [
+        "Радиокнопка"
+      ],
+      "Recipient Email": [
+        "Email получателя"
+      ],
+      "Regular": [
+        "Обычный"
+      ],
+      "Relative": [
+        "Относительный"
+      ],
+      "Remove": [
+        "Удалить"
+      ],
+      "Remove Icon": [
+        "Удалить иконку"
+      ],
+      "Remove Video": [
+        "Удалить видео"
+      ],
+      "Required Field": [
+        "Обязательное поле"
+      ],
+      "Responsive": [
+        "Адаптивность"
+      ],
+      "Reverse Direction": [
+        "Обратное направление"
+      ],
+      "Right Icon": [
+        "Правая иконка"
+      ],
+      "Rotate In": [
+        "Вращение"
+      ],
+      "Rounded (0.4rem)": [
+        "Rounded (0.4rem)"
+      ],
+      "Rounded-0 (0)": [
+        "Rounded-0 (0)"
+      ],
+      "Rounded-1 (0.2rem)": [
+        "Rounded-1 (0.2rem)"
+      ],
+      "Rounded-2 (0.25rem)": [
+        "Rounded-2 (0.25rem)"
+      ],
+      "Rounded-3 (0.5rem)": [
+        "Rounded-3 (0.5rem)"
+      ],
+      "Rounded-4 (1rem)": [
+        "Rounded-4 (1rem)"
+      ],
+      "Rounded-5 (1.5rem)": [
+        "Rounded-5 (1.5rem)"
+      ],
+      "Rounded-circle (50%)": [
+        "Rounded-circle (50%)"
+      ],
+      "Rounded-pill (50rem)": [
+        "Rounded-pill (50rem)"
+      ],
+      "Rounded-xl (0.8rem - Theme)": [
+        "Rounded-xl (0.8rem - Тема)"
+      ],
+      "Save Changes": [
+        "Сохранить изменения"
+      ],
+      "Scroll in editor to preview animation": [
+        "Прокрутите в редакторе для предпросмотра анимации"
+      ],
+      "Search icon...": [
+        "Поиск иконки..."
+      ],
+      "Section Frame": [
+        "Рамка секции"
+      ],
+      "Section Settings": [
+        "Настройки секции"
+      ],
+      "Security": [
+        "Безопасность"
+      ],
+      "Select": [
+        "Выбрать"
+      ],
+      "Select combination": [
+        "Выберите комбинацию"
+      ],
+      "Select Icon": [
+        "Выбрать иконку"
+      ],
+      "Select icon in settings": [
+        "Выберите иконку в настройках"
+      ],
+      "Select Image": [
+        "Выбрать изображение"
+      ],
+      "Select Modal": [
+        "Выбрать модальное окно"
+      ],
+      "Select option...": [
+        "Выберите опцию..."
+      ],
+      "Select Pattern": [
+        "Выбрать паттерн"
+      ],
+      "Select Video": [
+        "Выбрать видео"
+      ],
+      "Selected Icon": [
+        "Выбранная иконка"
+      ],
+      "Selected Images:": [
+        "Выбранные изображения:"
+      ],
+      "Sender Email": [
+        "Email отправителя"
+      ],
+      "Sender Name": [
+        "Имя отправителя"
+      ],
+      "Settings": [
+        "Настройки"
+      ],
+      "Shadow": [
+        "Тень"
+      ],
+      "Show pagination bullets/dots indicator at the bottom of the slider.": [
+        "Показывать индикатор точек/буллетов внизу слайдера."
+      ],
+      "Show previous/next navigation arrows to manually change slides.": [
+        "Показывать стрелки предыдущий/следующий для ручного переключения слайдов."
+      ],
+      "Single": [
+        "Одиночный"
+      ],
+      "Size": [
+        "Размер"
+      ],
+      "Slide In Down": [
+        "Въезд сверху"
+      ],
+      "Slide In Left": [
+        "Въезд слева"
+      ],
+      "Slide In Right": [
+        "Въезд справа"
+      ],
+      "Slide In Up": [
+        "Въезд снизу"
+      ],
+      "Small": [
+        "Маленький"
+      ],
+      "Small (sm) ≥576px": [
+        "Маленький (sm) ≥576px"
+      ],
+      "Social Icon Class": [
+        "Класс соц. иконки"
+      ],
+      "Soft": [
+        "Мягкий"
+      ],
+      "Solid": [
+        "Сплошной"
+      ],
+      "Spacing": [
+        "Отступы"
+      ],
+      "Spacing & Behavior": [
+        "Отступы и поведение"
+      ],
+      "Spacing Type": [
+        "Тип отступа"
+      ],
+      "Special slider types for hero sections or fullscreen layouts": [
+        "Специальные типы слайдеров для hero-секций или полноэкранных макетов"
+      ],
+      "Speed (ms)": [
+        "Скорость (мс)"
+      ],
+      "Start": [
+        "Начало"
+      ],
+      "Start (Left) Only": [
+        "Только начало (слева)"
+      ],
+      "Static": [
+        "Статичный"
+      ],
+      "Stretch": [
+        "Растянуть"
+      ],
+      "Subtitle": [
+        "Подзаголовок"
+      ],
+      "Subtitle Class": [
+        "Класс подзаголовка"
+      ],
+      "Subtitle Color": [
+        "Цвет подзаголовка"
+      ],
+      "Subtitle Color Type": [
+        "Тип цвета подзаголовка"
+      ],
+      "Subtitle CSS Class": [
+        "CSS класс подзаголовка"
+      ],
+      "Subtitle Data Attributes": [
+        "Data атрибуты подзаголовка"
+      ],
+      "Subtitle First": [
+        "Подзаголовок первым"
+      ],
+      "Subtitle ID": [
+        "ID подзаголовка"
+      ],
+      "Subtitle Line": [
+        "Линия подзаголовка"
+      ],
+      "Subtitle Size": [
+        "Размер подзаголовка"
+      ],
+      "Subtitle Tag": [
+        "Тег подзаголовка"
+      ],
+      "Subtitle Text": [
+        "Текст подзаголовка"
+      ],
+      "Subtitle Transform": [
+        "Трансформация подзаголовка"
+      ],
+      "Subtitle Weight": [
+        "Вес подзаголовка"
+      ],
+      "Success Message": [
+        "Сообщение об успехе"
+      ],
+      "SVG Lineal": [
+        "SVG Lineal"
+      ],
+      "SVG Solid": [
+        "SVG Solid"
+      ],
+      "SVG Style": [
+        "Стиль SVG"
+      ],
+      "Tag": [
+        "Тег"
+      ],
+      "Tel": [
+        "Телефон"
+      ],
+      "Text Align": [
+        "Выравнивание текста"
+      ],
+      "Text Color": [
+        "Цвет текста"
+      ],
+      "Textarea": [
+        "Текстовая область"
+      ],
+      "Third Width (col-md-4)": [
+        "Треть ширины (col-md-4)"
+      ],
+      "This field outputs consents configured below the form.": [
+        "Это поле выводит согласия, настроенные под формой."
+      ],
+      "Time": [
+        "Время"
+      ],
+      "Time Period (seconds)": [
+        "Временной период (секунды)"
+      ],
+      "Title": [
+        "Заголовок"
+      ],
+      "Title Align": [
+        "Выравнивание заголовка"
+      ],
+      "Title Block": [
+        "Блок заголовка"
+      ],
+      "Title Class": [
+        "Класс заголовка"
+      ],
+      "Title Color": [
+        "Цвет заголовка"
+      ],
+      "Title Color Type": [
+        "Тип цвета заголовка"
+      ],
+      "Title CSS Class": [
+        "CSS класс заголовка"
+      ],
+      "Title Data Attributes": [
+        "Data атрибуты заголовка"
+      ],
+      "Title ID": [
+        "ID заголовка"
+      ],
+      "Title Size": [
+        "Размер заголовка"
+      ],
+      "Title Tag": [
+        "Тег заголовка"
+      ],
+      "Title Text": [
+        "Текст заголовка"
+      ],
+      "Title Transform": [
+        "Трансформация заголовка"
+      ],
+      "Title Weight": [
+        "Вес заголовка"
+      ],
+      "Tooltip": [
+        "Подсказка"
+      ],
+      "Tooltip Type": [
+        "Тип подсказки"
+      ],
+      "Top": [
+        "Верх"
+      ],
+      "Top Center": [
+        "Сверху по центру"
+      ],
+      "Top Left": [
+        "Сверху слева"
+      ],
+      "Top Only": [
+        "Только верх"
+      ],
+      "Top Right": [
+        "Сверху справа"
+      ],
+      "Top Wave Style": [
+        "Стиль верхней волны"
+      ],
+      "Touch Drag": [
+        "Сенсорное перетаскивание"
+      ],
+      "Transform": [
+        "Трансформация"
+      ],
+      "Transition": [
+        "Переход"
+      ],
+      "Type link": [
+        "Тип ссылки"
+      ],
+      "Typography": [
+        "Типографика"
+      ],
+      "Unique field identifier (e.g., name, email)": [
+        "Уникальный идентификатор поля (например, name, email)"
+      ],
+      "Untitled": [
+        "Без названия"
+      ],
+      "Up.End": [
+        "Вверх.Конец"
+      ],
+      "Up.Start": [
+        "Вверх.Начало"
+      ],
+      "Update on Resize": [
+        "Обновлять при изменении размера"
+      ],
+      "Upload SVG": [
+        "Загрузить SVG"
+      ],
+      "Upper": [
+        "Верхний"
+      ],
+      "URL": [
+        "URL"
+      ],
+      "Use primary color for overlay": [
+        "Использовать основной цвет для наложения"
+      ],
+      "Validation": [
+        "Валидация"
+      ],
+      "Validation Type": [
+        "Тип валидации"
+      ],
+      "Vertical": [
+        "Вертикальный"
+      ],
+      "Video": [
+        "Видео"
+      ],
+      "Video loaded": [
+        "Видео загружено"
+      ],
+      "Watch Overflow": [
+        "Отслеживать переполнение"
+      ],
+      "Wave 1": [
+        "Волна 1"
+      ],
+      "Wave 2": [
+        "Волна 2"
+      ],
+      "Wave 3": [
+        "Волна 3"
+      ],
+      "Wave 4": [
+        "Волна 4"
+      ],
+      "Wave 5": [
+        "Волна 5"
+      ],
+      "Waves": [
+        "Волны"
+      ],
+      "Weight": [
+        "Вес"
+      ],
+      "When enabled, Swiper will be disabled and hide navigation buttons when there are not enough slides.": [
+        "При включении Swiper будет отключен и скроет кнопки навигации, когда недостаточно слайдов."
+      ],
+      "White": [
+        "Белый"
+      ],
+      "Wrap in div.icon": [
+        "Обернуть в div.icon"
+      ],
+      "Wrapper": [
+        "Обёртка"
+      ],
+      "Wrapper Style": [
+        "Стиль обёртки"
+      ],
+      "Zoom In": [
+        "Приближение"
+      ],
+      "Zoom Out": [
+        "Отдаление"
+      ]
+    }
+  }
+}

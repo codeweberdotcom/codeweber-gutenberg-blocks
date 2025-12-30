@@ -3,7 +3,7 @@
 	"name": "codeweber-blocks/avatar",
 	"version": "0.1.0",
 	"title": "Avatar",
-	"category": "codeweber-gutenberg-blocks",
+	"category": "codeweber-gutenberg-elements",
 	"icon": "admin-users",
 	"description": "Avatar block with letters or image. Supports different sizes and color styles.",
 	"keywords": ["avatar", "profile", "image", "letters"],

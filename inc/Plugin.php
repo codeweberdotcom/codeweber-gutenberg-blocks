@@ -149,6 +149,7 @@ class Plugin {
 		'yandex-map',
 		'html-blocks',
 		'swiper',
+		'group-button',
 	];
 	}
 
@@ -360,6 +361,7 @@ class Plugin {
 			'post-grid',
 			'yandex-map',
 			'swiper',
+			'group-button',
 		];
 
 		foreach ($blocks as $block_name) {
@@ -386,6 +388,10 @@ class Plugin {
 			[
 				'slug'  => 'codeweber-gutenberg-blocks',
 				'title' => __('Codeweber Gutenberg Blocks', Plugin::L10N),
+			],
+			[
+				'slug'  => 'codeweber-gutenberg-elements',
+				'title' => __('Codeweber Gutenberg Elements', Plugin::L10N),
 			],
 			...$categories,
 		];

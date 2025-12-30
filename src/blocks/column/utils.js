@@ -47,7 +47,9 @@ export const getColumnBackgroundClasses = (attrs = {}) => {
 			if (backgroundSize) {
 				classes.push(backgroundSize);
 			}
-			classes.push(backgroundOverlay || 'bg-overlay');
+			if (backgroundOverlay) {
+				classes.push(backgroundOverlay.trim());
+			}
 			break;
 		case 'pattern':
 			classes.push('pattern-wrapper', 'bg-image', 'text-white');
@@ -107,11 +109,19 @@ export const getColumnClassNames = (attrs = {}, mode = 'save') => {
 	classes.push(...getColumnBackgroundClasses(attrs));
 	classes.push(...getAdaptiveClasses(attrs));
 	classes.push(...getSpacingClasses(attrs));
+	
+	// Определяем, нужен ли flex контейнер
+	const needsFlex = columnAlignItems || columnJustifyContent;
+	
+	if (needsFlex) {
+		classes.push('d-flex', 'flex-column');
+	}
+	
 	if (columnAlignItems) {
 		classes.push(columnAlignItems.trim());
 	}
 	if (columnJustifyContent) {
-		classes.push('d-flex', columnJustifyContent.trim());
+		classes.push(columnJustifyContent.trim());
 	}
 	if (columnTextAlign) {
 		classes.push(columnTextAlign.trim());

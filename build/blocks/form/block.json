@@ -3,7 +3,7 @@
   "name": "codeweber-blocks/form",
   "version": "0.1.0",
   "title": "Форма",
-  "category": "codeweber-gutenberg-blocks",
+  "category": "codeweber-gutenberg-elements",
   "icon": "feedback",
   "description": "Создавайте контактные формы с разными типами полей",
   "supports": {

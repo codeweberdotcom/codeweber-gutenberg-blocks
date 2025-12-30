@@ -4,7 +4,7 @@
 	"name": "codeweber-blocks/media",
 	"version": "1.0.0",
 	"title": "Media",
-	"category": "codeweber-gutenberg-blocks",
+	"category": "codeweber-gutenberg-elements",
 	"icon": "format-image",
 	"description": "Display image or video with effects, masks and lightbox",
 	"keywords": ["image", "video", "mask", "lightbox", "hover"],

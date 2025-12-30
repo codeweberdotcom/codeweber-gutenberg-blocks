@@ -3,7 +3,7 @@
 	"name": "codeweber-blocks/accordion",
 	"version": "0.1.0",
 	"title": "Accordion",
-	"category": "codeweber-gutenberg-blocks",
+	"category": "codeweber-gutenberg-elements",
 	"icon": "editor-ul",
 	"description": "Bootstrap accordion with multiple items. Supports simple, background, and icon styles.",
 	"keywords": ["accordion", "collapse", "faq", "tabs"],

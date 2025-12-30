@@ -4,7 +4,7 @@
   "name": "codeweber-blocks/post-grid",
   "version": "1.0.0",
   "title": "Post Grid",
-  "category": "codeweber-gutenberg-blocks",
+  "category": "codeweber-gutenberg-elements",
   "icon": "grid-view",
   "description": "Display posts in a grid layout with images from posts",
   "keywords": [

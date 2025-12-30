@@ -23,6 +23,7 @@ const loadBlocks = async () => {
         import('./blocks/banners/index'),
         import('./blocks/yandex-map/index'),
         import('./blocks/swiper/index'),
+        import('./blocks/group-button/index'),
     ];
 
     await Promise.all(blocks);

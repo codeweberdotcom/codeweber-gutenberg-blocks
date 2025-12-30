@@ -3,7 +3,7 @@
     "name": "codeweber-blocks/form-field",
     "version": "0.1.0",
     "title": "Form Field",
-    "category": "codeweber-gutenberg-blocks",
+    "category": "codeweber-gutenberg-elements",
     "icon": "edit",
     "description": "Add form field (text, email, textarea, etc.)",
     "parent": ["codeweber-blocks/form"],

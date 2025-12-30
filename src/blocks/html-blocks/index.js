@@ -5,6 +5,7 @@
  */
 
 import { registerBlockType } from '@wordpress/blocks';
+import { code } from '@wordpress/icons';
 import './editor.scss';
 import './style.scss';
 
@@ -14,7 +15,9 @@ import metadata from './block.json';
 /**
  * Register: Html Blocks Block
  */
-registerBlockType(metadata, {
+registerBlockType(metadata.name, {
+	...metadata,
+	icon: code,
 	edit: Edit,
 	save: () => null, // Используем render.php для рендеринга
 });

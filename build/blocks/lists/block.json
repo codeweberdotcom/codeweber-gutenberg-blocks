@@ -3,7 +3,7 @@
   "name": "codeweber-blocks/lists",
   "version": "0.1.0",
   "title": "Lists",
-  "category": "codeweber-gutenberg-blocks",
+  "category": "codeweber-gutenberg-elements",
   "icon": "editor-ul",
   "description": "Custom lists with icons and colors. Supports Custom and Post modes.",
   "keywords": [

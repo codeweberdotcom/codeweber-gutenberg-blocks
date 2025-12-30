@@ -3,7 +3,7 @@
 	"name": "codeweber-blocks/feature",
 	"version": "0.1.0",
 	"title": "Feature",
-	"category": "codeweber-gutenberg-blocks",
+	"category": "codeweber-gutenberg-elements",
 	"icon": "star-filled",
 	"description": "Feature block with Icon, Title, Paragraph, and Button. Supports three layout variants.",
 	"keywords": ["feature", "icon", "title", "button", "card"],

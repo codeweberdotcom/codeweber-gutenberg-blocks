@@ -38,6 +38,8 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 		DataBsToggle,
 		DataBsTarget,
 		DataGlightboxTitle,
+		ArchiveId,
+		ArchiveType,
 	} = attributes;
 
 	// Состояния для хранения списка постов, страниц, модальных окон, HTML и форм CF7 и телефонов
@@ -55,6 +57,8 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 	const [postTypes, setPostTypes] = useState([]);
 	const [isLoadingPostTypes, setIsLoadingPostTypes] = useState(false);
 	const [isLoadingPosts, setIsLoadingPosts] = useState(false);
+	const [archives, setArchives] = useState([]);
+	const [isLoadingArchives, setIsLoadingArchives] = useState(false);
 
 	// Устанавливаем начальное состояние загрузки для телефонов
 	useEffect(() => {
@@ -172,6 +176,83 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 			setPostTypes([]);
 		} finally {
 			setIsLoadingPostTypes(false);
+		}
+	};
+
+	// Функция для загрузки архивов (типы записей и таксономии)
+	const fetchArchives = async () => {
+		setIsLoadingArchives(true);
+		try {
+			const archiveOptions = [];
+			
+			// Получаем типы записей с архивами
+			const types = await apiFetch({ path: '/wp/v2/types' });
+			Object.keys(types).forEach((key) => {
+				const type = types[key];
+				// Проверяем, есть ли архив у типа записи
+				if (type.has_archive && type.has_archive !== false) {
+					// Формируем URL архива
+					const archiveSlug = typeof type.has_archive === 'string' ? type.has_archive : key;
+					archiveOptions.push({
+						label: `${type.name} ${__('Archive', 'codeweber-gutenberg-blocks')}`,
+						value: `post_type_${key}`,
+						type: 'post_type',
+						slug: archiveSlug,
+						postType: key,
+					});
+				}
+			});
+			
+			// Получаем таксономии и их термины
+			const taxonomies = await apiFetch({ path: '/wp/v2/taxonomies' });
+			const taxonomyPromises = [];
+			
+			Object.keys(taxonomies).forEach((taxonomyKey) => {
+				const taxonomy = taxonomies[taxonomyKey];
+				// Пропускаем скрытые таксономии
+				if (!taxonomy.show_ui) {
+					return;
+				}
+				
+				// Получаем термины для таксономии
+				const taxonomyPromise = apiFetch({ 
+					path: `/wp/v2/${taxonomy.rest_base || taxonomyKey}?per_page=100&_fields=id,name,slug` 
+				})
+					.then((terms) => {
+						if (Array.isArray(terms)) {
+							return terms.map((term) => ({
+								label: `${term.name} (${taxonomy.name})`,
+								value: `taxonomy_${taxonomyKey}_${term.id}`,
+								type: 'taxonomy',
+								taxonomy: taxonomyKey,
+								termId: term.id,
+								termSlug: term.slug,
+							}));
+						}
+						return [];
+					})
+					.catch((error) => {
+						console.warn(`Error fetching terms for taxonomy ${taxonomyKey}:`, error);
+						return [];
+					});
+				
+				taxonomyPromises.push(taxonomyPromise);
+			});
+			
+			// Ждем завершения всех запросов таксономий
+			const taxonomyResults = await Promise.all(taxonomyPromises);
+			taxonomyResults.forEach((terms) => {
+				if (Array.isArray(terms)) {
+					archiveOptions.push(...terms);
+				}
+			});
+			
+			setArchives(archiveOptions);
+		} catch (error) {
+			console.error('Error fetching archives:', error);
+			setArchives([]);
+		} finally {
+			setIsLoadingArchives(false);
 		}
 	};
 
@@ -346,6 +427,10 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 			}
 		} else if (LinkType === 'document') {
 			fetchDocumentPosts();
+		} else if (LinkType === 'archive') {
+			if (archives.length === 0) {
+				fetchArchives();
+			}
 		}
 
 
@@ -663,6 +748,29 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 				DataBsToggle: '',
 				DataBsTarget: '',
 			});
+		} else if (newLinkType === 'archive') {
+			setAttributes({
+				LinkUrl: '',
+				PostId: '',
+				PageId: '',
+				CF7ID: '',
+				CodeweberFormID: '',
+				ModalID: '',
+				HtmlID: '',
+				PhoneType: '',
+				DataValue: '',
+				YoutubeID: '',
+				VimeoID: '',
+				RutubeID: '',
+				VKID: '',
+				DocumentID: '',
+				ArchiveId: '',
+				ArchiveType: '',
+				DataGlightbox: '',
+				DataGallery: '',
+				DataBsToggle: '',
+				DataBsTarget: '',
+			});
 		}
 	};
 
@@ -674,13 +782,23 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 	};
 
 	const handleLinkUrlChange = (newLinkUrl) => {
-		if (PhoneType === 'custom') {
+		// #region agent log
+		fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'link_type.js:676',message:'handleLinkUrlChange called',data:{LinkType,PhoneType,newLinkUrl},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'A'})}).catch(()=>{});
+		// #endregion
+		// Проверяем тип ссылки - добавляем "tel:" только для телефонных ссылок
+		if (LinkType === 'phone' && PhoneType === 'custom') {
 			// Проверяем и добавляем "tel:" только если его еще нет
 			const formattedLinkUrl = newLinkUrl.startsWith('tel:')
 				? newLinkUrl
 				: `tel:${newLinkUrl}`;
+			// #region agent log
+			fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'link_type.js:682',message:'Adding tel: prefix',data:{formattedLinkUrl},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'A'})}).catch(()=>{});
+			// #endregion
 			setAttributes({ LinkUrl: formattedLinkUrl });
 		} else {
+			// #region agent log
+			fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'link_type.js:686',message:'Setting LinkUrl without tel: prefix',data:{newLinkUrl},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'A'})}).catch(()=>{});
+			// #endregion
 			setAttributes({ LinkUrl: newLinkUrl });
 		}
 	};
@@ -899,6 +1017,71 @@ const handleDocumentActionChange = (newAction) => {
 	}
 };
 
+const handleArchiveSelect = async (selectedArchiveValue) => {
+	// #region agent log
+	fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'link_type.js:1020',message:'handleArchiveSelect called',data:{selectedArchiveValue},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'B'})}).catch(()=>{});
+	// #endregion
+	if (!selectedArchiveValue) {
+		return;
+	}
+	
+	// Находим выбранный архив
+	const selectedArchive = archives.find(arch => arch.value === selectedArchiveValue);
+	// #region agent log
+	fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'link_type.js:1027',message:'Selected archive found',data:{selectedArchive},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'B'})}).catch(()=>{});
+	// #endregion
+	if (!selectedArchive) {
+		return;
+	}
+	
+	setAttributes({ 
+		ArchiveId: selectedArchiveValue,
+		ArchiveType: selectedArchive.type,
+	});
+	
+	// Получаем правильный URL архива через REST API
+	try {
+		let apiPath = '';
+		if (selectedArchive.type === 'post_type') {
+			apiPath = `/codeweber-gutenberg-blocks/v1/archive-url?type=post_type&post_type=${selectedArchive.postType}`;
+		} else if (selectedArchive.type === 'taxonomy') {
+			apiPath = `/codeweber-gutenberg-blocks/v1/archive-url?type=taxonomy&taxonomy=${selectedArchive.taxonomy}&term_id=${selectedArchive.termId}`;
+		}
+		
+		// #region agent log
+		fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'link_type.js:1042',message:'Fetching archive URL from API',data:{apiPath},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'B'})}).catch(()=>{});
+		// #endregion
+		
+		const response = await apiFetch({ path: apiPath });
+		// #region agent log
+		fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'link_type.js:1045',message:'Archive URL received',data:{response},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'B'})}).catch(()=>{});
+		// #endregion
+		
+		if (response && response.url) {
+			setAttributes({ LinkUrl: response.url });
+		} else {
+			console.error('Invalid archive URL response:', response);
+		}
+	} catch (error) {
+		console.error('Error fetching archive URL:', error);
+		// Fallback: формируем URL вручную
+		const baseUrl = wpApiSettings.root.replace('/wp-json/', '');
+		let archiveUrl = '';
+		
+		if (selectedArchive.type === 'post_type') {
+			archiveUrl = `${baseUrl}${selectedArchive.slug}/`;
+		} else if (selectedArchive.type === 'taxonomy') {
+			archiveUrl = `${baseUrl}${selectedArchive.taxonomy}/${selectedArchive.termSlug}/`;
+		}
+		
+		// #region agent log
+		fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'link_type.js:1062',message:'Using fallback URL',data:{archiveUrl,error:error.message},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'B'})}).catch(()=>{});
+		// #endregion
+		
+		setAttributes({ LinkUrl: archiveUrl });
+	}
+};
+
 	const handleYoutubeIDChange = (newYoutubeID) => {
 		setAttributes({
 			YoutubeID: newYoutubeID,
@@ -1001,6 +1184,7 @@ const handleHtml5VideoChange = (newUrl) => {
 				options={[
 					{ label: __('External', 'codeweber-gutenberg-blocks'), value: 'external' },
 					{ label: __('Post', 'codeweber-gutenberg-blocks'), value: 'post' },
+					{ label: __('Archive', 'codeweber-gutenberg-blocks'), value: 'archive' },
 					{ label: __('CF7', 'codeweber-gutenberg-blocks'), value: 'cf7' },
 					{ label: __('Формы', 'codeweber-gutenberg-blocks'), value: 'cf' },
 					{ label: __('Modal', 'codeweber-gutenberg-blocks'), value: 'modal' },
@@ -1275,6 +1459,29 @@ const handleHtml5VideoChange = (newUrl) => {
 									</p>
 								)}
 							</>
+						)}
+					</>
+				)}
+
+				{LinkType === 'archive' && (
+					<>
+						{isLoadingArchives ? (
+							<div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+								<Spinner />
+								<span>{__('Loading archives...', 'codeweber-gutenberg-blocks')}</span>
+							</div>
+						) : archives.length > 0 ? (
+							<SelectControl
+								label={__('Select Archive', 'codeweber-gutenberg-blocks')}
+								value={ArchiveId}
+								options={archives.map((archive) => ({
+									label: archive.label,
+									value: archive.value,
+								}))}
+								onChange={handleArchiveSelect}
+							/>
+						) : (
+							<p>{__('No archives found', 'codeweber-gutenberg-blocks')}</p>
 						)}
 					</>
 				)}

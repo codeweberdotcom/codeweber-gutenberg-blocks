@@ -89,6 +89,14 @@
       "type": "string",
       "default": ""
     },
+    "ArchiveId": {
+      "type": "string",
+      "default": ""
+    },
+    "ArchiveType": {
+      "type": "string",
+      "default": ""
+    },
     "CF7ID": {
       "type": "string",
       "default": ""

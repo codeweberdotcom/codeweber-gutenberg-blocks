@@ -72,6 +72,9 @@ class Plugin {
 		// Register REST API endpoint for accordion posts (using WP_Query)
 		add_action('rest_api_init', __CLASS__ . '::register_accordion_posts_endpoint');
 
+		// Register REST API endpoint for archive URLs
+		add_action('rest_api_init', __CLASS__ . '::register_archive_urls_endpoint');
+
 		// Register REST API endpoint for theme style classes (button/card radius)
 		add_action('rest_api_init', [StyleAPI::class, 'register_routes']);
 
@@ -742,6 +745,66 @@ class Plugin {
 		}
 
 		return new \WP_REST_Response($posts, 200);
+	}
+
+	/**
+	 * Register REST API endpoint for archive URLs
+	 */
+	public static function register_archive_urls_endpoint() {
+		register_rest_route('codeweber-gutenberg-blocks/v1', '/archive-url', [
+			'methods' => 'GET',
+			'callback' => __CLASS__ . '::get_archive_url_callback',
+			'permission_callback' => '__return_true',
+			'args' => [
+				'type' => [
+					'required' => true,
+					'type' => 'string',
+					'enum' => ['post_type', 'taxonomy'],
+				],
+				'post_type' => [
+					'required' => false,
+					'type' => 'string',
+				],
+				'taxonomy' => [
+					'required' => false,
+					'type' => 'string',
+				],
+				'term_id' => [
+					'required' => false,
+					'type' => 'integer',
+				],
+			],
+		]);
+	}
+
+	/**
+	 * REST API callback for getting archive URL
+	 */
+	public static function get_archive_url_callback($request) {
+		$type = $request->get_param('type');
+		$url = '';
+
+		if ($type === 'post_type') {
+			$post_type = $request->get_param('post_type');
+			if ($post_type) {
+				$url = get_post_type_archive_link($post_type);
+			}
+		} elseif ($type === 'taxonomy') {
+			$taxonomy = $request->get_param('taxonomy');
+			$term_id = $request->get_param('term_id');
+			if ($taxonomy && $term_id) {
+				$term = get_term($term_id, $taxonomy);
+				if ($term && !is_wp_error($term)) {
+					$url = get_term_link($term);
+				}
+			}
+		}
+
+		if (empty($url) || is_wp_error($url)) {
+			return new \WP_Error('invalid_archive', 'Could not generate archive URL', ['status' => 400]);
+		}
+
+		return new \WP_REST_Response(['url' => $url], 200);
 	}
 
 	/**

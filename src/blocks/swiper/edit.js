@@ -10,9 +10,9 @@ import {
 	InspectorControls,
 } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
-import { useEffect, useRef } from '@wordpress/element';
+import { useEffect } from '@wordpress/element';
 import { PanelBody, ToggleControl, TextControl, SelectControl } from '@wordpress/components';
-import { getSwiperContainerClasses, getSwiperDataAttributes, getSwiperConfigFromAttributes } from '../../components/swiper';
+import { SwiperSlider, SwiperSlide, getSwiperConfigFromAttributes, initSwiper, destroySwiper } from '../../components/swiper';
 import { BlockMetaFields } from '../../components/block-meta/BlockMetaFields';
 import { useSelect } from '@wordpress/data';
 
@@ -44,162 +44,47 @@ const SwiperEdit = ({ attributes, setAttributes, clientId }) => {
 
 	// Get Swiper configuration from attributes
 	const swiperConfig = getSwiperConfigFromAttributes(attributes);
-	
-	// Get container classes and data attributes for HTML output
-	const containerClasses = `${getSwiperContainerClasses(swiperConfig)} mb-10 ${swiperClass || ''}`.trim();
-	const dataAttrs = getSwiperDataAttributes(swiperConfig);
 
-	// Get inner blocks to wrap them in swiper-slide
+	// Get inner blocks count for re-initialization
 	const innerBlocks = useSelect(
 		(select) => select('core/block-editor').getBlocks(clientId) || [],
 		[clientId]
 	);
 
-	const wrapperRef = useRef(null);
-
-	// Wrap each inner block in swiper-slide div and move them directly to swiper-wrapper
+	// Initialize Swiper in editor
 	useEffect(() => {
-		// #region agent log
-		const logData = {location:'swiper/edit.js:61',message:'useEffect triggered',data:{clientId,innerBlocksCount:innerBlocks.length,wrapperRefExists:!!wrapperRef.current},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'};
-		console.log('[SWIPER DEBUG]', JSON.stringify(logData, null, 2));
-		window.swiperDebugLogs = window.swiperDebugLogs || [];
-		window.swiperDebugLogs.push(logData);
-		// #endregion
+		if (typeof window === 'undefined') return;
 
-		if (!wrapperRef.current) {
-			// #region agent log
-			const logData = {location:'swiper/edit.js:66',message:'wrapperRef is null - early return',data:{},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'};
-			console.log('[SWIPER DEBUG]', JSON.stringify(logData, null, 2));
-			window.swiperDebugLogs.push(logData);
-			// #endregion
-			return;
-		}
+		destroySwiper(`.swiper-block-${clientId} .swiper`);
 
-		const wrapper = wrapperRef.current;
-		
-		// #region agent log
-		const logDataC = {location:'swiper/edit.js:72',message:'wrapper found, searching for blockListLayout',data:{wrapperClasses:wrapper.className,wrapperChildrenCount:wrapper.children.length,wrapperChildren:Array.from(wrapper.children).map(c=>({tag:c.tagName,classes:c.className}))},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'};
-		console.log('[SWIPER DEBUG]', JSON.stringify(logDataC, null, 2));
-		window.swiperDebugLogs.push(logDataC);
-		// #endregion
+		const timer = setTimeout(() => {
+			initSwiper(`.swiper-block-${clientId} .swiper`);
+		}, 300);
 
-		const blockListLayout = wrapper.querySelector('.block-editor-block-list__layout');
-		
-		// #region agent log
-		const logDataD = {location:'swiper/edit.js:77',message:'blockListLayout search result',data:{blockListLayoutFound:!!blockListLayout,blockListLayoutParent:blockListLayout?.parentElement?.className,wrapperHTML:wrapper.innerHTML.substring(0,500)},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'D'};
-		console.log('[SWIPER DEBUG]', JSON.stringify(logDataD, null, 2));
-		window.swiperDebugLogs.push(logDataD);
-		// #endregion
-		
-		if (!blockListLayout) {
-			// #region agent log
-			const logDataE = {location:'swiper/edit.js:82',message:'blockListLayout not found - early return',data:{wrapperDirectChildren:Array.from(wrapper.children).map(c=>({tag:c.tagName,classes:c.className,id:c.id}))},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'E'};
-			console.log('[SWIPER DEBUG]', JSON.stringify(logDataE, null, 2));
-			window.swiperDebugLogs.push(logDataE);
-			// #endregion
-			return;
-		}
-
-		// Find all direct block children (excluding appender)
-		const blocks = Array.from(blockListLayout.children).filter(
-			(child) => child.classList.contains('block-editor-block-list__block') && 
-			           !child.classList.contains('block-list-appender')
-		);
-
-		// #region agent log
-		const logDataF = {location:'swiper/edit.js:92',message:'Blocks found in layout',data:{blocksCount:blocks.length,blocksIds:blocks.map(b=>b.id),blockListLayoutChildrenCount:blockListLayout.children.length,allChildren:Array.from(blockListLayout.children).map(c=>({tag:c.tagName,classes:c.className}))},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'F'};
-		console.log('[SWIPER DEBUG]', JSON.stringify(logDataF, null, 2));
-		window.swiperDebugLogs.push(logDataF);
-		// #endregion
-
-		blocks.forEach((block, index) => {
-			// #region agent log
-			const logDataG = {location:'swiper/edit.js:96',message:'Processing block',data:{blockIndex:index,blockId:block.id,blockParentClasses:block.parentElement?.className,alreadyWrapped:block.parentElement?.classList.contains('swiper-slide')},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'G'};
-			console.log('[SWIPER DEBUG]', JSON.stringify(logDataG, null, 2));
-			window.swiperDebugLogs.push(logDataG);
-			// #endregion
-
-			let slideWrapper;
-
-			// Check if already wrapped
-			if (block.parentElement.classList.contains('swiper-slide')) {
-				slideWrapper = block.parentElement;
-				// #region agent log
-				const logDataH = {location:'swiper/edit.js:103',message:'Block already wrapped in swiper-slide',data:{slideWrapperParent:slideWrapper.parentElement?.className,slideWrapperParentIsWrapper:slideWrapper.parentElement === wrapper,slideWrapperParentTag:slideWrapper.parentElement?.tagName},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'H'};
-				console.log('[SWIPER DEBUG]', JSON.stringify(logDataH, null, 2));
-				window.swiperDebugLogs.push(logDataH);
-				// #endregion
-			} else {
-				// Create swiper-slide wrapper
-				slideWrapper = document.createElement('div');
-				slideWrapper.className = 'swiper-slide';
-				
-				// Move block into wrapper
-				slideWrapper.appendChild(block);
-				// #region agent log
-				const logDataI = {location:'swiper/edit.js:112',message:'Created new swiper-slide wrapper',data:{blockId:block.id},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'I'};
-				console.log('[SWIPER DEBUG]', JSON.stringify(logDataI, null, 2));
-				window.swiperDebugLogs.push(logDataI);
-				// #endregion
-			}
-
-			// Move slide wrapper directly to swiper-wrapper if not already there
-			if (slideWrapper.parentElement !== wrapper) {
-				// #region agent log
-				const logDataJ = {location:'swiper/edit.js:118',message:'Moving slideWrapper to wrapper',data:{currentParent:slideWrapper.parentElement?.className,currentParentTag:slideWrapper.parentElement?.tagName,willMove:true},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'J'};
-				console.log('[SWIPER DEBUG]', JSON.stringify(logDataJ, null, 2));
-				window.swiperDebugLogs.push(logDataJ);
-				// #endregion
-				// Find appender to insert before it
-				const appender = wrapper.querySelector('.block-list-appender');
-				if (appender && appender.parentElement === wrapper) {
-					wrapper.insertBefore(slideWrapper, appender);
-				} else {
-					wrapper.appendChild(slideWrapper);
-				}
-				// #region agent log
-				const logDataK = {location:'swiper/edit.js:125',message:'slideWrapper moved',data:{newParent:slideWrapper.parentElement?.className,newParentIsWrapper:slideWrapper.parentElement === wrapper,newParentTag:slideWrapper.parentElement?.tagName},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'K'};
-				console.log('[SWIPER DEBUG]', JSON.stringify(logDataK, null, 2));
-				window.swiperDebugLogs.push(logDataK);
-				// #endregion
-			} else {
-				// #region agent log
-				const logDataL = {location:'swiper/edit.js:129',message:'slideWrapper already in correct position',data:{},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'L'};
-				console.log('[SWIPER DEBUG]', JSON.stringify(logDataL, null, 2));
-				window.swiperDebugLogs.push(logDataL);
-				// #endregion
-			}
-		});
-
-		// Cleanup: remove empty swiper-slide wrappers
-		const slides = wrapper.querySelectorAll('.swiper-slide');
-		// #region agent log
-		const logDataM = {location:'swiper/edit.js:135',message:'Final state after processing',data:{totalSlides:slides.length,slidesInWrapper:Array.from(wrapper.children).filter(c=>c.classList.contains('swiper-slide')).length,wrapperDirectChildren:Array.from(wrapper.children).map(c=>({tag:c.tagName,classes:c.className,id:c.id}))},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'M'};
-		console.log('[SWIPER DEBUG]', JSON.stringify(logDataM, null, 2));
-		window.swiperDebugLogs.push(logDataM);
-		// #endregion
-
-		slides.forEach((slide) => {
-			if (!slide.querySelector('.block-editor-block-list__block')) {
-				slide.remove();
-			}
-		});
-	}, [innerBlocks.length, clientId]);
-
-	// #region agent log
-	useEffect(() => {
-		const logDataN = {location:'swiper/edit.js:111',message:'blockProps configuration',data:{containerClasses,dataAttrsKeys:Object.keys(dataAttrs),swiperId,swiperData},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'N'};
-		console.log('[SWIPER DEBUG]', JSON.stringify(logDataN, null, 2));
-		window.swiperDebugLogs = window.swiperDebugLogs || [];
-		window.swiperDebugLogs.push(logDataN);
-	}, [containerClasses, dataAttrs, swiperId, swiperData]);
-	// #endregion
+		return () => {
+			clearTimeout(timer);
+			destroySwiper(`.swiper-block-${clientId} .swiper`);
+		};
+	}, [
+		clientId,
+		swiperEffect,
+		swiperSpeed,
+		swiperItems,
+		swiperItemsXs,
+		swiperItemsMd,
+		swiperItemsXl,
+		swiperMargin,
+		swiperNav,
+		swiperDots,
+		swiperLoop,
+		swiperAutoplay,
+		innerBlocks.length,
+	]);
 
 	const blockProps = useBlockProps({
-		className: containerClasses,
+		className: `swiper-block swiper-block-${clientId} ${swiperClass || ''}`.trim(),
 		id: swiperId || undefined,
 		...(swiperData ? { 'data-codeweber': swiperData } : {}),
-		...dataAttrs,
 	});
 
 	return (
@@ -330,15 +215,17 @@ const SwiperEdit = ({ attributes, setAttributes, clientId }) => {
 			</InspectorControls>
 
 			<div {...blockProps}>
-				<div className="swiper">
-					<div className="swiper-wrapper" ref={wrapperRef}>
-						<InnerBlocks
-							allowedBlocks={undefined}
-							templateLock={false}
-							renderAppender={InnerBlocks.ButtonBlockAppender}
-						/>
-					</div>
-				</div>
+				<SwiperSlider
+					config={swiperConfig}
+					className="mb-10"
+					uniqueKey={`swiper-${clientId}`}
+				>
+					<InnerBlocks
+						allowedBlocks={undefined}
+						templateLock={false}
+						renderAppender={InnerBlocks.ButtonBlockAppender}
+					/>
+				</SwiperSlider>
 			</div>
 		</>
 	);

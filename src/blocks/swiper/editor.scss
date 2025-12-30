@@ -10,24 +10,26 @@
 		display: flex;
 	}
 
-	// Ensure swiper-slide wrappers display correctly
-	.swiper-slide {
-		display: flex;
-		flex-direction: column;
+	// Wrap each inner block in swiper-slide for editor preview
+	// Each direct child of swiper-wrapper should act as a slide
+	.swiper-wrapper > .wp-block {
+		// Add swiper-slide styling to inner blocks
 		flex: 0 0 auto;
-		width: 100%;
 		min-width: 300px;
+		margin-right: 20px;
 	}
 
 	// Ensure inner blocks are displayed as slides in editor
 	.block-editor-block-list__layout {
 		display: flex;
 		flex-wrap: nowrap;
-		width: 100%;
+		overflow-x: auto;
 	}
 
 	.block-editor-block-list__block {
-		width: 100%;
+		flex: 0 0 auto;
+		min-width: 300px;
+		margin-right: 20px;
 	}
 }
 

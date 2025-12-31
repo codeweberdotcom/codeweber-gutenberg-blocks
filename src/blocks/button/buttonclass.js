@@ -110,7 +110,7 @@ export const getClassNames = (attributes) => {
 	)
 		classes.push(`btn-soft-${ButtonColor}`);
 
-	// Добавляем классы btn-gradient-color
+	// Добавляем классы btn-gradient и gradient-X
 	if (
 		(ButtonType === 'solid' ||
 			ButtonType === 'circle' ||
@@ -119,14 +119,23 @@ export const getClassNames = (attributes) => {
 			ButtonType === 'play') &&
 		ButtonStyle === 'gradient' &&
 		ButtonGradientColor
-	)
-		classes.push(`btn-${ButtonGradientColor}`);
+	) {
+		classes.push(`btn-gradient`);
+		// Извлекаем номер градиента (например, "gradient-1" -> "gradient-1")
+		// Если значение уже содержит "gradient-", используем его как есть
+		if (ButtonGradientColor.startsWith('gradient-')) {
+			classes.push(ButtonGradientColor);
+		} else {
+			// Если формат другой, добавляем префикс
+			classes.push(`gradient-${ButtonGradientColor}`);
+		}
+	}
 
 	// Добавляем классы btn-social
 	if (ButtonType === 'social' && SocialIconClass)
 		classes.push(`btn-${SocialIconClass}`);
 
-	// Добавляем классы btn-outline-gradient
+	// Добавляем классы btn-outline-gradient и gradient-X
 	if (
 		(ButtonType === 'solid' ||
 			ButtonType === 'circle' ||
@@ -135,8 +144,17 @@ export const getClassNames = (attributes) => {
 			ButtonType === 'play') &&
 		ButtonStyle === 'outline-gradient' &&
 		ButtonGradientColor
-	)
-		classes.push(`btn-outline-${ButtonGradientColor}`);
+	) {
+		classes.push(`btn-outline-gradient`);
+		// Извлекаем номер градиента (например, "gradient-1" -> "gradient-1")
+		// Если значение уже содержит "gradient-", используем его как есть
+		if (ButtonGradientColor.startsWith('gradient-')) {
+			classes.push(ButtonGradientColor);
+		} else {
+			// Если формат другой, добавляем префикс
+			classes.push(`gradient-${ButtonGradientColor}`);
+		}
+	}
 
 	// Добавляем классы btn-shape
 	if ((ButtonType === 'solid' || ButtonType === 'icon') && ButtonShape)

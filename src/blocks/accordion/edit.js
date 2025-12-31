@@ -17,7 +17,7 @@ import { AccordionSidebar } from './sidebar';
 import { IconPicker } from '../../components/icon/IconPicker';
 
 const AccordionEdit = ({ attributes, setAttributes, clientId }) => {
-	const { accordionStyle, allowMultiple, items, accordionId, iconPosition, iconType, firstItemOpen, mode, postType, selectedTaxonomies } = attributes;
+	const { accordionStyle, allowMultiple, items, accordionId, iconPosition, iconType, firstItemOpen, mode, postType, selectedTaxonomies, orderBy, order, theme } = attributes;
 	const previousItemsLengthRef = useRef(items?.length || 0);
 	const previousFirstItemOpenRef = useRef(firstItemOpen);
 	const previousClientIdRef = useRef(clientId);
@@ -138,7 +138,7 @@ const AccordionEdit = ({ attributes, setAttributes, clientId }) => {
 			setIsLoadingPosts(true);
 			try {
 				// Используем наш кастомный endpoint, который использует WP_Query (как в render.php)
-				const apiPath = `/codeweber-gutenberg-blocks/v1/accordion-posts?post_type=${postType}&selected_taxonomies=${encodeURIComponent(JSON.stringify(selectedTaxonomies || {}))}`;
+				const apiPath = `/codeweber-gutenberg-blocks/v1/accordion-posts?post_type=${postType}&selected_taxonomies=${encodeURIComponent(JSON.stringify(selectedTaxonomies || {}))}&orderby=${orderBy || 'date'}&order=${order || 'desc'}`;
 				console.log('[Accordion] Fetching from WP_Query endpoint:', apiPath);
 				
 				const fetchedPosts = await apiFetch({
@@ -180,7 +180,7 @@ const AccordionEdit = ({ attributes, setAttributes, clientId }) => {
 		};
 
 		fetchPosts();
-	}, [mode, postType, selectedTaxonomies, clientId, firstItemOpen, setAttributes]);
+	}, [mode, postType, selectedTaxonomies, orderBy, order, clientId, firstItemOpen, setAttributes]);
 
 	// Ensure first item open (others closed) when option enabled
 	useEffect(() => {
@@ -277,6 +277,10 @@ const AccordionEdit = ({ attributes, setAttributes, clientId }) => {
 		if (iconType === 'type-2') classes.push('type-2');
 		else if (iconType === 'type-3') classes.push('type-3');
 		else classes.push('type-1');
+		// Тема (светлая/темная)
+		if (theme === 'dark') {
+			classes.push('accordion-dark');
+		}
 		return classes.join(' ');
 	};
 

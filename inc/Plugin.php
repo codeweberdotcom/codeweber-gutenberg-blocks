@@ -138,6 +138,7 @@ class Plugin {
 		'paragraph',
 		'card',
 		'feature',
+		'features',
 		'image-simple',
 		'post-grid',
 		'tabs',
@@ -354,6 +355,7 @@ class Plugin {
 			'column',
 			'columns',
 			'feature',
+			'features',
 			'heading-subtitle',
 			'icon',
 			'paragraph',
@@ -651,6 +653,16 @@ class Plugin {
 					'type' => 'string',
 					'default' => '{}',
 				],
+				'orderby' => [
+					'required' => false,
+					'sanitize_callback' => 'sanitize_key',
+					'default' => 'date',
+				],
+				'order' => [
+					'required' => false,
+					'sanitize_callback' => 'sanitize_text_field',
+					'default' => 'desc',
+				],
 			],
 		]);
 	}
@@ -661,6 +673,8 @@ class Plugin {
 	public static function get_accordion_posts_callback($request) {
 		$post_type = $request->get_param('post_type');
 		$selected_taxonomies_json = $request->get_param('selected_taxonomies');
+		$orderby = $request->get_param('orderby') ?: 'date';
+		$order = $request->get_param('order') ?: 'desc';
 
 		if (empty($post_type)) {
 			return new \WP_Error('missing_post_type', 'Post type is required', ['status' => 400]);
@@ -680,8 +694,8 @@ class Plugin {
 			'post_type' => $post_type,
 			'posts_per_page' => 10,
 			'post_status' => 'publish',
-			'orderby' => 'date',
-			'order' => 'DESC',
+			'orderby' => $orderby,
+			'order' => strtoupper($order),
 		);
 
 		// Добавляем фильтрацию по таксономиям, если выбраны термины

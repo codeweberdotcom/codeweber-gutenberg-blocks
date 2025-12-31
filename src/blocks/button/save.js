@@ -202,7 +202,12 @@ const ButtonSave = ({ attributes }) => {
 							<RawHTML>{ButtonContent}</RawHTML>
 						</span>
 					)}
-					{!shouldHideText && ButtonType !== 'expand' && (
+					{!shouldHideText && ButtonType !== 'expand' && attributes.ButtonStyle === 'outline-gradient' && (
+						<span>
+							<RawHTML>{ButtonContent}</RawHTML>
+						</span>
+					)}
+					{!shouldHideText && ButtonType !== 'expand' && attributes.ButtonStyle !== 'outline-gradient' && (
 						<RawHTML>{ButtonContent}</RawHTML>
 					)}
 

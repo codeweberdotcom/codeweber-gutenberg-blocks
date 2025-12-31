@@ -112,6 +112,7 @@ const getWrapperClasses = ({
 	btnSize = '',
 	btnVariant = 'soft',
 	wrapperClass = '',
+	gradientColor = 'gradient-1',
 }) => {
 	const classes = ['icon'];
 
@@ -135,6 +136,24 @@ const getWrapperClasses = ({
 			} else {
 				classes.push(`btn-${iconColor}`);
 			}
+		}
+
+		// Размер кнопки
+		if (btnSize) {
+			classes.push(btnSize);
+		}
+	} else if (wrapperStyle === 'gradient') {
+		// Градиентная кнопка
+		classes.push('btn');
+		classes.push('btn-block');
+		classes.push('btn-gradient');
+		classes.push('flex-shrink-0');
+		
+		// Добавляем класс градиента
+		if (gradientColor.startsWith('gradient-')) {
+			classes.push(gradientColor);
+		} else {
+			classes.push(`gradient-${gradientColor}`);
 		}
 
 		// Размер кнопки
@@ -202,6 +221,7 @@ export const IconRender = ({
 	iconBtnSize = '',
 	iconBtnVariant = 'soft',
 	iconWrapperClass = '',
+	iconGradientColor = 'gradient-1',
 	customSvgUrl = '',
 	customSvgId = null,
 	blockAlign = '',
@@ -328,6 +348,7 @@ export const IconRender = ({
 			btnSize: iconBtnSize,
 			btnVariant: iconBtnVariant,
 			wrapperClass: iconWrapperClass, // Только классы обёртки, iconClass идёт на саму иконку
+			gradientColor: iconGradientColor,
 		});
 
 		// Добавляем классы и атрибуты блока к обёртке (для save.js)

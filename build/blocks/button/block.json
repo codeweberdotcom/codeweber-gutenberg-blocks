@@ -30,7 +30,7 @@
     },
     "ButtonGradientColor": {
       "type": "string",
-      "default": "gradient gradient-1"
+      "default": "gradient-1"
     },
     "ButtonStyle": {
       "type": "string",

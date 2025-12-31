@@ -10,6 +10,7 @@ export const gradientcolors = [
 	{ label: 'Gradient 8', value: 'gradient-8' },
 	{ label: 'Gradient 9', value: 'gradient-9' },
 	{ label: 'Gradient 10', value: 'gradient-10' },
+	{ label: 'Gradient 11', value: 'gradient-11' },
 ];
 
 

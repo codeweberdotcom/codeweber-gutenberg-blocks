@@ -108,6 +108,10 @@ export const iconAttributes = (prefix = '') => {
 			type: 'string',
 			default: '',
 		},
+		[attr('iconGradientColor')]: {
+			type: 'string',
+			default: 'gradient-1',
+		},
 		[attr('customSvgUrl')]: {
 			type: 'string',
 			default: '',

@@ -32,6 +32,7 @@ const Save = ({ attributes }) => {
 		iconBtnSize,
 		iconBtnVariant,
 		iconWrapperClass,
+		iconGradientColor,
 		customSvgUrl,
 		customSvgId,
 		// Title
@@ -63,6 +64,9 @@ const Save = ({ attributes }) => {
 		shadow,
 		cardBorder,
 		borderColor,
+		borderPosition,
+		borderWidth,
+		borderColorType,
 		backgroundType,
 		backgroundColor,
 		backgroundColorType,
@@ -111,12 +115,26 @@ const Save = ({ attributes }) => {
 			classes.push(shadow);
 		}
 		
-		if (cardBorder) {
-			classes.push(cardBorder);
+		if (cardBorder || borderPosition) {
+			classes.push(cardBorder || borderPosition);
+		}
+		
+		// Если выбраны цвет или ширина, но нет позиции - применяем обычный border
+		if ((borderColor || borderWidth) && !cardBorder && !borderPosition) {
+			classes.push('border');
+		}
+		
+		if (borderWidth) {
+			classes.push(borderWidth);
 		}
 		
 		if (borderColor) {
-			classes.push(`border-${borderColor}`);
+			const colorType = borderColorType || 'solid';
+			if (colorType === 'soft') {
+				classes.push(`border-soft-${borderColor}`);
+			} else {
+				classes.push(`border-${borderColor}`);
+			}
 		}
 		
 		// Background classes
@@ -193,6 +211,7 @@ const Save = ({ attributes }) => {
 			iconBtnSize={iconBtnSize}
 			iconBtnVariant={iconBtnVariant}
 			iconWrapperClass={iconWrapperClass}
+			iconGradientColor={iconGradientColor}
 			customSvgUrl={customSvgUrl}
 			customSvgId={customSvgId}
 		/>

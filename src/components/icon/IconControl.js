@@ -12,6 +12,7 @@ import {
 	SelectControl,
 	ToggleControl,
 	BaseControl,
+	ComboboxControl,
 } from '@wordpress/components';
 import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
 
@@ -28,6 +29,7 @@ import {
 	iconBtnSizes,
 	iconBtnVariants,
 } from '../../utilities/icon_sizes';
+import { gradientcolors } from '../../utilities/gradient_colors';
 
 /**
  * Получение значения атрибута с префиксом
@@ -87,6 +89,7 @@ export const IconControl = ({
 	const iconBtnSize = getAttr(attributes, prefix, 'iconBtnSize') || '';
 	const iconBtnVariant = getAttr(attributes, prefix, 'iconBtnVariant') || 'soft';
 	const iconWrapperClass = getAttr(attributes, prefix, 'iconWrapperClass') || '';
+	const iconGradientColor = getAttr(attributes, prefix, 'iconGradientColor') || 'gradient-1';
 	const customSvgUrl = getAttr(attributes, prefix, 'customSvgUrl') || '';
 	const customSvgId = getAttr(attributes, prefix, 'customSvgId') || null;
 
@@ -401,6 +404,38 @@ export const IconControl = ({
 											))}
 										</ButtonGroup>
 									</BaseControl>
+								</>
+							)}
+
+							{/* Настройки градиента */}
+							{iconWrapperStyle === 'gradient' && (
+								<>
+									<BaseControl
+										label={__('Button Size', 'codeweber-gutenberg-blocks')}
+										__nextHasNoMarginBottom
+									>
+										<ButtonGroup className="icon-wrapper-style-buttons">
+											{iconBtnSizes.map((size) => (
+												<Button
+													key={size.value}
+													variant={iconBtnSize === size.value ? 'primary' : 'secondary'}
+													onClick={() => setAttr(setAttributes, prefix, 'iconBtnSize', size.value)}
+													size="compact"
+												>
+													{size.label}
+												</Button>
+											))}
+										</ButtonGroup>
+									</BaseControl>
+
+									<ComboboxControl
+										label={__('Gradient Color', 'codeweber-gutenberg-blocks')}
+										value={iconGradientColor}
+										options={gradientcolors}
+										onChange={(newGradient) =>
+											setAttr(setAttributes, prefix, 'iconGradientColor', newGradient)
+										}
+									/>
 								</>
 							)}
 

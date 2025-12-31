@@ -33,6 +33,9 @@ $firstItemOpen = isset($attributes['firstItemOpen']) ? (bool) $attributes['first
 $postType = isset($attributes['postType']) ? $attributes['postType'] : '';
 $selectedTaxonomies = isset($attributes['selectedTaxonomies']) ? $attributes['selectedTaxonomies'] : [];
 $items = isset($attributes['items']) ? $attributes['items'] : [];
+$orderBy = isset($attributes['orderBy']) ? $attributes['orderBy'] : 'date';
+$order = isset($attributes['order']) ? $attributes['order'] : 'desc';
+$theme = isset($attributes['theme']) ? $attributes['theme'] : 'light';
 
 // Отладка: логируем извлеченные значения
 if (defined('WP_DEBUG') && WP_DEBUG) {
@@ -66,6 +69,10 @@ if ($iconType === 'type-2') {
 } else {
 	$accordionClasses[] = 'type-1';
 }
+// Тема (светлая/темная)
+if ($theme === 'dark') {
+	$accordionClasses[] = 'accordion-dark';
+}
 
 // Подготавливаем данные для рендеринга
 $itemsToRender = [];
@@ -80,8 +87,8 @@ if ($mode === 'post' && !empty($postType)) {
 		'post_type' => $postType,
 		'posts_per_page' => 10,
 		'post_status' => 'publish',
-		'orderby' => 'date',
-		'order' => 'DESC',
+		'orderby' => $orderBy,
+		'order' => strtoupper($order),
 	);
 
 	// Добавляем фильтрацию по таксономиям, если выбраны термины

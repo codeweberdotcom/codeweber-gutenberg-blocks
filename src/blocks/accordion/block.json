@@ -74,6 +74,18 @@
 		"selectedTaxonomies": {
 			"type": "object",
 			"default": {}
+		},
+		"orderBy": {
+			"type": "string",
+			"default": "date"
+		},
+		"order": {
+			"type": "string",
+			"default": "desc"
+		},
+		"theme": {
+			"type": "string",
+			"default": "light"
 		}
 	},
 	"textdomain": "codeweber-gutenberg-blocks",

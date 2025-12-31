@@ -18,8 +18,7 @@ import { IconControl, IconRender } from '../../components/icon';
 import { HeadingContentControl } from '../../components/heading/HeadingContentControl';
 import { HeadingTypographyControl } from '../../components/heading/HeadingTypographyControl';
 import { ParagraphRender } from '../../components/paragraph';
-import { BorderRadiusControl } from '../../components/border-radius';
-import { ShadowControl } from '../../components/shadow';
+import { BorderSettingsPanel } from '../../components/borders';
 import { SpacingControl } from '../../components/spacing/SpacingControl';
 import { BackgroundSettingsPanel } from '../../components/background/BackgroundSettingsPanel';
 import { BlockMetaFields } from '../../components/block-meta/BlockMetaFields';
@@ -61,6 +60,7 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 		iconBtnSize,
 		iconBtnVariant,
 		iconWrapperClass,
+		iconGradientColor,
 		customSvgUrl,
 		customSvgId,
 		// Title
@@ -98,6 +98,9 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 		shadow,
 		cardBorder,
 		borderColor,
+		borderPosition,
+		borderWidth,
+		borderColorType,
 		backgroundType,
 		backgroundColor,
 		backgroundColorType,
@@ -278,12 +281,26 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 			classes.push(shadow);
 		}
 		
-		if (cardBorder) {
-			classes.push(cardBorder);
+		if (cardBorder || borderPosition) {
+			classes.push(cardBorder || borderPosition);
+		}
+		
+		// Если выбраны цвет или ширина, но нет позиции - применяем обычный border
+		if ((borderColor || borderWidth) && !cardBorder && !borderPosition) {
+			classes.push('border');
+		}
+		
+		if (borderWidth) {
+			classes.push(borderWidth);
 		}
 		
 		if (borderColor) {
-			classes.push(`border-${borderColor}`);
+			const colorType = borderColorType || 'solid';
+			if (colorType === 'soft') {
+				classes.push(`border-soft-${borderColor}`);
+			} else {
+				classes.push(`border-${borderColor}`);
+			}
 		}
 		
 		// Background classes
@@ -396,6 +413,7 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 				iconBtnSize={iconBtnSize}
 				iconBtnVariant={iconBtnVariant}
 				iconWrapperClass={iconWrapperClass}
+				iconGradientColor={iconGradientColor}
 				customSvgUrl={customSvgUrl}
 				customSvgId={customSvgId}
 				isEditor={true}
@@ -685,13 +703,12 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 										checked={h100}
 										onChange={(value) => setAttributes({ h100: value })}
 									/>
-									<BorderRadiusControl
-										value={borderRadius}
-										onChange={(value) => setAttributes({ borderRadius: value })}
-									/>
-									<ShadowControl
-										value={shadow}
-										onChange={(value) => setAttributes({ shadow: value })}
+									<BorderSettingsPanel
+										borderRadius={borderRadius}
+										onBorderRadiusChange={(value) => setAttributes({ borderRadius: value })}
+										shadow={shadow}
+										onShadowChange={(value) => setAttributes({ shadow: value })}
+										showBorder={false}
 									/>
 									<div style={{ marginTop: '16px' }}>
 										<SpacingControl
@@ -711,6 +728,30 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 											setAttributes={setAttributes}
 										/>
 									</div>
+								</PanelBody>
+							)}
+
+							{/* BORDERS TAB - Показывается только если Card включен */}
+							{tab.name === 'borders' && enableCard && (
+								<PanelBody>
+									<BorderSettingsPanel
+										borderPosition={cardBorder || borderPosition}
+										borderColor={borderColor}
+										borderColorType={borderColorType || 'solid'}
+										borderWidth={borderWidth}
+										showPosition={true}
+										showBorderRadius={false}
+										showShadow={false}
+										onBorderPositionChange={(value) => {
+											setAttributes({ 
+												cardBorder: value,
+												borderPosition: value 
+											});
+										}}
+										onBorderColorChange={(value) => setAttributes({ borderColor: value })}
+										onBorderColorTypeChange={(value) => setAttributes({ borderColorType: value })}
+										onBorderWidthChange={(value) => setAttributes({ borderWidth: value })}
+									/>
 								</PanelBody>
 							)}
 

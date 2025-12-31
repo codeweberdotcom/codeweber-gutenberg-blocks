@@ -80,6 +80,10 @@
       "type": "string",
       "default": "pe-none mb-5"
     },
+    "iconGradientColor": {
+      "type": "string",
+      "default": "gradient-1"
+    },
     "customSvgUrl": {
       "type": "string",
       "default": ""
@@ -211,6 +215,18 @@
     "borderColor": {
       "type": "string",
       "default": ""
+    },
+    "borderPosition": {
+      "type": "string",
+      "default": ""
+    },
+    "borderWidth": {
+      "type": "string",
+      "default": ""
+    },
+    "borderColorType": {
+      "type": "string",
+      "default": "solid"
     },
     "backgroundType": {
       "type": "string",

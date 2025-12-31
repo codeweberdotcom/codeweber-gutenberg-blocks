@@ -172,6 +172,18 @@
     "waveBottomType": {
       "type": "string",
       "default": ""
+    },
+    "borderColor": {
+      "type": "string",
+      "default": ""
+    },
+    "borderWidth": {
+      "type": "string",
+      "default": ""
+    },
+    "borderColorType": {
+      "type": "string",
+      "default": "solid"
     }
   },
   "textdomain": "codeweber-blocks",

@@ -49,6 +49,8 @@ export const PostTypeTaxonomyControl = ({
 							'header',
 							'footer',
 							'page-header',
+							'codeweber_form', // Формы
+							'cw_image_hotspot', // Image Hotspots
 						];
 						
 						// Исключаем по ключу
@@ -75,6 +77,12 @@ export const PostTypeTaxonomyControl = ({
 							'html blocks',
 							'rm content editor',
 							'content editor',
+							'формы',
+							'forms',
+							'image hotspot',
+							'image hotspots',
+							'hotspot',
+							'hotspots',
 						];
 						
 						// Исключаем по названию (частичное совпадение)

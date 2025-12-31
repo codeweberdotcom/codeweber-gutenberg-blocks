@@ -50,6 +50,18 @@
       "type": "string",
       "default": ""
     },
+    "borderPosition": {
+      "type": "string",
+      "default": ""
+    },
+    "borderWidth": {
+      "type": "string",
+      "default": ""
+    },
+    "borderColorType": {
+      "type": "string",
+      "default": "solid"
+    },
     "backgroundType": {
       "type": "string",
       "default": "none"

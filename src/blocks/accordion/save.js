@@ -8,7 +8,7 @@ import { useBlockProps, RichText } from '@wordpress/block-editor';
 import { Fragment } from '@wordpress/element';
 
 const AccordionSave = ({ attributes }) => {
-	const { accordionStyle, allowMultiple, items, accordionId, iconPosition, iconType, mode } = attributes;
+	const { accordionStyle, allowMultiple, items, accordionId, iconPosition, iconType, mode, theme } = attributes;
 	
 	// Если режим "Post", возвращаем null - будет использоваться PHP render
 	// Для режима Custom возвращаем HTML, который будет сохранен в базе данных
@@ -27,6 +27,10 @@ const AccordionSave = ({ attributes }) => {
 		if (iconType === 'type-2') classes.push('type-2');
 		else if (iconType === 'type-3') classes.push('type-3');
 		else classes.push('type-1');
+		// Тема (светлая/темная)
+		if (theme === 'dark') {
+			classes.push('accordion-dark');
+		}
 		return classes.join(' ');
 	};
 

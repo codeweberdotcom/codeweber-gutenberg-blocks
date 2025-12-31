@@ -11,11 +11,11 @@ import {
 	InspectorControls,
 } from '@wordpress/block-editor';
 import { TabPanel, PanelBody, ToggleControl, ButtonGroup, Button, ComboboxControl } from '@wordpress/components';
-import { Icon, symbol, brush, resizeCornerNE, positionCenter, image, cog, arrowRight } from '@wordpress/icons';
+import { Icon, symbol, resizeCornerNE, positionCenter, image, cog, arrowRight } from '@wordpress/icons';
+import { border } from '@wordpress/icons';
 import { useEffect } from '@wordpress/element';
 
-import { BorderRadiusControl } from '../../components/border-radius';
-import { ShadowControl } from '../../components/shadow';
+import { BorderSettingsPanel } from '../../components/borders';
 import { SpacingControl } from '../../components/spacing/SpacingControl';
 import { PositioningControl } from '../../components/layout/PositioningControl';
 import { BackgroundSettingsPanel } from '../../components/background/BackgroundSettingsPanel';
@@ -48,6 +48,9 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 		shadow,
 		cardBorder,
 		borderColor,
+		borderPosition,
+		borderWidth,
+		borderColorType,
 		backgroundType,
 		backgroundColor,
 		backgroundColorType,
@@ -78,7 +81,7 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 
 	const tabs = [
 		{ name: 'general', title: <TabIcon icon={symbol} label={__('General', 'codeweber-gutenberg-blocks')} /> },
-		{ name: 'appearance', title: <TabIcon icon={brush} label={__('Appearance', 'codeweber-gutenberg-blocks')} /> },
+		{ name: 'borders', title: <TabIcon icon={border} label={__('Borders', 'codeweber-gutenberg-blocks')} /> },
 		{ name: 'spacing', title: <TabIcon icon={resizeCornerNE} label={__('Spacing', 'codeweber-gutenberg-blocks')} /> },
 		{ name: 'align', title: <TabIcon icon={positionCenter} label={__('Position', 'codeweber-gutenberg-blocks')} /> },
 		{ name: 'background', title: <TabIcon icon={image} label={__('Background', 'codeweber-gutenberg-blocks')} /> },
@@ -110,9 +113,26 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 			classes.push(shadow);
 		}
 		
-		if (cardBorder) {
-			classes.push(cardBorder);
-			if (borderColor) {
+		if (cardBorder || borderPosition) {
+			classes.push(cardBorder || borderPosition);
+		}
+		
+		// Если выбраны цвет или ширина, но нет позиции - применяем обычный border
+		if ((borderColor || borderWidth) && !cardBorder && !borderPosition) {
+			classes.push('border');
+		}
+		
+		if (borderWidth) {
+			classes.push(borderWidth);
+		}
+		
+		if (borderColor) {
+			const colorType = borderColorType || 'solid';
+			if (colorType === 'soft') {
+				classes.push(`border-soft-${borderColor}`);
+			} else if (colorType === 'pale') {
+				classes.push(`border-pale-${borderColor}`);
+			} else {
 				classes.push(`border-${borderColor}`);
 			}
 		}
@@ -291,65 +311,29 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 								</PanelBody>
 							)}
 
-							{/* APPEARANCE TAB */}
-							{tab.name === 'appearance' && (
+							{/* BORDERS TAB */}
+							{tab.name === 'borders' && (
 								<PanelBody>
-									<BorderRadiusControl
-										value={borderRadius}
-										onChange={(value) => setAttributes({ borderRadius: value })}
+									<BorderSettingsPanel
+										borderRadius={borderRadius}
+										onBorderRadiusChange={(value) => setAttributes({ borderRadius: value })}
+										shadow={shadow}
+										onShadowChange={(value) => setAttributes({ shadow: value })}
+										borderPosition={cardBorder || borderPosition}
+										borderColor={borderColor}
+										borderColorType={borderColorType || 'solid'}
+										borderWidth={borderWidth}
+										showPosition={true}
+										onBorderPositionChange={(value) => {
+											setAttributes({ 
+												cardBorder: value,
+												borderPosition: value 
+											});
+										}}
+										onBorderColorChange={(value) => setAttributes({ borderColor: value })}
+										onBorderColorTypeChange={(value) => setAttributes({ borderColorType: value })}
+										onBorderWidthChange={(value) => setAttributes({ borderWidth: value })}
 									/>
-
-									<ShadowControl
-										value={shadow}
-										onChange={(value) => setAttributes({ shadow: value })}
-									/>
-
-									<div className="component-sidebar-title">
-										<label>{__('Card Border Position', 'codeweber-gutenberg-blocks')}</label>
-									</div>
-									<ButtonGroup className="button-group-sidebar_33" style={{ marginBottom: '16px' }}>
-										<Button
-											isPrimary={cardBorder === ''}
-											onClick={() => setAttributes({ cardBorder: '' })}
-										>
-											{__('None', 'codeweber-gutenberg-blocks')}
-										</Button>
-										<Button
-											isPrimary={cardBorder === 'card-border-top'}
-											onClick={() => setAttributes({ cardBorder: 'card-border-top' })}
-										>
-											{__('Top', 'codeweber-gutenberg-blocks')}
-										</Button>
-										<Button
-											isPrimary={cardBorder === 'card-border-bottom'}
-											onClick={() => setAttributes({ cardBorder: 'card-border-bottom' })}
-										>
-											{__('Bottom', 'codeweber-gutenberg-blocks')}
-										</Button>
-									</ButtonGroup>
-									<ButtonGroup className="button-group-sidebar_50" style={{ marginBottom: '16px' }}>
-										<Button
-											isPrimary={cardBorder === 'card-border-start'}
-											onClick={() => setAttributes({ cardBorder: 'card-border-start' })}
-										>
-											{__('Start', 'codeweber-gutenberg-blocks')}
-										</Button>
-										<Button
-											isPrimary={cardBorder === 'card-border-end'}
-											onClick={() => setAttributes({ cardBorder: 'card-border-end' })}
-										>
-											{__('End', 'codeweber-gutenberg-blocks')}
-										</Button>
-									</ButtonGroup>
-
-									{cardBorder && (
-										<ComboboxControl
-											label={__('Border Color', 'codeweber-gutenberg-blocks')}
-											value={borderColor}
-											options={colors}
-											onChange={(value) => setAttributes({ borderColor: value })}
-										/>
-									)}
 								</PanelBody>
 							)}
 

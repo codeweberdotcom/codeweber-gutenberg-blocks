@@ -443,10 +443,13 @@ $icon-color-values: (
 // ==============================================
 .icon-wrapper-style-buttons {
 	display: flex;
+	flex-wrap: wrap;
 	width: 100%;
+	gap: 4px;
 
 	.components-button {
 		flex: 1;
+		min-width: calc(25% - 3px);
 		justify-content: center;
 	}
 }

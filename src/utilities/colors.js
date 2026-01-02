@@ -24,7 +24,6 @@ export const colors = [
 	{ label: 'Dewalt', value: 'dewalt' },
 	{ label: 'Facebook', value: 'facebook' },
 	{ label: 'Telegram', value: 'telegram' },
-	{ label: 'Frost', value: 'frost' },
 ];
 
 

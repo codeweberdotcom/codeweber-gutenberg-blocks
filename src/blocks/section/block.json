@@ -3,7 +3,7 @@
     "name": "codeweber-blocks/section",
     "version": "0.1.0",
     "title": "Section",
-    "category": "codeweber-gutenberg-elements",
+    "category": "codeweber-gutenberg-blocks",
     "icon": "layout",
     "description": "Section block with background options and inner blocks support.",
     "supports": {
@@ -172,18 +172,6 @@
         "waveBottomType": {
         	"type": "string",
         	"default": ""
-        },
-        "borderColor": {
-        	"type": "string",
-        	"default": ""
-        },
-        "borderWidth": {
-        	"type": "string",
-        	"default": ""
-        },
-        "borderColorType": {
-        	"type": "string",
-        	"default": "solid"
         }
        },
     "textdomain": "codeweber-blocks",

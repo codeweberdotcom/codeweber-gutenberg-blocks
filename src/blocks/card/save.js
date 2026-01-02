@@ -21,9 +21,6 @@ const Save = ({ attributes }) => {
 		shadow,
 		cardBorder,
 		borderColor,
-		borderPosition,
-		borderWidth,
-		borderColorType,
 		backgroundType,
 		backgroundColor,
 		backgroundColorType,
@@ -65,26 +62,9 @@ const Save = ({ attributes }) => {
 			classes.push(shadow);
 		}
 		
-		if (cardBorder || borderPosition) {
-			classes.push(cardBorder || borderPosition);
-		}
-		
-		// Если выбраны цвет или ширина, но нет позиции - применяем обычный border
-		if ((borderColor || borderWidth) && !cardBorder && !borderPosition) {
-			classes.push('border');
-		}
-		
-		if (borderWidth) {
-			classes.push(borderWidth);
-		}
-		
-		if (borderColor) {
-			const colorType = borderColorType || 'solid';
-			if (colorType === 'soft') {
-				classes.push(`border-soft-${borderColor}`);
-			} else if (colorType === 'pale') {
-				classes.push(`border-pale-${borderColor}`);
-			} else {
+		if (cardBorder) {
+			classes.push(cardBorder);
+			if (borderColor) {
 				classes.push(`border-${borderColor}`);
 			}
 		}

@@ -3,7 +3,7 @@
 	"name": "codeweber-blocks/card",
 	"version": "0.1.0",
 	"title": "Card",
-	"category": "codeweber-gutenberg-elements",
+	"category": "codeweber-gutenberg-blocks",
 	"icon": "index-card",
 	"description": "Flexible card container with InnerBlocks support and advanced styling options.",
 	"keywords": ["card", "container", "wrapper"],
@@ -45,18 +45,6 @@
 		"borderColor": {
 			"type": "string",
 			"default": ""
-		},
-		"borderPosition": {
-			"type": "string",
-			"default": ""
-		},
-		"borderWidth": {
-			"type": "string",
-			"default": ""
-		},
-		"borderColorType": {
-			"type": "string",
-			"default": "solid"
 		},
 		"backgroundType": {
 			"type": "string",

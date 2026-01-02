@@ -31,21 +31,6 @@ const getSectionClasses = (attrs) => {
 	// Angled divider classes
 	classes.push(...getAngledClasses(attrs));
 
-	// Border classes
-	if (attrs.borderWidth) {
-		classes.push(attrs.borderWidth);
-	}
-	if (attrs.borderColor) {
-		const colorType = attrs.borderColorType || 'solid';
-		if (colorType === 'soft') {
-			classes.push(`border-soft-${attrs.borderColor}`);
-		} else if (colorType === 'pale') {
-			classes.push(`border-pale-${attrs.borderColor}`);
-		} else {
-			classes.push(`border-${attrs.borderColor}`);
-		}
-	}
-
 	return classes.filter(Boolean).join(' ');
 };
 
@@ -75,9 +60,6 @@ const SectionSave = ({ attributes }) => {
 		sectionClass,
 		sectionData,
 		sectionId,
-		borderColor,
-		borderWidth,
-		borderColorType,
 	} = attributes;
 
 	const normalizedMinHeight = normalizeMinHeightClass(minHeight);

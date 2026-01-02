@@ -54,6 +54,8 @@ export const iconColors = [
 	{ value: 'white', label: 'White' },
 	{ value: 'dark', label: 'Dark' },
 	{ value: 'muted', label: 'Muted' },
+	{ value: 'dewalt', label: 'Dewalt' },
+	{ value: 'frost', label: 'Frost' },
 ];
 
 /**

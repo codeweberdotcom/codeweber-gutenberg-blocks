@@ -12,7 +12,7 @@ import {
 } from '@wordpress/block-editor';
 import { TabPanel, PanelBody, ButtonGroup, Button, TextControl, ToggleControl } from '@wordpress/components';
 import { useEffect } from '@wordpress/element';
-import { Icon, symbol, typography, button, addCard, starFilled, cog, arrowRight } from '@wordpress/icons';
+import { Icon, symbol, typography, button, addCard, cog, arrowRight, border } from '@wordpress/icons';
 
 import { IconControl, IconRender } from '../../components/icon';
 import { HeadingContentControl } from '../../components/heading/HeadingContentControl';
@@ -130,10 +130,10 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 	// Динамический массив табов
 	const tabs = [
 		{ name: 'feature', title: <TabIcon icon={symbol} label={__('Feature', 'codeweber-gutenberg-blocks')} /> },
-		{ name: 'icon', title: <TabIcon icon={starFilled} label={__('Icon', 'codeweber-gutenberg-blocks')} /> },
 		{ name: 'title', title: <TabIcon icon={typography} label={__('Title', 'codeweber-gutenberg-blocks')} /> },
 		{ name: 'button', title: <TabIcon icon={button} label={__('Button', 'codeweber-gutenberg-blocks')} /> },
 		{ name: 'card', title: <TabIcon icon={addCard} label={__('Card', 'codeweber-gutenberg-blocks')} /> },
+		{ name: 'borders', title: <TabIcon icon={border} label={__('Borders', 'codeweber-gutenberg-blocks')} /> },
 	];
 	
 	// Добавляем табы Settings и Animation только если Card включен
@@ -569,12 +569,7 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 											{__('Feature 3', 'codeweber-gutenberg-blocks')}
 										</Button>
 									</ButtonGroup>
-								</PanelBody>
-							)}
-
-							{/* ICON TAB */}
-							{tab.name === 'icon' && (
-								<PanelBody>
+									
 									<IconControl
 										attributes={attributes}
 										setAttributes={setAttributes}
@@ -731,17 +726,21 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 								</PanelBody>
 							)}
 
-							{/* BORDERS TAB - Показывается только если Card включен */}
-							{tab.name === 'borders' && enableCard && (
+							{/* BORDERS TAB */}
+							{tab.name === 'borders' && (
 								<PanelBody>
 									<BorderSettingsPanel
+										borderRadius={borderRadius}
+										onBorderRadiusChange={(value) => setAttributes({ borderRadius: value })}
+										shadow={shadow}
+										onShadowChange={(value) => setAttributes({ shadow: value })}
 										borderPosition={cardBorder || borderPosition}
 										borderColor={borderColor}
 										borderColorType={borderColorType || 'solid'}
 										borderWidth={borderWidth}
 										showPosition={true}
-										showBorderRadius={false}
-										showShadow={false}
+										showBorderRadius={true}
+										showShadow={true}
 										onBorderPositionChange={(value) => {
 											setAttributes({ 
 												cardBorder: value,

@@ -172,6 +172,30 @@
         "waveBottomType": {
         	"type": "string",
         	"default": ""
+        },
+        "borderRadius": {
+        	"type": "string",
+        	"default": ""
+        },
+        "shadow": {
+        	"type": "string",
+        	"default": ""
+        },
+        "borderPosition": {
+        	"type": "string",
+        	"default": ""
+        },
+        "borderColor": {
+        	"type": "string",
+        	"default": ""
+        },
+        "borderColorType": {
+        	"type": "string",
+        	"default": "solid"
+        },
+        "borderWidth": {
+        	"type": "string",
+        	"default": ""
         }
        },
     "textdomain": "codeweber-blocks",

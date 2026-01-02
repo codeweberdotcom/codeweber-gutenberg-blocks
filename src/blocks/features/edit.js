@@ -14,7 +14,7 @@ import { TabPanel, PanelBody } from '@wordpress/components';
 import { useEffect, useRef } from '@wordpress/element';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { createBlock } from '@wordpress/blocks';
-import { Icon, symbol, typography, button, addCard, starFilled } from '@wordpress/icons';
+import { Icon, symbol, typography, button, addCard, starFilled, border } from '@wordpress/icons';
 import { ButtonGroup, Button } from '@wordpress/components';
 
 import { IconControl } from '../../components/icon';
@@ -93,6 +93,9 @@ const FeaturesEdit = ({ attributes, setAttributes, clientId }) => {
 		shadow,
 		cardBorder,
 		borderColor,
+		borderPosition,
+		borderWidth,
+		borderColorType,
 		backgroundType,
 		backgroundColor,
 		backgroundColorType,
@@ -253,6 +256,7 @@ const FeaturesEdit = ({ attributes, setAttributes, clientId }) => {
 		{ name: 'title', title: <TabIcon icon={typography} label={__('Title', 'codeweber-gutenberg-blocks')} /> },
 		{ name: 'button', title: <TabIcon icon={button} label={__('Button', 'codeweber-gutenberg-blocks')} /> },
 		{ name: 'card', title: <TabIcon icon={addCard} label={__('Card', 'codeweber-gutenberg-blocks')} /> },
+		{ name: 'borders', title: <TabIcon icon={border} label={__('Borders', 'codeweber-gutenberg-blocks')} /> },
 	];
 
 	return (
@@ -470,6 +474,30 @@ const FeaturesEdit = ({ attributes, setAttributes, clientId }) => {
 											setAttributes={applySettingsToFeatures}
 										/>
 									</div>
+								</PanelBody>
+							)}
+
+							{/* BORDERS TAB */}
+							{tab.name === 'borders' && (
+								<PanelBody>
+									<BorderSettingsPanel
+										borderRadius={borderRadius}
+										onBorderRadiusChange={(value) => applySettingsToFeatures({ borderRadius: value })}
+										shadow={shadow}
+										onShadowChange={(value) => applySettingsToFeatures({ shadow: value })}
+										borderPosition={borderPosition}
+										borderColor={borderColor}
+										borderColorType={borderColorType || 'solid'}
+										borderWidth={borderWidth}
+										showPosition={true}
+										showBorderRadius={true}
+										showShadow={true}
+										showBorder={true}
+										onBorderPositionChange={(value) => applySettingsToFeatures({ borderPosition: value })}
+										onBorderColorChange={(value) => applySettingsToFeatures({ borderColor: value })}
+										onBorderColorTypeChange={(value) => applySettingsToFeatures({ borderColorType: value })}
+										onBorderWidthChange={(value) => applySettingsToFeatures({ borderWidth: value })}
+									/>
 								</PanelBody>
 							)}
 						</>

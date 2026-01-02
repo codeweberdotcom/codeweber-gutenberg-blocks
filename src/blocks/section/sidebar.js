@@ -11,7 +11,7 @@ import {
 	FormFileUpload,
 	TabPanel,
 } from '@wordpress/components';
-import { Icon, layout, box, image, styles, resizeCornerNE, cog } from '@wordpress/icons';
+import { Icon, layout, box, image, styles, resizeCornerNE, cog, border } from '@wordpress/icons';
 import {
 	InspectorControls,
 	MediaUpload,
@@ -25,6 +25,7 @@ import { PositioningControl } from '../../components/layout/PositioningControl';
 import { SpacingControl } from '../../components/spacing/SpacingControl';
 import { AngledControl } from '../../components/angled/AngledControl';
 import { WavesControl } from '../../components/waves/WavesControl';
+import { BorderSettingsPanel } from '../../components/borders';
 
 export const SectionSidebar = ({ attributes, setAttributes }) => {
 	const [imageSize, setImageSize] = useState('');
@@ -72,6 +73,12 @@ export const SectionSidebar = ({ attributes, setAttributes }) => {
 		waveTopType,
 		waveBottomEnabled,
 		waveBottomType,
+		borderRadius,
+		shadow,
+		borderPosition,
+		borderColor,
+		borderColorType,
+		borderWidth,
 	} = attributes;
 
 
@@ -192,6 +199,7 @@ export const SectionSidebar = ({ attributes, setAttributes }) => {
 		{ name: 'section', title: <TabIcon icon={layout} label={__('Section', 'codeweber-gutenberg-blocks')} /> },
 		{ name: 'container', title: <TabIcon icon={box} label={__('Container', 'codeweber-gutenberg-blocks')} /> },
 		{ name: 'background', title: <TabIcon icon={image} label={__('Background', 'codeweber-gutenberg-blocks')} /> },
+		{ name: 'borders', title: <TabIcon icon={border} label={__('Borders', 'codeweber-gutenberg-blocks')} /> },
 		{ name: 'angled', title: <TabIcon icon={styles} label={__('Dividers', 'codeweber-gutenberg-blocks')} /> },
 		{ name: 'spacing', title: <TabIcon icon={resizeCornerNE} label={__('Spacing', 'codeweber-gutenberg-blocks')} /> },
 		{ name: 'settings', title: <TabIcon icon={cog} label={__('Settings', 'codeweber-gutenberg-blocks')} /> },
@@ -378,6 +386,28 @@ export const SectionSidebar = ({ attributes, setAttributes }) => {
 								)}
 							</PanelBody>
 						</>
+					)}
+
+					{tab.name === 'borders' && (
+						<PanelBody>
+							<BorderSettingsPanel
+								borderRadius={borderRadius}
+								onBorderRadiusChange={(value) => setAttributes({ borderRadius: value })}
+								shadow={shadow}
+								onShadowChange={(value) => setAttributes({ shadow: value })}
+								borderPosition={borderPosition}
+								borderColor={borderColor}
+								borderColorType={borderColorType || 'solid'}
+								borderWidth={borderWidth}
+								showPosition={true}
+								showBorderRadius={true}
+								showShadow={true}
+								onBorderPositionChange={(value) => setAttributes({ borderPosition: value })}
+								onBorderColorChange={(value) => setAttributes({ borderColor: value })}
+								onBorderColorTypeChange={(value) => setAttributes({ borderColorType: value })}
+								onBorderWidthChange={(value) => setAttributes({ borderWidth: value })}
+							/>
+						</PanelBody>
 					)}
 
 					{tab.name === 'angled' && (

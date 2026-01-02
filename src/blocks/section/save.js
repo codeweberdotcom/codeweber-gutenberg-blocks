@@ -31,6 +31,39 @@ const getSectionClasses = (attrs) => {
 	// Angled divider classes
 	classes.push(...getAngledClasses(attrs));
 
+	// Border classes
+	if (attrs.borderRadius) {
+		classes.push(attrs.borderRadius);
+	}
+
+	if (attrs.shadow) {
+		classes.push(attrs.shadow);
+	}
+
+	if (attrs.borderPosition) {
+		classes.push(attrs.borderPosition);
+	}
+
+	// Если выбраны цвет или ширина, но нет позиции - применяем обычный border
+	if ((attrs.borderColor || attrs.borderWidth) && !attrs.borderPosition) {
+		classes.push('border');
+	}
+
+	if (attrs.borderWidth) {
+		classes.push(attrs.borderWidth);
+	}
+
+	if (attrs.borderColor) {
+		const colorType = attrs.borderColorType || 'solid';
+		if (colorType === 'soft') {
+			classes.push(`border-soft-${attrs.borderColor}`);
+		} else if (colorType === 'pale') {
+			classes.push(`border-pale-${attrs.borderColor}`);
+		} else {
+			classes.push(`border-${attrs.borderColor}`);
+		}
+	}
+
 	return classes.filter(Boolean).join(' ');
 };
 

@@ -1,0 +1,52 @@
+{
+  "apiVersion": 3,
+  "name": "codeweber-blocks/contacts",
+  "version": "0.1.0",
+  "title": "Contacts",
+  "category": "codeweber-gutenberg-elements",
+  "icon": "phone",
+  "description": "Display contact information from Codeweber theme Redux settings (address, email, phone).",
+  "keywords": [
+    "contacts",
+    "address",
+    "email",
+    "phone",
+    "contact"
+  ],
+  "supports": {
+    "html": false,
+    "customClassName": true,
+    "anchor": true
+  },
+  "attributes": {
+    "items": {
+      "type": "array",
+      "default": [
+        {
+          "type": "address",
+          "enabled": true,
+          "format": "simple",
+          "addressType": "legal"
+        },
+        {
+          "type": "email",
+          "enabled": true,
+          "format": "simple"
+        },
+        {
+          "type": "phone",
+          "enabled": true,
+          "format": "simple",
+          "phones": [
+            "phone_01"
+          ]
+        }
+      ]
+    }
+  },
+  "textdomain": "codeweber-gutenberg-blocks",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}

@@ -1,0 +1,79 @@
+{
+  "apiVersion": 3,
+  "name": "codeweber-blocks/logo",
+  "version": "0.1.0",
+  "title": "Logo",
+  "category": "codeweber-gutenberg-elements",
+  "icon": "admin-site-alt3",
+  "description": "Logo block with light/dark variant selection and size control.",
+  "keywords": [
+    "logo",
+    "brand",
+    "image"
+  ],
+  "supports": {
+    "html": false,
+    "customClassName": true,
+    "anchor": true,
+    "align": [
+      "left",
+      "center",
+      "right"
+    ]
+  },
+  "attributes": {
+    "logoType": {
+      "type": "string",
+      "default": "both"
+    },
+    "logoSize": {
+      "type": "string",
+      "default": ""
+    },
+    "blockClass": {
+      "type": "string",
+      "default": ""
+    },
+    "blockId": {
+      "type": "string",
+      "default": ""
+    },
+    "blockData": {
+      "type": "string",
+      "default": ""
+    },
+    "blockAlign": {
+      "type": "string",
+      "default": ""
+    },
+    "enableLink": {
+      "type": "boolean",
+      "default": true
+    },
+    "logoUrl": {
+      "type": "string",
+      "default": ""
+    },
+    "animationEnabled": {
+      "type": "boolean",
+      "default": false
+    },
+    "animationType": {
+      "type": "string",
+      "default": ""
+    },
+    "animationDuration": {
+      "type": "number",
+      "default": 1000
+    },
+    "animationDelay": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "textdomain": "codeweber-gutenberg-blocks",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}

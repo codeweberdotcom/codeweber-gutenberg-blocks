@@ -1,0 +1,74 @@
+{
+  "apiVersion": 3,
+  "name": "codeweber-blocks/widget",
+  "version": "0.1.0",
+  "title": "Widget",
+  "category": "codeweber-gutenberg-elements",
+  "icon": "admin-page",
+  "description": "Widget container with title and InnerBlocks support.",
+  "keywords": [
+    "widget",
+    "container",
+    "sidebar"
+  ],
+  "supports": {
+    "html": false,
+    "customClassName": true,
+    "anchor": true,
+    "innerBlocks": true
+  },
+  "attributes": {
+    "enableTitle": {
+      "type": "boolean",
+      "default": true
+    },
+    "title": {
+      "type": "string",
+      "default": "Learn More"
+    },
+    "titleTag": {
+      "type": "string",
+      "default": "h4"
+    },
+    "titleColor": {
+      "type": "string",
+      "default": ""
+    },
+    "titleColorType": {
+      "type": "string",
+      "default": "solid"
+    },
+    "titleSize": {
+      "type": "string",
+      "default": ""
+    },
+    "titleWeight": {
+      "type": "string",
+      "default": ""
+    },
+    "titleTransform": {
+      "type": "string",
+      "default": ""
+    },
+    "titleClass": {
+      "type": "string",
+      "default": "mb-3"
+    },
+    "widgetClass": {
+      "type": "string",
+      "default": ""
+    },
+    "widgetId": {
+      "type": "string",
+      "default": ""
+    },
+    "widgetData": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "textdomain": "codeweber-gutenberg-blocks",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

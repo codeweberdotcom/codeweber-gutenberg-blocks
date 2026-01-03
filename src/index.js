@@ -25,6 +25,8 @@ const loadBlocks = async () => {
         import('./blocks/swiper/index'),
         import('./blocks/group-button/index'),
         import('./blocks/menu/index'),
+        import('./blocks/widget/index'),
+        import('./blocks/contacts/index'),
     ];
 
     await Promise.all(blocks);

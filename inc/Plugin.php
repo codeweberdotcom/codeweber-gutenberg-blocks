@@ -53,8 +53,8 @@ class Plugin {
 		// Фильтр для рендеринга html-blocks блока
 		add_filter('pre_render_block', __CLASS__ . '::pre_render_html_blocks_block', 10, 2);
 
-		// Фильтр для рендеринга html-blocks блока
-		add_filter('pre_render_block', __CLASS__ . '::pre_render_html_blocks_block', 10, 2);
+		// Фильтр для рендеринга contacts блока
+		add_filter('pre_render_block', __CLASS__ . '::pre_render_contacts_block', 10, 2);
 	}
 
 	public static function init(): void {
@@ -137,6 +137,7 @@ class Plugin {
 		'heading-subtitle',
 		'icon',
 		'lists',
+		'logo',
 		'menu',
 		'media',
 		'paragraph',
@@ -155,6 +156,7 @@ class Plugin {
 		'html-blocks',
 		'swiper',
 		'group-button',
+		'widget',
 	];
 	}
 
@@ -1065,6 +1067,41 @@ class Plugin {
 
 		// Всегда используем PHP render
 		$render_path = self::getBasePath() . '/build/blocks/html-blocks/render.php';
+		if (file_exists($render_path)) {
+			// Передаем атрибуты и блок в render.php
+			$attributes = $parsed_block['attrs'] ?? [];
+			$content = $parsed_block['innerHTML'] ?? '';
+			$block_instance = new \WP_Block($parsed_block);
+
+			// Передаем переменные в область видимости render.php
+			extract([
+				'attributes' => $attributes,
+				'content' => $content,
+				'block' => $block_instance,
+				'parsed_block' => $parsed_block,
+			], EXTR_SKIP);
+
+			ob_start();
+			require $render_path;
+			$rendered = ob_get_clean();
+
+			return $rendered;
+		}
+
+		return $pre_render;
+	}
+
+	/**
+	 * Pre-render contacts block
+	 */
+	public static function pre_render_contacts_block($pre_render, $parsed_block) {
+		// Проверяем, что это блок contacts
+		if (!isset($parsed_block['blockName']) || $parsed_block['blockName'] !== 'codeweber-blocks/contacts') {
+			return $pre_render;
+		}
+
+		// Всегда используем PHP render
+		$render_path = self::getBasePath() . '/build/blocks/contacts/render.php';
 		if (file_exists($render_path)) {
 			// Передаем атрибуты и блок в render.php
 			$attributes = $parsed_block['attrs'] ?? [];

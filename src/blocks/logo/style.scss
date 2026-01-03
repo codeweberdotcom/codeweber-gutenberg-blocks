@@ -1,0 +1,38 @@
+/**
+ * Logo Block - Frontend Styles
+ *
+ * @package CodeWeber Gutenberg Blocks
+ */
+
+.cwgb-logo-block {
+	display: inline-block;
+
+	img {
+		display: block;
+		max-width: 100%;
+		height: auto;
+	}
+
+	// Логотипы для светлой/темной темы
+	.logo-light,
+	.logo-dark {
+		display: block;
+	}
+}
+
+// Выравнивание
+.cwgb-logo-block {
+	&.text-left {
+		text-align: left;
+	}
+
+	&.text-center {
+		text-align: center;
+	}
+
+	&.text-right {
+		text-align: right;
+	}
+}
+
+

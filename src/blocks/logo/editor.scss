@@ -1,0 +1,41 @@
+/**
+ * Logo Block - Editor Styles
+ *
+ * @package CodeWeber Gutenberg Blocks
+ */
+
+.cwgb-logo-block {
+	// В редакторе показываем границу для удобства
+	&.is-selected,
+	&:hover {
+		outline: 1px dashed rgba(0, 124, 186, 0.3);
+		outline-offset: 4px;
+	}
+
+	.cwgb-logo-preview {
+		display: inline-block;
+
+		img {
+			display: block;
+			max-width: 100%;
+			height: auto;
+		}
+	}
+}
+
+// Выравнивание
+.cwgb-logo-block {
+	&.text-left {
+		text-align: left;
+	}
+
+	&.text-center {
+		text-align: center;
+	}
+
+	&.text-right {
+		text-align: right;
+	}
+}
+
+

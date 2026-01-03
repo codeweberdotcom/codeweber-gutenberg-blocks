@@ -1,7 +1,7 @@
 import { useBlockProps, InspectorControls, RichText } from '@wordpress/block-editor';
 import { TabPanel, PanelBody, ButtonGroup, Button } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
+import { useState, useEffect } from '@wordpress/element';
 import { Icon, edit, typography, positionCenter, resizeCornerNE, cog } from '@wordpress/icons';
 
 // Tab icon with native title tooltip

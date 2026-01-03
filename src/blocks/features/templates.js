@@ -23,6 +23,13 @@ export const getFeaturesTemplates = () => [
 			iconColor2: '11',
 			iconBtnVariant: 'gradient',
 		},
+		columnConfig: {
+			default: {
+				columnCol: '12',
+				columnColMd: '3',
+			},
+		},
+		firstColumn: null, // Default шаблон не имеет первой колонки с Title
 		featureData: [
 			{
 				iconName: 'phone-volume',
@@ -82,8 +89,8 @@ export const getFeaturesTemplates = () => [
 			},
 		},
 		firstColumn: {
-			subtitle: '',
-			title: __('Our Advantages', 'codeweber-gutenberg-blocks'),
+			subtitle: __('Features', 'codeweber-gutenberg-blocks'),
+			title: __('We create conditions in which it is profitable to work', 'codeweber-gutenberg-blocks'),
 			text: __('Learn why clients choose us and what benefits they get from working with our company.', 'codeweber-gutenberg-blocks'),
 			subtitleLine: false,
 			enableText: true,

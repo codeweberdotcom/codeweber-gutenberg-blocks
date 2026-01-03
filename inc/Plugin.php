@@ -38,6 +38,9 @@ class Plugin {
 		// Фильтр для условного рендеринга списков (перехватываем до рендеринга)
 		add_filter('pre_render_block', __CLASS__ . '::pre_render_lists_block', 10, 2);
 
+		// Фильтр для условного рендеринга меню (перехватываем до рендеринга)
+		add_filter('pre_render_block', __CLASS__ . '::pre_render_menu_block', 10, 2);
+
 		// Фильтр для условного рендеринга аватара (перехватываем до рендеринга)
 		add_filter('pre_render_block', __CLASS__ . '::pre_render_avatar_block', 10, 2);
 
@@ -134,6 +137,7 @@ class Plugin {
 		'heading-subtitle',
 		'icon',
 		'lists',
+		'menu',
 		'media',
 		'paragraph',
 		'card',
@@ -224,6 +228,41 @@ class Plugin {
 
 		// Всегда используем PHP render (он обрабатывает оба режима)
 		$render_path = self::getBasePath() . '/build/blocks/lists/render.php';
+		if (file_exists($render_path)) {
+			// Передаем атрибуты и блок в render.php
+			$attributes = $parsed_block['attrs'] ?? [];
+			$content = $parsed_block['innerHTML'] ?? '';
+			$block_instance = new \WP_Block($parsed_block);
+
+			// Передаем переменные в область видимости render.php
+			extract([
+				'attributes' => $attributes,
+				'content' => $content,
+				'block' => $block_instance,
+			], EXTR_SKIP);
+
+			ob_start();
+			require $render_path;
+			$rendered = ob_get_clean();
+
+			return $rendered;
+		}
+
+		return $pre_render;
+	}
+
+	/**
+	 * Pre-render menu block conditionally based on mode
+	 * Always uses PHP render for both modes (WP Menu and Custom)
+	 */
+	public static function pre_render_menu_block($pre_render, $parsed_block) {
+		// Проверяем, что это блок menu
+		if (!isset($parsed_block['blockName']) || $parsed_block['blockName'] !== 'codeweber-blocks/menu') {
+			return $pre_render;
+		}
+
+		// Всегда используем PHP render (он обрабатывает оба режима)
+		$render_path = self::getBasePath() . '/build/blocks/menu/render.php';
 		if (file_exists($render_path)) {
 			// Передаем атрибуты и блок в render.php
 			$attributes = $parsed_block['attrs'] ?? [];

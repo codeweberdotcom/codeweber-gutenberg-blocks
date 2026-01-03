@@ -20,16 +20,21 @@ function extractStringsFromJS(filePath) {
 	// __('text', "domain")
 	// __("text", 'domain')
 	// __("text", "domain")
+	// Обрабатываем экранированные кавычки: \' и \"
 	const patterns = [
-		/__\(['"]([^'"]+)['"]\s*,\s*['"]codeweber-gutenberg-blocks['"]\)/g,
-		/__\(["']([^"']+)["']\s*,\s*["']codeweber-gutenberg-blocks["']\)/g,
+		// Для одинарных кавычек с экранированием
+		/__\(['"]((?:[^'"]|\\['"])+)['"]\s*,\s*['"]codeweber-gutenberg-blocks['"]\)/g,
+		// Для двойных кавычек с экранированием
+		/__\(["']((?:[^"']|\\["'])+)["']\s*,\s*["']codeweber-gutenberg-blocks["']\)/g,
 	];
 	
 	patterns.forEach(pattern => {
 		let match;
 		while ((match = pattern.exec(content)) !== null) {
+			// Раскрываем экранированные кавычки: \' -> ', \" -> "
+			const unescapedText = match[1].replace(/\\(['"])/g, '$1');
 			strings.push({
-				text: match[1],
+				text: unescapedText,
 				file: path.relative(pluginPath, filePath),
 			});
 		}

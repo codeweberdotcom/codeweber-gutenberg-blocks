@@ -403,7 +403,7 @@
         "Блок с цитатой и иконкой"
       ],
       "Blockquote": [
-        "Блокцит"
+        "Цитата"
       ],
       "Blue Cluster": [
         "Синий кластер"
@@ -1018,7 +1018,7 @@
         "Включить обертку карточки"
       ],
       "Enable Clustering": [
-        "Включить кнопку"
+        "Включить Кластер"
       ],
       "Enable continuous loop mode. Slides will loop from last to first seamlessly.": [
         "Включить режим непрерывного зацикливания. Слайды будут переключаться от последнего к первому плавно."
@@ -1033,7 +1033,7 @@
         "Включить ссылки на записи клиентов (по умолчанию отключено)"
       ],
       "Enable links to post pages": [
-        "Включить ссылки на записи клиентов (по умолчанию отключено)"
+        "v"
       ],
       "Enable Paragraph": [
         "Включить параграф"
@@ -1057,7 +1057,7 @@
         "Включить сенсорное/мышиное перетаскивание для смены слайдов свайпом пальца или мыши."
       ],
       "Enable Video Lightbox": [
-        "Включить Lightbox"
+        "Включить видеолайтбокс"
       ],
       "End": [
         "Конец"
@@ -1096,22 +1096,25 @@
         "Введите поисковый запрос для отображения всех иконок"
       ],
       "Enter sidebar title": [
-        "Введите подзаголовок..."
+        "Введите заголовок сайдбара"
       ],
       "Enter subtitle...": [
         "Введите подзаголовок..."
+      ],
+      "Enter text or HTML content. This will be displayed instantly from a hidden element.": [
+        "Введите текст или HTML-контент. Он будет мгновенно отображен в скрытом элементе."
       ],
       "Enter title...": [
         "Введите заголовок..."
       ],
       "Enter Vimeo video ID": [
-        "URL Vimeo видео"
+        "Введите ID видео на Vimeo."
       ],
       "Enter VK video ID": [
         "ID enter vk video"
       ],
       "Enter YouTube video ID": [
-        "URL YouTube видео"
+        "Введите ID видео на YouTube."
       ],
       "Enter YouTube video URL or video ID": [
         "URL YouTube видео"
@@ -1205,6 +1208,9 @@
       ],
       "Feature Settings": [
         "Настройки аватара"
+      ],
+      "Features": [
+        "Преимущества"
       ],
       "Feedback form": [
         "Форма обратной связи"
@@ -2572,7 +2578,7 @@
         "Отправить"
       ],
       "Send Message": [
-        "Сообщение об успехе"
+        "Отправить"
       ],
       "Send to Email": [
         "Отправить на Email"
@@ -3189,6 +3195,9 @@
       "Waves": [
         "Волны"
       ],
+      "We create conditions in which it is profitable to work": [
+        "Мы создаем условия, в которых выгодно работать"
+      ],
       "Website": [
         "Веб-сайт"
       ],
@@ -3215,6 +3224,9 @@
       ],
       "Wrapper Style": [
         "Стиль обёртки"
+      ],
+      "Write to us — we'll be happy to answer your questions.": [
+        "Напишите нам — мы с удовольствием ответим на ваши вопросы."
       ],
       "Yandex Map": [
         "Яндекс.Карта"

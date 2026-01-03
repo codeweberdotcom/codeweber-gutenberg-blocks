@@ -1214,6 +1214,14 @@ msgstr ""
 msgid "Gradient Cards Template"
 msgstr ""
 
+#: src/src/blocks/features/templates.js src/src/blocks/features/templates.js
+msgid "Features"
+msgstr ""
+
+#: src/src/blocks/features/templates.js src/src/blocks/features/templates.js
+msgid "We create conditions in which it is profitable to work"
+msgstr ""
+
 #: src/src/blocks/features/templates.js src/src/blocks/features/templates.js src/src/components/post-grid-item/PostGridItemRender.js src/src/components/post-grid-item/PostGridItemRender.js src/src/components/post-grid-item/PostGridItemRender.js src/src/components/post-grid-item/PostGridItemRender.js src/src/components/post-grid-item/PostGridItemRender.js src/src/components/post-grid-item/PostGridItemRender.js src/src/components/post-grid-item/PostGridItemRender.js src/src/components/post-grid-item/PostGridItemRender.js
 msgid "Read more"
 msgstr ""
@@ -1668,6 +1676,10 @@ msgstr ""
 
 #: src/src/blocks/form/edit.js src/src/blocks/form/edit.js
 msgid "Feedback form"
+msgstr ""
+
+#: src/blocks/form/edit.js
+msgid "Write to us — we'll be happy to answer your questions."
 msgstr ""
 
 #: src/src/blocks/form/edit.js src/src/blocks/form/edit.js

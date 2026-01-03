@@ -139,7 +139,7 @@ const FeaturesEdit = ({ attributes, setAttributes, clientId }) => {
 		const columnBlocks = [];
 
 		// First column (if specified) - Card with Title
-		if (firstColumn) {
+		if (firstColumn !== null && firstColumn !== undefined) {
 			const firstColumnAttrs = columnConfig && columnConfig[0] 
 				? columnConfig[0] 
 				: (columnConfig && columnConfig.default ? columnConfig.default : {});
@@ -170,7 +170,7 @@ const FeaturesEdit = ({ attributes, setAttributes, clientId }) => {
 
 		// Feature columns
 		const featureColumns = featureData.map((data, index) => {
-			const featureIndex = firstColumn ? index + 1 : index;
+			const featureIndex = (firstColumn !== null && firstColumn !== undefined) ? index + 1 : index;
 			const featureAttrs = {
 				...featuresConfig,
 				iconName: data.iconName,

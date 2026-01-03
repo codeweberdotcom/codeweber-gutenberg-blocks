@@ -10,18 +10,7 @@ import { generateBackgroundClasses, generateTextColorClass } from '../../utiliti
 
 const normalizeSectionId = (value = '') => value.replace(/^#/, '').trim();
 
-const TEMPLATE = [
-	[
-		'codeweber-blocks/columns',
-		{ columnsCount: 4 },
-		[
-			['codeweber-blocks/column', {}, [['core/html', { content: '' }]]],
-			['codeweber-blocks/column', {}, [['core/html', { content: '' }]]],
-			['codeweber-blocks/column', {}, [['core/html', { content: '' }]]],
-			['codeweber-blocks/column', {}, [['core/html', { content: '' }]]],
-		],
-	],
-];
+const TEMPLATE = [];
 
 const getSectionClasses = (attrs) => {
 	const classes = [];

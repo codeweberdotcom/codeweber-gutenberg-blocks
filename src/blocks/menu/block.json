@@ -1,0 +1,86 @@
+{
+	"apiVersion": 3,
+	"name": "codeweber-blocks/menu",
+	"version": "0.1.0",
+	"title": "Menu",
+	"category": "codeweber-gutenberg-elements",
+	"icon": "menu",
+	"description": "Menu block with Custom and WordPress Menu modes. Supports dark/light theme and list styling options.",
+	"keywords": ["menu", "navigation", "nav", "list"],
+	"supports": {
+		"html": false,
+		"customClassName": true,
+		"anchor": true
+	},
+	"attributes": {
+		"mode": {
+			"type": "string",
+			"default": "custom"
+		},
+		"wpMenuId": {
+			"type": "number",
+			"default": 0
+		},
+		"theme": {
+			"type": "string",
+			"default": "light"
+		},
+		"listType": {
+			"type": "string",
+			"default": "unordered"
+		},
+		"bulletColor": {
+			"type": "string",
+			"default": "primary"
+		},
+		"bulletBg": {
+			"type": "boolean",
+			"default": false
+		},
+		"iconClass": {
+			"type": "string",
+			"default": "uil uil-arrow-right"
+		},
+		"textColor": {
+			"type": "string",
+			"default": ""
+		},
+		"items": {
+			"type": "array",
+			"default": [
+				{
+					"id": "item-1",
+					"text": "About Us",
+					"url": "#"
+				},
+				{
+					"id": "item-2",
+					"text": "Our Story",
+					"url": "#"
+				},
+				{
+					"id": "item-3",
+					"text": "Projects",
+					"url": "#"
+				}
+			]
+		},
+		"menuClass": {
+			"type": "string",
+			"default": "list-unstyled text-reset mb-0"
+		},
+		"menuId": {
+			"type": "string",
+			"default": ""
+		},
+		"menuData": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"textdomain": "codeweber-gutenberg-blocks",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
+}
+

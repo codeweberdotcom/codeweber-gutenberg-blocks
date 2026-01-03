@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Codeweber Gutenberg Blocks\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-02 20:06+0000\n"
-"PO-Revision-Date: 2026-01-02 21:43+0000\n"
+"PO-Revision-Date: 2026-01-03 00:54+0000\n"
 "Last-Translator: Codeweber\n"
 "Language-Team: Русский\n"
 "Language: ru_RU\n"
@@ -736,7 +736,7 @@ msgstr "Блок с цитатой и иконкой"
 #: src/src/components/post-grid-template/PostGridTemplateControl.js
 #: src/src/components/post-grid-template/PostGridTemplateControl.js
 msgid "Blockquote"
-msgstr "Блокцит"
+msgstr "Цитата"
 
 #: src/src/blocks/yandex-map/sidebar.js src/src/blocks/yandex-map/sidebar.js
 msgid "Blue Cluster"
@@ -1849,9 +1849,8 @@ msgid "Enable Card Wrapper"
 msgstr "Включить обертку карточки"
 
 #: src/src/blocks/yandex-map/sidebar.js src/src/blocks/yandex-map/sidebar.js
-#, fuzzy
 msgid "Enable Clustering"
-msgstr "Включить кнопку"
+msgstr "Включить Кластер"
 
 #: src/src/blocks/image-simple/controls/LayoutControl.js
 #: src/src/blocks/image-simple/controls/LayoutControl.js
@@ -1880,9 +1879,8 @@ msgid "Enable links to client posts (disabled by default)"
 msgstr "Включить ссылки на записи клиентов (по умолчанию отключено)"
 
 #: src/src/blocks/lists/sidebar.js src/src/blocks/lists/sidebar.js
-#, fuzzy
 msgid "Enable links to post pages"
-msgstr "Включить ссылки на записи клиентов (по умолчанию отключено)"
+msgstr "v"
 
 #: src/src/components/heading/HeadingContentControl.js
 #: src/src/components/heading/HeadingContentControl.js
@@ -1923,9 +1921,8 @@ msgstr ""
 "или мыши."
 
 #: src/src/blocks/media/sidebar.js src/src/blocks/media/sidebar.js
-#, fuzzy
 msgid "Enable Video Lightbox"
-msgstr "Включить Lightbox"
+msgstr "Включить видеолайтбокс"
 
 #: src/src/components/borders/BorderSettingsPanel.js
 #: src/src/components/borders/BorderSettingsPanel.js
@@ -1983,9 +1980,8 @@ msgid "Enter search query to display all icons"
 msgstr "Введите поисковый запрос для отображения всех иконок"
 
 #: src/src/blocks/yandex-map/sidebar.js src/src/blocks/yandex-map/sidebar.js
-#, fuzzy
 msgid "Enter sidebar title"
-msgstr "Введите подзаголовок..."
+msgstr "Введите заголовок сайдбара"
 
 #: src/src/blocks/heading-subtitle/edit.js
 #: src/src/blocks/heading-subtitle/edit.js
@@ -1999,6 +1995,8 @@ msgid ""
 "Enter text or HTML content. This will be displayed instantly from a hidden "
 "element."
 msgstr ""
+"Введите текст или HTML-контент. Он будет мгновенно отображен в скрытом "
+"элементе."
 
 #: src/src/blocks/accordion/edit.js src/src/blocks/accordion/edit.js
 #: src/src/blocks/feature/edit.js src/src/blocks/feature/edit.js
@@ -2013,9 +2011,8 @@ msgstr "Введите заголовок..."
 #: src/src/blocks/media/components/VideoRender.js
 #: src/src/components/video-url/VideoURLControl.js
 #: src/src/components/video-url/VideoURLControl.js
-#, fuzzy
 msgid "Enter Vimeo video ID"
-msgstr "URL Vimeo видео"
+msgstr "Введите ID видео на Vimeo."
 
 #: src/src/blocks/media/components/VideoRender.js
 #: src/src/blocks/media/components/VideoRender.js
@@ -2024,9 +2021,8 @@ msgstr "ID enter vk video"
 
 #: src/src/blocks/media/components/VideoRender.js
 #: src/src/blocks/media/components/VideoRender.js
-#, fuzzy
 msgid "Enter YouTube video ID"
-msgstr "URL YouTube видео"
+msgstr "Введите ID видео на YouTube."
 
 #: src/src/components/video-url/VideoURLControl.js
 #: src/src/components/video-url/VideoURLControl.js
@@ -2527,6 +2523,14 @@ msgstr "Градиент"
 msgid "Gradient Cards Template"
 msgstr "Шаблон градиентных карточек"
 
+#: src/src/blocks/features/templates.js src/src/blocks/features/templates.js
+msgid "Features"
+msgstr "Особенности"
+
+#: src/src/blocks/features/templates.js src/src/blocks/features/templates.js
+msgid "We create conditions in which it is profitable to work"
+msgstr "Мы создаем условия, в которых выгодно работать"
+
 #: src/src/components/icon/IconControl.js
 #: src/src/components/icon/IconControl.js
 msgid "Gradient Color"
@@ -2564,9 +2568,8 @@ msgid "Group align"
 msgstr "Выравнивание колонки"
 
 #: src/src/blocks/group-button/edit.js src/src/blocks/group-button/edit.js
-#, fuzzy
 msgid "Group Class"
-msgstr "Классы Gap"
+msgstr "Классы Группы"
 
 #: src/src/blocks/group-button/edit.js src/src/blocks/group-button/edit.js
 #, fuzzy
@@ -2777,20 +2780,17 @@ msgid "Image Hotspots"
 msgstr "Изображения HotSpot"
 
 #: src/src/blocks/banners/sidebar.js src/src/blocks/banners/sidebar.js
-#, fuzzy
 msgid "Image Layout"
-msgstr "Макет"
+msgstr "Макет изображения"
 
 #: src/src/blocks/media/controls/MediaControl.js
 #: src/src/blocks/media/controls/MediaControl.js
-#, fuzzy
 msgid "Image Mask"
-msgstr "Изображения"
+msgstr "Маска изображения"
 
 #: src/src/blocks/banners/sidebar.js src/src/blocks/banners/sidebar.js
-#, fuzzy
 msgid "Image Position"
-msgstr "Имя и должность"
+msgstr "Положение изображения"
 
 #: src/src/blocks/banners/sidebar.js src/src/blocks/banners/sidebar.js
 #, fuzzy
@@ -2812,9 +2812,8 @@ msgstr "Размер изображения"
 
 #: src/src/blocks/image-simple/sidebar.js
 #: src/src/blocks/image-simple/sidebar.js
-#, fuzzy
 msgid "Image Tag"
-msgstr "Изображение"
+msgstr "Метка изображения"
 
 #: src/src/blocks/banners/sidebar.js src/src/blocks/banners/sidebar.js
 #, fuzzy
@@ -2843,9 +2842,8 @@ msgid "Individual Approach"
 msgstr "Индивидуальный подход"
 
 #: src/src/blocks/form-field/edit.js src/src/blocks/form-field/edit.js
-#, fuzzy
 msgid "Inline button class"
-msgstr "Классы кнопки"
+msgstr "Встроенный класс кнопки"
 
 #: src/src/blocks/form-field/edit.js src/src/blocks/form-field/edit.js
 #, fuzzy
@@ -2853,9 +2851,8 @@ msgid "Inline button text"
 msgstr "Введите текст кнопки..."
 
 #: src/src/blocks/form-field/edit.js src/src/blocks/form-field/edit.js
-#, fuzzy
 msgid "Inline submit button"
-msgstr "Кнопка отправки"
+msgstr "Встроенная кнопка отправки"
 
 #: inc/ImageHotspotCPT.php:63
 msgid "Interactive image hotspots with tooltips and popups"
@@ -2871,9 +2868,8 @@ msgid "Items (default)"
 msgstr "Элементы (по умолчанию)"
 
 #: src/src/blocks/swiper/edit.js src/src/blocks/swiper/edit.js
-#, fuzzy
 msgid "Items MD (≥768px)"
-msgstr "Колонки MD (≥768px)"
+msgstr "Items MD (≥768px)"
 
 #: src/src/components/responsive-control/helpers.js
 #: src/src/components/responsive-control/helpers.js
@@ -2883,14 +2879,12 @@ msgid "Items Per View"
 msgstr "Элементов на экране"
 
 #: src/src/blocks/swiper/edit.js src/src/blocks/swiper/edit.js
-#, fuzzy
 msgid "Items XL (≥1200px)"
-msgstr "Колонки XL (≥1200px)"
+msgstr "Items XL (≥1200px)"
 
 #: src/src/blocks/swiper/edit.js src/src/blocks/swiper/edit.js
-#, fuzzy
 msgid "Items XS (<576px)"
-msgstr "Колонки SM (≥576px)"
+msgstr "Items XS (<576px)"
 
 #: settings/options_page/restapi.php:35
 msgid "JSON decoding error"
@@ -2903,9 +2897,8 @@ msgstr "Выравнивание содержимого"
 
 #: src/src/components/block-meta/BlockMetaFields.js
 #: src/src/components/block-meta/BlockMetaFields.js
-#, fuzzy
 msgid "key=value,key2=value2"
-msgstr "ключ=значение"
+msgstr "key=value,key2=value2"
 
 #: src/src/blocks/label-plus/edit.js src/src/blocks/label-plus/edit.js
 #: src/src/blocks/label-plus/edit.js src/src/blocks/label-plus/edit.js
@@ -3167,9 +3160,8 @@ msgid "Map Controls"
 msgstr "Элементы управления картой"
 
 #: src/src/blocks/yandex-map/sidebar.js src/src/blocks/yandex-map/sidebar.js
-#, fuzzy
 msgid "Map Height"
-msgstr "Мин. высота"
+msgstr "Высота карты"
 
 #: src/src/blocks/yandex-map/sidebar.js src/src/blocks/yandex-map/sidebar.js
 #, fuzzy
@@ -3291,9 +3283,10 @@ msgid "Max Total File Size"
 msgstr "Размер заголовка"
 
 #: src/src/blocks/form-field/edit.js src/src/blocks/form-field/edit.js
-#, fuzzy
 msgid "Maximum number of files (0 = unlimited). For single file, set to 1."
-msgstr "Максимальное количество файлов: %s. Пожалуйста, удалите лишние файлы."
+msgstr ""
+"Максимальное количество файлов (0 = неограниченное). Для одного файла "
+"установите значение 1."
 
 #: inc/Plugin.php:919
 #, php-format
@@ -3518,9 +3511,8 @@ msgstr "Телефоны не найдены"
 
 #: src/src/components/layout/PositioningControl.js
 #: src/src/components/layout/PositioningControl.js
-#, fuzzy
 msgid "No class"
-msgstr "Класс иконки"
+msgstr "Нет класса"
 
 #: src/src/utilities/link_type.js src/src/utilities/link_type.js
 #, fuzzy
@@ -3562,9 +3554,8 @@ msgid "No hotspots found in trash"
 msgstr "HotSpot не найдены в корзине"
 
 #: src/src/components/icon/IconPicker.js src/src/components/icon/IconPicker.js
-#, fuzzy
 msgid "No icon tabs available"
-msgstr "Контент недоступен"
+msgstr "Вкладки с иконками отсутствуют"
 
 #: src/src/components/icon/IconPicker.js src/src/components/icon/IconPicker.js
 #: src/src/components/icon/IconPicker.js src/src/components/icon/IconPicker.js
@@ -3706,9 +3697,8 @@ msgstr "Количество элементов, загружаемых при �
 
 #: src/src/components/responsive-control/helpers.js
 #: src/src/components/responsive-control/helpers.js
-#, fuzzy
 msgid "Number of items to display at each breakpoint"
-msgstr "Количество колонок на каждой точке останова"
+msgstr "Количество элементов для отображения"
 
 #: src/src/blocks/lists/sidebar.js src/src/blocks/lists/sidebar.js
 #: src/src/blocks/post-grid/controls/MainControl.js
@@ -4310,9 +4300,8 @@ msgid "Rounded-xl (0.8rem - Theme)"
 msgstr "Rounded-xl (0.8rem - Тема)"
 
 #: src/src/blocks/yandex-map/sidebar.js src/src/blocks/yandex-map/sidebar.js
-#, fuzzy
 msgid "Route Button"
-msgstr "Кнопка отправки"
+msgstr "Кнопка \"Маршрут\""
 
 #: src/src/components/grid-control/GridControl.js
 #: src/src/components/grid-control/GridControl.js
@@ -4378,9 +4367,8 @@ msgid "Section"
 msgstr "Секция"
 
 #: src/src/blocks/banners/sidebar.js src/src/blocks/banners/sidebar.js
-#, fuzzy
 msgid "Section Classes"
-msgstr "Классы кнопки"
+msgstr "Классы секции"
 
 #: src/src/components/section/SectionSettingsPanel.js
 #: src/src/components/section/SectionSettingsPanel.js
@@ -4598,9 +4586,8 @@ msgstr "Отправить"
 
 #: src/src/blocks/form/edit.js src/src/blocks/form/edit.js
 #: src/src/blocks/submit-button/edit.js src/src/blocks/submit-button/edit.js
-#, fuzzy
 msgid "Send Message"
-msgstr "Сообщение об успехе"
+msgstr "Отправить"
 
 #: src/src/components/post-grid-item/PostGridItemRender.js
 #: src/src/components/post-grid-item/PostGridItemRender.js
@@ -4666,9 +4653,8 @@ msgstr "Показать дополнительные данные"
 
 #: src/src/blocks/yandex-map/sidebar.js src/src/blocks/yandex-map/sidebar.js
 #: src/src/blocks/yandex-map/sidebar.js src/src/blocks/yandex-map/sidebar.js
-#, fuzzy
 msgid "Show Address"
-msgstr "Показать еще"
+msgstr "Показать Адрес"
 
 #: build/blocks/post-grid/render.php:82 src/blocks/post-grid/render.php:82
 msgid "Show All"
@@ -4686,34 +4672,29 @@ msgstr "Показать city"
 
 #: src/src/blocks/media/controls/MediaControl.js
 #: src/src/blocks/media/controls/MediaControl.js
-#, fuzzy
 msgid "Show Controls"
-msgstr "Показать еще"
+msgstr "Показать Элементы управления"
 
 #: src/src/blocks/yandex-map/sidebar.js src/src/blocks/yandex-map/sidebar.js
 #: src/src/blocks/yandex-map/sidebar.js src/src/blocks/yandex-map/sidebar.js
-#, fuzzy
 msgid "Show Description"
-msgstr "Показать имя и должность"
+msgstr "Показать Описание"
 
 #: src/src/blocks/swiper/edit.js src/src/blocks/swiper/edit.js
-#, fuzzy
 msgid "Show Dots"
-msgstr "Показать еще"
+msgstr "Показать Точки"
 
 #: src/src/blocks/yandex-map/sidebar.js src/src/blocks/yandex-map/sidebar.js
-#, fuzzy
 msgid "Show Filters"
-msgstr "Показать все"
+msgstr "Показать Фильтры"
 
 #: src/src/blocks/form-field/edit.js src/src/blocks/form-field/edit.js
 msgid "Show for guests only"
 msgstr "Показывать только гостям"
 
 #: src/src/blocks/yandex-map/sidebar.js src/src/blocks/yandex-map/sidebar.js
-#, fuzzy
 msgid "Show Link"
-msgstr "Ссылка"
+msgstr "Показать ссылку"
 
 #: build/blocks/post-grid/render.php:77 src/blocks/post-grid/render.php:77
 msgid "Show More"
@@ -4724,9 +4705,8 @@ msgid "Show More Items"
 msgstr "Показать больше"
 
 #: src/src/blocks/swiper/edit.js src/src/blocks/swiper/edit.js
-#, fuzzy
 msgid "Show Navigation"
-msgstr "Навигация"
+msgstr "Показать Навигацию"
 
 #: src/src/blocks/image-simple/controls/LayoutControl.js
 #: src/src/blocks/image-simple/controls/LayoutControl.js
@@ -4737,9 +4717,8 @@ msgstr "Показывать индикатор точек/буллетов вн
 
 #: src/src/blocks/yandex-map/sidebar.js src/src/blocks/yandex-map/sidebar.js
 #: src/src/blocks/yandex-map/sidebar.js src/src/blocks/yandex-map/sidebar.js
-#, fuzzy
 msgid "Show Phone"
-msgstr "Показать еще"
+msgstr "Показать Телефон"
 
 #: src/src/blocks/media/controls/MediaControl.js
 #: src/src/blocks/media/controls/MediaControl.js
@@ -4774,14 +4753,12 @@ msgid "Sidebar Item Fields"
 msgstr "Поля элементов боковой панели"
 
 #: src/src/blocks/yandex-map/sidebar.js src/src/blocks/yandex-map/sidebar.js
-#, fuzzy
 msgid "Sidebar Position"
-msgstr "Ваша должность"
+msgstr "Позиция Сайдбара"
 
 #: src/src/blocks/yandex-map/sidebar.js src/src/blocks/yandex-map/sidebar.js
-#, fuzzy
 msgid "Sidebar Settings"
-msgstr "Настройки файла"
+msgstr "Настройки Сайдбара"
 
 #: src/src/blocks/yandex-map/sidebar.js src/src/blocks/yandex-map/sidebar.js
 msgid "Sidebar Title"
@@ -4822,9 +4799,8 @@ msgid "Single"
 msgstr "Одиночный"
 
 #: src/src/blocks/form-field/edit.js src/src/blocks/form-field/edit.js
-#, fuzzy
 msgid "Single file"
-msgstr "Одиночный"
+msgstr "Одиночный файл"
 
 #: src/src/blocks/avatar/sidebar.js src/src/blocks/avatar/sidebar.js
 #: src/src/blocks/paragraph/edit.js src/src/blocks/paragraph/edit.js
@@ -4844,14 +4820,12 @@ msgid "Size from 1 to 25 (w-1 to w-25, h-1 to h-25)"
 msgstr "Размер от 1 до 25 (w-1 до w-25, h-1 до h-25)"
 
 #: src/src/blocks/avatar/sidebar.js src/src/blocks/avatar/sidebar.js
-#, fuzzy
 msgid "Size Settings"
-msgstr "Настройки файла"
+msgstr "Настройки Размера"
 
 #: src/src/blocks/swiper/edit.js src/src/blocks/swiper/edit.js
-#, fuzzy
 msgid "Slide"
-msgstr "Слайдер"
+msgstr "Слайд"
 
 #: src/src/components/animation/Animation.js
 #: src/src/components/animation/Animation.js
@@ -4893,6 +4867,8 @@ msgid ""
 "Slider wrapper will adapt its height to the height of the currently active "
 "slide."
 msgstr ""
+"Высота оболочки слайдера будет изменяться в соответствии с высотой текущего "
+"активного слайда."
 
 #: src/src/blocks/image-simple/controls/LayoutControl.js
 #: src/src/blocks/image-simple/controls/LayoutControl.js
@@ -4902,10 +4878,13 @@ msgid ""
 "Slides will have auto width based on their content. Overrides items per view "
 "settings."
 msgstr ""
+"Ширина слайдов будет устанавливаться автоматически в зависимости от их "
+"содержимого. Это переопределяет настройки количества элементов в окне "
+"просмотра."
 
 #: inc/ImageHotspotCPT.php:232
 msgid "Small"
-msgstr "Маленький"
+msgstr "Small"
 
 #: src/src/components/adaptive/AdaptiveControl.js
 #: src/src/components/adaptive/AdaptiveControl.js
@@ -4913,13 +4892,12 @@ msgstr "Маленький"
 #: src/src/components/spacing/SpacingControl.js
 #: src/src/components/spacing/SpacingControl.js
 msgid "Small (sm) ≥576px"
-msgstr "Маленький (sm) ≥576px"
+msgstr "Small (sm) ≥576px"
 
 #: src/src/components/responsive-control/helpers.js
 #: src/src/components/responsive-control/helpers.js
-#, fuzzy
 msgid "Small (≥576px)"
-msgstr "Маленький (sm) ≥576px"
+msgstr "Small (≥576px)"
 
 #: src/src/blocks/button/sidebar.js src/src/blocks/button/sidebar.js
 msgid "Social Icon Class"
@@ -4989,9 +4967,8 @@ msgstr "Промежуток между элементами сетки (обе 
 
 #: src/src/components/grid-control/GridControl.js
 #: src/src/components/grid-control/GridControl.js
-#, fuzzy
 msgid "Spacing Size"
-msgstr "Тип отступа"
+msgstr "Размер отступа"
 
 #: src/src/components/grid-control/GridControl.js
 #: src/src/components/grid-control/GridControl.js
@@ -5127,30 +5104,25 @@ msgid "Swiper"
 msgstr "Слайдер"
 
 #: src/src/blocks/swiper/edit.js src/src/blocks/swiper/edit.js
-#, fuzzy
 msgid "Swiper Class"
-msgstr "Класс заголовка"
+msgstr "Swiper Класс"
 
 #: src/src/blocks/swiper/edit.js src/src/blocks/swiper/edit.js
-#, fuzzy
 msgid "Swiper Data"
-msgstr "Слайдер"
+msgstr "Swiper Data"
 
 #: src/src/blocks/swiper/edit.js src/src/blocks/swiper/edit.js
-#, fuzzy
 msgid "Swiper ID"
-msgstr "Слайдер"
+msgstr "Swiper ID"
 
 #: src/src/blocks/swiper/edit.js src/src/blocks/swiper/edit.js
-#, fuzzy
 msgid "Swiper Settings"
-msgstr "Настройки файла"
+msgstr "Swiper Настройки"
 
 #: src/src/blocks/post-grid/controls/LayoutControl.js
 #: src/src/blocks/post-grid/controls/LayoutControl.js
-#, fuzzy
 msgid "Swiper Slide Class"
-msgstr "Класс подзаголовка"
+msgstr "Swiper Slide Class"
 
 #: src/src/blocks/image-simple/controls/LayoutControl.js
 #: src/src/blocks/image-simple/controls/LayoutControl.js
@@ -5160,6 +5132,8 @@ msgid ""
 "Swiper will recalculate slides position on window resize (orientation change)"
 "."
 msgstr ""
+"Swiper будет пересчитывать положение слайдов при изменении размера окна "
+"(изменении ориентации)."
 
 #: src/src/blocks/post-grid/controls/LayoutControl.js
 #: src/src/blocks/post-grid/controls/LayoutControl.js
@@ -5247,14 +5221,12 @@ msgstr "Форма отзыва"
 #: src/src/components/post-grid-item/PostGridItemRender.js
 #: src/src/components/post-grid-item/PostGridItemRender.js
 #: src/src/components/post-grid-item/PostGridItemRender.js
-#, fuzzy
 msgid "Testimonial text"
-msgstr "Форма отзыва"
+msgstr "Текст отзыва"
 
 #: inc/ImageHotspotCPT.php:342
-#, fuzzy
 msgid "Text"
-msgstr "Текстовая область"
+msgstr "Текст"
 
 #: src/src/components/layout/PositioningControl.js
 #: src/src/components/layout/PositioningControl.js
@@ -5389,9 +5361,8 @@ msgstr "Подсказка"
 
 #: src/src/components/image-hover/ImageHoverControl.js
 #: src/src/components/image-hover/ImageHoverControl.js
-#, fuzzy
 msgid "Tooltip Style"
-msgstr "Тип подсказки"
+msgstr "Стиль подсказки"
 
 #: inc/ImageHotspotCPT.php:265
 msgid "Top"
@@ -5476,9 +5447,8 @@ msgstr "Без названия"
 
 #: src/src/blocks/yandex-map/controls/MarkerRepeaterControl.js
 #: src/src/blocks/yandex-map/controls/MarkerRepeaterControl.js
-#, fuzzy
 msgid "Untitled Marker"
-msgstr "Без названия"
+msgstr "Безымянный маркер"
 
 #: src/src/components/angled/AngledControl.js
 #: src/src/components/angled/AngledControl.js
@@ -5506,9 +5476,8 @@ msgid "Upload complete"
 msgstr "Загрузка завершена"
 
 #: inc/ImageHotspotCPT.php:188
-#, fuzzy
 msgid "Upload Image"
-msgstr "Загрузка завершена"
+msgstr "Загрузка Фото"
 
 #: src/src/components/icon/IconControl.js
 #: src/src/components/icon/IconControl.js
@@ -5517,15 +5486,13 @@ msgstr "Загрузить SVG"
 
 #: src/src/components/media-upload/VideoUpload.js
 #: src/src/components/media-upload/VideoUpload.js
-#, fuzzy
 msgid "Upload Video"
-msgstr "Загрузить SVG"
+msgstr "Загрузка Видео"
 
 #: src/src/blocks/media/components/VideoRender.js
 #: src/src/blocks/media/components/VideoRender.js
-#, fuzzy
 msgid "Upload video file"
-msgstr "Загрузка завершена"
+msgstr "Загрузка Видео файла"
 
 #: inc/Plugin.php:923
 msgid "Uploading"
@@ -5561,9 +5528,8 @@ msgid "User"
 msgstr "Пользователь"
 
 #: src/src/blocks/avatar/sidebar.js src/src/blocks/avatar/sidebar.js
-#, fuzzy
 msgid "User Avatar Settings"
-msgstr "Настройки аватара"
+msgstr "Настройки аватара пользователя"
 
 #: src/src/blocks/form-field/edit.js src/src/blocks/form-field/edit.js
 msgid "Validation"
@@ -5779,6 +5745,10 @@ msgstr "Обёртка"
 #: src/src/components/icon/IconControl.js
 msgid "Wrapper Style"
 msgstr "Стиль обёртки"
+
+#: src/blocks/form/edit.js
+msgid "Write to us — we'll be happy to answer your questions."
+msgstr "Напишите нам — мы с удовольствием ответим на ваши вопросы."
 
 #: src/src/blocks/yandex-map/edit.js src/src/blocks/yandex-map/edit.js
 msgid "Yandex Map"

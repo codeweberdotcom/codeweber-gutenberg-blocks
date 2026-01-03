@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Codeweber Gutenberg Blocks\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-02 20:06+0000\n"
-"PO-Revision-Date: 2026-01-02 22:16+0000\n"
+"PO-Revision-Date: 2026-01-03 00:48+0000\n"
 "Last-Translator: Codeweber\n"
 "Language-Team: Русский\n"
 "Language: ru_RU\n"
@@ -736,7 +736,7 @@ msgstr "Блок с цитатой и иконкой"
 #: src/src/components/post-grid-template/PostGridTemplateControl.js
 #: src/src/components/post-grid-template/PostGridTemplateControl.js
 msgid "Blockquote"
-msgstr "Блокцит"
+msgstr "Цитата"
 
 #: src/src/blocks/yandex-map/sidebar.js src/src/blocks/yandex-map/sidebar.js
 msgid "Blue Cluster"
@@ -1849,9 +1849,8 @@ msgid "Enable Card Wrapper"
 msgstr "Включить обертку карточки"
 
 #: src/src/blocks/yandex-map/sidebar.js src/src/blocks/yandex-map/sidebar.js
-#, fuzzy
 msgid "Enable Clustering"
-msgstr "Включить кнопку"
+msgstr "Включить Кластер"
 
 #: src/src/blocks/image-simple/controls/LayoutControl.js
 #: src/src/blocks/image-simple/controls/LayoutControl.js
@@ -1880,9 +1879,8 @@ msgid "Enable links to client posts (disabled by default)"
 msgstr "Включить ссылки на записи клиентов (по умолчанию отключено)"
 
 #: src/src/blocks/lists/sidebar.js src/src/blocks/lists/sidebar.js
-#, fuzzy
 msgid "Enable links to post pages"
-msgstr "Включить ссылки на записи клиентов (по умолчанию отключено)"
+msgstr "v"
 
 #: src/src/components/heading/HeadingContentControl.js
 #: src/src/components/heading/HeadingContentControl.js
@@ -1923,9 +1921,8 @@ msgstr ""
 "или мыши."
 
 #: src/src/blocks/media/sidebar.js src/src/blocks/media/sidebar.js
-#, fuzzy
 msgid "Enable Video Lightbox"
-msgstr "Включить Lightbox"
+msgstr "Включить видеолайтбокс"
 
 #: src/src/components/borders/BorderSettingsPanel.js
 #: src/src/components/borders/BorderSettingsPanel.js
@@ -1983,9 +1980,8 @@ msgid "Enter search query to display all icons"
 msgstr "Введите поисковый запрос для отображения всех иконок"
 
 #: src/src/blocks/yandex-map/sidebar.js src/src/blocks/yandex-map/sidebar.js
-#, fuzzy
 msgid "Enter sidebar title"
-msgstr "Введите подзаголовок..."
+msgstr "Введите заголовок сайдбара"
 
 #: src/src/blocks/heading-subtitle/edit.js
 #: src/src/blocks/heading-subtitle/edit.js
@@ -1999,6 +1995,8 @@ msgid ""
 "Enter text or HTML content. This will be displayed instantly from a hidden "
 "element."
 msgstr ""
+"Введите текст или HTML-контент. Он будет мгновенно отображен в скрытом "
+"элементе."
 
 #: src/src/blocks/accordion/edit.js src/src/blocks/accordion/edit.js
 #: src/src/blocks/feature/edit.js src/src/blocks/feature/edit.js
@@ -2013,9 +2011,8 @@ msgstr "Введите заголовок..."
 #: src/src/blocks/media/components/VideoRender.js
 #: src/src/components/video-url/VideoURLControl.js
 #: src/src/components/video-url/VideoURLControl.js
-#, fuzzy
 msgid "Enter Vimeo video ID"
-msgstr "URL Vimeo видео"
+msgstr "Введите ID видео на Vimeo."
 
 #: src/src/blocks/media/components/VideoRender.js
 #: src/src/blocks/media/components/VideoRender.js
@@ -2024,9 +2021,8 @@ msgstr "ID enter vk video"
 
 #: src/src/blocks/media/components/VideoRender.js
 #: src/src/blocks/media/components/VideoRender.js
-#, fuzzy
 msgid "Enter YouTube video ID"
-msgstr "URL YouTube видео"
+msgstr "Введите ID видео на YouTube."
 
 #: src/src/components/video-url/VideoURLControl.js
 #: src/src/components/video-url/VideoURLControl.js
@@ -2564,9 +2560,8 @@ msgid "Group align"
 msgstr "Выравнивание колонки"
 
 #: src/src/blocks/group-button/edit.js src/src/blocks/group-button/edit.js
-#, fuzzy
 msgid "Group Class"
-msgstr "Классы Gap"
+msgstr "Классы Группы"
 
 #: src/src/blocks/group-button/edit.js src/src/blocks/group-button/edit.js
 #, fuzzy
@@ -2782,14 +2777,12 @@ msgstr "Макет изображения"
 
 #: src/src/blocks/media/controls/MediaControl.js
 #: src/src/blocks/media/controls/MediaControl.js
-#, fuzzy
 msgid "Image Mask"
-msgstr "Изображения"
+msgstr "Маска изображения"
 
 #: src/src/blocks/banners/sidebar.js src/src/blocks/banners/sidebar.js
-#, fuzzy
 msgid "Image Position"
-msgstr "Имя и должность"
+msgstr "Положение изображения"
 
 #: src/src/blocks/banners/sidebar.js src/src/blocks/banners/sidebar.js
 #, fuzzy
@@ -2811,9 +2804,8 @@ msgstr "Размер изображения"
 
 #: src/src/blocks/image-simple/sidebar.js
 #: src/src/blocks/image-simple/sidebar.js
-#, fuzzy
 msgid "Image Tag"
-msgstr "Изображение"
+msgstr "Метка изображения"
 
 #: src/src/blocks/banners/sidebar.js src/src/blocks/banners/sidebar.js
 #, fuzzy
@@ -2842,9 +2834,8 @@ msgid "Individual Approach"
 msgstr "Индивидуальный подход"
 
 #: src/src/blocks/form-field/edit.js src/src/blocks/form-field/edit.js
-#, fuzzy
 msgid "Inline button class"
-msgstr "Классы кнопки"
+msgstr "Встроенный класс кнопки"
 
 #: src/src/blocks/form-field/edit.js src/src/blocks/form-field/edit.js
 #, fuzzy
@@ -3512,9 +3503,8 @@ msgstr "Телефоны не найдены"
 
 #: src/src/components/layout/PositioningControl.js
 #: src/src/components/layout/PositioningControl.js
-#, fuzzy
 msgid "No class"
-msgstr "Класс иконки"
+msgstr "Нет класса"
 
 #: src/src/utilities/link_type.js src/src/utilities/link_type.js
 #, fuzzy
@@ -4369,9 +4359,8 @@ msgid "Section"
 msgstr "Секция"
 
 #: src/src/blocks/banners/sidebar.js src/src/blocks/banners/sidebar.js
-#, fuzzy
 msgid "Section Classes"
-msgstr "Классы кнопки"
+msgstr "Классы секции"
 
 #: src/src/components/section/SectionSettingsPanel.js
 #: src/src/components/section/SectionSettingsPanel.js

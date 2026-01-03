@@ -19,6 +19,17 @@ const MenuSave = ({ attributes }) => {
 		menuClass,
 		menuId,
 		menuData,
+		itemClass,
+		enableWidget,
+		enableTitle,
+		title,
+		titleTag,
+		titleClass,
+		titleColor,
+		titleColorType,
+		titleSize,
+		titleWeight,
+		titleTransform,
 	} = attributes;
 
 	// Если режим "WP Menu", возвращаем null - будет использоваться PHP render
@@ -40,9 +51,10 @@ const MenuSave = ({ attributes }) => {
 		} else if (listType === 'icon') {
 			classes.push('icon-list');
 		}
+		// Если listType === 'none', не добавляем никаких классов списка
 
-		// Bullet color
-		if (bulletColor && bulletColor !== 'none') {
+		// Bullet color (только если не 'none' и listType не 'none')
+		if (listType !== 'none' && bulletColor && bulletColor !== 'none') {
 			classes.push(`bullet-${bulletColor}`);
 		}
 
@@ -64,7 +76,6 @@ const MenuSave = ({ attributes }) => {
 	};
 
 	const blockProps = useBlockProps.save({
-		className: theme === 'dark' ? 'menu-dark' : 'menu-light',
 		id: menuId || undefined,
 	});
 
@@ -82,22 +93,74 @@ const MenuSave = ({ attributes }) => {
 		return dataAttrs;
 	};
 
+	// Generate title classes
+	const getTitleClasses = () => {
+		const classes = ['widget-title'];
+		
+		// Color classes
+		let hasColorClass = false;
+		if (titleColor) {
+			const colorClass = generateColorClass(titleColor, titleColorType, 'text');
+			if (colorClass) {
+				classes.push(colorClass);
+				hasColorClass = true;
+			}
+		}
+
+		// Add theme color class only if no custom color is set
+		if (!hasColorClass) {
+			if (theme === 'dark') {
+				classes.push('text-white');
+			} else {
+				classes.push('text-dark');
+			}
+		}
+
+		// Typography classes
+		const typographyClasses = generateTypographyClasses(attributes, 'title');
+		classes.push(...typographyClasses);
+
+		// Custom class
+		if (titleClass) {
+			classes.push(titleClass);
+		}
+
+		return classes.filter(Boolean).join(' ');
+	};
+
+	const content = (
+		<ul className={getListClasses()}>
+			{items.map((item) => (
+				<li key={item.id} className={itemClass || ''}>
+					{listType === 'icon' && (
+						<span><i className={iconClass || 'uil uil-arrow-right'}></i></span>
+					)}
+					<span className={theme === 'dark' ? 'text-white' : 'text-dark'}>
+						<a href={item.url || '#'}>
+							<RichText.Content tagName="span" value={item.text} />
+						</a>
+					</span>
+				</li>
+			))}
+		</ul>
+	);
+
 	return (
 		<div {...blockProps} {...getDataAttributes()}>
-			<ul className={getListClasses()}>
-				{items.map((item) => (
-					<li key={item.id}>
-						{listType === 'icon' && (
-							<span><i className={iconClass || 'uil uil-arrow-right'}></i></span>
-						)}
-						<span>
-							<a href={item.url || '#'}>
-								<RichText.Content tagName="span" value={item.text} />
-							</a>
-						</span>
-					</li>
-				))}
-			</ul>
+			{enableWidget ? (
+				<div className="widget">
+					{enableTitle && title && (
+						<RichText.Content
+							tagName={titleTag || 'h4'}
+							value={title}
+							className={getTitleClasses()}
+						/>
+					)}
+					{content}
+				</div>
+			) : (
+				content
+			)}
 		</div>
 	);
 };

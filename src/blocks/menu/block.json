@@ -27,7 +27,7 @@
 		},
 		"listType": {
 			"type": "string",
-			"default": "unordered"
+			"default": "none"
 		},
 		"bulletColor": {
 			"type": "string",
@@ -76,6 +76,50 @@
 		"menuData": {
 			"type": "string",
 			"default": ""
+		},
+		"itemClass": {
+			"type": "string",
+			"default": ""
+		},
+		"enableWidget": {
+			"type": "boolean",
+			"default": false
+		},
+		"enableTitle": {
+			"type": "boolean",
+			"default": false
+		},
+		"title": {
+			"type": "string",
+			"default": ""
+		},
+		"titleTag": {
+			"type": "string",
+			"default": "h4"
+		},
+		"titleColor": {
+			"type": "string",
+			"default": ""
+		},
+		"titleColorType": {
+			"type": "string",
+			"default": "solid"
+		},
+		"titleSize": {
+			"type": "string",
+			"default": ""
+		},
+		"titleWeight": {
+			"type": "string",
+			"default": ""
+		},
+		"titleTransform": {
+			"type": "string",
+			"default": ""
+		},
+		"titleClass": {
+			"type": "string",
+			"default": "mb-3"
 		}
 	},
 	"textdomain": "codeweber-gutenberg-blocks",

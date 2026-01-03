@@ -51,3 +51,4 @@ console.log(`\n📄 PO file updated: ${poPath}`);
 console.log('\n💡 These strings now have empty translations and need to be translated in Loco Translate');
 console.log('   Run: npm run i18n:compile to compile translations\n');
 
+

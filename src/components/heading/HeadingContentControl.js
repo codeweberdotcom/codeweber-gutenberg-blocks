@@ -3,7 +3,7 @@ import { ToggleControl, BaseControl } from '@wordpress/components';
 import { RichText } from '@wordpress/block-editor';
 import { createHeadingTagOptions, createSubtitleTagOptions } from '../../blocks/heading-subtitle/utils';
 
-export const HeadingContentControl = ({ attributes, setAttributes, hideSubtitle = false }) => {
+export const HeadingContentControl = ({ attributes, setAttributes, hideSubtitle = false, hideText = false, hideTitle = false }) => {
     const {
         enableTitle,
         enableSubtitle,
@@ -19,11 +19,13 @@ export const HeadingContentControl = ({ attributes, setAttributes, hideSubtitle 
 
     return (
         <>
-            <ToggleControl
-                label={__('Enable Title', 'codeweber-gutenberg-blocks')}
-                checked={enableTitle}
-                onChange={(value) => setAttributes({ enableTitle: value })}
-            />
+            {!hideTitle && (
+                <ToggleControl
+                    label={__('Enable Title', 'codeweber-gutenberg-blocks')}
+                    checked={enableTitle}
+                    onChange={(value) => setAttributes({ enableTitle: value })}
+                />
+            )}
             {!hideSubtitle && (
                 <>
                     <ToggleControl
@@ -33,11 +35,13 @@ export const HeadingContentControl = ({ attributes, setAttributes, hideSubtitle 
                     />
                 </>
             )}
-            <ToggleControl
-                label={__('Enable Paragraph', 'codeweber-gutenberg-blocks')}
-                checked={enableText}
-                onChange={(value) => setAttributes({ enableText: value })}
-            />
+            {!hideText && (
+                <ToggleControl
+                    label={__('Enable Paragraph', 'codeweber-gutenberg-blocks')}
+                    checked={enableText}
+                    onChange={(value) => setAttributes({ enableText: value })}
+                />
+            )}
             {!hideSubtitle && (
                 <>
                     <ToggleControl

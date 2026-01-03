@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Codeweber Gutenberg Blocks\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-02 20:06+0000\n"
-"PO-Revision-Date: 2026-01-03 01:57+0000\n"
+"PO-Revision-Date: 2026-01-03 11:08+0000\n"
 "Last-Translator: Codeweber\n"
 "Language-Team: Русский\n"
 "Language: ru_RU\n"
@@ -20,7 +20,7 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-0: node_modules\n"
 "X-Poedit-SearchPathExcluded-1: build\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Loco-Version: 2.8.0; wp-6.9; php-8.1.10\n"
+"X-Loco-Version: 2.8.0; wp-6.9; php-8.1.10"
 
 #: src/src/blocks/accordion/edit.js src/src/blocks/accordion/edit.js
 msgid "+ Add Accordion Item"
@@ -1257,11 +1257,11 @@ msgstr "Классы ширины колонок"
 #: src/src/components/responsive-control/helpers.js
 #: src/src/components/responsive-control/helpers.js
 msgid "Columns"
-msgstr "Колонки"
+msgstr "Columns"
 
 #: src/src/blocks/lists/index.js src/src/blocks/lists/index.js
 msgid "columns"
-msgstr "колонки"
+msgstr "columns"
 
 #: src/src/blocks/columns/edit.js src/src/blocks/columns/edit.js
 msgid "Columns align"
@@ -5435,7 +5435,7 @@ msgstr "Уникальный идентификатор поля (наприме
 
 #: src/src/blocks/lists/sidebar.js src/src/blocks/lists/sidebar.js
 msgid "Unordered"
-msgstr "Маркированный"
+msgstr "Маркер"
 
 #: settings/options_page/class-options-tabs.php:142
 msgid "Untitled"

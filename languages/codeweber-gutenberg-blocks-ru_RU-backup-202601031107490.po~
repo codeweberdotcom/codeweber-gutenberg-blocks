@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Codeweber Gutenberg Blocks\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-02 20:06+0000\n"
-"PO-Revision-Date: 2026-01-03 00:53+0000\n"
+"PO-Revision-Date: 2026-01-03 08:56+0000\n"
 "Last-Translator: Codeweber\n"
 "Language-Team: Русский\n"
 "Language: ru_RU\n"
@@ -20,7 +20,7 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-0: node_modules\n"
 "X-Poedit-SearchPathExcluded-1: build\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Loco-Version: 2.8.0; wp-6.9; php-8.1.10\n"
+"X-Loco-Version: 2.8.0; wp-6.9; php-8.1.10"
 
 #: src/src/blocks/accordion/edit.js src/src/blocks/accordion/edit.js
 msgid "+ Add Accordion Item"
@@ -2185,6 +2185,10 @@ msgstr "Тип 3"
 #, fuzzy
 msgid "Feature Settings"
 msgstr "Настройки аватара"
+
+#: src/src/blocks/features/templates.js src/src/blocks/features/templates.js
+msgid "Features"
+msgstr "Преимущества"
 
 #: src/src/blocks/form/edit.js src/src/blocks/form/edit.js
 msgid "Feedback form"
@@ -4578,9 +4582,8 @@ msgstr "Отправить"
 
 #: src/src/blocks/form/edit.js src/src/blocks/form/edit.js
 #: src/src/blocks/submit-button/edit.js src/src/blocks/submit-button/edit.js
-#, fuzzy
 msgid "Send Message"
-msgstr "Сообщение об успехе"
+msgstr "Отправить"
 
 #: src/src/components/post-grid-item/PostGridItemRender.js
 #: src/src/components/post-grid-item/PostGridItemRender.js
@@ -5432,7 +5435,7 @@ msgstr "Уникальный идентификатор поля (наприме
 
 #: src/src/blocks/lists/sidebar.js src/src/blocks/lists/sidebar.js
 msgid "Unordered"
-msgstr "Маркированный"
+msgstr "Маркер"
 
 #: settings/options_page/class-options-tabs.php:142
 msgid "Untitled"
@@ -5684,6 +5687,10 @@ msgstr "Тип Волны"
 #: src/src/blocks/section/sidebar.js src/src/blocks/section/sidebar.js
 msgid "Waves"
 msgstr "Волны"
+
+#: src/src/blocks/features/templates.js src/src/blocks/features/templates.js
+msgid "We create conditions in which it is profitable to work"
+msgstr "Мы создаем условия, в которых выгодно работать"
 
 #: src/src/blocks/form-field/edit.js src/src/blocks/form-field/edit.js
 msgid "Website"

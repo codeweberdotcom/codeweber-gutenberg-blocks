@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Codeweber Gutenberg Blocks\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-02 20:06+0000\n"
-"PO-Revision-Date: 2026-01-03 00:48+0000\n"
+"PO-Revision-Date: 2026-01-03 01:57+0000\n"
 "Last-Translator: Codeweber\n"
 "Language-Team: Русский\n"
 "Language: ru_RU\n"
@@ -2185,6 +2185,10 @@ msgstr "Тип 3"
 #, fuzzy
 msgid "Feature Settings"
 msgstr "Настройки аватара"
+
+#: src/src/blocks/features/templates.js src/src/blocks/features/templates.js
+msgid "Features"
+msgstr "Преимущества"
 
 #: src/src/blocks/form/edit.js src/src/blocks/form/edit.js
 msgid "Feedback form"
@@ -4578,9 +4582,8 @@ msgstr "Отправить"
 
 #: src/src/blocks/form/edit.js src/src/blocks/form/edit.js
 #: src/src/blocks/submit-button/edit.js src/src/blocks/submit-button/edit.js
-#, fuzzy
 msgid "Send Message"
-msgstr "Сообщение об успехе"
+msgstr "Отправить"
 
 #: src/src/components/post-grid-item/PostGridItemRender.js
 #: src/src/components/post-grid-item/PostGridItemRender.js
@@ -5685,6 +5688,10 @@ msgstr "Тип Волны"
 msgid "Waves"
 msgstr "Волны"
 
+#: src/src/blocks/features/templates.js src/src/blocks/features/templates.js
+msgid "We create conditions in which it is profitable to work"
+msgstr "Мы создаем условия, в которых выгодно работать"
+
 #: src/src/blocks/form-field/edit.js src/src/blocks/form-field/edit.js
 msgid "Website"
 msgstr "Веб-сайт"
@@ -5738,6 +5745,10 @@ msgstr "Обёртка"
 #: src/src/components/icon/IconControl.js
 msgid "Wrapper Style"
 msgstr "Стиль обёртки"
+
+#: src/blocks/form/edit.js
+msgid "Write to us — we'll be happy to answer your questions."
+msgstr "Напишите нам — мы с удовольствием ответим на ваши вопросы."
 
 #: src/src/blocks/yandex-map/edit.js src/src/blocks/yandex-map/edit.js
 msgid "Yandex Map"

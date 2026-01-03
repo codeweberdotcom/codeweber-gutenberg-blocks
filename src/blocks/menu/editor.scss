@@ -86,5 +86,26 @@
 		visibility: visible;
 		pointer-events: auto;
 	}
+
+	// Dark/Light theme support in editor
+	&.menu-dark {
+		a {
+			color: #fff !important;
+			
+			&:hover {
+				color: rgba(255, 255, 255, 0.8) !important;
+			}
+		}
+		
+		.text-white {
+			color: #fff !important;
+		}
+	}
+
+	&.menu-light {
+		a {
+			color: inherit;
+		}
+	}
 }
 

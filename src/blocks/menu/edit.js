@@ -14,6 +14,7 @@ import { Button } from '@wordpress/components';
 import { useEffect, useRef, useState } from '@wordpress/element';
 import apiFetch from '@wordpress/api-fetch';
 import { MenuSidebar } from './sidebar';
+import { generateColorClass, generateTypographyClasses } from '../../utilities/class-generators';
 
 const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 	const {
@@ -29,6 +30,17 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 		menuClass,
 		menuId,
 		menuData,
+		itemClass,
+		enableWidget,
+		enableTitle,
+		title,
+		titleTag,
+		titleClass,
+		titleColor,
+		titleColorType,
+		titleSize,
+		titleWeight,
+		titleTransform,
 	} = attributes;
 
 	const previousModeRef = useRef(mode);
@@ -177,9 +189,10 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 		} else if (listType === 'icon') {
 			classes.push('icon-list');
 		}
+		// Если listType === 'none', не добавляем никаких классов списка
 
-		// Bullet color
-		if (bulletColor && bulletColor !== 'none') {
+		// Bullet color (только если не 'none' и listType не 'none')
+		if (listType !== 'none' && bulletColor && bulletColor !== 'none') {
 			classes.push(`bullet-${bulletColor}`);
 		}
 
@@ -201,7 +214,6 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 	};
 
 	const blockProps = useBlockProps({
-		className: theme === 'dark' ? 'menu-dark' : 'menu-light',
 		id: menuId || undefined,
 	});
 
@@ -219,6 +231,126 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 		return dataAttrs;
 	};
 
+	// Generate title classes
+	const getTitleClasses = () => {
+		const classes = ['widget-title'];
+		
+		// Color classes
+		let hasColorClass = false;
+		if (titleColor) {
+			const colorClass = generateColorClass(titleColor, titleColorType, 'text');
+			if (colorClass) {
+				classes.push(colorClass);
+				hasColorClass = true;
+			}
+		}
+
+		// Add theme color class only if no custom color is set
+		if (!hasColorClass) {
+			if (theme === 'dark') {
+				classes.push('text-white');
+			} else {
+				classes.push('text-dark');
+			}
+		}
+
+		// Typography classes
+		const typographyClasses = generateTypographyClasses(attributes, 'title');
+		classes.push(...typographyClasses);
+
+		// Custom class
+		if (titleClass) {
+			classes.push(titleClass);
+		}
+
+		return classes.filter(Boolean).join(' ');
+	};
+
+	const menuContent = (
+		<>
+			{isLoadingMenu && (
+				<div style={{ padding: '20px', textAlign: 'center' }}>
+					{__('Loading menu...', 'codeweber-gutenberg-blocks')}
+				</div>
+			)}
+			{!isLoadingMenu && items.length === 0 && mode === 'wp-menu' && (
+				<div style={{ padding: '20px', textAlign: 'center' }}>
+					{__('No menu items found. Please select a WordPress menu.', 'codeweber-gutenberg-blocks')}
+				</div>
+			)}
+			{(mode === 'wp-menu' ? (items.length > 0 && !isLoadingMenu) : true) && (
+				<ul className={getListClasses()}>
+					{items.map((item, index) => (
+						<li key={item.id} className={itemClass || ''} style={{ position: 'relative' }}>
+							{listType === 'icon' && (
+								<span><i className={iconClass || 'uil uil-arrow-right'}></i></span>
+							)}
+							<span className={theme === 'dark' ? 'text-white' : 'text-dark'}>
+								{mode === 'custom' ? (
+									<>
+										<a href={item.url || '#'} style={{ pointerEvents: 'none' }}>
+											<RichText
+												tagName="span"
+												value={item.text}
+												onChange={(value) => updateItem(index, 'text', value)}
+												placeholder={__('Enter menu item...', 'codeweber-gutenberg-blocks')}
+												withoutInteractiveFormatting
+											/>
+										</a>
+										<div className="menu-item-controls" style={{
+											position: 'absolute',
+											right: '10px',
+											top: '-18px',
+											display: 'flex',
+											gap: '4px',
+											zIndex: 10,
+										}}>
+											<Button
+												isSmall
+												onClick={() => moveItem(index, 'up')}
+												disabled={index === 0}
+												title={__('Move up', 'codeweber-gutenberg-blocks')}
+											>
+												↑
+											</Button>
+											<Button
+												isSmall
+												onClick={() => moveItem(index, 'down')}
+												disabled={index === items.length - 1}
+												title={__('Move down', 'codeweber-gutenberg-blocks')}
+											>
+												↓
+											</Button>
+											<Button
+												isSmall
+												isDestructive
+												onClick={() => removeItem(index)}
+												title={__('Remove', 'codeweber-gutenberg-blocks')}
+											>
+												×
+											</Button>
+										</div>
+									</>
+								) : (
+									<a href={item.url || '#'} style={{ pointerEvents: 'none' }}>{item.text}</a>
+								)}
+							</span>
+						</li>
+					))}
+				</ul>
+			)}
+			{mode === 'custom' && (
+				<Button
+					isPrimary
+					onClick={addItem}
+					style={{ marginTop: '16px' }}
+				>
+					{__('+ Add Menu Item', 'codeweber-gutenberg-blocks')}
+				</Button>
+			)}
+		</>
+	);
+
 	return (
 		<>
 			<InspectorControls>
@@ -230,85 +362,21 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 			</InspectorControls>
 
 			<div {...blockProps} {...getDataAttributes()}>
-				{isLoadingMenu && (
-					<div style={{ padding: '20px', textAlign: 'center' }}>
-						{__('Loading menu...', 'codeweber-gutenberg-blocks')}
+				{enableWidget ? (
+					<div className="widget">
+						{enableTitle && (
+							<RichText
+								tagName={titleTag || 'h4'}
+								value={title}
+								onChange={(value) => setAttributes({ title: value })}
+								placeholder={__('Enter title...', 'codeweber-gutenberg-blocks')}
+								className={getTitleClasses()}
+							/>
+						)}
+						{menuContent}
 					</div>
-				)}
-				{!isLoadingMenu && items.length === 0 && mode === 'wp-menu' && (
-					<div style={{ padding: '20px', textAlign: 'center' }}>
-						{__('No menu items found. Please select a WordPress menu.', 'codeweber-gutenberg-blocks')}
-					</div>
-				)}
-				{(mode === 'wp-menu' ? (items.length > 0 && !isLoadingMenu) : true) && (
-					<ul className={getListClasses()}>
-						{items.map((item, index) => (
-							<li key={item.id} style={{ position: 'relative' }}>
-								{listType === 'icon' && (
-									<span><i className={iconClass || 'uil uil-arrow-right'}></i></span>
-								)}
-								<span>
-									{mode === 'custom' ? (
-										<>
-											<a href={item.url || '#'} style={{ pointerEvents: 'none' }}>
-												<RichText
-													tagName="span"
-													value={item.text}
-													onChange={(value) => updateItem(index, 'text', value)}
-													placeholder={__('Enter menu item...', 'codeweber-gutenberg-blocks')}
-													withoutInteractiveFormatting
-												/>
-											</a>
-											<div className="menu-item-controls" style={{
-												position: 'absolute',
-												right: '10px',
-												top: '-18px',
-												display: 'flex',
-												gap: '4px',
-												zIndex: 10,
-											}}>
-												<Button
-													isSmall
-													onClick={() => moveItem(index, 'up')}
-													disabled={index === 0}
-													title={__('Move up', 'codeweber-gutenberg-blocks')}
-												>
-													↑
-												</Button>
-												<Button
-													isSmall
-													onClick={() => moveItem(index, 'down')}
-													disabled={index === items.length - 1}
-													title={__('Move down', 'codeweber-gutenberg-blocks')}
-												>
-													↓
-												</Button>
-												<Button
-													isSmall
-													isDestructive
-													onClick={() => removeItem(index)}
-													title={__('Remove', 'codeweber-gutenberg-blocks')}
-												>
-													×
-												</Button>
-											</div>
-										</>
-									) : (
-										<a href={item.url || '#'}>{item.text}</a>
-									)}
-								</span>
-							</li>
-						))}
-					</ul>
-				)}
-				{mode === 'custom' && (
-					<Button
-						isPrimary
-						onClick={addItem}
-						style={{ marginTop: '16px' }}
-					>
-						{__('+ Add Menu Item', 'codeweber-gutenberg-blocks')}
-					</Button>
+				) : (
+					menuContent
 				)}
 			</div>
 		</>
@@ -316,4 +384,3 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 };
 
 export default MenuEdit;
-

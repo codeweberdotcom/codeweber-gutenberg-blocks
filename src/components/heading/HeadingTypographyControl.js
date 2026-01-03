@@ -1,4 +1,4 @@
-import { useState } from '@wordpress/element';
+import { useState, useEffect } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { PanelBody, SelectControl, ToggleControl, ComboboxControl, ButtonGroup, Button, TextControl } from '@wordpress/components';
 import { ColorTypeControl } from '../colors/ColorTypeControl';
@@ -11,7 +11,7 @@ import {
 	createLeadOptions,
 } from '../../blocks/heading-subtitle/utils';
 
-export const HeadingTypographyControl = ({ attributes, setAttributes, hideSubtitle = false }) => {
+export const HeadingTypographyControl = ({ attributes, setAttributes, hideSubtitle = false, hideText = false }) => {
     const {
         titleTag,
         subtitleTag,
@@ -41,6 +41,13 @@ export const HeadingTypographyControl = ({ attributes, setAttributes, hideSubtit
 
     const [activeTab, setActiveTab] = useState('title');
 
+    // Если paragraph скрыт и активна вкладка paragraph, переключаемся на title
+    useEffect(() => {
+        if (hideText && activeTab === 'paragraph') {
+            setActiveTab('title');
+        }
+    }, [hideText, activeTab]);
+
     return (
         <div style={{ padding: '16px' }}>
             <ButtonGroup>
@@ -58,12 +65,14 @@ export const HeadingTypographyControl = ({ attributes, setAttributes, hideSubtit
                         {__('Subtitle', 'codeweber-gutenberg-blocks')}
                     </Button>
                 )}
-                <Button
-                    isPrimary={activeTab === 'paragraph'}
-                    onClick={() => setActiveTab('paragraph')}
-                >
-                    {__('Paragraph', 'codeweber-gutenberg-blocks')}
-                </Button>
+                {!hideText && (
+                    <Button
+                        isPrimary={activeTab === 'paragraph'}
+                        onClick={() => setActiveTab('paragraph')}
+                    >
+                        {__('Paragraph', 'codeweber-gutenberg-blocks')}
+                    </Button>
+                )}
             </ButtonGroup>
             {activeTab === 'title' && (
                 <>
@@ -173,7 +182,7 @@ export const HeadingTypographyControl = ({ attributes, setAttributes, hideSubtit
                     />
                 </>
             )}
-            {activeTab === 'paragraph' && (
+            {!hideText && activeTab === 'paragraph' && (
                 <>
                     <TagControl
                         label={__('Paragraph Tag', 'codeweber-gutenberg-blocks')}

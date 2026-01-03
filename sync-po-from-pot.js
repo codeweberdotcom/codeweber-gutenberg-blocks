@@ -163,3 +163,4 @@ console.log(`✅ Added ${missingEntries.length} missing entries to PO file`);
 console.log(`📄 PO file updated: ${poPath}`);
 console.log('\n💡 Run: npm run i18n:compile to compile translations\n');
 
+

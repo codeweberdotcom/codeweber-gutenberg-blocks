@@ -55,8 +55,9 @@ const Edit = ({ attributes, setAttributes }) => {
 			})
 			.catch((error) => {
 				console.error('Error fetching logos:', error);
-				// Fallback на дефолтные логотипы
-				const themeUrl = '/wp-content/themes/codeweber';
+				// Fallback на дефолтные логотипы - используем window.location для правильного пути
+				const baseUrl = window.location.origin;
+				const themeUrl = `${baseUrl}/wp-content/themes/codeweber`;
 				setLogos({
 					light: `${themeUrl}/dist/assets/img/logo-light.png`,
 					dark: `${themeUrl}/dist/assets/img/logo-dark.png`,
@@ -97,8 +98,9 @@ const Edit = ({ attributes, setAttributes }) => {
 	// Получаем URL логотипов для превью
 	const getLogoUrls = () => {
 		if (logos.loading || !logos.light || !logos.dark) {
-			// Fallback на дефолтные пути
-			const themeUrl = '/wp-content/themes/codeweber';
+			// Fallback на дефолтные пути - используем window.location для правильного пути
+			const baseUrl = window.location.origin;
+			const themeUrl = `${baseUrl}/wp-content/themes/codeweber`;
 			return {
 				light: `${themeUrl}/dist/assets/img/logo-light.png`,
 				dark: `${themeUrl}/dist/assets/img/logo-dark.png`,

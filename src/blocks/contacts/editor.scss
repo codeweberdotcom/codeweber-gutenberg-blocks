@@ -1,0 +1,25 @@
+/**
+ * Contacts Block - Editor Styles
+ *
+ * @package CodeWeber Gutenberg Blocks
+ */
+
+.codeweber-contacts-preview {
+	.codeweber-contacts-preview-item {
+		margin-bottom: 1rem;
+	}
+}
+
+.codeweber-contacts-preview-empty {
+	padding: 1rem;
+	background: #f0f0f0;
+	border: 1px dashed #ccc;
+	border-radius: 4px;
+	text-align: center;
+	color: #666;
+
+	p {
+		margin: 0;
+	}
+}
+

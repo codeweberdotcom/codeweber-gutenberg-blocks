@@ -19,14 +19,17 @@
     "anchor": true
   },
   "attributes": {
+    "addressType": {
+      "type": "string",
+      "default": "legal"
+    },
     "items": {
       "type": "array",
       "default": [
         {
           "type": "address",
           "enabled": true,
-          "format": "simple",
-          "addressType": "legal"
+          "format": "simple"
         },
         {
           "type": "email",

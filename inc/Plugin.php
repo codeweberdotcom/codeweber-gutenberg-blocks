@@ -81,6 +81,12 @@ class Plugin {
 		// Register REST API endpoint for theme style classes (button/card radius)
 		add_action('rest_api_init', [StyleAPI::class, 'register_routes']);
 
+		// Register REST API endpoint for logos
+		add_action('rest_api_init', __CLASS__ . '::register_logos_endpoint');
+
+		// Register REST API endpoint for contacts
+		add_action('rest_api_init', __CLASS__ . '::register_contacts_endpoint');
+
 		// Load JavaScript translations after scripts are enqueued
 		add_action('enqueue_block_editor_assets', __CLASS__ . '::loadJSTranslations', 100);
 	}
@@ -157,6 +163,7 @@ class Plugin {
 		'swiper',
 		'group-button',
 		'widget',
+		'contacts',
 	];
 	}
 
@@ -872,6 +879,54 @@ class Plugin {
 	}
 
 	/**
+	 * Register REST API endpoint for logos
+	 */
+	public static function register_logos_endpoint() {
+		register_rest_route('codeweber-gutenberg-blocks/v1', '/logos', [
+			'methods' => 'GET',
+			'callback' => __CLASS__ . '::get_logos_callback',
+			'permission_callback' => '__return_true',
+		]);
+	}
+
+	/**
+	 * REST API callback for getting logos
+	 */
+	public static function get_logos_callback($request) {
+		global $opt_name;
+		$options = get_option($opt_name ?: 'redux_demo');
+
+		// Получаем ID текущего поста из параметра или из контекста
+		$post_id = $request->get_param('post_id');
+		if (!$post_id) {
+			$post_id = get_the_ID();
+		}
+
+		// Проверяем кастомные логотипы для поста
+		$custom_dark_logo = $post_id ? get_post_meta($post_id, 'custom-logo-dark-header', true) : null;
+		$custom_light_logo = $post_id ? get_post_meta($post_id, 'custom-logo-light-header', true) : null;
+
+		$default_logos = [
+			'light' => get_template_directory_uri() . '/dist/assets/img/logo-light.png',
+			'dark'  => get_template_directory_uri() . '/dist/assets/img/logo-dark.png',
+		];
+
+		// Получаем URL логотипов
+		$dark_logo = !empty($custom_dark_logo['url'])
+			? $custom_dark_logo['url']
+			: (!empty($options['opt-dark-logo']['url']) ? $options['opt-dark-logo']['url'] : $default_logos['dark']);
+
+		$light_logo = !empty($custom_light_logo['url'])
+			? $custom_light_logo['url']
+			: (!empty($options['opt-light-logo']['url']) ? $options['opt-light-logo']['url'] : $default_logos['light']);
+
+		return [
+			'dark' => esc_url($dark_logo),
+			'light' => esc_url($light_logo),
+		];
+	}
+
+	/**
 	 * Loads the plugin text domain.
 	 */
 	public static function loadTextDomain(): void {
@@ -1089,6 +1144,279 @@ class Plugin {
 		}
 
 		return $pre_render;
+	}
+
+	/**
+	 * Register REST API endpoint for contacts
+	 */
+	public static function register_contacts_endpoint() {
+		// #region agent log
+		$log_entry = json_encode(['location' => 'Plugin.php:1152', 'message' => 'register_contacts_endpoint called', 'data' => [], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'ALL']);
+		@file_put_contents(ABSPATH . '.cursor/debug.log', $log_entry . "\n", FILE_APPEND);
+		error_log('DEBUG: register_contacts_endpoint called');
+		// #endregion
+
+		register_rest_route('codeweber-gutenberg-blocks/v1', '/contacts', [
+			'methods' => 'GET',
+			'callback' => __CLASS__ . '::get_contacts_callback',
+			'permission_callback' => '__return_true',
+		]);
+
+		// #region agent log
+		$log_entry = json_encode(['location' => 'Plugin.php:1161', 'message' => 'register_contacts_endpoint completed', 'data' => [], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'ALL']);
+		@file_put_contents(ABSPATH . '.cursor/debug.log', $log_entry . "\n", FILE_APPEND);
+		error_log('DEBUG: register_contacts_endpoint completed');
+		// #endregion
+	}
+
+	/**
+	 * REST API callback for getting contacts data
+	 */
+	public static function get_contacts_callback($request) {
+		// #region agent log - FIRST LOG, before anything else
+		error_log('DEBUG: get_contacts_callback START');
+		$log_data = json_encode(['location' => 'Plugin.php:1170', 'message' => 'get_contacts_callback entry', 'data' => ['class_exists_Redux' => class_exists('\Redux'), 'abspath' => defined('ABSPATH') ? ABSPATH : 'NOT_DEFINED'], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'A']);
+		if (defined('ABSPATH')) {
+			@file_put_contents(ABSPATH . '.cursor/debug.log', $log_data . "\n", FILE_APPEND);
+		}
+		error_log('DEBUG: get_contacts_callback entry logged');
+		// #endregion
+
+		try {
+			// Проверяем наличие Redux Framework
+			if (!class_exists('\Redux')) {
+				// #region agent log
+				$log_data = json_encode(['location' => 'Plugin.php:1170', 'message' => 'Redux class not found', 'data' => [], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'A']);
+				@file_put_contents(ABSPATH . '.cursor/debug.log', $log_data . "\n", FILE_APPEND);
+				// #endregion
+				return new \WP_REST_Response([
+					'address' => [
+						'legal' => '',
+						'actual' => '',
+					],
+					'email' => '',
+					'phones' => [],
+				], 200);
+			}
+
+			// Получаем глобальную переменную opt_name для Redux
+			global $opt_name;
+			if (empty($opt_name)) {
+				$opt_name = 'redux_demo';
+			}
+			// #region agent log
+			$log_data = json_encode(['location' => 'Plugin.php:1185', 'message' => 'opt_name set', 'data' => ['opt_name' => $opt_name], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'B']);
+			@file_put_contents(ABSPATH . '.cursor/debug.log', $log_data . "\n", FILE_APPEND);
+			// #endregion
+
+			// Вспомогательная функция для получения адреса (вынесена из closure)
+			// #region agent log
+			$log_data = json_encode(['location' => 'Plugin.php:1196', 'message' => 'before creating get_contact_address', 'data' => ['class_exists' => class_exists('\Redux')], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'C']);
+			@file_put_contents(ABSPATH . '.cursor/debug.log', $log_data . "\n", FILE_APPEND);
+			// #endregion
+
+			$get_contact_address = function($addressType, $opt_name) {
+				// #region agent log
+				$log_entry = json_encode(['location' => 'Plugin.php:1200', 'message' => 'get_contact_address called', 'data' => ['addressType' => $addressType, 'opt_name' => $opt_name, 'class_exists' => class_exists('\Redux')], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'C']);
+				@file_put_contents(ABSPATH . '.cursor/debug.log', $log_entry . "\n", FILE_APPEND);
+				// #endregion
+
+				if (!class_exists('\Redux')) {
+					return '';
+				}
+
+				try {
+					// #region agent log
+					$log_entry = json_encode(['location' => 'Plugin.php:1210', 'message' => 'inside get_contact_address try', 'data' => ['addressType' => $addressType], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'C']);
+					@file_put_contents(ABSPATH . '.cursor/debug.log', $log_entry . "\n", FILE_APPEND);
+					// #endregion
+
+					if ($addressType === 'legal') {
+						// #region agent log
+						$log_entry = json_encode(['location' => 'Plugin.php:1216', 'message' => 'before first Redux::get_option legal', 'data' => ['opt_name' => $opt_name], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'B']);
+						@file_put_contents(ABSPATH . '.cursor/debug.log', $log_entry . "\n", FILE_APPEND);
+						// #endregion
+
+						$country = \Redux::get_option($opt_name, 'juri-country');
+						
+						// #region agent log
+						$log_entry = json_encode(['location' => 'Plugin.php:1222', 'message' => 'after first Redux::get_option', 'data' => ['country' => $country], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'B']);
+						@file_put_contents(ABSPATH . '.cursor/debug.log', $log_entry . "\n", FILE_APPEND);
+						// #endregion
+
+						$region = \Redux::get_option($opt_name, 'juri-region');
+						$city = \Redux::get_option($opt_name, 'juri-city');
+						$street = \Redux::get_option($opt_name, 'juri-street');
+						$house = \Redux::get_option($opt_name, 'juri-house');
+						$office = \Redux::get_option($opt_name, 'juri-office');
+						$postal = \Redux::get_option($opt_name, 'juri-postal');
+					} else {
+						// #region agent log
+						$log_entry = json_encode(['location' => 'Plugin.php:1232', 'message' => 'before first Redux::get_option actual', 'data' => ['opt_name' => $opt_name], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'B']);
+						@file_put_contents(ABSPATH . '.cursor/debug.log', $log_entry . "\n", FILE_APPEND);
+						// #endregion
+
+						$country = \Redux::get_option($opt_name, 'fact-country');
+						
+						// #region agent log
+						$log_entry = json_encode(['location' => 'Plugin.php:1238', 'message' => 'after first Redux::get_option actual', 'data' => ['country' => $country], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'B']);
+						@file_put_contents(ABSPATH . '.cursor/debug.log', $log_entry . "\n", FILE_APPEND);
+						// #endregion
+
+						$region = \Redux::get_option($opt_name, 'fact-region');
+						$city = \Redux::get_option($opt_name, 'fact-city');
+						$street = \Redux::get_option($opt_name, 'fact-street');
+						$house = \Redux::get_option($opt_name, 'fact-house');
+						$office = \Redux::get_option($opt_name, 'fact-office');
+						$postal = \Redux::get_option($opt_name, 'fact-postal');
+					}
+
+					// #region agent log
+					$log_entry = json_encode(['location' => 'Plugin.php:1250', 'message' => 'address parts collected', 'data' => ['street' => $street, 'house' => $house, 'city' => $city], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'D']);
+					@file_put_contents(ABSPATH . '.cursor/debug.log', $log_entry . "\n", FILE_APPEND);
+					// #endregion
+
+					// Формируем адрес в обратном порядке: индекс, страна, регион, город, улица, дом, офис
+					$address_parts = [];
+					if (!empty($postal)) $address_parts[] = $postal; // Индекс в начале
+					if (!empty($country)) $address_parts[] = $country;
+					if (!empty($region)) $address_parts[] = $region;
+					if (!empty($city)) $address_parts[] = $city;
+					if (!empty($street)) $address_parts[] = $street;
+					if (!empty($house)) $address_parts[] = $house;
+					if (!empty($office)) $address_parts[] = $office;
+					$result = implode(', ', $address_parts);
+					
+					// #region agent log
+					$log_entry = json_encode(['location' => 'Plugin.php:1256', 'message' => 'address assembled', 'data' => ['result' => $result], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'D']);
+					@file_put_contents(ABSPATH . '.cursor/debug.log', $log_entry . "\n", FILE_APPEND);
+					// #endregion
+
+					return $result;
+				} catch (\Exception $e) {
+					// #region agent log
+					$log_entry = json_encode(['location' => 'Plugin.php:1262', 'message' => 'get_contact_address exception', 'data' => ['error' => $e->getMessage(), 'trace' => substr($e->getTraceAsString(), 0, 500)], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'C']);
+					@file_put_contents(ABSPATH . '.cursor/debug.log', $log_entry . "\n", FILE_APPEND);
+					// #endregion
+					return '';
+				} catch (\Error $e) {
+					// #region agent log
+					$log_entry = json_encode(['location' => 'Plugin.php:1268', 'message' => 'get_contact_address fatal error', 'data' => ['error' => $e->getMessage(), 'trace' => substr($e->getTraceAsString(), 0, 500)], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'C']);
+					@file_put_contents(ABSPATH . '.cursor/debug.log', $log_entry . "\n", FILE_APPEND);
+					// #endregion
+					return '';
+				}
+			};
+
+			// Локальная функция для очистки номера телефона
+			$cleanNumber = function($digits) {
+				return preg_replace('/\D/', '', $digits);
+			};
+
+			// Получаем данные
+			// #region agent log
+			$log_data = json_encode(['location' => 'Plugin.php:1230', 'message' => 'before getting addresses', 'data' => [], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'E']);
+			@file_put_contents(ABSPATH . '.cursor/debug.log', $log_data . "\n", FILE_APPEND);
+			// #endregion
+
+			$legal_address = $get_contact_address('legal', $opt_name);
+			$actual_address = $get_contact_address('actual', $opt_name);
+			
+			// #region agent log
+			$log_data = json_encode(['location' => 'Plugin.php:1236', 'message' => 'before getting email', 'data' => ['legal_address' => $legal_address, 'actual_address' => $actual_address], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'E']);
+			@file_put_contents(ABSPATH . '.cursor/debug.log', $log_data . "\n", FILE_APPEND);
+			// #endregion
+
+			// #region agent log
+			$log_data = json_encode(['location' => 'Plugin.php:1264', 'message' => 'before getting email', 'data' => [], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'E']);
+			@file_put_contents(ABSPATH . '.cursor/debug.log', $log_data . "\n", FILE_APPEND);
+			// #endregion
+
+			$email = \Redux::get_option($opt_name, 'e-mail');
+			
+			// #region agent log
+			$log_data = json_encode(['location' => 'Plugin.php:1270', 'message' => 'after getting email', 'data' => ['email' => $email], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'E']);
+			@file_put_contents(ABSPATH . '.cursor/debug.log', $log_data . "\n", FILE_APPEND);
+			// #endregion
+
+			// Получаем телефоны
+			// #region agent log
+			$log_data = json_encode(['location' => 'Plugin.php:1245', 'message' => 'before getting phones', 'data' => ['email' => $email], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'E']);
+			@file_put_contents(ABSPATH . '.cursor/debug.log', $log_data . "\n", FILE_APPEND);
+			// #endregion
+
+			$phones = [];
+			$phone_keys = ['phone_01', 'phone_02', 'phone_03', 'phone_04', 'phone_05'];
+			foreach ($phone_keys as $phone_key) {
+				try {
+					// #region agent log
+					$log_data = json_encode(['location' => 'Plugin.php:1280', 'message' => 'before phone Redux::get_option', 'data' => ['phone_key' => $phone_key], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'B']);
+					@file_put_contents(ABSPATH . '.cursor/debug.log', $log_data . "\n", FILE_APPEND);
+					// #endregion
+
+					$phone_value = \Redux::get_option($opt_name, $phone_key);
+					
+					// #region agent log
+					$log_data = json_encode(['location' => 'Plugin.php:1286', 'message' => 'after phone Redux::get_option', 'data' => ['phone_key' => $phone_key, 'phone_value' => $phone_value], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'B']);
+					@file_put_contents(ABSPATH . '.cursor/debug.log', $log_data . "\n", FILE_APPEND);
+					// #endregion
+
+					if (!empty($phone_value)) {
+						$phones[$phone_key] = [
+							'display' => $phone_value,
+							'clean' => $cleanNumber($phone_value),
+						];
+					}
+				} catch (\Exception $e) {
+					// #region agent log
+					$log_data = json_encode(['location' => 'Plugin.php:1297', 'message' => 'phone get_option exception', 'data' => ['phone_key' => $phone_key, 'error' => $e->getMessage()], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'B']);
+					@file_put_contents(ABSPATH . '.cursor/debug.log', $log_data . "\n", FILE_APPEND);
+					// #endregion
+				}
+			}
+
+			// #region agent log
+			$log_data = json_encode(['location' => 'Plugin.php:1263', 'message' => 'before returning response', 'data' => ['phones_count' => count($phones)], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'E']);
+			@file_put_contents(ABSPATH . '.cursor/debug.log', $log_data . "\n", FILE_APPEND);
+			// #endregion
+
+			return new \WP_REST_Response([
+				'address' => [
+					'legal' => $legal_address,
+					'actual' => $actual_address,
+				],
+				'email' => $email ? $email : '',
+				'phones' => $phones,
+			], 200);
+		} catch (\Exception $e) {
+			// #region agent log
+			error_log('DEBUG: get_contacts_callback Exception: ' . $e->getMessage());
+			$log_data = json_encode(['location' => 'Plugin.php:1383', 'message' => 'main catch exception', 'data' => ['error' => $e->getMessage(), 'trace' => substr($e->getTraceAsString(), 0, 1000)], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'ALL']);
+			if (defined('ABSPATH')) {
+				@file_put_contents(ABSPATH . '.cursor/debug.log', $log_data . "\n", FILE_APPEND);
+			}
+			// #endregion
+			error_log('Contacts API Error: ' . $e->getMessage());
+			return new \WP_REST_Response([
+				'code' => 'internal_server_error',
+				'message' => 'An error occurred while fetching contact data.',
+				'data' => ['status' => 500, 'error' => $e->getMessage()],
+			], 500);
+		} catch (\Error $e) {
+			// #region agent log
+			error_log('DEBUG: get_contacts_callback Fatal Error: ' . $e->getMessage());
+			$log_data = json_encode(['location' => 'Plugin.php:1397', 'message' => 'main catch fatal error', 'data' => ['error' => $e->getMessage(), 'trace' => substr($e->getTraceAsString(), 0, 1000)], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'ALL']);
+			if (defined('ABSPATH')) {
+				@file_put_contents(ABSPATH . '.cursor/debug.log', $log_data . "\n", FILE_APPEND);
+			}
+			// #endregion
+			error_log('Contacts API Fatal Error: ' . $e->getMessage());
+			return new \WP_REST_Response([
+				'code' => 'internal_server_error',
+				'message' => 'A fatal error occurred while fetching contact data.',
+				'data' => ['status' => 500, 'error' => $e->getMessage()],
+			], 500);
+		}
 	}
 
 	/**

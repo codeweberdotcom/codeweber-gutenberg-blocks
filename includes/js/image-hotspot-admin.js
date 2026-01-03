@@ -20,17 +20,11 @@
 			// Load existing hotspots from hidden field
 			const hotspotData = $('#cw-hotspot-data').val();
 			
-			// #region agent log
-			fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-admin.js:init',message:'Loading hotspot data from DB',data:{hotspotData:hotspotData,hotspotDataLength:hotspotData?hotspotData.length:0},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'K'})}).catch(()=>{});
-			// #endregion
 			
 			if (hotspotData) {
 				try {
 					this.hotspots = JSON.parse(hotspotData);
 					
-					// #region agent log
-					fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-admin.js:init',message:'Hotspot data parsed',data:{hotspotsCount:this.hotspots.length,hotspots:JSON.stringify(this.hotspots)},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'L'})}).catch(()=>{});
-					// #endregion
 					
 					this.renderHotspots();
 				} catch (e) {
@@ -144,9 +138,6 @@
 		renderHotspots: function() {
 			const self = this;
 			
-			// #region agent log
-			fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-admin.js:renderHotspots',message:'Rendering all hotspots',data:{hotspotsCount:this.hotspots.length,hotspots:JSON.stringify(this.hotspots)},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'H'})}).catch(()=>{});
-			// #endregion
 			
 			// Remove all existing points
 			this.annotationBox.find('.cw-hotspot-point').remove();
@@ -161,9 +152,6 @@
 			const self = this;
 			const settings = this.getSettings();
 			
-			// #region agent log
-			fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-admin.js:renderHotspot',message:'Rendering hotspot point',data:{pointId:point.id,iconName:point.iconName,pointData:point},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'A'})}).catch(()=>{});
-			// #endregion
 			
 			// Удаляем старую точку, если она существует
 			this.annotationBox.find('.cw-hotspot-point[data-point-id="' + point.id + '"]').remove();
@@ -184,9 +172,6 @@
 			const buttonSize = settings.hotspotButtonSize || 'btn-sm';
 			const buttonShape = settings.hotspotButtonShape || 'btn-circle';
 			
-			// #region agent log
-			fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-admin.js:renderHotspot',message:'Icon settings determined',data:{iconName:iconName,buttonStyle:buttonStyle,buttonSize:buttonSize,buttonShape:buttonShape},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'B'})}).catch(()=>{});
-			// #endregion
 			
 			// Разбиваем buttonShape на отдельные классы (может быть "btn-block rounded-0")
 			const shapeClasses = buttonShape ? buttonShape.split(' ') : [];
@@ -209,9 +194,6 @@
 			const iconHtml = '<i class="uil uil-' + iconName + '"></i>';
 			button.html(iconHtml);
 			
-			// #region agent log
-			fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-admin.js:renderHotspot',message:'Button HTML created',data:{iconHtml:iconHtml,iconName:iconName},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'C'})}).catch(()=>{});
-			// #endregion
 			
 			const editorControls = $('<div>')
 				.attr('class', 'cw-hotspot-point-editor')
@@ -266,16 +248,10 @@
 					const x = (relativeLeft / imgWidth) * 100;
 					const y = (relativeTop / imgHeight) * 100;
 					
-					// #region agent log
-					fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-admin.js:drag-stop',message:'Calculating coordinates after drag',data:{pointId:point.id,uiPositionLeft:ui.position.left,uiPositionTop:ui.position.top,pointRectLeft:pointRect.left,pointRectTop:pointRect.top,pointRectWidth:pointRect.width,pointRectHeight:pointRect.height,annotationRectLeft:annotationRect.left,annotationRectTop:annotationRect.top,pointCenterX:pointCenterX,pointCenterY:pointCenterY,imgPositionLeft:imgPosition.left,imgPositionTop:imgPosition.top,imgWidth:imgWidth,imgHeight:imgHeight,relativeLeft:relativeLeft,relativeTop:relativeTop,calculatedX:x,calculatedY:y},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'S'})}).catch(()=>{});
-					// #endregion
 					
 					point.x = Math.max(0, Math.min(100, x));
 					point.y = Math.max(0, Math.min(100, y));
 					
-					// #region agent log
-					fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-admin.js:drag-stop',message:'Coordinates saved',data:{pointId:point.id,pointX:point.x,pointY:point.y},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'S'})}).catch(()=>{});
-					// #endregion
 					
 					// Don't update CSS here - let jQuery UI draggable manage the position
 					// The coordinates are saved and will be applied on next render
@@ -319,9 +295,6 @@
 			const modal = this.getOrCreateModal();
 			const self = this;
 			
-			// #region agent log
-			fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-admin.js:showEditModal',message:'Opening edit modal',data:{pointId:point.id,pointData:JSON.stringify(point)},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'A'})}).catch(()=>{});
-			// #endregion
 			
 			// ВАЖНО: Привязываем обработчики кнопок ПЕРЕД всеми асинхронными операциями
 			// Save button - используем замыкание для сохранения ссылок на point и self
@@ -329,31 +302,19 @@
 			const $saveButton = $('#cw-hotspot-modal-save');
 			const $cancelButton = $('#cw-hotspot-modal-cancel');
 			
-			// #region agent log
-			fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-admin.js:showEditModal',message:'Setting up save/cancel handlers (early)',data:{pointId:point.id,saveButtonExists:$saveButton.length > 0,cancelButtonExists:$cancelButton.length > 0,modalExists:modal.length > 0},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'P'})}).catch(()=>{});
-			// #endregion
 			
 			if ($saveButton.length > 0 && $cancelButton.length > 0) {
 				// Удаляем все предыдущие обработчики и добавляем новые
 				$saveButton.off('click.hotspot-save');
 				
-				// #region agent log
-				fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-admin.js:showEditModal',message:'Attaching save handler (early)',data:{pointId:point.id,saveButtonLength:$saveButton.length},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'O'})}).catch(()=>{});
-				// #endregion
 				
 				$saveButton.on('click.hotspot-save', function(e) {
 					e.preventDefault();
 					e.stopPropagation();
 					
-					// #region agent log
-					fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-admin.js:save-point',message:'Save button clicked',data:{pointId:currentPoint ? currentPoint.id : 'null',pointExists:!!currentPoint,iconValue:$('#cw-hotspot-modal-icon').val(),postIdValue:$('#cw-hotspot-modal-post-id').val(),postTypeValue:$('#cw-hotspot-modal-post-type').val(),postTemplateValue:$('#cw-hotspot-modal-post-template').val()},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'F'})}).catch(()=>{});
-					// #endregion
 					
 					if (!currentPoint) {
 						console.error('Point object is missing');
-						// #region agent log
-						fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-admin.js:save-point',message:'ERROR: Point object missing',data:{},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'F'})}).catch(()=>{});
-						// #endregion
 						modal.removeClass('active');
 						return false;
 					}
@@ -373,23 +334,14 @@
 					currentPoint.popoverWidth = $('#cw-hotspot-modal-popover-width').val() || '';
 					currentPoint.wrapperClass = $('#cw-hotspot-modal-wrapper-class').val() || '';
 					
-					// #region agent log
-					fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-admin.js:save-point',message:'Point data updated',data:{pointId:currentPoint.id,pointIconName:currentPoint.iconName,pointPostId:currentPoint.postId,pointPostType:currentPoint.postType,pointPostTemplate:currentPoint.postTemplate,fullPoint:JSON.stringify(currentPoint)},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'G'})}).catch(()=>{});
-					// #endregion
 					
 					// Re-render to update visual
 					self.renderHotspots();
 					self.saveHotspots();
 					
-					// #region agent log
-					fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-admin.js:save-point',message:'Before closing modal',data:{pointId:currentPoint.id,hotspotsCount:self.hotspots.length,modalHasActive:modal.hasClass('active')},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'H'})}).catch(()=>{});
-					// #endregion
 					
 					modal.removeClass('active');
 					
-					// #region agent log
-					fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-admin.js:save-point',message:'Save completed',data:{pointId:currentPoint.id,modalHasActive:modal.hasClass('active')},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'H'})}).catch(()=>{});
-					// #endregion
 					
 					return false;
 				});
@@ -397,23 +349,14 @@
 				// Cancel button
 				$cancelButton.off('click.hotspot-cancel');
 				
-				// #region agent log
-				fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-admin.js:showEditModal',message:'Attaching cancel handler (early)',data:{pointId:point.id,cancelButtonLength:$cancelButton.length},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'O'})}).catch(()=>{});
-				// #endregion
 				
 				$cancelButton.on('click.hotspot-cancel', function(e) {
 					e.preventDefault();
 					e.stopPropagation();
 					
-					// #region agent log
-					fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-admin.js:cancel-point',message:'Cancel button clicked',data:{pointId:point.id},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'J'})}).catch(()=>{});
-					// #endregion
 					
 					modal.removeClass('active');
 					
-					// #region agent log
-					fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-admin.js:cancel-point',message:'Cancel completed',data:{modalHasActive:modal.hasClass('active')},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'J'})}).catch(()=>{});
-					// #endregion
 					
 					return false;
 				});
@@ -423,9 +366,6 @@
 					cancelButton: $cancelButton.length,
 					modal: modal.length
 				});
-				// #region agent log
-				fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-admin.js:showEditModal',message:'ERROR: Buttons not found (early)',data:{saveButtonLength:$saveButton.length,cancelButtonLength:$cancelButton.length,modalLength:modal.length},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'N'})}).catch(()=>{});
-				// #endregion
 			}
 			
 			// Загружаем данные точки
@@ -446,16 +386,10 @@
 			// Устанавливаем значение иконки
 			const iconName = point.iconName || 'plus';
 			
-			// #region agent log
-			fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-admin.js:showEditModal',message:'Loading point icon for edit',data:{pointId:point.id,pointIconName:point.iconName,iconName:iconName},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'I'})}).catch(()=>{});
-			// #endregion
 			
 			$('#cw-hotspot-modal-icon').val(iconName);
 			this.updateIconPreview(iconName);
 			
-			// #region agent log
-			fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-admin.js:showEditModal',message:'Icon input value after setting',data:{iconInputValue:$('#cw-hotspot-modal-icon').val()},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'J'})}).catch(()=>{});
-			// #endregion
 			
 			// Initialize icon selector every time modal opens (needed to rebuild icon list)
 			this.initIconSelector();
@@ -468,9 +402,6 @@
 			const $postSelect = $('#cw-hotspot-modal-post-id');
 			const postsMapExists = $postTypeSelect.data('posts-map') !== undefined;
 			
-			// #region agent log
-			fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-admin.js:showEditModal',message:'Checking post selector state',data:{pointId:point.id,postsMapExists:postsMapExists,postId:point.postId,postType:point.postType,postTemplate:point.postTemplate,postSelectOptionsCount:$postSelect.find('option').length},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'B'})}).catch(()=>{});
-			// #endregion
 			
 			// Инициализируем post selector только если данные еще не загружены
 			if (!postsMapExists || $postTypeSelect.find('option').length <= 1) {
@@ -490,9 +421,6 @@
 		setPostDataInModal: function(point) {
 			const self = this;
 			
-			// #region agent log
-			fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-admin.js:setPostDataInModal',message:'Setting post data in modal',data:{pointId:point.id,postId:point.postId,postType:point.postType,postTemplate:point.postTemplate},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'C'})}).catch(()=>{});
-			// #endregion
 			
 			// Устанавливаем тип поста и сам пост, если есть
 			if (point.postId) {
@@ -541,9 +469,6 @@
 						// После загрузки шаблонов устанавливаем сохраненный шаблон
 						setTimeout(() => {
 							$('#cw-hotspot-modal-post-template').val(savedTemplate);
-							// #region agent log
-							fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-admin.js:setPostDataInModal',message:'Post data set after template load',data:{pointId:point.id,postId:postId,postType:postType,postTemplate:savedTemplate,postSelectValue:$postSelect.val(),templateSelectValue:$('#cw-hotspot-modal-post-template').val()},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'D'})}).catch(()=>{});
-							// #endregion
 						}, 100);
 					});
 				} else {
@@ -579,9 +504,6 @@
 							this.loadTemplatesForPostType(postType).then(() => {
 								setTimeout(() => {
 									$('#cw-hotspot-modal-post-template').val(savedTemplate);
-									// #region agent log
-									fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-admin.js:setPostDataInModal',message:'Post data set after async load',data:{pointId:point.id,postId:postId,postType:postType,postTemplate:savedTemplate,postSelectValue:$postSelect.val(),templateSelectValue:$('#cw-hotspot-modal-post-template').val()},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'E'})}).catch(()=>{});
-									// #endregion
 								}, 100);
 							});
 						}
@@ -796,9 +718,6 @@
 				modal.on('click.hotspot-backdrop', function(e) {
 					// Закрываем только при клике на backdrop или кнопку закрытия, но не на содержимое модального окна
 					if ($(e.target).is('.cw-hotspot-modal') || $(e.target).is('.cw-hotspot-modal-close')) {
-						// #region agent log
-						fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-admin.js:modal-backdrop-click',message:'Modal backdrop clicked',data:{targetClass:e.target.className,isModal:$(e.target).is('.cw-hotspot-modal'),isClose:$(e.target).is('.cw-hotspot-modal-close')},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'K'})}).catch(()=>{});
-						// #endregion
 						modal.removeClass('active');
 					}
 				});
@@ -808,9 +727,6 @@
 				modal.find('.cw-hotspot-modal-close').on('click.hotspot-close', function(e) {
 					e.preventDefault();
 					e.stopPropagation();
-					// #region agent log
-					fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-admin.js:modal-close-click',message:'Modal close button clicked',data:{},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'K'})}).catch(()=>{});
-					// #endregion
 					modal.removeClass('active');
 					return false;
 				});
@@ -842,9 +758,6 @@
 			
 			// Если данные уже загружены, возвращаем resolved promise
 			if ($postTypeSelect.data('posts-map') !== undefined && $postTypeSelect.find('option').length > 1) {
-				// #region agent log
-				fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-admin.js:initPostSelector',message:'Post selector already initialized',data:{postsMapExists:true,optionsCount:$postTypeSelect.find('option').length},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'F'})}).catch(()=>{});
-				// #endregion
 				return Promise.resolve();
 			}
 			
@@ -1032,17 +945,11 @@
 			const $dropdown = $('#cw-icon-select-dropdown');
 			const icons = cwHotspotAdmin.icons || [];
 			
-			// #region agent log
-			fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-admin.js:selectIcon',message:'Icon selected',data:{iconName:iconName,iconInputValue:$iconInput.val()},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'F'})}).catch(()=>{});
-			// #endregion
 			
 			const finalIconName = iconName || 'plus';
 			$iconInput.val(finalIconName);
 			this.updateIconPreview(finalIconName);
 			
-			// #region agent log
-			fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-admin.js:selectIcon',message:'Icon input value after setting',data:{iconInputValue:$iconInput.val()},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'G'})}).catch(()=>{});
-			// #endregion
 			
 			$dropdown.removeClass('active');
 		},

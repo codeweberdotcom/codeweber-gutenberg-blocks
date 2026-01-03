@@ -52,6 +52,32 @@ const HeadingSubtitleEdit = ({ attributes, setAttributes }) => {
 
     const blockProps = useBlockProps();
 
+    // Функция для очистки тегов strong из HTML
+    const cleanStrongTags = (html) => {
+        if (!html) return html;
+        // Удаляем все вложенные теги strong, сохраняя содержимое
+        let cleaned = html;
+        let previous = '';
+        // Повторяем до тех пор, пока есть изменения
+        while (cleaned !== previous) {
+            previous = cleaned;
+            cleaned = cleaned
+                .replace(/<strong[^>]*>/gi, '')
+                .replace(/<\/strong>/gi, '');
+        }
+        return cleaned;
+    };
+
+    // Очищаем title от strong тегов при загрузке блока
+    useEffect(() => {
+        if (title && title.includes('<strong')) {
+            const cleaned = cleanStrongTags(title);
+            if (cleaned !== title) {
+                setAttributes({ title: cleaned });
+            }
+        }
+    }, []); // Только при монтировании компонента
+
     const elements = [];
     if (enableTitle) {
         elements.push(
@@ -59,9 +85,15 @@ const HeadingSubtitleEdit = ({ attributes, setAttributes }) => {
                 key="title"
                 tagName={titleTag}
                 value={title}
-                onChange={(value) => setAttributes({ title: value })}
+                onChange={(value) => {
+                    // Очищаем strong теги при изменении
+                    const cleaned = cleanStrongTags(value);
+                    setAttributes({ title: cleaned });
+                }}
                 className={getTitleClasses(attributes)}
                 placeholder={__('Enter title...', 'codeweber-gutenberg-blocks')}
+                allowedFormats={[]}
+                withoutInteractiveFormatting
             />
         );
     }
@@ -74,6 +106,8 @@ const HeadingSubtitleEdit = ({ attributes, setAttributes }) => {
                 onChange={(value) => setAttributes({ subtitle: value })}
                 className={getSubtitleClasses(attributes)}
                 placeholder={__('Enter subtitle...', 'codeweber-gutenberg-blocks')}
+                allowedFormats={[]}
+                withoutInteractiveFormatting
             />
         );
     }

@@ -28,70 +28,13 @@ $button_text = $attributes['buttonText'] ?? '';
 $button_class = $attributes['buttonClass'] ?? 'btn btn-primary';
 $field_class = isset($attributes['fieldClass']) ? trim($attributes['fieldClass']) : '';
 
-// #region agent log
-$log_file = dirname(WP_CONTENT_DIR) . '/.cursor/debug.log';
-$log_dir = dirname($log_file);
-if (!is_dir($log_dir)) {
-    @mkdir($log_dir, 0755, true);
-}
-$log_entry = json_encode([
-    'sessionId' => 'debug-session',
-    'runId' => 'run1',
-    'hypothesisId' => 'A',
-    'location' => 'render.php:25',
-    'message' => 'render.php called - attributes check',
-    'data' => [
-        'field_type' => $field_type,
-        'field_name' => $field_name,
-        'enableInlineButton_raw' => $attributes['enableInlineButton'] ?? 'NOT_SET',
-        'enableInlineButton_type' => gettype($attributes['enableInlineButton'] ?? null),
-        'all_attributes_keys' => array_keys($attributes)
-    ],
-    'timestamp' => time() * 1000
-]) . "\n";
-@file_put_contents($log_file, $log_entry, FILE_APPEND);
-// #endregion
-
 // Check for inline button BEFORE other checks
 $enable_inline_button = isset($attributes['enableInlineButton']) && ($attributes['enableInlineButton'] === true || $attributes['enableInlineButton'] === 'true' || $attributes['enableInlineButton'] === 1);
 $inline_button_supported_types = ['text', 'email', 'tel', 'url', 'number', 'date', 'time', 'author_role', 'company'];
 $inline_button_enabled = $enable_inline_button && in_array($field_type, $inline_button_supported_types);
 
-// #region agent log
-$log_entry = json_encode([
-    'sessionId' => 'debug-session',
-    'runId' => 'run1',
-    'hypothesisId' => 'B',
-    'location' => 'render.php:29',
-    'message' => 'inline button check result',
-    'data' => [
-        'enable_inline_button' => $enable_inline_button,
-        'field_type' => $field_type,
-        'is_supported_type' => in_array($field_type, $inline_button_supported_types),
-        'inline_button_enabled' => $inline_button_enabled
-    ],
-    'timestamp' => time() * 1000
-]) . "\n";
-@file_put_contents($log_file, $log_entry, FILE_APPEND);
-// #endregion
-
 // For fields with inline button, render server-side FIRST (before other checks)
 if ($inline_button_enabled) {
-    // #region agent log
-    $log_entry = json_encode([
-        'sessionId' => 'debug-session',
-        'runId' => 'run1',
-        'hypothesisId' => 'C',
-        'location' => 'render.php:32',
-        'message' => 'INLINE BUTTON PATH TAKEN - rendering inline button',
-        'data' => [
-            'field_type' => $field_type,
-            'field_name' => $field_name
-        ],
-        'timestamp' => time() * 1000
-    ]) . "\n";
-    @file_put_contents($log_file, $log_entry, FILE_APPEND);
-    // #endregion
     // Get width classes
     $width_classes = 'col-12';
     if (!empty($attributes['fieldColumns'])) {
@@ -161,40 +104,9 @@ if ($inline_button_enabled) {
     </div>
     <?php
     $output = ob_get_clean();
-    // #region agent log
-    $log_entry = json_encode([
-        'sessionId' => 'debug-session',
-        'runId' => 'run1',
-        'hypothesisId' => 'D',
-        'location' => 'render.php:113',
-        'message' => 'INLINE BUTTON OUTPUT GENERATED',
-        'data' => [
-            'output_length' => strlen($output),
-            'output_preview' => substr($output, 0, 200)
-        ],
-        'timestamp' => time() * 1000
-    ]) . "\n";
-    @file_put_contents($log_file, $log_entry, FILE_APPEND);
-    // #endregion
     echo $output;
     return;
 }
-
-// #region agent log
-$log_entry = json_encode([
-    'sessionId' => 'debug-session',
-    'runId' => 'run1',
-    'hypothesisId' => 'E',
-    'location' => 'render.php:116',
-    'message' => 'INLINE BUTTON PATH NOT TAKEN - checking other conditions',
-    'data' => [
-        'field_type' => $field_type,
-        'inline_button_enabled' => $inline_button_enabled
-    ],
-    'timestamp' => time() * 1000
-]) . "\n";
-@file_put_contents($log_file, $log_entry, FILE_APPEND);
-// #endregion
 
 // For rating type, we need to render it server-side
 if ($field_type === 'rating' && function_exists('codeweber_testimonial_rating_stars')) {
@@ -346,22 +258,6 @@ if ($field_type === 'select') {
     echo ob_get_clean();
     return;
 }
-
-// #region agent log
-$log_entry = json_encode([
-    'sessionId' => 'debug-session',
-    'runId' => 'run1',
-    'hypothesisId' => 'F',
-    'location' => 'render.php:356',
-    'message' => 'RETURNING NULL - will use save.js',
-    'data' => [
-        'field_type' => $field_type,
-        'field_name' => $field_name
-    ],
-    'timestamp' => time() * 1000
-]) . "\n";
-@file_put_contents($log_file, $log_entry, FILE_APPEND);
-// #endregion
 
 // For other field types, return null to use save.js
 return null;

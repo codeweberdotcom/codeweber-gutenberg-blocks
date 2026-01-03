@@ -782,23 +782,14 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 	};
 
 	const handleLinkUrlChange = (newLinkUrl) => {
-		// #region agent log
-		fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'link_type.js:676',message:'handleLinkUrlChange called',data:{LinkType,PhoneType,newLinkUrl},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'A'})}).catch(()=>{});
-		// #endregion
 		// Проверяем тип ссылки - добавляем "tel:" только для телефонных ссылок
 		if (LinkType === 'phone' && PhoneType === 'custom') {
 			// Проверяем и добавляем "tel:" только если его еще нет
 			const formattedLinkUrl = newLinkUrl.startsWith('tel:')
 				? newLinkUrl
 				: `tel:${newLinkUrl}`;
-			// #region agent log
-			fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'link_type.js:682',message:'Adding tel: prefix',data:{formattedLinkUrl},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'A'})}).catch(()=>{});
-			// #endregion
 			setAttributes({ LinkUrl: formattedLinkUrl });
 		} else {
-			// #region agent log
-			fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'link_type.js:686',message:'Setting LinkUrl without tel: prefix',data:{newLinkUrl},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'A'})}).catch(()=>{});
-			// #endregion
 			setAttributes({ LinkUrl: newLinkUrl });
 		}
 	};
@@ -810,9 +801,6 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 	};
 
 	const handlePostSelect = async (selectedPostId) => {
-		// #region agent log
-		fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'link_type.js:794',message:'handlePostSelect called',data:{selectedPostId,PostType},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'C'})}).catch(()=>{});
-		// #endregion
 		if (!selectedPostId || !PostType) {
 			return;
 		}
@@ -850,9 +838,6 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 		// Если запись найдена и есть link, используем его (преобразуем в относительный путь)
 		if (selectedPost && selectedPost.link) {
 			const relativeUrl = getRelativePath(selectedPost.link);
-			// #region agent log
-			fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'link_type.js:820',message:'Using post link',data:{originalLink:selectedPost.link,relativeUrl},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'C'})}).catch(()=>{});
-			// #endregion
 			setAttributes({ LinkUrl: relativeUrl });
 			return;
 		}
@@ -884,9 +869,6 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 				const postData = await response.json();
 				if (postData.link) {
 					const relativeUrl = getRelativePath(postData.link);
-					// #region agent log
-					fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'link_type.js:848',message:'Using fetched post link',data:{originalLink:postData.link,relativeUrl},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'C'})}).catch(()=>{});
-					// #endregion
 					setAttributes({ LinkUrl: relativeUrl });
 					return;
 				}
@@ -908,9 +890,6 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 			postUrl = `?post_type=${PostType}&p=${selectedPostId}`;
 		}
 		
-		// #region agent log
-		fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'link_type.js:866',message:'Using fallback relative URL',data:{postUrl},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'C'})}).catch(()=>{});
-		// #endregion
 		
 		setAttributes({ LinkUrl: postUrl });
 	};
@@ -1051,18 +1030,12 @@ const handleDocumentActionChange = (newAction) => {
 };
 
 const handleArchiveSelect = async (selectedArchiveValue) => {
-	// #region agent log
-	fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'link_type.js:1020',message:'handleArchiveSelect called',data:{selectedArchiveValue},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'B'})}).catch(()=>{});
-	// #endregion
 	if (!selectedArchiveValue) {
 		return;
 	}
 	
 	// Находим выбранный архив
 	const selectedArchive = archives.find(arch => arch.value === selectedArchiveValue);
-	// #region agent log
-	fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'link_type.js:1027',message:'Selected archive found',data:{selectedArchive},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'B'})}).catch(()=>{});
-	// #endregion
 	if (!selectedArchive) {
 		return;
 	}
@@ -1081,14 +1054,8 @@ const handleArchiveSelect = async (selectedArchiveValue) => {
 			apiPath = `/codeweber-gutenberg-blocks/v1/archive-url?type=taxonomy&taxonomy=${selectedArchive.taxonomy}&term_id=${selectedArchive.termId}`;
 		}
 		
-		// #region agent log
-		fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'link_type.js:1042',message:'Fetching archive URL from API',data:{apiPath},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'B'})}).catch(()=>{});
-		// #endregion
 		
 		const response = await apiFetch({ path: apiPath });
-		// #region agent log
-		fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'link_type.js:1045',message:'Archive URL received',data:{response},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'B'})}).catch(()=>{});
-		// #endregion
 		
 		if (response && response.url) {
 			setAttributes({ LinkUrl: response.url });
@@ -1107,9 +1074,6 @@ const handleArchiveSelect = async (selectedArchiveValue) => {
 			archiveUrl = `${baseUrl}${selectedArchive.taxonomy}/${selectedArchive.termSlug}/`;
 		}
 		
-		// #region agent log
-		fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'link_type.js:1062',message:'Using fallback URL',data:{archiveUrl,error:error.message},timestamp:Date.now(),sessionId:'debug-session',runId:'pre-fix',hypothesisId:'B'})}).catch(()=>{});
-		// #endregion
 		
 		setAttributes({ LinkUrl: archiveUrl });
 	}
@@ -1219,7 +1183,7 @@ const handleHtml5VideoChange = (newUrl) => {
 					{ label: __('Post', 'codeweber-gutenberg-blocks'), value: 'post' },
 					{ label: __('Archive', 'codeweber-gutenberg-blocks'), value: 'archive' },
 					{ label: __('CF7', 'codeweber-gutenberg-blocks'), value: 'cf7' },
-					{ label: __('Формы', 'codeweber-gutenberg-blocks'), value: 'cf' },
+					{ label: __('Forms', 'codeweber-gutenberg-blocks'), value: 'cf' },
 					{ label: __('Modal', 'codeweber-gutenberg-blocks'), value: 'modal' },
 					{ label: __('Phone', 'codeweber-gutenberg-blocks'), value: 'phone' },
 					{ label: __('PDF', 'codeweber-gutenberg-blocks'), value: 'pdf' },
@@ -1531,7 +1495,7 @@ const handleHtml5VideoChange = (newUrl) => {
 							onChange={handleCF7Select}
 						/>
 					) : (
-						<p>Формы CF7 не найдены</p> // Сообщение о том, что формы отсутствуют
+						<p>{__('CF7 Forms not found', 'codeweber-gutenberg-blocks')}</p>
 					))}
 
 				{LinkType === 'cf' &&

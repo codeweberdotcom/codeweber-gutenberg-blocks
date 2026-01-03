@@ -87,6 +87,34 @@ add_filter('loco_plugins_data', function($data) {
 	return $data;
 });
 
+// Автоматическая генерация POT файла перед синхронизацией в Loco Translate
+// Это гарантирует, что строки из JS/JSX файлов будут в POT файле
+add_action('loco_extract_before', function($project) {
+	// Проверяем, что это наш плагин
+	if ($project && method_exists($project, 'getDomain')) {
+		$domain = $project->getDomain();
+		if ($domain && $domain->getName() === 'codeweber-gutenberg-blocks') {
+			$plugin_dir = plugin_dir_path(__FILE__);
+			$pot_script = $plugin_dir . 'generate-pot.js';
+			
+			// Запускаем скрипт генерации POT файла перед синхронизацией
+			if (file_exists($pot_script)) {
+				$command = 'cd ' . escapeshellarg($plugin_dir) . ' && node generate-pot.js 2>&1';
+				exec($command, $output, $return_var);
+				
+				// Логируем результат (только в режиме отладки)
+				if (defined('WP_DEBUG') && WP_DEBUG) {
+					if ($return_var === 0) {
+						error_log('Loco Translate: POT file generated successfully before sync');
+					} else {
+						error_log('Loco Translate: POT generation failed: ' . implode("\n", $output));
+					}
+				}
+			}
+		}
+	}
+}, 10, 1);
+
 // Автоматическая компиляция переводов после сохранения в Loco Translate
 add_filter('loco_file_written', function($path) {
 	// После сохранения переводов регенерируем MO и JSON файлы

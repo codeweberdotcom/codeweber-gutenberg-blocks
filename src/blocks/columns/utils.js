@@ -1,4 +1,4 @@
-import { getGridClasses } from '../../components/grid-control';
+import { getGridClasses, getSpacingClasses, getGapClasses } from '../../components/grid-control';
 
 export const normalizeColumnsId = (value = '') => value.replace(/^#/, '').trim();
 
@@ -43,11 +43,25 @@ export const getColumnsClassNames = (attrs = {}, mode = 'save') => {
 	}
 
 	// Используем getGridClasses для row-cols, gap и spacing
-	// Для Classic Grid не передаем fallbackRowCols, чтобы не генерировались row-cols-* классы
-	const gridClasses = getGridClasses(attrs, 'columns', {
-		fallbackRowCols: columnsType === 'columns-grid' && columnsCount ? String(columnsCount) : null,
-	});
-	classes.push(gridClasses);
+	// Для Columns Grid используем getGridClasses (включает row-cols, gap и spacing)
+	// Для Classic Grid добавляем row, gap и spacing отдельно (row-cols не используется)
+	if (columnsType === 'columns-grid') {
+		const gridClasses = getGridClasses(attrs, 'columns', {
+			fallbackRowCols: columnsCount ? String(columnsCount) : null,
+		});
+		classes.push(gridClasses);
+	} else {
+		// Для Classic Grid добавляем класс 'row', gap и spacing (если есть)
+		classes.push('row');
+		const gapClasses = getGapClasses(attrs, 'columns');
+		if (gapClasses && gapClasses.length > 0) {
+			classes.push(...gapClasses);
+		}
+		const spacingClasses = getSpacingClasses(attrs, 'columns');
+		if (spacingClasses && spacingClasses.length > 0) {
+			classes.push(...spacingClasses);
+		}
+	}
 
 	// Старые gutter классы (для обратной совместимости)
 	if (columnsGutterX) {

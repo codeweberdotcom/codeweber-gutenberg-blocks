@@ -127,8 +127,19 @@ const getWrapperClasses = ({
 			classes.push('btn-circle');
 		}
 
-		// Вариант кнопки с цветом
-		if (iconColor) {
+		// Вариант кнопки
+		if (btnVariant === 'gradient') {
+			// Градиентная кнопка
+			classes.push('btn-gradient');
+			
+			// Добавляем класс градиента
+			if (gradientColor.startsWith('gradient-')) {
+				classes.push(gradientColor);
+			} else {
+				classes.push(`gradient-${gradientColor}`);
+			}
+		} else if (iconColor) {
+			// Вариант кнопки с цветом
 			if (btnVariant === 'soft') {
 				classes.push(`btn-soft-${iconColor}`);
 			} else if (btnVariant === 'outline') {
@@ -136,24 +147,6 @@ const getWrapperClasses = ({
 			} else {
 				classes.push(`btn-${iconColor}`);
 			}
-		}
-
-		// Размер кнопки
-		if (btnSize) {
-			classes.push(btnSize);
-		}
-	} else if (wrapperStyle === 'gradient') {
-		// Градиентная кнопка
-		classes.push('btn');
-		classes.push('btn-block');
-		classes.push('btn-gradient');
-		classes.push('flex-shrink-0');
-		
-		// Добавляем класс градиента
-		if (gradientColor.startsWith('gradient-')) {
-			classes.push(gradientColor);
-		} else {
-			classes.push(`gradient-${gradientColor}`);
 		}
 
 		// Размер кнопки

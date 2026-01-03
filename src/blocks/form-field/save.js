@@ -56,47 +56,8 @@ export default function Save({ attributes }) {
 	const inlineButtonSupportedTypes = ['text', 'email', 'tel', 'url', 'number', 'date', 'time', 'author_role', 'company'];
 	const inlineButtonEnabled = enableInlineButton && inlineButtonSupportedTypes.includes(fieldType);
 	
-	// #region agent log
-	if (typeof window !== 'undefined') {
-		fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5', {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({
-				location: 'save.js:57',
-				message: 'save.js inline button check',
-				data: {
-					enableInlineButton: enableInlineButton,
-					fieldType: fieldType,
-					inlineButtonEnabled: inlineButtonEnabled,
-					isSupportedType: inlineButtonSupportedTypes.includes(fieldType)
-				},
-				timestamp: Date.now(),
-				sessionId: 'debug-session',
-				runId: 'run1',
-				hypothesisId: 'G'
-			})
-		}).catch(() => {});
-	}
-	// #endregion
 	
 	if (inlineButtonEnabled) {
-		// #region agent log
-		if (typeof window !== 'undefined') {
-			fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({
-					location: 'save.js:59',
-					message: 'save.js RETURNING NULL for inline button',
-					data: { fieldType, fieldName },
-					timestamp: Date.now(),
-					sessionId: 'debug-session',
-					runId: 'run1',
-					hypothesisId: 'H'
-				})
-			}).catch(() => {});
-		}
-		// #endregion
 		return null; // Use server-side render.php
 	}
 

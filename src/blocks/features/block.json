@@ -47,11 +47,11 @@
 		},
 		"iconColor": {
 			"type": "string",
-			"default": "yellow"
+			"default": "white"
 		},
 		"iconColor2": {
 			"type": "string",
-			"default": ""
+			"default": "11"
 		},
 		"iconClass": {
 			"type": "string",
@@ -71,7 +71,7 @@
 		},
 		"iconBtnVariant": {
 			"type": "string",
-			"default": "soft"
+			"default": "gradient"
 		},
 		"iconWrapperClass": {
 			"type": "string",
@@ -171,7 +171,7 @@
 		},
 		"buttonColor": {
 			"type": "string",
-			"default": "yellow"
+			"default": "primary"
 		},
 		"buttonClass": {
 			"type": "string",

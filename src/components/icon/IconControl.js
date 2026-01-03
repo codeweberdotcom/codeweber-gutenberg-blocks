@@ -387,6 +387,18 @@ export const IconControl = ({
 										</ButtonGroup>
 									</BaseControl>
 
+									{/* Настройки градиента - показываются только если выбран вариант gradient */}
+									{iconBtnVariant === 'gradient' && (
+										<ComboboxControl
+											label={__('Gradient Color', 'codeweber-gutenberg-blocks')}
+											value={iconGradientColor}
+											options={gradientcolors}
+											onChange={(newGradient) =>
+												setAttr(setAttributes, prefix, 'iconGradientColor', newGradient)
+											}
+										/>
+									)}
+
 									<BaseControl
 										label={__('Button Size', 'codeweber-gutenberg-blocks')}
 										__nextHasNoMarginBottom
@@ -404,38 +416,6 @@ export const IconControl = ({
 											))}
 										</ButtonGroup>
 									</BaseControl>
-								</>
-							)}
-
-							{/* Настройки градиента */}
-							{iconWrapperStyle === 'gradient' && (
-								<>
-									<BaseControl
-										label={__('Button Size', 'codeweber-gutenberg-blocks')}
-										__nextHasNoMarginBottom
-									>
-										<ButtonGroup className="icon-wrapper-style-buttons">
-											{iconBtnSizes.map((size) => (
-												<Button
-													key={size.value}
-													variant={iconBtnSize === size.value ? 'primary' : 'secondary'}
-													onClick={() => setAttr(setAttributes, prefix, 'iconBtnSize', size.value)}
-													size="compact"
-												>
-													{size.label}
-												</Button>
-											))}
-										</ButtonGroup>
-									</BaseControl>
-
-									<ComboboxControl
-										label={__('Gradient Color', 'codeweber-gutenberg-blocks')}
-										value={iconGradientColor}
-										options={gradientcolors}
-										onChange={(newGradient) =>
-											setAttr(setAttributes, prefix, 'iconGradientColor', newGradient)
-										}
-									/>
 								</>
 							)}
 

@@ -1,5 +1,5 @@
 import { __ } from '@wordpress/i18n';
-import { ToggleControl } from '@wordpress/components';
+import { ToggleControl, BaseControl } from '@wordpress/components';
 import { RichText } from '@wordpress/block-editor';
 import { createHeadingTagOptions, createSubtitleTagOptions } from '../../blocks/heading-subtitle/utils';
 
@@ -53,14 +53,17 @@ export const HeadingContentControl = ({ attributes, setAttributes, hideSubtitle 
                 </>
             )}
             {enableTitle && (
-                <div className="mb-3">
-                    <label>{__('Title Text', 'codeweber-gutenberg-blocks')}</label>
+                <BaseControl
+                    label={__('Title Text', 'codeweber-gutenberg-blocks')}
+                    className="mb-3"
+                >
                     <div style={{
                         border: '1px solid #ccc',
                         borderRadius: '4px',
                         padding: '8px',
                         minHeight: '40px',
-                        backgroundColor: '#fff'
+                        backgroundColor: '#fff',
+                        fontSize: '13px'
                     }}>
                         <RichText
                             tagName="div"
@@ -69,19 +72,23 @@ export const HeadingContentControl = ({ attributes, setAttributes, hideSubtitle 
                             placeholder={__('Enter title...', 'codeweber-gutenberg-blocks')}
                             allowedFormats={[]}
                             __unstableAllowHtml={true}
+                            withoutInteractiveFormatting
                         />
                     </div>
-                </div>
+                </BaseControl>
             )}
             {!hideSubtitle && enableSubtitle && (
-                <div className="mb-3">
-                    <label>{__('Subtitle Text', 'codeweber-gutenberg-blocks')}</label>
+                <BaseControl
+                    label={__('Subtitle Text', 'codeweber-gutenberg-blocks')}
+                    className="mb-3"
+                >
                     <div style={{
                         border: '1px solid #ccc',
                         borderRadius: '4px',
                         padding: '8px',
                         minHeight: '40px',
-                        backgroundColor: '#fff'
+                        backgroundColor: '#fff',
+                        fontSize: '13px'
                     }}>
                         <RichText
                             tagName="div"
@@ -92,17 +99,20 @@ export const HeadingContentControl = ({ attributes, setAttributes, hideSubtitle 
                             __unstableAllowHtml={true}
                         />
                     </div>
-                </div>
+                </BaseControl>
             )}
             {enableText && (
-                <div className="mb-3">
-                    <label>{__('Paragraph Text', 'codeweber-gutenberg-blocks')}</label>
+                <BaseControl
+                    label={__('Paragraph Text', 'codeweber-gutenberg-blocks')}
+                    className="mb-3"
+                >
                     <div style={{
                         border: '1px solid #ccc',
                         borderRadius: '4px',
                         padding: '8px',
                         minHeight: '80px',
-                        backgroundColor: '#fff'
+                        backgroundColor: '#fff',
+                        fontSize: '13px'
                     }}>
                         <RichText
                             tagName="div"
@@ -113,7 +123,7 @@ export const HeadingContentControl = ({ attributes, setAttributes, hideSubtitle 
                             __unstableAllowHtml={true}
                         />
                     </div>
-                </div>
+                </BaseControl>
             )}
         </>
     );

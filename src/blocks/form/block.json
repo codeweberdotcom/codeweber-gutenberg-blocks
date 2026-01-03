@@ -212,7 +212,8 @@
   },
     "allowedBlocks": [
         "codeweber-blocks/form-field",
-        "codeweber-blocks/submit-button"
+        "codeweber-blocks/submit-button",
+        "codeweber-gutenberg-blocks/heading-subtitle"
     ],
     "textdomain": "codeweber-blocks",
     "editorScript": "file:./index.js",

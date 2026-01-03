@@ -73,13 +73,11 @@ const getGapClassesForType = (attrs = {}, prefix = 'grid', gapTypePrefix = 'g') 
 		[`${prefix}Gap${suffix}Xxl`]: gapXxl,
 	} = attrs;
 
-	// Базовое значение (default breakpoint)
-	if (gapDefault && gapDefault !== '') {
-		classes.push(`${gapTypePrefix}-${gapDefault}`);
-	}
-	// XS breakpoint
-	if (gapXs && gapXs !== '') {
-		classes.push(`${gapTypePrefix}-${gapXs}`);
+	// Базовое значение (default breakpoint) - используем XS если установлен, иначе default
+	// В Bootstrap XS - это базовый breakpoint без префикса
+	const baseGap = (gapXs && gapXs !== '') ? gapXs : gapDefault;
+	if (baseGap && baseGap !== '') {
+		classes.push(`${gapTypePrefix}-${baseGap}`);
 	}
 	// Остальные breakpoints
 	if (gapSm && gapSm !== '') {

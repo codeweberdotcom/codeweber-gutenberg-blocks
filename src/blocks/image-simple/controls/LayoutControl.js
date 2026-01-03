@@ -131,9 +131,6 @@ export const LayoutControl = ({ attributes, setAttributes }) => {
 				<Button
 					isPrimary={displayMode === 'single'}
 					onClick={() => {
-						// #region agent log
-						fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'LayoutControl.js:133',message:'Setting displayMode to single',data:{currentDisplayMode:displayMode},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
-						// #endregion
 						setAttributes({ displayMode: 'single' });
 					}}
 				>
@@ -142,9 +139,6 @@ export const LayoutControl = ({ attributes, setAttributes }) => {
 				<Button
 					isPrimary={displayMode === 'grid'}
 					onClick={() => {
-						// #region agent log
-						fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'LayoutControl.js:139',message:'Setting displayMode to grid',data:{currentDisplayMode:displayMode},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
-						// #endregion
 						setAttributes({ displayMode: 'grid' });
 					}}
 				>
@@ -153,9 +147,6 @@ export const LayoutControl = ({ attributes, setAttributes }) => {
 				<Button
 					isPrimary={displayMode === 'swiper'}
 					onClick={() => {
-						// #region agent log
-						fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'LayoutControl.js:145',message:'Setting displayMode to swiper',data:{currentDisplayMode:displayMode},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
-						// #endregion
 						setAttributes({ displayMode: 'swiper' });
 					}}
 				>
@@ -217,7 +208,7 @@ export const LayoutControl = ({ attributes, setAttributes }) => {
 							showGap={true}
 							showSpacing={false}
 							rowColsLabel={__('Images Per Row', 'codeweber-gutenberg-blocks')}
-							gapLabel={__('Gap сетки', 'codeweber-gutenberg-blocks')}
+							gapLabel={__('Grid Gap', 'codeweber-gutenberg-blocks')}
 						/>
 					)}
 
@@ -279,7 +270,7 @@ export const LayoutControl = ({ attributes, setAttributes }) => {
 								showRowCols={false}
 								showGap={true}
 								showSpacing={false}
-								gapLabel={__('Gap сетки', 'codeweber-gutenberg-blocks')}
+								gapLabel={__('Grid Gap', 'codeweber-gutenberg-blocks')}
 							/>
 						</>
 					)}

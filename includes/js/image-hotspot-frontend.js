@@ -11,9 +11,6 @@
 		// Проверяем кэш
 		const cacheKey = `${hotspotId}_${pointId}`;
 		if (contentCache[cacheKey]) {
-			// #region agent log
-			fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-frontend.js:loadHotspotContent',message:'Content from cache',data:{hotspotId:hotspotId,pointId:pointId,cacheKey:cacheKey},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'A'})}).catch(()=>{});
-			// #endregion
 			return Promise.resolve(contentCache[cacheKey]);
 		}
 
@@ -30,24 +27,15 @@
 			point_id: pointId
 		}));
 
-		// #region agent log
-		fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-frontend.js:loadHotspotContent',message:'Starting AJAX request',data:{hotspotId:hotspotId,pointId:pointId,ajaxurl:ajaxurl},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'A'})}).catch(()=>{});
-		// #endregion
 
 		return fetch(ajaxurl, {
 			method: 'POST',
 			body: formData
 		})
 		.then(response => {
-			// #region agent log
-			fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-frontend.js:loadHotspotContent',message:'AJAX response received',data:{hotspotId:hotspotId,pointId:pointId,status:response.status,ok:response.ok},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'A'})}).catch(()=>{});
-			// #endregion
 			return response.json();
 		})
 		.then(result => {
-			// #region agent log
-			fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-frontend.js:loadHotspotContent',message:'AJAX result parsed',data:{hotspotId:hotspotId,pointId:pointId,resultStatus:result.status,hasData:!!result.data,dataKeys:result.data?Object.keys(result.data):[]},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'A'})}).catch(()=>{});
-			// #endregion
 			if (result.status === 'success' && result.data) {
 				// Сохраняем в кэш
 				contentCache[cacheKey] = result.data;
@@ -57,9 +45,6 @@
 			}
 		})
 		.catch(error => {
-			// #region agent log
-			fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-frontend.js:loadHotspotContent',message:'AJAX error',data:{hotspotId:hotspotId,pointId:pointId,error:error.message,errorStack:error.stack},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'A'})}).catch(()=>{});
-			// #endregion
 			console.error('Fetch error:', error);
 			throw error;
 		});
@@ -116,9 +101,6 @@
 				const spaceLeft = elementLeft;
 				const spaceRight = viewportWidth - elementRight;
 				
-				// #region agent log
-				fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-frontend.js:initHotspotPopovers',message:'Calculating smart placement',data:{pointId:pointId,elementTop:elementTop,elementBottom:elementBottom,viewportHeight:viewportHeight,spaceTop:spaceTop,spaceBottom:spaceBottom,spaceLeft:spaceLeft,spaceRight:spaceRight},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'J'})}).catch(()=>{});
-				// #endregion
 				
 				// Определяем лучшее направление на основе доступного пространства
 				// Приоритет: bottom > top > right > left
@@ -154,20 +136,11 @@
 					}
 				}
 				
-				// #region agent log
-				fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-frontend.js:initHotspotPopovers',message:'Smart placement determined',data:{pointId:pointId,determinedPlacement:placement,isInTopArea:isInTopArea,isInBottomArea:isInBottomArea},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'J'})}).catch(()=>{});
-				// #endregion
 			}
 			
 			// Получаем контент из скрытого элемента (для Text и Hybrid)
 			const contentContainer = wrapper.querySelector('.cw-hotspot-popover-content');
-			// #region agent log
-			fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-frontend.js:initHotspotPopovers',message:'Extracting content from hidden element',data:{pointId:pointId,hasContentContainer:!!contentContainer,contentContainerHTML:contentContainer?contentContainer.outerHTML.substring(0,100):'null',useAjax:useAjax},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'C'})}).catch(()=>{});
-			// #endregion
 			const staticContent = contentContainer ? contentContainer.innerHTML : '';
-			// #region agent log
-			fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-frontend.js:initHotspotPopovers',message:'Static content extracted',data:{pointId:pointId,staticContentLength:staticContent.length,staticContentPreview:staticContent.substring(0,50)},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'C'})}).catch(()=>{});
-			// #endregion
 			
 			// Используем getOrCreateInstance (рекомендуется Bootstrap 5)
 			// Формируем customClass с учетом типа контента для применения CSS сразу
@@ -194,9 +167,6 @@
 				popoverOptions.content = '<div class="cw-hotspot-loading text-center p-3"><div class="spinner spinner-sm"></div></div>';
 			} else {
 				// Для статического контента берем из скрытого элемента - устанавливаем напрямую как строку
-				// #region agent log
-				fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-frontend.js:initHotspotPopovers',message:'Setting static content directly',data:{pointId:pointId,staticContentLength:staticContent.length,staticContentPreview:staticContent.substring(0,50),hasTitle:!!title,titleValue:title},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'D'})}).catch(()=>{});
-				// #endregion
 				// Устанавливаем контент, но если он пустой, используем невидимый пробел, чтобы Bootstrap создал структуру
 				popoverOptions.content = staticContent.trim() || '&nbsp;';
 			}
@@ -239,19 +209,10 @@
 			const popoverWidth = getDataAttr(pointElement, 'bs-popover-width');
 			
 			// Используем getOrCreateInstance (рекомендуется Bootstrap 5 для динамического контента)
-			// #region agent log
-			fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-frontend.js:initHotspotPopovers',message:'Creating popover instance',data:{pointId:pointId,useAjax:useAjax,hasTitle:!!title,titleValue:title,titleInOptions:popoverOptions.title,placement:placement,popoverWidth:popoverWidth,popoverOptionsContentType:typeof popoverOptions.content,popoverOptionsContentLength:typeof popoverOptions.content === 'string' ? popoverOptions.content.length : 0,popoverOptionsKeys:Object.keys(popoverOptions)},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'E'})}).catch(()=>{});
-			// #endregion
 			let popover;
 			try {
 				popover = bootstrap.Popover.getOrCreateInstance(pointElement, popoverOptions);
-				// #region agent log
-				fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-frontend.js:initHotspotPopovers',message:'Popover instance created successfully',data:{pointId:pointId,popoverExists:!!popover,hasTitle:!!title},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'E'})}).catch(()=>{});
-				// #endregion
 			} catch (e) {
-				// #region agent log
-				fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-frontend.js:initHotspotPopovers',message:'Error creating popover instance',data:{pointId:pointId,error:e.message,errorStack:e.stack,hasTitle:!!title,titleValue:title},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'E'})}).catch(()=>{});
-				// #endregion
 				console.error('Error creating popover:', e);
 				return; // Пропускаем этот элемент, если не удалось создать popover
 			}
@@ -287,9 +248,6 @@
 					const popoverElement = document.querySelector('.popover.cw-hotspot-popover');
 					if (popoverElement) {
 						const actualPlacement = popover._getPlacement();
-						// #region agent log
-						fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-frontend.js:shown.bs.popover',message:'Actual placement detected',data:{pointId:pointId,requestedPlacement:placement,actualPlacement:actualPlacement,elementRect:pointElement.getBoundingClientRect(),viewportHeight:window.innerHeight,viewportWidth:window.innerWidth,elementTop:pointElement.getBoundingClientRect().top,elementBottom:pointElement.getBoundingClientRect().bottom},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'I'})}).catch(()=>{});
-						// #endregion
 					}
 				}, { once: true });
 			}
@@ -307,9 +265,6 @@
 					contentUpdate['.popover-header'] = '';
 				}
 				popover.setContent(contentUpdate);
-				// #region agent log
-				fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-frontend.js:initHotspotPopovers',message:'Forced content via setContent',data:{pointId:pointId,staticContentLength:staticContent.length,hasTitle:!!title,titleValue:title},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'G'})}).catch(()=>{});
-				// #endregion
 			}
 			
 			// Если title пустой, скрываем header после показа popover
@@ -320,17 +275,11 @@
 						const header = popoverElement.querySelector('.popover-header');
 						if (header) {
 							header.style.display = 'none';
-							// #region agent log
-							fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-frontend.js:shown.bs.popover',message:'Header hidden for empty title',data:{pointId:pointId},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'H'})}).catch(()=>{});
-							// #endregion
 						}
 					}
 				}, { once: true });
 			}
 			
-			// #region agent log
-			fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-frontend.js:initHotspotPopovers',message:'Popover instance created',data:{pointId:pointId,popoverExists:!!popover},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'E'})}).catch(()=>{});
-			// #endregion
 			
 			// Добавляем обработчик для однократного обновления контента при первом показе
 			if (!useAjax && staticContent) {
@@ -342,9 +291,6 @@
 					if (!contentUpdated) {
 						contentUpdated = true;
 						
-						// #region agent log
-						fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-frontend.js:shown.bs.popover',message:'Popover shown - updating content once',data:{pointId:pointId,staticContentLength:staticContent.length},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'F'})}).catch(()=>{});
-						// #endregion
 						
 						// Используем setTimeout для небольшой задержки, чтобы DOM был готов
 						setTimeout(() => {
@@ -360,9 +306,6 @@
 								const hasHeader = !!popoverHeader;
 								const headerContent = popoverHeader ? popoverHeader.innerHTML : '';
 								
-								// #region agent log
-								fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-frontend.js:shown.bs.popover',message:'Checking popover structure before update',data:{pointId:pointId,hasHeader:hasHeader,headerContent:headerContent,hasTitle:!!title,titleValue:title},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'H'})}).catch(()=>{});
-								// #endregion
 								
 								let popoverBody = popoverElement.querySelector('.popover-body');
 								
@@ -379,9 +322,6 @@
 									// Обновляем только если контент пустой или значительно меньше ожидаемого
 									if (!currentContent || currentContent.length < staticContent.trim().length / 2) {
 										popoverBody.innerHTML = staticContent;
-										// #region agent log
-										fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-frontend.js:shown.bs.popover',message:'Content updated directly in DOM (once)',data:{pointId:pointId,staticContentLength:staticContent.length,popoverBodyLength:popoverBody.innerHTML.length},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'F'})}).catch(()=>{});
-										// #endregion
 									}
 									
 									// Проверяем и обновляем заголовок
@@ -395,24 +335,15 @@
 											headerAfter.className = 'popover-header';
 											// Вставляем перед body
 											popoverElement.insertBefore(headerAfter, popoverBody);
-											// #region agent log
-											fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-frontend.js:shown.bs.popover',message:'Header created',data:{pointId:pointId,title:title},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'H'})}).catch(()=>{});
-											// #endregion
 										}
 										
 										// Устанавливаем содержимое заголовка, если оно пустое или не совпадает
 										if (!headerAfter.innerHTML.trim() || headerAfter.innerHTML.trim() !== title) {
 											headerAfter.innerHTML = title;
-											// #region agent log
-											fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-frontend.js:shown.bs.popover',message:'Header content set',data:{pointId:pointId,title:title,headerContent:headerAfter.innerHTML},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'H'})}).catch(()=>{});
-											// #endregion
 										}
 									}
 									
 									// Финальная проверка структуры
-									// #region agent log
-									fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-frontend.js:shown.bs.popover',message:'Popover structure after update',data:{pointId:pointId,hasHeaderAfter:!!headerAfter,headerContentAfter:headerAfter?headerAfter.innerHTML:'',hasBody:!!popoverBody,bodyLength:popoverBody?popoverBody.innerHTML.length:0},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'H'})}).catch(()=>{});
-									// #endregion
 								}
 							}
 						}, 50); // Небольшая задержка для готовности DOM
@@ -422,16 +353,10 @@
 			
 			// Добавляем обработчик клика для диагностики
 			pointElement.addEventListener('click', (e) => {
-				// #region agent log
-				fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-frontend.js:click',message:'Point clicked',data:{pointId:pointId,hasTitle:!!title,titleValue:title,useAjax:useAjax,hasPopover:!!popover,popoverIsShown:popover?._isShown?.()},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'F'})}).catch(()=>{});
-				// #endregion
 			});
 			
 			// Добавляем обработчик для события show.bs.popover (до показа)
 			pointElement.addEventListener('show.bs.popover', (e) => {
-				// #region agent log
-				fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-frontend.js:show.bs.popover',message:'Popover show event triggered',data:{pointId:pointId,hasTitle:!!title,titleValue:title,useAjax:useAjax},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'F'})}).catch(()=>{});
-				// #endregion
 			});
 			
 			// Если используется AJAX, загружаем контент при показе
@@ -441,9 +366,6 @@
 				
 				// Используем shown.bs.popover вместо show.bs.popover, чтобы popover был уже полностью показан
 				pointElement.addEventListener('shown.bs.popover', () => {
-					// #region agent log
-					fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-frontend.js:shown.bs.popover',message:'Popover shown event for AJAX',data:{pointId:pointId,contentLoaded:contentLoaded,isLoading:isLoading,hotspotId:hotspotId},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'B'})}).catch(()=>{});
-					// #endregion
 					
 					// Загружаем контент только один раз
 					if (!contentLoaded && !isLoading) {
@@ -451,14 +373,8 @@
 						
 						// Проверяем, что popover все еще открыт
 						const isPopoverShown = popover._isShown();
-						// #region agent log
-						fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-frontend.js:shown.bs.popover',message:'Checking popover state before loading',data:{pointId:pointId,isPopoverShown:isPopoverShown},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'C'})}).catch(()=>{});
-						// #endregion
 						
 						if (!isPopoverShown) {
-							// #region agent log
-							fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-frontend.js:shown.bs.popover',message:'Popover already closed, skipping load',data:{pointId:pointId},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'C'})}).catch(()=>{});
-							// #endregion
 							isLoading = false;
 							return;
 						}
@@ -468,32 +384,17 @@
 							popover.setContent({
 								'.popover-body': '<div class="cw-hotspot-loading text-center p-3"><div class="spinner spinner-sm"></div></div>'
 							});
-							// #region agent log
-							fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-frontend.js:shown.bs.popover',message:'Loading indicator set',data:{pointId:pointId},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'D'})}).catch(()=>{});
-							// #endregion
 						} catch (e) {
-							// #region agent log
-							fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-frontend.js:shown.bs.popover',message:'Error setting loading indicator',data:{pointId:pointId,error:e.message},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'D'})}).catch(()=>{});
-							// #endregion
 						}
 						
 						// Загружаем контент
 						loadHotspotContent(hotspotId, pointId)
 							.then(data => {
-								// #region agent log
-								fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-frontend.js:loadHotspotContent.then',message:'AJAX content loaded successfully',data:{pointId:pointId,hasContent:!!data.content,contentLength:data.content?data.content.length:0,hasTitle:!!data.title},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'E'})}).catch(()=>{});
-								// #endregion
 								
 								// Проверяем, что popover все еще открыт перед обновлением контента
 								const isStillShown = popover._isShown();
-								// #region agent log
-								fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-frontend.js:loadHotspotContent.then',message:'Checking popover state before updating content',data:{pointId:pointId,isStillShown:isStillShown},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'F'})}).catch(()=>{});
-								// #endregion
 								
 								if (!isStillShown) {
-									// #region agent log
-									fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-frontend.js:loadHotspotContent.then',message:'Popover closed during AJAX, cannot update content',data:{pointId:pointId},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'F'})}).catch(()=>{});
-									// #endregion
 									contentLoaded = false; // Разрешаем повторную загрузку при следующем открытии
 									isLoading = false;
 									return;
@@ -515,13 +416,7 @@
 									popover.setContent({
 										'.popover-body': finalContent
 									});
-									// #region agent log
-									fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-frontend.js:loadHotspotContent.then',message:'Content updated successfully',data:{pointId:pointId,finalContentLength:finalContent.length},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'G'})}).catch(()=>{});
-									// #endregion
 								} catch (e) {
-									// #region agent log
-									fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-frontend.js:loadHotspotContent.then',message:'Error updating content',data:{pointId:pointId,error:e.message},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'G'})}).catch(()=>{});
-									// #endregion
 								}
 								
 								// Обновляем title, если он изменился
@@ -531,16 +426,10 @@
 											'.popover-header': data.title
 										});
 									} catch (e) {
-										// #region agent log
-										fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-frontend.js:loadHotspotContent.then',message:'Error updating title',data:{pointId:pointId,error:e.message},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'G'})}).catch(()=>{});
-										// #endregion
 									}
 								}
 							})
 							.catch(error => {
-								// #region agent log
-								fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-frontend.js:loadHotspotContent.catch',message:'AJAX error caught',data:{pointId:pointId,error:error.message,isPopoverShown:popover._isShown()},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'H'})}).catch(()=>{});
-								// #endregion
 								
 								isLoading = false;
 								console.error('Error loading hotspot content:', error);
@@ -552,9 +441,6 @@
 											'.popover-body': '<div class="alert alert-danger">Error loading content. Please try again.</div>'
 										});
 									} catch (e) {
-										// #region agent log
-										fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-frontend.js:loadHotspotContent.catch',message:'Error setting error message',data:{pointId:pointId,error:e.message},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'H'})}).catch(()=>{});
-										// #endregion
 									}
 								}
 							});
@@ -563,9 +449,6 @@
 				
 				// Отслеживаем закрытие popover во время загрузки
 				pointElement.addEventListener('hide.bs.popover', () => {
-					// #region agent log
-					fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'image-hotspot-frontend.js:hide.bs.popover',message:'Popover hide event',data:{pointId:pointId,contentLoaded:contentLoaded,isLoading:isLoading},timestamp:Date.now(),sessionId:'debug-session',runId:'initial',hypothesisId:'I'})}).catch(()=>{});
-					// #endregion
 				});
 			}
 			

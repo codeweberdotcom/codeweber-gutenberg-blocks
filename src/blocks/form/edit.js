@@ -16,7 +16,7 @@ import {
 import { __ } from '@wordpress/i18n';
 import { useEffect, useRef, createElement } from '@wordpress/element';
 import { useSelect, useDispatch } from '@wordpress/data';
-import { Icon, cog, inbox, comment, shield, justifySpaceBetween, positionCenter, heading } from '@wordpress/icons';
+import { Icon, cog, inbox, comment, shield, justifySpaceBetween, positionCenter } from '@wordpress/icons';
 import { TagControl } from '../../components/tag/TagControl';
 import { BlockMetaFields } from '../../components/block-meta/BlockMetaFields';
 import { GridControl, getGapClasses } from '../../components/grid-control';
@@ -118,8 +118,21 @@ const FormEdit = ({ attributes, setAttributes, clientId }) => {
 
 	// Функция для получения шаблона блоков
 	const getTemplateBlocks = () => {
+		// Базовый блок Title для всех форм
+		const titleBlock = ['codeweber-gutenberg-blocks/heading-subtitle', {
+			enableTitle: true,
+			enableSubtitle: false,
+			enableText: true,
+			title: __('Feedback form', 'codeweber-gutenberg-blocks'),
+			subtitle: '',
+			text: __('Write to us — we\'ll be happy to answer your questions.', 'codeweber-gutenberg-blocks'),
+			titleTag: 'h2',
+			textTag: 'p',
+		}];
+
 		if (formType === 'testimonial') {
 			return [
+				titleBlock,
 				['codeweber-blocks/form-field', {
 					fieldType: 'textarea',
 					fieldName: 'testimonial_text',
@@ -169,6 +182,7 @@ const FormEdit = ({ attributes, setAttributes, clientId }) => {
 
 		// Дефолтный шаблон для обычных форм
 		return [
+			titleBlock,
 			['codeweber-blocks/form-field', {
 				fieldType: 'text',
 				fieldName: 'name',
@@ -235,7 +249,6 @@ const FormEdit = ({ attributes, setAttributes, clientId }) => {
 
 	const tabs = [
 		{ name: 'form', title: <TabIcon icon={cog} label={__('Form', 'codeweber-gutenberg-blocks')} /> },
-		{ name: 'header', title: <TabIcon icon={heading} label={__('Header', 'codeweber-gutenberg-blocks')} /> },
 		{ name: 'email', title: <TabIcon icon={inbox} label={__('Email', 'codeweber-gutenberg-blocks')} /> },
 		{ name: 'messages', title: <TabIcon icon={comment} label={__('Messages', 'codeweber-gutenberg-blocks')} /> },
 		{ name: 'security', title: <TabIcon icon={shield} label={__('Security', 'codeweber-gutenberg-blocks')} /> },
@@ -265,54 +278,16 @@ const FormEdit = ({ attributes, setAttributes, clientId }) => {
 										]}
 										onChange={(value) => setAttributes({ formType: value })}
 										help={__('Select the type of form. This determines how the form is processed.', 'codeweber-gutenberg-blocks')}
+										__nextHasNoMarginBottom
+										__next40pxDefaultSize
 									/>
 									<TextControl
 										label={__('Form ID', 'codeweber-gutenberg-blocks')}
 										value={formId || (postId ? String(postId) : '')}
 										disabled={true}
 										help={__('Form ID is assigned automatically from the CPT Form ID and cannot be changed here.', 'codeweber-gutenberg-blocks')}
-									/>
-								</PanelBody>
-							)}
-
-							{/* HEADER TAB */}
-							{tab.name === 'header' && (
-								<PanelBody title={__('Header Settings', 'codeweber-gutenberg-blocks')} initialOpen={true}>
-									<TextControl
-										label={__('Form Title', 'codeweber-gutenberg-blocks')}
-										value={formTitle || ''}
-										onChange={(value) => setAttributes({ formTitle: value })}
-										help={__('Title displayed above the form', 'codeweber-gutenberg-blocks')}
-									/>
-									<TagControl
-										label={__('Title Tag', 'codeweber-gutenberg-blocks')}
-										value={formTitleTag || 'div'}
-										onChange={(value) => setAttributes({ formTitleTag: value })}
-										type="heading"
-									/>
-									<TextControl
-										label={__('Title Class', 'codeweber-gutenberg-blocks')}
-										value={formTitleClass !== undefined ? formTitleClass : 'h3 text-start'}
-										onChange={(value) => setAttributes({ formTitleClass: value })}
-										help={__('CSS classes for the title element', 'codeweber-gutenberg-blocks')}
-									/>
-									<TextControl
-										label={__('Form Subtitle', 'codeweber-gutenberg-blocks')}
-										value={formSubtitle || ''}
-										onChange={(value) => setAttributes({ formSubtitle: value })}
-										help={__('Subtitle displayed below the title', 'codeweber-gutenberg-blocks')}
-									/>
-									<TagControl
-										label={__('Subtitle Tag', 'codeweber-gutenberg-blocks')}
-										value={formSubtitleTag || 'p'}
-										onChange={(value) => setAttributes({ formSubtitleTag: value })}
-										type="subtitle"
-									/>
-									<TextControl
-										label={__('Subtitle Class', 'codeweber-gutenberg-blocks')}
-										value={formSubtitleClass !== undefined ? formSubtitleClass : 'lead mb-4 text-start'}
-										onChange={(value) => setAttributes({ formSubtitleClass: value })}
-										help={__('CSS classes for the subtitle element', 'codeweber-gutenberg-blocks')}
+										__nextHasNoMarginBottom
+										__next40pxDefaultSize
 									/>
 								</PanelBody>
 							)}
@@ -326,22 +301,30 @@ const FormEdit = ({ attributes, setAttributes, clientId }) => {
 										value={recipientEmail}
 										onChange={(value) => setAttributes({ recipientEmail: value })}
 										help={__('Email address to receive form submissions', 'codeweber-gutenberg-blocks')}
+										__nextHasNoMarginBottom
+										__next40pxDefaultSize
 									/>
 									<TextControl
 										label={__('Sender Email', 'codeweber-gutenberg-blocks')}
 										type="email"
 										value={senderEmail}
 										onChange={(value) => setAttributes({ senderEmail: value })}
+										__nextHasNoMarginBottom
+										__next40pxDefaultSize
 									/>
 									<TextControl
 										label={__('Sender Name', 'codeweber-gutenberg-blocks')}
 										value={senderName}
 										onChange={(value) => setAttributes({ senderName: value })}
+										__nextHasNoMarginBottom
+										__next40pxDefaultSize
 									/>
 									<TextControl
 										label={__('Email Subject', 'codeweber-gutenberg-blocks')}
 										value={subject}
 										onChange={(value) => setAttributes({ subject: value })}
+										__nextHasNoMarginBottom
+										__next40pxDefaultSize
 									/>
 								</PanelBody>
 							)}
@@ -371,6 +354,7 @@ const FormEdit = ({ attributes, setAttributes, clientId }) => {
 										label={__('Enable Captcha', 'codeweber-gutenberg-blocks')}
 										checked={enableCaptcha}
 										onChange={(value) => setAttributes({ enableCaptcha: value })}
+										__nextHasNoMarginBottom
 									/>
 									{enableCaptcha && (
 										<SelectControl
@@ -380,12 +364,15 @@ const FormEdit = ({ attributes, setAttributes, clientId }) => {
 												{ label: __('Honeypot', 'codeweber-gutenberg-blocks'), value: 'honeypot' },
 											]}
 											onChange={(value) => setAttributes({ captchaType: value })}
+											__nextHasNoMarginBottom
+											__next40pxDefaultSize
 										/>
 									)}
 									<ToggleControl
 										label={__('Enable Rate Limiting', 'codeweber-gutenberg-blocks')}
 										checked={enableRateLimit}
 										onChange={(value) => setAttributes({ enableRateLimit: value })}
+										__nextHasNoMarginBottom
 									/>
 									{enableRateLimit && (
 										<>
@@ -464,27 +451,6 @@ const FormEdit = ({ attributes, setAttributes, clientId }) => {
 
 			<div {...blockProps}>
 				<div className="form-preview">
-					{(formTitle || formSubtitle) && (
-						<div className="form-header">
-							{formTitle && createElement(
-								formTitleTag || 'div',
-								{
-									className: formTitleClass || 'h3 text-start',
-									dangerouslySetInnerHTML: { __html: formTitle }
-								}
-							)}
-							{formSubtitle && createElement(
-								formSubtitleTag || 'p',
-								{
-									className: formSubtitleClass || 'lead mb-4 text-start',
-									dangerouslySetInnerHTML: { __html: formSubtitle }
-								}
-							)}
-						</div>
-					)}
-					{!formTitle && (
-						<h4>{formType === 'testimonial' ? __('Testimonial Form', 'codeweber-gutenberg-blocks') : __('Contact Form', 'codeweber-gutenberg-blocks')}</h4>
-					)}
 					{(() => {
 						const gapClasses = getGapClasses(attributes, 'form');
 						const rowClasses = ['row', ...gapClasses].filter(Boolean);
@@ -510,7 +476,7 @@ const FormEdit = ({ attributes, setAttributes, clientId }) => {
 					return (
 						<div className={`form-fields-preview ${finalRowClassName}`}>
 							<InnerBlocks
-								allowedBlocks={['codeweber-blocks/form-field', 'codeweber-blocks/submit-button']}
+								allowedBlocks={['codeweber-blocks/form-field', 'codeweber-blocks/submit-button', 'codeweber-gutenberg-blocks/heading-subtitle']}
 								template={getTemplateBlocks()}
 								templateLock={false}
 							/>

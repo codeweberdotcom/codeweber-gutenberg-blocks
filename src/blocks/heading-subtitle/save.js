@@ -2,6 +2,22 @@ import { RichText } from '@wordpress/block-editor';
 import { getTitleClasses, getSubtitleClasses } from './utils';
 import { ParagraphRenderSave } from '../../components/paragraph';
 
+// Функция для очистки тегов strong из HTML
+const cleanStrongTags = (html) => {
+    if (!html) return html;
+    // Удаляем все вложенные теги strong, сохраняя содержимое
+    let cleaned = html;
+    let previous = '';
+    // Повторяем до тех пор, пока есть изменения
+    while (cleaned !== previous) {
+        previous = cleaned;
+        cleaned = cleaned
+            .replace(/<strong[^>]*>/gi, '')
+            .replace(/<\/strong>/gi, '');
+    }
+    return cleaned;
+};
+
 const HeadingSubtitleSave = ({ attributes }) => {
     const {
         enableTitle,
@@ -18,11 +34,13 @@ const HeadingSubtitleSave = ({ attributes }) => {
     const elements = [];
 
     if (enableTitle) {
+        // Очищаем strong теги перед сохранением
+        const cleanTitle = cleanStrongTags(title);
         elements.push(
             <RichText.Content
                 key="title"
                 tagName={titleTag}
-                value={title}
+                value={cleanTitle}
                 className={getTitleClasses(attributes)}
             />
         );

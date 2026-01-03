@@ -113,7 +113,6 @@ export const iconWrapperStyles = [
 	{ value: '', label: 'Div.icon' },
 	{ value: 'btn', label: 'Square' },
 	{ value: 'btn-circle', label: 'Round' },
-	{ value: 'gradient', label: 'Gradient' },
 ];
 
 /**
@@ -132,4 +131,5 @@ export const iconBtnVariants = [
 	{ value: 'soft', label: 'Soft' },
 	{ value: 'outline', label: 'Outline' },
 	{ value: 'solid', label: 'Solid' },
+	{ value: 'gradient', label: 'Gradient' },
 ];

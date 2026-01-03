@@ -43,7 +43,7 @@ const HtmlBlocksEdit = ({ attributes, setAttributes, clientId }) => {
 				});
 
 				const options = [
-					{ label: __('-- Выберите блок --', 'codeweber-gutenberg-blocks'), value: 0 },
+					{ label: __('-- Select Block --', 'codeweber-gutenberg-blocks'), value: 0 },
 					...posts.map((post) => ({
 						label: post.title?.rendered || `#${post.id}`,
 						value: post.id,
@@ -54,7 +54,7 @@ const HtmlBlocksEdit = ({ attributes, setAttributes, clientId }) => {
 			} catch (error) {
 				console.error('Error fetching HTML blocks:', error);
 				setHtmlBlocks([
-					{ label: __('-- Выберите блок --', 'codeweber-gutenberg-blocks'), value: 0 },
+					{ label: __('-- Select Block --', 'codeweber-gutenberg-blocks'), value: 0 },
 				]);
 			} finally {
 				setIsLoading(false);
@@ -83,7 +83,7 @@ const HtmlBlocksEdit = ({ attributes, setAttributes, clientId }) => {
 				setSelectedBlockContent(content);
 			} catch (error) {
 				console.error('Error fetching block content:', error);
-				setSelectedBlockContent(__('Ошибка загрузки контента', 'codeweber-gutenberg-blocks'));
+				setSelectedBlockContent(__('Error loading content', 'codeweber-gutenberg-blocks'));
 			} finally {
 				setIsLoadingContent(false);
 			}
@@ -114,24 +114,24 @@ const HtmlBlocksEdit = ({ attributes, setAttributes, clientId }) => {
 	return (
 		<>
 			<InspectorControls>
-				<PanelBody title={__('Настройки HTML блока', 'codeweber-gutenberg-blocks')} initialOpen={true}>
+				<PanelBody title={__('HTML Block Settings', 'codeweber-gutenberg-blocks')} initialOpen={true}>
 					{isLoading ? (
 						<div style={{ padding: '10px', textAlign: 'center' }}>
 							<Spinner />
-							<p>{__('Загрузка блоков...', 'codeweber-gutenberg-blocks')}</p>
+							<p>{__('Loading blocks...', 'codeweber-gutenberg-blocks')}</p>
 						</div>
 					) : (
 						<SelectControl
-							label={__('Выберите HTML блок', 'codeweber-gutenberg-blocks')}
+							label={__('Select HTML Block', 'codeweber-gutenberg-blocks')}
 							value={selectedBlockId || 0}
 							options={htmlBlocks}
 							onChange={(value) => setAttributes({ selectedBlockId: parseInt(value) || 0 })}
-							help={__('Выберите блок из CPT html_blocks для отображения', 'codeweber-gutenberg-blocks')}
+							help={__('Select a block from html_blocks CPT to display', 'codeweber-gutenberg-blocks')}
 						/>
 					)}
 				</PanelBody>
 
-				<PanelBody title={__('Дополнительные настройки', 'codeweber-gutenberg-blocks')}>
+				<PanelBody title={__('Additional Settings', 'codeweber-gutenberg-blocks')}>
 					<BlockMetaFields
 						attributes={attributes}
 						setAttributes={setAttributes}
@@ -141,9 +141,9 @@ const HtmlBlocksEdit = ({ attributes, setAttributes, clientId }) => {
 							idKey: 'blockId',
 						}}
 						labels={{
-							classLabel: __('CSS класс', 'codeweber-gutenberg-blocks'),
-							dataLabel: __('Data атрибуты', 'codeweber-gutenberg-blocks'),
-							idLabel: __('ID элемента', 'codeweber-gutenberg-blocks'),
+							classLabel: __('CSS Class', 'codeweber-gutenberg-blocks'),
+							dataLabel: __('Data Attributes', 'codeweber-gutenberg-blocks'),
+							idLabel: __('Element ID', 'codeweber-gutenberg-blocks'),
 						}}
 					/>
 				</PanelBody>
@@ -154,12 +154,12 @@ const HtmlBlocksEdit = ({ attributes, setAttributes, clientId }) => {
 					<Placeholder
 						icon="code"
 						label={__('Html Blocks', 'codeweber-gutenberg-blocks')}
-						instructions={__('Выберите HTML блок из списка в настройках', 'codeweber-gutenberg-blocks')}
+						instructions={__('Select an HTML block from the settings list', 'codeweber-gutenberg-blocks')}
 					/>
 				) : isLoadingContent ? (
 					<div style={{ padding: '20px', textAlign: 'center' }}>
 						<Spinner />
-						<p>{__('Загрузка контента...', 'codeweber-gutenberg-blocks')}</p>
+						<p>{__('Loading content...', 'codeweber-gutenberg-blocks')}</p>
 					</div>
 				) : (
 					<div
@@ -173,6 +173,7 @@ const HtmlBlocksEdit = ({ attributes, setAttributes, clientId }) => {
 };
 
 export default HtmlBlocksEdit;
+
 
 
 

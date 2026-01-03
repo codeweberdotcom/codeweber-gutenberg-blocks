@@ -1,0 +1,3020 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Codeweber Gutenberg Blocks\n"
+"POT-Creation-Date: 2025-12-04T14:31:54Z\n"
+"PO-Revision-Date: 2025-12-20 19:32+0000\n"
+"Last-Translator: Codeweber\n"
+"Language-Team: Русский\n"
+"Language: ru_RU\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10 >= 2 && "
+"n%10<=4 &&(n%100<10||n%100 >= 20)? 1 : 2);\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-KeywordsList: __;_e;_x;_ex;_n;_nx;esc_attr__;esc_attr_e;esc_attr_x;"
+"esc_html__;esc_html_e;esc_html_x\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: node_modules\n"
+"X-Poedit-SearchPathExcluded-1: build\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"Report-Msgid-Bugs-To: \n"
+"X-Loco-Version: 2.8.0; wp-6.9; php-8.1.10"
+
+#: src/blocks/button/sidebar.js:223
+msgid "Button Settings"
+msgstr "Настройки кнопки"
+
+#: src/blocks/button/sidebar.js:228
+msgid "Button Type"
+msgstr "Тип кнопки"
+
+#: src/components/icon/IconControl.js:388
+msgid "Button Size"
+msgstr "Размер кнопки"
+
+#: src/blocks/button/sidebar.js:288
+msgid "Button Shape"
+msgstr "Форма кнопки"
+
+#: src/blocks/button/sidebar.js:316
+msgid "Button Style"
+msgstr "Стиль кнопки"
+
+#: src/blocks/feature/edit.js:647
+msgid "Button Color"
+msgstr "Цвет кнопки"
+
+#: src/blocks/button/sidebar.js:397
+msgid "Link Type"
+msgstr "Тип ссылки"
+
+#: src/blocks/button/sidebar.js:421
+msgid "Link Variant"
+msgstr "Вариант ссылки"
+
+#: src/blocks/button/sidebar.js:443
+msgid "Link Text Color"
+msgstr "Цвет текста ссылки"
+
+#: src/blocks/button/sidebar.js
+msgid "Icon Position"
+msgstr "Позиция иконки"
+
+#: src/blocks/button/sidebar.js:466
+msgid "Left Icon"
+msgstr "Левая иконка"
+
+#: src/blocks/button/sidebar.js:474
+msgid "Right Icon"
+msgstr "Правая иконка"
+
+#: src/blocks/button/sidebar.js
+msgid "Left"
+msgstr "Слева"
+
+#: src/blocks/button/sidebar.js
+msgid "Right"
+msgstr "Справа"
+
+#: src/blocks/button/sidebar.js:483
+msgid "Icon Class"
+msgstr "Класс иконки"
+
+#: src/blocks/button/sidebar.js:493
+msgid "Social Icon Class"
+msgstr "Класс соц. иконки"
+
+#: src/blocks/button/sidebar.js:400
+msgid "Gradient Color"
+msgstr "Градиентный цвет"
+
+#: src/blocks/button/sidebar.js:518
+msgid "Current icon:"
+msgstr "Текущая иконка:"
+
+#: src/blocks/button/sidebar.js:579
+msgid "Social Icon Style"
+msgstr "Стиль соц. иконки"
+
+#: src/components/gap/GapControl.js:5
+msgid "General"
+msgstr "Общие"
+
+#: src/blocks/card/edit.js:81
+msgid "Appearance"
+msgstr "Внешний вид"
+
+#: src/blocks/section/sidebar.js:220
+msgid "Spacing"
+msgstr "Отступы"
+
+#: src/components/layout/PositioningControl.js:80
+msgid "Position"
+msgstr "Позиция"
+
+#: src/blocks/section/sidebar.js:218
+msgid "Background"
+msgstr "Фон"
+
+#: src/blocks/feature/edit.js:138
+msgid "Animation"
+msgstr "Анимация"
+
+#: src/blocks/section/sidebar.js:221
+msgid "Settings"
+msgstr "Настройки"
+
+#: src/blocks/feature/edit.js:667
+msgid "Enable Card Wrapper"
+msgstr "Включить обертку карточки"
+
+#: src/blocks/feature/edit.js:673
+msgid "Enable Card Body"
+msgstr "Включить тело карточки"
+
+#: src/components/section/SectionSettingsPanel.js:57
+msgid "Overflow Hidden"
+msgstr "Скрыть переполнение"
+
+#: src/blocks/feature/edit.js:684
+msgid "H-100"
+msgstr "H-100"
+
+#: src/blocks/card/edit.js:308
+msgid "Card Border Position"
+msgstr "Позиция границы карточки"
+
+#: src/components/waves/WavesControl.js:9
+msgid "None"
+msgstr "Нет"
+
+#: src/components/waves/WavesControl.js:18
+msgid "Top"
+msgstr "Верх"
+
+#: src/components/waves/WavesControl.js:19
+msgid "Bottom"
+msgstr "Низ"
+
+#: src/components/layout/PositioningControl.js:6
+msgid "Start"
+msgstr "Начало"
+
+#: src/components/layout/PositioningControl.js:8
+msgid "End"
+msgstr "Конец"
+
+#: src/blocks/card/edit.js:347
+msgid "Border Color"
+msgstr "Цвет границы"
+
+#: src/blocks/feature/edit.js:739
+msgid "Card Class"
+msgstr "Класс карточки"
+
+#: src/blocks/feature/edit.js:740
+msgid "Card Data"
+msgstr "Данные карточки"
+
+#: src/blocks/feature/edit.js:741
+msgid "Card ID"
+msgstr "ID карточки"
+
+#: src/blocks/column/edit.js:25
+msgid "Responsive"
+msgstr "Адаптивность"
+
+#: src/blocks/column/edit.js:67
+msgid "Column align"
+msgstr "Выравнивание колонки"
+
+#: src/blocks/column/edit.js:91
+msgid "Column Class"
+msgstr "Класс колонки"
+
+#: src/blocks/column/edit.js:92
+msgid "Column Data"
+msgstr "Данные колонки"
+
+#: src/blocks/column/edit.js:93
+msgid "Column ID"
+msgstr "ID колонки"
+
+#: src/blocks/columns/edit.js:32
+msgid "Classic grid"
+msgstr "Classic grid"
+
+#: src/blocks/columns/edit.js:33
+msgid "Columns grid"
+msgstr "Columns grid"
+
+#: src/utilities/border-radius.js:22
+msgid "Default"
+msgstr "По умолчанию"
+
+#: src/components/background/BackgroundSettingsPanel.js:19
+msgid "Auto"
+msgstr "Авто"
+
+#: src/blocks/columns/edit.js:40
+msgid "1 column"
+msgstr "1 колонка"
+
+#: src/blocks/columns/edit.js:41
+msgid "2 columns"
+msgstr "2 колонки"
+
+#: src/blocks/columns/edit.js:42
+msgid "3 columns"
+msgstr "3 колонки"
+
+#: src/blocks/columns/edit.js:43
+msgid "4 columns"
+msgstr "4 колонки"
+
+#: src/blocks/columns/edit.js:44
+msgid "5 columns"
+msgstr "5 колонок"
+
+#: src/blocks/columns/edit.js:45
+msgid "6 columns"
+msgstr "6 колонок"
+
+#: src/blocks/columns/edit.js:51
+msgid "Grid type"
+msgstr "Тип сетки"
+
+#: src/blocks/image-simple/sidebar.js:24
+msgid "Layout"
+msgstr "Макет"
+
+#: src/blocks/columns/edit.js:137
+msgid "Gap"
+msgstr "Gap"
+
+#: src/blocks/columns/edit.js:154
+msgid "Columns count"
+msgstr "Количество колонок"
+
+#: src/blocks/columns/edit.js:165
+msgid "Columns (base)"
+msgstr "Колонки (база)"
+
+#: src/blocks/columns/edit.js:170
+msgid "Columns SM (≥576px)"
+msgstr "Колонки SM (≥576px)"
+
+#: src/blocks/columns/edit.js:175
+msgid "Columns MD (≥768px)"
+msgstr "Колонки MD (≥768px)"
+
+#: src/blocks/columns/edit.js:180
+msgid "Columns LG (≥992px)"
+msgstr "Колонки LG (≥992px)"
+
+#: src/blocks/columns/edit.js:185
+msgid "Columns XL (≥1200px)"
+msgstr "Колонки XL (≥1200px)"
+
+#: src/blocks/columns/edit.js:190
+msgid "Columns XXL (≥1400px)"
+msgstr "Колонки XXL (≥1400px)"
+
+#: src/blocks/columns/edit.js:201
+msgid "Columns align"
+msgstr "Выравнивание колонок"
+
+#: src/blocks/columns/edit.js:253
+msgid "Columns Class"
+msgstr "Класс колонок"
+
+#: src/blocks/columns/edit.js:254
+msgid "Columns Data"
+msgstr "Данные колонок"
+
+#: src/blocks/columns/edit.js:255
+msgid "Columns ID"
+msgstr "ID колонок"
+
+#: src/blocks/feature/edit.js:129
+msgid "Feature"
+msgstr "Преимущества"
+
+#: src/components/icon/IconControl.js:66
+msgid "Icon"
+msgstr "Иконка"
+
+#: src/components/heading/HeadingTypographyControl.js:51
+msgid "Title"
+msgstr "Заголовок"
+
+#: src/blocks/feature/edit.js:132
+msgid "Button"
+msgstr "Кнопка"
+
+#: src/blocks/feature/edit.js:133
+msgid "Card"
+msgstr "Карточка"
+
+#: src/components/heading/HeadingContentControl.js:69
+msgid "Enter title..."
+msgstr "Введите заголовок..."
+
+#: src/blocks/feature/edit.js:519
+msgid "Feature 1"
+msgstr "Тип 1"
+
+#: src/blocks/feature/edit.js:535
+msgid "Feature 2"
+msgstr "Тип 2"
+
+#: src/blocks/feature/edit.js:551
+msgid "Feature 3"
+msgstr "Тип 3"
+
+#: src/blocks/feature/edit.js:630
+msgid "Enable Button"
+msgstr "Включить кнопку"
+
+#: src/blocks/feature/edit.js:637
+msgid "Button Text"
+msgstr "Текст кнопки"
+
+#: src/blocks/feature/edit.js:642
+msgid "Button URL"
+msgstr "URL кнопки"
+
+#: src/blocks/feature/edit.js:653
+msgid "Button Classes"
+msgstr "Классы кнопки"
+
+#: src/blocks/feature/edit.js:656
+msgid "Default: more hover"
+msgstr "По умолчанию: more hover"
+
+#: src/components/heading/HeadingContentControl.js:90
+msgid "Enter subtitle..."
+msgstr "Введите подзаголовок..."
+
+#: src/blocks/heading-subtitle/edit.js:98
+msgid "Content"
+msgstr "Содержимое"
+
+#: src/blocks/paragraph/edit.js:53
+msgid "Typography"
+msgstr "Типографика"
+
+#: src/components/layout/PositioningControl.js:56
+msgid "Align"
+msgstr "Выравнивание"
+
+#: src/blocks/heading-subtitle/edit.js:132
+msgid "Title Align"
+msgstr "Выравнивание заголовка"
+
+#: src/components/heading/HeadingTypographyControl.js:58
+msgid "Subtitle"
+msgstr "Подзаголовок"
+
+#: src/components/paragraph/ParagraphControl.js:47
+msgid "Paragraph"
+msgstr "Параграф"
+
+#: src/blocks/heading-subtitle/edit.js:191
+msgid "Title CSS Class"
+msgstr "CSS класс заголовка"
+
+#: src/blocks/heading-subtitle/edit.js:192
+msgid "Title Data Attributes"
+msgstr "Data атрибуты заголовка"
+
+#: src/blocks/heading-subtitle/edit.js:193
+msgid "Title ID"
+msgstr "ID заголовка"
+
+#: src/blocks/heading-subtitle/edit.js:207
+msgid "Subtitle CSS Class"
+msgstr "CSS класс подзаголовка"
+
+#: src/blocks/heading-subtitle/edit.js:208
+msgid "Subtitle Data Attributes"
+msgstr "Data атрибуты подзаголовка"
+
+#: src/blocks/heading-subtitle/edit.js:209
+msgid "Subtitle ID"
+msgstr "ID подзаголовка"
+
+#: src/blocks/heading-subtitle/edit.js:223
+msgid "Paragraph CSS Class"
+msgstr "CSS класс параграфа"
+
+#: src/blocks/heading-subtitle/edit.js:224
+msgid "Paragraph Data Attributes"
+msgstr "Data атрибуты параграфа"
+
+#: src/blocks/paragraph/edit.js:125
+msgid "Paragraph ID"
+msgstr "ID параграфа"
+
+#: src/blocks/heading-subtitle/edit.js:236
+msgid "Title Block"
+msgstr "Блок заголовка"
+
+#: src/blocks/heading-subtitle/index.js:10
+msgid ""
+"A flexible heading and subtitle block with advanced typography controls."
+msgstr ""
+"Гибкий блок заголовка и подзаголовка с расширенными настройками типографики."
+
+#: src/blocks/icon/edit.js:91
+msgid "Select icon in settings"
+msgstr "Выберите иконку в настройках"
+
+#: src/blocks/icon/sidebar.js:44
+msgid "Wrapper"
+msgstr "Обёртка"
+
+#: src/blocks/icon/sidebar.js:59
+msgid "Icon Settings"
+msgstr "Настройки иконки"
+
+#: src/components/icon/IconControl.js:339
+msgid "Wrap in div.icon"
+msgstr "Обернуть в div.icon"
+
+#: src/components/icon/IconControl.js:340
+msgid "Adds wrapper for positioning or styling"
+msgstr "Добавляет обёртку для позиционирования или стилизации"
+
+#: src/components/icon/IconControl.js:349
+msgid "Wrapper Style"
+msgstr "Стиль обёртки"
+
+#: src/components/icon/IconControl.js:370
+msgid "Button Variant"
+msgstr "Вариант кнопки"
+
+#: src/components/icon/IconControl.js:408
+msgid "Additional wrapper classes"
+msgstr "Доп. классы обёртки"
+
+#: src/components/icon/IconControl.js:409
+msgid "Example: pe-none"
+msgstr "Например: pe-none"
+
+#: src/components/block-meta/BlockMetaFields.js:19
+msgid "Block Class"
+msgstr "Класс блока"
+
+#: src/components/block-meta/BlockMetaFields.js:20
+msgid "Block Data"
+msgstr "Данные блока"
+
+#: src/components/block-meta/BlockMetaFields.js:21
+msgid "Block ID"
+msgstr "ID блока"
+
+#: src/blocks/image/controls/EffectsControl.js:71
+msgid "Hover Effect"
+msgstr "Эффект при наведении"
+
+#: src/blocks/image/controls/EffectsControl.js:82
+msgid "Enable Effect Type"
+msgstr "Включить тип эффекта"
+
+#: src/blocks/image/controls/EffectsControl.js:100
+msgid "Effect Type"
+msgstr "Тип эффекта"
+
+#: src/blocks/image/controls/EffectsControl.js:107
+msgid "Overlay"
+msgstr "Наложение"
+
+#: src/blocks/image/controls/EffectsControl.js:113
+msgid "Tooltip"
+msgstr "Подсказка"
+
+#: src/blocks/image/controls/EffectsControl.js:119
+msgid "Caption"
+msgstr "Подпись"
+
+#: src/blocks/image/controls/EffectsControl.js:135
+msgid "Overlay Type"
+msgstr "Тип наложения"
+
+#: src/blocks/image/controls/EffectsControl.js:148
+msgid "Overlay Color (Primary)"
+msgstr "Цвет наложения (Основной)"
+
+#: src/blocks/image/controls/EffectsControl.js:151
+msgid "Use primary color for overlay"
+msgstr "Использовать основной цвет для наложения"
+
+#: src/blocks/image/controls/EffectsControl.js:157
+msgid "Overlay Gradient"
+msgstr "Градиент наложения"
+
+#: src/blocks/image/controls/EffectsControl.js:178
+msgid "Tooltip Type"
+msgstr "Тип подсказки"
+
+#: src/blocks/image/controls/EffectsControl.js:193
+msgid "Caption Background"
+msgstr "Фон подписи"
+
+#: src/blocks/image/controls/EffectsControl.js:205
+msgid "Caption Position"
+msgstr "Позиция подписи"
+
+#: src/blocks/image/controls/EffectsControl.js:208
+msgid "Bottom Center"
+msgstr "Снизу по центру"
+
+#: src/blocks/image/controls/EffectsControl.js:209
+msgid "Bottom Left"
+msgstr "Снизу слева"
+
+#: src/blocks/image/controls/EffectsControl.js:210
+msgid "Bottom Right"
+msgstr "Снизу справа"
+
+#: src/blocks/image/controls/EffectsControl.js:211
+msgid "Top Center"
+msgstr "Сверху по центру"
+
+#: src/blocks/image/controls/EffectsControl.js:212
+msgid "Top Left"
+msgstr "Сверху слева"
+
+#: src/blocks/image/controls/EffectsControl.js:213
+msgid "Top Right"
+msgstr "Сверху справа"
+
+#: src/components/layout/PositioningControl.js:7
+msgid "Center"
+msgstr "Центр"
+
+#: src/blocks/image/controls/EffectsControl.js:220
+msgid "Caption Padding"
+msgstr "Отступ подписи"
+
+#: src/blocks/image/controls/EffectsControl.js:233
+msgid "Caption Font Size"
+msgstr "Размер шрифта подписи"
+
+#: src/blocks/image/controls/EffectsControl.js:270
+msgid "Cursor Type"
+msgstr "Тип курсора"
+
+#: src/components/section/SectionSettingsPanel.js:7
+msgid "Dark"
+msgstr "Тёмный"
+
+#: src/blocks/image-simple/controls/LayoutControl.js:460
+msgid "Light"
+msgstr "Светлый"
+
+#: src/blocks/image-simple/controls/LayoutControl.js:409
+msgid "Primary"
+msgstr "Основной"
+
+#: src/blocks/image-simple/controls/LayoutControl.js:67
+msgid "Items Per View"
+msgstr "Элементов на экране"
+
+#: src/blocks/image-simple/controls/LayoutControl.js:119
+msgid "Display Mode"
+msgstr "Режим отображения"
+
+#: src/blocks/image-simple/controls/LayoutControl.js:126
+msgid "Single"
+msgstr "Одиночный"
+
+#: src/blocks/image-simple/controls/LayoutControl.js:132
+msgid "Grid"
+msgstr "Сетка"
+
+#: src/blocks/image-simple/controls/LayoutControl.js:138
+msgid "Swiper"
+msgstr "Слайдер"
+
+#: src/blocks/image/controls/LayoutControl.js:146
+msgid "Columns"
+msgstr "Колонки"
+
+#: src/blocks/image/controls/LayoutControl.js:165
+msgid "Gap X (Horizontal)"
+msgstr "Gap X"
+
+#: src/blocks/image/controls/LayoutControl.js:182
+msgid "Gap Y (Vertical)"
+msgstr "Gap Y"
+
+#: src/components/section/ContainerSettingsPanel.js:15
+msgid "Container Type"
+msgstr "Тип контейнера"
+
+#: src/blocks/image-simple/controls/LayoutControl.js:203
+msgid "Hero Slider"
+msgstr "Hero слайдер"
+
+#: src/blocks/image-simple/controls/LayoutControl.js:204
+msgid "Fullscreen Slider"
+msgstr "Полноэкранный слайдер"
+
+#: src/blocks/image-simple/controls/LayoutControl.js:207
+msgid "Special slider types for hero sections or fullscreen layouts"
+msgstr "Специальные типы слайдеров для hero-секций или полноэкранных макетов"
+
+#: src/blocks/image-simple/controls/LayoutControl.js:211
+msgid "Transition"
+msgstr "Переход"
+
+#: src/blocks/image-simple/controls/LayoutControl.js:215
+msgid "Effect"
+msgstr "Эффект"
+
+#: src/blocks/image-simple/controls/LayoutControl.js:225
+msgid "Speed (ms)"
+msgstr "Скорость (мс)"
+
+#: src/blocks/image-simple/controls/LayoutControl.js:238
+msgid "Auto Width"
+msgstr "Авто ширина"
+
+#: src/blocks/image-simple/controls/LayoutControl.js:247
+msgid "Spacing & Behavior"
+msgstr "Отступы и поведение"
+
+#: src/blocks/image-simple/controls/LayoutControl.js:251
+msgid "Margin (px)"
+msgstr "Отступ (px)"
+
+#: src/blocks/image-simple/controls/LayoutControl.js:262
+msgid "Loop"
+msgstr "Зацикливание"
+
+#: src/blocks/image-simple/controls/LayoutControl.js:263
+msgid ""
+"Enable continuous loop mode. Slides will loop from last to first seamlessly."
+msgstr ""
+"Включить режим непрерывного зацикливания. Слайды будут переключаться от "
+"последнего к первому плавно."
+
+#: src/blocks/image-simple/controls/LayoutControl.js:273
+msgid "Auto Height"
+msgstr "Авто высота"
+
+#: src/blocks/image-simple/controls/LayoutControl.js:284
+msgid "Watch Overflow"
+msgstr "Отслеживать переполнение"
+
+#: src/blocks/image-simple/controls/LayoutControl.js:295
+msgid "Update on Resize"
+msgstr "Обновлять при изменении размера"
+
+#: src/blocks/image-simple/controls/LayoutControl.js:306
+msgid "Centered Slides"
+msgstr "Центрировать слайды"
+
+#: src/blocks/image-simple/controls/LayoutControl.js:315
+msgid "Autoplay"
+msgstr "Автопроигрывание"
+
+#: src/blocks/image-simple/controls/LayoutControl.js:321
+msgid "Enable Autoplay"
+msgstr "Включить автопроигрывание"
+
+#: src/blocks/image-simple/controls/LayoutControl.js:332
+msgid "Autoplay Time (ms)"
+msgstr "Время автопроигрывания (мс)"
+
+#: src/blocks/image-simple/controls/LayoutControl.js:341
+msgid "Reverse Direction"
+msgstr "Обратное направление"
+
+#: src/blocks/image-simple/controls/LayoutControl.js:349
+msgid "Navigation"
+msgstr "Навигация"
+
+#: src/blocks/image-simple/controls/LayoutControl.js:355
+msgid "Navigation Arrows"
+msgstr "Стрелки навигации"
+
+#: src/blocks/image-simple/controls/LayoutControl.js:356
+msgid "Show previous/next navigation arrows to manually change slides."
+msgstr "Показать стрелки навигации влево/вправо для ручной смены слайдов."
+"Показывать стрелки предыдущий/следующий для ручного переключения слайдов."
+
+#: src/blocks/image-simple/controls/LayoutControl.js:366
+msgid "Pagination Dots"
+msgstr "Точки пагинации"
+
+#: src/blocks/image-simple/controls/LayoutControl.js:367
+msgid "Show pagination bullets/dots indicator at the bottom of the slider."
+msgstr "Показывать индикатор точек/буллетов внизу слайдера."
+
+#: src/blocks/image-simple/controls/LayoutControl.js:377
+msgid "Touch Drag"
+msgstr "Сенсорное перетаскивание"
+
+#: src/blocks/image-simple/controls/LayoutControl.js:378
+msgid ""
+"Enable touch/mouse drag to change slides by swiping with finger or mouse."
+msgstr ""
+"Включить сенсорное/мышиное перетаскивание для смены слайдов свайпом пальца "
+"или мыши."
+
+#: src/blocks/image-simple/controls/LayoutControl.js:387
+msgid "Navigation Style"
+msgstr "Стиль навигации"
+
+#: src/blocks/image-simple/controls/LayoutControl.js:416
+msgid "Navigation Position"
+msgstr "Позиция навигации"
+
+#: src/blocks/image-simple/controls/LayoutControl.js:431
+msgid "Below"
+msgstr "Снизу"
+
+#: src/blocks/image-simple/controls/LayoutControl.js:445
+msgid "Pagination Style"
+msgstr "Стиль пагинации"
+
+#: src/blocks/image-simple/controls/LayoutControl.js:474
+msgid "Over"
+msgstr "Поверх"
+
+#: src/blocks/image-simple/controls/LayoutControl.js:481
+msgid "Closer"
+msgstr "Ближе"
+
+#: src/blocks/image/controls/LightboxControl.js:10
+msgid "Enable Lightbox"
+msgstr "Включить Lightbox"
+
+#: src/blocks/image/controls/LightboxControl.js:17
+msgid "Gallery Name"
+msgstr "Имя галереи"
+
+#: src/blocks/image-simple/sidebar.js:23
+msgid "Images"
+msgstr "Изображения"
+
+#: src/blocks/image/sidebar.js:30
+msgid "Effects"
+msgstr "Эффекты"
+
+#: src/blocks/image-simple/sidebar.js:25
+msgid "Lightbox"
+msgstr "Lightbox"
+
+#: src/blocks/image-simple/controls/LayoutControl.js:146
+msgid "Grid Columns"
+msgstr "Колонки сетки"
+
+#: src/blocks/image-simple/controls/LayoutControl.js:165
+msgid "Grid Gap X"
+msgstr "Gap сетки X"
+
+#: src/blocks/image-simple/controls/LayoutControl.js:179
+msgid "Grid Gap Y"
+msgstr "Gap сетки Y"
+
+#: src/blocks/image-simple/edit.js:239
+msgid "Placeholder"
+msgstr "Заполнитель"
+
+#: src/components/heading/HeadingTypographyControl.js:179
+msgid "Paragraph Tag"
+msgstr "Тег параграфа"
+
+#: src/components/paragraph/ParagraphControl.js:81
+msgid "Color Type"
+msgstr "Тип цвета"
+
+#: src/components/paragraph/ParagraphControl.js:85
+msgid "Solid"
+msgstr "Сплошной"
+
+#: src/components/paragraph/ParagraphControl.js:86
+msgid "Soft"
+msgstr "Мягкий"
+
+#: src/components/paragraph/ParagraphControl.js:87
+msgid "Pale"
+msgstr "Бледный"
+
+#: src/components/paragraph/ParagraphControl.js:91
+msgid "Color"
+msgstr "Цвет"
+
+#: src/components/paragraph/ParagraphControl.js:97
+msgid "Size"
+msgstr "Размер"
+
+#: src/components/paragraph/ParagraphControl.js:103
+msgid "Weight"
+msgstr "Вес"
+
+#: src/components/paragraph/ParagraphControl.js:109
+msgid "Transform"
+msgstr "Трансформация"
+
+#: src/blocks/paragraph/edit.js:124
+msgid "Paragraph Data"
+msgstr "Данные параграфа"
+
+#: src/blocks/paragraph/edit.js:141
+msgid "Enter paragraph text..."
+msgstr "Введите текст параграфа..."
+
+#: src/blocks/section/sidebar.js:216
+msgid "Section"
+msgstr "Секция"
+
+#: src/blocks/section/sidebar.js:217
+msgid "Container"
+msgstr "Контейнер"
+
+#: src/blocks/section/sidebar.js:219
+msgid "Dividers"
+msgstr "Разделители"
+
+#: src/blocks/section/sidebar.js:233
+msgid "Background Settings"
+msgstr "Настройки фона"
+
+#: src/blocks/section/sidebar.js:248
+msgid "Background Video"
+msgstr "Видео фон"
+
+#: src/blocks/section/sidebar.js:292
+msgid "Select Video"
+msgstr "Выбрать видео"
+
+#: src/blocks/section/sidebar.js:320
+msgid "Select"
+msgstr "Выбрать"
+
+#: src/blocks/section/sidebar.js:354
+msgid "Video loaded"
+msgstr "Видео загружено"
+
+#: src/blocks/section/sidebar.js:394
+msgid "Remove Video"
+msgstr "Удалить видео"
+
+#: src/blocks/section/sidebar.js:409
+msgid "Angles"
+msgstr "Углы"
+
+#: src/blocks/section/sidebar.js:419
+msgid "Waves"
+msgstr "Волны"
+
+#: src/blocks/section/sidebar.js:471
+msgid "Container Align"
+msgstr "Выравнивание контейнера"
+
+#: src/components/spacing/SpacingControl.js:73
+msgid "Extra small (xs)"
+msgstr "Очень маленький (xs)"
+
+#: src/components/spacing/SpacingControl.js:83
+msgid "Small (sm) ≥576px"
+msgstr "Маленький (sm) ≥576px"
+
+#: src/components/spacing/SpacingControl.js:93
+msgid "Medium (md) ≥768px"
+msgstr "Средний (md) ≥768px"
+
+#: src/components/spacing/SpacingControl.js:103
+msgid "Large (lg) ≥992px"
+msgstr "Большой (lg) ≥992px"
+
+#: src/components/spacing/SpacingControl.js:113
+msgid "Extra large (xl) ≥1200px"
+msgstr "Очень большой (xl) ≥1200px"
+
+#: src/components/spacing/SpacingControl.js:123
+msgid "Extra extra large (xxl) ≥1400px"
+msgstr "Очень очень большой (xxl) ≥1400px"
+
+#: src/components/angled/AngledControl.js:10
+msgid "Up.Start"
+msgstr "Вверх.Начало"
+
+#: src/components/angled/AngledControl.js:11
+msgid "Up.End"
+msgstr "Вверх.Конец"
+
+#: src/components/angled/AngledControl.js:16
+msgid "Down.Start"
+msgstr "Вниз.Начало"
+
+#: src/components/angled/AngledControl.js:17
+msgid "Down.End"
+msgstr "Вниз.Конец"
+
+#: src/components/angled/AngledControl.js:31
+msgid "Enable Angled Divider"
+msgstr "Включить угловой разделитель"
+
+#: src/components/angled/AngledControl.js:39
+msgid "Upper"
+msgstr "Верхний"
+
+#: src/components/angled/AngledControl.js:54
+msgid "Down"
+msgstr "Вниз"
+
+#: src/components/angled/AngledControl.js:77
+msgid "Preview classes:"
+msgstr "Предпросмотр классов:"
+
+#: src/components/animation/Animation.js:6
+msgid "Fade In"
+msgstr "Появление"
+
+#: src/components/animation/Animation.js:7
+msgid "Slide In Left"
+msgstr "Въезд слева"
+
+#: src/components/animation/Animation.js:8
+msgid "Slide In Right"
+msgstr "Въезд справа"
+
+#: src/components/animation/Animation.js:9
+msgid "Slide In Down"
+msgstr "Въезд сверху"
+
+#: src/components/animation/Animation.js:10
+msgid "Slide In Up"
+msgstr "Въезд снизу"
+
+#: src/components/animation/Animation.js:11
+msgid "Zoom In"
+msgstr "Приближение"
+
+#: src/components/animation/Animation.js:12
+msgid "Zoom Out"
+msgstr "Отдаление"
+
+#: src/components/animation/Animation.js:13
+msgid "Rotate In"
+msgstr "Вращение"
+
+#: src/components/animation/Animation.js:14
+msgid "Bounce In"
+msgstr "Подпрыгивание"
+
+#: src/components/animation/Animation.js:15
+msgid "Bounce In Left"
+msgstr "Подпрыгивание слева"
+
+#: src/components/animation/Animation.js:16
+msgid "Bounce In Right"
+msgstr "Подпрыгивание справа"
+
+#: src/components/animation/Animation.js:17
+msgid "Bounce In Down"
+msgstr "Подпрыгивание сверху"
+
+#: src/components/animation/Animation.js:18
+msgid "Bounce In Up"
+msgstr "Подпрыгивание снизу"
+
+#: src/components/animation/Animation.js:19
+msgid "Flip In X"
+msgstr "Переворот по X"
+
+#: src/components/animation/Animation.js:20
+msgid "Flip In Y"
+msgstr "Переворот по Y"
+
+#: src/components/animation/Animation.js:34
+msgid "Enable Animation"
+msgstr "Включить анимацию"
+
+#: src/components/animation/Animation.js:37
+msgid "Scroll in editor to preview animation"
+msgstr "Прокрутите в редакторе для предпросмотра анимации"
+
+#: src/components/animation/Animation.js:42
+msgid "Animation Type"
+msgstr "Тип анимации"
+
+#: src/components/animation/Animation.js:48
+msgid "Duration (ms)"
+msgstr "Длительность (мс)"
+
+#: src/components/animation/Animation.js:56
+msgid "Delay (ms)"
+msgstr "Задержка (мс)"
+
+#: src/components/background/BackgroundSettingsPanel.js:13
+msgid "Image"
+msgstr "Изображение"
+
+#: src/components/background/BackgroundSettingsPanel.js:14
+msgid "Pattern"
+msgstr "Паттерн"
+
+#: src/components/background/BackgroundSettingsPanel.js:20
+msgid "Cover"
+msgstr "Покрытие"
+
+#: src/components/background/BackgroundSettingsPanel.js:21
+msgid "Full"
+msgstr "Полный"
+
+#: src/components/background/BackgroundSettingsPanel.js:60
+msgid "Video"
+msgstr "Видео"
+
+#: src/components/background/BackgroundSettingsPanel.js:87
+msgid "Background Overlay"
+msgstr "Наложение фона"
+
+#: src/components/background/BackgroundSettingsPanel.js:256
+msgid "Background Image"
+msgstr "Фоновое изображение"
+
+#: src/components/background/BackgroundSettingsPanel.js:262
+msgid "Select Image"
+msgstr "Выбрать изображение"
+
+#: src/components/background/BackgroundSettingsPanel.js:264
+msgid "Image Size"
+msgstr "Размер изображения"
+
+#: src/components/background/BackgroundSettingsPanel.js:271
+msgid "Pattern Image"
+msgstr "Изображение паттерна"
+
+#: src/components/background/BackgroundSettingsPanel.js:276
+msgid "Select Pattern"
+msgstr "Выбрать паттерн"
+
+#: src/components/background/BackgroundSettingsPanel.js:278
+msgid "Pattern Size"
+msgstr "Размер паттерна"
+
+#: src/components/background/BackgroundSettingsPanel.js:290
+msgid "Background Type"
+msgstr "Тип фона"
+
+#: src/components/background/BackgroundSettingsPanel.js:307
+msgid "Background Color Type"
+msgstr "Тип цвета фона"
+
+#: src/components/background/BackgroundSettingsPanel.js:313
+msgid "Background Gradient"
+msgstr "Градиент фона"
+
+#: src/components/background/BackgroundSettingsPanel.js:320
+msgid "Background Color"
+msgstr "Цвет фона"
+
+#: src/components/block-meta/BlockMetaFields.js:24
+msgid "custom-wrapper classes"
+msgstr "классы custom-wrapper"
+
+#: src/components/block-meta/BlockMetaFields.js:25
+msgid "key=value"
+msgstr "ключ=значение"
+
+#: src/components/block-meta/BlockMetaFields.js:26
+msgid "custom-id"
+msgstr "custom-id"
+
+#: src/components/block-meta/BlockMetaFields.js:49
+msgid "Comma separated pairs: key=value"
+msgstr "Пары через запятую: ключ=значение"
+
+#: src/components/border-radius/BorderRadiusControl.js:23
+msgid "Border Radius"
+msgstr "Радиус границы"
+
+#: src/components/colors/ColorTypeControl.js:8
+msgid "Gradient"
+msgstr "Градиент"
+
+#: src/components/gap/GapControl.js:6
+msgid "Horizontal"
+msgstr "Горизонтальный"
+
+#: src/components/gap/GapControl.js:7
+msgid "Vertical"
+msgstr "Вертикальный"
+
+#: src/components/gap/GapControl.js:38
+msgid "Gap Type"
+msgstr "Тип промежутка"
+
+#: src/components/heading/HeadingContentControl.js:23
+msgid "Enable Title"
+msgstr "Включить заголовок"
+
+#: src/components/heading/HeadingContentControl.js:30
+msgid "Enable Subtitle"
+msgstr "Включить подзаголовок"
+
+#: src/components/heading/HeadingContentControl.js:37
+msgid "Enable Paragraph"
+msgstr "Включить параграф"
+
+#: src/components/heading/HeadingContentControl.js:44
+msgid "Subtitle First"
+msgstr "Подзаголовок первым"
+
+#: src/components/heading/HeadingContentControl.js:49
+msgid "Subtitle Line"
+msgstr "Линия подзаголовка"
+
+#: src/components/heading/HeadingContentControl.js:57
+msgid "Title Text"
+msgstr "Текст заголовка"
+
+#: src/components/heading/HeadingContentControl.js:78
+msgid "Subtitle Text"
+msgstr "Текст подзаголовка"
+
+#: src/components/heading/HeadingContentControl.js:99
+msgid "Paragraph Text"
+msgstr "Текст параграфа"
+
+#: src/components/paragraph/ParagraphRender.js:68
+msgid "Enter paragraph..."
+msgstr "Введите параграф..."
+
+#: src/components/heading/HeadingTypographyControl.js:71
+msgid "Title Tag"
+msgstr "Тег заголовка"
+
+#: src/components/heading/HeadingTypographyControl.js:77
+msgid "Title Color Type"
+msgstr "Тип цвета заголовка"
+
+#: src/components/heading/HeadingTypographyControl.js:87
+msgid "Title Color"
+msgstr "Цвет заголовка"
+
+#: src/components/heading/HeadingTypographyControl.js:93
+msgid "Title Size"
+msgstr "Размер заголовка"
+
+#: src/components/heading/HeadingTypographyControl.js:99
+msgid "Title Weight"
+msgstr "Вес заголовка"
+
+#: src/components/heading/HeadingTypographyControl.js:105
+msgid "Title Transform"
+msgstr "Трансформация заголовка"
+
+#: src/components/heading/HeadingTypographyControl.js:111
+msgid "Title Class"
+msgstr "Класс заголовка"
+
+#: src/components/heading/HeadingTypographyControl.js:115
+msgid "Additional CSS classes"
+msgstr "Дополнительные CSS классы"
+
+#: src/components/heading/HeadingTypographyControl.js:122
+msgid "Subtitle Tag"
+msgstr "Тег подзаголовка"
+
+#: src/components/heading/HeadingTypographyControl.js:128
+msgid "Subtitle Color Type"
+msgstr "Тип цвета подзаголовка"
+
+#: src/components/heading/HeadingTypographyControl.js:138
+msgid "Subtitle Color"
+msgstr "Цвет подзаголовка"
+
+#: src/components/heading/HeadingTypographyControl.js:144
+msgid "Subtitle Size"
+msgstr "Размер подзаголовка"
+
+#: src/components/heading/HeadingTypographyControl.js:150
+msgid "Subtitle Weight"
+msgstr "Вес подзаголовка"
+
+#: src/components/heading/HeadingTypographyControl.js:156
+msgid "Subtitle Transform"
+msgstr "Трансформация подзаголовка"
+
+#: src/components/heading/HeadingTypographyControl.js:162
+msgid "Lead Style"
+msgstr "Стиль Lead"
+
+#: src/components/heading/HeadingTypographyControl.js:168
+msgid "Subtitle Class"
+msgstr "Класс подзаголовка"
+
+#: src/blocks/form/edit.js:297
+msgid "CSS classes for the title element"
+msgstr "CSS классы для заголовка"
+
+#: src/blocks/form/edit.js:315
+msgid "CSS classes for the subtitle element"
+msgstr "CSS классы для подзаголовка"
+
+#: src/components/heading/HeadingTypographyControl.js:185
+msgid "Paragraph Color Type"
+msgstr "Тип цвета параграфа"
+
+#: src/components/heading/HeadingTypographyControl.js:195
+msgid "Paragraph Color"
+msgstr "Цвет параграфа"
+
+#: src/components/heading/HeadingTypographyControl.js:201
+msgid "Paragraph Size"
+msgstr "Размер параграфа"
+
+#: src/components/heading/HeadingTypographyControl.js:207
+msgid "Paragraph Weight"
+msgstr "Вес параграфа"
+
+#: src/components/heading/HeadingTypographyControl.js:213
+msgid "Paragraph Transform"
+msgstr "Трансформация параграфа"
+
+#: src/components/icon/IconControl.js:143
+msgid "Icon Type"
+msgstr "Тип иконки"
+
+#: src/components/icon/IconControl.js:154
+msgid "Selected Icon"
+msgstr "Выбранная иконка"
+
+#: src/components/icon/IconControl.js:179
+msgid "Change Icon"
+msgstr "Изменить иконку"
+
+#: src/components/icon/IconPicker.js:153
+msgid "Select Icon"
+msgstr "Выбрать иконку"
+
+#: src/components/icon/IconControl.js:198
+msgid "Custom SVG"
+msgstr "Кастомный SVG"
+
+#: src/components/image/ImageControl.js:122
+msgid "Remove"
+msgstr "Удалить"
+
+#: src/components/icon/IconControl.js:219
+msgid "Upload SVG"
+msgstr "Загрузить SVG"
+
+#: src/components/icon/IconControl.js:233
+msgid "SVG Style"
+msgstr "Стиль SVG"
+
+#: src/components/icon/IconControl.js:289
+msgid "Color Combination"
+msgstr "Комбинация цветов"
+
+#: src/components/icon/IconControl.js:292
+msgid "Select combination"
+msgstr "Выберите комбинацию"
+
+#: src/components/icon/IconControl.js:322
+msgid "Additional icon class"
+msgstr "Дополнительный класс иконки"
+
+#: src/components/icon/IconControl.js:323
+msgid "Example: me-4"
+msgstr "Например: me-4"
+
+#: src/components/icon/IconPicker.js:132
+msgid "Font Icons"
+msgstr "Font иконки"
+
+#: src/components/icon/IconPicker.js:137
+msgid "SVG Lineal"
+msgstr "SVG Lineal"
+
+#: src/components/icon/IconPicker.js:142
+msgid "SVG Solid"
+msgstr "SVG Solid"
+
+#: src/components/icon/IconPicker.js:160
+msgid "Search icon..."
+msgstr "Поиск иконки..."
+
+#: src/components/icon/IconPicker.js:179
+msgid "No icons found"
+msgstr "Иконки не найдены"
+
+#: src/components/icon/IconPicker.js:198
+msgid "Enter search query to display all icons"
+msgstr "Введите поисковый запрос для отображения всех иконок"
+
+#: src/components/icon/IconPicker.js:266
+msgid "Remove Icon"
+msgstr "Удалить иконку"
+
+#: src/components/icon/IconPicker.js:269
+msgid "Cancel"
+msgstr "Отмена"
+
+#: src/components/image/ImageControl.js:85
+msgid "Edit Images"
+msgstr "Редактировать изображения"
+
+#: src/components/image/ImageControl.js:86
+msgid "Add Images"
+msgstr "Добавить изображения"
+
+#: src/components/image/ImageControl.js:95
+msgid "Selected Images:"
+msgstr "Выбранные изображения:"
+
+#: src/components/image/ImageControl.js:109
+msgid "Move Up"
+msgstr "Переместить вверх"
+
+#: src/components/image/ImageControl.js:116
+msgid "Move Down"
+msgstr "Переместить вниз"
+
+#: src/components/layout/PositioningControl.js:9
+msgid "Stretch"
+msgstr "Растянуть"
+
+#: src/components/layout/PositioningControl.js:17
+msgid "Between"
+msgstr "Между"
+
+#: src/components/layout/PositioningControl.js:18
+msgid "Around"
+msgstr "Вокруг"
+
+#: src/components/layout/PositioningControl.js:19
+msgid "Evenly"
+msgstr "Равномерно"
+
+#: src/components/layout/PositioningControl.js:30
+msgid "Static"
+msgstr "Статичный"
+
+#: src/components/layout/PositioningControl.js:31
+msgid "Relative"
+msgstr "Относительный"
+
+#: src/components/layout/PositioningControl.js:32
+msgid "Absolute"
+msgstr "Абсолютный"
+
+#: src/components/layout/PositioningControl.js:33
+msgid "Fixed"
+msgstr "Фиксированный"
+
+#: src/components/layout/PositioningControl.js:77
+msgid "Text Align"
+msgstr "Выравнивание текста"
+
+#: src/components/layout/PositioningControl.js:78
+msgid "Align Items"
+msgstr "Выравнивание элементов"
+
+#: src/components/layout/PositioningControl.js:79
+msgid "Justify Content"
+msgstr "Выравнивание содержимого"
+
+#: src/components/section/ContainerSettingsPanel.js:10
+msgid "Container Settings"
+msgstr "Настройки контейнера"
+
+#: src/components/section/ContainerSettingsPanel.js:25
+msgid "Container Class"
+msgstr "Класс контейнера"
+
+#: src/components/section/SectionSettingsPanel.js:6
+msgid "White"
+msgstr "Белый"
+
+#: src/components/section/SectionSettingsPanel.js:8
+msgid "Inverse"
+msgstr "Инверсный"
+
+#: src/components/section/SectionSettingsPanel.js:32
+msgid "Section Settings"
+msgstr "Настройки секции"
+
+#: src/components/section/SectionSettingsPanel.js:37
+msgid "Text Color"
+msgstr "Цвет текста"
+
+#: src/components/section/SectionSettingsPanel.js:52
+msgid "Section Frame"
+msgstr "Рамка секции"
+
+#: src/components/section/SectionSettingsPanel.js:62
+msgid "Position Relative"
+msgstr "Относительная позиция"
+
+#: src/components/section/SectionSettingsPanel.js:68
+msgid "Min Height"
+msgstr "Мин. высота"
+
+#: src/components/shadow/ShadowControl.js:23
+msgid "Shadow"
+msgstr "Тень"
+
+#: src/components/spacing/SpacingControl.js:5
+msgid "Padding"
+msgstr "Внутренний отступ"
+
+#: src/components/spacing/SpacingControl.js:6
+msgid "Margin"
+msgstr "Внешний отступ"
+
+#: src/components/spacing/SpacingControl.js:57
+msgid "Spacing Type"
+msgstr "Тип отступа"
+
+#: src/components/tag/TagControl.js:71
+msgid "Tag"
+msgstr "Тег"
+
+#: src/components/waves/WavesControl.js:10
+msgid "Wave 1"
+msgstr "Волна 1"
+
+#: src/components/waves/WavesControl.js:11
+msgid "Wave 2"
+msgstr "Волна 2"
+
+#: src/components/waves/WavesControl.js:12
+msgid "Wave 3"
+msgstr "Волна 3"
+
+#: src/components/waves/WavesControl.js:13
+msgid "Wave 4"
+msgstr "Волна 4"
+
+#: src/components/waves/WavesControl.js:14
+msgid "Wave 5"
+msgstr "Волна 5"
+
+#: src/components/waves/WavesControl.js:74
+msgid "Enable Top Wave"
+msgstr "Включить верхнюю волну"
+
+#: src/components/waves/WavesControl.js:82
+msgid "Top Wave Style"
+msgstr "Стиль верхней волны"
+
+#: src/components/waves/WavesControl.js:95
+msgid "Enable Bottom Wave"
+msgstr "Включить нижнюю волну"
+
+#: src/components/waves/WavesControl.js:103
+msgid "Bottom Wave Style"
+msgstr "Стиль нижней волны"
+
+#: src/utilities/border-radius.js:23
+msgid "Rounded-0 (0)"
+msgstr "Rounded-0 (0)"
+
+#: src/utilities/border-radius.js:24
+msgid "Rounded-1 (0.2rem)"
+msgstr "Rounded-1 (0.2rem)"
+
+#: src/utilities/border-radius.js:25
+msgid "Rounded-2 (0.25rem)"
+msgstr "Rounded-2 (0.25rem)"
+
+#: src/utilities/border-radius.js:26
+msgid "Rounded (0.4rem)"
+msgstr "Rounded (0.4rem)"
+
+#: src/utilities/border-radius.js:27
+msgid "Rounded-3 (0.5rem)"
+msgstr "Rounded-3 (0.5rem)"
+
+#: src/utilities/border-radius.js:28
+msgid "Rounded-4 (1rem)"
+msgstr "Rounded-4 (1rem)"
+
+#: src/utilities/border-radius.js:29
+msgid "Rounded-5 (1.5rem)"
+msgstr "Rounded-5 (1.5rem)"
+
+#: src/utilities/border-radius.js:30
+msgid "Rounded-xl (0.8rem - Theme)"
+msgstr "Rounded-xl (0.8rem - Тема)"
+
+#: src/utilities/border-radius.js:31
+msgid "Rounded-pill (50rem)"
+msgstr "Rounded-pill (50rem)"
+
+#: src/utilities/border-radius.js:32
+msgid "Rounded-circle (50%)"
+msgstr "Rounded-circle (50%)"
+
+#: src/utilities/border-radius.js:39
+msgid "All Sides"
+msgstr "Все стороны"
+
+#: src/utilities/border-radius.js:40
+msgid "Top Only"
+msgstr "Только верх"
+
+#: src/utilities/border-radius.js:41
+msgid "Bottom Only"
+msgstr "Только низ"
+
+#: src/utilities/border-radius.js:42
+msgid "Start (Left) Only"
+msgstr "Только начало (слева)"
+
+#: src/utilities/border-radius.js:43
+msgid "End (Right) Only"
+msgstr "Только конец (справа)"
+
+#: src/utilities/link_type.js:718
+msgid "Link Settings"
+msgstr "Настройки ссылки"
+
+#: src/utilities/link_type.js:887
+msgid "Phone Type"
+msgstr "Тип телефона"
+
+#: src/utilities/shadows.js:14
+msgid "Default (with border)"
+msgstr "По умолчанию (с границей)"
+
+#: src/utilities/shadows.js:15
+msgid "No Shadow"
+msgstr "Без тени"
+
+#: src/utilities/shadows.js:16
+msgid "Small"
+msgstr "Маленький"
+
+#: src/utilities/shadows.js:17
+msgid "Regular"
+msgstr "Обычный"
+
+#: src/utilities/shadows.js:18
+msgid "Large"
+msgstr "Большой"
+
+#: src/utilities/shadows.js:19
+msgid "Extra Large"
+msgstr "Очень большой"
+
+#: settings/options_page/class-options-tabs.php:142
+msgid "Untitled"
+msgstr "Без названия"
+
+#: settings/options_page/pages/page_2.php:31
+msgid "Contacts"
+msgstr "Контакты"
+
+#: settings/options_page/pages/page_2.php:33
+msgid "Link to RestApi data"
+msgstr "Ссылка на данные RestApi"
+
+#: settings/options_page/pages/page_2.php:49
+msgid "Company"
+msgstr "Компания"
+
+#: settings/options_page/pages/page_2.php:61
+msgid "Phones"
+msgstr "Телефоны"
+
+#: settings/options_page/pages/page_2.php:78
+msgid "Save Changes"
+msgstr "Сохранить изменения"
+
+#: src/utilities/link_type.js:722
+msgid "Type link"
+msgstr "Тип ссылки"
+
+#: src/utilities/link_type.js:992
+msgid "Select Modal"
+msgstr "Выбрать модальное окно"
+
+#: src/blocks/image-simple/controls/LayoutControl.js:285
+msgid ""
+"When enabled, Swiper will be disabled and hide navigation buttons when there "
+"are not enough slides."
+msgstr ""
+"При включении Swiper будет отключен и скроет кнопки навигации, когда "
+"недостаточно слайдов."
+
+#: src/blocks/image-simple/controls/LayoutControl.js:307
+msgid "Active slide will be centered, not at the beginning of the slider."
+msgstr "Активный слайд будет отцентрирован, а не в начале слайдера."
+
+#: src/utilities/link_type.js
+msgid "External"
+msgstr "Внешняя"
+
+#: src/utilities/link_type.js
+msgid "Page"
+msgstr "Страница"
+
+#: src/utilities/link_type.js
+msgid "Post"
+msgstr "Запись"
+
+#: src/utilities/link_type.js
+msgid "CF7"
+msgstr "CF7"
+
+#: src/utilities/link_type.js
+msgid "Modal"
+msgstr "Модальное окно"
+
+#: src/utilities/link_type.js
+msgid "HTML"
+msgstr "HTML"
+
+#: src/utilities/link_type.js
+msgid "Document"
+msgstr "Документ"
+
+#: src/utilities/link_type.js
+msgid "Phone"
+msgstr "Телефон"
+
+#: src/utilities/link_type.js
+msgid "PDF"
+msgstr "PDF"
+
+#: src/utilities/link_type.js
+msgid "Html5 Video"
+msgstr "Html5 Видео"
+
+#: src/utilities/link_type.js
+msgid "YouTube"
+msgstr "YouTube"
+
+#: src/utilities/link_type.js
+msgid "Vimeo"
+msgstr "Vimeo"
+
+#: src/utilities/link_type.js
+msgid "Rutube"
+msgstr "Rutube"
+
+#: src/utilities/link_type.js
+msgid "VK Video"
+msgstr "VK Видео"
+
+#: src/utilities/link_type.js
+msgid "YouTube Video URL"
+msgstr "URL YouTube видео"
+
+#: src/utilities/link_type.js
+msgid "Vimeo Video URL"
+msgstr "URL Vimeo видео"
+
+#: src/utilities/link_type.js
+msgid "Rutube Video URL or Embed Code"
+msgstr "URL Rutube видео или Embed код"
+
+#: src/utilities/link_type.js
+msgid "VK Video URL or Embed Code"
+msgstr "URL VK видео или Embed код"
+
+#: src/utilities/link_type.js
+msgid "URL"
+msgstr "URL"
+
+#: src/utilities/link_type.js
+msgid "Image URL"
+msgstr "URL изображения"
+
+#: src/utilities/link_type.js
+msgid "Html 5 video URL"
+msgstr "URL Html 5 видео"
+
+#: src/utilities/link_type.js
+msgid "Gallery ID"
+msgstr "ID галереи"
+
+#: src/utilities/link_type.js
+msgid "Custom phone"
+msgstr "Пользовательский телефон"
+
+#: src/utilities/link_type.js
+msgid "Select Phone"
+msgstr "Выбрать телефон"
+
+#: src/utilities/link_type.js
+msgid "Select Post"
+msgstr "Выбрать запись"
+
+#: src/utilities/link_type.js:1098
+msgid "Select Post Type"
+msgstr "Выбрать тип записи"
+
+#: src/utilities/link_type.js:1105
+msgid "No post types found"
+msgstr "Типы записей не найдены"
+
+#: src/utilities/link_type.js:1108
+msgid "Select the type of post to display"
+msgstr "Выберите тип записи для отображения"
+
+#: src/utilities/link_type.js:1130
+msgid "No posts found"
+msgstr "Записи не найдены"
+
+#: src/utilities/link_type.js:1070
+msgid "Loading phones..."
+msgstr "Загрузка телефонов..."
+
+#: src/utilities/link_type.js:1076
+msgid "No phones found"
+msgstr "Телефоны не найдены"
+
+#: src/utilities/link_type.js
+msgid "Select Page"
+msgstr "Выбрать страницу"
+
+#: src/utilities/link_type.js
+msgid "Select CF7"
+msgstr "Выбрать CF7"
+
+#: src/utilities/link_type.js
+msgid "Select HTML"
+msgstr "Выбрать HTML"
+
+#: src/utilities/link_type.js
+msgid "Select Document"
+msgstr "Выбрать документ"
+
+#: src/blocks/post-grid/controls/MainControl.js
+msgid "Post Type"
+msgstr "Тип записи"
+
+#: src/blocks/post-grid/controls/MainControl.js
+msgid "Select the post type to display"
+msgstr "Выберите тип записи для отображения"
+
+#: src/blocks/post-grid/controls/MainControl.js
+msgid "Posts Per Page"
+msgstr "Записей на странице"
+
+#: src/blocks/post-grid/controls/MainControl.js
+msgid "Number of posts to display"
+msgstr "Количество записей для отображения"
+
+#: src/blocks/post-grid/controls/MainControl.js
+msgid "Enable Links"
+msgstr "Включить ссылки"
+
+#: src/blocks/post-grid/controls/MainControl.js
+msgid "Enable links to client posts (disabled by default)"
+msgstr "Включить ссылки на записи клиентов (по умолчанию отключено)"
+
+#: src/blocks/post-grid/controls/MainControl.js
+msgid "Select the size for featured images."
+msgstr "Выберите размер для изображений записей."
+
+#: src/components/taxonomy-filter/TaxonomyFilterControl.js
+msgid "Filter by Taxonomies"
+msgstr "Фильтр по таксономиям"
+
+#: src/components/taxonomy-filter/TaxonomyFilterControl.js
+msgid "No terms available."
+msgstr "Нет доступных терминов."
+
+#: src/components/post-grid-template/PostGridTemplateControl.js
+msgid "Template"
+msgstr "Шаблон"
+
+#: src/components/post-grid-template/PostGridTemplateControl.js
+msgid "Simple layout with figure overlay and post header/footer"
+msgstr "Простая компоновка с наложением изображения и заголовком/подвалом записи"
+"Простая компоновка с наложением изображения и заголовком/подвалом записи"
+
+#: src/components/post-grid-template/PostGridTemplateControl.js
+msgid "Card layout with shadow and card body"
+msgstr "Компоновка карточки с тенью и телом карточки"
+
+#: src/components/post-grid-template/PostGridTemplateControl.js
+msgid "Card Content"
+msgstr "Контент карточки"
+
+#: src/components/post-grid-template/PostGridTemplateControl.js
+msgid "Card with excerpt and footer"
+msgstr "Карточка с отрывком и подвалом"
+
+#: src/components/post-grid-template/PostGridTemplateControl.js
+msgid "Slider"
+msgstr "Слайдер"
+
+#: src/components/post-grid-template/PostGridTemplateControl.js
+msgid "Slider layout with category on image and excerpt"
+msgstr "Компоновка слайдера с категорией на изображении и отрывком"
+
+#: src/components/post-grid-template/PostGridTemplateControl.js
+msgid "Default Clickable"
+msgstr "По умолчанию кликабельный"
+
+#: src/components/post-grid-template/PostGridTemplateControl.js
+msgid "Fully clickable card with lift effect"
+msgstr "Полностью кликабельная карточка с эффектом подъема"
+
+#: src/components/post-grid-template/PostGridTemplateControl.js
+msgid "Overlay 5"
+msgstr "Наложение 5"
+
+#: src/components/post-grid-template/PostGridTemplateControl.js
+msgid "Overlay effect with 90% opacity and bottom overlay for date"
+msgstr "Эффект наложения с непрозрачностью 90% и нижним наложением для даты"
+
+#: src/components/post-grid-template/PostGridTemplateControl.js
+msgid "Client Simple"
+msgstr "Клиент простой"
+
+#: src/components/post-grid-template/PostGridTemplateControl.js
+msgid "Simple logo for Swiper slider"
+msgstr "Простой логотип для слайдера Swiper"
+
+#: src/components/post-grid-template/PostGridTemplateControl.js
+msgid "Client Grid"
+msgstr "Сетка клиентов"
+
+#: src/components/post-grid-template/PostGridTemplateControl.js
+msgid "Logo in figure with adaptive padding for Grid layout"
+msgstr "Логотип в figure с адаптивными отступами для сетки"
+
+#: src/components/post-grid-template/PostGridTemplateControl.js
+msgid "Client Card"
+msgstr "Карточка клиента"
+
+#: src/components/post-grid-template/PostGridTemplateControl.js
+msgid "Logo in card with shadow for Grid with cards"
+msgstr "Логотип в карточке с тенью для сетки с карточками"
+
+#: src/components/post-sort/PostSortControl.js
+msgid "Sort By"
+msgstr "Сортировать по"
+
+#: src/components/post-sort/PostSortControl.js
+msgid "Select how to sort the posts"
+msgstr "Выберите способ сортировки записей"
+
+#: src/components/post-sort/PostSortControl.js
+msgid "Order"
+msgstr "Порядок"
+
+#: src/components/post-sort/PostSortControl.js
+msgid "Select sort direction"
+msgstr "Выберите направление сортировки"
+
+#: src/components/post-sort/PostSortControl.js
+msgid "Date"
+msgstr "Дата"
+
+#: src/components/post-sort/PostSortControl.js
+msgid "Modified Date"
+msgstr "Дата изменения"
+
+#: src/components/post-sort/PostSortControl.js
+msgid "Comment Count"
+msgstr "Количество комментариев"
+
+#: src/components/post-sort/PostSortControl.js
+msgid "Random"
+msgstr "Случайно"
+
+#: src/components/post-sort/PostSortControl.js
+msgid "ID"
+msgstr "ID"
+
+#: src/components/post-sort/PostSortControl.js
+msgid "Author"
+msgstr "Автор"
+
+#: src/components/post-sort/PostSortControl.js
+msgid "Menu Order"
+msgstr "Порядок меню"
+
+#: src/components/post-sort/PostSortControl.js
+msgid "Descending"
+msgstr "По убыванию"
+
+#: src/components/post-sort/PostSortControl.js
+msgid "Ascending"
+msgstr "По возрастанию"
+
+#: src/components/load-more/LoadMoreControl.js
+msgid "Show More"
+msgstr "Показать еще"
+
+#: src/components/load-more/LoadMoreControl.js
+msgid "Load More"
+msgstr "Загрузить еще"
+
+#: src/components/load-more/LoadMoreControl.js
+msgid "Show More Items"
+msgstr "Показать больше"
+
+#: src/components/load-more/LoadMoreControl.js
+msgid "More Posts"
+msgstr "Еще записи"
+
+#: src/components/load-more/LoadMoreControl.js
+msgid "View All"
+msgstr "Смотреть все"
+
+#: src/components/load-more/LoadMoreControl.js
+msgid "Show All"
+msgstr "Показать все"
+
+#: src/components/load-more/LoadMoreControl.js
+msgid "Link"
+msgstr "Ссылка"
+
+#: src/components/load-more/LoadMoreControl.js
+msgid "How many items to display"
+msgstr "Сколько элементов отображать"
+
+#: src/components/load-more/LoadMoreControl.js
+msgid "Number of items displayed initially"
+msgstr "Количество элементов, отображаемых изначально"
+
+#: src/components/load-more/LoadMoreControl.js
+msgid "Enable \"Show More\" button"
+msgstr "Включить кнопку \"Показать еще\""
+
+#: src/components/load-more/LoadMoreControl.js
+msgid "Element Type"
+msgstr "Тип элемента"
+
+#: src/components/load-more/LoadMoreControl.js
+msgid "Select element type: button or link"
+msgstr "Выберите тип элемента: кнопка или ссылка"
+
+#: src/components/load-more/LoadMoreControl.js
+msgid "Button/Link Text"
+msgstr "Текст кнопки/ссылки"
+
+#: src/components/load-more/LoadMoreControl.js
+msgid "Select text for button or link"
+msgstr "Выберите текст для кнопки или ссылки"
+
+#: src/components/load-more/LoadMoreControl.js
+msgid "How many items to load"
+msgstr "Сколько элементов загружать"
+
+#: src/components/load-more/LoadMoreControl.js
+msgid "Number of items loaded when clicking the button"
+msgstr "Количество элементов, загружаемых при клике на кнопку"
+
+#: src/blocks/post-grid/controls/LayoutControl.js
+msgid "Col Classes"
+msgstr "Классы Col"
+
+#: src/blocks/post-grid/controls/LayoutControl.js
+msgid "No Col Classes"
+msgstr "Нет классов Col"
+
+#: src/blocks/post-grid/edit.js
+msgid "Loading posts..."
+msgstr "Загрузка записей..."
+
+#: src/blocks/post-grid/edit.js
+msgid ""
+"No posts found. Please select a post type and ensure there are published "
+"posts."
+msgstr ""
+"Записи не найдены. Пожалуйста, выберите тип записи и убедитесь, что есть "
+"опубликованные записи."
+
+#: src/blocks/post-grid/render.php
+msgid "No posts found."
+msgstr "Записи не найдены."
+
+#: src/blocks/post-grid/sidebar.js
+msgid "Main"
+msgstr "Основное"
+
+#: src/components/grid-control/GridControl.js
+msgid "No Gap Classes"
+msgstr "Нет классов Gap"
+
+#: src/components/grid-control/GridControl.js
+msgid "No Row Cols Classes"
+msgstr "Нет классов Row Cols"
+
+#: src/components/grid-control/GridControl.js
+msgid "Row Cols Classes"
+msgstr "Классы Row Cols"
+
+#: src/components/grid-control/GridControl.js
+msgid "Gap Settings"
+msgstr "Настройки Gap"
+
+#: src/components/grid-control/GridControl.js
+msgid "Gap Classes"
+msgstr "Классы Gap"
+
+#: src/components/grid-control/GridControl.js
+msgid "Gap Size"
+msgstr "Размер Gap"
+
+#: src/components/grid-control/GridControl.js
+msgid "Gap-X Size"
+msgstr "Размер Gap-X"
+
+#: src/components/grid-control/GridControl.js
+msgid "Gap-Y Size"
+msgstr "Размер Gap-Y"
+
+#: src/components/video-url/VideoURLControl.js
+msgid "Loading poster..."
+msgstr "Загрузка постера..."
+
+#: src/blocks/button/edit.js
+msgid "Enter button text..."
+msgstr "Введите текст кнопки..."
+
+#: src/components/icon/IconControl.js
+msgid "For example: me-4, mb-3, etc."
+msgstr "Например: me-4, mb-3 и др."
+
+#: src/components/icon/IconControl.js
+msgid "For example: pe-none, mb-5"
+msgstr "Например: pe-none, mb-5"
+
+#: settings/options_page/restapi.php
+msgid "JSON decoding error"
+msgstr "Ошибка декодирования JSON"
+
+#: settings/options_page/register_fields.php
+msgid "Error reading JSON: "
+msgstr "Ошибка при чтении JSON: "
+
+#: settings/options_page/options.php
+msgid "Plugin Settings"
+msgstr "Настройки плагина"
+
+#: src/blocks/accordion/index.js
+msgid "Accordion"
+msgstr "Аккордеон"
+
+#: src/blocks/accordion/index.js
+msgid ""
+"Bootstrap accordion with multiple items. Supports simple, background, and "
+"icon styles."
+msgstr ""
+"Bootstrap аккордеон с несколькими элементами. Поддерживает простой, фоновый "
+"и иконный стили."
+
+#: src/blocks/accordion/index.js
+msgid "accordion"
+msgstr "аккордеон"
+
+#: src/blocks/accordion/index.js
+msgid "collapse"
+msgstr "сворачивание"
+
+#: src/blocks/accordion/index.js
+msgid "faq"
+msgstr "часто задаваемые вопросы"
+
+#: src/blocks/accordion/index.js
+msgid "tabs"
+msgstr "вкладки"
+
+#: src/blocks/accordion/sidebar.js
+msgid "Accordion Settings"
+msgstr "Настройки аккордеона"
+
+#: src/blocks/accordion/sidebar.js
+msgid "Accordion Style"
+msgstr "Стиль аккордеона"
+
+#: src/blocks/accordion/sidebar.js
+msgid "Simple"
+msgstr "Простой"
+
+#: src/blocks/accordion/sidebar.js
+msgid "Type 1"
+msgstr "Тип 1"
+
+#: src/blocks/accordion/sidebar.js
+msgid "Type 2"
+msgstr "Тип 2"
+
+#: src/blocks/accordion/sidebar.js
+msgid "Type 3"
+msgstr "Тип 3"
+
+#: src/blocks/accordion/sidebar.js
+msgid "Allow Multiple Items Open"
+msgstr "Разрешить открытие нескольких элементов"
+
+#: src/blocks/accordion/sidebar.js
+msgid "When enabled, multiple accordion items can be open at the same time."
+msgstr "При включении несколько элементов аккордеона могут быть открыты одновременно."
+"При включении несколько элементов аккордеона могут быть открыты одновременно."
+
+#: src/blocks/accordion/sidebar.js
+msgid "Open first item by default"
+msgstr "Открывать первый элемент по умолчанию"
+
+#: src/blocks/accordion/sidebar.js
+msgid "When enabled, the first item is forced open (others closed)."
+msgstr "При включении первый элемент принудительно открыт (остальные закрыты)."
+
+#: src/blocks/accordion/edit.js
+msgid "New Item"
+msgstr "Новый элемент"
+
+#: src/blocks/accordion/edit.js
+msgid "Add your content here..."
+msgstr "Добавьте ваш контент здесь..."
+
+#: src/blocks/accordion/edit.js
+msgid "Click to change icon"
+msgstr "Нажмите, чтобы изменить иконку"
+
+#: src/blocks/accordion/edit.js
+msgid "Enter content..."
+msgstr "Введите содержимое..."
+
+#: src/blocks/accordion/edit.js
+msgid "Move up"
+msgstr "Переместить вверх"
+
+#: src/blocks/accordion/edit.js
+msgid "Move down"
+msgstr "Переместить вниз"
+
+#: src/blocks/accordion/edit.js
+msgid "+ Add Accordion Item"
+msgstr "+ Добавить элемент аккордеона"
+
+#: src/blocks/accordion/sidebar.js
+msgid "Data Source"
+msgstr "Источник данных"
+
+#: src/blocks/accordion/sidebar.js
+msgid "Custom"
+msgstr "Вручную"
+
+#: src/blocks/accordion/sidebar.js
+msgid "Select the post type to generate accordion items from"
+msgstr "Выберите тип записи для генерации элементов аккордеона"
+
+#: src/blocks/accordion/edit.js
+msgid "No posts found. Please select a post type and check your filters."
+msgstr "Записи не найдены. Пожалуйста, выберите тип записи и проверьте ваши фильтры."
+"Записи не найдены. Пожалуйста, выберите тип записи и проверьте фильтры."
+
+#: src/blocks/accordion/edit.js
+msgid "No content available"
+msgstr "Контент недоступен"
+
+#: src/blocks/lists/index.js
+msgid "Lists"
+msgstr "Списки"
+
+#: src/blocks/lists/index.js
+msgid ""
+"Custom lists with icons, colors, and columns. Supports Custom and Post modes."
+msgstr ""
+"Пользовательские списки с иконками, цветами и колонками. Поддерживает режимы "
+"Custom и Post."
+
+#: src/blocks/lists/index.js
+msgid "list"
+msgstr "список"
+
+#: src/blocks/lists/index.js
+msgid "lists"
+msgstr "списки"
+
+#: src/blocks/lists/index.js
+msgid "ul"
+msgstr "ul"
+
+#: src/blocks/lists/index.js
+msgid "icon"
+msgstr "иконка"
+
+#: src/blocks/lists/index.js
+msgid "columns"
+msgstr "колонки"
+
+#: src/blocks/lists/sidebar.js
+msgid "Lists Settings"
+msgstr "Настройки списков"
+
+#: src/blocks/lists/sidebar.js
+msgid "Select the post type to generate list items from"
+msgstr "Выберите тип записи для генерации элементов списка"
+
+#: src/blocks/lists/sidebar.js
+msgid "List Type"
+msgstr "Тип списка"
+
+#: src/blocks/lists/sidebar.js
+msgid "Unordered"
+msgstr "Маркированный"
+
+#: src/blocks/lists/sidebar.js
+msgid "Bullet Color"
+msgstr "Цвет маркера"
+
+#: src/blocks/lists/sidebar.js
+msgid "Bullet Background"
+msgstr "Фон маркера"
+
+#: src/blocks/lists/sidebar.js
+msgid "Enable background color for bullet icons"
+msgstr "Включить цвет фона для иконок маркеров"
+
+#: src/blocks/lists/sidebar.js
+msgid "Columns Layout"
+msgstr "Макет колонок"
+
+#: src/blocks/lists/sidebar.js
+msgid "Block Settings"
+msgstr "Настройки блока"
+
+#: src/blocks/lists/edit.js
+msgid "New list item"
+msgstr "Новый элемент списка"
+
+#: src/blocks/lists/edit.js
+msgid "Enter list item..."
+msgstr "Введите элемент списка..."
+
+#: src/blocks/lists/edit.js
+msgid "+ Add List Item"
+msgstr "+ Добавить элемент списка"
+
+#: src/blocks/lists/render.php
+msgid "No items found."
+msgstr "Элементы не найдены."
+
+#: src/blocks/tabs/index.js
+msgid "Tabs"
+msgstr "Вкладки"
+
+#: src/blocks/tabs/index.js
+msgid ""
+"Bootstrap tabs with multiple items. Supports basic and pills styles with "
+"icons."
+msgstr ""
+"Вкладки Bootstrap с несколькими элементами. Поддерживает стили basic и pills "
+"с иконками."
+
+#: src/blocks/tabs/index.js
+msgid "tab"
+msgstr "вкладка"
+
+#: src/blocks/tabs/index.js
+msgid "navigation"
+msgstr "навигация"
+
+#: src/blocks/tabs/index.js
+msgid "nav"
+msgstr "нав"
+
+#: src/blocks/tabs/sidebar.js
+msgid "Tabs Settings"
+msgstr "Настройки вкладок"
+
+#: src/blocks/tabs/sidebar.js
+msgid "Tab Style"
+msgstr "Стиль вкладки"
+
+#: src/blocks/tabs/sidebar.js
+msgid "Basic"
+msgstr "Базовый"
+
+#: src/blocks/tabs/sidebar.js
+msgid "Pills"
+msgstr "Пилюли"
+
+#: src/blocks/tabs/sidebar.js
+msgid "Tabs ID"
+msgstr "ID вкладок"
+
+#: src/blocks/tabs/sidebar.js
+msgid "Tabs Class"
+msgstr "Класс вкладок"
+
+#: src/blocks/tabs/sidebar.js
+msgid "Tabs Data"
+msgstr "Данные вкладок"
+
+#: src/blocks/tabs/edit.js
+msgid "New Tab"
+msgstr "Новая вкладка"
+
+#: src/blocks/tabs/edit.js
+msgid "Tab title..."
+msgstr "Заголовок вкладки..."
+
+#: src/blocks/tabs/edit.js
+msgid "+ Add Tab"
+msgstr "+ Добавить вкладку"
+
+#: src/blocks/tabs/edit.js
+msgid "Click to add icon"
+msgstr "Нажмите, чтобы добавить иконку"
+
+#: src/blocks/tabs/sidebar.js
+msgid "Fanny"
+msgstr "Fanny"
+
+#: src/blocks/tabs/sidebar.js
+msgid "Tab Rounded"
+msgstr "Скругление вкладок"
+
+#: src/blocks/tabs/sidebar.js
+msgid "Rounded"
+msgstr "Скруглено"
+
+#: src/blocks/tabs/sidebar.js
+msgid "Rounded 0"
+msgstr "Скруглено 0"
+
+#: src/blocks/tabs/sidebar.js
+msgid "Rounded Pill"
+msgstr "Скруглено Pill"
+
+#: src/blocks/tabs/sidebar.js
+msgid "Tab Alignment"
+msgstr "Выравнивание вкладок"
+
+#: src/blocks/tabs/sidebar.js
+msgid "Enable Background"
+msgstr "Включить фон"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Avatar Settings"
+msgstr "Настройки аватара"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Avatar Type"
+msgstr "Тип аватара"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Letters"
+msgstr "Буквы"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Enter letters to display (e.g., AB, TC, CH)"
+msgstr "Введите буквы для отображения (например, AB, TC, CH)"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Avatar Image"
+msgstr "Изображение аватара"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Size from 1 to 25 (w-1 to w-25, h-1 to h-25)"
+msgstr "Размер от 1 до 25 (w-1 до w-25, h-1 до h-25)"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Avatar ID"
+msgstr "ID аватара"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Avatar Class"
+msgstr "Класс аватара"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Avatar Data"
+msgstr "Данные аватара"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Pale Primary"
+msgstr "Бледный основной"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Soft Primary"
+msgstr "Мягкий основной"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Secondary"
+msgstr "Вторичный"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Success"
+msgstr "Успех"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Danger"
+msgstr "Опасность"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Warning"
+msgstr "Предупреждение"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Info"
+msgstr "Информация"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Name & Position"
+msgstr "Имя и должность"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Show Name & Position"
+msgstr "Показать имя и должность"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Name"
+msgstr "Имя"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Enter name"
+msgstr "Введите имя"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Enter position/job title"
+msgstr "Введите должность/название должности"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Name Link (URL)"
+msgstr "Ссылка на имя (URL)"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Optional: URL for name link"
+msgstr "Необязательно: URL для ссылки на имя"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Leave empty if name should not be a link"
+msgstr "Оставьте пустым, если имя не должно быть ссылкой"
+
+#: src/blocks/avatar/sidebar.js
+msgid "User"
+msgstr "Пользователь"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Select User"
+msgstr "Выбрать пользователя"
+
+#: src/blocks/avatar/sidebar.js
+msgid "— Select User —"
+msgstr "— Выбрать пользователя —"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Loading users..."
+msgstr "Загрузка пользователей..."
+
+#: src/blocks/avatar/edit.js
+msgid "Select a user"
+msgstr "Выбрать пользователя"
+
+#: src/blocks/avatar/edit.js
+msgid "Loading..."
+msgstr "Загрузка..."
+
+#: src/blocks/avatar/sidebar.js
+msgid "Used when image is not uploaded"
+msgstr "Используется, когда изображение не загружено"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Additional Data"
+msgstr "Дополнительные данные"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Show Additional Data"
+msgstr "Показать дополнительные данные"
+
+#: src/blocks/avatar/sidebar.js
+msgid "Enable to show name and position"
+msgstr "Включить для отображения имени и должности"
+
+#: src/utilities/link_type.js
+msgid "Document Action"
+msgstr "Действие с документом"
+
+#: src/utilities/link_type.js
+msgid "Download"
+msgstr "Скачать"
+
+#: src/utilities/link_type.js
+#: src/components/post-grid-item/PostGridItemRender.js
+msgid "Send to Email"
+msgstr "Отправить на Email"
+
+#: src/utilities/link_type.js
+msgid "No documents found"
+msgstr "Документы не найдены"
+
+#: src/components/post-grid-template/PostGridTemplateControl.js
+msgid "Document Card"
+msgstr "Карточка документа"
+
+#: src/components/post-grid-template/PostGridTemplateControl.js
+msgid "Card layout with email button for documents"
+msgstr "Компоновка карточки с кнопкой email для документов"
+
+#: src/components/post-grid-template/PostGridTemplateControl.js
+msgid "Document Card Download"
+msgstr "Карточка документа (загрузка)"
+
+#: src/components/post-grid-template/PostGridTemplateControl.js
+msgid "Card layout with AJAX download button for documents"
+msgstr "Компоновка карточки с AJAX кнопкой загрузки для документов"
+
+#: src/blocks/post-grid/controls/LayoutControl.js
+msgid "Images Per Row"
+msgstr "Изображений в ряду"
+
+#: src/blocks/post-grid/controls/LayoutControl.js
+msgid "Gap сетки"
+msgstr "Gap сетки"
+
+#: src/blocks/post-grid/controls/LayoutControl.js
+msgid "Number of columns at each breakpoint"
+msgstr "Количество колонок на каждой точке останова"
+
+#: src/blocks/form/edit.js:69
+msgid "Form Settings"
+msgstr "Настройки формы"
+
+#: src/blocks/form/edit.js:71
+msgid "Form Name"
+msgstr "Название формы"
+
+#: src/blocks/form/edit.js:76
+msgid "Form ID"
+msgstr "ID формы"
+
+#: src/blocks/form/edit.js:98
+msgid ""
+"Form ID is assigned automatically from the CPT Form ID and cannot be changed "
+"here."
+msgstr ""
+"ID формы автоматически присваивается из ID записи CPT Форма и не может быть "
+"изменен здесь."
+
+#: src/blocks/form/edit.js:144
+msgid "Form Type"
+msgstr "Тип формы"
+
+#: src/blocks/form/edit.js:148
+msgid "Regular Form"
+msgstr "Обычная форма"
+
+#: src/blocks/form/edit.js:149
+msgid "Newsletter Subscription"
+msgstr "Подписка на рассылку"
+
+#: src/blocks/form/edit.js:150
+msgid "Testimonial Form"
+msgstr "Форма отзыва"
+
+#: src/blocks/form/edit.js:151
+msgid "Resume Form"
+msgstr "Форма резюме"
+
+#: src/blocks/form/edit.js:152
+msgid "Callback Request"
+msgstr "Запрос обратного звонка"
+
+#: src/blocks/form/edit.js:154
+msgid "Select the type of form. This determines how the form is processed."
+msgstr "Выберите тип формы. Это определяет способ обработки формы."
+
+#: src/blocks/form/edit.js:79
+msgid "Leave empty to auto-generate"
+msgstr "Оставьте пустым для автоматической генерации"
+
+#: src/blocks/form/edit.js:83
+msgid "Email Settings"
+msgstr "Настройки электронной почты"
+
+#: src/blocks/form/edit.js:85
+msgid "Recipient Email"
+msgstr "Email получателя"
+
+#: src/blocks/form/edit.js:89
+msgid "Email address to receive form submissions"
+msgstr "Адрес электронной почты для получения отправленных форм"
+
+#: src/blocks/form/edit.js:92
+msgid "Sender Email"
+msgstr "Email отправителя"
+
+#: src/blocks/form/edit.js:98
+msgid "Sender Name"
+msgstr "Имя отправителя"
+
+#: src/blocks/form/edit.js:103
+msgid "Email Subject"
+msgstr "Тема письма"
+
+#: src/blocks/form/edit.js:109
+msgid "Messages"
+msgstr "Сообщения"
+
+#: src/blocks/form/edit.js:111
+msgid "Success Message"
+msgstr "Сообщение об успехе"
+
+#: src/blocks/form/edit.js:116
+msgid "Error Message"
+msgstr "Сообщение об ошибке"
+
+#: src/blocks/form/edit.js:122
+msgid "Security"
+msgstr "Безопасность"
+
+#: src/blocks/form/edit.js:124
+msgid "Enable Captcha"
+msgstr "Включить капчу"
+
+#: src/blocks/form/edit.js:130
+msgid "Captcha Type"
+msgstr "Тип капчи"
+
+#: src/blocks/form/edit.js:133
+msgid "Honeypot"
+msgstr "Honeypot"
+
+#: src/blocks/form/edit.js:139
+msgid "Enable Rate Limiting"
+msgstr "Включить ограничение частоты"
+
+#: src/blocks/form/edit.js:146
+msgid "Max Submissions"
+msgstr "Максимум отправок"
+
+#: src/blocks/form/edit.js:152
+msgid "Time Period (seconds)"
+msgstr "Временной период (секунды)"
+
+#: src/blocks/form/edit.js:161
+msgid "Submit Button"
+msgstr "Кнопка отправки"
+
+#: src/blocks/form/edit.js:171
+msgid "Bootstrap classes: btn btn-primary"
+msgstr "Классы Bootstrap: btn btn-primary"
+
+#: src/blocks/form/edit.js:178
+msgid "Contact Form"
+msgstr "Контактная форма"
+
+#: src/blocks/form/render.php:190
+msgid "Forms module is not active."
+msgstr "Модуль форм не активен."
+
+#: src/blocks/form-field/edit.js:41
+msgid "Tel"
+msgstr "Телефон"
+
+#: src/blocks/form-field/edit.js:43
+msgid "Textarea"
+msgstr "Текстовая область"
+
+#: src/blocks/form-field/edit.js:45
+msgid "Radio"
+msgstr "Радиокнопка"
+
+#: src/blocks/form-field/edit.js:46
+msgid "Checkbox"
+msgstr "Чекбокс"
+
+#: src/blocks/form-field/edit.js:47
+msgid "File"
+msgstr "Файл"
+
+#: src/blocks/form-field/edit.js:49
+msgid "Time"
+msgstr "Время"
+
+#: src/blocks/form-field/edit.js:50
+msgid "Number"
+msgstr "Число"
+
+#: src/blocks/form-field/edit.js:51
+msgid "Hidden"
+msgstr "Скрытое поле"
+
+#: src/blocks/form-field/edit.js:52
+msgid "Consents block"
+msgstr "Блок согласий"
+
+#: src/blocks/form-field/edit.js:57
+msgid "Full Width (col-12)"
+msgstr "Полная ширина (col-12)"
+
+#: src/blocks/form-field/edit.js:58
+msgid "Half Width (col-md-6)"
+msgstr "Половина ширины (col-md-6)"
+
+#: src/blocks/form-field/edit.js:59
+msgid "Third Width (col-md-4)"
+msgstr "Треть ширины (col-md-4)"
+
+#: src/blocks/form-field/edit.js:60
+msgid "Quarter Width (col-md-3)"
+msgstr "Четверть ширины (col-md-3)"
+
+#: src/blocks/form-field/edit.js:89
+msgid "Select option..."
+msgstr "Выберите опцию..."
+
+#: src/blocks/form-field/edit.js:135
+msgid "Option"
+msgstr "Опция"
+
+#: src/blocks/form-field/edit.js:154
+msgid "File Upload"
+msgstr "Загрузка файла"
+
+#: src/blocks/form-field/edit.js:163
+msgid "Hidden Field"
+msgstr "Скрытое поле"
+
+#: src/blocks/form-field/edit.js:170
+msgid "Consents Block"
+msgstr "Блок согласий"
+
+#: src/blocks/form-field/edit.js:172
+msgid "This field outputs consents configured below the form."
+msgstr "Это поле выводит согласия, настроенные под формой."
+
+#: src/blocks/form-field/edit.js:199
+msgid "Field Settings"
+msgstr "Настройки поля"
+
+#: src/blocks/form-field/edit.js:201
+msgid "Field Type"
+msgstr "Тип поля"
+
+#: src/blocks/form-field/edit.js:207
+msgid "Field Name"
+msgstr "Имя поля"
+
+#: src/blocks/form-field/edit.js:210
+msgid "Unique field identifier (e.g., name, email)"
+msgstr "Уникальный идентификатор поля (например, name, email)"
+
+#: src/blocks/form-field/edit.js:233
+msgid "Field Label"
+msgstr "Метка поля"
+
+#: src/blocks/form-field/edit.js:226
+msgid "Required Field"
+msgstr "Обязательное поле"
+
+#: src/blocks/form-field/edit.js:251
+msgid "Validation"
+msgstr "Валидация"
+
+#: src/blocks/form-field/edit.js:234
+msgid "Min Length"
+msgstr "Минимальная длина"
+
+#: src/blocks/form-field/edit.js:240
+msgid "Max Length"
+msgstr "Максимальная длина"
+
+#: src/blocks/form-field/edit.js:246
+msgid "Validation Type"
+msgstr "Тип валидации"
+
+#: src/blocks/form-field/edit.js:261
+msgid "Options (one per line, format: label|value)"
+msgstr "Опции (по одной на строку, формат: label|value)"
+
+#: src/blocks/form-field/edit.js:275
+msgid "Example: Option 1|value1"
+msgstr "Пример: Опция 1|value1"
+
+#: src/blocks/form-field/edit.js:281
+msgid "File Settings"
+msgstr "Настройки файла"
+
+#: src/blocks/form-field/edit.js:283
+msgid "Accept"
+msgstr "Принимаемые типы"
+
+#: src/blocks/form-field/edit.js:286
+msgid "File types: .pdf,.doc,.docx or image/*"
+msgstr "Типы файлов: .pdf,.doc,.docx или image/*"
+
+#: src/blocks/form-field/edit.js:289
+msgid "Multiple Files"
+msgstr "Несколько файлов"
+
+#: src/blocks/form-field/edit.js:298
+msgid "Field Width"
+msgstr "Ширина поля"
+
+#: src/blocks/form-field/edit.js:332
+msgid "Advanced"
+msgstr "Дополнительно"
+
+#: src/blocks/form-field/edit.js:315
+msgid "Default Value"
+msgstr "Значение по умолчанию"
+
+#: src/blocks/form-field/edit.js:320
+msgid "Help Text"
+msgstr "Текст подсказки"
+
+#: src/blocks/form-field/edit.js:323
+msgid "Additional help text below the field"
+msgstr "Дополнительный текст подсказки под полем"
+
+#: src/blocks/form-field/edit.js:100
+msgid "Replace existing label text with default text for this document?"
+msgstr "Заменить существующий текст метки на текст по умолчанию для этого документа?"
+"Заменить существующий текст метки на текст по умолчанию для этого документа?"
+
+#: src/blocks/form-field/edit.js:144
+msgid "I agree to the {document_title_url}"
+msgstr "Я согласен с {document_title_url}"
+
+#: src/blocks/form-field/edit.js:330
+msgid "Consents"
+msgstr "Согласия"
+
+#: src/blocks/form-field/edit.js:332
+msgid ""
+"Add consent checkboxes to your form. Each consent can have a custom label "
+"with placeholders for document links."
+msgstr ""
+"Добавьте чекбоксы согласия в вашу форму. Каждое согласие может иметь "
+"пользовательскую метку с плейсхолдерами для ссылок на документы."
+
+#: src/blocks/form-field/edit.js:338
+msgid "Consent"
+msgstr "Согласие"
+
+#: src/blocks/form-field/edit.js:342
+msgid "Label Text"
+msgstr "Текст метки"
+
+#: src/blocks/form-field/edit.js:345
+msgid "I agree to the {document_title}"
+msgstr "Я согласен с {document_title}"
+
+#: src/blocks/form-field/edit.js:346
+msgid ""
+"You can use placeholders: {document_url}, {document_title}, "
+"{document_title_url}, {form_id}"
+msgstr ""
+"Вы можете использовать плейсхолдеры: {document_url}, {document_title}, "
+"{document_title_url}, {form_id}"
+
+#: src/blocks/form-field/edit.js:353
+msgid "— Select —"
+msgstr "— Выбрать —"
+
+#: src/blocks/form-field/edit.js:370
+msgid "Required (form cannot be submitted without this consent)"
+msgstr "Обязательно (форма не может быть отправлена без этого согласия)"
+
+#: src/blocks/form-field/edit.js:392
+msgid "+ Add Consent"
+msgstr "+ Добавить согласие"
+
+#: src/blocks/form-field/block.json:5
+msgid "Form Field"
+msgstr "Поле формы"
+
+#: src/blocks/form-field/block.json:8
+msgid "Add form field (text, email, textarea, etc.)"
+msgstr "Добавить поле формы (текст, email, текстовая область и т.д.)"
+
+#: src/blocks/form-field/edit.js:257
+msgid "Newsletter Email"
+msgstr "Email для рассылки"
+
+#: src/blocks/form-field/edit.js:270
+msgid "Rating"
+msgstr "Рейтинг"
+
+#: src/blocks/form-field/edit.js:271
+msgid "Author Role (Position)"
+msgstr "Роль автора (Должность)"
+
+#: src/blocks/form-field/edit.js:391 src/blocks/form-field/edit.js:606
+msgid "Your Position"
+msgstr "Ваша должность"
+
+#: src/blocks/form-field/edit.js:642
+msgid "Show for guests only"
+msgstr "Показывать только гостям"
+
+#: src/blocks/form-field/edit.js:645
+msgid "Field will be shown only for non-logged-in users (guests)"
+msgstr "Поле будет показано только для неавторизованных пользователей (гостей)"
+"Поле будет отображаться только для неавторизованных пользователей (гостей)"
+
+#. translators: Default label for email input field
+#: src/blocks/form-field/edit.js:76
+msgid "Email Address"
+msgstr "Адрес электронной почты"
+
+#. translators: Default label for phone number input field
+#: src/blocks/form-field/edit.js:80
+msgid "Phone Number"
+msgstr "Номер телефона"
+
+#. translators: Default label for website URL input field
+#: src/blocks/form-field/edit.js:82
+msgid "Website"
+msgstr "Веб-сайт"
+
+#. translators: Default label for textarea field
+#: src/blocks/form-field/edit.js:84
+msgid "Message"
+msgstr "Сообщение"
+
+#. translators: Default label for select dropdown field
+#: src/blocks/form-field/edit.js:86
+msgid "Select Option"
+msgstr "Выберите опцию"
+
+#. translators: Default label for checkbox field
+#: src/blocks/form-field/edit.js:90
+msgid "I agree"
+msgstr "Я согласен"
+
+#: src/blocks/form-field/save.js:271 src/blocks/form-field/edit.js:548
+msgid "Browse"
+msgstr "Обзор"
+
+#: src/blocks/form-field/save.js:270 src/blocks/form-field/edit.js:547
+msgid "No file selected"
+msgstr "Файл не выбран"
+
+#. translators: Default text for inline submit button
+#: src/blocks/form-field/render.php:124
+msgid "Send"
+msgstr "Отправить"
+
+#. translators: Loading text for inline submit button during form submission
+#: src/blocks/form-field/render.php:169
+msgid "Sending..."
+msgstr "Отправка..."
+
+#: includes/js/filepond-init.js:71
+msgid ""
+"Drag & drop your files or <span class=\"filepond--label-action\">"
+"browse</span>"
+msgstr ""
+"<span class=\"filepond--label-action\">Выбрать файлы для загрузки</span>"
+
+#: includes/js/filepond-init.js:79
+msgid "Upload complete"
+msgstr "Загрузка завершена"
+
+#: includes/js/filepond-init.js:84
+msgid "Tap to undo"
+msgstr "Нажмите, чтобы отменить"
+
+#: inc/Plugin.php:835
+msgid "Uploading"
+msgstr "Загрузка"
+
+#: inc/Plugin.php:836
+msgid "tap to cancel"
+msgstr "нажмите, чтобы отменить"
+
+#: inc/Plugin.php:826
+msgid "Maximum number of files: %s. Please remove excess files."
+msgstr "Максимальное количество файлов: %s. Пожалуйста, удалите лишние файлы."
+
+#: inc/Plugin.php:827
+msgid "File is too large. Maximum size: %s"
+msgstr "Файл слишком большой. Максимальный размер: %s"
+
+#: inc/Plugin.php:828
+msgid "Total file size is too large. Maximum: %s"
+msgstr "Общий размер файлов слишком большой. Максимум: %s"
+
+#: inc/Plugin.php:829
+msgid "Error uploading file"
+msgstr "Ошибка при загрузке файла"
+
+#: inc/Plugin.php:830
+msgid "Error adding file"
+msgstr "Ошибка при добавлении файла"
+
+#: inc/Plugin.php:831
+msgid "Maximum number of files: %s. Files removed: %s"
+msgstr "Максимальное количество файлов: %s. Удалено файлов: %s"
+
+#: inc/Plugin.php:832
+msgid "Total file size exceeded. Maximum: %s"
+msgstr "Общий размер файлов превышен. Максимум: %s"

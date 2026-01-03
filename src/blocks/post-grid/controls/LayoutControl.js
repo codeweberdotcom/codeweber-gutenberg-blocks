@@ -198,7 +198,7 @@ export const LayoutControl = ({ attributes, setAttributes }) => {
 							showGap={true}
 							showSpacing={false}
 							rowColsLabel={__('Images Per Row', 'codeweber-gutenberg-blocks')}
-							gapLabel={__('Gap сетки', 'codeweber-gutenberg-blocks')}
+							gapLabel={__('Grid Gap', 'codeweber-gutenberg-blocks')}
 						/>
 					)}
 
@@ -260,7 +260,7 @@ export const LayoutControl = ({ attributes, setAttributes }) => {
 								showRowCols={false}
 								showGap={true}
 								showSpacing={false}
-								gapLabel={__('Gap сетки', 'codeweber-gutenberg-blocks')}
+								gapLabel={__('Grid Gap', 'codeweber-gutenberg-blocks')}
 							/>
 						</>
 					)}

@@ -385,6 +385,9 @@ class Plugin {
 		}
 	}
 
+	/**
+	 * Pass locale to features block
+	 */
 	public static function gutenbergBlocksRegisterCategory($categories, $post): array {
 		return [
 			[
@@ -865,14 +868,6 @@ class Plugin {
 	public static function enqueue_filepond() {
 		// Check if already enqueued
 		if (wp_script_is('filepond', 'enqueued')) {
-			// #region agent log
-			$log_dir = dirname(WP_CONTENT_DIR) . '/.cursor';
-			$log_path = $log_dir . '/debug.log';
-			if (!is_dir($log_dir)) {
-				@mkdir($log_dir, 0755, true);
-			}
-			@file_put_contents($log_path, json_encode(['sessionId'=>'debug-session','runId'=>'run1','hypothesisId'=>'A','location'=>'Plugin.php:771','message'=>'FilePond already enqueued','data'=>[],'timestamp'=>time()*1000])."\n", FILE_APPEND);
-			// #endregion
 			return;
 		}
 
@@ -880,14 +875,6 @@ class Plugin {
 		$js_url = self::getBaseUrl() . '/assets/filepond/filepond.min.js';
 		$init_url = self::getBaseUrl() . '/includes/js/filepond-init.js';
 
-		// #region agent log
-		$log_dir = dirname(WP_CONTENT_DIR) . '/.cursor';
-		$log_path = $log_dir . '/debug.log';
-		if (!is_dir($log_dir)) {
-			@mkdir($log_dir, 0755, true);
-		}
-		@file_put_contents($log_path, json_encode(['sessionId'=>'debug-session','runId'=>'run1','hypothesisId'=>'A','location'=>'Plugin.php:777','message'=>'Enqueueing FilePond scripts','data'=>['cssUrl'=>$css_url,'jsUrl'=>$js_url,'initUrl'=>$init_url,'cssExists'=>file_exists(dirname(__DIR__).'/assets/filepond/filepond.min.css'),'jsExists'=>file_exists(dirname(__DIR__).'/assets/filepond/filepond.min.js')],'timestamp'=>time()*1000])."\n", FILE_APPEND);
-		// #endregion
 
 		// Enqueue FilePond CSS
 		wp_enqueue_style(
@@ -938,14 +925,6 @@ class Plugin {
 			]
 		]);
 
-		// #region agent log
-		$log_dir = dirname(WP_CONTENT_DIR) . '/.cursor';
-		$log_path = $log_dir . '/debug.log';
-		if (!is_dir($log_dir)) {
-			@mkdir($log_dir, 0755, true);
-		}
-		@file_put_contents($log_path, json_encode(['sessionId'=>'debug-session','runId'=>'run1','hypothesisId'=>'A','location'=>'Plugin.php:805','message'=>'FilePond scripts enqueued','data'=>['scriptEnqueued'=>wp_script_is('filepond','enqueued'),'styleEnqueued'=>wp_style_is('filepond','enqueued'),'initEnqueued'=>wp_script_is('filepond-init','enqueued')],'timestamp'=>time()*1000])."\n", FILE_APPEND);
-		// #endregion
 	}
 
 	/**
@@ -1000,24 +979,6 @@ class Plugin {
 		$inline_button_supported_types = ['text', 'email', 'tel', 'url', 'number', 'date', 'time', 'author_role', 'company'];
 		$inline_button_enabled = $enable_inline_button && in_array($field_type, $inline_button_supported_types) && $field_type !== 'newsletter';
 
-		// #region agent log
-		$log_file = dirname(dirname(WP_CONTENT_DIR)) . '/.cursor/debug.log';
-		$log_entry = json_encode([
-			'sessionId' => 'debug-session',
-			'runId' => 'run1',
-			'hypothesisId' => 'I',
-			'location' => 'Plugin.php:pre_render_form_field_inline_button',
-			'message' => 'pre_render_form_field_inline_button called',
-			'data' => [
-				'enable_inline_button' => $enable_inline_button,
-				'field_type' => $field_type,
-				'inline_button_enabled' => $inline_button_enabled,
-				'enableInlineButton_raw' => $attributes['enableInlineButton'] ?? 'NOT_SET'
-			],
-			'timestamp' => time() * 1000
-		]) . "\n";
-		@file_put_contents($log_file, $log_entry, FILE_APPEND);
-		// #endregion
 
 		// Use PHP render for fields with inline button
 		if ($inline_button_enabled) {
@@ -1040,41 +1001,11 @@ class Plugin {
 					'context' => $context,
 				], EXTR_SKIP);
 
-				// #region agent log
-				$log_entry = json_encode([
-					'sessionId' => 'debug-session',
-					'runId' => 'run1',
-					'hypothesisId' => 'J',
-					'location' => 'Plugin.php:pre_render_form_field_inline_button',
-					'message' => 'INLINE BUTTON - calling render.php',
-					'data' => [
-						'render_path' => $render_path,
-						'file_exists' => file_exists($render_path)
-					],
-					'timestamp' => time() * 1000
-				]) . "\n";
-				@file_put_contents($log_file, $log_entry, FILE_APPEND);
-				// #endregion
 
 				ob_start();
 				require $render_path;
 				$rendered = ob_get_clean();
 
-				// #region agent log
-				$log_entry = json_encode([
-					'sessionId' => 'debug-session',
-					'runId' => 'run1',
-					'hypothesisId' => 'K',
-					'location' => 'Plugin.php:pre_render_form_field_inline_button',
-					'message' => 'INLINE BUTTON - render.php output generated',
-					'data' => [
-						'output_length' => strlen($rendered),
-						'output_preview' => substr($rendered, 0, 200)
-					],
-					'timestamp' => time() * 1000
-				]) . "\n";
-				@file_put_contents($log_file, $log_entry, FILE_APPEND);
-				// #endregion
 
 				return $rendered;
 			}

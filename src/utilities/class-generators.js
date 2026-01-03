@@ -227,6 +227,14 @@ export const generateSpacingClasses = (attrs) => {
 export const generateAlignmentClasses = (attrs) => {
     const classes = [];
     
+    // Определяем, нужен ли flex контейнер для вертикального/горизонтального выравнивания
+    const needsFlex = (attrs.alignItems && attrs.alignItems.trim() !== '') || (attrs.justifyContent && attrs.justifyContent.trim() !== '');
+    
+    // Если есть alignItems или justifyContent, добавляем d-flex и flex-column
+    if (needsFlex) {
+        classes.push('d-flex', 'flex-column');
+    }
+    
     // Text align
     if (attrs.align) {
         classes.push(generateTextAlignClass(attrs.align));

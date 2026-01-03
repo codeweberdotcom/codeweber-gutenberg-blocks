@@ -37,21 +37,6 @@ class ImageHotspotCPT {
 		// Endpoint для загрузки только CSS с определениями иконок
 		add_action('admin_enqueue_scripts', [$this, 'enqueue_unicons_icons_css']);
 
-		// #region agent log
-		$log_file = WP_CONTENT_DIR . '/../.cursor/debug.log';
-		if (file_exists(dirname($log_file)) || @mkdir(dirname($log_file), 0755, true)) {
-			$log_entry = json_encode([
-				'timestamp' => time() * 1000,
-				'location' => 'ImageHotspotCPT.php:30',
-				'message' => 'Shortcode registration initiated',
-				'data' => ['shortcode' => 'cw_image_hotspot', 'method' => 'render_shortcode'],
-				'sessionId' => 'debug-session',
-				'runId' => 'initial',
-				'hypothesisId' => 'A'
-			]) . "\n";
-			@file_put_contents($log_file, $log_entry, FILE_APPEND);
-		}
-		// #endregion
 	}
 
 	/**
@@ -269,7 +254,7 @@ class ImageHotspotCPT {
 								<option value="hover" <?php selected($settings_data['popoverTrigger'] ?? '', 'hover'); ?>><?php _e('Hover', 'codeweber-gutenberg-blocks'); ?></option>
 								<option value="focus" <?php selected($settings_data['popoverTrigger'] ?? '', 'focus'); ?>><?php _e('Focus', 'codeweber-gutenberg-blocks'); ?></option>
 							</select>
-							<p class="description"><?php _e('Способ открытия Bootstrap Popover', 'codeweber-gutenberg-blocks'); ?></p>
+							<p class="description"><?php _e('Bootstrap Popover Opening Method', 'codeweber-gutenberg-blocks'); ?></p>
 						</td>
 					</tr>
 					<tr>
@@ -282,7 +267,7 @@ class ImageHotspotCPT {
 								<option value="bottom" <?php selected($settings_data['popoverPlacement'] ?? '', 'bottom'); ?>><?php _e('Bottom', 'codeweber-gutenberg-blocks'); ?></option>
 								<option value="left" <?php selected($settings_data['popoverPlacement'] ?? '', 'left'); ?>><?php _e('Left', 'codeweber-gutenberg-blocks'); ?></option>
 							</select>
-							<p class="description"><?php _e('Позиция отображения popover', 'codeweber-gutenberg-blocks'); ?></p>
+							<p class="description"><?php _e('Popover Display Position', 'codeweber-gutenberg-blocks'); ?></p>
 						</td>
 					</tr>
 				</table>
@@ -443,21 +428,6 @@ class ImageHotspotCPT {
 
 		// Bootstrap Popover будет инициализирован через скрипт фронтенда
 
-		// #region agent log
-		$log_file = WP_CONTENT_DIR . '/../.cursor/debug.log';
-		if (file_exists(dirname($log_file)) || @mkdir(dirname($log_file), 0755, true)) {
-			$log_entry = json_encode([
-				'timestamp' => time() * 1000,
-				'location' => 'ImageHotspotCPT.php:render_shortcode',
-				'message' => 'Shortcode render called',
-				'data' => ['atts' => $atts],
-				'sessionId' => 'debug-session',
-				'runId' => 'initial',
-				'hypothesisId' => 'B'
-			]) . "\n";
-			@file_put_contents($log_file, $log_entry, FILE_APPEND);
-		}
-		// #endregion
 
 		// Получаем атрибуты шорткода
 		$atts = shortcode_atts([
@@ -466,56 +436,14 @@ class ImageHotspotCPT {
 
 		$hotspot_id = intval($atts['id']);
 
-		// #region agent log
-		if (file_exists(dirname($log_file)) || @mkdir(dirname($log_file), 0755, true)) {
-			$log_entry = json_encode([
-				'timestamp' => time() * 1000,
-				'location' => 'ImageHotspotCPT.php:render_shortcode',
-				'message' => 'Parsed shortcode attributes',
-				'data' => ['hotspot_id' => $hotspot_id],
-				'sessionId' => 'debug-session',
-				'runId' => 'initial',
-				'hypothesisId' => 'B'
-			]) . "\n";
-			@file_put_contents($log_file, $log_entry, FILE_APPEND);
-		}
-		// #endregion
 
 		if (!$hotspot_id) {
-			// #region agent log
-			if (file_exists(dirname($log_file)) || @mkdir(dirname($log_file), 0755, true)) {
-				$log_entry = json_encode([
-					'timestamp' => time() * 1000,
-					'location' => 'ImageHotspotCPT.php:render_shortcode',
-					'message' => 'Invalid hotspot ID',
-					'data' => ['hotspot_id' => $hotspot_id],
-					'sessionId' => 'debug-session',
-					'runId' => 'initial',
-					'hypothesisId' => 'B'
-				]) . "\n";
-				@file_put_contents($log_file, $log_entry, FILE_APPEND);
-			}
-			// #endregion
 			return '';
 		}
 
 		// Получаем данные hotspot из CPT
 		$post = get_post($hotspot_id);
 		if (!$post || $post->post_type !== 'cw_image_hotspot') {
-			// #region agent log
-			if (file_exists(dirname($log_file)) || @mkdir(dirname($log_file), 0755, true)) {
-				$log_entry = json_encode([
-					'timestamp' => time() * 1000,
-					'location' => 'ImageHotspotCPT.php:render_shortcode',
-					'message' => 'Hotspot post not found or wrong type',
-					'data' => ['hotspot_id' => $hotspot_id, 'post_type' => $post ? $post->post_type : 'null'],
-					'sessionId' => 'debug-session',
-					'runId' => 'initial',
-					'hypothesisId' => 'B'
-				]) . "\n";
-				@file_put_contents($log_file, $log_entry, FILE_APPEND);
-			}
-			// #endregion
 			return '';
 		}
 
@@ -524,20 +452,6 @@ class ImageHotspotCPT {
 		$hotspot_data = get_post_meta($hotspot_id, '_hotspot_data', true);
 		$settings = get_post_meta($hotspot_id, '_hotspot_settings', true);
 
-		// #region agent log
-		if (file_exists(dirname($log_file)) || @mkdir(dirname($log_file), 0755, true)) {
-			$log_entry = json_encode([
-				'timestamp' => time() * 1000,
-				'location' => 'ImageHotspotCPT.php:render_shortcode',
-				'message' => 'Retrieved hotspot metadata',
-				'data' => ['image_id' => $image_id, 'has_hotspot_data' => !empty($hotspot_data), 'has_settings' => !empty($settings)],
-				'sessionId' => 'debug-session',
-				'runId' => 'initial',
-				'hypothesisId' => 'B'
-			]) . "\n";
-			@file_put_contents($log_file, $log_entry, FILE_APPEND);
-		}
-		// #endregion
 
 		if (!$image_id) {
 			return '';
@@ -546,20 +460,6 @@ class ImageHotspotCPT {
 		// Получаем URL изображения
 		$image_url = wp_get_attachment_image_url($image_id, 'full');
 		if (!$image_url) {
-			// #region agent log
-			if (file_exists(dirname($log_file)) || @mkdir(dirname($log_file), 0755, true)) {
-				$log_entry = json_encode([
-					'timestamp' => time() * 1000,
-					'location' => 'ImageHotspotCPT.php:render_shortcode',
-					'message' => 'Image URL not found',
-					'data' => ['image_id' => $image_id],
-					'sessionId' => 'debug-session',
-					'runId' => 'initial',
-					'hypothesisId' => 'B'
-				]) . "\n";
-				@file_put_contents($log_file, $log_entry, FILE_APPEND);
-			}
-			// #endregion
 			return '';
 		}
 
@@ -577,20 +477,6 @@ class ImageHotspotCPT {
 		];
 		$settings_data = wp_parse_args($settings_data, $default_settings);
 
-		// #region agent log
-		if (file_exists(dirname($log_file)) || @mkdir(dirname($log_file), 0755, true)) {
-			$log_entry = json_encode([
-				'timestamp' => time() * 1000,
-				'location' => 'ImageHotspotCPT.php:render_shortcode',
-				'message' => 'Preparing to render HTML',
-				'data' => ['hotspots_count' => count($hotspots), 'settings' => $settings_data],
-				'sessionId' => 'debug-session',
-				'runId' => 'initial',
-				'hypothesisId' => 'B'
-			]) . "\n";
-			@file_put_contents($log_file, $log_entry, FILE_APPEND);
-		}
-		// #endregion
 
 		// Рендерим HTML
 		ob_start();
@@ -629,30 +515,6 @@ class ImageHotspotCPT {
 							$popover_placement = $settings_data['popoverPlacement'] ?? 'auto';
 							$wrapper_class = !empty($hotspot['wrapperClass']) ? esc_attr($hotspot['wrapperClass']) : '';
 
-							// #region agent log
-							$log_file = WP_CONTENT_DIR . '/../.cursor/debug.log';
-							if (file_exists(dirname($log_file)) || @mkdir(dirname($log_file), 0755, true)) {
-								$log_entry = json_encode([
-									'timestamp' => time() * 1000,
-									'location' => 'ImageHotspotCPT.php:render_shortcode:point_info',
-									'message' => 'Point identification and title check',
-									'data' => [
-										'point_id' => $hotspot['id'] ?? 'missing',
-										'point_has_id' => !empty($hotspot['id']),
-										'point_title' => $hotspot['title'] ?? 'missing',
-										'point_title_empty' => empty($hotspot['title']),
-										'popover_title' => $popover_title,
-										'popover_title_empty' => empty($popover_title),
-										'content_type' => $content_type,
-										'hotspot_keys' => array_keys($hotspot ?? [])
-									],
-									'sessionId' => 'debug-session',
-									'runId' => 'initial',
-									'hypothesisId' => 'A'
-								]) . "\n";
-								@file_put_contents($log_file, $log_entry, FILE_APPEND);
-							}
-							// #endregion
 
 							// Формируем контент в зависимости от типа
 							$popover_content = '';
@@ -660,41 +522,12 @@ class ImageHotspotCPT {
 
 							if ($content_type === 'text') {
 								// Простой текст - храним в скрытом элементе
-								// #region agent log
-								$log_file = WP_CONTENT_DIR . '/../.cursor/debug.log';
-								if (file_exists(dirname($log_file)) || @mkdir(dirname($log_file), 0755, true)) {
-									$log_entry = json_encode([
-										'timestamp' => time() * 1000,
-										'location' => 'ImageHotspotCPT.php:render_shortcode:text',
-										'message' => 'Processing text content type',
-										'data' => ['point_id' => $hotspot['id'], 'has_content' => !empty($hotspot['content']), 'content_length' => isset($hotspot['content']) ? strlen($hotspot['content']) : 0, 'content_preview' => isset($hotspot['content']) ? substr($hotspot['content'], 0, 50) : ''],
-										'sessionId' => 'debug-session',
-										'runId' => 'initial',
-										'hypothesisId' => 'A'
-									]) . "\n";
-									@file_put_contents($log_file, $log_entry, FILE_APPEND);
-								}
-								// #endregion
 								if (!empty($hotspot['content'])) {
 									$popover_content = wp_kses_post($hotspot['content']);
 								}
 								if (!empty($hotspot['link'])) {
 									$popover_content .= '<br><a href="' . esc_url($hotspot['link']) . '" target="' . esc_attr($hotspot['linkTarget'] ?? '_self') . '">' . __('Learn more', 'codeweber-gutenberg-blocks') . '</a>';
 								}
-								// #region agent log
-								if (file_exists(dirname($log_file)) || @mkdir(dirname($log_file), 0755, true)) {
-									$log_entry = json_encode([
-										'timestamp' => time() * 1000,
-										'location' => 'ImageHotspotCPT.php:render_shortcode:text',
-										'message' => 'After processing text content',
-										'data' => ['point_id' => $hotspot['id'], 'popover_content_length' => strlen($popover_content), 'popover_content_preview' => substr($popover_content, 0, 50), 'will_create_hidden' => (!$use_ajax && !empty($popover_content))],
-										'sessionId' => 'debug-session',
-										'runId' => 'initial',
-										'hypothesisId' => 'A'
-									]) . "\n";
-									@file_put_contents($log_file, $log_entry, FILE_APPEND);
-								}
-								// #endregion
 							} elseif ($content_type === 'post' || $content_type === 'hybrid') {
 								// Пост или гибрид - загружаем через AJAX
 								$use_ajax = true;
@@ -707,21 +540,6 @@ class ImageHotspotCPT {
 							<?php if (!$use_ajax && !empty($popover_content)): ?>
 								<!-- Скрытый контейнер с HTML контентом для простого текста -->
 								<?php
-								// #region agent log
-								$log_file = WP_CONTENT_DIR . '/../.cursor/debug.log';
-								if (file_exists(dirname($log_file)) || @mkdir(dirname($log_file), 0755, true)) {
-									$log_entry = json_encode([
-										'timestamp' => time() * 1000,
-										'location' => 'ImageHotspotCPT.php:render_shortcode:create_hidden',
-										'message' => 'Creating hidden content element',
-										'data' => ['point_id' => $hotspot['id'], 'content_type' => $content_type, 'content_length' => strlen($popover_content)],
-										'sessionId' => 'debug-session',
-										'runId' => 'initial',
-										'hypothesisId' => 'A'
-									]) . "\n";
-									@file_put_contents($log_file, $log_entry, FILE_APPEND);
-								}
-								// #endregion
 								?>
 								<div class="cw-hotspot-popover-content" style="display: none;">
 									<?php if (!empty($wrapper_class)): ?>
@@ -745,29 +563,6 @@ class ImageHotspotCPT {
 								</div>
 							<?php endif; ?>
 							<?php
-							// #region agent log
-							$log_file = WP_CONTENT_DIR . '/../.cursor/debug.log';
-							if (file_exists(dirname($log_file)) || @mkdir(dirname($log_file), 0755, true)) {
-								$log_entry = json_encode([
-									'timestamp' => time() * 1000,
-									'location' => 'ImageHotspotCPT.php:render_shortcode:before_span',
-									'message' => 'Before rendering span element with title attribute',
-									'data' => [
-										'point_id' => $hotspot['id'] ?? 'missing',
-										'popover_title' => $popover_title,
-										'popover_title_type' => gettype($popover_title),
-										'popover_title_empty' => empty($popover_title),
-										'popover_title_length' => strlen($popover_title),
-										'will_output_title' => !empty($popover_title),
-										'will_output_data_bs_title' => !empty($popover_title)
-									],
-									'sessionId' => 'debug-session',
-									'runId' => 'initial',
-									'hypothesisId' => 'B'
-								]) . "\n";
-								@file_put_contents($log_file, $log_entry, FILE_APPEND);
-							}
-							// #endregion
 							?>
 							<span class="btn <?php echo esc_attr(implode(' ', array_merge($theme_classes, $shape_classes, [$button_style, $button_size]))); ?>"
 							      tabindex="0"
@@ -793,20 +588,6 @@ class ImageHotspotCPT {
 		<?php
 		$output = ob_get_clean();
 
-		// #region agent log
-		if (file_exists(dirname($log_file)) || @mkdir(dirname($log_file), 0755, true)) {
-			$log_entry = json_encode([
-				'timestamp' => time() * 1000,
-				'location' => 'ImageHotspotCPT.php:render_shortcode',
-				'message' => 'Shortcode rendered successfully',
-				'data' => ['output_length' => strlen($output)],
-				'sessionId' => 'debug-session',
-				'runId' => 'initial',
-				'hypothesisId' => 'B'
-			]) . "\n";
-			@file_put_contents($log_file, $log_entry, FILE_APPEND);
-		}
-		// #endregion
 
 		return $output;
 	}

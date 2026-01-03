@@ -14,7 +14,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Получаем атрибуты из разных источников (на случай, если они передаются через parsed_block)
-if (!isset($attributes) && isset($parsed_block['attrs'])) {
+if (!isset($attributes) && isset($parsed_block) && isset($parsed_block['attrs'])) {
     $attributes = $parsed_block['attrs'];
 }
 if (!isset($attributes)) {
@@ -278,38 +278,14 @@ if (class_exists('CodeweberFormsRenderer')) {
         // FilePond всегда используется для полей типа file
         if (($field['fieldType'] ?? '') === 'file') {
             $has_filepond = true;
-            // #region agent log
-            $log_dir = dirname(WP_CONTENT_DIR) . '/.cursor';
-            $log_path = $log_dir . '/debug.log';
-            if (!is_dir($log_dir)) {
-                @mkdir($log_dir, 0755, true);
-            }
-            @file_put_contents($log_path, json_encode(['sessionId'=>'debug-session','runId'=>'run1','hypothesisId'=>'A','location'=>'form/render.php:215','message'=>'FilePond field detected in inline form','data'=>['fieldType'=>$field['fieldType']??'','useFilePond'=>$field['useFilePond']??false,'maxFiles'=>$field['maxFiles']??0,'maxFileSize'=>$field['maxFileSize']??'','maxTotalFileSize'=>$field['maxTotalFileSize']??''],'timestamp'=>time()*1000])."\n", FILE_APPEND);
-            // #endregion
             break;
         }
     }
 
     // Enqueue FilePond if needed
     if ($has_filepond) {
-        // #region agent log
-        $log_dir = dirname(WP_CONTENT_DIR) . '/.cursor';
-        $log_path = $log_dir . '/debug.log';
-        if (!is_dir($log_dir)) {
-            @mkdir($log_dir, 0755, true);
-        }
-        @file_put_contents($log_path, json_encode(['sessionId'=>'debug-session','runId'=>'run1','hypothesisId'=>'A','location'=>'form/render.php:225','message'=>'Attempting to enqueue FilePond for inline form','data'=>['has_filepond'=>$has_filepond,'class_exists'=>class_exists('\Codeweber\Blocks\Plugin')],'timestamp'=>time()*1000])."\n", FILE_APPEND);
-        // #endregion
         if (class_exists('\Codeweber\Blocks\Plugin')) {
             \Codeweber\Blocks\Plugin::enqueue_filepond();
-            // #region agent log
-            $log_dir = dirname(WP_CONTENT_DIR) . '/.cursor';
-            $log_path = $log_dir . '/debug.log';
-            if (!is_dir($log_dir)) {
-                @mkdir($log_dir, 0755, true);
-            }
-            @file_put_contents($log_path, json_encode(['sessionId'=>'debug-session','runId'=>'run1','hypothesisId'=>'A','location'=>'form/render.php:230','message'=>'FilePond enqueued for inline form','data'=>['script_enqueued'=>wp_script_is('filepond','enqueued'),'style_enqueued'=>wp_style_is('filepond','enqueued')],'timestamp'=>time()*1000])."\n", FILE_APPEND);
-            // #endregion
         }
     }
 
@@ -338,15 +314,15 @@ if (class_exists('CodeweberFormsRenderer')) {
     }
     
     // Если не найдены в $attributes, проверяем parsed_block
-    if (empty($form_title) && isset($parsed_block['attrs']['formTitle'])) {
+    if (empty($form_title) && isset($parsed_block) && isset($parsed_block['attrs']['formTitle'])) {
         $form_title = $parsed_block['attrs']['formTitle'];
     }
-    if (empty($form_subtitle) && isset($parsed_block['attrs']['formSubtitle'])) {
+    if (empty($form_subtitle) && isset($parsed_block) && isset($parsed_block['attrs']['formSubtitle'])) {
         $form_subtitle = $parsed_block['attrs']['formSubtitle'];
     }
     
     // Если все еще не найдены, проверяем parsed_form_block (из сохраненного контента)
-    if ((empty($form_title) || empty($form_subtitle)) && isset($parsed_form_block['attrs'])) {
+    if ((empty($form_title) || empty($form_subtitle)) && isset($parsed_form_block) && isset($parsed_form_block['attrs'])) {
         if (empty($form_title) && !empty($parsed_form_block['attrs']['formTitle'])) {
             $form_title = $parsed_form_block['attrs']['formTitle'];
         }
@@ -355,15 +331,52 @@ if (class_exists('CodeweberFormsRenderer')) {
         }
     }
     
-    if (!empty($form_title) || !empty($form_subtitle)) {
-        echo '<div class="form-header">';
-        if (!empty($form_title)) {
-            echo '<div class="h3 text-start">' . esc_html($form_title) . '</div>';
+    // Рендерим все innerBlocks, которые не являются form-field или submit-button
+    // (например, heading-subtitle блоки)
+    if (!empty($inner_blocks)) {
+        foreach ($inner_blocks as $inner_block) {
+            // Пропускаем form-field и submit-button, они рендерятся через renderer
+            if (is_array($inner_block)) {
+                $block_name = $inner_block['blockName'] ?? '';
+                if ($block_name === 'codeweber-gutenberg-blocks/heading-subtitle') {
+                    // Рендерим блок heading-subtitle
+                    echo render_block($inner_block);
+                }
+            } elseif (is_object($inner_block)) {
+                // Если это объект WP_Block, рендерим его
+                if (method_exists($inner_block, 'get_name')) {
+                    $block_name = $inner_block->get_name();
+                    if ($block_name === 'codeweber-gutenberg-blocks/heading-subtitle') {
+                        echo $inner_block->render();
+                    }
+                }
+            }
         }
-        if (!empty($form_subtitle)) {
-            echo '<p class="lead mb-4 text-start">' . esc_html($form_subtitle) . '</p>';
+    }
+    
+    // Также проверяем innerBlocks через $block->inner_blocks
+    if (is_object($block)) {
+        $reflection = new ReflectionClass($block);
+        if ($reflection->hasProperty('inner_blocks')) {
+            $property = $reflection->getProperty('inner_blocks');
+            $property->setAccessible(true);
+            $block_inner_blocks = $property->getValue($block);
+            
+            if (!empty($block_inner_blocks)) {
+                foreach ($block_inner_blocks as $inner_block_obj) {
+                    if (is_object($inner_block_obj)) {
+                        $block_name = method_exists($inner_block_obj, 'get_name')
+                            ? $inner_block_obj->get_name()
+                            : (property_exists($inner_block_obj, 'name') ? $inner_block_obj->name : '');
+                        
+                        // Рендерим только heading-subtitle, остальные обрабатываются через renderer
+                        if ($block_name === 'codeweber-gutenberg-blocks/heading-subtitle') {
+                            echo $inner_block_obj->render();
+                        }
+                    }
+                }
+            }
         }
-        echo '</div>';
     }
 
     $renderer = new CodeweberFormsRenderer();

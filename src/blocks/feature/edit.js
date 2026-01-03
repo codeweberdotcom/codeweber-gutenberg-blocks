@@ -142,6 +142,40 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 		tabs.push({ name: 'settings', title: <TabIcon icon={cog} label={__('Settings', 'codeweber-gutenberg-blocks')} /> });
 	}
 
+	// Установка значений по умолчанию для иконки при создании блока
+	useEffect(() => {
+		const updates = {};
+		let hasUpdates = false;
+
+		// Устанавливаем цвет иконки white, если не установлен
+		if (!iconColor || iconColor === 'yellow') {
+			updates.iconColor = 'white';
+			hasUpdates = true;
+		}
+
+		// Устанавливаем градиентный цвет 11, если не установлен
+		if (!iconColor2 || iconColor2 === '') {
+			updates.iconColor2 = '11';
+			hasUpdates = true;
+		}
+
+		// Устанавливаем вариант градиента, если не установлен
+		if (!iconBtnVariant || iconBtnVariant === 'soft') {
+			updates.iconBtnVariant = 'gradient';
+			hasUpdates = true;
+		}
+
+		// Устанавливаем цвет кнопки primary, если не установлен
+		if (!buttonColor || buttonColor === 'yellow') {
+			updates.buttonColor = 'primary';
+			hasUpdates = true;
+		}
+
+		if (hasUpdates) {
+			setAttributes(updates);
+		}
+	}, []); // Только при монтировании компонента
+
 	// Реинициализация анимации при изменении настроек (Enable, Type, Duration, Delay)
 	useEffect(() => {
 		if (typeof window === 'undefined') return;

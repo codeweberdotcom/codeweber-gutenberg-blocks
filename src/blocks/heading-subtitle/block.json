@@ -43,11 +43,11 @@
         },
         "titleTag": {
             "type": "string",
-            "default": "h1"
+            "default": "h2"
         },
         "subtitleTag": {
             "type": "string",
-            "default": "p"
+            "default": "div"
         },
         "textTag": {
             "type": "string",
@@ -159,7 +159,7 @@
         },
         "subtitleClass": {
             "type": "string",
-            "default": ""
+            "default": "mb-3"
         },
         "subtitleData": {
             "type": "string",

@@ -1,5 +1,5 @@
 {
-    "apiVersion": 2,
+    "apiVersion": 3,
     "name": "codeweber-blocks/form-field",
     "version": "0.1.0",
     "title": "Form Field",

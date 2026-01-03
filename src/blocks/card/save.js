@@ -95,12 +95,26 @@ const Save = ({ attributes }) => {
 		// Spacing classes
 		classes.push(...getSpacingClasses(attributes));
 		
-		// Alignment classes
-		classes.push(...generateAlignmentClasses(attributes));
+		// Alignment classes - применяются к card только если card-body не включен
+		if (!enableCardBody) {
+			classes.push(...generateAlignmentClasses(attributes));
+		}
 		
 		// Custom class
 		if (blockClass) {
 			classes.push(blockClass);
+		}
+		
+		return classes.filter(Boolean).join(' ');
+	};
+
+	// Generate classes for card-body
+	const getCardBodyClasses = () => {
+		const classes = ['card-body'];
+		
+		// Alignment classes - применяются к card-body если он включен
+		if (enableCardBody) {
+			classes.push(...generateAlignmentClasses(attributes));
 		}
 		
 		return classes.filter(Boolean).join(' ');
@@ -142,7 +156,7 @@ const Save = ({ attributes }) => {
 			})}
 		>
 			{enableCardBody ? (
-				<div className="card-body">
+				<div className={getCardBodyClasses()}>
 					<InnerBlocks.Content />
 				</div>
 			) : (

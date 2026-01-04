@@ -88,6 +88,7 @@ export const ContactsSidebar = ({ attributes, setAttributes }) => {
 				options={[
 					{ label: __('Simple', 'codeweber-gutenberg-blocks'), value: 'simple' },
 					{ label: __('With Icon', 'codeweber-gutenberg-blocks'), value: 'icon' },
+					{ label: __('With Icon Simple', 'codeweber-gutenberg-blocks'), value: 'icon-simple' },
 				]}
 				onChange={(value) => setAttributes({ format: value })}
 			/>

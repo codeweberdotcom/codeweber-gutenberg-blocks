@@ -102,7 +102,7 @@ const ContactsPreview = ({ items, contactsData, format = 'simple', attributes = 
 	const titleClasses = getTitleClasses();
 	const textClasses = getTextClasses();
 
-	// Функция для рендеринга иконки контакта
+	// Функция для рендеринга иконки контакта (для формата 'icon' - без обёртки, только me-6)
 	const renderContactIcon = (iconNameForContact) => {
 		// Если пользователь выбрал иконку - используем её, иначе используем предустановленную для типа контакта
 		let iconNameToUse = iconName || iconNameForContact;
@@ -123,6 +123,7 @@ const ContactsPreview = ({ items, contactsData, format = 'simple', attributes = 
 		// Для custom иконок: если пользователь не выбрал, не показываем
 		if (iconType === 'custom' && !customSvgUrlToUse) return null;
 		
+		// Для формата 'icon' не используем обёртку и не добавляем mt-n1, только me-6
 		return (
 			<IconRender
 				iconType={iconType}
@@ -134,16 +135,94 @@ const ContactsPreview = ({ items, contactsData, format = 'simple', attributes = 
 				iconColor={iconColor}
 				iconColor2={iconColor2}
 				iconClass={iconClass}
-				iconWrapper={iconWrapper}
-				iconWrapperStyle={iconWrapperStyle}
-				iconBtnSize={iconBtnSize}
-				iconBtnVariant={iconBtnVariant}
-				iconWrapperClass={iconWrapperClass ? `${iconWrapperClass} me-6 mt-n1` : 'me-6 mt-n1'}
+				iconWrapper={false}
+				iconWrapperStyle=""
+				iconBtnSize=""
+				iconBtnVariant="soft"
+				iconWrapperClass={iconWrapperClass ? `${iconWrapperClass} me-6` : 'me-6'}
 				iconGradientColor={iconGradientColor}
 				customSvgUrl={customSvgUrlToUse}
 				isEditor={true}
 			/>
 		);
+	};
+
+	// Функция для рендеринга простой иконки (без обёртки, только иконка с классом me-2)
+	const renderSimpleIcon = (iconNameForContact) => {
+		// Если пользователь выбрал иконку - используем её, иначе используем предустановленную для типа контакта
+		let iconNameToUse = iconName || iconNameForContact;
+		let svgIconToUse = svgIcon;
+		let customSvgUrlToUse = customSvgUrl;
+		
+		// Если тип иконки none или нет данных - не показываем
+		if (iconType === 'none') return null;
+		
+		// Для font иконок: если пользователь не выбрал, используем предустановленную
+		if (iconType === 'font') {
+			if (!iconNameToUse) return null;
+			// Простая font иконка без обёртки
+			const iconClasses = ['uil', `uil-${iconNameToUse}`, 'me-2'];
+			if (iconColor) {
+				iconClasses.push(`text-${iconColor}`);
+			}
+			if (iconClass) {
+				iconClasses.push(iconClass);
+			}
+			return <i className={iconClasses.filter(Boolean).join(' ')}></i>;
+		}
+		
+		// Для SVG иконок
+		if (iconType === 'svg' && svgIconToUse) {
+			// Для SVG используем IconRender, но без обёртки
+			return (
+				<IconRender
+					iconType={iconType}
+					iconName=""
+					svgIcon={svgIconToUse}
+					svgStyle={svgStyle}
+					iconSize={iconSize}
+					iconFontSize=""
+					iconColor={iconColor}
+					iconColor2={iconColor2}
+					iconClass={`${iconClass} me-2`}
+					iconWrapper={false}
+					iconWrapperStyle=""
+					iconBtnSize=""
+					iconBtnVariant="soft"
+					iconWrapperClass=""
+					iconGradientColor={iconGradientColor}
+					customSvgUrl=""
+					isEditor={true}
+				/>
+			);
+		}
+		
+		// Для custom иконок
+		if (iconType === 'custom' && customSvgUrlToUse) {
+			return (
+				<IconRender
+					iconType={iconType}
+					iconName=""
+					svgIcon=""
+					svgStyle="lineal"
+					iconSize={iconSize}
+					iconFontSize=""
+					iconColor={iconColor}
+					iconColor2=""
+					iconClass={`${iconClass} me-2`}
+					iconWrapper={false}
+					iconWrapperStyle=""
+					iconBtnSize=""
+					iconBtnVariant="soft"
+					iconWrapperClass=""
+					iconGradientColor={iconGradientColor}
+					customSvgUrl={customSvgUrlToUse}
+					isEditor={true}
+				/>
+			);
+		}
+		
+		return null;
 	};
 
 	return (
@@ -166,11 +245,20 @@ const ContactsPreview = ({ items, contactsData, format = 'simple', attributes = 
 												{React.createElement(textTag || 'address', { className: textClasses }, __('Address will be displayed here', 'codeweber-gutenberg-blocks'))}
 											</div>
 										</div>
-								) : (
-									<div>
-										{React.createElement(textTag || 'address', { className: `pe-xl-15 pe-xxl-17 ${textClasses}` }, __('Address will be displayed here', 'codeweber-gutenberg-blocks'))}
-									</div>
-								)}
+									) : format === 'icon-simple' ? (
+										<div>
+											{React.createElement(textTag || 'address', { className: textClasses }, 
+												<>
+													{renderSimpleIcon('location-pin-alt')}
+													<span>{__('Address will be displayed here', 'codeweber-gutenberg-blocks')}</span>
+												</>
+											)}
+										</div>
+									) : (
+										<div>
+											{React.createElement(textTag || 'address', { className: `pe-xl-15 pe-xxl-17 ${textClasses}` }, __('Address will be displayed here', 'codeweber-gutenberg-blocks'))}
+										</div>
+									)}
 								</div>
 							);
 						}
@@ -187,9 +275,18 @@ const ContactsPreview = ({ items, contactsData, format = 'simple', attributes = 
 											{React.createElement(textTag || 'address', { className: textClasses }, address)}
 										</div>
 									</div>
+								) : format === 'icon-simple' ? (
+									<div>
+										{React.createElement(textTag || 'address', { className: textClasses }, 
+											<>
+												{renderSimpleIcon('location-pin-alt')}
+												<span>{address}</span>
+											</>
+										)}
+									</div>
 								) : (
 									<div>
-										<address className="pe-xl-15 pe-xxl-17">{address}</address>
+										<address className={`pe-xl-15 pe-xxl-17 ${textClasses}`}>{address}</address>
 									</div>
 								)}
 							</div>
@@ -215,6 +312,13 @@ const ContactsPreview = ({ items, contactsData, format = 'simple', attributes = 
 												</p>
 											</div>
 										</div>
+								) : format === 'icon-simple' ? (
+									<div>
+										<a href="mailto:#" className={`d-flex align-items-center ${textClasses}`}>
+											{renderSimpleIcon('envelope')}
+											<span>{__('Email will be displayed here', 'codeweber-gutenberg-blocks')}</span>
+										</a>
+									</div>
 									) : (
 										<div>
 											<a href="mailto:#" className={textClasses}>
@@ -241,6 +345,13 @@ const ContactsPreview = ({ items, contactsData, format = 'simple', attributes = 
 												</a>
 											</p>
 										</div>
+									</div>
+								) : format === 'icon-simple' ? (
+									<div>
+										<a href={`mailto:${email}`} className={`d-flex align-items-center ${textClasses}`}>
+											{renderSimpleIcon('envelope')}
+											<span>{email}</span>
+										</a>
 									</div>
 								) : (
 									<div>
@@ -272,6 +383,13 @@ const ContactsPreview = ({ items, contactsData, format = 'simple', attributes = 
 												</a>
 											</div>
 										</div>
+									) : format === 'icon-simple' ? (
+										<div>
+											<a href="tel:#" className={`d-flex align-items-center ${textClasses}`}>
+												{renderSimpleIcon('phone-volume')}
+												<span>{__('Phone will be displayed here', 'codeweber-gutenberg-blocks')}</span>
+											</a>
+										</div>
 									) : (
 										<div>
 											<a href="tel:#" className={textClasses}>
@@ -301,6 +419,18 @@ const ContactsPreview = ({ items, contactsData, format = 'simple', attributes = 
 												</span>
 											))}
 										</div>
+									</div>
+								) : format === 'icon-simple' ? (
+									<div>
+										{phoneData.map((phone, phoneIndex) => (
+											<span key={phoneIndex}>
+												<a href={`tel:${phone.clean}`} className={`d-flex align-items-center ${textClasses}`}>
+													{renderSimpleIcon('phone-volume')}
+													<span>{phone.display}</span>
+												</a>
+												{phoneIndex < phoneData.length - 1 && <br />}
+											</span>
+										))}
 									</div>
 								) : (
 									<div>

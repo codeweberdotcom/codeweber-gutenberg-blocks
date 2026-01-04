@@ -19,27 +19,152 @@
 		"anchor": true
 	},
 	"attributes": {
+		"format": {
+			"type": "string",
+			"default": "simple"
+		},
 		"items": {
 			"type": "array",
 			"default": [
 				{
 					"type": "address",
 					"enabled": true,
-					"format": "simple",
 					"addressType": "legal"
 				},
 				{
 					"type": "email",
-					"enabled": true,
-					"format": "simple"
+					"enabled": true
 				},
 				{
 					"type": "phone",
 					"enabled": true,
-					"format": "simple",
 					"phones": ["phone_01"]
 				}
 			]
+		},
+		"titleTag": {
+			"type": "string",
+			"default": "h5"
+		},
+		"titleColor": {
+			"type": "string",
+			"default": ""
+		},
+		"titleColorType": {
+			"type": "string",
+			"default": "solid"
+		},
+		"titleSize": {
+			"type": "string",
+			"default": ""
+		},
+		"titleWeight": {
+			"type": "string",
+			"default": ""
+		},
+		"titleTransform": {
+			"type": "string",
+			"default": ""
+		},
+		"titleClass": {
+			"type": "string",
+			"default": ""
+		},
+		"textTag": {
+			"type": "string",
+			"default": "address"
+		},
+		"textColor": {
+			"type": "string",
+			"default": ""
+		},
+		"textColorType": {
+			"type": "string",
+			"default": "solid"
+		},
+		"textSize": {
+			"type": "string",
+			"default": ""
+		},
+		"textWeight": {
+			"type": "string",
+			"default": ""
+		},
+		"textTransform": {
+			"type": "string",
+			"default": ""
+		},
+		"textClass": {
+			"type": "string",
+			"default": ""
+		},
+		"iconType": {
+			"type": "string",
+			"default": "font"
+		},
+		"iconName": {
+			"type": "string",
+			"default": ""
+		},
+		"svgIcon": {
+			"type": "string",
+			"default": ""
+		},
+		"svgStyle": {
+			"type": "string",
+			"default": "lineal"
+		},
+		"iconSize": {
+			"type": "string",
+			"default": "xs"
+		},
+		"iconFontSize": {
+			"type": "string",
+			"default": "fs-28"
+		},
+		"iconColor": {
+			"type": "string",
+			"default": "primary"
+		},
+		"iconColor2": {
+			"type": "string",
+			"default": ""
+		},
+		"iconClass": {
+			"type": "string",
+			"default": ""
+		},
+		"iconWrapper": {
+			"type": "boolean",
+			"default": false
+		},
+		"iconWrapperStyle": {
+			"type": "string",
+			"default": ""
+		},
+		"iconBtnSize": {
+			"type": "string",
+			"default": ""
+		},
+		"iconBtnVariant": {
+			"type": "string",
+			"default": "soft"
+		},
+		"iconWrapperClass": {
+			"type": "string",
+			"default": ""
+		},
+		"iconGradientColor": {
+			"type": "string",
+			"default": "gradient-1"
+		},
+		"customSvgUrl": {
+			"type": "string",
+			"default": ""
+		},
+		"customSvgId": {
+			"type": "number",
+			"default": null
 		}
 	},
 	"textdomain": "codeweber-gutenberg-blocks",

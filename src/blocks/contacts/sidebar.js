@@ -11,11 +11,28 @@ import {
 	ToggleControl,
 	SelectControl,
 	CheckboxControl,
+	TabPanel,
+	ComboboxControl,
 } from '@wordpress/components';
-import { Icon, trash } from '@wordpress/icons';
+import { Icon, trash, starFilled, typography } from '@wordpress/icons';
+import { HeadingTypographyControl } from '../../components/heading/HeadingTypographyControl';
+import { IconControl } from '../../components/icon/IconControl';
+
+// Tab icon with native title tooltip
+const TabIcon = ({ icon, label }) => (
+	<span 
+		title={label}
+		style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+	>
+		<Icon icon={icon} size={20} />
+	</span>
+);
 
 export const ContactsSidebar = ({ attributes, setAttributes }) => {
-	const { items = [] } = attributes;
+	const { 
+		items = [], 
+		format = 'simple',
+	} = attributes;
 
 	const updateItem = (index, updates) => {
 		const newItems = [...items];
@@ -34,7 +51,6 @@ export const ContactsSidebar = ({ attributes, setAttributes }) => {
 		const newItem = {
 			type,
 			enabled: true,
-			format: 'simple',
 			...(type === 'address' ? { addressType: 'legal' } : {}),
 			...(type === 'phone' ? { phones: ['phone_01'] } : {}),
 		};
@@ -54,8 +70,28 @@ export const ContactsSidebar = ({ attributes, setAttributes }) => {
 		{ label: __('Phone 05', 'codeweber-gutenberg-blocks'), value: 'phone_05' },
 	];
 
+	const tabs = [
+		{ name: 'items', title: <TabIcon icon={trash} label={__('Contact Items', 'codeweber-gutenberg-blocks')} /> },
+		{ name: 'text', title: <TabIcon icon={typography} label={__('Text', 'codeweber-gutenberg-blocks')} /> },
+		{ name: 'icon', title: <TabIcon icon={starFilled} label={__('Icon', 'codeweber-gutenberg-blocks')} /> },
+	];
+
 	return (
-		<PanelBody title={__('Contact Items', 'codeweber-gutenberg-blocks')} initialOpen={true}>
+		<TabPanel tabs={tabs}>
+			{(tab) => (
+				<>
+					{tab.name === 'items' && (
+						<PanelBody title={__('Contact Items', 'codeweber-gutenberg-blocks')} initialOpen={true}>
+			<SelectControl
+				label={__('Format', 'codeweber-gutenberg-blocks')}
+				value={format}
+				options={[
+					{ label: __('Simple', 'codeweber-gutenberg-blocks'), value: 'simple' },
+					{ label: __('With Icon', 'codeweber-gutenberg-blocks'), value: 'icon' },
+				]}
+				onChange={(value) => setAttributes({ format: value })}
+			/>
+
 			{items.length === 0 && (
 				<p style={{ marginBottom: '16px', color: '#757575' }}>
 					{__('No contact items. Add items below.', 'codeweber-gutenberg-blocks')}
@@ -113,16 +149,6 @@ export const ContactsSidebar = ({ attributes, setAttributes }) => {
 						label={__('Enable', 'codeweber-gutenberg-blocks')}
 						checked={item.enabled}
 						onChange={(value) => updateItem(index, { enabled: value })}
-					/>
-
-					<SelectControl
-						label={__('Format', 'codeweber-gutenberg-blocks')}
-						value={item.format}
-						options={[
-							{ label: __('Simple', 'codeweber-gutenberg-blocks'), value: 'simple' },
-							{ label: __('With Icon', 'codeweber-gutenberg-blocks'), value: 'icon' },
-						]}
-						onChange={(value) => updateItem(index, { format: value })}
 					/>
 
 					{item.type === 'address' && (
@@ -202,6 +228,27 @@ export const ContactsSidebar = ({ attributes, setAttributes }) => {
 				</div>
 			</div>
 		</PanelBody>
+					)}
+
+					{tab.name === 'text' && (
+						<HeadingTypographyControl
+							attributes={attributes}
+							setAttributes={setAttributes}
+							hideSubtitle={true}
+							hideText={false}
+						/>
+					)}
+
+					{tab.name === 'icon' && (
+						<IconControl
+							attributes={attributes}
+							setAttributes={setAttributes}
+							prefix=""
+						/>
+					)}
+				</>
+			)}
+		</TabPanel>
 	);
 };
 

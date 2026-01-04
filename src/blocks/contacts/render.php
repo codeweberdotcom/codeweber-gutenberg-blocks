@@ -29,10 +29,342 @@ if (!isset($attributes)) {
 }
 
 $items = isset($attributes['items']) ? $attributes['items'] : [];
+$format = isset($attributes['format']) ? $attributes['format'] : 'simple';
+$titleTag = isset($attributes['titleTag']) ? $attributes['titleTag'] : 'h5';
+$titleColor = isset($attributes['titleColor']) ? $attributes['titleColor'] : '';
+$titleColorType = isset($attributes['titleColorType']) ? $attributes['titleColorType'] : 'solid';
+$titleSize = isset($attributes['titleSize']) ? $attributes['titleSize'] : '';
+$titleWeight = isset($attributes['titleWeight']) ? $attributes['titleWeight'] : '';
+$titleTransform = isset($attributes['titleTransform']) ? $attributes['titleTransform'] : '';
+$titleClass = isset($attributes['titleClass']) ? $attributes['titleClass'] : '';
+$textTag = isset($attributes['textTag']) ? $attributes['textTag'] : 'address';
+$textColor = isset($attributes['textColor']) ? $attributes['textColor'] : '';
+$textColorType = isset($attributes['textColorType']) ? $attributes['textColorType'] : 'solid';
+$textSize = isset($attributes['textSize']) ? $attributes['textSize'] : '';
+$textWeight = isset($attributes['textWeight']) ? $attributes['textWeight'] : '';
+$textTransform = isset($attributes['textTransform']) ? $attributes['textTransform'] : '';
+$textClass = isset($attributes['textClass']) ? $attributes['textClass'] : '';
+$iconType = isset($attributes['iconType']) ? $attributes['iconType'] : 'font';
+$iconName = isset($attributes['iconName']) ? $attributes['iconName'] : '';
+$svgIcon = isset($attributes['svgIcon']) ? $attributes['svgIcon'] : '';
+$svgStyle = isset($attributes['svgStyle']) ? $attributes['svgStyle'] : 'lineal';
+$iconSize = isset($attributes['iconSize']) ? $attributes['iconSize'] : 'xs';
+$iconFontSize = isset($attributes['iconFontSize']) ? $attributes['iconFontSize'] : 'fs-28';
+$iconColor = isset($attributes['iconColor']) ? $attributes['iconColor'] : 'primary';
+$iconColor2 = isset($attributes['iconColor2']) ? $attributes['iconColor2'] : '';
+$iconClass = isset($attributes['iconClass']) ? $attributes['iconClass'] : '';
+$iconWrapper = isset($attributes['iconWrapper']) ? $attributes['iconWrapper'] : false;
+$iconWrapperStyle = isset($attributes['iconWrapperStyle']) ? $attributes['iconWrapperStyle'] : '';
+$iconBtnSize = isset($attributes['iconBtnSize']) ? $attributes['iconBtnSize'] : '';
+$iconBtnVariant = isset($attributes['iconBtnVariant']) ? $attributes['iconBtnVariant'] : 'soft';
+$iconWrapperClass = isset($attributes['iconWrapperClass']) ? $attributes['iconWrapperClass'] : '';
+$iconGradientColor = isset($attributes['iconGradientColor']) ? $attributes['iconGradientColor'] : 'gradient-1';
+$customSvgUrl = isset($attributes['customSvgUrl']) ? $attributes['customSvgUrl'] : '';
 
 if (empty($items)) {
     return;
 }
+
+// Функция для генерации классов цвета
+if (!function_exists('get_contacts_color_class')) {
+    function get_contacts_color_class($color, $colorType, $prefix = 'text') {
+        if (!$color) return '';
+        if ($colorType === 'soft') {
+            return $prefix . '-soft-' . $color;
+        } else if ($colorType === 'pale') {
+            return $prefix . '-pale-' . $color;
+        } else {
+            return $prefix . '-' . $color;
+        }
+    }
+}
+
+// Функция для генерации типографических классов
+if (!function_exists('get_contacts_typography_classes')) {
+    function get_contacts_typography_classes($attrs, $prefix) {
+        $classes = [];
+        $size = isset($attrs[$prefix . 'Size']) ? $attrs[$prefix . 'Size'] : '';
+        $weight = isset($attrs[$prefix . 'Weight']) ? $attrs[$prefix . 'Weight'] : '';
+        $transform = isset($attrs[$prefix . 'Transform']) ? $attrs[$prefix . 'Transform'] : '';
+        $tag = isset($attrs[$prefix . 'Tag']) ? $attrs[$prefix . 'Tag'] : '';
+        
+        if ($tag && strpos($tag, 'display-') === 0) {
+            $classes[] = $tag;
+        }
+        if ($size) {
+            $classes[] = $size;
+        }
+        if ($weight) {
+            $classes[] = $weight;
+        }
+        if ($transform) {
+            $classes[] = $transform;
+        }
+        return $classes;
+    }
+}
+
+// Функция для генерации классов заголовка
+if (!function_exists('get_contacts_title_classes')) {
+    function get_contacts_title_classes($attrs) {
+        $classes = ['mb-1'];
+        $classes[] = get_contacts_color_class($attrs['titleColor'], $attrs['titleColorType'], 'text');
+        $typographyClasses = get_contacts_typography_classes($attrs, 'title');
+        $classes = array_merge($classes, $typographyClasses);
+        if (!empty($attrs['titleClass'])) {
+            $classes[] = $attrs['titleClass'];
+        }
+        return implode(' ', array_filter($classes));
+    }
+}
+
+// Функция для генерации классов текста
+if (!function_exists('get_contacts_text_classes')) {
+    function get_contacts_text_classes($attrs) {
+        $classes = [];
+        $classes[] = get_contacts_color_class($attrs['textColor'], $attrs['textColorType'], 'text');
+        $typographyClasses = get_contacts_typography_classes($attrs, 'text');
+        $classes = array_merge($classes, $typographyClasses);
+        if (!empty($attrs['textClass'])) {
+            $classes[] = $attrs['textClass'];
+        }
+        return implode(' ', array_filter($classes));
+    }
+}
+
+// Функция для генерации классов иконки (Font Icon)
+if (!function_exists('get_contacts_icon_font_classes')) {
+    function get_contacts_icon_font_classes($iconName, $iconFontSize, $iconColor, $iconClass) {
+        $classes = ['uil', 'uil-' . $iconName];
+        if ($iconFontSize) {
+            $classes[] = $iconFontSize;
+        }
+        if ($iconColor) {
+            $classes[] = 'text-' . $iconColor;
+        }
+        if ($iconClass) {
+            $classes[] = $iconClass;
+        }
+        return implode(' ', array_filter($classes));
+    }
+}
+
+// Функция для генерации классов обёртки иконки
+if (!function_exists('get_contacts_icon_wrapper_classes')) {
+    function get_contacts_icon_wrapper_classes($iconColor, $iconFontSize, $wrapperStyle, $btnSize, $btnVariant, $wrapperClass, $gradientColor) {
+        $classes = ['icon'];
+        
+        // Стиль обёртки: кнопка
+        if ($wrapperStyle === 'btn' || $wrapperStyle === 'btn-circle') {
+            $classes[] = 'btn';
+            $classes[] = 'btn-block';
+            $classes[] = 'flex-shrink-0';
+            
+            // Круглая кнопка
+            if ($wrapperStyle === 'btn-circle') {
+                $classes[] = 'btn-circle';
+            }
+            
+            // Вариант кнопки
+            if ($btnVariant === 'gradient') {
+                $classes[] = 'btn-gradient';
+                if (strpos($gradientColor, 'gradient-') === 0) {
+                    $classes[] = $gradientColor;
+                } else {
+                    $classes[] = 'gradient-' . $gradientColor;
+                }
+            } else if ($iconColor) {
+                if ($btnVariant === 'soft') {
+                    $classes[] = 'btn-soft-' . $iconColor;
+                } else if ($btnVariant === 'outline') {
+                    $classes[] = 'btn-outline-' . $iconColor;
+                } else {
+                    $classes[] = 'btn-' . $iconColor;
+                }
+            }
+            
+            // Размер кнопки
+            if ($btnSize) {
+                $classes[] = $btnSize;
+            }
+        } else {
+            // Обычная обёртка div.icon
+            if ($iconColor) {
+                $classes[] = 'text-' . $iconColor;
+            }
+        }
+        
+        // Размер fs-* для font иконок с обёрткой
+        if ($iconFontSize) {
+            $classes[] = $iconFontSize;
+        }
+        
+        if ($wrapperClass) {
+            $classes[] = $wrapperClass;
+        }
+        
+        return implode(' ', array_filter($classes));
+    }
+}
+
+// Функция для получения пути SVG иконки (аналогично getSvgIconPath из JS)
+if (!function_exists('get_contacts_svg_icon_path')) {
+    function get_contacts_svg_icon_path($iconName, $style = 'lineal') {
+        // Путь к SVG иконкам в теме (соответствует пути из getSvgIconPath в JS)
+        $folder = ($style === 'lineal') ? 'lineal' : 'solid';
+        return get_template_directory_uri() . '/dist/assets/img/icons/' . $folder . '/' . $iconName . '.svg';
+    }
+}
+
+// Функция для генерации классов SVG иконки
+if (!function_exists('get_contacts_svg_icon_classes')) {
+    function get_contacts_svg_icon_classes($svgStyle, $iconSize, $iconColor, $iconColor2, $iconClass) {
+        $classes = ['svg-inject', 'icon-svg'];
+        
+        // Размер
+        if ($iconSize) {
+            $classes[] = 'icon-svg-' . $iconSize;
+        }
+        
+        // Стиль и цвет
+        switch ($svgStyle) {
+            case 'solid':
+                $classes[] = 'solid';
+                if ($iconColor) {
+                    $classes[] = 'text-' . $iconColor;
+                }
+                break;
+            case 'solid-mono':
+                $classes[] = 'solid-mono';
+                if ($iconColor) {
+                    $classes[] = 'text-' . $iconColor;
+                }
+                break;
+            case 'solid-duo':
+                $classes[] = 'solid-duo';
+                if ($iconColor && $iconColor2) {
+                    $classes[] = 'text-' . $iconColor . '-' . $iconColor2;
+                } else if ($iconColor) {
+                    $classes[] = 'text-' . $iconColor;
+                }
+                break;
+            case 'lineal':
+            default:
+                if ($iconColor) {
+                    $classes[] = 'text-' . $iconColor;
+                }
+                break;
+        }
+        
+        if ($iconClass) {
+            $classes[] = $iconClass;
+        }
+        
+        return implode(' ', array_filter($classes));
+    }
+}
+
+// Функция для рендеринга иконки контакта
+if (!function_exists('render_contacts_icon')) {
+    function render_contacts_icon($iconNameForContact, $iconType, $iconName, $svgIcon, $svgStyle, $iconSize, $iconFontSize, $iconColor, $iconColor2, $iconClass, $iconWrapper, $iconWrapperStyle, $iconBtnSize, $iconBtnVariant, $iconWrapperClass, $iconGradientColor, $customSvgUrl) {
+        // Если тип иконки none - не показываем
+        if ($iconType === 'none') return '';
+        
+        $iconHtml = '';
+        
+        // Font Icon
+        if ($iconType === 'font') {
+            // Если пользователь выбрал иконку - используем её, иначе используем предустановленную для типа контакта
+            $iconNameToUse = $iconName ? $iconName : $iconNameForContact;
+            if (!$iconNameToUse) return '';
+            
+            // Классы для самой иконки
+            $isButtonWrapper = $iconWrapper && ($iconWrapperStyle === 'btn' || $iconWrapperStyle === 'btn-circle');
+            $shouldApplyColorToIcon = !$isButtonWrapper || $iconBtnVariant !== 'solid';
+            
+            $iconClasses = get_contacts_icon_font_classes(
+                $iconNameToUse,
+                $iconWrapper ? '' : $iconFontSize, // Размер на обёртке если wrapper
+                $shouldApplyColorToIcon ? $iconColor : '', // Цвет только если не Solid-кнопка
+                $iconClass
+            );
+            
+            $iconHtml = '<i class="' . esc_attr($iconClasses) . '"></i>';
+        }
+        
+        // SVG Icon
+        if ($iconType === 'svg' && $svgIcon) {
+            $isButtonWrapper = $iconWrapper && ($iconWrapperStyle === 'btn' || $iconWrapperStyle === 'btn-circle');
+            $shouldApplyColorToIcon = !$isButtonWrapper || $iconBtnVariant !== 'solid';
+            
+            $svgClasses = get_contacts_svg_icon_classes(
+                $svgStyle,
+                $iconSize,
+                $shouldApplyColorToIcon ? $iconColor : '',
+                $shouldApplyColorToIcon ? $iconColor2 : '',
+                $iconClass
+            );
+            
+            $svgPath = get_contacts_svg_icon_path($svgIcon, $svgStyle);
+            $iconHtml = '<img src="' . esc_url($svgPath) . '" class="' . esc_attr($svgClasses) . '" alt="" />';
+        }
+        
+        // Custom SVG
+        if ($iconType === 'custom' && $customSvgUrl) {
+            $isButtonWrapper = $iconWrapper && ($iconWrapperStyle === 'btn' || $iconWrapperStyle === 'btn-circle');
+            $shouldApplyColorToIcon = !$isButtonWrapper || $iconBtnVariant !== 'solid';
+            
+            $svgClasses = get_contacts_svg_icon_classes(
+                'lineal', // Кастомные как lineal
+                $iconSize,
+                $shouldApplyColorToIcon ? $iconColor : '',
+                '',
+                $iconClass
+            );
+            
+            $iconHtml = '<img src="' . esc_url($customSvgUrl) . '" class="' . esc_attr($svgClasses) . '" alt="" />';
+        }
+        
+        if (!$iconHtml) return '';
+        
+        // Обёртка
+        if ($iconWrapper) {
+            $wrapperClasses = get_contacts_icon_wrapper_classes(
+                $iconColor,
+                $iconFontSize,
+                $iconWrapperStyle,
+                $iconBtnSize,
+                $iconBtnVariant,
+                $iconWrapperClass . ' me-6 mt-n1',
+                $iconGradientColor
+            );
+            return '<div class="' . esc_attr($wrapperClasses) . '">' . $iconHtml . '</div>';
+        }
+        
+        return '<div class="' . esc_attr($iconWrapperClass . ' me-6 mt-n1') . '">' . $iconHtml . '</div>';
+    }
+}
+
+$titleAttrs = [
+    'titleColor' => $titleColor,
+    'titleColorType' => $titleColorType,
+    'titleSize' => $titleSize,
+    'titleWeight' => $titleWeight,
+    'titleTransform' => $titleTransform,
+    'titleClass' => $titleClass,
+    'titleTag' => $titleTag,
+];
+$textAttrs = [
+    'textColor' => $textColor,
+    'textColorType' => $textColorType,
+    'textSize' => $textSize,
+    'textWeight' => $textWeight,
+    'textTransform' => $textTransform,
+    'textClass' => $textClass,
+    'textTag' => $textTag,
+];
+$titleClasses = get_contacts_title_classes($titleAttrs);
+$textClasses = get_contacts_text_classes($textAttrs);
 
 // Проверяем наличие Redux Framework
 if (!class_exists('Redux')) {
@@ -123,7 +455,6 @@ ob_start();
     <?php foreach ($enabled_items as $item): ?>
         <?php
         $type = isset($item['type']) ? $item['type'] : '';
-        $format = isset($item['format']) ? $item['format'] : 'simple';
         ?>
 
         <?php if ($type === 'address'): ?>
@@ -135,18 +466,16 @@ ob_start();
             <?php if ($format === 'icon'): ?>
                 <div class="d-flex flex-row">
                     <div>
-                        <div class="icon text-primary fs-28 me-6 mt-n1">
-                            <i class="uil uil-location-pin-alt"></i>
-                        </div>
+                        <?php echo render_contacts_icon('location-pin-alt', $iconType, $iconName, $svgIcon, $svgStyle, $iconSize, $iconFontSize, $iconColor, $iconColor2, $iconClass, $iconWrapper, $iconWrapperStyle, $iconBtnSize, $iconBtnVariant, $iconWrapperClass, $iconGradientColor, $customSvgUrl); ?>
                     </div>
                     <div>
-                        <h5 class="mb-1"><?php echo esc_html__('Address', 'codeweber-gutenberg-blocks'); ?></h5>
-                        <address><?php echo esc_html($address); ?></address>
+                        <<?php echo esc_attr($titleTag); ?> class="<?php echo esc_attr($titleClasses); ?>"><?php echo esc_html__('Address', 'codeweber-gutenberg-blocks'); ?></<?php echo esc_attr($titleTag); ?>>
+                        <<?php echo esc_attr($textTag); ?> class="<?php echo esc_attr($textClasses); ?>"><?php echo esc_html($address); ?></<?php echo esc_attr($textTag); ?>>
                     </div>
                 </div>
             <?php else: ?>
                 <div>
-                    <address class="pe-xl-15 pe-xxl-17"><?php echo esc_html($address); ?></address>
+                    <<?php echo esc_attr($textTag); ?> class="pe-xl-15 pe-xxl-17 <?php echo esc_attr($textClasses); ?>"><?php echo esc_html($address); ?></<?php echo esc_attr($textTag); ?>>
                 </div>
             <?php endif; ?>
 
@@ -158,14 +487,12 @@ ob_start();
             <?php if ($format === 'icon'): ?>
                 <div class="d-flex flex-row">
                     <div>
-                        <div class="icon text-primary fs-28 me-6 mt-n1">
-                            <i class="uil uil-envelope"></i>
-                        </div>
+                        <?php echo render_contacts_icon('envelope', $iconType, $iconName, $svgIcon, $svgStyle, $iconSize, $iconFontSize, $iconColor, $iconColor2, $iconClass, $iconWrapper, $iconWrapperStyle, $iconBtnSize, $iconBtnVariant, $iconWrapperClass, $iconGradientColor, $customSvgUrl); ?>
                     </div>
                     <div>
-                        <h5 class="mb-1"><?php echo esc_html__('E-mail', 'codeweber-gutenberg-blocks'); ?></h5>
+                        <<?php echo esc_attr($titleTag); ?> class="<?php echo esc_attr($titleClasses); ?>"><?php echo esc_html__('E-mail', 'codeweber-gutenberg-blocks'); ?></<?php echo esc_attr($titleTag); ?>>
                         <p class="mb-0">
-                            <a href="mailto:<?php echo esc_attr(antispambot($email)); ?>" class="link-body">
+                            <a href="mailto:<?php echo esc_attr(antispambot($email)); ?>" class="link-body <?php echo esc_attr($textClasses); ?>">
                                 <?php echo esc_html(antispambot($email)); ?>
                             </a>
                         </p>
@@ -173,7 +500,7 @@ ob_start();
                 </div>
             <?php else: ?>
                 <div>
-                    <a href="mailto:<?php echo esc_attr(antispambot($email)); ?>">
+                    <a href="mailto:<?php echo esc_attr(antispambot($email)); ?>" class="<?php echo esc_attr($textClasses); ?>">
                         <?php echo esc_html(antispambot($email)); ?>
                     </a>
                 </div>
@@ -198,14 +525,12 @@ ob_start();
             <?php if ($format === 'icon'): ?>
                 <div class="d-flex flex-row">
                     <div>
-                        <div class="icon text-primary fs-28 me-6 mt-n1">
-                            <i class="uil uil-phone-volume"></i>
-                        </div>
+                        <?php echo render_contacts_icon('phone-volume', $iconType, $iconName, $svgIcon, $svgStyle, $iconSize, $iconFontSize, $iconColor, $iconColor2, $iconClass, $iconWrapper, $iconWrapperStyle, $iconBtnSize, $iconBtnVariant, $iconWrapperClass, $iconGradientColor, $customSvgUrl); ?>
                     </div>
                     <div>
-                        <h5 class="mb-1"><?php echo esc_html__('Phone', 'codeweber-gutenberg-blocks'); ?></h5>
+                        <<?php echo esc_attr($titleTag); ?> class="<?php echo esc_attr($titleClasses); ?>"><?php echo esc_html__('Phone', 'codeweber-gutenberg-blocks'); ?></<?php echo esc_attr($titleTag); ?>>
                         <?php foreach ($phone_values as $index => $phone_data): ?>
-                            <a href="tel:<?php echo esc_attr($phone_data['clean']); ?>">
+                            <a href="tel:<?php echo esc_attr($phone_data['clean']); ?>" class="<?php echo esc_attr($textClasses); ?>">
                                 <?php echo esc_html($phone_data['display']); ?>
                             </a>
                             <?php if ($index < count($phone_values) - 1): ?>
@@ -217,7 +542,7 @@ ob_start();
             <?php else: ?>
                 <div>
                     <?php foreach ($phone_values as $index => $phone_data): ?>
-                        <a href="tel:<?php echo esc_attr($phone_data['clean']); ?>">
+                        <a href="tel:<?php echo esc_attr($phone_data['clean']); ?>" class="<?php echo esc_attr($textClasses); ?>">
                             <?php echo esc_html($phone_data['display']); ?>
                         </a>
                         <?php if ($index < count($phone_values) - 1): ?>

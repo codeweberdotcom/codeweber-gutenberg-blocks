@@ -71,6 +71,7 @@ export const IconControl = ({
 	allowCustom = true,
 	showWrapper = true,
 	initialOpen = false,
+	hideIconPicker = false,
 }) => {
 	const [isPickerOpen, setIsPickerOpen] = useState(false);
 
@@ -142,16 +143,18 @@ export const IconControl = ({
 	return (
 		<div style={{ padding: '16px' }}>
 			{/* Тип иконки */}
-			<SelectControl
-				label={__('Icon Type', 'codeweber-gutenberg-blocks')}
-				value={iconType}
-				options={availableTypes}
-				onChange={(value) => setAttr(setAttributes, prefix, 'iconType', value)}
-				__nextHasNoMarginBottom
-			/>
+			{!hideIconPicker && (
+				<SelectControl
+					label={__('Icon Type', 'codeweber-gutenberg-blocks')}
+					value={iconType}
+					options={availableTypes}
+					onChange={(value) => setAttr(setAttributes, prefix, 'iconType', value)}
+					__nextHasNoMarginBottom
+				/>
+			)}
 
 			{/* Выбор Font или SVG иконки */}
-			{(iconType === 'font' || iconType === 'svg') && (
+			{!hideIconPicker && (iconType === 'font' || iconType === 'svg') && (
 				<>
 					<BaseControl
 						label={__('Selected Icon', 'codeweber-gutenberg-blocks')}
@@ -197,7 +200,7 @@ export const IconControl = ({
 			)}
 
 			{/* Кастомный SVG */}
-			{iconType === 'custom' && (
+			{!hideIconPicker && iconType === 'custom' && (
 				<BaseControl label={__('Custom SVG', 'codeweber-gutenberg-blocks')}>
 					<div className="icon-control-custom-svg">
 						{customSvgUrl ? (
@@ -230,7 +233,7 @@ export const IconControl = ({
 			)}
 
 			{/* Настройки SVG иконки */}
-			{iconType === 'svg' && svgIcon && (
+			{!hideIconPicker && iconType === 'svg' && svgIcon && (
 				<>
 					<SelectControl
 						label={__('SVG Style', 'codeweber-gutenberg-blocks')}
@@ -262,9 +265,9 @@ export const IconControl = ({
 			)}
 
 			{/* Размер Font иконки */}
-			{iconType === 'font' && iconName && (
+			{iconType === 'font' && (
 				<SelectControl
-					label={__('Size', 'codeweber-gutenberg-blocks')}
+					label={__('Font Size', 'codeweber-gutenberg-blocks')}
 					value={iconFontSize}
 					options={iconFontSizes}
 					onChange={(value) => setAttr(setAttributes, prefix, 'iconFontSize', value)}
@@ -284,7 +287,7 @@ export const IconControl = ({
 			)}
 
 			{/* Цвет */}
-			{iconType !== 'none' && (iconName || svgIcon || customSvgUrl) && (
+			{iconType !== 'none' && (
 				<>
 					{/* Для solid-duo используем предустановленные комбинации */}
 					{iconType === 'svg' && svgStyle === 'solid-duo' ? (
@@ -320,7 +323,7 @@ export const IconControl = ({
 			)}
 
 			{/* Дополнительные классы */}
-			{iconType !== 'none' && (iconName || svgIcon || customSvgUrl) && (
+			{iconType !== 'none' && (
 				<BaseControl
 					label={__('Additional icon class', 'codeweber-gutenberg-blocks')}
 					help={__('For example: me-4, mb-3, etc.', 'codeweber-gutenberg-blocks')}
@@ -336,7 +339,7 @@ export const IconControl = ({
 			)}
 
 			{/* Обёртка div.icon */}
-			{showWrapper && iconType !== 'none' && (iconName || svgIcon || customSvgUrl) && (
+			{showWrapper && iconType !== 'none' && (
 				<>
 					<ToggleControl
 						label={__('Wrap in div.icon', 'codeweber-gutenberg-blocks')}

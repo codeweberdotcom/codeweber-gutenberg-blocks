@@ -7,6 +7,7 @@
 import { __ } from '@wordpress/i18n';
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
 import DividerSidebar from './sidebar';
+import { getTitleClasses } from '../heading-subtitle/utils';
 
 /**
  * Edit Component
@@ -16,20 +17,21 @@ const Edit = ({ attributes, setAttributes }) => {
 		dividerType,
 		borderStyle,
 		borderIcon,
+		textAlign,
+		enableTitle,
+		title,
+		titleTag,
 		waveType,
 		waveColor,
-		marginTop,
-		marginBottom,
 		blockClass,
 		blockId,
 	} = attributes;
 
-	// Классы блока
+	// Классы блока (без отступов для текстового разделителя)
 	const blockClasses = [
 		'cwgb-divider-block',
-		marginTop,
-		marginBottom,
-		blockClass,
+		// Для текстового разделителя отступы не добавляем на обертку
+		...(dividerType === 'border' && borderStyle === 'text' ? [] : [blockClass]),
 	].filter(Boolean).join(' ');
 
 	const blockProps = useBlockProps({
@@ -42,16 +44,42 @@ const Edit = ({ attributes, setAttributes }) => {
 		switch (dividerType) {
 			case 'border':
 				if (borderStyle === 'simple') {
-					return <hr className="my-8" />;
+					return <hr className={blockClass || 'my-8'} />;
 				} else if (borderStyle === 'double') {
-					return <hr className="double my-8" />;
+					return <hr className={`double ${blockClass || 'my-8'}`} />;
 				} else if (borderStyle === 'icon') {
 					return (
-						<div className="divider-icon my-8">
+						<div className={`divider-icon ${blockClass || 'my-8'}`}>
 							{borderIcon ? (
 								<i className={borderIcon}></i>
 							) : (
 								<span>{__('Select icon', 'codeweber-gutenberg-blocks')}</span>
+							)}
+						</div>
+					);
+				} else if (borderStyle === 'text') {
+					const titleClasses = getTitleClasses(attributes);
+					const alignClass = textAlign === 'left' ? 'text-start' : textAlign === 'right' ? 'text-end' : 'text-center';
+					const TagName = titleTag || 'h3';
+					
+					// Классы для текстового разделителя (с отступами, как на фронтенде)
+					const textDividerClasses = [
+						'divider-text',
+						blockClass || 'my-8',
+						alignClass,
+					].filter(Boolean).join(' ');
+					
+					return (
+						<div className={textDividerClasses}>
+							{enableTitle && title ? (
+								<TagName 
+									className={titleClasses}
+									dangerouslySetInnerHTML={{ __html: title }}
+								/>
+							) : (
+								<TagName className={titleClasses}>
+									{__('Enter title...', 'codeweber-gutenberg-blocks')}
+								</TagName>
 							)}
 						</div>
 					);
@@ -69,7 +97,7 @@ const Edit = ({ attributes, setAttributes }) => {
 				);
 
 			default:
-				return <hr className="my-8" />;
+				return <hr className={blockClass || 'my-8'} />;
 		}
 	};
 

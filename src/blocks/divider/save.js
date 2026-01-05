@@ -4,6 +4,8 @@
  * @package CodeWeber Gutenberg Blocks
  */
 
+import { getTitleClasses } from '../heading-subtitle/utils';
+
 /**
  * Save Component
  */
@@ -12,20 +14,20 @@ const Save = ({ attributes }) => {
 		dividerType,
 		borderStyle,
 		borderIcon,
+		textAlign,
+		enableTitle,
+		title,
+		titleTag,
 		waveType,
 		waveColor,
-		marginTop,
-		marginBottom,
 		blockClass,
 		blockId,
 	} = attributes;
 
-	// Классы блока
+	// Классы блока (для всех кроме text)
 	const blockClasses = [
 		'cwgb-divider-block',
-		marginTop,
-		marginBottom,
-		blockClass,
+		blockClass || 'my-8',
 	].filter(Boolean).join(' ');
 
 	const blockProps = {
@@ -38,15 +40,41 @@ const Save = ({ attributes }) => {
 		switch (dividerType) {
 			case 'border':
 				if (borderStyle === 'simple') {
-					return <hr className="my-8" />;
+					return <hr className={blockClass || 'my-8'} />;
 				} else if (borderStyle === 'double') {
-					return <hr className="double my-8" />;
+					return <hr className={`double ${blockClass || 'my-8'}`} />;
 				} else if (borderStyle === 'icon') {
 					return (
-						<div className="divider-icon my-8">
+						<div className={`divider-icon ${blockClass || 'my-8'}`}>
 							{borderIcon && <i className={borderIcon}></i>}
 						</div>
 					);
+				} else if (borderStyle === 'text') {
+					const titleClasses = getTitleClasses(attributes);
+					const alignClass = textAlign === 'left' ? 'text-start' : textAlign === 'right' ? 'text-end' : 'text-center';
+					const TagName = titleTag || 'h3';
+					
+					// Классы для текстового разделителя (без обертки)
+					const textDividerClasses = [
+						'divider-text',
+						blockClass || 'my-8',
+						alignClass,
+					].filter(Boolean).join(' ');
+					
+					if (enableTitle && title) {
+						return (
+							<div 
+								className={textDividerClasses}
+								{...(blockId && { id: blockId })}
+							>
+								<TagName 
+									className={titleClasses}
+									dangerouslySetInnerHTML={{ __html: title }}
+								/>
+							</div>
+						);
+					}
+					return null;
 				}
 				break;
 
@@ -61,10 +89,16 @@ const Save = ({ attributes }) => {
 				);
 
 			default:
-				return <hr className="my-8" />;
+				return <hr className={blockClass || 'my-8'} />;
 		}
 	};
 
+	// Для текстового разделителя возвращаем без обертки
+	if (dividerType === 'border' && borderStyle === 'text') {
+		return renderDivider();
+	}
+
+	// Для остальных типов - с оберткой
 	return (
 		<div {...blockProps}>
 			{renderDivider()}

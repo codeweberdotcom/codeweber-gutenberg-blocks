@@ -15,6 +15,8 @@ import {
 import { useState } from '@wordpress/element';
 import { IconPicker } from '../../components/icon/IconPicker';
 import { colors } from '../../utilities/colors';
+import { HeadingContentControl } from '../../components/heading/HeadingContentControl';
+import { HeadingTypographyControl } from '../../components/heading/HeadingTypographyControl';
 
 /**
  * Sidebar Component
@@ -24,10 +26,9 @@ const DividerSidebar = ({ attributes, setAttributes }) => {
 		dividerType,
 		borderStyle,
 		borderIcon,
+		textAlign,
 		waveType,
 		waveColor,
-		marginTop,
-		marginBottom,
 		blockClass,
 		blockId,
 	} = attributes;
@@ -58,51 +59,86 @@ const DividerSidebar = ({ attributes, setAttributes }) => {
 
 			{/* Настройки Border */}
 			{dividerType === 'border' && (
-				<PanelBody title={__('Border Settings', 'codeweber-gutenberg-blocks')} initialOpen={true}>
-					<SelectControl
-						label={__('Border Style', 'codeweber-gutenberg-blocks')}
-						value={borderStyle}
-						options={[
-							{ label: __('Simple', 'codeweber-gutenberg-blocks'), value: 'simple' },
-							{ label: __('Double', 'codeweber-gutenberg-blocks'), value: 'double' },
-							{ label: __('Icon', 'codeweber-gutenberg-blocks'), value: 'icon' },
-						]}
-						onChange={(value) => setAttributes({ borderStyle: value })}
-					/>
-					{borderStyle === 'icon' && (
-						<div style={{ marginTop: '16px' }}>
-							<div className="component-sidebar-title">
-								<label>{__('Icon', 'codeweber-gutenberg-blocks')}</label>
-							</div>
-							<Button
-								isPrimary
-								onClick={() => setIconPickerOpen(true)}
-								style={{ width: '100%', marginBottom: '12px' }}
-							>
-								{__('Select Icon', 'codeweber-gutenberg-blocks')}
-							</Button>
-							{borderIcon && (
-								<div style={{ marginTop: '8px', padding: '8px', background: '#f0f0f1', borderRadius: '4px', fontSize: '12px' }}>
-									<strong>{__('Current icon:', 'codeweber-gutenberg-blocks')}</strong> {borderIcon}
+				<>
+					<PanelBody title={__('Border Settings', 'codeweber-gutenberg-blocks')} initialOpen={true}>
+						<SelectControl
+							label={__('Border Style', 'codeweber-gutenberg-blocks')}
+							value={borderStyle}
+							options={[
+								{ label: __('Simple', 'codeweber-gutenberg-blocks'), value: 'simple' },
+								{ label: __('Double', 'codeweber-gutenberg-blocks'), value: 'double' },
+								{ label: __('Icon', 'codeweber-gutenberg-blocks'), value: 'icon' },
+								{ label: __('Text', 'codeweber-gutenberg-blocks'), value: 'text' },
+							]}
+							onChange={(value) => setAttributes({ borderStyle: value })}
+						/>
+						{borderStyle === 'icon' && (
+							<div style={{ marginTop: '16px' }}>
+								<div className="component-sidebar-title">
+									<label>{__('Icon', 'codeweber-gutenberg-blocks')}</label>
 								</div>
-							)}
-							<IconPicker
-								isOpen={iconPickerOpen}
-								onClose={() => setIconPickerOpen(false)}
-								onSelect={(result) => {
-									const iconClass = result.iconName ? `uil uil-${result.iconName}` : '';
-									setAttributes({ borderIcon: iconClass });
-								}}
-								selectedIcon={getIconName(borderIcon)}
-								selectedType="font"
-								initialTab="font"
-								allowFont={true}
-								allowSvgLineal={false}
-								allowSvgSolid={false}
+								<Button
+									isPrimary
+									onClick={() => setIconPickerOpen(true)}
+									style={{ width: '100%', marginBottom: '12px' }}
+								>
+									{__('Select Icon', 'codeweber-gutenberg-blocks')}
+								</Button>
+								{borderIcon && (
+									<div style={{ marginTop: '8px', padding: '8px', background: '#f0f0f1', borderRadius: '4px', fontSize: '12px' }}>
+										<strong>{__('Current icon:', 'codeweber-gutenberg-blocks')}</strong> {borderIcon}
+									</div>
+								)}
+								<IconPicker
+									isOpen={iconPickerOpen}
+									onClose={() => setIconPickerOpen(false)}
+									onSelect={(result) => {
+										const iconClass = result.iconName ? `uil uil-${result.iconName}` : '';
+										setAttributes({ borderIcon: iconClass });
+									}}
+									selectedIcon={getIconName(borderIcon)}
+									selectedType="font"
+									initialTab="font"
+									allowFont={true}
+									allowSvgLineal={false}
+									allowSvgSolid={false}
+								/>
+							</div>
+						)}
+						{borderStyle === 'text' && (
+							<SelectControl
+								label={__('Text Alignment', 'codeweber-gutenberg-blocks')}
+								value={textAlign}
+								options={[
+									{ label: __('Left', 'codeweber-gutenberg-blocks'), value: 'left' },
+									{ label: __('Center', 'codeweber-gutenberg-blocks'), value: 'center' },
+									{ label: __('Right', 'codeweber-gutenberg-blocks'), value: 'right' },
+								]}
+								onChange={(value) => setAttributes({ textAlign: value })}
 							/>
-						</div>
+						)}
+					</PanelBody>
+					{borderStyle === 'text' && (
+						<>
+							<PanelBody title={__('Title Content', 'codeweber-gutenberg-blocks')} initialOpen={true}>
+								<HeadingContentControl
+									attributes={attributes}
+									setAttributes={setAttributes}
+									hideSubtitle={true}
+									hideText={true}
+								/>
+							</PanelBody>
+							<PanelBody title={__('Title Typography', 'codeweber-gutenberg-blocks')} initialOpen={false}>
+								<HeadingTypographyControl
+									attributes={attributes}
+									setAttributes={setAttributes}
+									hideSubtitle={true}
+									hideText={true}
+								/>
+							</PanelBody>
+						</>
 					)}
-				</PanelBody>
+				</>
 			)}
 
 			{/* Настройки Wave */}
@@ -134,22 +170,6 @@ const DividerSidebar = ({ attributes, setAttributes }) => {
 					/>
 				</PanelBody>
 			)}
-
-			{/* Общие настройки */}
-			<PanelBody title={__('Spacing', 'codeweber-gutenberg-blocks')} initialOpen={false}>
-				<TextControl
-					label={__('Margin Top', 'codeweber-gutenberg-blocks')}
-					value={marginTop}
-					onChange={(value) => setAttributes({ marginTop: value })}
-					help={__('Enter margin class (e.g., my-8, mt-4)', 'codeweber-gutenberg-blocks')}
-				/>
-				<TextControl
-					label={__('Margin Bottom', 'codeweber-gutenberg-blocks')}
-					value={marginBottom}
-					onChange={(value) => setAttributes({ marginBottom: value })}
-					help={__('Enter margin class (e.g., my-8, mb-4)', 'codeweber-gutenberg-blocks')}
-				/>
-			</PanelBody>
 
 			{/* Дополнительные настройки */}
 			<PanelBody title={__('Advanced', 'codeweber-gutenberg-blocks')} initialOpen={false}>

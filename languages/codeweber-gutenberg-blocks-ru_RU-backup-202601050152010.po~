@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Codeweber Gutenberg Blocks\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-02 20:06+0000\n"
-"PO-Revision-Date: 2026-01-03 00:54+0000\n"
+"PO-Revision-Date: 2026-01-03 11:08+0000\n"
 "Last-Translator: Codeweber\n"
 "Language-Team: Русский\n"
 "Language: ru_RU\n"
@@ -20,7 +20,7 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-0: node_modules\n"
 "X-Poedit-SearchPathExcluded-1: build\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Loco-Version: 2.8.0; wp-6.9; php-8.1.10\n"
+"X-Loco-Version: 2.8.0; wp-6.9; php-8.1.10"
 
 #: src/src/blocks/accordion/edit.js src/src/blocks/accordion/edit.js
 msgid "+ Add Accordion Item"
@@ -1257,11 +1257,11 @@ msgstr "Классы ширины колонок"
 #: src/src/components/responsive-control/helpers.js
 #: src/src/components/responsive-control/helpers.js
 msgid "Columns"
-msgstr "Колонки"
+msgstr "Columns"
 
 #: src/src/blocks/lists/index.js src/src/blocks/lists/index.js
 msgid "columns"
-msgstr "колонки"
+msgstr "columns"
 
 #: src/src/blocks/columns/edit.js src/src/blocks/columns/edit.js
 msgid "Columns align"
@@ -2186,6 +2186,10 @@ msgstr "Тип 3"
 msgid "Feature Settings"
 msgstr "Настройки аватара"
 
+#: src/src/blocks/features/templates.js src/src/blocks/features/templates.js
+msgid "Features"
+msgstr "Преимущества"
+
 #: src/src/blocks/form/edit.js src/src/blocks/form/edit.js
 msgid "Feedback form"
 msgstr "Форма обратной связи"
@@ -2522,14 +2526,6 @@ msgstr "Градиент"
 #: src/src/blocks/features/templates.js src/src/blocks/features/templates.js
 msgid "Gradient Cards Template"
 msgstr "Шаблон градиентных карточек"
-
-#: src/src/blocks/features/templates.js src/src/blocks/features/templates.js
-msgid "Features"
-msgstr "Особенности"
-
-#: src/src/blocks/features/templates.js src/src/blocks/features/templates.js
-msgid "We create conditions in which it is profitable to work"
-msgstr "Мы создаем условия, в которых выгодно работать"
 
 #: src/src/components/icon/IconControl.js
 #: src/src/components/icon/IconControl.js
@@ -5439,7 +5435,7 @@ msgstr "Уникальный идентификатор поля (наприме
 
 #: src/src/blocks/lists/sidebar.js src/src/blocks/lists/sidebar.js
 msgid "Unordered"
-msgstr "Маркированный"
+msgstr "Маркер"
 
 #: settings/options_page/class-options-tabs.php:142
 msgid "Untitled"
@@ -5692,6 +5688,10 @@ msgstr "Тип Волны"
 msgid "Waves"
 msgstr "Волны"
 
+#: src/src/blocks/features/templates.js src/src/blocks/features/templates.js
+msgid "We create conditions in which it is profitable to work"
+msgstr "Мы создаем условия, в которых выгодно работать"
+
 #: src/src/blocks/form-field/edit.js src/src/blocks/form-field/edit.js
 msgid "Website"
 msgstr "Веб-сайт"
@@ -5833,3 +5833,107 @@ msgstr "— Выбрать пользователя —"
 #: src/src/blocks/form-field/edit.js src/src/blocks/form-field/edit.js
 msgid "— Select —"
 msgstr "— Выбрать —"
+
+#: src/src/blocks/contacts/index.js
+msgid "Contacts"
+msgstr "Контакты"
+
+#: src/src/blocks/contacts/index.js
+msgid "Display contact information from Codeweber theme Redux settings."
+msgstr "Отображение контактной информации из настроек темы Codeweber Redux."
+
+#: src/src/blocks/contacts/index.js
+msgid "contacts"
+msgstr "контакты"
+
+#: src/src/blocks/contacts/index.js
+msgid "address"
+msgstr "адрес"
+
+#: src/src/blocks/contacts/index.js
+msgid "email"
+msgstr "email"
+
+#: src/src/blocks/contacts/index.js
+msgid "phone"
+msgstr "телефон"
+
+#: src/src/blocks/contacts/index.js
+msgid "contact"
+msgstr "контакт"
+
+#: src/src/blocks/contacts/edit.js
+msgid "Address will be displayed here"
+msgstr "Здесь будет отображаться адрес"
+
+#: src/src/blocks/contacts/edit.js
+msgid "E-mail"
+msgstr "E-mail"
+
+#: src/src/blocks/contacts/edit.js
+msgid "Email will be displayed here"
+msgstr "Здесь будет отображаться email"
+
+#: src/src/blocks/contacts/edit.js
+msgid "Phone will be displayed here"
+msgstr "Здесь будет отображаться телефон"
+
+#: src/src/blocks/contacts/edit.js
+msgid "Loading contacts data..."
+msgstr "Загрузка данных контактов..."
+
+#: src/src/blocks/contacts/sidebar.js
+msgid "Phone 01"
+msgstr "Телефон 01"
+
+#: src/src/blocks/contacts/sidebar.js
+msgid "Phone 02"
+msgstr "Телефон 02"
+
+#: src/src/blocks/contacts/sidebar.js
+msgid "Phone 03"
+msgstr "Телефон 03"
+
+#: src/src/blocks/contacts/sidebar.js
+msgid "Phone 04"
+msgstr "Телефон 04"
+
+#: src/src/blocks/contacts/sidebar.js
+msgid "Phone 05"
+msgstr "Телефон 05"
+
+#: src/src/blocks/contacts/sidebar.js
+msgid "Contact Items"
+msgstr "Элементы контактов"
+
+#: src/src/blocks/contacts/sidebar.js
+msgid "With Icon"
+msgstr "С иконкой"
+
+#: src/src/blocks/contacts/sidebar.js
+msgid "With Icon Simple"
+msgstr "С иконкой (простой)"
+
+#: src/src/blocks/contacts/sidebar.js
+msgid "No contact items. Add items below."
+msgstr "Нет элементов контактов. Добавьте элементы ниже."
+
+#: src/src/blocks/contacts/sidebar.js
+msgid "Address Type"
+msgstr "Тип адреса"
+
+#: src/src/blocks/contacts/sidebar.js
+msgid "Legal Address"
+msgstr "Юридический адрес"
+
+#: src/src/blocks/contacts/sidebar.js
+msgid "Actual Address"
+msgstr "Фактический адрес"
+
+#: src/src/blocks/contacts/sidebar.js
+msgid "Select Phones"
+msgstr "Выбрать телефоны"
+
+#: src/src/blocks/contacts/sidebar.js
+msgid "Add Item"
+msgstr "Добавить элемент"

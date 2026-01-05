@@ -4,15 +4,10 @@
  * @package CodeWeber Gutenberg Blocks
  */
 
-import { useBlockProps } from '@wordpress/block-editor';
-
-const ContactsSave = ({ attributes }) => {
-	const blockProps = useBlockProps.save({
-		className: 'codeweber-contacts-block',
-	});
-
-	// Блок использует PHP render, поэтому возвращаем пустой div
-	return <div {...blockProps}></div>;
+// Блок использует PHP render (render.php), поэтому возвращаем null
+// WordPress будет использовать render.php для рендеринга на фронтенде
+const ContactsSave = () => {
+	return null;
 };
 
 export default ContactsSave;

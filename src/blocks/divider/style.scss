@@ -45,6 +45,50 @@
 		}
 	}
 
+	// Text divider
+	.divider-text {
+		position: relative;
+		display: flex;
+		align-items: center;
+		
+		&::before,
+		&::after {
+			content: '';
+			flex: 1;
+			height: 1px;
+			background: rgba(0, 0, 0, 0.1);
+		}
+
+		&::before {
+			margin-right: 1rem;
+		}
+
+		&::after {
+			margin-left: 1rem;
+		}
+
+		&.text-start {
+			&::before {
+				display: none;
+			}
+		}
+
+		&.text-end {
+			&::after {
+				display: none;
+			}
+		}
+
+		&.text-center {
+			// Both lines visible
+		}
+
+		> * {
+			margin: 0;
+			white-space: nowrap;
+		}
+	}
+
 	// Wave divider
 	.divider {
 		svg {

@@ -45,7 +45,7 @@ const ContactsPreview = ({ items, contactsData, format = 'simple', attributes = 
 		iconWrapperStyle = '',
 		iconBtnSize = '',
 		iconBtnVariant = 'soft',
-		iconWrapperClass = '',
+		iconWrapperClass = 'mb-3',
 		iconGradientColor = 'gradient-1',
 		customSvgUrl = '',
 	} = attributes;
@@ -100,9 +100,13 @@ const ContactsPreview = ({ items, contactsData, format = 'simple', attributes = 
 	};
 
 	const titleClasses = getTitleClasses();
-	const textClasses = getTextClasses();
+	let textClasses = getTextClasses();
+	// Добавляем mb-0 для address
+	if (textTag === 'address') {
+		textClasses = textClasses ? `${textClasses} mb-0` : 'mb-0';
+	}
 
-	// Функция для рендеринга иконки контакта (для формата 'icon' - без обёртки, только me-6)
+	// Функция для рендеринга иконки контакта (для формата 'icon' - обёртка работает, но без mt-n1)
 	const renderContactIcon = (iconNameForContact) => {
 		// Если пользователь выбрал иконку - используем её, иначе используем предустановленную для типа контакта
 		let iconNameToUse = iconName || iconNameForContact;
@@ -123,28 +127,60 @@ const ContactsPreview = ({ items, contactsData, format = 'simple', attributes = 
 		// Для custom иконок: если пользователь не выбрал, не показываем
 		if (iconType === 'custom' && !customSvgUrlToUse) return null;
 		
-		// Для формата 'icon' не используем обёртку и не добавляем mt-n1, только me-6
-		return (
-			<IconRender
-				iconType={iconType}
-				iconName={iconNameToUse}
-				svgIcon={svgIconToUse}
-				svgStyle={svgStyle}
-				iconSize={iconSize}
-				iconFontSize={iconFontSize}
-				iconColor={iconColor}
-				iconColor2={iconColor2}
-				iconClass={iconClass}
-				iconWrapper={false}
-				iconWrapperStyle=""
-				iconBtnSize=""
-				iconBtnVariant="soft"
-				iconWrapperClass={iconWrapperClass ? `${iconWrapperClass} me-6` : 'me-6'}
-				iconGradientColor={iconGradientColor}
-				customSvgUrl={customSvgUrlToUse}
-				isEditor={true}
-			/>
-		);
+		// Для формата 'icon': 
+		// - если iconWrapper = true: только me-4 (без mt-n1) - классы передаются в IconRender
+		// - если iconWrapper = false: me-4 mt-n1 - нужно обернуть в div, т.к. IconRender не создаёт обёртку
+		if (iconWrapper) {
+			// С обёрткой - классы передаются в IconRender через iconWrapperClass
+			const wrapperClassForIcon = iconWrapperClass ? `${iconWrapperClass} me-4` : 'me-4';
+			return (
+				<IconRender
+					iconType={iconType}
+					iconName={iconNameToUse}
+					svgIcon={svgIconToUse}
+					svgStyle={svgStyle}
+					iconSize={iconSize}
+					iconFontSize={iconFontSize}
+					iconColor={iconColor}
+					iconColor2={iconColor2}
+					iconClass={iconClass}
+					iconWrapper={iconWrapper}
+					iconWrapperStyle={iconWrapperStyle}
+					iconBtnSize={iconBtnSize}
+					iconBtnVariant={iconBtnVariant}
+					iconWrapperClass={wrapperClassForIcon}
+					iconGradientColor={iconGradientColor}
+					customSvgUrl={customSvgUrlToUse}
+					isEditor={true}
+				/>
+			);
+		} else {
+			// Без обёртки - оборачиваем в div с классами me-4 mt-n1
+			const wrapperClassForIcon = iconWrapperClass ? `${iconWrapperClass} me-4 mt-n1` : 'me-4 mt-n1';
+			return (
+				<div className={wrapperClassForIcon}>
+					<IconRender
+						iconType={iconType}
+						iconName={iconNameToUse}
+						svgIcon={svgIconToUse}
+						svgStyle={svgStyle}
+						iconSize={iconSize}
+						iconFontSize={iconFontSize}
+						iconColor={iconColor}
+						iconColor2={iconColor2}
+						iconClass={iconClass}
+						iconWrapper={false}
+						iconWrapperStyle=""
+						iconBtnSize=""
+						iconBtnVariant="soft"
+						iconWrapperClass=""
+						iconGradientColor={iconGradientColor}
+						customSvgUrl={customSvgUrlToUse}
+						isEditor={true}
+					/>
+				</div>
+			);
+		}
 	};
 
 	// Функция для рендеринга простой иконки (без обёртки, только иконка с классом me-2)
@@ -236,7 +272,7 @@ const ContactsPreview = ({ items, contactsData, format = 'simple', attributes = 
 							return (
 								<div>
 									{format === 'icon' ? (
-										<div className="d-flex flex-row">
+										<div className={`d-flex flex-row ${iconWrapperClass || ''}`}>
 											<div>
 												{renderContactIcon('location-pin-alt')}
 											</div>
@@ -266,7 +302,7 @@ const ContactsPreview = ({ items, contactsData, format = 'simple', attributes = 
 						return (
 							<div>
 								{format === 'icon' ? (
-									<div className="d-flex flex-row">
+									<div className={`d-flex flex-row ${iconWrapperClass || ''}`}>
 										<div>
 											{renderContactIcon('location-pin-alt')}
 										</div>
@@ -299,7 +335,7 @@ const ContactsPreview = ({ items, contactsData, format = 'simple', attributes = 
 							return (
 								<div>
 									{format === 'icon' ? (
-										<div className="d-flex flex-row">
+										<div className={`d-flex flex-row ${iconWrapperClass || ''}`}>
 											<div>
 												{renderContactIcon('envelope')}
 											</div>
@@ -333,7 +369,7 @@ const ContactsPreview = ({ items, contactsData, format = 'simple', attributes = 
 						return (
 							<div>
 								{format === 'icon' ? (
-									<div className="d-flex flex-row">
+									<div className={`d-flex flex-row ${iconWrapperClass || ''}`}>
 										<div>
 											{renderContactIcon('envelope')}
 										</div>
@@ -404,7 +440,7 @@ const ContactsPreview = ({ items, contactsData, format = 'simple', attributes = 
 						return (
 							<div>
 								{format === 'icon' ? (
-									<div className="d-flex flex-row">
+									<div className={`d-flex flex-row ${iconWrapperClass || ''}`}>
 										<div>
 											{renderContactIcon('phone-volume')}
 										</div>

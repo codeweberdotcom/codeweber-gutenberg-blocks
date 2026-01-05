@@ -1431,10 +1431,36 @@ class Plugin {
 		// Всегда используем PHP render
 		$render_path = self::getBasePath() . '/build/blocks/contacts/render.php';
 		if (file_exists($render_path)) {
-			// Передаем атрибуты и блок в render.php
-			$attributes = $parsed_block['attrs'] ?? [];
-			$content = $parsed_block['innerHTML'] ?? '';
+			// Создаем экземпляр блока для получения атрибутов
 			$block_instance = new \WP_Block($parsed_block);
+			
+			// Получаем атрибуты из разных источников
+			$attributes = $parsed_block['attrs'] ?? [];
+			
+			// Если атрибуты пустые, пытаемся получить из экземпляра блока
+			if (empty($attributes) && method_exists($block_instance, 'get_attributes')) {
+				$attributes = $block_instance->get_attributes();
+			} elseif (empty($attributes) && property_exists($block_instance, 'attributes')) {
+				$attributes = $block_instance->attributes ?? [];
+			}
+			
+			// Если items пустой или отсутствует, используем значения по умолчанию из block.json
+			if (empty($attributes['items']) || !is_array($attributes['items'])) {
+				if (!is_array($attributes)) {
+					$attributes = [];
+				}
+				$attributes['items'] = [
+					['type' => 'address', 'enabled' => true, 'addressType' => 'legal'],
+					['type' => 'email', 'enabled' => true],
+					['type' => 'phone', 'enabled' => true, 'phones' => ['phone_01']],
+				];
+				// Устанавливаем format по умолчанию, если его нет
+				if (empty($attributes['format'])) {
+					$attributes['format'] = 'simple';
+				}
+			}
+			
+			$content = $parsed_block['innerHTML'] ?? '';
 
 			// Передаем переменные в область видимости render.php
 			extract([
@@ -1448,7 +1474,22 @@ class Plugin {
 			require $render_path;
 			$rendered = ob_get_clean();
 
+			// Отладка: если вывод пустой, добавляем комментарий с информацией
+			if (empty(trim($rendered))) {
+				$items_count = isset($attributes['items']) ? count($attributes['items']) : 0;
+				$enabled_count = 0;
+				if (isset($attributes['items']) && is_array($attributes['items'])) {
+					$enabled_count = count(array_filter($attributes['items'], function($item) {
+						return isset($item['enabled']) && $item['enabled'] === true;
+					}));
+				}
+				$redux_loaded = class_exists('Redux') ? 'yes' : 'no';
+				$rendered = '<!-- Contacts block rendered empty. Total items: ' . $items_count . ', Enabled items: ' . $enabled_count . ', Redux loaded: ' . $redux_loaded . ', Format: ' . (isset($attributes['format']) ? $attributes['format'] : 'not set') . ' -->';
+			}
+
 			return $rendered;
+		} else {
+			return '<!-- Contacts block: render.php file not found at ' . $render_path . ' -->';
 		}
 
 		return $pre_render;

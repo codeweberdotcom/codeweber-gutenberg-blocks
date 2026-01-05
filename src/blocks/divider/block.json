@@ -34,9 +34,17 @@
 			"type": "string",
 			"default": ""
 		},
-		"blockClass": {
+		"marginTop": {
 			"type": "string",
 			"default": "my-8"
+		},
+		"marginBottom": {
+			"type": "string",
+			"default": "my-8"
+		},
+		"blockClass": {
+			"type": "string",
+			"default": ""
 		},
 		"blockId": {
 			"type": "string",

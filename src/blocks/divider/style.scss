@@ -2,52 +2,13 @@
  * Divider Block - Frontend Styles
  *
  * @package CodeWeber Gutenberg Blocks
+ * 
+ * Note: Styles for hr, hr.double, .divider-icon, and .divider-text 
+ * are defined in theme Codeweber (_reboot.scss)
  */
 
 .cwgb-divider-block {
-	// Border styles
-	hr {
-		border: 0;
-		border-top: 1px solid rgba(0, 0, 0, 0.1);
-		margin: 0;
-
-		&.double {
-			border-top: 3px double rgba(0, 0, 0, 0.1);
-		}
-	}
-
-	// Icon divider
-	.divider-icon {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		position: relative;
-
-		&::before,
-		&::after {
-			content: '';
-			flex: 1;
-			height: 1px;
-			background: rgba(0, 0, 0, 0.1);
-		}
-
-		&::before {
-			margin-right: 1rem;
-		}
-
-		&::after {
-			margin-left: 1rem;
-		}
-
-		i {
-			font-size: 1.5rem;
-			color: rgba(0, 0, 0, 0.3);
-		}
-	}
-
-	// Text divider styles are in theme Codeweber (_reboot.scss)
-
-	// Wave divider
+	// Wave divider (specific to block)
 	.divider {
 		svg {
 			display: block;
@@ -55,7 +16,6 @@
 			height: auto;
 		}
 	}
-
 }
 
 

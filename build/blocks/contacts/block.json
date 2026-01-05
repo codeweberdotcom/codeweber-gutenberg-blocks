@@ -117,7 +117,7 @@
     },
     "titleTag": {
       "type": "string",
-      "default": "h5"
+      "default": "div"
     },
     "titleColor": {
       "type": "string",
@@ -129,7 +129,7 @@
     },
     "titleSize": {
       "type": "string",
-      "default": ""
+      "default": "h5"
     },
     "titleWeight": {
       "type": "string",

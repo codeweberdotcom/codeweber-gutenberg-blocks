@@ -26,6 +26,86 @@
 			"type": "string",
 			"default": ""
 		},
+		"textAlign": {
+			"type": "string",
+			"default": "center"
+		},
+		"enableTitle": {
+			"type": "boolean",
+			"default": true
+		},
+		"title": {
+			"type": "string",
+			"default": "Тестовый разделитель"
+		},
+		"titleTag": {
+			"type": "string",
+			"default": "span"
+		},
+		"titleColor": {
+			"type": "string",
+			"default": ""
+		},
+		"titleColorType": {
+			"type": "string",
+			"default": "solid"
+		},
+		"titleSize": {
+			"type": "string",
+			"default": ""
+		},
+		"titleWeight": {
+			"type": "string",
+			"default": ""
+		},
+		"titleTransform": {
+			"type": "string",
+			"default": "text-uppercase"
+		},
+		"titleClass": {
+			"type": "string",
+			"default": "lh-1"
+		},
+		"backgroundType": {
+			"type": "string",
+			"default": "none"
+		},
+		"backgroundColor": {
+			"type": "string",
+			"default": ""
+		},
+		"backgroundColorType": {
+			"type": "string",
+			"default": "solid"
+		},
+		"backgroundGradient": {
+			"type": "string",
+			"default": ""
+		},
+		"backgroundImageId": {
+			"type": "number",
+			"default": 0
+		},
+		"backgroundImageUrl": {
+			"type": "string",
+			"default": ""
+		},
+		"backgroundImageSize": {
+			"type": "string",
+			"default": "full"
+		},
+		"backgroundSize": {
+			"type": "string",
+			"default": ""
+		},
+		"backgroundPatternUrl": {
+			"type": "string",
+			"default": ""
+		},
+		"backgroundOverlay": {
+			"type": "string",
+			"default": ""
+		},
 		"waveType": {
 			"type": "string",
 			"default": "wave-1"

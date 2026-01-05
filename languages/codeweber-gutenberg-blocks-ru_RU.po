@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Codeweber Gutenberg Blocks\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-02 20:06+0000\n"
-"PO-Revision-Date: 2026-01-05 01:51+0000\n"
+"PO-Revision-Date: 2026-01-05 13:02+0000\n"
 "Last-Translator: Codeweber\n"
 "Language-Team: Русский\n"
 "Language: ru_RU\n"
@@ -192,6 +192,10 @@ msgstr "Стиль аккордеона"
 msgid "Active slide will be centered, not at the beginning of the slider."
 msgstr "Активный слайд будет отцентрирован, а не в начале слайдера."
 
+#: src/src/blocks/contacts/sidebar.js
+msgid "Actual Address"
+msgstr "Фактический адрес"
+
 #: src/src/blocks/form-field/edit.js src/src/blocks/form-field/edit.js
 msgid ""
 "Add consent checkboxes to your form. Each consent can have a custom label "
@@ -209,6 +213,10 @@ msgstr "Добавить изображение"
 #: src/src/components/image/ImageControl.js
 msgid "Add Images"
 msgstr "Добавить изображения"
+
+#: src/src/blocks/contacts/sidebar.js
+msgid "Add Item"
+msgstr "Добавить элемент"
 
 #: src/src/blocks/yandex-map/controls/MarkerRepeaterControl.js
 #: src/src/blocks/yandex-map/controls/MarkerRepeaterControl.js
@@ -275,6 +283,18 @@ msgstr "Доп. классы обёртки"
 #: src/src/blocks/yandex-map/controls/MarkerRepeaterControl.js
 msgid "Address"
 msgstr "Адрес"
+
+#: src/src/blocks/contacts/index.js
+msgid "address"
+msgstr "адрес"
+
+#: src/src/blocks/contacts/sidebar.js
+msgid "Address Type"
+msgstr "Тип адреса"
+
+#: src/src/blocks/contacts/edit.js
+msgid "Address will be displayed here"
+msgstr "Здесь будет отображаться адрес"
 
 #: src/src/blocks/icon/sidebar.js src/src/blocks/icon/sidebar.js
 #: src/src/components/icon/IconControl.js
@@ -1350,6 +1370,22 @@ msgstr "Блок согласий"
 msgid "Consents block"
 msgstr "Блок согласий"
 
+#: src/src/blocks/contacts/index.js
+msgid "contact"
+msgstr "контакт"
+
+#: src/src/blocks/contacts/sidebar.js
+msgid "Contact Items"
+msgstr "Элементы контактов"
+
+#: src/src/blocks/contacts/index.js
+msgid "Contacts"
+msgstr "Контакты"
+
+#: src/src/blocks/contacts/index.js
+msgid "contacts"
+msgstr "контакты"
+
 #: src/src/blocks/section/sidebar.js src/src/blocks/section/sidebar.js
 msgid "Container"
 msgstr "Контейнер"
@@ -1620,6 +1656,10 @@ msgstr "По убыванию"
 msgid "Description"
 msgstr "Описание"
 
+#: src/src/blocks/contacts/index.js
+msgid "Display contact information from Codeweber theme Redux settings."
+msgstr "Отображение контактной информации из настроек темы Codeweber Redux."
+
 #: src/src/blocks/image-simple/controls/LayoutControl.js
 #: src/src/blocks/image-simple/controls/LayoutControl.js
 #: src/src/blocks/post-grid/controls/LayoutControl.js
@@ -1706,6 +1746,10 @@ msgstr ""
 msgid "Duration (ms)"
 msgstr "Длительность (мс)"
 
+#: src/src/blocks/contacts/edit.js
+msgid "E-mail"
+msgstr "E-mail"
+
 #: src/src/blocks/yandex-map/controls/MarkerRepeaterControl.js
 #: src/src/blocks/yandex-map/controls/MarkerRepeaterControl.js
 msgid "Edit"
@@ -1761,6 +1805,10 @@ msgstr "Тип элемента"
 msgid "Email"
 msgstr "Email"
 
+#: src/src/blocks/contacts/index.js
+msgid "email"
+msgstr "email"
+
 #: src/src/blocks/form-field/edit.js src/src/blocks/form-field/edit.js
 msgid "Email Address"
 msgstr "Адрес электронной почты"
@@ -1776,6 +1824,10 @@ msgstr "Настройки электронной почты"
 #: src/src/blocks/form/edit.js src/src/blocks/form/edit.js
 msgid "Email Subject"
 msgstr "Тема письма"
+
+#: src/src/blocks/contacts/edit.js
+msgid "Email will be displayed here"
+msgstr "Здесь будет отображаться email"
 
 #: src/src/blocks/media/controls/MediaControl.js
 #: src/src/blocks/media/controls/MediaControl.js
@@ -2964,6 +3016,10 @@ msgstr "Оставьте пустым, если имя не должно быт�
 msgid "Left"
 msgstr "Слева"
 
+#: src/src/blocks/contacts/sidebar.js
+msgid "Legal Address"
+msgstr "Юридический адрес"
+
 #: src/src/components/image-hover/ImageHoverControl.js
 #: src/src/components/image-hover/ImageHoverControl.js
 msgid "Lift"
@@ -3054,6 +3110,10 @@ msgstr "Загрузка телефонов..."
 #: src/src/blocks/html-blocks/edit.js src/src/blocks/html-blocks/edit.js
 msgid "Loading blocks..."
 msgstr "Загрузка блоков..."
+
+#: src/src/blocks/contacts/edit.js
+msgid "Loading contacts data..."
+msgstr "Загрузка данных контактов..."
 
 #: src/src/blocks/html-blocks/edit.js src/src/blocks/html-blocks/edit.js
 msgid "Loading content..."
@@ -3526,6 +3586,10 @@ msgstr "Нет классов Col"
 #, fuzzy
 msgid "No Column Width Classes"
 msgstr "Нет классов Col"
+
+#: src/src/blocks/contacts/sidebar.js
+msgid "No contact items. Add items below."
+msgstr "Нет элементов контактов. Добавьте элементы ниже."
 
 #: inc/Plugin.php:756 build/blocks/accordion/render.php:149
 #: src/blocks/accordion/render.php:149
@@ -4000,6 +4064,30 @@ msgstr ""
 msgid "Phone"
 msgstr "Телефон"
 
+#: src/src/blocks/contacts/index.js
+msgid "phone"
+msgstr "телефон"
+
+#: src/src/blocks/contacts/sidebar.js
+msgid "Phone 01"
+msgstr "Телефон 01"
+
+#: src/src/blocks/contacts/sidebar.js
+msgid "Phone 02"
+msgstr "Телефон 02"
+
+#: src/src/blocks/contacts/sidebar.js
+msgid "Phone 03"
+msgstr "Телефон 03"
+
+#: src/src/blocks/contacts/sidebar.js
+msgid "Phone 04"
+msgstr "Телефон 04"
+
+#: src/src/blocks/contacts/sidebar.js
+msgid "Phone 05"
+msgstr "Телефон 05"
+
 #: src/src/blocks/form-field/edit.js src/src/blocks/form-field/edit.js
 #, fuzzy
 msgid "Phone mask"
@@ -4012,6 +4100,10 @@ msgstr "Номер телефона"
 #: src/src/utilities/link_type.js src/src/utilities/link_type.js
 msgid "Phone Type"
 msgstr "Тип телефона"
+
+#: src/src/blocks/contacts/edit.js
+msgid "Phone will be displayed here"
+msgstr "Здесь будет отображаться телефон"
 
 #: src/src/blocks/tabs/sidebar.js src/src/blocks/tabs/sidebar.js
 msgid "Pills"
@@ -4494,6 +4586,10 @@ msgstr "Выбрать паттерн"
 #: src/src/utilities/link_type.js src/src/utilities/link_type.js
 msgid "Select Phone"
 msgstr "Выбрать телефон"
+
+#: src/src/blocks/contacts/sidebar.js
+msgid "Select Phones"
+msgstr "Выбрать телефоны"
 
 #: inc/ImageHotspotCPT.php:345
 msgid "Select Post"
@@ -5716,6 +5812,14 @@ msgstr ""
 #: inc/ImageHotspotCPT.php:222
 msgid "White"
 msgstr "Белый"
+
+#: src/src/blocks/contacts/sidebar.js
+msgid "With Icon"
+msgstr "С иконкой"
+
+#: src/src/blocks/contacts/sidebar.js
+msgid "With Icon Simple"
+msgstr "С иконкой (простой)"
 
 #: src/src/blocks/features/templates.js src/src/blocks/features/templates.js
 msgid ""

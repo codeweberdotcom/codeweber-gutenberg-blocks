@@ -24,10 +24,10 @@ if (!isset($attributes) || !is_array($attributes)) {
 
 $items = isset($attributes['items']) ? $attributes['items'] : [];
 $format = isset($attributes['format']) ? $attributes['format'] : 'simple';
-$titleTag = isset($attributes['titleTag']) ? $attributes['titleTag'] : 'h5';
+$titleTag = isset($attributes['titleTag']) ? $attributes['titleTag'] : 'div';
 $titleColor = isset($attributes['titleColor']) ? $attributes['titleColor'] : '';
 $titleColorType = isset($attributes['titleColorType']) ? $attributes['titleColorType'] : 'solid';
-$titleSize = isset($attributes['titleSize']) ? $attributes['titleSize'] : '';
+$titleSize = isset($attributes['titleSize']) ? $attributes['titleSize'] : 'h5';
 $titleWeight = isset($attributes['titleWeight']) ? $attributes['titleWeight'] : '';
 $titleTransform = isset($attributes['titleTransform']) ? $attributes['titleTransform'] : '';
 $titleClass = isset($attributes['titleClass']) ? $attributes['titleClass'] : '';

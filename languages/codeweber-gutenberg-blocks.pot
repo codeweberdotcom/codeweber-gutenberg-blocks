@@ -4438,3 +4438,107 @@ msgstr ""
 msgid "Extra Large"
 msgstr ""
 
+#: src/src/blocks/contacts/index.js
+msgid "Contacts"
+msgstr ""
+
+#: src/src/blocks/contacts/index.js
+msgid "Display contact information from Codeweber theme Redux settings."
+msgstr ""
+
+#: src/src/blocks/contacts/index.js
+msgid "contacts"
+msgstr ""
+
+#: src/src/blocks/contacts/index.js
+msgid "address"
+msgstr ""
+
+#: src/src/blocks/contacts/index.js
+msgid "email"
+msgstr ""
+
+#: src/src/blocks/contacts/index.js
+msgid "phone"
+msgstr ""
+
+#: src/src/blocks/contacts/index.js
+msgid "contact"
+msgstr ""
+
+#: src/src/blocks/contacts/edit.js
+msgid "Address will be displayed here"
+msgstr ""
+
+#: src/src/blocks/contacts/edit.js
+msgid "E-mail"
+msgstr ""
+
+#: src/src/blocks/contacts/edit.js
+msgid "Email will be displayed here"
+msgstr ""
+
+#: src/src/blocks/contacts/edit.js
+msgid "Phone will be displayed here"
+msgstr ""
+
+#: src/src/blocks/contacts/edit.js
+msgid "Loading contacts data..."
+msgstr ""
+
+#: src/src/blocks/contacts/sidebar.js
+msgid "Phone 01"
+msgstr ""
+
+#: src/src/blocks/contacts/sidebar.js
+msgid "Phone 02"
+msgstr ""
+
+#: src/src/blocks/contacts/sidebar.js
+msgid "Phone 03"
+msgstr ""
+
+#: src/src/blocks/contacts/sidebar.js
+msgid "Phone 04"
+msgstr ""
+
+#: src/src/blocks/contacts/sidebar.js
+msgid "Phone 05"
+msgstr ""
+
+#: src/src/blocks/contacts/sidebar.js
+msgid "Contact Items"
+msgstr ""
+
+#: src/src/blocks/contacts/sidebar.js
+msgid "With Icon"
+msgstr ""
+
+#: src/src/blocks/contacts/sidebar.js
+msgid "With Icon Simple"
+msgstr ""
+
+#: src/src/blocks/contacts/sidebar.js
+msgid "No contact items. Add items below."
+msgstr ""
+
+#: src/src/blocks/contacts/sidebar.js
+msgid "Address Type"
+msgstr ""
+
+#: src/src/blocks/contacts/sidebar.js
+msgid "Legal Address"
+msgstr ""
+
+#: src/src/blocks/contacts/sidebar.js
+msgid "Actual Address"
+msgstr ""
+
+#: src/src/blocks/contacts/sidebar.js
+msgid "Select Phones"
+msgstr ""
+
+#: src/src/blocks/contacts/sidebar.js
+msgid "Add Item"
+msgstr ""
+

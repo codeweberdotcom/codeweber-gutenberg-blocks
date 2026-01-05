@@ -8,6 +8,7 @@ import { __ } from '@wordpress/i18n';
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
 import DividerSidebar from './sidebar';
 import { getTitleClasses } from '../heading-subtitle/utils';
+import { generateColorClass, generateBackgroundClasses } from '../../utilities/class-generators';
 
 /**
  * Edit Component
@@ -18,9 +19,10 @@ const Edit = ({ attributes, setAttributes }) => {
 		borderStyle,
 		borderIcon,
 		textAlign,
-		enableTitle,
 		title,
 		titleTag,
+		titleColor,
+		titleColorType,
 		waveType,
 		waveColor,
 		blockClass,
@@ -49,7 +51,7 @@ const Edit = ({ attributes, setAttributes }) => {
 					return <hr className={`double ${blockClass || 'my-8'}`} />;
 				} else if (borderStyle === 'icon') {
 					return (
-						<div className={`divider-icon ${blockClass || 'my-8'}`}>
+						<div className="divider-icon">
 							{borderIcon ? (
 								<i className={borderIcon}></i>
 							) : (
@@ -60,18 +62,64 @@ const Edit = ({ attributes, setAttributes }) => {
 				} else if (borderStyle === 'text') {
 					const titleClasses = getTitleClasses(attributes);
 					const alignClass = textAlign === 'left' ? 'text-start' : textAlign === 'right' ? 'text-end' : 'text-center';
-					const TagName = titleTag || 'h3';
+					const TagName = titleTag || 'span';
+					
+					// Класс цвета текста для обертки
+					const textColorClass = generateColorClass(titleColor, titleColorType, 'text');
+					
+					// Background классы
+					const backgroundClasses = generateBackgroundClasses(attributes);
+					
+					// Inline стили для background
+					const backgroundStyles = {};
+					const {
+						backgroundType,
+						backgroundImageUrl,
+						backgroundPatternUrl,
+						backgroundSize,
+					} = attributes;
+					
+					if (backgroundType === 'image' && backgroundImageUrl) {
+						backgroundStyles.backgroundImage = `url(${backgroundImageUrl})`;
+						backgroundStyles.backgroundRepeat = 'no-repeat';
+						if (backgroundSize === 'bg-cover') {
+							backgroundStyles.backgroundSize = 'cover';
+						} else if (backgroundSize === 'bg-full') {
+							backgroundStyles.backgroundSize = '100% 100%';
+						} else {
+							backgroundStyles.backgroundSize = 'auto';
+						}
+						backgroundStyles.backgroundPosition = 'center';
+						backgroundStyles.backgroundAttachment = backgroundSize === 'bg-full' ? 'scroll' : 'fixed';
+					}
+					
+					if (backgroundType === 'pattern' && backgroundPatternUrl) {
+						backgroundStyles.backgroundImage = `url(${backgroundPatternUrl})`;
+						backgroundStyles.backgroundRepeat = 'repeat';
+						if (backgroundSize === 'bg-cover') {
+							backgroundStyles.backgroundSize = 'cover';
+						} else if (backgroundSize === 'bg-full') {
+							backgroundStyles.backgroundSize = '100% 100%';
+						} else {
+							backgroundStyles.backgroundSize = 'auto';
+						}
+					}
 					
 					// Классы для текстового разделителя (с отступами, как на фронтенде)
 					const textDividerClasses = [
 						'divider-text',
 						blockClass || 'my-8',
 						alignClass,
+						textColorClass,
+						...backgroundClasses,
 					].filter(Boolean).join(' ');
 					
 					return (
-						<div className={textDividerClasses}>
-							{enableTitle && title ? (
+						<div 
+							className={textDividerClasses}
+							style={Object.keys(backgroundStyles).length > 0 ? backgroundStyles : undefined}
+						>
+							{title ? (
 								<TagName 
 									className={titleClasses}
 									dangerouslySetInnerHTML={{ __html: title }}

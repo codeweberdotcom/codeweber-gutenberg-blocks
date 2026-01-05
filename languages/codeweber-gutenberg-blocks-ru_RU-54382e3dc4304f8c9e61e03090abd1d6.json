@@ -108,6 +108,9 @@
       "Active slide will be centered, not at the beginning of the slider.": [
         "Активный слайд будет отцентрирован, а не в начале слайдера."
       ],
+      "Actual Address": [
+        "Фактический адрес"
+      ],
       "Add consent checkboxes to your form. Each consent can have a custom label with placeholders for document links.": [
         "Добавьте чекбоксы согласия в вашу форму. Каждое согласие может иметь пользовательскую метку с плейсхолдерами для ссылок на документы."
       ],
@@ -116,6 +119,9 @@
       ],
       "Add Images": [
         "Добавить изображения"
+      ],
+      "Add Item": [
+        "Добавить элемент"
       ],
       "Add Marker": [
         "Добавить Маркер"
@@ -155,6 +161,15 @@
       ],
       "Address": [
         "Адрес"
+      ],
+      "address": [
+        "адрес"
+      ],
+      "Address Type": [
+        "Тип адреса"
+      ],
+      "Address will be displayed here": [
+        "Здесь будет отображаться адрес"
       ],
       "Adds wrapper for positioning or styling": [
         "Добавляет обёртку для позиционирования или стилизации"
@@ -756,6 +771,18 @@
       "Consents block": [
         "Блок согласий"
       ],
+      "contact": [
+        "контакт"
+      ],
+      "Contact Items": [
+        "Элементы контактов"
+      ],
+      "Contacts": [
+        "Контакты"
+      ],
+      "contacts": [
+        "контакты"
+      ],
       "Container": [
         "Контейнер"
       ],
@@ -888,6 +915,9 @@
       "Description": [
         "Описание"
       ],
+      "Display contact information from Codeweber theme Redux settings.": [
+        "Отображение контактной информации из настроек темы Codeweber Redux."
+      ],
       "Display Mode": [
         "Режим отображения"
       ],
@@ -942,6 +972,9 @@
       "Duration (ms)": [
         "Длительность (мс)"
       ],
+      "E-mail": [
+        "E-mail"
+      ],
       "Edit": [
         "Редактировать"
       ],
@@ -972,6 +1005,9 @@
       "Email": [
         "Email"
       ],
+      "email": [
+        "email"
+      ],
       "Email Address": [
         "Адрес электронной почты"
       ],
@@ -983,6 +1019,9 @@
       ],
       "Email Subject": [
         "Тема письма"
+      ],
+      "Email will be displayed here": [
+        "Здесь будет отображаться email"
       ],
       "Embed Code": [
         "Embed код"
@@ -1659,6 +1698,9 @@
       "Left": [
         "Слева"
       ],
+      "Legal Address": [
+        "Юридический адрес"
+      ],
       "Lift": [
         "Подъём"
       ],
@@ -1712,6 +1754,9 @@
       ],
       "Loading blocks...": [
         "Загрузка блоков..."
+      ],
+      "Loading contacts data...": [
+        "Загрузка данных контактов..."
       ],
       "Loading content...": [
         "Загрузка контента..."
@@ -1992,6 +2037,9 @@
       "No Column Width Classes": [
         "Нет классов Col"
       ],
+      "No contact items. Add items below.": [
+        "Нет элементов контактов. Добавьте элементы ниже."
+      ],
       "No content available": [
         "Контент недоступен"
       ],
@@ -2220,6 +2268,24 @@
       "Phone": [
         "Телефон"
       ],
+      "phone": [
+        "телефон"
+      ],
+      "Phone 01": [
+        "Телефон 01"
+      ],
+      "Phone 02": [
+        "Телефон 02"
+      ],
+      "Phone 03": [
+        "Телефон 03"
+      ],
+      "Phone 04": [
+        "Телефон 04"
+      ],
+      "Phone 05": [
+        "Телефон 05"
+      ],
       "Phone mask": [
         "Телефоны"
       ],
@@ -2228,6 +2294,9 @@
       ],
       "Phone Type": [
         "Тип телефона"
+      ],
+      "Phone will be displayed here": [
+        "Здесь будет отображаться телефон"
       ],
       "Pills": [
         "Пилюли"
@@ -2522,6 +2591,9 @@
       ],
       "Select Phone": [
         "Выбрать телефон"
+      ],
+      "Select Phones": [
+        "Выбрать телефоны"
       ],
       "Select Post": [
         "Выбрать запись"
@@ -3209,6 +3281,12 @@
       ],
       "White": [
         "Белый"
+      ],
+      "With Icon": [
+        "С иконкой"
+      ],
+      "With Icon Simple": [
+        "С иконкой (простой)"
       ],
       "Work with professionals who have years of experience and deep knowledge in their field.": [
         "Работайте с профессионалами, имеющими многолетний опыт и глубокие знания в своей области."

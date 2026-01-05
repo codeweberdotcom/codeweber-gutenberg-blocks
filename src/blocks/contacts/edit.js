@@ -18,10 +18,10 @@ import { IconRender } from '../../components/icon/IconRender';
 
 const ContactsPreview = ({ items, contactsData, format = 'simple', attributes = {} }) => {
 	const {
-		titleTag = 'h5',
+		titleTag = 'div',
 		titleColor = '',
 		titleColorType = 'solid',
-		titleSize = '',
+		titleSize = 'h5',
 		titleWeight = '',
 		titleTransform = '',
 		titleClass = '',
@@ -277,7 +277,7 @@ const ContactsPreview = ({ items, contactsData, format = 'simple', attributes = 
 												{renderContactIcon('location-pin-alt')}
 											</div>
 											<div>
-												{React.createElement(titleTag || 'h5', { className: titleClasses }, __('Address', 'codeweber-gutenberg-blocks'))}
+												{React.createElement(titleTag || 'div', { className: titleClasses }, __('Address', 'codeweber-gutenberg-blocks'))}
 												{React.createElement(textTag || 'address', { className: textClasses }, __('Address will be displayed here', 'codeweber-gutenberg-blocks'))}
 											</div>
 										</div>
@@ -307,7 +307,7 @@ const ContactsPreview = ({ items, contactsData, format = 'simple', attributes = 
 											{renderContactIcon('location-pin-alt')}
 										</div>
 										<div>
-											{React.createElement(titleTag || 'h5', { className: titleClasses }, __('Address', 'codeweber-gutenberg-blocks'))}
+											{React.createElement(titleTag || 'div', { className: titleClasses }, __('Address', 'codeweber-gutenberg-blocks'))}
 											{React.createElement(textTag || 'address', { className: textClasses }, address)}
 										</div>
 									</div>

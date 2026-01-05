@@ -46,9 +46,9 @@ const Edit = ({ attributes, setAttributes }) => {
 		switch (dividerType) {
 			case 'border':
 				if (borderStyle === 'simple') {
-					return <hr className={blockClass || 'my-8'} />;
+					return <hr className={blockClass} />;
 				} else if (borderStyle === 'double') {
-					return <hr className={`double ${blockClass || 'my-8'}`} />;
+					return <hr className={`double ${blockClass}`} />;
 				} else if (borderStyle === 'icon') {
 					return (
 						<div className="divider-icon">
@@ -108,7 +108,7 @@ const Edit = ({ attributes, setAttributes }) => {
 					// Классы для текстового разделителя (с отступами, как на фронтенде)
 					const textDividerClasses = [
 						'divider-text',
-						blockClass || 'my-8',
+						blockClass,
 						alignClass,
 						textColorClass,
 						...backgroundClasses,
@@ -145,7 +145,7 @@ const Edit = ({ attributes, setAttributes }) => {
 				);
 
 			default:
-				return <hr className={blockClass || 'my-8'} />;
+				return <hr className={blockClass} />;
 		}
 	};
 

@@ -29,7 +29,7 @@ const Save = ({ attributes }) => {
 	// Классы блока (для всех кроме text)
 	const blockClasses = [
 		'cwgb-divider-block',
-		blockClass || 'my-8',
+		blockClass,
 	].filter(Boolean).join(' ');
 
 	const blockProps = {
@@ -42,9 +42,9 @@ const Save = ({ attributes }) => {
 		switch (dividerType) {
 			case 'border':
 				if (borderStyle === 'simple') {
-					return <hr className={blockClass || 'my-8'} />;
+					return <hr className={blockClass} />;
 				} else if (borderStyle === 'double') {
-					return <hr className={`double ${blockClass || 'my-8'}`} />;
+					return <hr className={`double ${blockClass}`} />;
 				} else if (borderStyle === 'icon') {
 					return (
 						<div className="divider-icon">
@@ -100,7 +100,7 @@ const Save = ({ attributes }) => {
 					// Классы для текстового разделителя (без обертки)
 					const textDividerClasses = [
 						'divider-text',
-						blockClass || 'my-8',
+						blockClass,
 						alignClass,
 						textColorClass,
 						...backgroundClasses,
@@ -135,7 +135,7 @@ const Save = ({ attributes }) => {
 				);
 
 			default:
-				return <hr className={blockClass || 'my-8'} />;
+				return <hr className={blockClass} />;
 		}
 	};
 

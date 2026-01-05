@@ -121,11 +121,11 @@
     },
     "marginTop": {
       "type": "string",
-      "default": "my-8"
+      "default": ""
     },
     "marginBottom": {
       "type": "string",
-      "default": "my-8"
+      "default": ""
     },
     "blockClass": {
       "type": "string",

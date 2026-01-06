@@ -181,3 +181,9 @@ export const Banner2 = ({ attributes, isEditor = false }) => {
 
 
 
+
+
+
+
+
+

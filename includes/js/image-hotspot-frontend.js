@@ -57,6 +57,190 @@
 		return element.getAttribute(`data-${attr}`) || element.dataset[attr] || '';
 	}
 
+	// Callout функциональность
+	let activeCalloutId = null;
+	let hideCalloutTimeout = null;
+
+	/**
+	 * Инициализация Callout для hotspot точек
+	 * Создает выноски с SVG линиями при наведении
+	 */
+	function initHotspotCallouts(container, hotspotId) {
+		const points = container.querySelectorAll('.cw-hotspot-point[data-callout="true"]');
+		console.log('initHotspotCallouts called for hotspot:', hotspotId, 'Found points:', points.length);
+		if (!points.length) {
+			console.log('No callout points found in container');
+			return;
+		}
+		
+		let pointCounter = 0;
+		
+		points.forEach((pointElement) => {
+			pointCounter++;
+			const pointId = getDataAttr(pointElement, 'point-id');
+			const calloutText = getDataAttr(pointElement, 'callout-text') || '';
+			
+			if (!calloutText) return;
+			
+			// Создаем контейнер для callout
+			const calloutContainer = document.createElement('div');
+			calloutContainer.className = 'cw-hotspot-callout-container';
+			calloutContainer.id = `cw-callout-${hotspotId}-${pointId}`;
+			
+			// Вычисляем ширину текста
+			const tempSpan = document.createElement('span');
+			tempSpan.style.fontSize = '0.875rem';
+			tempSpan.style.fontFamily = "'Segoe UI', system-ui, -apple-system, sans-serif";
+			tempSpan.style.fontWeight = '500';
+			tempSpan.style.visibility = 'hidden';
+			tempSpan.style.position = 'absolute';
+			tempSpan.style.whiteSpace = 'nowrap';
+			tempSpan.textContent = calloutText;
+			document.body.appendChild(tempSpan);
+			
+			const textWidth = tempSpan.offsetWidth;
+			document.body.removeChild(tempSpan);
+			
+			// Параметры линии
+			const diagonalLength = 35;
+			const textOffset = 50;
+			const totalWidth = diagonalLength + textWidth + 15;
+			
+			// Создаем SVG линию
+			const svgNS = "http://www.w3.org/2000/svg";
+			const svg = document.createElementNS(svgNS, "svg");
+			svg.setAttribute("class", "cw-hotspot-callout-line");
+			svg.setAttribute("width", totalWidth);
+			svg.setAttribute("height", "30");
+			svg.setAttribute("viewBox", `0 0 ${totalWidth} 30`);
+			
+			const path = document.createElementNS(svgNS, "path");
+			const pathData = `M5,25 L${diagonalLength},5 L${totalWidth},5`;
+			path.setAttribute("d", pathData);
+			path.setAttribute("stroke", "rgba(108, 117, 125, 0.3)");
+			
+			svg.appendChild(path);
+			calloutContainer.appendChild(svg);
+			
+			// Создаем текст
+			const textDiv = document.createElement("div");
+			textDiv.className = "cw-hotspot-callout-text bg-white px-2 py-1 shadow-sm opacity-0 fs-14 text-dark text-nowrap";
+			textDiv.textContent = calloutText;
+			textDiv.style.left = `${textOffset}px`;
+			textDiv.style.top = `-15px`;
+			
+			calloutContainer.appendChild(textDiv);
+			
+			// Добавляем в контейнер hotspot
+			const annotationBox = container.querySelector('.cw-hotspot-annotation-box');
+			if (annotationBox) {
+				annotationBox.appendChild(calloutContainer);
+				console.log('Callout container added for point:', pointId, 'Text:', calloutText);
+			} else {
+				console.error('Annotation box not found for hotspot:', hotspotId);
+			}
+			
+			// Обработчики событий
+			pointElement.addEventListener('mouseenter', () => {
+				clearTimeout(hideCalloutTimeout);
+				showCallout(hotspotId, pointId, pointElement, calloutContainer);
+			});
+			
+			pointElement.addEventListener('mouseleave', () => {
+				hideCalloutTimeout = setTimeout(() => hideCallout(hotspotId, pointId, calloutContainer), 100);
+			});
+			
+			calloutContainer.addEventListener('mouseenter', () => {
+				clearTimeout(hideCalloutTimeout);
+				showCallout(hotspotId, pointId, pointElement, calloutContainer);
+			});
+			
+			calloutContainer.addEventListener('mouseleave', () => {
+				hideCalloutTimeout = setTimeout(() => hideCallout(hotspotId, pointId, calloutContainer), 100);
+			});
+		});
+	}
+
+	function showCallout(hotspotId, pointId, pointElement, calloutContainer) {
+		clearTimeout(hideCalloutTimeout);
+		
+		const calloutId = `${hotspotId}-${pointId}`;
+		
+		if (activeCalloutId !== calloutId) {
+			if (activeCalloutId) {
+				const prevCallout = document.getElementById(`cw-callout-${activeCalloutId}`);
+				if (prevCallout) {
+					hideCallout(activeCalloutId.split('-')[0], activeCalloutId.split('-')[1], prevCallout);
+				}
+			}
+			
+			positionCallout(pointElement, calloutContainer);
+			
+			calloutContainer.classList.remove('hiding');
+			calloutContainer.classList.remove('active');
+			void calloutContainer.offsetWidth; // Принудительный reflow
+			calloutContainer.classList.add('active');
+
+			// Показываем текст
+			const textDiv = calloutContainer.querySelector('.cw-hotspot-callout-text');
+			if (textDiv) {
+				textDiv.classList.remove('opacity-0');
+				textDiv.classList.add('opacity-100');
+			}
+
+			activeCalloutId = calloutId;
+		}
+	}
+
+	function hideCallout(hotspotId, pointId, calloutContainer) {
+		if (calloutContainer && calloutContainer.classList.contains('active')) {
+			calloutContainer.classList.add('hiding');
+			calloutContainer.classList.remove('active');
+
+			// Скрываем текст (через анимацию)
+
+			setTimeout(() => {
+				calloutContainer.classList.remove('hiding');
+				const line = calloutContainer.querySelector('.cw-hotspot-callout-line');
+				const text = calloutContainer.querySelector('.cw-hotspot-callout-text');
+				if (line) {
+					line.style.animation = 'none';
+					void line.offsetWidth;
+					line.style.animation = null;
+				}
+				if (text) {
+					text.style.animation = 'none';
+					void text.offsetWidth;
+					text.style.animation = null;
+				}
+			}, 600);
+
+			if (activeCalloutId === `${hotspotId}-${pointId}`) {
+				activeCalloutId = null;
+			}
+		}
+	}
+
+	function positionCallout(pointElement, calloutContainer) {
+		if (!calloutContainer || !pointElement) return;
+
+		const rect = pointElement.getBoundingClientRect();
+		const container = pointElement.closest('.cw-hotspot-annotation-box');
+		if (!container) return;
+
+		const containerRect = container.getBoundingClientRect();
+
+		// Центр точки относительно контейнера (учитываем transform: translate(-50%, -50%))
+		// rect.left - левый край точки, но центр в rect.left + rect.width/2
+		const centerX = rect.left - containerRect.left + rect.width / 2;
+		const centerY = rect.top - containerRect.top + rect.height / 2;
+
+		// Позиционируем callout так, чтобы линия шла от центра точки
+		// SVG линия начинается от M5,25 (5px вправо, 25px вниз от верхнего левого callout)
+		calloutContainer.style.left = (centerX - 5) + 'px';
+		calloutContainer.style.top = (centerY - 25) + 'px';
+	}
+
 	/**
 	 * Инициализация Bootstrap Popover для hotspot точек
 	 * Поддерживает HTML контент и все типы триггеров (click, hover, focus)
@@ -473,19 +657,27 @@
 		
 		[...containers].forEach(container => {
 			const hotspotId = getDataAttr(container, 'hotspot-id');
+			const displayType = getDataAttr(container, 'display-type') || 'popover';
 			
-			// Инициализируем Bootstrap Popovers
-			initHotspotPopovers(container, hotspotId);
+			console.log('Initializing hotspot:', hotspotId, 'Display Type:', displayType);
 			
-			// Добавляем классы для стилизации в зависимости от триггера
-			const firstPoint = container.querySelector('.cw-hotspot-point [data-bs-toggle="popover"]');
-			if (firstPoint) {
-				const trigger = getDataAttr(firstPoint, 'bs-trigger') || 'click';
-				container.classList.add(`cw-hotspot-trigger-${trigger}`);
+			if (displayType === 'callout') {
+				// Инициализируем Callouts
+				initHotspotCallouts(container, hotspotId);
+			} else {
+				// Инициализируем Bootstrap Popovers
+				initHotspotPopovers(container, hotspotId);
 				
-				// Отключаем hover эффекты темы для click и focus триггеров
-				if (trigger === 'click' || trigger === 'focus') {
-					container.classList.add('cw-hotspot-trigger-click');
+				// Добавляем классы для стилизации в зависимости от триггера
+				const firstPoint = container.querySelector('.cw-hotspot-point [data-bs-toggle="popover"]');
+				if (firstPoint) {
+					const trigger = getDataAttr(firstPoint, 'bs-trigger') || 'click';
+					container.classList.add(`cw-hotspot-trigger-${trigger}`);
+					
+					// Отключаем hover эффекты темы для click и focus триггеров
+					if (trigger === 'click' || trigger === 'focus') {
+						container.classList.add('cw-hotspot-trigger-click');
+					}
 				}
 			}
 		});
@@ -495,7 +687,13 @@
 			const container = e.detail?.container;
 			if (container) {
 				const hotspotId = getDataAttr(container, 'hotspot-id');
-				initHotspotPopovers(container, hotspotId);
+				const displayType = getDataAttr(container, 'display-type') || 'popover';
+				
+				if (displayType === 'callout') {
+					initHotspotCallouts(container, hotspotId);
+				} else {
+					initHotspotPopovers(container, hotspotId);
+				}
 			}
 		});
 	}

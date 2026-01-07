@@ -151,6 +151,7 @@
 		renderHotspot: function(point) {
 			const self = this;
 			const settings = this.getSettings();
+			const displayType = settings.displayType || 'popover';
 			
 			
 			// Удаляем старую точку, если она существует
@@ -172,27 +173,35 @@
 			const buttonSize = settings.hotspotButtonSize || 'btn-sm';
 			const buttonShape = settings.hotspotButtonShape || 'btn-circle';
 			
+			let button;
 			
-			// Разбиваем buttonShape на отдельные классы (может быть "btn-block rounded-0")
-			const shapeClasses = buttonShape ? buttonShape.split(' ') : [];
-			
-			const button = $('<a>')
-				.attr('href', '#')
-				.attr('onclick', 'return false;') // Предотвращаем переход по ссылке
-				.addClass('btn');
-			
-			// Добавляем классы формы
-			shapeClasses.forEach(function(cls) {
-				if (cls) button.addClass(cls);
-			});
-			
-			// Добавляем стиль и размер
-			button.addClass(buttonStyle);
-			button.addClass(buttonSize);
-			
-			// Добавляем иконку
-			const iconHtml = '<i class="uil uil-' + iconName + '"></i>';
-			button.html(iconHtml);
+			if (displayType === 'callout') {
+				// Для callout рендерим простую кнопку без иконки
+				button = $('<span>')
+					.addClass('btn btn-circle ' + buttonStyle + ' w-2 h-2');
+			} else {
+				// Для Popover рендерим с иконкой
+				// Разбиваем buttonShape на отдельные классы (может быть "btn-block rounded-0")
+				const shapeClasses = buttonShape ? buttonShape.split(' ') : [];
+				
+				button = $('<a>')
+					.attr('href', '#')
+					.attr('onclick', 'return false;') // Предотвращаем переход по ссылке
+					.addClass('btn');
+				
+				// Добавляем классы формы
+				shapeClasses.forEach(function(cls) {
+					if (cls) button.addClass(cls);
+				});
+				
+				// Добавляем стиль и размер
+				button.addClass(buttonStyle);
+				button.addClass(buttonSize);
+				
+				// Добавляем иконку
+				const iconHtml = '<i class="uil uil-' + iconName + '"></i>';
+				button.html(iconHtml);
+			}
 			
 			
 			const editorControls = $('<div>')
@@ -984,7 +993,8 @@
 				hotspotButtonSize: 'btn-sm',
 				hotspotButtonShape: 'btn-circle',
 				popoverTrigger: 'click',
-				popoverPlacement: 'auto'
+				popoverPlacement: 'auto',
+				displayType: 'popover'
 			};
 		},
 		
@@ -994,7 +1004,8 @@
 				hotspotButtonSize: $('#hotspot-button-size').val() || 'btn-sm',
 				hotspotButtonShape: $('#hotspot-button-shape').val() || 'btn-circle',
 				popoverTrigger: $('#popover-trigger').val() || 'click',
-				popoverPlacement: $('#popover-placement').val() || 'auto'
+				popoverPlacement: $('#popover-placement').val() || 'auto',
+				displayType: $('#display-type').val() || 'popover'
 			};
 			
 			$('#cw-hotspot-settings').val(JSON.stringify(settings));

@@ -25,6 +25,7 @@
 	transform: translate(-50%, -50%);
 }
 
+
 /* Отключаем hover эффекты классов темы в режиме click */
 .cw-hotspot-trigger-click .cw-hotspot-point .btn.hover-scale:hover {
 	transform: translateY(0) !important;
@@ -140,5 +141,86 @@
 
 .cw-hotspot-post-content article {
 	margin-bottom: 0;
+}
+
+/* Callout Styles (выноски с линиями) */
+.cw-hotspot-callout-container {
+	position: absolute;
+	opacity: 0;
+	pointer-events: none;
+	z-index: 20;
+	cursor: pointer;
+}
+
+.cw-hotspot-callout-container.active {
+	opacity: 1;
+	pointer-events: all;
+}
+
+.cw-hotspot-callout-container.hiding {
+	opacity: 1;
+	pointer-events: none;
+}
+
+.cw-hotspot-callout-line {
+	position: absolute;
+	top: 0;
+	left: 0;
+	stroke: rgba(108, 117, 125, 0.3);
+	stroke-width: 1.2;
+	fill: none;
+	stroke-dasharray: 200;
+	stroke-dashoffset: 200;
+}
+
+.cw-hotspot-callout-container.active .cw-hotspot-callout-line {
+	animation: cwDrawLine 0.6s ease-out forwards;
+}
+
+.cw-hotspot-callout-container.hiding .cw-hotspot-callout-line {
+	animation: cwUndrawLine 0.6s ease-in forwards;
+}
+
+.fs-14 {
+	font-size: 14px;
+}
+
+.cw-hotspot-callout-text {
+	position: absolute;
+	margin: 0;
+	z-index: 21;
+	transform: translateY(0px);
+	letter-spacing: 0.3px;
+	transition: opacity 0.6s ease-out;
+	cursor: pointer;
+	left: 50px !important;
+}
+
+.cw-hotspot-callout-container.active .cw-hotspot-callout-text {
+	animation: cwDrawText 0.3s ease-out forwards;
+}
+
+.cw-hotspot-callout-container.hiding .cw-hotspot-callout-text {
+	animation: cwUndrawText 0.3s ease-in forwards;
+}
+
+@keyframes cwDrawLine {
+	0% { stroke-dashoffset: 200; }
+	100% { stroke-dashoffset: 0; }
+}
+
+@keyframes cwUndrawLine {
+	0% { stroke-dashoffset: 0; }
+	100% { stroke-dashoffset: 200; }
+}
+
+@keyframes cwDrawText {
+	0% { opacity: 0; transform: translateY(-26px); }
+	100% { opacity: 1; transform: translateY(-15px); }
+}
+
+@keyframes cwUndrawText {
+	0% { opacity: 1; transform: translateY(-15px); }
+	100% { opacity: 0; transform: translateY(-15px); }
 }
 

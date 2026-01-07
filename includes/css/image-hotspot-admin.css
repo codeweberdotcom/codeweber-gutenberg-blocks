@@ -172,6 +172,14 @@
 	height: 3.5rem;
 }
 
+/* Specific admin CSS for small hotspot buttons */
+.cw-hotspot-point .btn-circle.w-2.h-2 {
+	width: 0.5rem !important;
+	height: 0.5rem !important;
+	min-width: 0.5rem !important;
+	min-height: 0.5rem !important;
+}
+
 .cw-hotspot-point .btn-block {
 	display: block;
 	width: 100%;

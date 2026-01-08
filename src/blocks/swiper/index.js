@@ -11,32 +11,3 @@ registerBlockType(metadata, {
 	edit: Edit,
 	save: Save,
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -739,7 +739,7 @@ export const PostGridItemRender = ({
 								{excerptLimited}
 							</div>
 						)}
-						<a href={isEditor ? '#' : postLink} className="hover-4 link-body label-s text-charcoal-blue me-4 post-read-more" onClick={isEditor ? (e) => e.preventDefault() : undefined}>
+						<a href={isEditor ? '#' : postLink} className="hover-8 link-body label-s text-charcoal-blue me-4 post-read-more" onClick={isEditor ? (e) => e.preventDefault() : undefined}>
 							{__('Read more', 'codeweber-gutenberg-blocks')}
 						</a>
 					</div>
@@ -768,7 +768,7 @@ export const PostGridItemRender = ({
 								<p className="mb-3">{excerptLimited}</p>
 							)}
 							<div className="d-block">
-								<a href={isEditor ? '#' : postLink} className="hover-4 link-body label-s text-charcoal-blue me-4 post-read-more" onClick={isEditor ? (e) => e.preventDefault() : undefined}>
+								<a href={isEditor ? '#' : postLink} className="hover-8 link-body label-s text-charcoal-blue me-4 post-read-more" onClick={isEditor ? (e) => e.preventDefault() : undefined}>
 									{__('Read more', 'codeweber-gutenberg-blocks')}
 								</a>
 							</div>
@@ -814,7 +814,7 @@ export const PostGridItemRender = ({
 									<span>{__('Send to Email', 'codeweber-gutenberg-blocks')}</span>
 								</a>
 							) : (
-								<a href={isEditor ? '#' : postLink} className="hover-4 link-body label-s text-charcoal-blue me-4 post-read-more" onClick={isEditor ? (e) => e.preventDefault() : undefined}>
+								<a href={isEditor ? '#' : postLink} className="hover-8 link-body label-s text-charcoal-blue me-4 post-read-more" onClick={isEditor ? (e) => e.preventDefault() : undefined}>
 									{__('Read more', 'codeweber-gutenberg-blocks')}
 								</a>
 							)}
@@ -863,7 +863,7 @@ export const PostGridItemRender = ({
 									<span className="ms-1">{__('Download', 'codeweber-gutenberg-blocks')}</span>
 								</a>
 							) : (
-								<a href={isEditor ? '#' : postLink} className="hover-4 link-body label-s text-charcoal-blue me-4 post-read-more" onClick={isEditor ? (e) => e.preventDefault() : undefined}>
+								<a href={isEditor ? '#' : postLink} className="hover-8 link-body label-s text-charcoal-blue me-4 post-read-more" onClick={isEditor ? (e) => e.preventDefault() : undefined}>
 									{__('Read more', 'codeweber-gutenberg-blocks')}
 								</a>
 							)}

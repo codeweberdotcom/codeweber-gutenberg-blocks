@@ -26,26 +26,3 @@ registerBlockType(metadata, {
 		__('sidebar', 'codeweber-gutenberg-blocks'),
 	],
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

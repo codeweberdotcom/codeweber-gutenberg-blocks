@@ -424,6 +424,8 @@ const handleIconChange = (type, value) => {
 						{ label: 'Hover', value: 'hover' },
 						{ label: 'Hover 2', value: 'hover-2' },
 						{ label: 'Hover 3', value: 'hover-3' },
+						{ label: 'Hover 8', value: 'hover-8' },
+						{ label: 'Hover 9', value: 'hover-9' },
 					].map((type) => (
 						<Button
 							key={type.value}

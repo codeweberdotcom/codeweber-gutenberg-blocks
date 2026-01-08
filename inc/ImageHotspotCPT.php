@@ -172,8 +172,7 @@ class ImageHotspotCPT {
 			'hotspotButtonShape' => 'btn-circle',
 			'popoverTrigger' => 'click',
 			'popoverPlacement' => 'auto',
-			'displayType' => 'popover',
-			];
+		];
 		$settings_data = wp_parse_args($settings_data, $default_settings);
 
 		?>
@@ -269,16 +268,6 @@ class ImageHotspotCPT {
 								<option value="left" <?php selected($settings_data['popoverPlacement'] ?? '', 'left'); ?>><?php _e('Left', 'codeweber-gutenberg-blocks'); ?></option>
 							</select>
 							<p class="description"><?php _e('Popover Display Position', 'codeweber-gutenberg-blocks'); ?></p>
-						</td>
-					</tr>
-					<tr>
-						<th><label for="display-type"><?php _e('Display Type', 'codeweber-gutenberg-blocks'); ?></label></th>
-						<td>
-							<select id="display-type" name="display_type" class="cw-hotspot-setting">
-								<option value="popover" <?php selected($settings_data['displayType'] ?? 'popover', 'popover'); ?>><?php _e('Popover', 'codeweber-gutenberg-blocks'); ?></option>
-								<option value="callout" <?php selected($settings_data['displayType'] ?? '', 'callout'); ?>><?php _e('Callout (with line)', 'codeweber-gutenberg-blocks'); ?></option>
-							</select>
-							<p class="description"><?php _e('Choose how hotspot content is displayed', 'codeweber-gutenberg-blocks'); ?></p>
 						</td>
 					</tr>
 				</table>
@@ -485,7 +474,6 @@ class ImageHotspotCPT {
 			'hotspotButtonShape' => 'btn-circle',
 			'popoverTrigger' => 'click',
 			'popoverPlacement' => 'auto',
-			'displayType' => 'popover',
 		];
 		$settings_data = wp_parse_args($settings_data, $default_settings);
 
@@ -494,8 +482,7 @@ class ImageHotspotCPT {
 		ob_start();
 		?>
 		<div class="cw-image-hotspot-container cw-image-hotspot-<?php echo esc_attr($hotspot_id); ?>"
-		     data-hotspot-id="<?php echo esc_attr($hotspot_id); ?>"
-		     data-display-type="<?php echo esc_attr($settings_data['displayType'] ?? 'popover'); ?>">
+		     data-hotspot-id="<?php echo esc_attr($hotspot_id); ?>">
 			<div class="cw-hotspot-annotation-box">
 				<img src="<?php echo esc_url($image_url); ?>"
 				     class="cw-hotspot-main-image"
@@ -509,32 +496,12 @@ class ImageHotspotCPT {
 						$button_size = $settings_data['hotspotButtonSize'] ?? 'btn-sm';
 						$button_shape = $settings_data['hotspotButtonShape'] ?? 'btn-circle';
 						?>
-						<?php
-						$display_type = $settings_data['displayType'] ?? 'popover';
-						$callout_text = '';
-						if ($display_type === 'callout') {
-							// Для callout используем title или обрезанный content
-							if (!empty($hotspot['title'])) {
-								$callout_text = $hotspot['title'];
-							} elseif (!empty($hotspot['content'])) {
-								$callout_text = wp_strip_all_tags($hotspot['content']);
-								// Ограничиваем длину текста для callout
-								if (mb_strlen($callout_text) > 50) {
-									$callout_text = mb_substr($callout_text, 0, 50) . '...';
-								}
-							}
-						}
-						?>
 						<div class="cw-hotspot-point"
 						     style="left: <?php echo esc_attr($hotspot['x']); ?>%; top: <?php echo esc_attr($hotspot['y']); ?>%;"
 						     data-x="<?php echo esc_attr($hotspot['x']); ?>"
 						     data-y="<?php echo esc_attr($hotspot['y']); ?>"
 						     data-hotspot-id="<?php echo esc_attr($hotspot['id']); ?>"
-						     data-point-id="<?php echo esc_attr($hotspot['id']); ?>"
-						     <?php if ($display_type === 'callout' && !empty($callout_text)): ?>
-						     data-callout="true"
-						     data-callout-text="<?php echo esc_attr($callout_text); ?>"
-						     <?php endif; ?>>
+						     data-point-id="<?php echo esc_attr($hotspot['id']); ?>">
 							<?php
 							// Разбиваем buttonShape на отдельные классы (может быть "btn-block rounded-0")
 							$shape_classes = $button_shape ? explode(' ', $button_shape) : [];
@@ -570,57 +537,49 @@ class ImageHotspotCPT {
 								}
 							}
 							?>
-							<?php if ($display_type !== 'callout'): ?>
-								<?php if (!$use_ajax && !empty($popover_content)): ?>
-									<!-- Скрытый контейнер с HTML контентом для простого текста -->
-									<?php
-									?>
-									<div class="cw-hotspot-popover-content" style="display: none;">
-										<?php if (!empty($wrapper_class)): ?>
-											<div class="<?php echo $wrapper_class; ?>">
-												<?php echo $popover_content; ?>
-											</div>
-										<?php else: ?>
+							<?php if (!$use_ajax && !empty($popover_content)): ?>
+								<!-- Скрытый контейнер с HTML контентом для простого текста -->
+								<?php
+								?>
+								<div class="cw-hotspot-popover-content" style="display: none;">
+									<?php if (!empty($wrapper_class)): ?>
+										<div class="<?php echo $wrapper_class; ?>">
 											<?php echo $popover_content; ?>
-										<?php endif; ?>
-									</div>
-								<?php elseif ($content_type === 'hybrid' && !empty($popover_content)): ?>
-									<!-- Для гибрида сохраняем текст в скрытом элементе -->
-									<div class="cw-hotspot-popover-content" style="display: none;">
-										<?php if (!empty($wrapper_class)): ?>
-											<div class="<?php echo $wrapper_class; ?>">
-												<?php echo $popover_content; ?>
-											</div>
-										<?php else: ?>
+										</div>
+									<?php else: ?>
+										<?php echo $popover_content; ?>
+									<?php endif; ?>
+								</div>
+							<?php elseif ($content_type === 'hybrid' && !empty($popover_content)): ?>
+								<!-- Для гибрида сохраняем текст в скрытом элементе -->
+								<div class="cw-hotspot-popover-content" style="display: none;">
+									<?php if (!empty($wrapper_class)): ?>
+										<div class="<?php echo $wrapper_class; ?>">
 											<?php echo $popover_content; ?>
-										<?php endif; ?>
-									</div>
-								<?php endif; ?>
+										</div>
+									<?php else: ?>
+										<?php echo $popover_content; ?>
+									<?php endif; ?>
+								</div>
 							<?php endif; ?>
 							<?php
 							?>
-							<?php if ($display_type === 'callout'): ?>
-								<!-- Для callout рендерим простую кнопку без Popover атрибутов -->
-								<span class="btn btn-circle <?php echo esc_attr($button_style); ?> w-2 h-2"></span>
-							<?php else: ?>
-								<!-- Для Popover рендерим с полными атрибутами -->
-								<span class="btn <?php echo esc_attr(implode(' ', array_merge($theme_classes, $shape_classes, [$button_style, $button_size]))); ?>"
-								      tabindex="0"
-								      data-bs-toggle="popover"
-								      data-bs-trigger="<?php echo esc_attr($popover_trigger); ?>"
-								      data-bs-placement="<?php echo esc_attr($popover_placement); ?>"
-								      data-bs-html="true"
-								      data-bs-ajax-load="<?php echo $use_ajax ? 'true' : 'false'; ?>"
-								      data-bs-title="<?php echo esc_attr($popover_title); ?>"
-								      data-content-type="<?php echo esc_attr($content_type); ?>"
-								      <?php if (!empty($hotspot['popoverWidth'])): ?>data-bs-popover-width="<?php echo esc_attr($hotspot['popoverWidth']); ?>"<?php endif; ?>>
-									<?php if (!empty($point_icon)): ?>
-										<i class="uil uil-<?php echo esc_attr($point_icon); ?>"></i>
-									<?php else: ?>
-										<i class="uil uil-plus"></i>
-									<?php endif; ?>
-								</span>
-							<?php endif; ?>
+							<span class="btn <?php echo esc_attr(implode(' ', array_merge($theme_classes, $shape_classes, [$button_style, $button_size]))); ?>"
+							      tabindex="0"
+							      data-bs-toggle="popover"
+							      data-bs-trigger="<?php echo esc_attr($popover_trigger); ?>"
+							      data-bs-placement="<?php echo esc_attr($popover_placement); ?>"
+							      data-bs-html="true"
+							      data-bs-ajax-load="<?php echo $use_ajax ? 'true' : 'false'; ?>"
+							      data-bs-title="<?php echo esc_attr($popover_title); ?>"
+							      data-content-type="<?php echo esc_attr($content_type); ?>"
+							      <?php if (!empty($hotspot['popoverWidth'])): ?>data-bs-popover-width="<?php echo esc_attr($hotspot['popoverWidth']); ?>"<?php endif; ?>>
+								<?php if (!empty($point_icon)): ?>
+									<i class="uil uil-<?php echo esc_attr($point_icon); ?>"></i>
+								<?php else: ?>
+									<i class="uil uil-plus"></i>
+								<?php endif; ?>
+							</span>
 						</div>
 					<?php endforeach; ?>
 				<?php endif; ?>

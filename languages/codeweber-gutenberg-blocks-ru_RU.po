@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Codeweber Gutenberg Blocks\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-02 20:06+0000\n"
-"PO-Revision-Date: 2026-01-09 12:42+0000\n"
+"PO-Revision-Date: 2026-01-09 12:53+0000\n"
 "Last-Translator: Codeweber\n"
 "Language-Team: Русский\n"
 "Language: ru_RU\n"
@@ -2840,9 +2840,8 @@ msgid "Image Position"
 msgstr "Положение изображения"
 
 #: src/src/blocks/banners/sidebar.js src/src/blocks/banners/sidebar.js
-#, fuzzy
 msgid "Image Simple"
-msgstr "Размер изображения"
+msgstr "Простое изображение"
 
 #: src/src/blocks/media/controls/MediaControl.js
 #: src/src/blocks/media/controls/MediaControl.js
@@ -2863,9 +2862,8 @@ msgid "Image Tag"
 msgstr "Метка изображения"
 
 #: src/src/blocks/banners/sidebar.js src/src/blocks/banners/sidebar.js
-#, fuzzy
 msgid "Image Type"
-msgstr "Размер изображения"
+msgstr "Тип изображения"
 
 #: src/src/utilities/link_type.js src/src/utilities/link_type.js
 msgid "Image URL"
@@ -4495,9 +4493,8 @@ msgid "Select Archive"
 msgstr "Выбрать видео"
 
 #: src/src/blocks/banners/sidebar.js src/src/blocks/banners/sidebar.js
-#, fuzzy
 msgid "Select Banner Type"
-msgstr "Выбрать тип записи"
+msgstr "Выбрать тип баннера"
 
 #: src/src/utilities/link_type.js src/src/utilities/link_type.js
 msgid "Select CF7"
@@ -4509,9 +4506,8 @@ msgid "Select combination"
 msgstr "Выберите комбинацию"
 
 #: src/src/blocks/yandex-map/sidebar.js src/src/blocks/yandex-map/sidebar.js
-#, fuzzy
 msgid "Select data source for markers"
-msgstr "Выберите размер для изображений записей."
+msgstr "Выберите источник данных для маркеров."
 
 #: src/src/blocks/form-field/edit.js src/src/blocks/form-field/edit.js
 #: src/src/utilities/link_type.js src/src/utilities/link_type.js

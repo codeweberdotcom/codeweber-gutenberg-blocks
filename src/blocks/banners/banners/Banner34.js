@@ -1,6 +1,7 @@
 import { InnerBlocks } from '@wordpress/block-editor';
 import { generateBackgroundClasses } from '../../../utilities/class-generators';
 import { ImageSimpleRender } from '../../../components/image/ImageSimpleRender';
+import { getImageUrl } from '../../../utilities/image-url';
 import { 
 	SwiperSlider, 
 	SwiperSlide, 
@@ -210,8 +211,74 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 		}
 
 		if ((imageType === 'image-simple' || imageType === 'background') && imagesToRender && imagesToRender.length > 0) {
-			// Для режима background всегда используем imageRenderType='background'
-			const renderType = imageType === 'background' ? 'background' : imageRenderType;
+			// Для режима background рендерим напрямую без ImageSimpleRender (и в редакторе, и на фронтенде)
+			if (imageType === 'background') {
+				// Рендерим в зависимости от displayMode
+				if (displayMode === 'single') {
+					const imageUrl = getImageUrl(imagesToRender[0], imageSize);
+					return (
+						<div className={wrapperClasses}>
+							<div 
+								className={`image-wrapper bg-image bg-cover h-100 w-100 ${borderRadius || ''}`.trim()}
+								data-image-src={imageUrl}
+								{...(isEditor && { style: { backgroundImage: `url(${imageUrl})` } })}
+							></div>
+						</div>
+					);
+				} else if (displayMode === 'grid') {
+					return (
+						<div className={wrapperClasses}>
+							<div className={getContainerClasses()}>
+								{imagesToRender.map((image, index) => {
+									const imageUrl = getImageUrl(image, imageSize);
+									return (
+										<div 
+											key={`banner-image-${index}-${imageSize}`}
+											className={gridType === 'classic' ? getColClasses() : ''}
+										>
+											<div 
+												className={`image-wrapper bg-image bg-cover h-100 w-100 ${borderRadius || ''}`.trim()}
+												data-image-src={imageUrl}
+												{...(isEditor && { style: { backgroundImage: `url(${imageUrl})` } })}
+											></div>
+										</div>
+									);
+								})}
+							</div>
+						</div>
+					);
+				} else if (displayMode === 'swiper') {
+					const swiperClassName = 'h-100';
+					const swiperContainerClassName = 'h-100 w-100';
+
+					return (
+						<div className={wrapperClasses}>
+							<SwiperSlider 
+								config={swiperConfig} 
+								className={swiperContainerClassName}
+								swiperClassName={swiperClassName}
+								{...(isEditor && { uniqueKey: `${swiperUniqueKey}-${imageSize}` })}
+							>
+								{imagesToRender.map((image, index) => {
+									const imageUrl = getImageUrl(image, imageSize);
+									return (
+										<SwiperSlide key={`banner-swiper-${index}-${imageSize}`}>
+											<div 
+												className={`image-wrapper bg-image bg-cover h-100 w-100 ${borderRadius || ''}`.trim()}
+												data-image-src={imageUrl}
+												{...(isEditor && { style: { backgroundImage: `url(${imageUrl})` } })}
+											></div>
+										</SwiperSlide>
+									);
+								})}
+							</SwiperSlider>
+						</div>
+					);
+				}
+			}
+			
+			// Для image-simple используем ImageSimpleRender
+			const renderType = imageRenderType;
 			
 			// Рендерим в зависимости от displayMode
 			if (displayMode === 'single') {

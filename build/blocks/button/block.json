@@ -179,7 +179,7 @@
     },
     "HoverType": {
       "type": "string",
-      "default": "hover"
+      "default": "none"
     },
     "LinkTextColor": {
       "type": "string",

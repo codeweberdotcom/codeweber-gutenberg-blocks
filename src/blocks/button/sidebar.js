@@ -84,8 +84,8 @@ export const ButtonSidebar = ({ attributes, setAttributes, iconPickerOpen, setIc
 				rightIcon = IconClass || 'uil uil-arrow-right';
 			}
 		} else if (type === 'link') {
-			// Set default HoverType to 'hover' when switching to link type
-			setAttributes({ HoverType: 'hover' });
+			// Set default HoverType to 'none' when switching to link type
+			setAttributes({ HoverType: 'none' });
 		}
 
 		setAttributes({
@@ -421,6 +421,7 @@ const handleIconChange = (type, value) => {
 						</label>
 					</div>
 					{[
+						{ label: 'Нет', value: 'none' },
 						{ label: 'Hover', value: 'hover' },
 						{ label: 'Hover 2', value: 'hover-2' },
 						{ label: 'Hover 3', value: 'hover-3' },
@@ -439,7 +440,7 @@ const handleIconChange = (type, value) => {
 			)}
 
 			{/* Link Variant */}
-			{ButtonType === 'link' && (
+			{ButtonType === 'link' && HoverType !== 'none' && (
 				<div className="link-variant-controls button-group-sidebar_33">
 					<div className="component-sidebar-title">
 						<label>
@@ -463,7 +464,7 @@ const handleIconChange = (type, value) => {
 			)}
 
 			{/* Link Text Color */}
-			{ButtonType === 'link' && (
+			{ButtonType === 'link' && HoverType !== 'none' && (
 				<ComboboxControl
 					label={__('Link Text Color', 'codeweber-gutenberg-blocks')}
 					value={LinkTextColor}

@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Codeweber Gutenberg Blocks\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-02 20:06+0000\n"
-"PO-Revision-Date: 2026-01-05 13:02+0000\n"
+"PO-Revision-Date: 2026-01-09 12:42+0000\n"
 "Last-Translator: Codeweber\n"
 "Language-Team: Русский\n"
 "Language: ru_RU\n"
@@ -2704,9 +2704,8 @@ msgstr "Эффекты при наведении доступны только �
 
 #: src/src/components/image-hover/ImageHoverControl.js
 #: src/src/components/image-hover/ImageHoverControl.js
-#, fuzzy
 msgid "Hover Scale"
-msgstr "Эффект при наведении"
+msgstr "Scale"
 
 #: src/src/components/load-more/LoadMoreControl.js
 #: src/src/components/load-more/LoadMoreControl.js
@@ -3023,7 +3022,7 @@ msgstr "Юридический адрес"
 #: src/src/components/image-hover/ImageHoverControl.js
 #: src/src/components/image-hover/ImageHoverControl.js
 msgid "Lift"
-msgstr "Подъём"
+msgstr "Lift"
 
 #: src/src/blocks/accordion/sidebar.js src/src/blocks/accordion/sidebar.js
 #: src/src/blocks/image-simple/controls/LayoutControl.js

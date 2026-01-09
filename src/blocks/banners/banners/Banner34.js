@@ -71,6 +71,8 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 		swiperNav,
 		swiperDots,
 		imageRenderType = 'img',
+		imageColumnClass,
+		contentColumnRightWrapperClass,
 	} = attributes;
 
 	// Функция для получения классов секции
@@ -185,7 +187,10 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 
 	const renderImageColumn = () => {
 		const positionClass = imagePosition === 'right' ? 'end-0' : 'start-0';
-		const wrapperClasses = `col-lg-6 position-lg-absolute top-0 ${positionClass} h-100 d-flex align-items-center justify-content-center`;
+		// Если задан imageColumnClass, используем его, иначе стандартные классы
+		const wrapperClasses = imageColumnClass 
+			? imageColumnClass.trim()
+			: `col-lg-6 position-lg-absolute top-0 ${positionClass} h-100 d-flex align-items-center justify-content-center`;
 		
 		// Используем массив images для обоих режимов
 		const imagesToRender = images || [];
@@ -374,7 +379,10 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 	};
 
 	const contentColumnClasses = imagePosition === 'right' ? 'col-lg-6' : 'col-lg-6 offset-lg-6';
-	const contentPaddingClasses = imagePosition === 'right' ? 'py-12 py-lg-16 pe-lg-12 py-xxl-18 pe-xxl-16 ps-lg-0' : 'py-12 py-lg-16 ps-lg-12 py-xxl-18 ps-xxl-16 pe-lg-0';
+	// Если задан contentColumnRightWrapperClass, используем его, иначе стандартные классы wrapper'а
+	const contentPaddingClasses = contentColumnRightWrapperClass 
+		? contentColumnRightWrapperClass.trim()
+		: (imagePosition === 'right' ? 'py-12 py-lg-16 pe-lg-12 py-xxl-18 pe-xxl-16 ps-lg-0' : 'py-12 py-lg-16 ps-lg-12 py-xxl-18 ps-xxl-16 pe-lg-0');
 
 	if (isEditor) {
 		return (

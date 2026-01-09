@@ -403,6 +403,14 @@
     "imageRenderType": {
       "type": "string",
       "default": "img"
+    },
+    "imageColumnClass": {
+      "type": "string",
+      "default": ""
+    },
+    "contentColumnRightWrapperClass": {
+      "type": "string",
+      "default": ""
     }
   },
   "textdomain": "codeweber-blocks",

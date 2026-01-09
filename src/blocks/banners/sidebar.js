@@ -299,6 +299,36 @@ export const BannersSidebar = ({ attributes, setAttributes }) => {
 									placeholder={__('Additional CSS classes', 'codeweber-gutenberg-blocks')}
 								/>
 							</div>
+							{bannerType === 'banner-34' && (
+								<>
+									<div className="mb-3">
+										<label>{__('Image Column Classes', 'codeweber-gutenberg-blocks')}</label>
+										<input
+											type="text"
+											className="components-text-control__input"
+											value={attributes.imageColumnClass || ''}
+											onChange={(e) => setAttributes({ imageColumnClass: e.target.value })}
+											placeholder={__('CSS classes (replaces default column classes)', 'codeweber-gutenberg-blocks')}
+										/>
+										<p className="components-base-control__help" style={{ fontSize: '12px', marginTop: '4px', color: '#757575' }}>
+											{__('If specified, replaces default column classes', 'codeweber-gutenberg-blocks')}
+										</p>
+									</div>
+									<div className="mb-3">
+										<label>{__('Content Column Right Wrapper Classes', 'codeweber-gutenberg-blocks')}</label>
+										<input
+											type="text"
+											className="components-text-control__input"
+											value={attributes.contentColumnRightWrapperClass || ''}
+											onChange={(e) => setAttributes({ contentColumnRightWrapperClass: e.target.value })}
+											placeholder={__('CSS classes (replaces default wrapper classes)', 'codeweber-gutenberg-blocks')}
+										/>
+										<p className="components-base-control__help" style={{ fontSize: '12px', marginTop: '4px', color: '#757575' }}>
+											{__('If specified, replaces default wrapper classes (py-12, ps-lg-12, etc.)', 'codeweber-gutenberg-blocks')}
+										</p>
+									</div>
+								</>
+							)}
 						</PanelBody>
 					)}
 				</>

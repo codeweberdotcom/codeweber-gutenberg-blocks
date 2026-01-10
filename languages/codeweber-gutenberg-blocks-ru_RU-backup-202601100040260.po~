@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Codeweber Gutenberg Blocks\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-02 20:06+0000\n"
-"PO-Revision-Date: 2026-01-05 01:51+0000\n"
+"PO-Revision-Date: 2026-01-10 00:39+0000\n"
 "Last-Translator: Codeweber\n"
 "Language-Team: Русский\n"
 "Language: ru_RU\n"
@@ -165,7 +165,6 @@ msgid "Accept"
 msgstr "Принимаемые типы"
 
 #: src/src/blocks/form-field/edit.js src/src/blocks/form-field/edit.js
-#, fuzzy
 msgid "Accepted types"
 msgstr "Принимаемые типы"
 
@@ -192,6 +191,10 @@ msgstr "Стиль аккордеона"
 msgid "Active slide will be centered, not at the beginning of the slider."
 msgstr "Активный слайд будет отцентрирован, а не в начале слайдера."
 
+#: src/src/blocks/contacts/sidebar.js
+msgid "Actual Address"
+msgstr "Фактический адрес"
+
 #: src/src/blocks/form-field/edit.js src/src/blocks/form-field/edit.js
 msgid ""
 "Add consent checkboxes to your form. Each consent can have a custom label "
@@ -209,6 +212,10 @@ msgstr "Добавить изображение"
 #: src/src/components/image/ImageControl.js
 msgid "Add Images"
 msgstr "Добавить изображения"
+
+#: src/src/blocks/contacts/sidebar.js
+msgid "Add Item"
+msgstr "Добавить элемент"
 
 #: src/src/blocks/yandex-map/controls/MarkerRepeaterControl.js
 #: src/src/blocks/yandex-map/controls/MarkerRepeaterControl.js
@@ -275,6 +282,18 @@ msgstr "Доп. классы обёртки"
 #: src/src/blocks/yandex-map/controls/MarkerRepeaterControl.js
 msgid "Address"
 msgstr "Адрес"
+
+#: src/src/blocks/contacts/index.js
+msgid "address"
+msgstr "адрес"
+
+#: src/src/blocks/contacts/sidebar.js
+msgid "Address Type"
+msgstr "Тип адреса"
+
+#: src/src/blocks/contacts/edit.js
+msgid "Address will be displayed here"
+msgstr "Здесь будет отображаться адрес"
 
 #: src/src/blocks/icon/sidebar.js src/src/blocks/icon/sidebar.js
 #: src/src/components/icon/IconControl.js
@@ -1350,6 +1369,22 @@ msgstr "Блок согласий"
 msgid "Consents block"
 msgstr "Блок согласий"
 
+#: src/src/blocks/contacts/index.js
+msgid "contact"
+msgstr "контакт"
+
+#: src/src/blocks/contacts/sidebar.js
+msgid "Contact Items"
+msgstr "Элементы контактов"
+
+#: src/src/blocks/contacts/index.js
+msgid "Contacts"
+msgstr "Контакты"
+
+#: src/src/blocks/contacts/index.js
+msgid "contacts"
+msgstr "контакты"
+
 #: src/src/blocks/section/sidebar.js src/src/blocks/section/sidebar.js
 msgid "Container"
 msgstr "Контейнер"
@@ -1620,6 +1655,10 @@ msgstr "По убыванию"
 msgid "Description"
 msgstr "Описание"
 
+#: src/src/blocks/contacts/index.js
+msgid "Display contact information from Codeweber theme Redux settings."
+msgstr "Отображение контактной информации из настроек темы Codeweber Redux."
+
 #: src/src/blocks/image-simple/controls/LayoutControl.js
 #: src/src/blocks/image-simple/controls/LayoutControl.js
 #: src/src/blocks/post-grid/controls/LayoutControl.js
@@ -1706,6 +1745,10 @@ msgstr ""
 msgid "Duration (ms)"
 msgstr "Длительность (мс)"
 
+#: src/src/blocks/contacts/edit.js
+msgid "E-mail"
+msgstr "E-mail"
+
 #: src/src/blocks/yandex-map/controls/MarkerRepeaterControl.js
 #: src/src/blocks/yandex-map/controls/MarkerRepeaterControl.js
 msgid "Edit"
@@ -1722,9 +1765,8 @@ msgstr "Редактировать изображения"
 
 #: src/src/blocks/yandex-map/controls/MarkerRepeaterControl.js
 #: src/src/blocks/yandex-map/controls/MarkerRepeaterControl.js
-#, fuzzy
 msgid "Edit Marker"
-msgstr "Редактировать изображения"
+msgstr "Редактировать Маркер"
 
 #: inc/ImageHotspotCPT.php:332
 msgid "Edit Point"
@@ -1761,6 +1803,10 @@ msgstr "Тип элемента"
 msgid "Email"
 msgstr "Email"
 
+#: src/src/blocks/contacts/index.js
+msgid "email"
+msgstr "email"
+
 #: src/src/blocks/form-field/edit.js src/src/blocks/form-field/edit.js
 msgid "Email Address"
 msgstr "Адрес электронной почты"
@@ -1776,6 +1822,10 @@ msgstr "Настройки электронной почты"
 #: src/src/blocks/form/edit.js src/src/blocks/form/edit.js
 msgid "Email Subject"
 msgstr "Тема письма"
+
+#: src/src/blocks/contacts/edit.js
+msgid "Email will be displayed here"
+msgstr "Здесь будет отображаться email"
 
 #: src/src/blocks/media/controls/MediaControl.js
 #: src/src/blocks/media/controls/MediaControl.js
@@ -2026,9 +2076,8 @@ msgstr "Введите ID видео на YouTube."
 
 #: src/src/components/video-url/VideoURLControl.js
 #: src/src/components/video-url/VideoURLControl.js
-#, fuzzy
 msgid "Enter YouTube video URL or video ID"
-msgstr "URL YouTube видео"
+msgstr "URL YouTube видео или ID"
 
 #: inc/Plugin.php:918
 msgid "Error adding file"
@@ -2055,9 +2104,8 @@ msgstr "Ошибка при загрузке файла"
 #: src/src/blocks/media/controls/MediaControl.js
 #: src/src/components/media-upload/VideoUpload.js
 #: src/src/components/media-upload/VideoUpload.js
-#, fuzzy
 msgid "Example: 15801179"
-msgstr "Например: me-4"
+msgstr "Например: 15801179"
 
 #: src/src/blocks/media/controls/MediaControl.js
 #: src/src/blocks/media/controls/MediaControl.js
@@ -2652,9 +2700,8 @@ msgstr "Эффекты при наведении доступны только �
 
 #: src/src/components/image-hover/ImageHoverControl.js
 #: src/src/components/image-hover/ImageHoverControl.js
-#, fuzzy
 msgid "Hover Scale"
-msgstr "Эффект при наведении"
+msgstr "Scale"
 
 #: src/src/components/load-more/LoadMoreControl.js
 #: src/src/components/load-more/LoadMoreControl.js
@@ -2789,9 +2836,8 @@ msgid "Image Position"
 msgstr "Положение изображения"
 
 #: src/src/blocks/banners/sidebar.js src/src/blocks/banners/sidebar.js
-#, fuzzy
 msgid "Image Simple"
-msgstr "Размер изображения"
+msgstr "Простое изображение"
 
 #: src/src/blocks/media/controls/MediaControl.js
 #: src/src/blocks/media/controls/MediaControl.js
@@ -2812,9 +2858,8 @@ msgid "Image Tag"
 msgstr "Метка изображения"
 
 #: src/src/blocks/banners/sidebar.js src/src/blocks/banners/sidebar.js
-#, fuzzy
 msgid "Image Type"
-msgstr "Размер изображения"
+msgstr "Тип изображения"
 
 #: src/src/utilities/link_type.js src/src/utilities/link_type.js
 msgid "Image URL"
@@ -2964,10 +3009,14 @@ msgstr "Оставьте пустым, если имя не должно быт�
 msgid "Left"
 msgstr "Слева"
 
+#: src/src/blocks/contacts/sidebar.js
+msgid "Legal Address"
+msgstr "Юридический адрес"
+
 #: src/src/components/image-hover/ImageHoverControl.js
 #: src/src/components/image-hover/ImageHoverControl.js
 msgid "Lift"
-msgstr "Подъём"
+msgstr "Lift"
 
 #: src/src/blocks/accordion/sidebar.js src/src/blocks/accordion/sidebar.js
 #: src/src/blocks/image-simple/controls/LayoutControl.js
@@ -3054,6 +3103,10 @@ msgstr "Загрузка телефонов..."
 #: src/src/blocks/html-blocks/edit.js src/src/blocks/html-blocks/edit.js
 msgid "Loading blocks..."
 msgstr "Загрузка блоков..."
+
+#: src/src/blocks/contacts/edit.js
+msgid "Loading contacts data..."
+msgstr "Загрузка данных контактов..."
 
 #: src/src/blocks/html-blocks/edit.js src/src/blocks/html-blocks/edit.js
 msgid "Loading content..."
@@ -3526,6 +3579,10 @@ msgstr "Нет классов Col"
 #, fuzzy
 msgid "No Column Width Classes"
 msgstr "Нет классов Col"
+
+#: src/src/blocks/contacts/sidebar.js
+msgid "No contact items. Add items below."
+msgstr "Нет элементов контактов. Добавьте элементы ниже."
 
 #: inc/Plugin.php:756 build/blocks/accordion/render.php:149
 #: src/blocks/accordion/render.php:149
@@ -4000,6 +4057,30 @@ msgstr ""
 msgid "Phone"
 msgstr "Телефон"
 
+#: src/src/blocks/contacts/index.js
+msgid "phone"
+msgstr "телефон"
+
+#: src/src/blocks/contacts/sidebar.js
+msgid "Phone 01"
+msgstr "Телефон 01"
+
+#: src/src/blocks/contacts/sidebar.js
+msgid "Phone 02"
+msgstr "Телефон 02"
+
+#: src/src/blocks/contacts/sidebar.js
+msgid "Phone 03"
+msgstr "Телефон 03"
+
+#: src/src/blocks/contacts/sidebar.js
+msgid "Phone 04"
+msgstr "Телефон 04"
+
+#: src/src/blocks/contacts/sidebar.js
+msgid "Phone 05"
+msgstr "Телефон 05"
+
 #: src/src/blocks/form-field/edit.js src/src/blocks/form-field/edit.js
 #, fuzzy
 msgid "Phone mask"
@@ -4012,6 +4093,10 @@ msgstr "Номер телефона"
 #: src/src/utilities/link_type.js src/src/utilities/link_type.js
 msgid "Phone Type"
 msgstr "Тип телефона"
+
+#: src/src/blocks/contacts/edit.js
+msgid "Phone will be displayed here"
+msgstr "Здесь будет отображаться телефон"
 
 #: src/src/blocks/tabs/sidebar.js src/src/blocks/tabs/sidebar.js
 msgid "Pills"
@@ -4404,9 +4489,8 @@ msgid "Select Archive"
 msgstr "Выбрать видео"
 
 #: src/src/blocks/banners/sidebar.js src/src/blocks/banners/sidebar.js
-#, fuzzy
 msgid "Select Banner Type"
-msgstr "Выбрать тип записи"
+msgstr "Выбрать тип баннера"
 
 #: src/src/utilities/link_type.js src/src/utilities/link_type.js
 msgid "Select CF7"
@@ -4418,9 +4502,8 @@ msgid "Select combination"
 msgstr "Выберите комбинацию"
 
 #: src/src/blocks/yandex-map/sidebar.js src/src/blocks/yandex-map/sidebar.js
-#, fuzzy
 msgid "Select data source for markers"
-msgstr "Выберите размер для изображений записей."
+msgstr "Выберите источник данных для маркеров."
 
 #: src/src/blocks/form-field/edit.js src/src/blocks/form-field/edit.js
 #: src/src/utilities/link_type.js src/src/utilities/link_type.js
@@ -4494,6 +4577,10 @@ msgstr "Выбрать паттерн"
 #: src/src/utilities/link_type.js src/src/utilities/link_type.js
 msgid "Select Phone"
 msgstr "Выбрать телефон"
+
+#: src/src/blocks/contacts/sidebar.js
+msgid "Select Phones"
+msgstr "Выбрать телефоны"
 
 #: inc/ImageHotspotCPT.php:345
 msgid "Select Post"
@@ -5717,6 +5804,14 @@ msgstr ""
 msgid "White"
 msgstr "Белый"
 
+#: src/src/blocks/contacts/sidebar.js
+msgid "With Icon"
+msgstr "С иконкой"
+
+#: src/src/blocks/contacts/sidebar.js
+msgid "With Icon Simple"
+msgstr "С иконкой (простой)"
+
 #: src/src/blocks/features/templates.js src/src/blocks/features/templates.js
 msgid ""
 "Work with professionals who have years of experience and deep knowledge in "
@@ -5833,107 +5928,3 @@ msgstr "— Выбрать пользователя —"
 #: src/src/blocks/form-field/edit.js src/src/blocks/form-field/edit.js
 msgid "— Select —"
 msgstr "— Выбрать —"
-
-#: src/src/blocks/contacts/index.js
-msgid "Contacts"
-msgstr "Контакты"
-
-#: src/src/blocks/contacts/index.js
-msgid "Display contact information from Codeweber theme Redux settings."
-msgstr "Отображение контактной информации из настроек темы Codeweber Redux."
-
-#: src/src/blocks/contacts/index.js
-msgid "contacts"
-msgstr "контакты"
-
-#: src/src/blocks/contacts/index.js
-msgid "address"
-msgstr "адрес"
-
-#: src/src/blocks/contacts/index.js
-msgid "email"
-msgstr "email"
-
-#: src/src/blocks/contacts/index.js
-msgid "phone"
-msgstr "телефон"
-
-#: src/src/blocks/contacts/index.js
-msgid "contact"
-msgstr "контакт"
-
-#: src/src/blocks/contacts/edit.js
-msgid "Address will be displayed here"
-msgstr "Здесь будет отображаться адрес"
-
-#: src/src/blocks/contacts/edit.js
-msgid "E-mail"
-msgstr "E-mail"
-
-#: src/src/blocks/contacts/edit.js
-msgid "Email will be displayed here"
-msgstr "Здесь будет отображаться email"
-
-#: src/src/blocks/contacts/edit.js
-msgid "Phone will be displayed here"
-msgstr "Здесь будет отображаться телефон"
-
-#: src/src/blocks/contacts/edit.js
-msgid "Loading contacts data..."
-msgstr "Загрузка данных контактов..."
-
-#: src/src/blocks/contacts/sidebar.js
-msgid "Phone 01"
-msgstr "Телефон 01"
-
-#: src/src/blocks/contacts/sidebar.js
-msgid "Phone 02"
-msgstr "Телефон 02"
-
-#: src/src/blocks/contacts/sidebar.js
-msgid "Phone 03"
-msgstr "Телефон 03"
-
-#: src/src/blocks/contacts/sidebar.js
-msgid "Phone 04"
-msgstr "Телефон 04"
-
-#: src/src/blocks/contacts/sidebar.js
-msgid "Phone 05"
-msgstr "Телефон 05"
-
-#: src/src/blocks/contacts/sidebar.js
-msgid "Contact Items"
-msgstr "Элементы контактов"
-
-#: src/src/blocks/contacts/sidebar.js
-msgid "With Icon"
-msgstr "С иконкой"
-
-#: src/src/blocks/contacts/sidebar.js
-msgid "With Icon Simple"
-msgstr "С иконкой (простой)"
-
-#: src/src/blocks/contacts/sidebar.js
-msgid "No contact items. Add items below."
-msgstr "Нет элементов контактов. Добавьте элементы ниже."
-
-#: src/src/blocks/contacts/sidebar.js
-msgid "Address Type"
-msgstr "Тип адреса"
-
-#: src/src/blocks/contacts/sidebar.js
-msgid "Legal Address"
-msgstr "Юридический адрес"
-
-#: src/src/blocks/contacts/sidebar.js
-msgid "Actual Address"
-msgstr "Фактический адрес"
-
-#: src/src/blocks/contacts/sidebar.js
-msgid "Select Phones"
-msgstr "Выбрать телефоны"
-
-#: src/src/blocks/contacts/sidebar.js
-msgid "Add Item"
-msgstr "Добавить элемент"

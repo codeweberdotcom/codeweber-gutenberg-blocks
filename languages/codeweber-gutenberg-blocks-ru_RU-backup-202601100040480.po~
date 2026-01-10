@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Codeweber Gutenberg Blocks\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-02 20:06+0000\n"
-"PO-Revision-Date: 2026-01-09 12:42+0000\n"
+"PO-Revision-Date: 2026-01-10 00:40+0000\n"
 "Last-Translator: Codeweber\n"
 "Language-Team: Русский\n"
 "Language: ru_RU\n"
@@ -165,7 +165,6 @@ msgid "Accept"
 msgstr "Принимаемые типы"
 
 #: src/src/blocks/form-field/edit.js src/src/blocks/form-field/edit.js
-#, fuzzy
 msgid "Accepted types"
 msgstr "Принимаемые типы"
 
@@ -1766,9 +1765,8 @@ msgstr "Редактировать изображения"
 
 #: src/src/blocks/yandex-map/controls/MarkerRepeaterControl.js
 #: src/src/blocks/yandex-map/controls/MarkerRepeaterControl.js
-#, fuzzy
 msgid "Edit Marker"
-msgstr "Редактировать изображения"
+msgstr "Редактировать Маркер"
 
 #: inc/ImageHotspotCPT.php:332
 msgid "Edit Point"
@@ -2078,9 +2076,8 @@ msgstr "Введите ID видео на YouTube."
 
 #: src/src/components/video-url/VideoURLControl.js
 #: src/src/components/video-url/VideoURLControl.js
-#, fuzzy
 msgid "Enter YouTube video URL or video ID"
-msgstr "URL YouTube видео"
+msgstr "URL YouTube видео или ID"
 
 #: inc/Plugin.php:918
 msgid "Error adding file"
@@ -2107,9 +2104,8 @@ msgstr "Ошибка при загрузке файла"
 #: src/src/blocks/media/controls/MediaControl.js
 #: src/src/components/media-upload/VideoUpload.js
 #: src/src/components/media-upload/VideoUpload.js
-#, fuzzy
 msgid "Example: 15801179"
-msgstr "Например: me-4"
+msgstr "Например: 15801179"
 
 #: src/src/blocks/media/controls/MediaControl.js
 #: src/src/blocks/media/controls/MediaControl.js
@@ -2141,9 +2137,8 @@ msgstr "Очень очень большой (xxl) ≥1400px"
 
 #: src/src/components/responsive-control/helpers.js
 #: src/src/components/responsive-control/helpers.js
-#, fuzzy
 msgid "Extra Extra Large (≥1400px)"
-msgstr "Очень очень большой (xxl) ≥1400px"
+msgstr "Extra Extra Large (≥1400px)"
 
 #: src/src/utilities/shadows.js src/src/utilities/shadows.js
 msgid "Extra Large"
@@ -2159,14 +2154,12 @@ msgstr "Очень большой (xl) ≥1200px"
 
 #: src/src/components/responsive-control/helpers.js
 #: src/src/components/responsive-control/helpers.js
-#, fuzzy
 msgid "Extra Large (≥1200px)"
-msgstr "Очень большой (xl) ≥1200px"
+msgstr "Extra Large (≥1200px)"
 
 #: inc/ImageHotspotCPT.php:231
-#, fuzzy
 msgid "Extra Small"
-msgstr "Очень маленький (xs)"
+msgstr "Extra Small (xs)"
 
 #: src/src/components/adaptive/AdaptiveControl.js
 #: src/src/components/adaptive/AdaptiveControl.js
@@ -2178,12 +2171,10 @@ msgstr "Очень маленький (xs)"
 
 #: src/src/components/responsive-control/helpers.js
 #: src/src/components/responsive-control/helpers.js
-#, fuzzy
 msgid "Extra Small (≥0px)"
-msgstr "Очень маленький (xs)"
+msgstr "Extra Small (xs)"
 
 #: src/src/blocks/swiper/edit.js src/src/blocks/swiper/edit.js
-#, fuzzy
 msgid "Fade"
 msgstr "Появление"
 
@@ -2840,9 +2831,8 @@ msgid "Image Position"
 msgstr "Положение изображения"
 
 #: src/src/blocks/banners/sidebar.js src/src/blocks/banners/sidebar.js
-#, fuzzy
 msgid "Image Simple"
-msgstr "Размер изображения"
+msgstr "Простое изображение"
 
 #: src/src/blocks/media/controls/MediaControl.js
 #: src/src/blocks/media/controls/MediaControl.js
@@ -2863,9 +2853,8 @@ msgid "Image Tag"
 msgstr "Метка изображения"
 
 #: src/src/blocks/banners/sidebar.js src/src/blocks/banners/sidebar.js
-#, fuzzy
 msgid "Image Type"
-msgstr "Размер изображения"
+msgstr "Тип изображения"
 
 #: src/src/utilities/link_type.js src/src/utilities/link_type.js
 msgid "Image URL"
@@ -4495,9 +4484,8 @@ msgid "Select Archive"
 msgstr "Выбрать видео"
 
 #: src/src/blocks/banners/sidebar.js src/src/blocks/banners/sidebar.js
-#, fuzzy
 msgid "Select Banner Type"
-msgstr "Выбрать тип записи"
+msgstr "Выбрать тип баннера"
 
 #: src/src/utilities/link_type.js src/src/utilities/link_type.js
 msgid "Select CF7"
@@ -4509,9 +4497,8 @@ msgid "Select combination"
 msgstr "Выберите комбинацию"
 
 #: src/src/blocks/yandex-map/sidebar.js src/src/blocks/yandex-map/sidebar.js
-#, fuzzy
 msgid "Select data source for markers"
-msgstr "Выберите размер для изображений записей."
+msgstr "Выберите источник данных для маркеров."
 
 #: src/src/blocks/form-field/edit.js src/src/blocks/form-field/edit.js
 #: src/src/utilities/link_type.js src/src/utilities/link_type.js

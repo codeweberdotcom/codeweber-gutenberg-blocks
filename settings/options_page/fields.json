@@ -1,11 +1,9 @@
 {
-  "company_name": "Company Name",
-  "phones": {
-  "phone_number": "Phone",
-	"phone_number_2": "Phone 2",
-	"phone_number_3": "Phone 3"
-  },
+	"company_name": "Company Name",
+	"phones": {
+		"phone_number": "Phone",
+		"phone_number_2": "Phone 2",
+		"phone_number_3": "Phone 3"
+	},
 	"email": "Email"
 }
-
-

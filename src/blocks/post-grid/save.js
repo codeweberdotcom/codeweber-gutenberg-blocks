@@ -6,13 +6,3 @@ export default function Save() {
 	// Dynamic block - rendered on server via render.php
 	return null;
 }
-
-
-
-
-
-
-
-
-
-

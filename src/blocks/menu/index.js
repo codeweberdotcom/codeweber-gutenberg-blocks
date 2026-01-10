@@ -19,7 +19,10 @@ registerBlockType(metadata, {
 	edit: Edit,
 	save: Save,
 	title: __('Menu', 'codeweber-gutenberg-blocks'),
-	description: __('Menu block with Custom and WordPress Menu modes. Supports dark/light theme and list styling options.', 'codeweber-gutenberg-blocks'),
+	description: __(
+		'Menu block with Custom and WordPress Menu modes. Supports dark/light theme and list styling options.',
+		'codeweber-gutenberg-blocks'
+	),
 	keywords: [
 		__('menu', 'codeweber-gutenberg-blocks'),
 		__('navigation', 'codeweber-gutenberg-blocks'),

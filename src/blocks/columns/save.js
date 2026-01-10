@@ -1,5 +1,9 @@
 import { InnerBlocks } from '@wordpress/block-editor';
-import { getColumnsClassNames, normalizeColumnsId, normalizeColumnsData } from './utils';
+import {
+	getColumnsClassNames,
+	normalizeColumnsId,
+	normalizeColumnsData,
+} from './utils';
 
 const ColumnsSave = ({ attributes }) => {
 	const { columnsId, columnsData } = attributes;
@@ -16,5 +20,3 @@ const ColumnsSave = ({ attributes }) => {
 };
 
 export default ColumnsSave;
-
-

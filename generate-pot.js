@@ -4,7 +4,11 @@ const fs = require('fs');
 const glob = require('glob');
 
 const pluginPath = __dirname;
-const potFile = path.join(pluginPath, 'languages', 'codeweber-gutenberg-blocks.pot');
+const potFile = path.join(
+	pluginPath,
+	'languages',
+	'codeweber-gutenberg-blocks.pot'
+);
 const textDomain = 'codeweber-gutenberg-blocks';
 const packageName = 'Codeweber Gutenberg Blocks';
 
@@ -14,7 +18,7 @@ console.log('📝 Generating POT file from source files...\n');
 function extractStringsFromJS(filePath) {
 	const content = fs.readFileSync(filePath, 'utf8');
 	const strings = [];
-	
+
 	// Паттерны для поиска строк перевода:
 	// __('text', 'domain')
 	// __('text', "domain")
@@ -27,8 +31,8 @@ function extractStringsFromJS(filePath) {
 		// Для двойных кавычек с экранированием
 		/__\(["']((?:[^"']|\\["'])+)["']\s*,\s*["']codeweber-gutenberg-blocks["']\)/g,
 	];
-	
-	patterns.forEach(pattern => {
+
+	patterns.forEach((pattern) => {
 		let match;
 		while ((match = pattern.exec(content)) !== null) {
 			// Раскрываем экранированные кавычки: \' -> ', \" -> "
@@ -39,7 +43,7 @@ function extractStringsFromJS(filePath) {
 			});
 		}
 	});
-	
+
 	return strings;
 }
 
@@ -53,12 +57,12 @@ try {
 
 	// Сначала генерируем POT из PHP файлов используя wp i18n make-pot
 	let phpCommand = `wp i18n make-pot "${pluginPath}" "${potFile}" --domain="${textDomain}" --package-name="${packageName}" --headers='{"Last-Translator":"FULL NAME <EMAIL@ADDRESS>","Language-Team":"LANGUAGE <LL@li.org>"}' --skip-js --skip-jsx`;
-	
+
 	try {
 		console.log('Running: wp i18n make-pot (PHP files)...');
-		execSync(phpCommand, { 
+		execSync(phpCommand, {
 			cwd: pluginPath,
-			stdio: 'inherit'
+			stdio: 'inherit',
 		});
 	} catch (error) {
 		console.log('⚠️  wp i18n make-pot failed, will extract manually...\n');
@@ -68,8 +72,8 @@ try {
 	console.log('Extracting strings from JS/JSX files...');
 	const jsFiles = glob.sync('src/**/*.{js,jsx}', { cwd: pluginPath });
 	const allStrings = new Map();
-	
-	jsFiles.forEach(file => {
+
+	jsFiles.forEach((file) => {
 		const fullPath = path.join(pluginPath, file);
 		const strings = extractStringsFromJS(fullPath);
 		strings.forEach(({ text, file: filePath }) => {
@@ -108,7 +112,9 @@ msgstr ""
 	allStrings.forEach((files, text) => {
 		// Проверяем, нет ли уже этой строки в POT
 		if (!potContent.includes(`msgid "${text.replace(/"/g, '\\"')}"`)) {
-			const fileRefs = files.map(f => `src/${f.replace(/\\/g, '/')}`).join(' ');
+			const fileRefs = files
+				.map((f) => `src/${f.replace(/\\/g, '/')}`)
+				.join(' ');
 			newEntries += `#: ${fileRefs}\n`;
 			newEntries += `msgid "${text.replace(/"/g, '\\"')}"\n`;
 			newEntries += `msgstr ""\n\n`;
@@ -118,7 +124,9 @@ msgstr ""
 	if (newEntries) {
 		potContent += newEntries;
 		fs.writeFileSync(potFile, potContent, 'utf8');
-		console.log(`✅ Added ${allStrings.size} strings from JS/JSX files to POT`);
+		console.log(
+			`✅ Added ${allStrings.size} strings from JS/JSX files to POT`
+		);
 	} else {
 		console.log('ℹ️  No new strings found in JS/JSX files');
 	}
@@ -128,12 +136,13 @@ msgstr ""
 	console.log('   1. Review the POT file');
 	console.log('   2. Sync in Loco Translate if needed');
 	console.log('   3. Run: npm run i18n:compile\n');
-
 } catch (error) {
 	console.error('\n❌ Error generating POT file:');
 	console.error(error.message);
 	console.error('\n💡 Alternative: Use Loco Translate in WordPress admin:');
-	console.error('   1. Go to: Loco Translate → Plugins → Codeweber Gutenberg Blocks');
+	console.error(
+		'   1. Go to: Loco Translate → Plugins → Codeweber Gutenberg Blocks'
+	);
 	console.error('   2. Click "Sync" button');
 	console.error('   3. POT file will be updated automatically\n');
 	process.exit(1);

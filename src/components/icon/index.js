@@ -136,4 +136,3 @@ export const iconAttributesJson = (prefix = '') => {
 	});
 	return attrs;
 };
-

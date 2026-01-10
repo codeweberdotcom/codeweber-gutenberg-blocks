@@ -1,5 +1,8 @@
 import { getLightboxAttributes } from '../../../utilities/lightbox';
-import { getImageHoverClasses, getTooltipTitle } from '../../../components/image-hover/ImageHoverControl';
+import {
+	getImageHoverClasses,
+	getTooltipTitle,
+} from '../../../components/image-hover/ImageHoverControl';
 import { getImageUrl } from '../../../utilities/image-url';
 
 export const ImageRender = ({ attributes, isEditor = false }) => {
@@ -33,7 +36,10 @@ export const ImageRender = ({ attributes, isEditor = false }) => {
 	const tooltipTitle = getTooltipTitle(effectType, tooltipStyle, image);
 
 	// Получаем атрибуты lightbox
-	const lightboxAttrs = getLightboxAttributes(enableLightbox, lightboxGallery);
+	const lightboxAttrs = getLightboxAttributes(
+		enableLightbox,
+		lightboxGallery
+	);
 
 	// Определяем href и обработчик клика
 	const href = enableLightbox && !isEditor ? image.url : '#';
@@ -45,31 +51,36 @@ export const ImageRender = ({ attributes, isEditor = false }) => {
 	};
 
 	// Формируем классы figure
-	const figureClasses = [
-		hoverClasses,
-		borderRadius,
-	].filter(Boolean).join(' ');
+	const figureClasses = [hoverClasses, borderRadius]
+		.filter(Boolean)
+		.join(' ');
 
 	// Формируем контент изображения
-	const imageContent = (
-		<img src={imageUrl} alt={image.alt || ''} />
-	);
+	const imageContent = <img src={imageUrl} alt={image.alt || ''} />;
 
 	// Wrapper для маски
-	const maskedImage = imageMask && imageMask !== 'none' ? (
-		<div className={`img-mask ${imageMask}`}>
-			{imageContent}
-		</div>
-	) : imageContent;
+	const maskedImage =
+		imageMask && imageMask !== 'none' ? (
+			<div className={`img-mask ${imageMask}`}>{imageContent}</div>
+		) : (
+			imageContent
+		);
 
 	// Стили для отключения кликабельности в редакторе
-	const linkStyle = isEditor ? { pointerEvents: 'none', cursor: 'default' } : undefined;
+	const linkStyle = isEditor
+		? { pointerEvents: 'none', cursor: 'default' }
+		: undefined;
 
 	// Tooltip вариант
 	if (effectType === 'tooltip' && tooltipTitle) {
 		return (
 			<figure className={figureClasses} title={tooltipTitle}>
-				<a href={href} onClick={onClickHandler} {...lightboxAttrs} style={linkStyle}>
+				<a
+					href={href}
+					onClick={onClickHandler}
+					{...lightboxAttrs}
+					style={linkStyle}
+				>
 					{maskedImage}
 				</a>
 			</figure>
@@ -85,7 +96,12 @@ export const ImageRender = ({ attributes, isEditor = false }) => {
 		if (overlayStyle === 'overlay-4') {
 			return (
 				<figure className={figureClasses}>
-					<a href={href} onClick={onClickHandler} {...lightboxAttrs} style={linkStyle}>
+					<a
+						href={href}
+						onClick={onClickHandler}
+						{...lightboxAttrs}
+						style={linkStyle}
+					>
 						{maskedImage}
 					</a>
 					{overlayText && (
@@ -100,7 +116,12 @@ export const ImageRender = ({ attributes, isEditor = false }) => {
 		// Остальные overlay стили
 		return (
 			<figure className={figureClasses}>
-				<a href={href} onClick={onClickHandler} {...lightboxAttrs} style={linkStyle}>
+				<a
+					href={href}
+					onClick={onClickHandler}
+					{...lightboxAttrs}
+					style={linkStyle}
+				>
 					{maskedImage}
 				</a>
 				{overlayText && (
@@ -115,10 +136,14 @@ export const ImageRender = ({ attributes, isEditor = false }) => {
 	// Простой вариант (cursor, none или только simple эффекты)
 	return (
 		<figure className={figureClasses}>
-			<a href={href} onClick={onClickHandler} {...lightboxAttrs} style={linkStyle}>
+			<a
+				href={href}
+				onClick={onClickHandler}
+				{...lightboxAttrs}
+				style={linkStyle}
+			>
 				{maskedImage}
 			</a>
 		</figure>
 	);
 };
-

@@ -1,6 +1,6 @@
 /**
  * Swiper Component Exports
- * 
+ *
  * @package CodeWeber Gutenberg Blocks
  */
 
@@ -13,13 +13,3 @@ export {
 	initSwiper,
 	destroySwiper,
 } from './SwiperSlider';
-
-
-
-
-
-
-
-
-
-

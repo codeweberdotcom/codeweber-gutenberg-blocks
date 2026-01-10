@@ -112,5 +112,3 @@ export const fontIconsSocial = [
 	{ value: 'yandex-dzen', label: 'yandex-dzen' },
 	{ value: 'salesforce', label: 'salesforce' },
 ];
-
-

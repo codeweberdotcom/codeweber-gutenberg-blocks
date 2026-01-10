@@ -12,24 +12,28 @@ export const ImageControl = ({ images, setAttributes, imageSize }) => {
 				let title = '';
 				let description = '';
 				let sizes = {};
-				
+
 				// Запрашиваем полные данные из REST API для получения title, description и sizes
 				try {
-					const response = await fetch(`/wp-json/wp/v2/media/${item.id}`);
+					const response = await fetch(
+						`/wp-json/wp/v2/media/${item.id}`
+					);
 					if (response.ok) {
 						const fullData = await response.json();
 						title = fullData.title?.rendered || '';
-						
+
 						// Description может содержать HTML - извлекаем только текст
-						let descriptionHtml = fullData.description?.rendered || '';
+						let descriptionHtml =
+							fullData.description?.rendered || '';
 						if (descriptionHtml) {
 							// Создаем временный элемент для парсинга HTML
 							const tempDiv = document.createElement('div');
 							tempDiv.innerHTML = descriptionHtml;
-							description = tempDiv.textContent || tempDiv.innerText || '';
+							description =
+								tempDiv.textContent || tempDiv.innerText || '';
 							description = description.trim();
 						}
-						
+
 						// Получаем все доступные размеры
 						if (fullData.media_details?.sizes) {
 							sizes = fullData.media_details.sizes;
@@ -38,11 +42,11 @@ export const ImageControl = ({ images, setAttributes, imageSize }) => {
 				} catch (error) {
 					console.warn('Failed to fetch full media data:', error);
 				}
-				
+
 				return {
 					id: item.id,
 					url: item.url, // Full size URL
-					sizes: sizes,  // Все доступные размеры
+					sizes: sizes, // Все доступные размеры
 					alt: item.alt || '',
 					title: title,
 					caption: item.caption || '',
@@ -51,7 +55,7 @@ export const ImageControl = ({ images, setAttributes, imageSize }) => {
 				};
 			})
 		);
-		
+
 		setAttributes({ images: newImages });
 	};
 
@@ -66,7 +70,10 @@ export const ImageControl = ({ images, setAttributes, imageSize }) => {
 	const handleMoveUp = (index) => {
 		if (index === 0) return;
 		const newImages = [...images];
-		[newImages[index - 1], newImages[index]] = [newImages[index], newImages[index - 1]];
+		[newImages[index - 1], newImages[index]] = [
+			newImages[index],
+			newImages[index - 1],
+		];
 		setAttributes({ images: newImages });
 	};
 
@@ -74,7 +81,10 @@ export const ImageControl = ({ images, setAttributes, imageSize }) => {
 	const handleMoveDown = (index) => {
 		if (index === images.length - 1) return;
 		const newImages = [...images];
-		[newImages[index], newImages[index + 1]] = [newImages[index + 1], newImages[index]];
+		[newImages[index], newImages[index + 1]] = [
+			newImages[index + 1],
+			newImages[index],
+		];
 		setAttributes({ images: newImages });
 	};
 
@@ -88,10 +98,20 @@ export const ImageControl = ({ images, setAttributes, imageSize }) => {
 					gallery={true}
 					value={images.map((img) => img.id)}
 					render={({ open }) => (
-						<Button onClick={open} variant="primary" className="mb-3">
+						<Button
+							onClick={open}
+							variant="primary"
+							className="mb-3"
+						>
 							{images.length > 0
-								? __('Edit Images', 'codeweber-gutenberg-blocks')
-								: __('Add Images', 'codeweber-gutenberg-blocks')}
+								? __(
+										'Edit Images',
+										'codeweber-gutenberg-blocks'
+									)
+								: __(
+										'Add Images',
+										'codeweber-gutenberg-blocks'
+									)}
 						</Button>
 					)}
 				/>
@@ -103,15 +123,27 @@ export const ImageControl = ({ images, setAttributes, imageSize }) => {
 					<div style={{ marginBottom: '16px' }}>
 						<ImageSizeControl
 							value={imageSize}
-							onChange={(value) => setAttributes({ imageSize: value })}
-							label={__('Image Size', 'codeweber-gutenberg-blocks')}
-							help={__('Choose image size for display', 'codeweber-gutenberg-blocks')}
+							onChange={(value) =>
+								setAttributes({ imageSize: value })
+							}
+							label={__(
+								'Image Size',
+								'codeweber-gutenberg-blocks'
+							)}
+							help={__(
+								'Choose image size for display',
+								'codeweber-gutenberg-blocks'
+							)}
 						/>
 					</div>
 
 					<div className="cwgb-image-list">
 						<p className="components-base-control__label">
-							{__('Selected Images:', 'codeweber-gutenberg-blocks')} {images.length}
+							{__(
+								'Selected Images:',
+								'codeweber-gutenberg-blocks'
+							)}{' '}
+							{images.length}
 						</p>
 						{images.map((image, index) => (
 							<div key={index} className="cwgb-image-item">
@@ -125,20 +157,29 @@ export const ImageControl = ({ images, setAttributes, imageSize }) => {
 										icon="arrow-up-alt2"
 										onClick={() => handleMoveUp(index)}
 										disabled={index === 0}
-										label={__('Move Up', 'codeweber-gutenberg-blocks')}
+										label={__(
+											'Move Up',
+											'codeweber-gutenberg-blocks'
+										)}
 										isSmall
 									/>
 									<Button
 										icon="arrow-down-alt2"
 										onClick={() => handleMoveDown(index)}
 										disabled={index === images.length - 1}
-										label={__('Move Down', 'codeweber-gutenberg-blocks')}
+										label={__(
+											'Move Down',
+											'codeweber-gutenberg-blocks'
+										)}
 										isSmall
 									/>
 									<Button
 										icon="trash"
 										onClick={() => handleRemoveImage(index)}
-										label={__('Remove', 'codeweber-gutenberg-blocks')}
+										label={__(
+											'Remove',
+											'codeweber-gutenberg-blocks'
+										)}
 										isDestructive
 										isSmall
 									/>
@@ -151,5 +192,3 @@ export const ImageControl = ({ images, setAttributes, imageSize }) => {
 		</div>
 	);
 };
-
-

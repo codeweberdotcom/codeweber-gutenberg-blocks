@@ -47,7 +47,9 @@ const Edit = ({ attributes, setAttributes }) => {
 		'cwgb-icon-block',
 		blockAlign ? `text-${blockAlign}` : '',
 		blockClass,
-	].filter(Boolean).join(' ');
+	]
+		.filter(Boolean)
+		.join(' ');
 
 	// Парсим data-атрибуты
 	const dataAttributes = {};
@@ -88,7 +90,12 @@ const Edit = ({ attributes, setAttributes }) => {
 			<div {...blockProps}>
 				{iconType === 'none' ? (
 					<div className="cwgb-icon-placeholder">
-						<span>{__('Select icon in settings', 'codeweber-gutenberg-blocks')}</span>
+						<span>
+							{__(
+								'Select icon in settings',
+								'codeweber-gutenberg-blocks'
+							)}
+						</span>
 					</div>
 				) : (
 					<IconRender
@@ -121,4 +128,3 @@ const Edit = ({ attributes, setAttributes }) => {
 };
 
 export default Edit;
-

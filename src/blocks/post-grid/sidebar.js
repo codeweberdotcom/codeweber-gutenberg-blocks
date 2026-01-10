@@ -11,9 +11,13 @@ import { LoadMoreControl } from '../../components/load-more';
 
 // Tab icon with native title tooltip
 const TabIcon = ({ icon, label }) => (
-	<span 
+	<span
 		title={label}
-		style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+		style={{
+			display: 'flex',
+			alignItems: 'center',
+			justifyContent: 'center',
+		}}
 	>
 		<Icon icon={icon} size={20} />
 	</span>
@@ -21,10 +25,42 @@ const TabIcon = ({ icon, label }) => (
 
 export const PostGridSidebar = ({ attributes, setAttributes }) => {
 	const tabs = [
-		{ name: 'main', title: <TabIcon icon={cog} label={__('Main', 'codeweber-gutenberg-blocks')} /> },
-		{ name: 'layout', title: <TabIcon icon={grid} label={__('Layout', 'codeweber-gutenberg-blocks')} /> },
-		{ name: 'effects', title: <TabIcon icon={starFilled} label={__('Effects', 'codeweber-gutenberg-blocks')} /> },
-		{ name: 'settings', title: <TabIcon icon={cog} label={__('Settings', 'codeweber-gutenberg-blocks')} /> },
+		{
+			name: 'main',
+			title: (
+				<TabIcon
+					icon={cog}
+					label={__('Main', 'codeweber-gutenberg-blocks')}
+				/>
+			),
+		},
+		{
+			name: 'layout',
+			title: (
+				<TabIcon
+					icon={grid}
+					label={__('Layout', 'codeweber-gutenberg-blocks')}
+				/>
+			),
+		},
+		{
+			name: 'effects',
+			title: (
+				<TabIcon
+					icon={starFilled}
+					label={__('Effects', 'codeweber-gutenberg-blocks')}
+				/>
+			),
+		},
+		{
+			name: 'settings',
+			title: (
+				<TabIcon
+					icon={cog}
+					label={__('Settings', 'codeweber-gutenberg-blocks')}
+				/>
+			),
+		},
 	];
 
 	return (
@@ -52,10 +88,22 @@ export const PostGridSidebar = ({ attributes, setAttributes }) => {
 
 								{/* Load More - только для Grid режима */}
 								{attributes.displayMode !== 'swiper' && (
-									<div style={{ marginTop: '24px', paddingTop: '24px', borderTop: '1px solid #ddd' }}>
-										<PanelBody title={__('Load More', 'codeweber-gutenberg-blocks')} initialOpen={false}>
-											<LoadMoreControl 
-												attributes={attributes} 
+									<div
+										style={{
+											marginTop: '24px',
+											paddingTop: '24px',
+											borderTop: '1px solid #ddd',
+										}}
+									>
+										<PanelBody
+											title={__(
+												'Load More',
+												'codeweber-gutenberg-blocks'
+											)}
+											initialOpen={false}
+										>
+											<LoadMoreControl
+												attributes={attributes}
 												setAttributes={setAttributes}
 												attributePrefix="loadMore"
 											/>
@@ -66,7 +114,11 @@ export const PostGridSidebar = ({ attributes, setAttributes }) => {
 								<div style={{ marginTop: '16px' }}>
 									<BorderRadiusControl
 										value={attributes.borderRadius}
-										onChange={(value) => setAttributes({ borderRadius: value })}
+										onChange={(value) =>
+											setAttributes({
+												borderRadius: value,
+											})
+										}
 									/>
 								</div>
 							</PanelBody>
@@ -94,9 +146,18 @@ export const PostGridSidebar = ({ attributes, setAttributes }) => {
 										idKey: 'blockId',
 									}}
 									labels={{
-										classLabel: __('Block Class', 'codeweber-gutenberg-blocks'),
-										dataLabel: __('Block Data', 'codeweber-gutenberg-blocks'),
-										idLabel: __('Block ID', 'codeweber-gutenberg-blocks'),
+										classLabel: __(
+											'Block Class',
+											'codeweber-gutenberg-blocks'
+										),
+										dataLabel: __(
+											'Block Data',
+											'codeweber-gutenberg-blocks'
+										),
+										idLabel: __(
+											'Block ID',
+											'codeweber-gutenberg-blocks'
+										),
 									}}
 								/>
 							</PanelBody>
@@ -107,4 +168,3 @@ export const PostGridSidebar = ({ attributes, setAttributes }) => {
 		</InspectorControls>
 	);
 };
-

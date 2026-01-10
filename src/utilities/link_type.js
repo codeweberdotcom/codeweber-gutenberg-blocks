@@ -49,9 +49,10 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 	const [codeweberForms, setCodeweberForms] = useState([]);
 	const [modals, setModals] = useState([]);
 	const [htmlPosts, setHtmlPosts] = useState([]);
-		const [documentPosts, setDocumentPosts] = useState([]);
+	const [documentPosts, setDocumentPosts] = useState([]);
 	const [isLoadingCF7, setIsLoadingCF7] = useState(true);
-	const [isLoadingCodeweberForms, setIsLoadingCodeweberForms] = useState(true);
+	const [isLoadingCodeweberForms, setIsLoadingCodeweberForms] =
+		useState(true);
 	const [phones, setPhones] = useState([]);
 	const [isLoadingPhones, setIsLoadingPhones] = useState(false);
 	const [postTypes, setPostTypes] = useState([]);
@@ -76,17 +77,19 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 		try {
 			const response = await fetch(`${wpApiSettings.root}wp/v2/phones`);
 			if (!response.ok) {
-				throw new Error(`Failed to fetch phones: ${response.status} ${response.statusText}`);
+				throw new Error(
+					`Failed to fetch phones: ${response.status} ${response.statusText}`
+				);
 			}
 			const phoneNumbers = await response.json();
-			
+
 			// Проверяем, что phoneNumbers является объектом
 			if (!phoneNumbers || typeof phoneNumbers !== 'object') {
 				console.warn('Invalid phone numbers response:', phoneNumbers);
 				setPhones([]);
 				return;
 			}
-			
+
 			// phoneNumbers уже является объектом вида { 'phone_01': '+74951234567', ... }
 			const phoneOptions = Object.entries(phoneNumbers).map(
 				([id, phone]) => ({
@@ -94,7 +97,7 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 					value: phone,
 				})
 			);
-			
+
 			console.log('Loaded phones:', phoneOptions);
 			setPhones(phoneOptions);
 		} catch (error) {
@@ -132,12 +135,15 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 						'footer',
 						'page-header',
 					];
-					
+
 					// Исключаем по ключу
-					if (excluded.includes(key) || excludedCustom.includes(key)) {
+					if (
+						excluded.includes(key) ||
+						excludedCustom.includes(key)
+					) {
 						return false;
 					}
-					
+
 					// Фильтрация по названию
 					const typeName = (types[key].name || '').toLowerCase();
 					const excludedNamePatterns = [
@@ -158,11 +164,15 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 						'rm content editor',
 						'content editor',
 					];
-					
-					if (excludedNamePatterns.some(pattern => typeName.includes(pattern.toLowerCase()))) {
+
+					if (
+						excludedNamePatterns.some((pattern) =>
+							typeName.includes(pattern.toLowerCase())
+						)
+					) {
 						return false;
 					}
-					
+
 					return true;
 				})
 				.map((key) => ({
@@ -184,7 +194,7 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 		setIsLoadingArchives(true);
 		try {
 			const archiveOptions = [];
-			
+
 			// Получаем типы записей с архивами
 			const types = await apiFetch({ path: '/wp/v2/types' });
 			Object.keys(types).forEach((key) => {
@@ -192,7 +202,10 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 				// Проверяем, есть ли архив у типа записи
 				if (type.has_archive && type.has_archive !== false) {
 					// Формируем URL архива
-					const archiveSlug = typeof type.has_archive === 'string' ? type.has_archive : key;
+					const archiveSlug =
+						typeof type.has_archive === 'string'
+							? type.has_archive
+							: key;
 					archiveOptions.push({
 						label: `${type.name} ${__('Archive', 'codeweber-gutenberg-blocks')}`,
 						value: `post_type_${key}`,
@@ -202,21 +215,21 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 					});
 				}
 			});
-			
+
 			// Получаем таксономии и их термины
 			const taxonomies = await apiFetch({ path: '/wp/v2/taxonomies' });
 			const taxonomyPromises = [];
-			
+
 			Object.keys(taxonomies).forEach((taxonomyKey) => {
 				const taxonomy = taxonomies[taxonomyKey];
 				// Пропускаем скрытые таксономии
 				if (!taxonomy.show_ui) {
 					return;
 				}
-				
+
 				// Получаем термины для таксономии
-				const taxonomyPromise = apiFetch({ 
-					path: `/wp/v2/${taxonomy.rest_base || taxonomyKey}?per_page=100&_fields=id,name,slug` 
+				const taxonomyPromise = apiFetch({
+					path: `/wp/v2/${taxonomy.rest_base || taxonomyKey}?per_page=100&_fields=id,name,slug`,
 				})
 					.then((terms) => {
 						if (Array.isArray(terms)) {
@@ -232,13 +245,16 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 						return [];
 					})
 					.catch((error) => {
-						console.warn(`Error fetching terms for taxonomy ${taxonomyKey}:`, error);
+						console.warn(
+							`Error fetching terms for taxonomy ${taxonomyKey}:`,
+							error
+						);
 						return [];
 					});
-				
+
 				taxonomyPromises.push(taxonomyPromise);
 			});
-			
+
 			// Ждем завершения всех запросов таксономий
 			const taxonomyResults = await Promise.all(taxonomyPromises);
 			taxonomyResults.forEach((terms) => {
@@ -246,7 +262,7 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 					archiveOptions.push(...terms);
 				}
 			});
-			
+
 			setArchives(archiveOptions);
 		} catch (error) {
 			console.error('Error fetching archives:', error);
@@ -262,12 +278,12 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 			setPosts([]);
 			return;
 		}
-		
+
 		setIsLoadingPosts(true);
 		try {
 			// Получаем правильный REST API endpoint для типа записи
 			let endpoint = postType;
-			
+
 			// Для стандартных типов используем правильный rest_base
 			if (postType === 'post') {
 				endpoint = 'posts';
@@ -283,15 +299,22 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 						endpoint = postTypeData.rest_base;
 					}
 				} catch (error) {
-					console.warn('Could not fetch post type data, using postType as endpoint:', error);
+					console.warn(
+						'Could not fetch post type data, using postType as endpoint:',
+						error
+					);
 					// Оставляем endpoint как postType
 				}
 			}
-			
+
 			// Запрашиваем записи с полями id и title, чтобы получить базовую информацию
-			const response = await fetch(`${wpApiSettings.root}wp/v2/${endpoint}?per_page=100&_fields=id,title,link,slug`);
+			const response = await fetch(
+				`${wpApiSettings.root}wp/v2/${endpoint}?per_page=100&_fields=id,title,link,slug`
+			);
 			if (!response.ok) {
-				throw new Error(`Failed to fetch posts: ${response.status} ${response.statusText}`);
+				throw new Error(
+					`Failed to fetch posts: ${response.status} ${response.statusText}`
+				);
 			}
 			const data = await response.json();
 			setPosts(data);
@@ -329,17 +352,20 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 				// Используем apiFetch для правильной авторизации
 				// rest_base установлен как 'codeweber' в CPT регистрации
 				const data = await apiFetch({
-					path: '/wp/v2/codeweber?per_page=100&status=publish&_fields=id,title'
+					path: '/wp/v2/codeweber?per_page=100&status=publish&_fields=id,title',
 				});
-				
+
 				// Проверяем, что data - массив
 				if (!Array.isArray(data)) {
-					console.warn('CodeWeber forms response is not an array:', data);
+					console.warn(
+						'CodeWeber forms response is not an array:',
+						data
+					);
 					setCodeweberForms([]);
 					setIsLoadingCodeweberForms(false);
 					return;
 				}
-				
+
 				const formOptions = data.map((form) => ({
 					label: `${form.id}: ${form.title?.rendered || form.title || `Form #${form.id}`}`,
 					value: String(form.id),
@@ -368,11 +394,17 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 							}));
 							setCodeweberForms(formOptions);
 							if (formOptions.length === 1) {
-								setAttributes({ CodeweberFormID: formOptions[0].value });
+								setAttributes({
+									CodeweberFormID: formOptions[0].value,
+								});
 							}
 						}
 					} else {
-						console.error('Fetch response not OK:', response.status, response.statusText);
+						console.error(
+							'Fetch response not OK:',
+							response.status,
+							response.statusText
+						);
 					}
 				} catch (fetchError) {
 					console.error('Fallback fetch also failed:', fetchError);
@@ -432,8 +464,6 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 				fetchArchives();
 			}
 		}
-
-
 	}, [LinkType, PostType, sitelinkurl]);
 
 	// Автоматический выбор первого модального окна, если ModalID пустой
@@ -450,14 +480,13 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 	}, [modals, ModalID, LinkType, setAttributes]);
 
 	// Функция для обработки изменения файла
-  const handleFileSelect = (media) => {
-    if (media && media.url) {
-      setAttributes({
-        LinkUrl: media.url, // Сохраняем URL выбранного файла
-      });
-    }
-  };
-
+	const handleFileSelect = (media) => {
+		if (media && media.url) {
+			setAttributes({
+				LinkUrl: media.url, // Сохраняем URL выбранного файла
+			});
+		}
+	};
 
 	const handleLinkTypeChange = (newLinkType) => {
 		setAttributes({ LinkType: newLinkType });
@@ -804,18 +833,16 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 		if (!selectedPostId || !PostType) {
 			return;
 		}
-		
+
 		setAttributes({ PostId: selectedPostId });
-		
+
 		// Ищем запись в уже загруженных
-		const selectedPost = posts.find(
-			(post) => {
-				const postId = String(post.id);
-				const selectedId = String(selectedPostId);
-				return postId === selectedId || post.id == selectedPostId;
-			}
-		);
-		
+		const selectedPost = posts.find((post) => {
+			const postId = String(post.id);
+			const selectedId = String(selectedPostId);
+			return postId === selectedId || post.id == selectedPostId;
+		});
+
 		// Функция для преобразования полного URL в относительный путь
 		const getRelativePath = (fullUrl) => {
 			if (!fullUrl) return '';
@@ -834,14 +861,14 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 				return fullUrl;
 			}
 		};
-		
+
 		// Если запись найдена и есть link, используем его (преобразуем в относительный путь)
 		if (selectedPost && selectedPost.link) {
 			const relativeUrl = getRelativePath(selectedPost.link);
 			setAttributes({ LinkUrl: relativeUrl });
 			return;
 		}
-		
+
 		// Определяем правильный endpoint для типа записи
 		let endpoint = PostType;
 		if (PostType === 'post') {
@@ -861,10 +888,12 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 				console.warn('Could not fetch post type data:', error);
 			}
 		}
-		
+
 		// Если link нет, запрашиваем конкретную запись по ID для получения правильного URL
 		try {
-			const response = await fetch(`${wpApiSettings.root}wp/v2/${endpoint}/${selectedPostId}?_fields=id,link`);
+			const response = await fetch(
+				`${wpApiSettings.root}wp/v2/${endpoint}/${selectedPostId}?_fields=id,link`
+			);
 			if (response.ok) {
 				const postData = await response.json();
 				if (postData.link) {
@@ -876,11 +905,11 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 		} catch (error) {
 			console.warn('Error fetching post permalink:', error);
 		}
-		
+
 		// Если ничего не получилось, формируем относительный URL по ID
 		// Это fallback, который всегда сработает
 		let postUrl;
-		
+
 		if (PostType === 'post') {
 			postUrl = `?p=${selectedPostId}`;
 		} else if (PostType === 'page') {
@@ -889,8 +918,7 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 			// Для кастомных типов записей
 			postUrl = `?post_type=${PostType}&p=${selectedPostId}`;
 		}
-		
-		
+
 		setAttributes({ LinkUrl: postUrl });
 	};
 
@@ -911,7 +939,7 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 		) {
 			const singlePost = posts[0];
 			const postId = String(singlePost.id);
-			
+
 			// Автоматически выбираем единственную запись
 			handlePostSelect(postId);
 		}
@@ -932,152 +960,152 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 		) {
 			const singleDocument = documentPosts[0];
 			const documentId = String(singleDocument.id);
-			
+
 			// Автоматически выбираем единственный документ
 			handleDocumentSelect(documentId);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [LinkType, documentPosts.length, DocumentID]);
 
-const handleCF7Select = (selectedCF7Id) => {
-	setAttributes({
-		CF7ID: selectedCF7Id,
-		DataValue: `cf7-${selectedCF7Id}`,
-		LinkUrl: 'javascript:void(0)',
-		DataBsToggle: 'modal',
-		DataBsTarget: `modal`,
-	});
-};
-
-const handleCodeweberFormSelect = (selectedFormId) => {
-	setAttributes({
-		CodeweberFormID: selectedFormId,
-		DataValue: `cf-${selectedFormId}`,
-		LinkUrl: 'javascript:void(0)',
-		DataBsToggle: 'modal',
-		DataBsTarget: `modal`,
-	});
-};
-
-const handleModalSelect = (selectedModalId) => {
-	setAttributes({
-		ModalID: selectedModalId,
-		DataValue: `modal-${selectedModalId}`,
-		LinkUrl: 'javascript:void(0)',
-		DataBsToggle: 'modal',
-		DataBsTarget: `modal`,
-	});
-};
-
-const handleHtmlSelect = (selectedHtmlId) => {
-  setAttributes({
-    HtmlID: selectedHtmlId,
-    DataValue: `html-${selectedHtmlId}`,
-    LinkUrl: 'javascript:void(0)',
-    DataBsToggle: 'modal',
-    DataBsTarget: `modal`,
-  });
-};
-
-const handleDocumentSelect = async (selectedDocumentId) => {
-	if (!selectedDocumentId) {
-		return;
-	}
-
-	setAttributes({ DocumentID: selectedDocumentId });
-
-	// Обновляем атрибуты в зависимости от выбранного действия
-	// Используем текущее значение DocumentAction или значение по умолчанию 'download'
-	const action = DocumentAction || 'download';
-	
-	if (action === 'download') {
+	const handleCF7Select = (selectedCF7Id) => {
 		setAttributes({
-			DataValue: `doc-${selectedDocumentId}`,
-			LinkUrl: 'javascript:void(0)',
-			DataBsToggle: 'download',
-			DataBsTarget: '',
-		});
-	} else if (action === 'email') {
-		setAttributes({
-			DataValue: `doc-${selectedDocumentId}`,
+			CF7ID: selectedCF7Id,
+			DataValue: `cf7-${selectedCF7Id}`,
 			LinkUrl: 'javascript:void(0)',
 			DataBsToggle: 'modal',
-			DataBsTarget: 'modal',
+			DataBsTarget: `modal`,
 		});
-	}
-};
+	};
 
-const handleDocumentActionChange = (newAction) => {
-	setAttributes({ DocumentAction: newAction });
-	// Если документ уже выбран, обновляем атрибуты
-	if (DocumentID) {
-		if (newAction === 'download') {
+	const handleCodeweberFormSelect = (selectedFormId) => {
+		setAttributes({
+			CodeweberFormID: selectedFormId,
+			DataValue: `cf-${selectedFormId}`,
+			LinkUrl: 'javascript:void(0)',
+			DataBsToggle: 'modal',
+			DataBsTarget: `modal`,
+		});
+	};
+
+	const handleModalSelect = (selectedModalId) => {
+		setAttributes({
+			ModalID: selectedModalId,
+			DataValue: `modal-${selectedModalId}`,
+			LinkUrl: 'javascript:void(0)',
+			DataBsToggle: 'modal',
+			DataBsTarget: `modal`,
+		});
+	};
+
+	const handleHtmlSelect = (selectedHtmlId) => {
+		setAttributes({
+			HtmlID: selectedHtmlId,
+			DataValue: `html-${selectedHtmlId}`,
+			LinkUrl: 'javascript:void(0)',
+			DataBsToggle: 'modal',
+			DataBsTarget: `modal`,
+		});
+	};
+
+	const handleDocumentSelect = async (selectedDocumentId) => {
+		if (!selectedDocumentId) {
+			return;
+		}
+
+		setAttributes({ DocumentID: selectedDocumentId });
+
+		// Обновляем атрибуты в зависимости от выбранного действия
+		// Используем текущее значение DocumentAction или значение по умолчанию 'download'
+		const action = DocumentAction || 'download';
+
+		if (action === 'download') {
 			setAttributes({
-				DataValue: `doc-${DocumentID}`,
+				DataValue: `doc-${selectedDocumentId}`,
 				LinkUrl: 'javascript:void(0)',
 				DataBsToggle: 'download',
 				DataBsTarget: '',
 			});
-		} else if (newAction === 'email') {
+		} else if (action === 'email') {
 			setAttributes({
-				DataValue: `doc-${DocumentID}`,
+				DataValue: `doc-${selectedDocumentId}`,
 				LinkUrl: 'javascript:void(0)',
 				DataBsToggle: 'modal',
 				DataBsTarget: 'modal',
 			});
 		}
-	}
-};
+	};
 
-const handleArchiveSelect = async (selectedArchiveValue) => {
-	if (!selectedArchiveValue) {
-		return;
-	}
-	
-	// Находим выбранный архив
-	const selectedArchive = archives.find(arch => arch.value === selectedArchiveValue);
-	if (!selectedArchive) {
-		return;
-	}
-	
-	setAttributes({ 
-		ArchiveId: selectedArchiveValue,
-		ArchiveType: selectedArchive.type,
-	});
-	
-	// Получаем правильный URL архива через REST API
-	try {
-		let apiPath = '';
-		if (selectedArchive.type === 'post_type') {
-			apiPath = `/codeweber-gutenberg-blocks/v1/archive-url?type=post_type&post_type=${selectedArchive.postType}`;
-		} else if (selectedArchive.type === 'taxonomy') {
-			apiPath = `/codeweber-gutenberg-blocks/v1/archive-url?type=taxonomy&taxonomy=${selectedArchive.taxonomy}&term_id=${selectedArchive.termId}`;
+	const handleDocumentActionChange = (newAction) => {
+		setAttributes({ DocumentAction: newAction });
+		// Если документ уже выбран, обновляем атрибуты
+		if (DocumentID) {
+			if (newAction === 'download') {
+				setAttributes({
+					DataValue: `doc-${DocumentID}`,
+					LinkUrl: 'javascript:void(0)',
+					DataBsToggle: 'download',
+					DataBsTarget: '',
+				});
+			} else if (newAction === 'email') {
+				setAttributes({
+					DataValue: `doc-${DocumentID}`,
+					LinkUrl: 'javascript:void(0)',
+					DataBsToggle: 'modal',
+					DataBsTarget: 'modal',
+				});
+			}
 		}
-		
-		
-		const response = await apiFetch({ path: apiPath });
-		
-		if (response && response.url) {
-			setAttributes({ LinkUrl: response.url });
-		} else {
-			console.error('Invalid archive URL response:', response);
+	};
+
+	const handleArchiveSelect = async (selectedArchiveValue) => {
+		if (!selectedArchiveValue) {
+			return;
 		}
-	} catch (error) {
-		console.error('Error fetching archive URL:', error);
-		// Fallback: формируем URL вручную
-		const baseUrl = wpApiSettings.root.replace('/wp-json/', '');
-		let archiveUrl = '';
-		
-		if (selectedArchive.type === 'post_type') {
-			archiveUrl = `${baseUrl}${selectedArchive.slug}/`;
-		} else if (selectedArchive.type === 'taxonomy') {
-			archiveUrl = `${baseUrl}${selectedArchive.taxonomy}/${selectedArchive.termSlug}/`;
+
+		// Находим выбранный архив
+		const selectedArchive = archives.find(
+			(arch) => arch.value === selectedArchiveValue
+		);
+		if (!selectedArchive) {
+			return;
 		}
-		
-		
-		setAttributes({ LinkUrl: archiveUrl });
-	}
-};
+
+		setAttributes({
+			ArchiveId: selectedArchiveValue,
+			ArchiveType: selectedArchive.type,
+		});
+
+		// Получаем правильный URL архива через REST API
+		try {
+			let apiPath = '';
+			if (selectedArchive.type === 'post_type') {
+				apiPath = `/codeweber-gutenberg-blocks/v1/archive-url?type=post_type&post_type=${selectedArchive.postType}`;
+			} else if (selectedArchive.type === 'taxonomy') {
+				apiPath = `/codeweber-gutenberg-blocks/v1/archive-url?type=taxonomy&taxonomy=${selectedArchive.taxonomy}&term_id=${selectedArchive.termId}`;
+			}
+
+			const response = await apiFetch({ path: apiPath });
+
+			if (response && response.url) {
+				setAttributes({ LinkUrl: response.url });
+			} else {
+				console.error('Invalid archive URL response:', response);
+			}
+		} catch (error) {
+			console.error('Error fetching archive URL:', error);
+			// Fallback: формируем URL вручную
+			const baseUrl = wpApiSettings.root.replace('/wp-json/', '');
+			let archiveUrl = '';
+
+			if (selectedArchive.type === 'post_type') {
+				archiveUrl = `${baseUrl}${selectedArchive.slug}/`;
+			} else if (selectedArchive.type === 'taxonomy') {
+				archiveUrl = `${baseUrl}${selectedArchive.taxonomy}/${selectedArchive.termSlug}/`;
+			}
+
+			setAttributes({ LinkUrl: archiveUrl });
+		}
+	};
 
 	const handleYoutubeIDChange = (newYoutubeID) => {
 		setAttributes({
@@ -1086,7 +1114,6 @@ const handleArchiveSelect = async (selectedArchiveValue) => {
 			DataGlightbox: `youtube`,
 		});
 	};
-
 
 	const handleVimeoIDChange = (newVimeoID) => {
 		setAttributes({
@@ -1098,7 +1125,7 @@ const handleArchiveSelect = async (selectedArchiveValue) => {
 
 	const handleRutubeIDChange = (url, metadata = {}) => {
 		const videoId = metadata.videoId || '';
-		
+
 		// Generate unique gallery ID for this Rutube video instance
 		const uniqueGalleryId = `rutube_${videoId}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
@@ -1108,13 +1135,15 @@ const handleArchiveSelect = async (selectedArchiveValue) => {
 			DataValue: url ? `rutube-${url}` : '',
 			DataGallery: uniqueGalleryId,
 			// Use iframe type with proper width for Rutube
-			DataGlightbox: url ? 'type: iframe; width: 90vw; height: 90vh;' : 'video',
+			DataGlightbox: url
+				? 'type: iframe; width: 90vw; height: 90vh;'
+				: 'video',
 		});
 	};
 
 	const handleVKIDChange = (url, metadata = {}) => {
 		const { oid, id } = metadata;
-		
+
 		// Generate unique gallery ID for this VK video instance
 		const uniqueGalleryId = `vk_${id}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
@@ -1124,7 +1153,9 @@ const handleArchiveSelect = async (selectedArchiveValue) => {
 			DataValue: url ? `vkvideo-${url}` : '',
 			DataGallery: uniqueGalleryId,
 			// Use iframe type with proper width for VK
-			DataGlightbox: url ? 'type: iframe; width: 90vw; height: 90vh;' : 'video',
+			DataGlightbox: url
+				? 'type: iframe; width: 90vw; height: 90vh;'
+				: 'video',
 		});
 	};
 
@@ -1152,22 +1183,21 @@ const handleArchiveSelect = async (selectedArchiveValue) => {
 		});
 	};
 
-const handleGalleryID = (newValue) => {
-	setAttributes({ DataGallery: newValue || '' }); // Сохраняем введенное значение в DataGallery
-};
+	const handleGalleryID = (newValue) => {
+		setAttributes({ DataGallery: newValue || '' }); // Сохраняем введенное значение в DataGallery
+	};
 
-const handleHtml5VideoSelect = (media) => {
-	if (media && media.url) {
-		setAttributes({ LinkUrl: media.url }); // Сохраняем URL выбранного видео
-	} else {
-		setAttributes({ LinkUrl: '' }); // Если ничего не выбрано, очищаем
-	}
-};
+	const handleHtml5VideoSelect = (media) => {
+		if (media && media.url) {
+			setAttributes({ LinkUrl: media.url }); // Сохраняем URL выбранного видео
+		} else {
+			setAttributes({ LinkUrl: '' }); // Если ничего не выбрано, очищаем
+		}
+	};
 
-const handleHtml5VideoChange = (newUrl) => {
-	setAttributes({ LinkUrl: newUrl }); // Обновляем атрибут LinkUrl с введенным значением
-};
-
+	const handleHtml5VideoChange = (newUrl) => {
+		setAttributes({ LinkUrl: newUrl }); // Обновляем атрибут LinkUrl с введенным значением
+	};
 
 	return (
 		<>
@@ -1175,33 +1205,84 @@ const handleHtml5VideoChange = (newUrl) => {
 				title={__('Link Settings', 'codeweber-gutenberg-blocks')}
 				className="custom-panel-body"
 			>
-			<SelectControl
-				label={__('Type link', 'codeweber-gutenberg-blocks')}
-				value={LinkType}
-				options={[
-					{ label: __('External', 'codeweber-gutenberg-blocks'), value: 'external' },
-					{ label: __('Post', 'codeweber-gutenberg-blocks'), value: 'post' },
-					{ label: __('Archive', 'codeweber-gutenberg-blocks'), value: 'archive' },
-					{ label: __('CF7', 'codeweber-gutenberg-blocks'), value: 'cf7' },
-					{ label: __('Forms', 'codeweber-gutenberg-blocks'), value: 'cf' },
-					{ label: __('Modal', 'codeweber-gutenberg-blocks'), value: 'modal' },
-					{ label: __('Phone', 'codeweber-gutenberg-blocks'), value: 'phone' },
-					{ label: __('PDF', 'codeweber-gutenberg-blocks'), value: 'pdf' },
-					{ label: __('Image', 'codeweber-gutenberg-blocks'), value: 'image' },
-					{ label: __('Html5 Video', 'codeweber-gutenberg-blocks'), value: 'html5video' },
-					{ label: __('YouTube', 'codeweber-gutenberg-blocks'), value: 'youtube' },
-					{ label: __('Vimeo', 'codeweber-gutenberg-blocks'), value: 'vimeo' },
-					{ label: __('Rutube', 'codeweber-gutenberg-blocks'), value: 'rutube' },
-					{ label: __('VK Video', 'codeweber-gutenberg-blocks'), value: 'vk' },
-					{ label: __('Document', 'codeweber-gutenberg-blocks'), value: 'document' },
-				]}
+				<SelectControl
+					label={__('Type link', 'codeweber-gutenberg-blocks')}
+					value={LinkType}
+					options={[
+						{
+							label: __('External', 'codeweber-gutenberg-blocks'),
+							value: 'external',
+						},
+						{
+							label: __('Post', 'codeweber-gutenberg-blocks'),
+							value: 'post',
+						},
+						{
+							label: __('Archive', 'codeweber-gutenberg-blocks'),
+							value: 'archive',
+						},
+						{
+							label: __('CF7', 'codeweber-gutenberg-blocks'),
+							value: 'cf7',
+						},
+						{
+							label: __('Forms', 'codeweber-gutenberg-blocks'),
+							value: 'cf',
+						},
+						{
+							label: __('Modal', 'codeweber-gutenberg-blocks'),
+							value: 'modal',
+						},
+						{
+							label: __('Phone', 'codeweber-gutenberg-blocks'),
+							value: 'phone',
+						},
+						{
+							label: __('PDF', 'codeweber-gutenberg-blocks'),
+							value: 'pdf',
+						},
+						{
+							label: __('Image', 'codeweber-gutenberg-blocks'),
+							value: 'image',
+						},
+						{
+							label: __(
+								'Html5 Video',
+								'codeweber-gutenberg-blocks'
+							),
+							value: 'html5video',
+						},
+						{
+							label: __('YouTube', 'codeweber-gutenberg-blocks'),
+							value: 'youtube',
+						},
+						{
+							label: __('Vimeo', 'codeweber-gutenberg-blocks'),
+							value: 'vimeo',
+						},
+						{
+							label: __('Rutube', 'codeweber-gutenberg-blocks'),
+							value: 'rutube',
+						},
+						{
+							label: __('VK Video', 'codeweber-gutenberg-blocks'),
+							value: 'vk',
+						},
+						{
+							label: __('Document', 'codeweber-gutenberg-blocks'),
+							value: 'document',
+						},
+					]}
 					onChange={handleLinkTypeChange}
 				/>
 
 				{/* Поля для YouTube */}
 				{LinkType === 'youtube' && (
 					<TextControl
-					label={__('YouTube Video URL', 'codeweber-gutenberg-blocks')}
+						label={__(
+							'YouTube Video URL',
+							'codeweber-gutenberg-blocks'
+						)}
 						value={YoutubeID}
 						onChange={handleYoutubeIDChange}
 						placeholder="YouTube URL"
@@ -1211,7 +1292,10 @@ const handleHtml5VideoChange = (newUrl) => {
 				{/* Поля для Vimeo */}
 				{LinkType === 'vimeo' && (
 					<TextControl
-					label={__('Vimeo Video URL', 'codeweber-gutenberg-blocks')}
+						label={__(
+							'Vimeo Video URL',
+							'codeweber-gutenberg-blocks'
+						)}
 						value={VimeoID}
 						onChange={handleVimeoIDChange}
 						placeholder="Vimeo URL"
@@ -1312,7 +1396,10 @@ const handleHtml5VideoChange = (newUrl) => {
 
 				{LinkType === 'html5video' && (
 					<TextControl
-						label={__('Html 5 video URL', 'codeweber-gutenberg-blocks')}
+						label={__(
+							'Html 5 video URL',
+							'codeweber-gutenberg-blocks'
+						)}
 						value={LinkUrl}
 						onChange={handleHtml5VideoChange}
 						placeholder="https://example.com"
@@ -1380,7 +1467,10 @@ const handleHtml5VideoChange = (newUrl) => {
 
 						{PhoneType === 'custom' && (
 							<TextControl
-								label={__('Custom phone', 'codeweber-gutenberg-blocks')}
+								label={__(
+									'Custom phone',
+									'codeweber-gutenberg-blocks'
+								)}
 								value={LinkUrl.replace(/^tel:/, '')} // Убираем "tel:" для отображения
 								onChange={handleLinkUrlChange}
 								placeholder="+1234567890"
@@ -1390,15 +1480,41 @@ const handleHtml5VideoChange = (newUrl) => {
 						{PhoneType === 'contacts' && (
 							<>
 								{isLoadingPhones ? (
-									<div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+									<div
+										style={{
+											display: 'flex',
+											alignItems: 'center',
+											gap: '8px',
+										}}
+									>
 										<Spinner />
-										<span>{__('Loading phones...', 'codeweber-gutenberg-blocks')}</span>
+										<span>
+											{__(
+												'Loading phones...',
+												'codeweber-gutenberg-blocks'
+											)}
+										</span>
 									</div>
 								) : (
 									<SelectControl
-										label={__('Select Phone', 'codeweber-gutenberg-blocks')}
+										label={__(
+											'Select Phone',
+											'codeweber-gutenberg-blocks'
+										)}
 										value={PhoneNumber}
-										options={phones.length > 0 ? phones : [{ label: __('No phones found', 'codeweber-gutenberg-blocks'), value: '' }]}
+										options={
+											phones.length > 0
+												? phones
+												: [
+														{
+															label: __(
+																'No phones found',
+																'codeweber-gutenberg-blocks'
+															),
+															value: '',
+														},
+													]
+										}
 										onChange={(newPhone) => {
 											setAttributes({
 												PhoneNumber: newPhone,
@@ -1420,29 +1536,66 @@ const handleHtml5VideoChange = (newUrl) => {
 				{LinkType === 'post' && (
 					<>
 						<SelectControl
-							label={__('Select Post Type', 'codeweber-gutenberg-blocks')}
+							label={__(
+								'Select Post Type',
+								'codeweber-gutenberg-blocks'
+							)}
 							value={PostType}
 							options={
 								isLoadingPostTypes
-									? [{ label: __('Loading...', 'codeweber-gutenberg-blocks'), value: '' }]
+									? [
+											{
+												label: __(
+													'Loading...',
+													'codeweber-gutenberg-blocks'
+												),
+												value: '',
+											},
+										]
 									: postTypes.length > 0
-									? postTypes
-									: [{ label: __('No post types found', 'codeweber-gutenberg-blocks'), value: '' }]
+										? postTypes
+										: [
+												{
+													label: __(
+														'No post types found',
+														'codeweber-gutenberg-blocks'
+													),
+													value: '',
+												},
+											]
 							}
 							onChange={handlePostTypeChange}
-							help={__('Select the type of post to display', 'codeweber-gutenberg-blocks')}
+							help={__(
+								'Select the type of post to display',
+								'codeweber-gutenberg-blocks'
+							)}
 						/>
 
 						{PostType && (
 							<>
 								{isLoadingPosts ? (
-									<div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '16px' }}>
+									<div
+										style={{
+											display: 'flex',
+											alignItems: 'center',
+											gap: '8px',
+											marginTop: '16px',
+										}}
+									>
 										<Spinner />
-										<span>{__('Loading posts...', 'codeweber-gutenberg-blocks')}</span>
+										<span>
+											{__(
+												'Loading posts...',
+												'codeweber-gutenberg-blocks'
+											)}
+										</span>
 									</div>
 								) : posts.length > 0 ? (
 									<SelectControl
-										label={__('Select Post', 'codeweber-gutenberg-blocks')}
+										label={__(
+											'Select Post',
+											'codeweber-gutenberg-blocks'
+										)}
 										value={PostId}
 										options={posts.map((post) => ({
 											label: post.title.rendered,
@@ -1452,7 +1605,10 @@ const handleHtml5VideoChange = (newUrl) => {
 									/>
 								) : (
 									<p style={{ marginTop: '16px' }}>
-										{__('No posts found', 'codeweber-gutenberg-blocks')}
+										{__(
+											'No posts found',
+											'codeweber-gutenberg-blocks'
+										)}
 									</p>
 								)}
 							</>
@@ -1463,13 +1619,27 @@ const handleHtml5VideoChange = (newUrl) => {
 				{LinkType === 'archive' && (
 					<>
 						{isLoadingArchives ? (
-							<div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+							<div
+								style={{
+									display: 'flex',
+									alignItems: 'center',
+									gap: '8px',
+								}}
+							>
 								<Spinner />
-								<span>{__('Loading archives...', 'codeweber-gutenberg-blocks')}</span>
+								<span>
+									{__(
+										'Loading archives...',
+										'codeweber-gutenberg-blocks'
+									)}
+								</span>
 							</div>
 						) : archives.length > 0 ? (
 							<SelectControl
-								label={__('Select Archive', 'codeweber-gutenberg-blocks')}
+								label={__(
+									'Select Archive',
+									'codeweber-gutenberg-blocks'
+								)}
 								value={ArchiveId}
 								options={archives.map((archive) => ({
 									label: archive.label,
@@ -1478,7 +1648,12 @@ const handleHtml5VideoChange = (newUrl) => {
 								onChange={handleArchiveSelect}
 							/>
 						) : (
-							<p>{__('No archives found', 'codeweber-gutenberg-blocks')}</p>
+							<p>
+								{__(
+									'No archives found',
+									'codeweber-gutenberg-blocks'
+								)}
+							</p>
 						)}
 					</>
 				)}
@@ -1486,7 +1661,10 @@ const handleHtml5VideoChange = (newUrl) => {
 				{LinkType === 'cf7' &&
 					(cf7Forms.length > 0 ? (
 						<SelectControl
-							label={__('Select CF7', 'codeweber-gutenberg-blocks')}
+							label={__(
+								'Select CF7',
+								'codeweber-gutenberg-blocks'
+							)}
 							value={CF7ID}
 							options={cf7Forms.map((form) => ({
 								label: form.label, // Используем label, который вы формировали в fetchCF7Forms
@@ -1495,18 +1673,37 @@ const handleHtml5VideoChange = (newUrl) => {
 							onChange={handleCF7Select}
 						/>
 					) : (
-						<p>{__('CF7 Forms not found', 'codeweber-gutenberg-blocks')}</p>
+						<p>
+							{__(
+								'CF7 Forms not found',
+								'codeweber-gutenberg-blocks'
+							)}
+						</p>
 					))}
 
 				{LinkType === 'cf' &&
 					(isLoadingCodeweberForms ? (
-						<div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+						<div
+							style={{
+								display: 'flex',
+								alignItems: 'center',
+								gap: '8px',
+							}}
+						>
 							<Spinner />
-							<span>{__('Loading forms...', 'codeweber-gutenberg-blocks')}</span>
+							<span>
+								{__(
+									'Loading forms...',
+									'codeweber-gutenberg-blocks'
+								)}
+							</span>
 						</div>
 					) : codeweberForms.length > 0 ? (
 						<SelectControl
-							label={__('Select Form', 'codeweber-gutenberg-blocks')}
+							label={__(
+								'Select Form',
+								'codeweber-gutenberg-blocks'
+							)}
 							value={CodeweberFormID}
 							options={codeweberForms.map((form) => ({
 								label: form.label,
@@ -1515,14 +1712,22 @@ const handleHtml5VideoChange = (newUrl) => {
 							onChange={handleCodeweberFormSelect}
 						/>
 					) : (
-						<p>{__('No CodeWeber forms found', 'codeweber-gutenberg-blocks')}</p>
+						<p>
+							{__(
+								'No CodeWeber forms found',
+								'codeweber-gutenberg-blocks'
+							)}
+						</p>
 					))}
 
 				{LinkType === 'modal' &&
 					(modals.length > 0 ? (
-					<SelectControl
-						label={__('Select Modal', 'codeweber-gutenberg-blocks')}
-						value={ModalID}
+						<SelectControl
+							label={__(
+								'Select Modal',
+								'codeweber-gutenberg-blocks'
+							)}
+							value={ModalID}
 							options={modals.map((modal) => ({
 								label: modal.title.rendered,
 								value: modal.id,
@@ -1537,26 +1742,39 @@ const handleHtml5VideoChange = (newUrl) => {
 					<>
 						<div className="component-sidebar-title">
 							<label>
-								{__('Document Action', 'codeweber-gutenberg-blocks')}
+								{__(
+									'Document Action',
+									'codeweber-gutenberg-blocks'
+								)}
 							</label>
 						</div>
 						<div className="document-action-controls button-group-sidebar_50">
 							<Button
 								isPrimary={DocumentAction === 'download'}
-								onClick={() => handleDocumentActionChange('download')}
+								onClick={() =>
+									handleDocumentActionChange('download')
+								}
 							>
 								{__('Download', 'codeweber-gutenberg-blocks')}
 							</Button>
 							<Button
 								isPrimary={DocumentAction === 'email'}
-								onClick={() => handleDocumentActionChange('email')}
+								onClick={() =>
+									handleDocumentActionChange('email')
+								}
 							>
-								{__('Send to Email', 'codeweber-gutenberg-blocks')}
+								{__(
+									'Send to Email',
+									'codeweber-gutenberg-blocks'
+								)}
 							</Button>
 						</div>
 						{documentPosts.length > 0 ? (
 							<SelectControl
-								label={__('Select Document', 'codeweber-gutenberg-blocks')}
+								label={__(
+									'Select Document',
+									'codeweber-gutenberg-blocks'
+								)}
 								value={DocumentID}
 								options={documentPosts.map((doc) => ({
 									label: doc.title.rendered,
@@ -1565,7 +1783,12 @@ const handleHtml5VideoChange = (newUrl) => {
 								onChange={handleDocumentSelect}
 							/>
 						) : (
-							<p>{__('No documents found', 'codeweber-gutenberg-blocks')}</p>
+							<p>
+								{__(
+									'No documents found',
+									'codeweber-gutenberg-blocks'
+								)}
+							</p>
 						)}
 					</>
 				)}
@@ -1573,5 +1796,3 @@ const handleHtml5VideoChange = (newUrl) => {
 		</>
 	);
 };
-
-

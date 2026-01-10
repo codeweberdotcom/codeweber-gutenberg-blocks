@@ -15,7 +15,11 @@ import {
 } from '@wordpress/components';
 
 import { fontIcons } from '../../utilities/font_icon';
-import { svgIconsLineal, svgIconsSolid, getSvgIconPath } from '../../utilities/svg_icons';
+import {
+	svgIconsLineal,
+	svgIconsSolid,
+	getSvgIconPath,
+} from '../../utilities/svg_icons';
 import { InlineSvg } from './InlineSvg';
 
 /**
@@ -85,12 +89,12 @@ export const IconPicker = ({
 			{ name: 'svg-lineal', allowed: allowSvgLineal },
 			{ name: 'svg-solid', allowed: allowSvgSolid },
 		];
-		const allowedTabs = allTabs.filter(tab => tab.allowed);
+		const allowedTabs = allTabs.filter((tab) => tab.allowed);
 		if (allowedTabs.length === 0) return 'font'; // Fallback
-		const validTab = allowedTabs.find(tab => tab.name === initialTab);
+		const validTab = allowedTabs.find((tab) => tab.name === initialTab);
 		return validTab ? validTab.name : allowedTabs[0].name;
 	};
-	
+
 	const [searchTerm, setSearchTerm] = useState('');
 	const [activeTab, setActiveTab] = useState(getValidInitialTab());
 
@@ -175,7 +179,9 @@ export const IconPicker = ({
 				className="icon-picker-modal"
 				isFullScreen={false}
 			>
-				<p>{__('No icon tabs available', 'codeweber-gutenberg-blocks')}</p>
+				<p>
+					{__('No icon tabs available', 'codeweber-gutenberg-blocks')}
+				</p>
 				<div className="icon-picker-footer">
 					<Button variant="tertiary" onClick={onClose}>
 						{__('Close', 'codeweber-gutenberg-blocks')}
@@ -184,7 +190,6 @@ export const IconPicker = ({
 			</Modal>
 		);
 	}
-
 
 	return (
 		<Modal
@@ -195,7 +200,10 @@ export const IconPicker = ({
 		>
 			<div className="icon-picker-search">
 				<TextControl
-					placeholder={__('Search icon...', 'codeweber-gutenberg-blocks')}
+					placeholder={__(
+						'Search icon...',
+						'codeweber-gutenberg-blocks'
+					)}
 					value={searchTerm}
 					onChange={setSearchTerm}
 					__nextHasNoMarginBottom
@@ -214,28 +222,48 @@ export const IconPicker = ({
 							<>
 								{filteredFontIcons.length === 0 ? (
 									<p className="icon-picker-no-results">
-										{__('No icons found', 'codeweber-gutenberg-blocks')}
+										{__(
+											'No icons found',
+											'codeweber-gutenberg-blocks'
+										)}
 									</p>
 								) : (
 									filteredFontIcons.map((icon) => (
 										<FontIconPreview
 											key={icon.value}
-											iconName={icon.value.replace('uil-', '')}
+											iconName={icon.value.replace(
+												'uil-',
+												''
+											)}
 											isSelected={
 												selectedType === 'font' &&
-												selectedIcon === icon.value.replace('uil-', '')
+												selectedIcon ===
+													icon.value.replace(
+														'uil-',
+														''
+													)
 											}
 											onClick={() =>
-												handleSelect(icon.value.replace('uil-', ''), 'font')
+												handleSelect(
+													icon.value.replace(
+														'uil-',
+														''
+													),
+													'font'
+												)
 											}
 										/>
 									))
 								)}
-								{!searchTerm && filteredFontIcons.length === 200 && (
-									<p className="icon-picker-hint">
-										{__('Enter search query to display all icons', 'codeweber-gutenberg-blocks')}
-									</p>
-								)}
+								{!searchTerm &&
+									filteredFontIcons.length === 200 && (
+										<p className="icon-picker-hint">
+											{__(
+												'Enter search query to display all icons',
+												'codeweber-gutenberg-blocks'
+											)}
+										</p>
+									)}
 							</>
 						)}
 
@@ -243,7 +271,10 @@ export const IconPicker = ({
 							<>
 								{filteredLinealIcons.length === 0 ? (
 									<p className="icon-picker-no-results">
-										{__('No icons found', 'codeweber-gutenberg-blocks')}
+										{__(
+											'No icons found',
+											'codeweber-gutenberg-blocks'
+										)}
 									</p>
 								) : (
 									filteredLinealIcons.map((icon) => (
@@ -255,7 +286,12 @@ export const IconPicker = ({
 												selectedType === 'svg-lineal' &&
 												selectedIcon === icon.value
 											}
-											onClick={() => handleSelect(icon.value, 'svg-lineal')}
+											onClick={() =>
+												handleSelect(
+													icon.value,
+													'svg-lineal'
+												)
+											}
 										/>
 									))
 								)}
@@ -266,7 +302,10 @@ export const IconPicker = ({
 							<>
 								{filteredSolidIcons.length === 0 ? (
 									<p className="icon-picker-no-results">
-										{__('No icons found', 'codeweber-gutenberg-blocks')}
+										{__(
+											'No icons found',
+											'codeweber-gutenberg-blocks'
+										)}
 									</p>
 								) : (
 									filteredSolidIcons.map((icon) => (
@@ -278,7 +317,12 @@ export const IconPicker = ({
 												selectedType === 'svg-solid' &&
 												selectedIcon === icon.value
 											}
-											onClick={() => handleSelect(icon.value, 'svg-solid')}
+											onClick={() =>
+												handleSelect(
+													icon.value,
+													'svg-solid'
+												)
+											}
 										/>
 									))
 								)}
@@ -312,4 +356,3 @@ export const IconPicker = ({
 };
 
 export default IconPicker;
-

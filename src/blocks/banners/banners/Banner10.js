@@ -41,7 +41,7 @@ export const Banner10 = ({ attributes, isEditor = false }) => {
 	// Функция для получения классов первой секции
 	const getFirstSectionClasses = () => {
 		const classes = ['wrapper'];
-		
+
 		// Если sectionClass содержит bg-light, используем sectionClass напрямую
 		if (sectionClass && sectionClass.includes('bg-light')) {
 			classes.push(sectionClass);
@@ -52,7 +52,7 @@ export const Banner10 = ({ attributes, isEditor = false }) => {
 				classes.push(sectionClass);
 			}
 		}
-		
+
 		return classes.filter(Boolean).join(' ');
 	};
 
@@ -76,33 +76,35 @@ export const Banner10 = ({ attributes, isEditor = false }) => {
 
 	const imagesToRender = images || [];
 	const hasImage = imagesToRender && imagesToRender.length > 0;
-	
+
 	// Placeholder изображение - about15.jpg
-	const placeholderUrl = isEditor 
-		? (window.location?.origin 
+	const placeholderUrl = isEditor
+		? window.location?.origin
 			? `${window.location.origin}/wp-content/themes/codeweber/dist/assets/img/photos/about15.jpg`
-			: './assets/img/photos/about15.jpg')
+			: './assets/img/photos/about15.jpg'
 		: '/wp-content/themes/codeweber/dist/assets/img/photos/about15.jpg';
 
 	// Рендерим изображение во второй секции
 	const renderBottomImage = () => {
-		const imageUrl = hasImage ? getImageUrl(imagesToRender[0], imageSize) : placeholderUrl;
-		const imageAlt = hasImage ? (imagesToRender[0].alt || '') : '';
+		const imageUrl = hasImage
+			? getImageUrl(imagesToRender[0], imageSize)
+			: placeholderUrl;
+		const imageAlt = hasImage ? imagesToRender[0].alt || '' : '';
 
 		// Для placeholder добавляем srcset для ретина-дисплеев
-		const placeholderSrcset = !hasImage 
-			? (isEditor 
-				? (window.location?.origin 
+		const placeholderSrcset = !hasImage
+			? isEditor
+				? window.location?.origin
 					? `${window.location.origin}/wp-content/themes/codeweber/dist/assets/img/photos/about15@2x.jpg 2x`
-					: './assets/img/photos/about15@2x.jpg 2x')
-				: '/wp-content/themes/codeweber/dist/assets/img/photos/about15@2x.jpg 2x')
+					: './assets/img/photos/about15@2x.jpg 2x'
+				: '/wp-content/themes/codeweber/dist/assets/img/photos/about15@2x.jpg 2x'
 			: undefined;
 
 		return (
 			<section className="wrapper bg-dark">
 				<div className="container pt-14 pt-md-16 pb-9 pb-md-11">
 					<figure className="rounded mt-md-n21 mt-lg-n23 mb-14">
-						<img 
+						<img
 							src={imageUrl}
 							srcSet={placeholderSrcset}
 							alt={imageAlt}
@@ -117,11 +119,17 @@ export const Banner10 = ({ attributes, isEditor = false }) => {
 	if (isEditor) {
 		return (
 			<>
-				<section className={getFirstSectionClasses()} style={getSectionStyles()}>
+				<section
+					className={getFirstSectionClasses()}
+					style={getSectionStyles()}
+				>
 					<div className="container pt-11 pt-md-13 pb-11 pb-md-19 pb-lg-22 text-center">
 						<div className="row">
 							<div className="col-lg-8 col-xl-7 col-xxl-6 mx-auto">
-								<InnerBlocks allowedBlocks={ALLOWED_CODEWEBER_BLOCKS} templateLock={false} />
+								<InnerBlocks
+									allowedBlocks={ALLOWED_CODEWEBER_BLOCKS}
+									templateLock={false}
+								/>
 							</div>
 						</div>
 					</div>
@@ -136,7 +144,10 @@ export const Banner10 = ({ attributes, isEditor = false }) => {
 			<section
 				className={getFirstSectionClasses()}
 				style={getSectionStyles()}
-				{...(backgroundType === 'image' && backgroundImageUrl && { 'data-image-src': backgroundImageUrl })}
+				{...(backgroundType === 'image' &&
+					backgroundImageUrl && {
+						'data-image-src': backgroundImageUrl,
+					})}
 			>
 				<div className="container pt-11 pt-md-13 pb-11 pb-md-19 pb-lg-22 text-center">
 					<div className="row">
@@ -150,33 +161,3 @@ export const Banner10 = ({ attributes, isEditor = false }) => {
 		</>
 	);
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

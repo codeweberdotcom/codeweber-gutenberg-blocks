@@ -1076,4 +1076,3 @@ if (!function_exists('render_post_grid_item')) {
 		<p><?php esc_html_e('No posts found.', 'codeweber-gutenberg-blocks'); ?></p>
 	<?php endif; ?>
 </div>
-

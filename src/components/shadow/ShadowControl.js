@@ -1,6 +1,6 @@
 /**
  * ShadowControl Component
- * 
+ *
  * @package CodeWeber Gutenberg Blocks
  */
 
@@ -10,18 +10,18 @@ import { shadowOptions } from '../../utilities/shadows';
 
 /**
  * ShadowControl Component
- * 
+ *
  * @param {Object} props
  * @param {string} props.value - Current shadow value
  * @param {Function} props.onChange - Callback when value changes
  * @param {string} props.label - Label for the control
  * @param {string} props.help - Help text
  */
-export const ShadowControl = ({ 
-	value = '', 
-	onChange, 
+export const ShadowControl = ({
+	value = '',
+	onChange,
 	label = __('Shadow', 'codeweber-gutenberg-blocks'),
-	help = '' 
+	help = '',
 }) => {
 	return (
 		<SelectControl
@@ -35,16 +35,3 @@ export const ShadowControl = ({
 };
 
 export default ShadowControl;
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -10,7 +10,11 @@
  * @param {boolean} forLightbox - Add autoplay and fullscreen for lightbox (default: false)
  * @returns {object} - { url: string, oid: string, id: string }
  */
-export const parseVKVideoURL = (input, enhanceQuality = true, forLightbox = false) => {
+export const parseVKVideoURL = (
+	input,
+	enhanceQuality = true,
+	forLightbox = false
+) => {
 	let url = '';
 	let oid = '';
 	let id = '';
@@ -28,7 +32,7 @@ export const parseVKVideoURL = (input, enhanceQuality = true, forLightbox = fals
 				url = `https:${url}`;
 			}
 		}
-	} 
+	}
 	// Check if input is URL
 	else if (input.includes('vkvideo.ru') || input.includes('vk.com/video')) {
 		try {
@@ -42,11 +46,11 @@ export const parseVKVideoURL = (input, enhanceQuality = true, forLightbox = fals
 	if (url) {
 		try {
 			const urlObj = new URL(url);
-			
+
 			// Try to get from query params (embed URL)
 			oid = urlObj.searchParams.get('oid');
 			id = urlObj.searchParams.get('id');
-			
+
 			// If not found, try to extract from pathname (video page URL)
 			if (!oid || !id) {
 				const pathMatch = urlObj.pathname.match(/video(-?\d+)_(\d+)/);
@@ -61,16 +65,19 @@ export const parseVKVideoURL = (input, enhanceQuality = true, forLightbox = fals
 				const finalUrl = new URL(`https://vkvideo.ru/video_ext.php`);
 				finalUrl.searchParams.set('oid', oid);
 				finalUrl.searchParams.set('id', id);
-				
+
 				// Add quality enhancement parameters if requested
 				if (enhanceQuality) {
 					finalUrl.searchParams.set('hd', '2');
 					if (!urlObj.searchParams.has('hash')) {
 						finalUrl.searchParams.set('hash', '0f00c4ecd2885c04'); // Default hash
 					} else {
-						finalUrl.searchParams.set('hash', urlObj.searchParams.get('hash'));
+						finalUrl.searchParams.set(
+							'hash',
+							urlObj.searchParams.get('hash')
+						);
 					}
-					
+
 					// Add lightbox-specific parameters
 					if (forLightbox) {
 						finalUrl.searchParams.set('autoplay', '1');
@@ -78,7 +85,7 @@ export const parseVKVideoURL = (input, enhanceQuality = true, forLightbox = fals
 						finalUrl.searchParams.set('fullscreen', 'true');
 					}
 				}
-				
+
 				url = finalUrl.toString();
 			}
 		} catch (e) {
@@ -140,7 +147,9 @@ export const parseRutubeVideoURL = (input, addAutoplay = true) => {
 			if (match) {
 				videoId = match[1];
 				// Always use embed format for final URL
-				const finalUrl = new URL(`https://rutube.ru/play/embed/${videoId}`);
+				const finalUrl = new URL(
+					`https://rutube.ru/play/embed/${videoId}`
+				);
 				// Add autoplay parameter for faster initialization
 				if (addAutoplay) {
 					finalUrl.searchParams.set('autoplay', '1');
@@ -170,8 +179,10 @@ export const parseYouTubeVideoURL = (input) => {
 	try {
 		// Handle different YouTube URL formats
 		if (input.includes('youtube.com') || input.includes('youtu.be')) {
-			const url = new URL(input.startsWith('http') ? input : `https://${input}`);
-			
+			const url = new URL(
+				input.startsWith('http') ? input : `https://${input}`
+			);
+
 			// youtube.com/watch?v=ID
 			if (url.hostname.includes('youtube.com')) {
 				videoId = url.searchParams.get('v') || '';
@@ -207,7 +218,9 @@ export const parseVimeoVideoURL = (input) => {
 	try {
 		// Handle different Vimeo URL formats
 		if (input.includes('vimeo.com')) {
-			const url = new URL(input.startsWith('http') ? input : `https://${input}`);
+			const url = new URL(
+				input.startsWith('http') ? input : `https://${input}`
+			);
 			const match = url.pathname.match(/\/(\d+)/);
 			if (match) {
 				videoId = match[1];
@@ -223,4 +236,3 @@ export const parseVimeoVideoURL = (input) => {
 
 	return { url: input, videoId };
 };
-

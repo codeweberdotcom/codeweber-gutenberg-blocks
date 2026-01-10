@@ -26,5 +26,3 @@ export const colors = [
 	{ label: 'Telegram', value: 'telegram' },
 	{ label: 'Frost', value: 'frost' },
 ];
-
-

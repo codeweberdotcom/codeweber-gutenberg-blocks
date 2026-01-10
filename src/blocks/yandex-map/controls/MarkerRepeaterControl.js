@@ -32,7 +32,11 @@ const MarkerEditor = ({ marker, onSave, onCancel }) => {
 
 	return (
 		<Modal
-			title={marker ? __('Edit Marker', 'codeweber-gutenberg-blocks') : __('Add Marker', 'codeweber-gutenberg-blocks')}
+			title={
+				marker
+					? __('Edit Marker', 'codeweber-gutenberg-blocks')
+					: __('Add Marker', 'codeweber-gutenberg-blocks')
+			}
 			onRequestClose={onCancel}
 			style={{ maxWidth: '600px' }}
 		>
@@ -40,66 +44,102 @@ const MarkerEditor = ({ marker, onSave, onCancel }) => {
 				<CoordinateControl
 					label={__('Coordinates', 'codeweber-gutenberg-blocks')}
 					value={editedMarker.coords}
-					onChange={(coords) => setEditedMarker({ ...editedMarker, coords })}
+					onChange={(coords) =>
+						setEditedMarker({ ...editedMarker, coords })
+					}
 				/>
 
 				<TextControl
 					label={__('Title', 'codeweber-gutenberg-blocks')}
 					value={editedMarker.title}
-					onChange={(value) => setEditedMarker({ ...editedMarker, title: value })}
+					onChange={(value) =>
+						setEditedMarker({ ...editedMarker, title: value })
+					}
 				/>
 
 				<TextControl
 					label={__('Address', 'codeweber-gutenberg-blocks')}
 					value={editedMarker.address}
-					onChange={(value) => setEditedMarker({ ...editedMarker, address: value })}
+					onChange={(value) =>
+						setEditedMarker({ ...editedMarker, address: value })
+					}
 				/>
 
 				<TextControl
 					label={__('Phone', 'codeweber-gutenberg-blocks')}
 					value={editedMarker.phone}
-					onChange={(value) => setEditedMarker({ ...editedMarker, phone: value })}
+					onChange={(value) =>
+						setEditedMarker({ ...editedMarker, phone: value })
+					}
 				/>
 
 				<TextControl
 					label={__('Working Hours', 'codeweber-gutenberg-blocks')}
 					value={editedMarker.workingHours}
-					onChange={(value) => setEditedMarker({ ...editedMarker, workingHours: value })}
+					onChange={(value) =>
+						setEditedMarker({
+							...editedMarker,
+							workingHours: value,
+						})
+					}
 				/>
 
 				<TextControl
 					label={__('City', 'codeweber-gutenberg-blocks')}
 					value={editedMarker.city}
-					onChange={(value) => setEditedMarker({ ...editedMarker, city: value })}
+					onChange={(value) =>
+						setEditedMarker({ ...editedMarker, city: value })
+					}
 				/>
 
 				<TextControl
 					label={__('Category', 'codeweber-gutenberg-blocks')}
 					value={editedMarker.category}
-					onChange={(value) => setEditedMarker({ ...editedMarker, category: value })}
+					onChange={(value) =>
+						setEditedMarker({ ...editedMarker, category: value })
+					}
 				/>
 
 				<TextControl
 					label={__('Link', 'codeweber-gutenberg-blocks')}
 					value={editedMarker.link}
-					onChange={(value) => setEditedMarker({ ...editedMarker, link: value })}
+					onChange={(value) =>
+						setEditedMarker({ ...editedMarker, link: value })
+					}
 					type="url"
 				/>
 
-				<BaseControl label={__('Description', 'codeweber-gutenberg-blocks')}>
+				<BaseControl
+					label={__('Description', 'codeweber-gutenberg-blocks')}
+				>
 					<textarea
 						value={editedMarker.description}
-						onChange={(e) => setEditedMarker({ ...editedMarker, description: e.target.value })}
+						onChange={(e) =>
+							setEditedMarker({
+								...editedMarker,
+								description: e.target.value,
+							})
+						}
 						rows={3}
 						style={{ width: '100%' }}
 					/>
 				</BaseControl>
 
-				<div style={{ display: 'flex', gap: '8px', marginTop: '16px', justifyContent: 'flex-end' }}>
+				<div
+					style={{
+						display: 'flex',
+						gap: '8px',
+						marginTop: '16px',
+						justifyContent: 'flex-end',
+					}}
+				>
 					<Button variant="secondary" onClick={onCancel}>
 						{__('Cancel', 'codeweber-gutenberg-blocks')}
 					</Button>
-					<Button variant="primary" onClick={() => onSave(editedMarker)}>
+					<Button
+						variant="primary"
+						onClick={() => onSave(editedMarker)}
+					>
 						{__('Save', 'codeweber-gutenberg-blocks')}
 					</Button>
 				</div>
@@ -121,7 +161,11 @@ export const MarkerRepeaterControl = ({ markers = [], onChange }) => {
 	};
 
 	const handleDelete = (index) => {
-		if (window.confirm(__('Delete this marker?', 'codeweber-gutenberg-blocks'))) {
+		if (
+			window.confirm(
+				__('Delete this marker?', 'codeweber-gutenberg-blocks')
+			)
+		) {
 			const newMarkers = [...markers];
 			newMarkers.splice(index, 1);
 			onChange(newMarkers);
@@ -163,10 +207,19 @@ export const MarkerRepeaterControl = ({ markers = [], onChange }) => {
 
 			{markers.length === 0 ? (
 				<p style={{ color: '#666', fontStyle: 'italic' }}>
-					{__('No markers added yet. Click "Add Marker" to add one.', 'codeweber-gutenberg-blocks')}
+					{__(
+						'No markers added yet. Click "Add Marker" to add one.',
+						'codeweber-gutenberg-blocks'
+					)}
 				</p>
 			) : (
-				<div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+				<div
+					style={{
+						display: 'flex',
+						flexDirection: 'column',
+						gap: '8px',
+					}}
+				>
 					{markers.map((marker, index) => (
 						<div
 							key={marker.id || index}
@@ -180,9 +233,21 @@ export const MarkerRepeaterControl = ({ markers = [], onChange }) => {
 							}}
 						>
 							<div style={{ flex: 1 }}>
-								<strong>{marker.title || __('Untitled Marker', 'codeweber-gutenberg-blocks')}</strong>
+								<strong>
+									{marker.title ||
+										__(
+											'Untitled Marker',
+											'codeweber-gutenberg-blocks'
+										)}
+								</strong>
 								{marker.address && (
-									<div style={{ fontSize: '12px', color: '#666', marginTop: '4px' }}>
+									<div
+										style={{
+											fontSize: '12px',
+											color: '#666',
+											marginTop: '4px',
+										}}
+									>
 										{marker.address}
 									</div>
 								)}

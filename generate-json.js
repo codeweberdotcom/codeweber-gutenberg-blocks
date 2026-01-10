@@ -112,5 +112,3 @@ glob(`${languagesDir}/**/*.po`, (err, files) => {
 		});
 	});
 });
-
-

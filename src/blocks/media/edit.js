@@ -35,11 +35,23 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 	// Генерируем уникальный ключ для форсирования ре-рендера при изменении hover эффектов или imageSize
 	const hoverEffectsKey = useMemo(() => {
 		return `${simpleEffect}-${effectType}-${tooltipStyle}-${overlayStyle}-${overlayGradient}-${overlayColor}-${cursorStyle}`;
-	}, [simpleEffect, effectType, tooltipStyle, overlayStyle, overlayGradient, overlayColor, cursorStyle]);
+	}, [
+		simpleEffect,
+		effectType,
+		tooltipStyle,
+		overlayStyle,
+		overlayGradient,
+		overlayColor,
+		cursorStyle,
+	]);
 
 	// Generate unique ID for lightbox (only once, to avoid validation errors)
 	useEffect(() => {
-		if (videoLightbox && (videoType === 'vk' || videoType === 'rutube') && !attributes.lightboxUniqueId) {
+		if (
+			videoLightbox &&
+			(videoType === 'vk' || videoType === 'rutube') &&
+			!attributes.lightboxUniqueId
+		) {
 			const uniqueId = `video-${Math.random().toString(36).substr(2, 9)}`;
 			setAttributes({ lightboxUniqueId: uniqueId });
 		}
@@ -55,32 +67,48 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		const timer = setTimeout(() => {
 			try {
 				// Очистка старых span.bg перед реинициализацией overlay
-				const oldBgSpans = document.querySelectorAll('.cwgb-media-block .overlay > a > span.bg, .cwgb-media-block .overlay > span > span.bg');
-				oldBgSpans.forEach(span => span.remove());
+				const oldBgSpans = document.querySelectorAll(
+					'.cwgb-media-block .overlay > a > span.bg, .cwgb-media-block .overlay > span > span.bg'
+				);
+				oldBgSpans.forEach((span) => span.remove());
 
 				// Overlay (imageHoverOverlay) - добавляет <span class="bg"></span>
-				if (mediaType === 'image' && effectType === 'overlay' && typeof window.theme?.imageHoverOverlay === 'function') {
+				if (
+					mediaType === 'image' &&
+					effectType === 'overlay' &&
+					typeof window.theme?.imageHoverOverlay === 'function'
+				) {
 					window.theme.imageHoverOverlay();
 				}
 
 				// Tooltip (iTooltip)
-				if (mediaType === 'image' && effectType === 'tooltip' && typeof window.theme?.iTooltip === 'function') {
+				if (
+					mediaType === 'image' &&
+					effectType === 'tooltip' &&
+					typeof window.theme?.iTooltip === 'function'
+				) {
 					window.theme.iTooltip();
 				}
 
 				// Lightbox (GLightbox) - для изображений и видео
-				if ((mediaType === 'image' && enableLightbox) || (mediaType === 'video' && videoLightbox)) {
+				if (
+					(mediaType === 'image' && enableLightbox) ||
+					(mediaType === 'video' && videoLightbox)
+				) {
 					initLightbox();
 				}
 
 				// Plyr (Video Player) - инициализируем в редакторе для YouTube и Vimeo
-				if (mediaType === 'video' && !videoLightbox && (videoType === 'youtube' || videoType === 'vimeo')) {
+				if (
+					mediaType === 'video' &&
+					!videoLightbox &&
+					(videoType === 'youtube' || videoType === 'vimeo')
+				) {
 					// Дополнительная задержка для Plyr
 					setTimeout(() => {
 						initPlyr();
 					}, 200);
 				}
-
 			} catch (error) {
 				console.error('Library initialization failed (media):', error);
 			}
@@ -114,12 +142,18 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 
 	return (
 		<>
-			<ImageSidebar attributes={attributes} setAttributes={setAttributes} />
+			<ImageSidebar
+				attributes={attributes}
+				setAttributes={setAttributes}
+			/>
 			<div {...blockProps}>
 				{mediaType === 'image' ? (
 					image.url ? (
 						<div key={`image-${hoverEffectsKey}-${imageSize}`}>
-							<ImageRender attributes={attributes} isEditor={true} />
+							<ImageRender
+								attributes={attributes}
+								isEditor={true}
+							/>
 						</div>
 					) : (
 						<div
@@ -137,12 +171,17 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 						</div>
 					)
 				) : (
-					<div key={`video-${videoType}-${videoLightbox}-${videoVimeoId}-${videoYoutubeId}-${videoVkId}-${videoRutubeId}-${videoUrl}`}>
-						<VideoRender attributes={attributes} isEditor={true} setAttributes={setAttributes} />
+					<div
+						key={`video-${videoType}-${videoLightbox}-${videoVimeoId}-${videoYoutubeId}-${videoVkId}-${videoRutubeId}-${videoUrl}`}
+					>
+						<VideoRender
+							attributes={attributes}
+							isEditor={true}
+							setAttributes={setAttributes}
+						/>
 					</div>
 				)}
 			</div>
 		</>
 	);
 }
-

@@ -52,13 +52,10 @@ export default function Save({ attributes }) {
 	return (
 		<div {...blockProps}>
 			{positionWrapperClass ? (
-				<div className={positionWrapperClass}>
-					{buttonElement}
-				</div>
+				<div className={positionWrapperClass}>{buttonElement}</div>
 			) : (
 				buttonElement
 			)}
 		</div>
 	);
 }
-

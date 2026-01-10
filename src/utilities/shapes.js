@@ -5,5 +5,3 @@ export const shapes = [
 	{ label: 'Rounder', value: 'rounded-xl' },
 	{ label: 'Pill', value: 'rounded-pill' },
 ];
-
-

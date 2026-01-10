@@ -4,10 +4,7 @@
  * @package CodeWeber Gutenberg Blocks
  */
 
-import {
-	useBlockProps,
-	InspectorControls,
-} from '@wordpress/block-editor';
+import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
 import {
 	PanelBody,
 	SelectControl,
@@ -20,12 +17,7 @@ import { BlockMetaFields } from '../../components/block-meta/BlockMetaFields';
 import apiFetch from '@wordpress/api-fetch';
 
 const HtmlBlocksEdit = ({ attributes, setAttributes, clientId }) => {
-	const {
-		selectedBlockId,
-		blockClass,
-		blockData,
-		blockId,
-	} = attributes;
+	const { selectedBlockId, blockClass, blockData, blockId } = attributes;
 
 	const [htmlBlocks, setHtmlBlocks] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
@@ -43,7 +35,13 @@ const HtmlBlocksEdit = ({ attributes, setAttributes, clientId }) => {
 				});
 
 				const options = [
-					{ label: __('-- Select Block --', 'codeweber-gutenberg-blocks'), value: 0 },
+					{
+						label: __(
+							'-- Select Block --',
+							'codeweber-gutenberg-blocks'
+						),
+						value: 0,
+					},
 					...posts.map((post) => ({
 						label: post.title?.rendered || `#${post.id}`,
 						value: post.id,
@@ -54,7 +52,13 @@ const HtmlBlocksEdit = ({ attributes, setAttributes, clientId }) => {
 			} catch (error) {
 				console.error('Error fetching HTML blocks:', error);
 				setHtmlBlocks([
-					{ label: __('-- Select Block --', 'codeweber-gutenberg-blocks'), value: 0 },
+					{
+						label: __(
+							'-- Select Block --',
+							'codeweber-gutenberg-blocks'
+						),
+						value: 0,
+					},
 				]);
 			} finally {
 				setIsLoading(false);
@@ -83,7 +87,9 @@ const HtmlBlocksEdit = ({ attributes, setAttributes, clientId }) => {
 				setSelectedBlockContent(content);
 			} catch (error) {
 				console.error('Error fetching block content:', error);
-				setSelectedBlockContent(__('Error loading content', 'codeweber-gutenberg-blocks'));
+				setSelectedBlockContent(
+					__('Error loading content', 'codeweber-gutenberg-blocks')
+				);
 			} finally {
 				setIsLoadingContent(false);
 			}
@@ -114,24 +120,50 @@ const HtmlBlocksEdit = ({ attributes, setAttributes, clientId }) => {
 	return (
 		<>
 			<InspectorControls>
-				<PanelBody title={__('HTML Block Settings', 'codeweber-gutenberg-blocks')} initialOpen={true}>
+				<PanelBody
+					title={__(
+						'HTML Block Settings',
+						'codeweber-gutenberg-blocks'
+					)}
+					initialOpen={true}
+				>
 					{isLoading ? (
 						<div style={{ padding: '10px', textAlign: 'center' }}>
 							<Spinner />
-							<p>{__('Loading blocks...', 'codeweber-gutenberg-blocks')}</p>
+							<p>
+								{__(
+									'Loading blocks...',
+									'codeweber-gutenberg-blocks'
+								)}
+							</p>
 						</div>
 					) : (
 						<SelectControl
-							label={__('Select HTML Block', 'codeweber-gutenberg-blocks')}
+							label={__(
+								'Select HTML Block',
+								'codeweber-gutenberg-blocks'
+							)}
 							value={selectedBlockId || 0}
 							options={htmlBlocks}
-							onChange={(value) => setAttributes({ selectedBlockId: parseInt(value) || 0 })}
-							help={__('Select a block from html_blocks CPT to display', 'codeweber-gutenberg-blocks')}
+							onChange={(value) =>
+								setAttributes({
+									selectedBlockId: parseInt(value) || 0,
+								})
+							}
+							help={__(
+								'Select a block from html_blocks CPT to display',
+								'codeweber-gutenberg-blocks'
+							)}
 						/>
 					)}
 				</PanelBody>
 
-				<PanelBody title={__('Additional Settings', 'codeweber-gutenberg-blocks')}>
+				<PanelBody
+					title={__(
+						'Additional Settings',
+						'codeweber-gutenberg-blocks'
+					)}
+				>
 					<BlockMetaFields
 						attributes={attributes}
 						setAttributes={setAttributes}
@@ -141,9 +173,18 @@ const HtmlBlocksEdit = ({ attributes, setAttributes, clientId }) => {
 							idKey: 'blockId',
 						}}
 						labels={{
-							classLabel: __('CSS Class', 'codeweber-gutenberg-blocks'),
-							dataLabel: __('Data Attributes', 'codeweber-gutenberg-blocks'),
-							idLabel: __('Element ID', 'codeweber-gutenberg-blocks'),
+							classLabel: __(
+								'CSS Class',
+								'codeweber-gutenberg-blocks'
+							),
+							dataLabel: __(
+								'Data Attributes',
+								'codeweber-gutenberg-blocks'
+							),
+							idLabel: __(
+								'Element ID',
+								'codeweber-gutenberg-blocks'
+							),
 						}}
 					/>
 				</PanelBody>
@@ -154,17 +195,27 @@ const HtmlBlocksEdit = ({ attributes, setAttributes, clientId }) => {
 					<Placeholder
 						icon="code"
 						label={__('Html Blocks', 'codeweber-gutenberg-blocks')}
-						instructions={__('Select an HTML block from the settings list', 'codeweber-gutenberg-blocks')}
+						instructions={__(
+							'Select an HTML block from the settings list',
+							'codeweber-gutenberg-blocks'
+						)}
 					/>
 				) : isLoadingContent ? (
 					<div style={{ padding: '20px', textAlign: 'center' }}>
 						<Spinner />
-						<p>{__('Loading content...', 'codeweber-gutenberg-blocks')}</p>
+						<p>
+							{__(
+								'Loading content...',
+								'codeweber-gutenberg-blocks'
+							)}
+						</p>
 					</div>
 				) : (
 					<div
 						className="html-blocks-content"
-						dangerouslySetInnerHTML={{ __html: selectedBlockContent }}
+						dangerouslySetInnerHTML={{
+							__html: selectedBlockContent,
+						}}
 					/>
 				)}
 			</div>
@@ -173,8 +224,3 @@ const HtmlBlocksEdit = ({ attributes, setAttributes, clientId }) => {
 };
 
 export default HtmlBlocksEdit;
-
-
-
-
-

@@ -16,9 +16,12 @@ import { IconPicker } from '../../components/icon/IconPicker';
 import { BlockMetaFields } from '../../components/block-meta/BlockMetaFields';
 import apiFetch from '@wordpress/api-fetch';
 
-
-
-export const ButtonSidebar = ({ attributes, setAttributes, iconPickerOpen, setIconPickerOpen }) => {
+export const ButtonSidebar = ({
+	attributes,
+	setAttributes,
+	iconPickerOpen,
+	setIconPickerOpen,
+}) => {
 	const {
 		ButtonSize,
 		ButtonColor,
@@ -71,10 +74,8 @@ export const ButtonSidebar = ({ attributes, setAttributes, iconPickerOpen, setIc
 
 		if (type === 'expand') {
 			leftIcon = 'uil uil-arrow-right';
-
 		} else if (type === 'play') {
 			leftIcon = 'icn-caret-right';
-
 		} else if (type === 'circle') {
 			circleIcon = IconClass || 'uil uil-arrow-right';
 		} else if (type === 'icon') {
@@ -140,96 +141,94 @@ export const ButtonSidebar = ({ attributes, setAttributes, iconPickerOpen, setIc
 		});
 	};
 
-const handleIconChange = (type, value) => {
-	const {
-		ButtonType,
-		ButtonIconPosition,
-		IconClass,
-		SocialIconClass,
-		SocialIconStyle,
-		LeftIcon,
-		RightIcon,
-		CircleIcon,
-	} = attributes;
+	const handleIconChange = (type, value) => {
+		const {
+			ButtonType,
+			ButtonIconPosition,
+			IconClass,
+			SocialIconClass,
+			SocialIconStyle,
+			LeftIcon,
+			RightIcon,
+			CircleIcon,
+		} = attributes;
 
-	let leftIcon = '';
-	let rightIcon = '';
-	let circleIcon = '';
+		let leftIcon = '';
+		let rightIcon = '';
+		let circleIcon = '';
 
-	switch (type) {
-		case 'position': {
-			// Обработка изменения позиции иконки
-			if (ButtonType === 'icon') {
-				if (ButtonIconPosition === 'left') {
-					rightIcon = IconClass;
-					leftIcon = '';
-				} else if (ButtonIconPosition === 'right') {
-					leftIcon = IconClass;
-					rightIcon = '';
+		switch (type) {
+			case 'position': {
+				// Обработка изменения позиции иконки
+				if (ButtonType === 'icon') {
+					if (ButtonIconPosition === 'left') {
+						rightIcon = IconClass;
+						leftIcon = '';
+					} else if (ButtonIconPosition === 'right') {
+						leftIcon = IconClass;
+						rightIcon = '';
+					}
 				}
-			}
-			setAttributes({
-				ButtonIconPosition: value,
-				LeftIcon: leftIcon,
-				RightIcon: rightIcon,
-				CircleIcon: circleIcon,
-			});
-			break;
-		}
-
-		case 'icon': {
-			// Обработка изменения иконки
-			if (ButtonType === 'circle') {
-				circleIcon = value;
-			} else if (ButtonType === 'icon') {
-				if (ButtonIconPosition === 'left') {
-					leftIcon = value;
-					rightIcon = '';
-				} else if (ButtonIconPosition === 'right') {
-					rightIcon = value;
-					leftIcon = '';
-				}
-			}
-			setAttributes({
-				IconClass: value,
-				LeftIcon: leftIcon,
-				RightIcon: rightIcon,
-				CircleIcon: circleIcon,
-			});
-			break;
-		}
-
-		case 'socialIconStyle': {
-			// Обработка изменения стиля социальной иконки
-			setAttributes({
-				SocialIconStyle: value,
-			});
-			break;
-		}
-
-		case 'socialIconClass': {
-
-		     let socialIconClass = '';
-
-			if (ButtonType === 'social') {
-				if (ButtonIconPosition === 'left') {
-					socialIconClass = value;
-				} else if (ButtonIconPosition === 'right') {
-					socialIconClass = value;
-				}
+				setAttributes({
+					ButtonIconPosition: value,
+					LeftIcon: leftIcon,
+					RightIcon: rightIcon,
+					CircleIcon: circleIcon,
+				});
+				break;
 			}
 
-			setAttributes({
-				SocialIconClass: socialIconClass,
-			});
-			break;
+			case 'icon': {
+				// Обработка изменения иконки
+				if (ButtonType === 'circle') {
+					circleIcon = value;
+				} else if (ButtonType === 'icon') {
+					if (ButtonIconPosition === 'left') {
+						leftIcon = value;
+						rightIcon = '';
+					} else if (ButtonIconPosition === 'right') {
+						rightIcon = value;
+						leftIcon = '';
+					}
+				}
+				setAttributes({
+					IconClass: value,
+					LeftIcon: leftIcon,
+					RightIcon: rightIcon,
+					CircleIcon: circleIcon,
+				});
+				break;
+			}
+
+			case 'socialIconStyle': {
+				// Обработка изменения стиля социальной иконки
+				setAttributes({
+					SocialIconStyle: value,
+				});
+				break;
+			}
+
+			case 'socialIconClass': {
+				let socialIconClass = '';
+
+				if (ButtonType === 'social') {
+					if (ButtonIconPosition === 'left') {
+						socialIconClass = value;
+					} else if (ButtonIconPosition === 'right') {
+						socialIconClass = value;
+					}
+				}
+
+				setAttributes({
+					SocialIconClass: socialIconClass,
+				});
+				break;
+			}
+
+			default:
+				break;
 		}
-
-		default:
-			break;
-	}
-};
-
+	};
 
 	return (
 		<PanelBody
@@ -342,7 +341,7 @@ const handleIconChange = (type, value) => {
 											label: 'Gradient',
 											value: 'gradient',
 										},
-								  ]
+									]
 								: []),
 						].map((style) => (
 							<Button
@@ -519,8 +518,22 @@ const handleIconChange = (type, value) => {
 						{__('Select Icon', 'codeweber-gutenberg-blocks')}
 					</Button>
 					{IconClass && (
-						<div style={{ marginTop: '8px', padding: '8px', background: '#f0f0f1', borderRadius: '4px', fontSize: '12px' }}>
-							<strong>{__('Current icon:', 'codeweber-gutenberg-blocks')}</strong> {IconClass}
+						<div
+							style={{
+								marginTop: '8px',
+								padding: '8px',
+								background: '#f0f0f1',
+								borderRadius: '4px',
+								fontSize: '12px',
+							}}
+						>
+							<strong>
+								{__(
+									'Current icon:',
+									'codeweber-gutenberg-blocks'
+								)}
+							</strong>{' '}
+							{IconClass}
 						</div>
 					)}
 					<IconPicker
@@ -528,26 +541,28 @@ const handleIconChange = (type, value) => {
 						onClose={() => setIconPickerOpen(false)}
 						onSelect={(result) => {
 							// Извлекаем iconName и сохраняем как класс иконки
-							const iconClass = result.iconName ? `uil uil-${result.iconName}` : '';
+							const iconClass = result.iconName
+								? `uil uil-${result.iconName}`
+								: '';
 
 							// Определяем, какую иконку обновлять в зависимости от типа и позиции
 							if (ButtonType === 'circle') {
 								setAttributes({
 									IconClass: iconClass,
-									CircleIcon: iconClass
+									CircleIcon: iconClass,
 								});
 							} else if (ButtonType === 'icon') {
 								if (ButtonIconPosition === 'left') {
 									setAttributes({
 										IconClass: iconClass,
 										LeftIcon: iconClass,
-										RightIcon: ''
+										RightIcon: '',
 									});
 								} else if (ButtonIconPosition === 'right') {
 									setAttributes({
 										IconClass: iconClass,
 										RightIcon: iconClass,
-										LeftIcon: ''
+										LeftIcon: '',
 									});
 								}
 							}
@@ -565,7 +580,10 @@ const handleIconChange = (type, value) => {
 			{/* Социальные иконки */}
 			{ButtonType === 'social' && (
 				<ComboboxControl
-					label={__('Social Icon Class', 'codeweber-gutenberg-blocks')}
+					label={__(
+						'Social Icon Class',
+						'codeweber-gutenberg-blocks'
+					)}
 					value={SocialIconClass}
 					options={fontIconsSocial}
 					onChange={(newIconClass) =>
@@ -621,7 +639,10 @@ const handleIconChange = (type, value) => {
 					idKey: 'blockId',
 				}}
 				labels={{
-					classLabel: __('Button Class', 'codeweber-gutenberg-blocks'),
+					classLabel: __(
+						'Button Class',
+						'codeweber-gutenberg-blocks'
+					),
 					dataLabel: __('Button Data', 'codeweber-gutenberg-blocks'),
 					idLabel: __('Button ID', 'codeweber-gutenberg-blocks'),
 				}}

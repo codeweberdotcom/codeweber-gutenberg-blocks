@@ -1,8 +1,8 @@
 import { InnerBlocks } from '@wordpress/block-editor';
 import { getImageUrl } from '../../../utilities/image-url';
-import { 
-	SwiperSlider, 
-	SwiperSlide, 
+import {
+	SwiperSlider,
+	SwiperSlide,
 	getSwiperConfigFromAttributes,
 } from '../../../components/swiper/SwiperSlider';
 
@@ -50,23 +50,23 @@ export const Banner15 = ({ attributes, isEditor = false, clientId = '' }) => {
 
 	const imagesToRender = images || [];
 	const hasImage = imagesToRender && imagesToRender.length > 0;
-	
+
 	// Placeholder фоновые изображения для слайдов
 	const placeholderBgImages = [
-		isEditor 
-			? (window.location?.origin 
+		isEditor
+			? window.location?.origin
 				? `${window.location.origin}/wp-content/themes/codeweber/dist/assets/img/photos/bg7.jpg`
-				: './assets/img/photos/bg7.jpg')
+				: './assets/img/photos/bg7.jpg'
 			: '/wp-content/themes/codeweber/dist/assets/img/photos/bg7.jpg',
-		isEditor 
-			? (window.location?.origin 
+		isEditor
+			? window.location?.origin
 				? `${window.location.origin}/wp-content/themes/codeweber/dist/assets/img/photos/bg8.jpg`
-				: './assets/img/photos/bg8.jpg')
+				: './assets/img/photos/bg8.jpg'
 			: '/wp-content/themes/codeweber/dist/assets/img/photos/bg8.jpg',
-		isEditor 
-			? (window.location?.origin 
+		isEditor
+			? window.location?.origin
 				? `${window.location.origin}/wp-content/themes/codeweber/dist/assets/img/photos/bg9.jpg`
-				: './assets/img/photos/bg9.jpg')
+				: './assets/img/photos/bg9.jpg'
 			: '/wp-content/themes/codeweber/dist/assets/img/photos/bg9.jpg',
 	];
 
@@ -102,60 +102,75 @@ export const Banner15 = ({ attributes, isEditor = false, clientId = '' }) => {
 	// Рендерим Swiper со слайдами
 	const renderSwiper = () => {
 		// Используем imagesToRender или placeholder изображения
-		const slideImages = hasImage ? imagesToRender : placeholderBgImages.map((url, index) => ({ 
-			url, 
-			alt: `Slide ${index + 1}`,
-			id: 0 
-		}));
+		const slideImages = hasImage
+			? imagesToRender
+			: placeholderBgImages.map((url, index) => ({
+					url,
+					alt: `Slide ${index + 1}`,
+					id: 0,
+				}));
 
 		// Всегда минимум 3 слайда (если меньше, добавляем placeholder)
 		let slidesToRender = slideImages;
 		if (slidesToRender.length < 3) {
 			slidesToRender = [
 				...slidesToRender,
-				...placeholderBgImages.slice(slidesToRender.length).map((url, index) => ({ 
-					url, 
-					alt: `Slide ${slidesToRender.length + index + 1}`,
-					id: 0 
-				}))
+				...placeholderBgImages
+					.slice(slidesToRender.length)
+					.map((url, index) => ({
+						url,
+						alt: `Slide ${slidesToRender.length + index + 1}`,
+						id: 0,
+					})),
 			].slice(0, 3);
 		}
 
 		return (
-			<SwiperSlider 
-				config={swiperConfig} 
+			<SwiperSlider
+				config={swiperConfig}
 				className="swiper-hero dots-over"
 				{...(isEditor && { uniqueKey: swiperUniqueKey })}
 			>
 				{slidesToRender.map((image, index) => {
-					const imageUrl = hasImage && image.id ? getImageUrl(image, imageSize) : image.url;
-					const contentClasses = slideContentClasses[index % slideContentClasses.length];
+					const imageUrl =
+						hasImage && image.id
+							? getImageUrl(image, imageSize)
+							: image.url;
+					const contentClasses =
+						slideContentClasses[index % slideContentClasses.length];
 					const isVideoSlide = !hasImage && index === 1 && videoUrl;
 
 					return (
-						<SwiperSlide key={`banner15-slide-${index}-${swiperUniqueKey}`}>
-							<div 
+						<SwiperSlide
+							key={`banner15-slide-${index}-${swiperUniqueKey}`}
+						>
+							<div
 								className="h-100 bg-overlay bg-overlay-400 bg-dark"
-								style={{ 
+								style={{
 									backgroundImage: `url(${imageUrl})`,
 									backgroundSize: 'cover',
 									backgroundPosition: 'center',
-									backgroundRepeat: 'no-repeat'
+									backgroundRepeat: 'no-repeat',
 								}}
 							>
 								<div className="container h-100">
 									<div className="row h-100">
 										<div className={contentClasses}>
 											{isEditor && index === 0 ? (
-												<InnerBlocks allowedBlocks={ALLOWED_CODEWEBER_BLOCKS} templateLock={false} />
+												<InnerBlocks
+													allowedBlocks={
+														ALLOWED_CODEWEBER_BLOCKS
+													}
+													templateLock={false}
+												/>
 											) : !isEditor ? (
 												<InnerBlocks.Content />
 											) : null}
 											{isVideoSlide && (
 												<div className="animate__animated animate__slideInUp animate__delay-3s">
-													<a 
-														href={videoUrl} 
-														className="btn btn-circle btn-white btn-play ripple mx-auto mb-5" 
+													<a
+														href={videoUrl}
+														className="btn btn-circle btn-white btn-play ripple mx-auto mb-5"
 														data-glightbox
 													>
 														<i className="icn-caret-right"></i>
@@ -176,4 +191,3 @@ export const Banner15 = ({ attributes, isEditor = false, clientId = '' }) => {
 	// Для Banner15 нет обёртки section, это просто swiper-container
 	return renderSwiper();
 };
-

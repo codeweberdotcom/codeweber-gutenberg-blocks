@@ -1,223 +1,222 @@
 {
-    "apiVersion": 2,
-    "name": "codeweber-blocks/form",
-    "version": "0.1.0",
-    "title": "Форма",
-    "category": "codeweber-gutenberg-elements",
-    "icon": "feedback",
-    "description": "Создавайте контактные формы с разными типами полей",
-    "supports": {
-        "html": false,
-        "customClassName": true,
-        "anchor": true,
-        "innerBlocks": true
-    },
-    "attributes": {
-        "formId": {
-            "type": "string",
-            "default": ""
-        },
-        "recipientEmail": {
-            "type": "string",
-            "default": ""
-        },
-        "senderEmail": {
-            "type": "string",
-            "default": ""
-        },
-        "senderName": {
-            "type": "string",
-            "default": ""
-        },
-        "subject": {
-            "type": "string",
-            "default": ""
-        },
-        "successMessage": {
-            "type": "string",
-            "default": "Thank you! Your message has been sent."
-        },
-        "errorMessage": {
-            "type": "string",
-            "default": "An error occurred. Please try again."
-        },
-        "enableCaptcha": {
-            "type": "boolean",
-            "default": false
-        },
-        "captchaType": {
-            "type": "string",
-            "default": "honeypot"
-        },
-        "enableRateLimit": {
-            "type": "boolean",
-            "default": true
-        },
-        "rateLimitCount": {
-            "type": "number",
-            "default": 5
-        },
-        "rateLimitPeriod": {
-            "type": "number",
-            "default": 60
-        },
-        "formFields": {
-            "type": "array",
-            "default": []
-        },
-        "blockClass": {
-            "type": "string",
-            "default": ""
-        },
-        "blockData": {
-            "type": "string",
-            "default": ""
-        },
-        "blockId": {
-            "type": "string",
-            "default": ""
-        },
-        "formGapType": {
-            "type": "string",
-            "default": "general"
-        },
-        "formGap": {
-            "type": "string",
-            "default": "4"
-        },
-        "formGapXs": {
-            "type": "string",
-            "default": ""
-        },
-        "formGapSm": {
-            "type": "string",
-            "default": ""
-        },
-        "formGapMd": {
-            "type": "string",
-            "default": ""
-        },
-        "formGapLg": {
-            "type": "string",
-            "default": ""
-        },
-        "formGapXl": {
-            "type": "string",
-            "default": ""
-        },
-        "formGapXxl": {
-            "type": "string",
-            "default": ""
-        },
-        "formGapX": {
-            "type": "string",
-            "default": ""
-        },
-        "formGapXXs": {
-            "type": "string",
-            "default": ""
-        },
-        "formGapXSm": {
-            "type": "string",
-            "default": ""
-        },
-        "formGapXMd": {
-            "type": "string",
-            "default": ""
-        },
-        "formGapXLg": {
-            "type": "string",
-            "default": ""
-        },
-        "formGapXXl": {
-            "type": "string",
-            "default": ""
-        },
-        "formGapXXxl": {
-            "type": "string",
-            "default": ""
-        },
-        "formGapY": {
-            "type": "string",
-            "default": ""
-        },
-        "formGapYXs": {
-            "type": "string",
-            "default": ""
-        },
-        "formGapYSm": {
-            "type": "string",
-            "default": ""
-        },
-        "formGapYMd": {
-            "type": "string",
-            "default": ""
-        },
-        "formGapYLg": {
-            "type": "string",
-            "default": ""
-        },
-        "formGapYXl": {
-            "type": "string",
-            "default": ""
-        },
-        "formGapYXxl": {
-            "type": "string",
-            "default": ""
-        },
-        "formAlignItems": {
-            "type": "string",
-            "default": ""
-        },
-        "formJustifyContent": {
-            "type": "string",
-            "default": ""
-        },
-        "formTextAlign": {
-            "type": "string",
-            "default": ""
-        },
-        "formPosition": {
-            "type": "string",
-            "default": ""
-        },
-        "formType": {
-            "type": "string",
-            "default": "form"
-        },
-        "formTitle": {
-            "type": "string",
-            "default": ""
-        },
-    "formSubtitle": {
-      "type": "string",
-      "default": ""
-    },
-    "formTitleTag": {
-      "type": "string",
-      "default": "div"
-    },
-    "formSubtitleTag": {
-      "type": "string",
-      "default": "p"
-    },
-    "formTitleClass": {
-      "type": "string",
-      "default": "h3 text-start"
-    },
-    "formSubtitleClass": {
-      "type": "string",
-      "default": "lead mb-4 text-start"
-    }
-  },
-    "allowedBlocks": [
-        "codeweber-blocks/form-field",
-        "codeweber-blocks/submit-button",
-        "codeweber-gutenberg-blocks/heading-subtitle"
-    ],
-    "textdomain": "codeweber-blocks",
-    "editorScript": "file:./index.js",
-    "editorStyle": "file:./index.css",
-    "style": "file:./style-index.css"
+	"apiVersion": 2,
+	"name": "codeweber-blocks/form",
+	"version": "0.1.0",
+	"title": "Форма",
+	"category": "codeweber-gutenberg-elements",
+	"icon": "feedback",
+	"description": "Создавайте контактные формы с разными типами полей",
+	"supports": {
+		"html": false,
+		"customClassName": true,
+		"anchor": true,
+		"innerBlocks": true
+	},
+	"attributes": {
+		"formId": {
+			"type": "string",
+			"default": ""
+		},
+		"recipientEmail": {
+			"type": "string",
+			"default": ""
+		},
+		"senderEmail": {
+			"type": "string",
+			"default": ""
+		},
+		"senderName": {
+			"type": "string",
+			"default": ""
+		},
+		"subject": {
+			"type": "string",
+			"default": ""
+		},
+		"successMessage": {
+			"type": "string",
+			"default": "Thank you! Your message has been sent."
+		},
+		"errorMessage": {
+			"type": "string",
+			"default": "An error occurred. Please try again."
+		},
+		"enableCaptcha": {
+			"type": "boolean",
+			"default": false
+		},
+		"captchaType": {
+			"type": "string",
+			"default": "honeypot"
+		},
+		"enableRateLimit": {
+			"type": "boolean",
+			"default": true
+		},
+		"rateLimitCount": {
+			"type": "number",
+			"default": 5
+		},
+		"rateLimitPeriod": {
+			"type": "number",
+			"default": 60
+		},
+		"formFields": {
+			"type": "array",
+			"default": []
+		},
+		"blockClass": {
+			"type": "string",
+			"default": ""
+		},
+		"blockData": {
+			"type": "string",
+			"default": ""
+		},
+		"blockId": {
+			"type": "string",
+			"default": ""
+		},
+		"formGapType": {
+			"type": "string",
+			"default": "general"
+		},
+		"formGap": {
+			"type": "string",
+			"default": "4"
+		},
+		"formGapXs": {
+			"type": "string",
+			"default": ""
+		},
+		"formGapSm": {
+			"type": "string",
+			"default": ""
+		},
+		"formGapMd": {
+			"type": "string",
+			"default": ""
+		},
+		"formGapLg": {
+			"type": "string",
+			"default": ""
+		},
+		"formGapXl": {
+			"type": "string",
+			"default": ""
+		},
+		"formGapXxl": {
+			"type": "string",
+			"default": ""
+		},
+		"formGapX": {
+			"type": "string",
+			"default": ""
+		},
+		"formGapXXs": {
+			"type": "string",
+			"default": ""
+		},
+		"formGapXSm": {
+			"type": "string",
+			"default": ""
+		},
+		"formGapXMd": {
+			"type": "string",
+			"default": ""
+		},
+		"formGapXLg": {
+			"type": "string",
+			"default": ""
+		},
+		"formGapXXl": {
+			"type": "string",
+			"default": ""
+		},
+		"formGapXXxl": {
+			"type": "string",
+			"default": ""
+		},
+		"formGapY": {
+			"type": "string",
+			"default": ""
+		},
+		"formGapYXs": {
+			"type": "string",
+			"default": ""
+		},
+		"formGapYSm": {
+			"type": "string",
+			"default": ""
+		},
+		"formGapYMd": {
+			"type": "string",
+			"default": ""
+		},
+		"formGapYLg": {
+			"type": "string",
+			"default": ""
+		},
+		"formGapYXl": {
+			"type": "string",
+			"default": ""
+		},
+		"formGapYXxl": {
+			"type": "string",
+			"default": ""
+		},
+		"formAlignItems": {
+			"type": "string",
+			"default": ""
+		},
+		"formJustifyContent": {
+			"type": "string",
+			"default": ""
+		},
+		"formTextAlign": {
+			"type": "string",
+			"default": ""
+		},
+		"formPosition": {
+			"type": "string",
+			"default": ""
+		},
+		"formType": {
+			"type": "string",
+			"default": "form"
+		},
+		"formTitle": {
+			"type": "string",
+			"default": ""
+		},
+		"formSubtitle": {
+			"type": "string",
+			"default": ""
+		},
+		"formTitleTag": {
+			"type": "string",
+			"default": "div"
+		},
+		"formSubtitleTag": {
+			"type": "string",
+			"default": "p"
+		},
+		"formTitleClass": {
+			"type": "string",
+			"default": "h3 text-start"
+		},
+		"formSubtitleClass": {
+			"type": "string",
+			"default": "lead mb-4 text-start"
+		}
+	},
+	"allowedBlocks": [
+		"codeweber-blocks/form-field",
+		"codeweber-blocks/submit-button",
+		"codeweber-gutenberg-blocks/heading-subtitle"
+	],
+	"textdomain": "codeweber-blocks",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
 }
-

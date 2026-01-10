@@ -1,6 +1,6 @@
 /**
  * BorderSettingsPanel Component
- * 
+ *
  * @package CodeWeber Gutenberg Blocks
  */
 
@@ -16,7 +16,10 @@ const BORDER_POSITION_OPTIONS = [
 	{ label: __('None', 'codeweber-gutenberg-blocks'), value: '' },
 	{ label: __('All', 'codeweber-gutenberg-blocks'), value: 'border' },
 	{ label: __('Top', 'codeweber-gutenberg-blocks'), value: 'border-top' },
-	{ label: __('Bottom', 'codeweber-gutenberg-blocks'), value: 'border-bottom' },
+	{
+		label: __('Bottom', 'codeweber-gutenberg-blocks'),
+		value: 'border-bottom',
+	},
 	{ label: __('Start', 'codeweber-gutenberg-blocks'), value: 'border-start' },
 	{ label: __('End', 'codeweber-gutenberg-blocks'), value: 'border-end' },
 ];
@@ -33,7 +36,7 @@ const BORDER_WIDTH_OPTIONS = [
 
 /**
  * BorderSettingsPanel Component
- * 
+ *
  * @param {Object} props
  * @param {string} props.borderRadius - Current border radius value
  * @param {Function} props.onBorderRadiusChange - Callback when border radius changes
@@ -95,7 +98,10 @@ export const BorderSettingsPanel = ({
 					{showPosition && (
 						<div style={{ marginBottom: '16px' }}>
 							<SelectControl
-								label={__('Border Position', 'codeweber-gutenberg-blocks')}
+								label={__(
+									'Border Position',
+									'codeweber-gutenberg-blocks'
+								)}
 								value={borderPosition || ''}
 								options={BORDER_POSITION_OPTIONS}
 								onChange={onBorderPositionChange}
@@ -105,7 +111,10 @@ export const BorderSettingsPanel = ({
 
 					<div style={{ marginBottom: '16px' }}>
 						<SelectControl
-							label={__('Border Width', 'codeweber-gutenberg-blocks')}
+							label={__(
+								'Border Width',
+								'codeweber-gutenberg-blocks'
+							)}
 							value={borderWidth || ''}
 							options={BORDER_WIDTH_OPTIONS}
 							onChange={onBorderWidthChange}
@@ -114,19 +123,37 @@ export const BorderSettingsPanel = ({
 
 					<div style={{ marginBottom: '16px' }}>
 						<ColorTypeControl
-							label={__('Border Color Type', 'codeweber-gutenberg-blocks')}
+							label={__(
+								'Border Color Type',
+								'codeweber-gutenberg-blocks'
+							)}
 							value={borderColorType || 'solid'}
 							onChange={onBorderColorTypeChange}
 							options={[
-								{ value: 'solid', label: __('Solid', 'codeweber-gutenberg-blocks') },
-								{ value: 'soft', label: __('Soft', 'codeweber-gutenberg-blocks') },
+								{
+									value: 'solid',
+									label: __(
+										'Solid',
+										'codeweber-gutenberg-blocks'
+									),
+								},
+								{
+									value: 'soft',
+									label: __(
+										'Soft',
+										'codeweber-gutenberg-blocks'
+									),
+								},
 							]}
 						/>
 					</div>
 
 					<div style={{ marginBottom: '16px' }}>
 						<ComboboxControl
-							label={__('Border Color', 'codeweber-gutenberg-blocks')}
+							label={__(
+								'Border Color',
+								'codeweber-gutenberg-blocks'
+							)}
 							value={borderColor || ''}
 							options={colors}
 							onChange={onBorderColorChange}

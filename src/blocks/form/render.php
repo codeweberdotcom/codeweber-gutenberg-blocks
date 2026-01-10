@@ -384,4 +384,3 @@ if (class_exists('CodeweberFormsRenderer')) {
 } else {
     echo '<p>' . __('Forms module is not active.', 'codeweber-gutenberg-blocks') . '</p>';
 }
-

@@ -27,7 +27,7 @@ const fetchSvg = async (url) => {
 			throw new Error(`Failed to fetch SVG: ${response.status}`);
 		}
 		const svgText = await response.text();
-		
+
 		// Сохраняем в кэш
 		svgCache.set(url, svgText);
 		return svgText;
@@ -69,11 +69,16 @@ const processSvg = (svgText, className, preserveFillClasses = false) => {
 	// и НЕ заменяем fill на currentColor
 	if (!preserveFillClasses) {
 		// Убираем fill="..." с путей чтобы CSS мог управлять цветом через currentColor
-		const paths = svg.querySelectorAll('path, circle, rect, polygon, ellipse, line, polyline');
+		const paths = svg.querySelectorAll(
+			'path, circle, rect, polygon, ellipse, line, polyline'
+		);
 		paths.forEach((el) => {
 			const elClass = el.getAttribute('class') || '';
 			// Не трогаем элементы с классами fill-primary или fill-secondary
-			if (elClass.includes('fill-primary') || elClass.includes('fill-secondary')) {
+			if (
+				elClass.includes('fill-primary') ||
+				elClass.includes('fill-secondary')
+			) {
 				return;
 			}
 			const fill = el.getAttribute('fill');
@@ -101,7 +106,12 @@ const processSvg = (svgText, className, preserveFillClasses = false) => {
  * @param {string} props.alt - Alt текст (для fallback)
  * @param {boolean} props.preserveFillClasses - Сохранять fill-primary/fill-secondary (для solid icons)
  */
-export const InlineSvg = ({ src, className = '', alt = '', preserveFillClasses = false }) => {
+export const InlineSvg = ({
+	src,
+	className = '',
+	alt = '',
+	preserveFillClasses = false,
+}) => {
 	const [svgContent, setSvgContent] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
 	const [error, setError] = useState(false);
@@ -119,7 +129,11 @@ export const InlineSvg = ({ src, className = '', alt = '', preserveFillClasses =
 		fetchSvg(src)
 			.then((svgText) => {
 				if (svgText) {
-					const processed = processSvg(svgText, className, preserveFillClasses);
+					const processed = processSvg(
+						svgText,
+						className,
+						preserveFillClasses
+					);
 					setSvgContent(processed);
 				} else {
 					setError(true);
@@ -135,9 +149,21 @@ export const InlineSvg = ({ src, className = '', alt = '', preserveFillClasses =
 	// Загрузка
 	if (isLoading) {
 		return (
-			<span className={`inline-svg-loading ${className}`} role="img" aria-label={alt}>
+			<span
+				className={`inline-svg-loading ${className}`}
+				role="img"
+				aria-label={alt}
+			>
 				<svg viewBox="0 0 24 24" className="inline-svg-spinner">
-					<circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" fill="none" opacity="0.3" />
+					<circle
+						cx="12"
+						cy="12"
+						r="10"
+						stroke="currentColor"
+						strokeWidth="2"
+						fill="none"
+						opacity="0.3"
+					/>
 				</svg>
 			</span>
 		);
@@ -146,9 +172,13 @@ export const InlineSvg = ({ src, className = '', alt = '', preserveFillClasses =
 	// Ошибка - показываем placeholder
 	if (error || !svgContent) {
 		return (
-			<span className={`inline-svg-error ${className}`} role="img" aria-label={alt}>
+			<span
+				className={`inline-svg-error ${className}`}
+				role="img"
+				aria-label={alt}
+			>
 				<svg viewBox="0 0 24 24" fill="currentColor">
-					<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+					<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
 				</svg>
 			</span>
 		);
@@ -166,4 +196,3 @@ export const InlineSvg = ({ src, className = '', alt = '', preserveFillClasses =
 };
 
 export default InlineSvg;
-

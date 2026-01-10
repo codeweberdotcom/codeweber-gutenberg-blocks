@@ -3,7 +3,11 @@ import { useEffect, useState } from '@wordpress/element';
 import { CheckboxControl, Spinner } from '@wordpress/components';
 import apiFetch from '@wordpress/api-fetch';
 
-export const TaxonomyFilterControl = ({ postType, selectedTaxonomies = {}, onChange }) => {
+export const TaxonomyFilterControl = ({
+	postType,
+	selectedTaxonomies = {},
+	onChange,
+}) => {
 	const [taxonomies, setTaxonomies] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
 
@@ -51,9 +55,9 @@ export const TaxonomyFilterControl = ({ postType, selectedTaxonomies = {}, onCha
 			}
 		} else {
 			// Удаляем термин
-			newSelectedTaxonomies[taxonomySlug] = newSelectedTaxonomies[taxonomySlug].filter(
-				(id) => id !== termId
-			);
+			newSelectedTaxonomies[taxonomySlug] = newSelectedTaxonomies[
+				taxonomySlug
+			].filter((id) => id !== termId);
 
 			// Удаляем пустые таксономии
 			if (newSelectedTaxonomies[taxonomySlug].length === 0) {
@@ -67,7 +71,13 @@ export const TaxonomyFilterControl = ({ postType, selectedTaxonomies = {}, onCha
 	if (isLoading) {
 		return (
 			<div style={{ marginTop: '16px' }}>
-				<p style={{ marginBottom: '12px', fontSize: '13px', fontWeight: 600 }}>
+				<p
+					style={{
+						marginBottom: '12px',
+						fontSize: '13px',
+						fontWeight: 600,
+					}}
+				>
 					{__('Filter by Taxonomies', 'codeweber-gutenberg-blocks')}
 				</p>
 				<Spinner />
@@ -81,7 +91,13 @@ export const TaxonomyFilterControl = ({ postType, selectedTaxonomies = {}, onCha
 
 	return (
 		<div style={{ marginTop: '16px' }}>
-			<p style={{ marginBottom: '12px', fontSize: '13px', fontWeight: 600 }}>
+			<p
+				style={{
+					marginBottom: '12px',
+					fontSize: '13px',
+					fontWeight: 600,
+				}}
+			>
 				{__('Filter by Taxonomies', 'codeweber-gutenberg-blocks')}
 			</p>
 			{taxonomies.map((taxonomy) => {
@@ -89,21 +105,52 @@ export const TaxonomyFilterControl = ({ postType, selectedTaxonomies = {}, onCha
 
 				return (
 					<div key={taxonomy.slug} style={{ marginBottom: '0' }}>
-						<p style={{ marginBottom: '8px', fontSize: '12px', fontWeight: 500, color: '#1e1e1e' }}>
+						<p
+							style={{
+								marginBottom: '8px',
+								fontSize: '12px',
+								fontWeight: 500,
+								color: '#1e1e1e',
+							}}
+						>
 							{taxonomy.name}
 						</p>
 						{taxonomy.terms.length === 0 ? (
-							<p style={{ color: '#757575', fontStyle: 'italic', fontSize: '12px', margin: 0 }}>
-								{__('No terms available.', 'codeweber-gutenberg-blocks')}
+							<p
+								style={{
+									color: '#757575',
+									fontStyle: 'italic',
+									fontSize: '12px',
+									margin: 0,
+								}}
+							>
+								{__(
+									'No terms available.',
+									'codeweber-gutenberg-blocks'
+								)}
 							</p>
 						) : (
-							<div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+							<div
+								style={{
+									display: 'flex',
+									flexDirection: 'column',
+									gap: '6px',
+								}}
+							>
 								{taxonomy.terms.map((term) => (
 									<CheckboxControl
 										key={term.id}
 										label={`${term.name} (${term.count})`}
-										checked={selectedTerms.includes(term.id)}
-										onChange={(checked) => handleTermChange(taxonomy.slug, term.id, checked)}
+										checked={selectedTerms.includes(
+											term.id
+										)}
+										onChange={(checked) =>
+											handleTermChange(
+												taxonomy.slug,
+												term.id,
+												checked
+											)
+										}
 									/>
 								))}
 							</div>

@@ -10,13 +10,7 @@ import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
 import { getGapClasses } from '../../components/grid-control';
 
 export default function Save({ attributes }) {
-	const {
-		formId,
-		formType,
-		blockClass,
-		blockData,
-		blockId,
-	} = attributes;
+	const { formId, formType, blockClass, blockData, blockId } = attributes;
 
 	// Используем стабильный ID: если formId задан - используем его
 	// В CPT формах formId должен быть всегда задан (ID поста)
@@ -42,7 +36,7 @@ export default function Save({ attributes }) {
 		try {
 			const parsedData = JSON.parse(blockData);
 			const dataAttrs = {};
-			Object.keys(parsedData).forEach(key => {
+			Object.keys(parsedData).forEach((key) => {
 				// В React/JSX data-атрибуты должны быть в camelCase или через строки
 				dataAttrs[`data-${key}`] = parsedData[key];
 			});
@@ -76,7 +70,9 @@ export default function Save({ attributes }) {
 		alignmentClasses.push(attributes.formPosition.trim());
 	}
 
-	rowClassName = [rowClassName, ...alignmentClasses].filter(Boolean).join(' ');
+	rowClassName = [rowClassName, ...alignmentClasses]
+		.filter(Boolean)
+		.join(' ');
 
 	return (
 		<div {...blockProps}>
@@ -90,7 +86,10 @@ export default function Save({ attributes }) {
 				encType="multipart/form-data"
 			>
 				<input type="hidden" name="form_id" value={formIdAttr} />
-				<div className="form-messages" style={{ display: 'none' }}></div>
+				<div
+					className="form-messages"
+					style={{ display: 'none' }}
+				></div>
 				<div className={rowClassName}>
 					<InnerBlocks.Content />
 				</div>
@@ -98,4 +97,3 @@ export default function Save({ attributes }) {
 		</div>
 	);
 }
-

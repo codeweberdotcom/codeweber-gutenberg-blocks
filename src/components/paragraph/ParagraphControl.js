@@ -19,7 +19,9 @@ import {
  * Получение значения атрибута с префиксом
  */
 const getAttr = (attributes, prefix, name) => {
-	const attrName = prefix ? `${prefix}${name.charAt(0).toUpperCase()}${name.slice(1)}` : name;
+	const attrName = prefix
+		? `${prefix}${name.charAt(0).toUpperCase()}${name.slice(1)}`
+		: name;
 	return attributes[attrName];
 };
 
@@ -27,7 +29,9 @@ const getAttr = (attributes, prefix, name) => {
  * Установка значения атрибута с префиксом
  */
 const setAttr = (setAttributes, prefix, name, value) => {
-	const attrName = prefix ? `${prefix}${name.charAt(0).toUpperCase()}${name.slice(1)}` : name;
+	const attrName = prefix
+		? `${prefix}${name.charAt(0).toUpperCase()}${name.slice(1)}`
+		: name;
 	setAttributes({ [attrName]: value });
 };
 
@@ -48,7 +52,8 @@ export const ParagraphControl = ({
 }) => {
 	const text = getAttr(attributes, prefix, 'text') || '';
 	const textColor = getAttr(attributes, prefix, 'textColor') || '';
-	const textColorType = getAttr(attributes, prefix, 'textColorType') || 'solid';
+	const textColorType =
+		getAttr(attributes, prefix, 'textColorType') || 'solid';
 	const textSize = getAttr(attributes, prefix, 'textSize') || '';
 	const textWeight = getAttr(attributes, prefix, 'textWeight') || '';
 	const textTransform = getAttr(attributes, prefix, 'textTransform') || '';
@@ -58,18 +63,25 @@ export const ParagraphControl = ({
 			{/* Поле ввода текста */}
 			<div className="mb-3">
 				<label>{label}</label>
-				<div style={{
-					border: '1px solid #ccc',
-					borderRadius: '4px',
-					padding: '8px',
-					minHeight: '80px',
-					backgroundColor: '#fff'
-				}}>
+				<div
+					style={{
+						border: '1px solid #ccc',
+						borderRadius: '4px',
+						padding: '8px',
+						minHeight: '80px',
+						backgroundColor: '#fff',
+					}}
+				>
 					<RichText
 						tagName="div"
 						value={text}
-						onChange={(value) => setAttr(setAttributes, prefix, 'text', value)}
-						placeholder={__('Enter paragraph...', 'codeweber-gutenberg-blocks')}
+						onChange={(value) =>
+							setAttr(setAttributes, prefix, 'text', value)
+						}
+						placeholder={__(
+							'Enter paragraph...',
+							'codeweber-gutenberg-blocks'
+						)}
 						allowedFormats={[]}
 						__unstableAllowHtml={true}
 					/>
@@ -80,40 +92,58 @@ export const ParagraphControl = ({
 			<ColorTypeControl
 				label={__('Color Type', 'codeweber-gutenberg-blocks')}
 				value={textColorType}
-				onChange={(value) => setAttr(setAttributes, prefix, 'textColorType', value)}
+				onChange={(value) =>
+					setAttr(setAttributes, prefix, 'textColorType', value)
+				}
 				options={[
-					{ value: 'solid', label: __('Solid', 'codeweber-gutenberg-blocks') },
-					{ value: 'soft', label: __('Soft', 'codeweber-gutenberg-blocks') },
-					{ value: 'pale', label: __('Pale', 'codeweber-gutenberg-blocks') },
+					{
+						value: 'solid',
+						label: __('Solid', 'codeweber-gutenberg-blocks'),
+					},
+					{
+						value: 'soft',
+						label: __('Soft', 'codeweber-gutenberg-blocks'),
+					},
+					{
+						value: 'pale',
+						label: __('Pale', 'codeweber-gutenberg-blocks'),
+					},
 				]}
 			/>
 			<ComboboxControl
 				label={__('Color', 'codeweber-gutenberg-blocks')}
 				value={textColor}
 				options={colors}
-				onChange={(value) => setAttr(setAttributes, prefix, 'textColor', value)}
+				onChange={(value) =>
+					setAttr(setAttributes, prefix, 'textColor', value)
+				}
 			/>
 			<SelectControl
 				label={__('Size', 'codeweber-gutenberg-blocks')}
 				value={textSize}
 				options={createSizeOptions()}
-				onChange={(value) => setAttr(setAttributes, prefix, 'textSize', value)}
+				onChange={(value) =>
+					setAttr(setAttributes, prefix, 'textSize', value)
+				}
 			/>
 			<SelectControl
 				label={__('Weight', 'codeweber-gutenberg-blocks')}
 				value={textWeight}
 				options={createWeightOptions()}
-				onChange={(value) => setAttr(setAttributes, prefix, 'textWeight', value)}
+				onChange={(value) =>
+					setAttr(setAttributes, prefix, 'textWeight', value)
+				}
 			/>
 			<SelectControl
 				label={__('Transform', 'codeweber-gutenberg-blocks')}
 				value={textTransform}
 				options={createTransformOptions()}
-				onChange={(value) => setAttr(setAttributes, prefix, 'textTransform', value)}
+				onChange={(value) =>
+					setAttr(setAttributes, prefix, 'textTransform', value)
+				}
 			/>
 		</div>
 	);
 };
 
 export default ParagraphControl;
-

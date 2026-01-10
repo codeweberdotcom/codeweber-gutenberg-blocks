@@ -53,10 +53,20 @@ export default function Save({ attributes }) {
 	}
 
 	// For fields with inline button, return null to use server-side render.php
-	const inlineButtonSupportedTypes = ['text', 'email', 'tel', 'url', 'number', 'date', 'time', 'author_role', 'company'];
-	const inlineButtonEnabled = enableInlineButton && inlineButtonSupportedTypes.includes(fieldType);
-	
-	
+	const inlineButtonSupportedTypes = [
+		'text',
+		'email',
+		'tel',
+		'url',
+		'number',
+		'date',
+		'time',
+		'author_role',
+		'company',
+	];
+	const inlineButtonEnabled =
+		enableInlineButton && inlineButtonSupportedTypes.includes(fieldType);
+
 	if (inlineButtonEnabled) {
 		return null; // Use server-side render.php
 	}
@@ -70,7 +80,15 @@ export default function Save({ attributes }) {
 		const colClasses = [];
 
 		// Если есть fieldColumns* атрибуты, используем их
-		if (fieldColumns || fieldColumnsXs || fieldColumnsSm || fieldColumnsMd || fieldColumnsLg || fieldColumnsXl || fieldColumnsXxl) {
+		if (
+			fieldColumns ||
+			fieldColumnsXs ||
+			fieldColumnsSm ||
+			fieldColumnsMd ||
+			fieldColumnsLg ||
+			fieldColumnsXl ||
+			fieldColumnsXxl
+		) {
 			if (fieldColumns) colClasses.push(`col-${fieldColumns}`);
 			if (fieldColumnsXs) colClasses.push(`col-${fieldColumnsXs}`);
 			if (fieldColumnsSm) colClasses.push(`col-sm-${fieldColumnsSm}`);
@@ -91,7 +109,9 @@ export default function Save({ attributes }) {
 	});
 
 	const fieldId = `field-${fieldName}`;
-	const requiredMark = isRequired ? ' <span class="text-danger">*</span>' : '';
+	const requiredMark = isRequired
+		? ' <span class="text-danger">*</span>'
+		: '';
 	const labelContent = fieldLabel + requiredMark;
 
 	// Рендерим поле в зависимости от типа
@@ -107,7 +127,8 @@ export default function Save({ attributes }) {
 				maskProps['data-mask-caret'] = caretChar;
 			}
 			let softCaretChar = (phoneMaskSoftCaret || '').toString();
-			softCaretChar = softCaretChar === '' ? '' : softCaretChar.slice(0, 1);
+			softCaretChar =
+				softCaretChar === '' ? '' : softCaretChar.slice(0, 1);
 			if (softCaretChar) {
 				maskProps['data-mask-soft-caret'] = softCaretChar;
 			}
@@ -142,16 +163,34 @@ export default function Save({ attributes }) {
 							className={classNames('form-select', fieldClass)}
 							id={fieldId}
 							name={fieldName}
-							aria-label={fieldLabel || placeholder || __('Select option', 'codeweber-gutenberg-blocks')}
+							aria-label={
+								fieldLabel ||
+								placeholder ||
+								__(
+									'Select option',
+									'codeweber-gutenberg-blocks'
+								)
+							}
 							defaultValue={defaultValue || ''}
 							{...(isRequired && { required: true })}
 						>
-							<option value="">{placeholder || fieldLabel || __('Select...', 'codeweber-gutenberg-blocks')}</option>
-							{options && options.map((opt, idx) => (
-								<option key={idx} value={opt.value || opt.label}>
-									{opt.label}
-								</option>
-							))}
+							<option value="">
+								{placeholder ||
+									fieldLabel ||
+									__(
+										'Select...',
+										'codeweber-gutenberg-blocks'
+									)}
+							</option>
+							{options &&
+								options.map((opt, idx) => (
+									<option
+										key={idx}
+										value={opt.value || opt.label}
+									>
+										{opt.label}
+									</option>
+								))}
 						</select>
 					</div>
 				);
@@ -162,21 +201,28 @@ export default function Save({ attributes }) {
 						<label className="form-label">
 							<RawHTML>{labelContent}</RawHTML>
 						</label>
-						{options && options.map((opt, idx) => (
-							<div key={idx} className="form-check">
-								<input
-									className={classNames('form-check-input', fieldClass)}
-									type="radio"
-									id={`${fieldId}-${idx}`}
-									name={fieldName}
-									value={opt.value || opt.label}
-									{...(isRequired && { required: true })}
-								/>
-								<label className="form-check-label" htmlFor={`${fieldId}-${idx}`}>
-									{opt.label}
-								</label>
-							</div>
-						))}
+						{options &&
+							options.map((opt, idx) => (
+								<div key={idx} className="form-check">
+									<input
+										className={classNames(
+											'form-check-input',
+											fieldClass
+										)}
+										type="radio"
+										id={`${fieldId}-${idx}`}
+										name={fieldName}
+										value={opt.value || opt.label}
+										{...(isRequired && { required: true })}
+									/>
+									<label
+										className="form-check-label"
+										htmlFor={`${fieldId}-${idx}`}
+									>
+										{opt.label}
+									</label>
+								</div>
+							))}
 					</div>
 				);
 
@@ -184,19 +230,28 @@ export default function Save({ attributes }) {
 				if (options && options.length > 0) {
 					return (
 						<div>
-							<label className="form-label" dangerouslySetInnerHTML={{
-								__html: fieldLabel + requiredMark
-							}} />
+							<label
+								className="form-label"
+								dangerouslySetInnerHTML={{
+									__html: fieldLabel + requiredMark,
+								}}
+							/>
 							{options.map((opt, idx) => (
 								<div key={idx} className="form-check">
 									<input
-									className={classNames('form-check-input small-checkbox', fieldClass)}
+										className={classNames(
+											'form-check-input small-checkbox',
+											fieldClass
+										)}
 										type="checkbox"
 										id={`${fieldId}-${idx}`}
 										name={`${fieldName}[]`}
 										value={opt.value || opt.label}
 									/>
-									<label className="form-check-label" htmlFor={`${fieldId}-${idx}`}>
+									<label
+										className="form-check-label"
+										htmlFor={`${fieldId}-${idx}`}
+									>
 										{opt.label}
 									</label>
 								</div>
@@ -207,7 +262,10 @@ export default function Save({ attributes }) {
 				return (
 					<div className="form-check">
 						<input
-							className={classNames('form-check-input small-checkbox', fieldClass)}
+							className={classNames(
+								'form-check-input small-checkbox',
+								fieldClass
+							)}
 							type="checkbox"
 							id={fieldId}
 							name={fieldName}
@@ -225,10 +283,13 @@ export default function Save({ attributes }) {
 				let acceptAttr = accept;
 				if (accept) {
 					// Разбиваем по запятой, если несколько типов
-					const types = accept.split(',').map(t => t.trim()).filter(t => t);
-					
+					const types = accept
+						.split(',')
+						.map((t) => t.trim())
+						.filter((t) => t);
+
 					// Преобразуем каждый тип
-					const formattedTypes = types.map(type => {
+					const formattedTypes = types.map((type) => {
 						// Если это уже MIME-тип (содержит "/"), оставляем как есть
 						if (type.includes('/')) {
 							return type;
@@ -240,31 +301,41 @@ export default function Save({ attributes }) {
 						// Если уже с точкой, просто приводим к нижнему регистру
 						return type.toLowerCase();
 					});
-					
+
 					acceptAttr = formattedTypes.join(',');
 				}
-				
+
 				return (
 					<div>
 						<label htmlFor={fieldId} className="form-label">
 							<RawHTML>{labelContent}</RawHTML>
 						</label>
-					<div className="input-group">
-						{/* FilePond всегда используется для полей типа file - обычный дизайн */}
-						<input
-							type="file"
-							className={classNames('filepond', fieldClass)}
-							id={fieldId}
-							name={multiple ? `${fieldName}[]` : fieldName}
-							data-filepond="true"
-							data-max-files={multiple && maxFiles ? maxFiles : (!multiple ? '1' : '')}
-							data-max-file-size={maxFileSize ? maxFileSize : ''}
-							data-max-total-file-size={maxTotalFileSize ? maxTotalFileSize : ''}
-							{...(isRequired && { required: true })}
-							{...(acceptAttr && { accept: acceptAttr })}
-							{...(multiple && { multiple: true })}
-						/>
-					</div>
+						<div className="input-group">
+							{/* FilePond всегда используется для полей типа file - обычный дизайн */}
+							<input
+								type="file"
+								className={classNames('filepond', fieldClass)}
+								id={fieldId}
+								name={multiple ? `${fieldName}[]` : fieldName}
+								data-filepond="true"
+								data-max-files={
+									multiple && maxFiles
+										? maxFiles
+										: !multiple
+											? '1'
+											: ''
+								}
+								data-max-file-size={
+									maxFileSize ? maxFileSize : ''
+								}
+								data-max-total-file-size={
+									maxTotalFileSize ? maxTotalFileSize : ''
+								}
+								{...(isRequired && { required: true })}
+								{...(acceptAttr && { accept: acceptAttr })}
+								{...(multiple && { multiple: true })}
+							/>
+						</div>
 					</div>
 				);
 
@@ -293,7 +364,10 @@ export default function Save({ attributes }) {
 							value={currentRating}
 							{...(isRequired && { required: true })}
 						/>
-						<div className="rating-stars-wrapper d-flex gap-1 align-items-center p-0" data-rating-input={fieldId}>
+						<div
+							className="rating-stars-wrapper d-flex gap-1 align-items-center p-0"
+							data-rating-input={fieldId}
+						>
 							{[1, 2, 3, 4, 5].map((starValue) => (
 								<span
 									key={starValue}
@@ -335,11 +409,8 @@ export default function Save({ attributes }) {
 		<div {...blockProps}>
 			{renderField()}
 			{helpText && (
-				<div className="form-text text-muted small">
-					{helpText}
-				</div>
+				<div className="form-text text-muted small">{helpText}</div>
 			)}
 		</div>
 	);
 }
-

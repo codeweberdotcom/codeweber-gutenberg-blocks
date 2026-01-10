@@ -57,23 +57,30 @@ const ButtonSave = ({ attributes }) => {
 	const hasGallery = DataGallery && DataGallery.trim() !== '';
 	const hasBsToggle = DataBsToggle && DataBsToggle.trim() !== '';
 	const hasBsTarget = DataBsTarget && DataBsTarget.trim() !== '';
-	
+
 	// Add target="_blank" only for external links, all other types open on the same page
 	const isExternalLink = LinkType === 'external';
 	const shouldOpenInNewTab = isExternalLink && !hasGlightbox && !hasBsToggle;
-	
+
 	// Check if this is a video link (VK, Rutube, YouTube, Vimeo)
-	const isVideoLink = LinkType === 'vkvideo' || LinkType === 'rutube' || 
-	                    LinkType === 'youtube' || LinkType === 'vimeo' ||
-	                    (hasGlightbox && DataGlightbox.includes('type: iframe'));
-	
+	const isVideoLink =
+		LinkType === 'vkvideo' ||
+		LinkType === 'rutube' ||
+		LinkType === 'youtube' ||
+		LinkType === 'vimeo' ||
+		(hasGlightbox && DataGlightbox.includes('type: iframe'));
+
 	// For video links, create hidden iframe and use anchor link (like Media block)
 	let hiddenIframe = null;
 	let finalHref = LinkUrl;
 	let finalGlightbox = DataGlightbox;
-	
+
 	// Если LinkType === 'post' и LinkUrl пустой, но есть PostId, формируем URL из PostId
-	if (LinkType === 'post' && (!LinkUrl || LinkUrl === '#' || LinkUrl === '') && PostId) {
+	if (
+		LinkType === 'post' &&
+		(!LinkUrl || LinkUrl === '#' || LinkUrl === '') &&
+		PostId
+	) {
 		// Формируем URL по ID записи (это fallback, в идеале LinkUrl должен быть заполнен)
 		// Но на фронтенде мы не можем использовать get_permalink, поэтому формируем простой URL
 		// В реальности WordPress автоматически обработает такой URL
@@ -87,12 +94,12 @@ const ButtonSave = ({ attributes }) => {
 			finalHref = `?p=${PostId}`;
 		}
 	}
-	
+
 	if (isVideoLink && LinkUrl) {
 		const videoId = generateVideoId(LinkUrl, LinkType);
 		finalHref = `#${videoId}`;
 		finalGlightbox = 'width: auto;';
-		
+
 		// Create hidden iframe (like in Media block)
 		hiddenIframe = (
 			<div id={videoId} style={{ display: 'none' }}>
@@ -101,12 +108,16 @@ const ButtonSave = ({ attributes }) => {
 					allow="autoplay; encrypted-media; fullscreen; picture-in-picture; clipboard-write;"
 					frameBorder="0"
 					allowFullScreen
-					style={{ width: '100%', height: '100%', aspectRatio: '16/9' }}
+					style={{
+						width: '100%',
+						height: '100%',
+						aspectRatio: '16/9',
+					}}
 				/>
 			</div>
 		);
 	}
-	
+
 	// Parse data attributes from blockData
 	const getDataAttributes = () => {
 		const dataAttrs = {};
@@ -122,7 +133,7 @@ const ButtonSave = ({ attributes }) => {
 	};
 
 	const dataAttributes = getDataAttributes();
-	
+
 	// Normalize blockId (remove # if present)
 	const normalizeButtonId = (value = '') => value.replace(/^#/, '').trim();
 	const buttonId = normalizeButtonId(blockId) || anchor || undefined;
@@ -135,20 +146,23 @@ const ButtonSave = ({ attributes }) => {
 		'data-value': DataValue || undefined,
 		...dataAttributes,
 	};
-	
+
 	// Add GLightbox attrs (use finalGlightbox for videos)
-	if (hasGlightbox || isVideoLink) linkProps['data-glightbox'] = finalGlightbox;
+	if (hasGlightbox || isVideoLink)
+		linkProps['data-glightbox'] = finalGlightbox;
 	if (hasGallery) linkProps['data-gallery'] = DataGallery;
-	
+
 	// Add Bootstrap attrs
 	if (hasBsToggle) linkProps['data-bs-toggle'] = DataBsToggle;
 	if (hasBsTarget) {
 		// Если DataBsTarget уже содержит #, не добавляем его повторно
 		// Если DataBsTarget равен "modal", добавляем #
-		const target = DataBsTarget.startsWith('#') ? DataBsTarget : `#${DataBsTarget}`;
+		const target = DataBsTarget.startsWith('#')
+			? DataBsTarget
+			: `#${DataBsTarget}`;
 		linkProps['data-bs-target'] = target;
 	}
-	
+
 	// Add target="_blank" only for external links
 	if (shouldOpenInNewTab) {
 		linkProps.target = '_blank';
@@ -159,7 +173,9 @@ const ButtonSave = ({ attributes }) => {
 		<>
 			{hiddenIframe}
 			{attributes.ButtonType === 'social' ? (
-				<nav className={`nav social${attributes.SocialIconStyle === 'style_2' ? ' social-muted' : ''}`}>
+				<nav
+					className={`nav social${attributes.SocialIconStyle === 'style_2' ? ' social-muted' : ''}`}
+				>
 					<a
 						href={LinkUrl}
 						className={
@@ -169,7 +185,9 @@ const ButtonSave = ({ attributes }) => {
 						}
 						id={buttonId}
 						data-value={DataValue || undefined}
-						{...(hasGlightbox && { 'data-glightbox': DataGlightbox })}
+						{...(hasGlightbox && {
+							'data-glightbox': DataGlightbox,
+						})}
 						{...(hasGallery && { 'data-gallery': DataGallery })}
 						{...(hasBsToggle && { 'data-bs-toggle': DataBsToggle })}
 						{...(hasBsTarget && {
@@ -177,7 +195,9 @@ const ButtonSave = ({ attributes }) => {
 						})}
 						{...dataAttributes}
 					>
-						<i className={`uil uil-${attributes.SocialIconClass}${attributes.SocialIconClass === 'facebook' ? '-f' : ''}`}></i>
+						<i
+							className={`uil uil-${attributes.SocialIconClass}${attributes.SocialIconClass === 'facebook' ? '-f' : ''}`}
+						></i>
 					</a>
 				</nav>
 			) : (
@@ -202,14 +222,18 @@ const ButtonSave = ({ attributes }) => {
 							<RawHTML>{ButtonContent}</RawHTML>
 						</span>
 					)}
-					{!shouldHideText && ButtonType !== 'expand' && attributes.ButtonStyle === 'outline-gradient' && (
-						<span>
+					{!shouldHideText &&
+						ButtonType !== 'expand' &&
+						attributes.ButtonStyle === 'outline-gradient' && (
+							<span>
+								<RawHTML>{ButtonContent}</RawHTML>
+							</span>
+						)}
+					{!shouldHideText &&
+						ButtonType !== 'expand' &&
+						attributes.ButtonStyle !== 'outline-gradient' && (
 							<RawHTML>{ButtonContent}</RawHTML>
-						</span>
-					)}
-					{!shouldHideText && ButtonType !== 'expand' && attributes.ButtonStyle !== 'outline-gradient' && (
-						<RawHTML>{ButtonContent}</RawHTML>
-					)}
+						)}
 
 					{getIconComponent(RightIcon)}
 				</a>
@@ -219,5 +243,3 @@ const ButtonSave = ({ attributes }) => {
 };
 
 export default ButtonSave;
-
-

@@ -12,7 +12,10 @@ import {
 } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
 import { WidgetSidebar } from './sidebar';
-import { generateColorClass, generateTypographyClasses } from '../../utilities/class-generators';
+import {
+	generateColorClass,
+	generateTypographyClasses,
+} from '../../utilities/class-generators';
 
 const WidgetEdit = ({ attributes, setAttributes }) => {
 	const {
@@ -31,8 +34,8 @@ const WidgetEdit = ({ attributes, setAttributes }) => {
 		if (!attributes.widgetData) return {};
 		const dataAttrs = {};
 		const pairs = attributes.widgetData.split(',');
-		pairs.forEach(pair => {
-			const [key, value] = pair.split('=').map(s => s.trim());
+		pairs.forEach((pair) => {
+			const [key, value] = pair.split('=').map((s) => s.trim());
 			if (key && value) {
 				dataAttrs[`data-${key}`] = value;
 			}
@@ -45,11 +48,15 @@ const WidgetEdit = ({ attributes, setAttributes }) => {
 	// Generate title classes
 	const getTitleClasses = () => {
 		const classes = ['widget-title'];
-		
+
 		// Color classes
 		let hasColorClass = false;
 		if (titleColor) {
-			const colorClass = generateColorClass(titleColor, titleColorType, 'text');
+			const colorClass = generateColorClass(
+				titleColor,
+				titleColorType,
+				'text'
+			);
 			if (colorClass) {
 				classes.push(colorClass);
 				hasColorClass = true;
@@ -62,7 +69,10 @@ const WidgetEdit = ({ attributes, setAttributes }) => {
 		}
 
 		// Typography classes
-		const typographyClasses = generateTypographyClasses(attributes, 'title');
+		const typographyClasses = generateTypographyClasses(
+			attributes,
+			'title'
+		);
 		classes.push(...typographyClasses);
 
 		// Custom class
@@ -84,7 +94,9 @@ const WidgetEdit = ({ attributes, setAttributes }) => {
 
 			<div {...blockProps}>
 				<div
-					className={['widget', attributes.widgetClass].filter(Boolean).join(' ')}
+					className={['widget', attributes.widgetClass]
+						.filter(Boolean)
+						.join(' ')}
 					{...(attributes.widgetId && { id: attributes.widgetId })}
 					{...dataAttributes}
 				>
@@ -92,8 +104,13 @@ const WidgetEdit = ({ attributes, setAttributes }) => {
 						<RichText
 							tagName={titleTag || 'h4'}
 							value={title}
-							onChange={(value) => setAttributes({ title: value })}
-							placeholder={__('Enter title...', 'codeweber-gutenberg-blocks')}
+							onChange={(value) =>
+								setAttributes({ title: value })
+							}
+							placeholder={__(
+								'Enter title...',
+								'codeweber-gutenberg-blocks'
+							)}
 							className={getTitleClasses()}
 						/>
 					)}
@@ -105,4 +122,3 @@ const WidgetEdit = ({ attributes, setAttributes }) => {
 };
 
 export default WidgetEdit;
-

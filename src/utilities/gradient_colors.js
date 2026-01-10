@@ -12,5 +12,3 @@ export const gradientcolors = [
 	{ label: 'Gradient 10', value: 'gradient-10' },
 	{ label: 'Gradient 11', value: 'gradient-11' },
 ];
-
-

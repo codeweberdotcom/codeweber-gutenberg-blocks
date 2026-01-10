@@ -1,9 +1,1 @@
 export { TaxonomyFilterControl } from './TaxonomyFilterControl';
-
-
-
-
-
-
-
-

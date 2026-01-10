@@ -54,14 +54,18 @@ export const SpacingControl = ({
 		<>
 			<div className="mb-3">
 				<div className="component-sidebar-title">
-					<label>{__('Spacing Type', 'codeweber-gutenberg-blocks')}</label>
+					<label>
+						{__('Spacing Type', 'codeweber-gutenberg-blocks')}
+					</label>
 				</div>
 				<ButtonGroup>
 					{SPACING_TYPE_OPTIONS.map((option) => (
 						<Button
 							key={option.value}
 							isPrimary={spacingType === option.value}
-							onClick={() => onChange('spacingType', option.value)}
+							onClick={() =>
+								onChange('spacingType', option.value)
+							}
 						>
 							{option.label}
 						</Button>
@@ -70,7 +74,9 @@ export const SpacingControl = ({
 			</div>
 			<div className="mb-3">
 				<div className="component-sidebar-title">
-					<label>{__('Extra small (xs)', 'codeweber-gutenberg-blocks')}</label>
+					<label>
+						{__('Extra small (xs)', 'codeweber-gutenberg-blocks')}
+					</label>
 				</div>
 				<SelectControl
 					value={spacingXs}
@@ -80,7 +86,9 @@ export const SpacingControl = ({
 			</div>
 			<div className="mb-3">
 				<div className="component-sidebar-title">
-					<label>{__('Small (sm) ≥576px', 'codeweber-gutenberg-blocks')}</label>
+					<label>
+						{__('Small (sm) ≥576px', 'codeweber-gutenberg-blocks')}
+					</label>
 				</div>
 				<SelectControl
 					value={spacingSm}
@@ -90,7 +98,9 @@ export const SpacingControl = ({
 			</div>
 			<div className="mb-3">
 				<div className="component-sidebar-title">
-					<label>{__('Medium (md) ≥768px', 'codeweber-gutenberg-blocks')}</label>
+					<label>
+						{__('Medium (md) ≥768px', 'codeweber-gutenberg-blocks')}
+					</label>
 				</div>
 				<SelectControl
 					value={spacingMd}
@@ -100,7 +110,9 @@ export const SpacingControl = ({
 			</div>
 			<div className="mb-3">
 				<div className="component-sidebar-title">
-					<label>{__('Large (lg) ≥992px', 'codeweber-gutenberg-blocks')}</label>
+					<label>
+						{__('Large (lg) ≥992px', 'codeweber-gutenberg-blocks')}
+					</label>
 				</div>
 				<SelectControl
 					value={spacingLg}
@@ -110,7 +122,12 @@ export const SpacingControl = ({
 			</div>
 			<div className="mb-3">
 				<div className="component-sidebar-title">
-					<label>{__('Extra large (xl) ≥1200px', 'codeweber-gutenberg-blocks')}</label>
+					<label>
+						{__(
+							'Extra large (xl) ≥1200px',
+							'codeweber-gutenberg-blocks'
+						)}
+					</label>
 				</div>
 				<SelectControl
 					value={spacingXl}
@@ -120,7 +137,12 @@ export const SpacingControl = ({
 			</div>
 			<div className="mb-3">
 				<div className="component-sidebar-title">
-					<label>{__('Extra extra large (xxl) ≥1400px', 'codeweber-gutenberg-blocks')}</label>
+					<label>
+						{__(
+							'Extra extra large (xxl) ≥1400px',
+							'codeweber-gutenberg-blocks'
+						)}
+					</label>
 				</div>
 				<SelectControl
 					value={spacingXxl}
@@ -133,4 +155,3 @@ export const SpacingControl = ({
 };
 
 export default SpacingControl;
-

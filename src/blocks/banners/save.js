@@ -1,4 +1,27 @@
-import { Banner34, Banner3, Banner14, Banner23, Banner24, Banner25, Banner1, Banner2, Banner4, Banner6, Banner7, Banner8, Banner10, Banner11, Banner15, Banner16, Banner18, Banner20, Banner27, Banner29, Banner30, Banner32 } from './banners';
+import {
+	Banner34,
+	Banner3,
+	Banner14,
+	Banner23,
+	Banner24,
+	Banner25,
+	Banner1,
+	Banner2,
+	Banner4,
+	Banner6,
+	Banner7,
+	Banner8,
+	Banner10,
+	Banner11,
+	Banner15,
+	Banner16,
+	Banner18,
+	Banner20,
+	Banner27,
+	Banner29,
+	Banner30,
+	Banner32,
+} from './banners';
 
 const BannersSave = ({ attributes }) => {
 	const { bannerType } = attributes;
@@ -28,9 +51,21 @@ const BannersSave = ({ attributes }) => {
 			case 'banner-10':
 				return <Banner10 attributes={attributes} isEditor={false} />;
 			case 'banner-11':
-				return <Banner11 attributes={attributes} isEditor={false} clientId={''} />;
+				return (
+					<Banner11
+						attributes={attributes}
+						isEditor={false}
+						clientId={''}
+					/>
+				);
 			case 'banner-15':
-				return <Banner15 attributes={attributes} isEditor={false} clientId={''} />;
+				return (
+					<Banner15
+						attributes={attributes}
+						isEditor={false}
+						clientId={''}
+					/>
+				);
 			case 'banner-16':
 				return <Banner16 attributes={attributes} isEditor={false} />;
 			case 'banner-18':
@@ -38,9 +73,21 @@ const BannersSave = ({ attributes }) => {
 			case 'banner-20':
 				return <Banner20 attributes={attributes} isEditor={false} />;
 			case 'banner-24':
-				return <Banner24 attributes={attributes} isEditor={false} clientId={''} />;
+				return (
+					<Banner24
+						attributes={attributes}
+						isEditor={false}
+						clientId={''}
+					/>
+				);
 			case 'banner-25':
-				return <Banner25 attributes={attributes} isEditor={false} clientId={''} />;
+				return (
+					<Banner25
+						attributes={attributes}
+						isEditor={false}
+						clientId={''}
+					/>
+				);
 			case 'banner-27':
 				return <Banner27 attributes={attributes} isEditor={false} />;
 			case 'banner-29':
@@ -58,4 +105,3 @@ const BannersSave = ({ attributes }) => {
 };
 
 export default BannersSave;
-

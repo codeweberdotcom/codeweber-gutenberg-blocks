@@ -147,5 +147,3 @@ if ($enable_link) {
 <div class="<?php echo esc_attr(implode(' ', $wrapper_classes)); ?>"<?php echo $wrapper_attrs_string; ?>>
 	<?php echo $logo_html; ?>
 </div>
-
-

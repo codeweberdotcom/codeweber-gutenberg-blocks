@@ -1,12 +1,15 @@
 import { useBlockProps } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
 import { ImageSimpleRender } from '../../components/image/ImageSimpleRender';
-import { 
-	SwiperSlider, 
-	SwiperSlide, 
-	getSwiperConfigFromAttributes 
+import {
+	SwiperSlider,
+	SwiperSlide,
+	getSwiperConfigFromAttributes,
 } from '../../components/swiper/SwiperSlider';
-import { getRowColsClasses, getGapClasses } from '../../components/grid-control';
+import {
+	getRowColsClasses,
+	getGapClasses,
+} from '../../components/grid-control';
 
 export default function Save({ attributes }) {
 	const {
@@ -78,12 +81,16 @@ export default function Save({ attributes }) {
 	const getContainerClasses = () => {
 		if (displayMode === 'grid') {
 			const currentGridType = gridType || 'classic';
-			
+
 			if (currentGridType === 'columns-grid') {
 				// Columns Grid: используем row-cols и новые gap атрибуты
-				const rowColsClasses = getRowColsClasses(attributes, 'grid', gridColumns);
+				const rowColsClasses = getRowColsClasses(
+					attributes,
+					'grid',
+					gridColumns
+				);
 				const gapClasses = getGapClasses(attributes, 'grid');
-				
+
 				// Fallback на старые атрибуты gridGapX и gridGapY для обратной совместимости
 				let gapClassesStr = gapClasses.join(' ');
 				if (!gapClassesStr && (gridGapX || gridGapY)) {
@@ -93,7 +100,7 @@ export default function Save({ attributes }) {
 					if (gridGapX) oldGapClasses.push(`gx-${gridGapX}`);
 					gapClassesStr = oldGapClasses.join(' ');
 				}
-				
+
 				return `row ${gapClassesStr} ${rowColsClasses.join(' ')}`;
 			} else {
 				// Classic Grid: только row и gap классы, БЕЗ row-cols-*
@@ -101,7 +108,7 @@ export default function Save({ attributes }) {
 				// Используем getGapClasses для новых gap атрибутов, с fallback на старые
 				const gapClasses = getGapClasses(attributes, 'grid');
 				let gapClassesStr = gapClasses.join(' ');
-				
+
 				// Fallback на старые атрибуты gridGapX и gridGapY для обратной совместимости
 				if (!gapClassesStr && (gridGapX || gridGapY)) {
 					const oldGapClasses = [];
@@ -109,7 +116,7 @@ export default function Save({ attributes }) {
 					if (gridGapX) oldGapClasses.push(`gx-${gridGapX}`);
 					gapClassesStr = oldGapClasses.join(' ');
 				}
-				
+
 				// Classic Grid: только row + gap, без row-cols-*
 				return `row ${gapClassesStr}`.trim();
 			}
@@ -123,7 +130,7 @@ export default function Save({ attributes }) {
 		if (displayMode !== 'grid' || gridType !== 'classic') {
 			return '';
 		}
-		
+
 		const colClasses = [];
 		const {
 			gridColumns: colsDefault,
@@ -134,17 +141,17 @@ export default function Save({ attributes }) {
 			gridColumnsXl: colsXl,
 			gridColumnsXxl: colsXxl,
 		} = attributes;
-		
+
 		// Base (default) - без префикса
 		if (colsDefault) {
 			colClasses.push(`col-${colsDefault}`);
 		}
-		
+
 		// XS - без префикса (как и default)
 		if (colsXs) {
 			colClasses.push(`col-${colsXs}`);
 		}
-		
+
 		// SM и выше - с префиксами
 		if (colsSm) {
 			colClasses.push(`col-sm-${colsSm}`);
@@ -161,7 +168,7 @@ export default function Save({ attributes }) {
 		if (colsXxl) {
 			colClasses.push(`col-xxl-${colsXxl}`);
 		}
-		
+
 		return colClasses.join(' ');
 	};
 
@@ -190,11 +197,13 @@ export default function Save({ attributes }) {
 	const shouldRemoveWrapper = imageRenderType === 'background';
 
 	// Создаем blockProps только если нужна обертка
-	const blockProps = shouldRemoveWrapper ? null : useBlockProps.save({
-		className: `cwgb-image-simple-block ${blockClass}`,
-		...(blockId && { id: blockId }),
-		...getDataAttributes(),
-	});
+	const blockProps = shouldRemoveWrapper
+		? null
+		: useBlockProps.save({
+				className: `cwgb-image-simple-block ${blockClass}`,
+				...(blockId && { id: blockId }),
+				...getDataAttributes(),
+			});
 
 	// Рендерим контент для разных режимов
 	const renderContent = () => {
@@ -224,12 +233,15 @@ export default function Save({ attributes }) {
 				// Режим Grid с поддержкой Load More
 				(() => {
 					// Определяем, нужно ли ограничивать количество изображений
-					const shouldLimitImages = loadMoreEnable && loadMoreInitialCount > 0;
-					const initialImages = shouldLimitImages 
-						? images.slice(0, loadMoreInitialCount) 
+					const shouldLimitImages =
+						loadMoreEnable && loadMoreInitialCount > 0;
+					const initialImages = shouldLimitImages
+						? images.slice(0, loadMoreInitialCount)
 						: images;
-					const hasMoreImages = shouldLimitImages && images.length > loadMoreInitialCount;
-					
+					const hasMoreImages =
+						shouldLimitImages &&
+						images.length > loadMoreInitialCount;
+
 					// Если Load More включен, оборачиваем в контейнер
 					if (loadMoreEnable) {
 						// Сохраняем все атрибуты блока в data-атрибуте для использования в AJAX
@@ -255,9 +267,9 @@ export default function Save({ attributes }) {
 							gridColumnsXl: attributes.gridColumnsXl,
 							gridColumnsXxl: attributes.gridColumnsXxl,
 						});
-						
+
 						return (
-							<div 
+							<div
 								className="cwgb-load-more-container"
 								data-block-id={blockId || 'image-simple-block'}
 								data-block-type="image-simple"
@@ -266,99 +278,156 @@ export default function Save({ attributes }) {
 								data-post-id=""
 								data-block-attributes={blockDataJson}
 							>
-								<div className={`cwgb-load-more-items ${getContainerClasses()}`}>
+								<div
+									className={`cwgb-load-more-items ${getContainerClasses()}`}
+								>
 									{initialImages.map((image, index) => (
-										<div 
+										<div
 											key={index}
-											className={gridType === 'classic' ? getColClasses() : ''}
+											className={
+												gridType === 'classic'
+													? getColClasses()
+													: ''
+											}
 										>
 											<ImageSimpleRender
 												image={image}
 												imageSize={imageSize}
 												borderRadius={borderRadius}
 												enableLightbox={enableLightbox}
-												lightboxGallery={lightboxGallery}
+												lightboxGallery={
+													lightboxGallery
+												}
 												simpleEffect={simpleEffect}
 												effectType={effectType}
 												tooltipStyle={tooltipStyle}
 												overlayStyle={overlayStyle}
-												overlayGradient={overlayGradient}
+												overlayGradient={
+													overlayGradient
+												}
 												overlayColor={overlayColor}
 												cursorStyle={cursorStyle}
-												imageRenderType={imageRenderType}
+												imageRenderType={
+													imageRenderType
+												}
 												isEditor={false}
 											/>
 										</div>
 									))}
 								</div>
-								
-								{hasMoreImages && (() => {
-									// Предустановленные тексты для кнопки/ссылки Load More
-									const loadMoreTexts = {
-										'show-more': __('Show More', 'codeweber-gutenberg-blocks'),
-										'load-more': __('Load More', 'codeweber-gutenberg-blocks'),
-										'show-more-items': __('Show More Items', 'codeweber-gutenberg-blocks'),
-										'more-posts': __('More Posts', 'codeweber-gutenberg-blocks'),
-										'view-all': __('View All', 'codeweber-gutenberg-blocks'),
-										'show-all': __('Show All', 'codeweber-gutenberg-blocks'),
-									};
-									
-									const loadMoreTextKey = loadMoreText || 'show-more';
-									const loadMoreTextValue = loadMoreTexts[loadMoreTextKey] || loadMoreTexts['show-more'];
-									const loadMoreElementType = loadMoreType || 'button';
-									const loadingText = __('Loading...', 'codeweber-gutenberg-blocks');
-									
-									// Строим класс кнопки
-									const buttonClasses = ['btn', 'cwgb-load-more-btn'];
-									
-									// Добавляем стиль кнопки (solid или outline)
-									if (loadMoreButtonStyle === 'outline') {
-										buttonClasses.push('btn-outline-primary');
-									} else {
-										buttonClasses.push('btn-primary');
-									}
-									
-									// Добавляем размер кнопки
-									if (loadMoreButtonSize) {
-										buttonClasses.push(loadMoreButtonSize);
-									}
-									
-									const buttonClassName = buttonClasses.join(' ');
-									
-									return (
-										<div className="text-center mt-5">
-											{loadMoreElementType === 'link' ? (
-												<a 
-													href="#" 
-													className="hover cwgb-load-more-btn"
-													data-load-more="true"
-													data-loading-text={loadingText}
-												>
-													{loadMoreTextValue}
-												</a>
-											) : (
-												<button 
-													className={buttonClassName}
-													type="button"
-													data-loading-text={loadingText}
-												>
-													{loadMoreTextValue}
-												</button>
-											)}
-										</div>
-									);
-								})()}
+
+								{hasMoreImages &&
+									(() => {
+										// Предустановленные тексты для кнопки/ссылки Load More
+										const loadMoreTexts = {
+											'show-more': __(
+												'Show More',
+												'codeweber-gutenberg-blocks'
+											),
+											'load-more': __(
+												'Load More',
+												'codeweber-gutenberg-blocks'
+											),
+											'show-more-items': __(
+												'Show More Items',
+												'codeweber-gutenberg-blocks'
+											),
+											'more-posts': __(
+												'More Posts',
+												'codeweber-gutenberg-blocks'
+											),
+											'view-all': __(
+												'View All',
+												'codeweber-gutenberg-blocks'
+											),
+											'show-all': __(
+												'Show All',
+												'codeweber-gutenberg-blocks'
+											),
+										};
+
+										const loadMoreTextKey =
+											loadMoreText || 'show-more';
+										const loadMoreTextValue =
+											loadMoreTexts[loadMoreTextKey] ||
+											loadMoreTexts['show-more'];
+										const loadMoreElementType =
+											loadMoreType || 'button';
+										const loadingText = __(
+											'Loading...',
+											'codeweber-gutenberg-blocks'
+										);
+
+										// Строим класс кнопки
+										const buttonClasses = [
+											'btn',
+											'cwgb-load-more-btn',
+										];
+
+										// Добавляем стиль кнопки (solid или outline)
+										if (loadMoreButtonStyle === 'outline') {
+											buttonClasses.push(
+												'btn-outline-primary'
+											);
+										} else {
+											buttonClasses.push('btn-primary');
+										}
+
+										// Добавляем размер кнопки
+										if (loadMoreButtonSize) {
+											buttonClasses.push(
+												loadMoreButtonSize
+											);
+										}
+
+										const buttonClassName =
+											buttonClasses.join(' ');
+
+										return (
+											<div className="text-center mt-5">
+												{loadMoreElementType ===
+												'link' ? (
+													<a
+														href="#"
+														className="hover cwgb-load-more-btn"
+														data-load-more="true"
+														data-loading-text={
+															loadingText
+														}
+													>
+														{loadMoreTextValue}
+													</a>
+												) : (
+													<button
+														className={
+															buttonClassName
+														}
+														type="button"
+														data-loading-text={
+															loadingText
+														}
+													>
+														{loadMoreTextValue}
+													</button>
+												)}
+											</div>
+										);
+									})()}
 							</div>
 						);
 					}
-					
+
 					// Если Load More отключен, отображаем все изображения как обычно
 					return (
 						<div className={getContainerClasses()}>
 							{images.map((image, index) => (
-								<div 
+								<div
 									key={index}
-									className={gridType === 'classic' ? getColClasses() : ''}
+									className={
+										gridType === 'classic'
+											? getColClasses()
+											: ''
+									}
 								>
 									<ImageSimpleRender
 										image={image}
@@ -385,11 +454,13 @@ export default function Save({ attributes }) {
 		} else if (displayMode === 'swiper') {
 			// Режим Swiper - используем компонент SwiperSlider
 			// Для background режима добавляем h-100 к swiper-container и swiper
-			const swiperClassName = imageRenderType === 'background' ? 'h-100' : '';
-			const swiperContainerClassName = imageRenderType === 'background' ? 'h-100' : '';
-			
+			const swiperClassName =
+				imageRenderType === 'background' ? 'h-100' : '';
+			const swiperContainerClassName =
+				imageRenderType === 'background' ? 'h-100' : '';
+
 			return (
-				<SwiperSlider 
+				<SwiperSlider
 					config={swiperConfig}
 					className={swiperContainerClassName}
 					swiperClassName={swiperClassName}
@@ -428,10 +499,5 @@ export default function Save({ attributes }) {
 	}
 
 	// Иначе возвращаем с оберткой
-	return (
-		<div {...blockProps}>
-			{content}
-		</div>
-	);
+	return <div {...blockProps}>{content}</div>;
 }
-

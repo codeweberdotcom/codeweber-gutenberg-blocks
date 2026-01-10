@@ -6,7 +6,10 @@
 
 import { __ } from '@wordpress/i18n';
 import { RichText } from '@wordpress/block-editor';
-import { generateColorClass, generateTypographyClasses } from '../../utilities/class-generators';
+import {
+	generateColorClass,
+	generateTypographyClasses,
+} from '../../utilities/class-generators';
 
 /**
  * Генерация классов для параграфа
@@ -15,7 +18,9 @@ export const getParagraphClasses = (attrs, prefix = '') => {
 	const classes = [];
 
 	const getAttr = (name) => {
-		const attrName = prefix ? `${prefix}${name.charAt(0).toUpperCase()}${name.slice(1)}` : name;
+		const attrName = prefix
+			? `${prefix}${name.charAt(0).toUpperCase()}${name.slice(1)}`
+			: name;
 		return attrs[attrName];
 	};
 
@@ -27,7 +32,9 @@ export const getParagraphClasses = (attrs, prefix = '') => {
 	classes.push(generateColorClass(textColor, textColorType, 'text'));
 
 	// Typography classes
-	classes.push(...generateTypographyClasses(attrs, prefix ? `${prefix}text` : 'text'));
+	classes.push(
+		...generateTypographyClasses(attrs, prefix ? `${prefix}text` : 'text')
+	);
 
 	// Custom class
 	if (textClass) {
@@ -47,12 +54,16 @@ export const ParagraphRender = ({
 	tag = 'p',
 }) => {
 	const getAttr = (name) => {
-		const attrName = prefix ? `${prefix}${name.charAt(0).toUpperCase()}${name.slice(1)}` : name;
+		const attrName = prefix
+			? `${prefix}${name.charAt(0).toUpperCase()}${name.slice(1)}`
+			: name;
 		return attributes[attrName];
 	};
 
 	const setAttr = (name, value) => {
-		const attrName = prefix ? `${prefix}${name.charAt(0).toUpperCase()}${name.slice(1)}` : name;
+		const attrName = prefix
+			? `${prefix}${name.charAt(0).toUpperCase()}${name.slice(1)}`
+			: name;
 		setAttributes({ [attrName]: value });
 	};
 
@@ -73,13 +84,11 @@ export const ParagraphRender = ({
 /**
  * ParagraphRenderSave - для использования в save.js
  */
-export const ParagraphRenderSave = ({
-	attributes,
-	prefix = '',
-	tag = 'p',
-}) => {
+export const ParagraphRenderSave = ({ attributes, prefix = '', tag = 'p' }) => {
 	const getAttr = (name) => {
-		const attrName = prefix ? `${prefix}${name.charAt(0).toUpperCase()}${name.slice(1)}` : name;
+		const attrName = prefix
+			? `${prefix}${name.charAt(0).toUpperCase()}${name.slice(1)}`
+			: name;
 		return attributes[attrName];
 	};
 
@@ -111,4 +120,3 @@ export const ParagraphRenderSave = ({
 };
 
 export default ParagraphRender;
-

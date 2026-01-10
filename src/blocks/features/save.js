@@ -1,6 +1,6 @@
 /**
  * Features Block - Save Component
- * 
+ *
  * This block renders child blocks (columns -> column -> feature).
  *
  * @package CodeWeber Gutenberg Blocks
@@ -13,4 +13,3 @@ const FeaturesSave = () => {
 };
 
 export default FeaturesSave;
-

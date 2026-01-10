@@ -21,8 +21,14 @@ export const BlockMetaFields = ({
 		idLabel: __('Block ID', 'codeweber-gutenberg-blocks'),
 	},
 	placeholders = {
-		classPlaceholder: __('custom-wrapper classes', 'codeweber-gutenberg-blocks'),
-		dataPlaceholder: __('key=value,key2=value2', 'codeweber-gutenberg-blocks'),
+		classPlaceholder: __(
+			'custom-wrapper classes',
+			'codeweber-gutenberg-blocks'
+		),
+		dataPlaceholder: __(
+			'key=value,key2=value2',
+			'codeweber-gutenberg-blocks'
+		),
 		idPlaceholder: __('custom-id', 'codeweber-gutenberg-blocks'),
 	},
 }) => {
@@ -46,7 +52,10 @@ export const BlockMetaFields = ({
 				label={labels.dataLabel}
 				value={attributes[fieldKeys.dataKey] || ''}
 				placeholder={placeholders.dataPlaceholder}
-				help={__('Comma separated pairs: key=value,key2=value2', 'codeweber-gutenberg-blocks')}
+				help={__(
+					'Comma separated pairs: key=value,key2=value2',
+					'codeweber-gutenberg-blocks'
+				)}
 				onChange={(value) => handleChange(fieldKeys.dataKey, value)}
 			/>
 			<TextControl
@@ -60,5 +69,3 @@ export const BlockMetaFields = ({
 };
 
 export default BlockMetaFields;
-
-

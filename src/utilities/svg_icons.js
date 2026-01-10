@@ -336,4 +336,3 @@ export const getSvgIconPath = (iconName, style = 'lineal') => {
 	const folder = style === 'lineal' ? 'lineal' : 'solid';
 	return `/wp-content/themes/codeweber/dist/assets/img/icons/${folder}/${iconName}.svg`;
 };
-

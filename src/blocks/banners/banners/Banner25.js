@@ -1,8 +1,8 @@
 import { generateBackgroundClasses } from '../../../utilities/class-generators';
 import { getImageUrl } from '../../../utilities/image-url';
-import { 
-	SwiperSlider, 
-	SwiperSlide, 
+import {
+	SwiperSlider,
+	SwiperSlide,
 	getSwiperConfigFromAttributes,
 } from '../../../components/swiper/SwiperSlider';
 
@@ -24,7 +24,7 @@ export const Banner25 = ({ attributes, isEditor = false, clientId = '' }) => {
 	// Функция для получения классов секции
 	const getSectionClasses = () => {
 		const classes = ['wrapper'];
-		
+
 		// Если sectionClass содержит bg-gray, используем sectionClass напрямую
 		if (sectionClass && sectionClass.includes('bg-gray')) {
 			classes.push(sectionClass);
@@ -36,49 +36,49 @@ export const Banner25 = ({ attributes, isEditor = false, clientId = '' }) => {
 				classes.push(sectionClass);
 			}
 		}
-		
+
 		return classes.filter(Boolean).join(' ');
 	};
 
 	const imagesToRender = images || [];
 	const hasImage = imagesToRender && imagesToRender.length > 0;
-	
+
 	// Placeholder изображения для слайдов (tb1.jpg - tb7.jpg)
 	const placeholderImages = [
-		isEditor 
-			? (window.location?.origin 
+		isEditor
+			? window.location?.origin
 				? `${window.location.origin}/wp-content/themes/codeweber/dist/assets/img/photos/tb1.jpg`
-				: './assets/img/photos/tb1.jpg')
+				: './assets/img/photos/tb1.jpg'
 			: '/wp-content/themes/codeweber/dist/assets/img/photos/tb1.jpg',
-		isEditor 
-			? (window.location?.origin 
+		isEditor
+			? window.location?.origin
 				? `${window.location.origin}/wp-content/themes/codeweber/dist/assets/img/photos/tb2.jpg`
-				: './assets/img/photos/tb2.jpg')
+				: './assets/img/photos/tb2.jpg'
 			: '/wp-content/themes/codeweber/dist/assets/img/photos/tb2.jpg',
-		isEditor 
-			? (window.location?.origin 
+		isEditor
+			? window.location?.origin
 				? `${window.location.origin}/wp-content/themes/codeweber/dist/assets/img/photos/tb3.jpg`
-				: './assets/img/photos/tb3.jpg')
+				: './assets/img/photos/tb3.jpg'
 			: '/wp-content/themes/codeweber/dist/assets/img/photos/tb3.jpg',
-		isEditor 
-			? (window.location?.origin 
+		isEditor
+			? window.location?.origin
 				? `${window.location.origin}/wp-content/themes/codeweber/dist/assets/img/photos/tb4.jpg`
-				: './assets/img/photos/tb4.jpg')
+				: './assets/img/photos/tb4.jpg'
 			: '/wp-content/themes/codeweber/dist/assets/img/photos/tb4.jpg',
-		isEditor 
-			? (window.location?.origin 
+		isEditor
+			? window.location?.origin
 				? `${window.location.origin}/wp-content/themes/codeweber/dist/assets/img/photos/tb5.jpg`
-				: './assets/img/photos/tb5.jpg')
+				: './assets/img/photos/tb5.jpg'
 			: '/wp-content/themes/codeweber/dist/assets/img/photos/tb5.jpg',
-		isEditor 
-			? (window.location?.origin 
+		isEditor
+			? window.location?.origin
 				? `${window.location.origin}/wp-content/themes/codeweber/dist/assets/img/photos/tb6.jpg`
-				: './assets/img/photos/tb6.jpg')
+				: './assets/img/photos/tb6.jpg'
 			: '/wp-content/themes/codeweber/dist/assets/img/photos/tb6.jpg',
-		isEditor 
-			? (window.location?.origin 
+		isEditor
+			? window.location?.origin
 				? `${window.location.origin}/wp-content/themes/codeweber/dist/assets/img/photos/tb7.jpg`
-				: './assets/img/photos/tb7.jpg')
+				: './assets/img/photos/tb7.jpg'
 			: '/wp-content/themes/codeweber/dist/assets/img/photos/tb7.jpg',
 	];
 
@@ -106,43 +106,56 @@ export const Banner25 = ({ attributes, isEditor = false, clientId = '' }) => {
 	// Рендерим Swiper с изображениями
 	const renderSwiper = () => {
 		// Используем imagesToRender или placeholder изображения
-		const slideImages = hasImage ? imagesToRender : placeholderImages.map((url, index) => ({ 
-			url, 
-			alt: `Slide ${index + 1}`,
-			id: 0 
-		}));
+		const slideImages = hasImage
+			? imagesToRender
+			: placeholderImages.map((url, index) => ({
+					url,
+					alt: `Slide ${index + 1}`,
+					id: 0,
+				}));
 
 		// Если нет изображений, используем все 7 placeholder
-		const slidesToRender = slideImages.length > 0 ? slideImages : placeholderImages.map((url, index) => ({ 
-			url, 
-			alt: `Slide ${index + 1}`,
-			id: 0 
-		}));
+		const slidesToRender =
+			slideImages.length > 0
+				? slideImages
+				: placeholderImages.map((url, index) => ({
+						url,
+						alt: `Slide ${index + 1}`,
+						id: 0,
+					}));
 
 		return (
-			<SwiperSlider 
-				config={swiperConfig} 
+			<SwiperSlider
+				config={swiperConfig}
 				className="blog grid-view mb-16"
 				{...(isEditor && { uniqueKey: swiperUniqueKey })}
 			>
 				{slidesToRender.map((image, index) => {
-					const imageUrl = hasImage ? getImageUrl(image, imageSize) : image.url;
-					const imageAlt = hasImage ? (image.alt || '') : '';
+					const imageUrl = hasImage
+						? getImageUrl(image, imageSize)
+						: image.url;
+					const imageAlt = hasImage ? image.alt || '' : '';
 
 					return (
-						<SwiperSlide key={`banner25-slide-${index}-${swiperUniqueKey}`}>
+						<SwiperSlide
+							key={`banner25-slide-${index}-${swiperUniqueKey}`}
+						>
 							<figure className="overlay caption caption-overlay rounded mb-0">
 								<a href="#">
-									<img 
-										src={imageUrl} 
-										alt={imageAlt} 
+									<img
+										src={imageUrl}
+										alt={imageAlt}
 										decoding="async"
 									/>
 								</a>
 								<figcaption>
-									<span className="badge badge-lg bg-white text-uppercase mb-3">Places</span>
+									<span className="badge badge-lg bg-white text-uppercase mb-3">
+										Places
+									</span>
 									<h2 className="post-title h3 mt-1 mb-3">
-										<a href="./blog-post.html">The Best Moments in Venice</a>
+										<a href="./blog-post.html">
+											The Best Moments in Venice
+										</a>
 									</h2>
 									<ul className="post-meta text-white mb-0">
 										<li className="post-date">
@@ -179,33 +192,3 @@ export const Banner25 = ({ attributes, isEditor = false, clientId = '' }) => {
 		</section>
 	);
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

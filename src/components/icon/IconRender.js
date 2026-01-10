@@ -131,7 +131,7 @@ const getWrapperClasses = ({
 		if (btnVariant === 'gradient') {
 			// Градиентная кнопка
 			classes.push('btn-gradient');
-			
+
 			// Добавляем класс градиента
 			if (gradientColor.startsWith('gradient-')) {
 				classes.push(gradientColor);
@@ -232,8 +232,11 @@ export const IconRender = ({
 
 	// Определяем, нужен ли цвет на иконке
 	// Для Solid-кнопок иконка должна быть белой (без цвета)
-	const isButtonWrapper = iconWrapper && (iconWrapperStyle === 'btn' || iconWrapperStyle === 'btn-circle');
-	const shouldApplyColorToIcon = !isButtonWrapper || iconBtnVariant !== 'solid';
+	const isButtonWrapper =
+		iconWrapper &&
+		(iconWrapperStyle === 'btn' || iconWrapperStyle === 'btn-circle');
+	const shouldApplyColorToIcon =
+		!isButtonWrapper || iconBtnVariant !== 'solid';
 
 	// Font Icon
 	if (iconType === 'font' && iconName) {
@@ -261,7 +264,10 @@ export const IconRender = ({
 		const svgPath = getSvgIconPath(svgIcon, svgStyle);
 
 		// Для solid иконок нужно сохранять классы fill-primary/fill-secondary
-		const isSolidStyle = svgStyle === 'solid' || svgStyle === 'solid-mono' || svgStyle === 'solid-duo';
+		const isSolidStyle =
+			svgStyle === 'solid' ||
+			svgStyle === 'solid-mono' ||
+			svgStyle === 'solid-duo';
 
 		// В редакторе используем InlineSvg для поддержки CSS цветов
 		if (isEditor) {
@@ -275,13 +281,7 @@ export const IconRender = ({
 			);
 		} else {
 			// На фронте используем img с svg-inject для SVGInject библиотеки
-			iconElement = (
-				<img
-					src={svgPath}
-					className={svgClasses}
-					alt=""
-				/>
-			);
+			iconElement = <img src={svgPath} className={svgClasses} alt="" />;
 		}
 	}
 
@@ -307,11 +307,7 @@ export const IconRender = ({
 			);
 		} else {
 			iconElement = (
-				<img
-					src={customSvgUrl}
-					className={svgClasses}
-					alt=""
-				/>
+				<img src={customSvgUrl} className={svgClasses} alt="" />
 			);
 		}
 	}
@@ -345,16 +341,19 @@ export const IconRender = ({
 		});
 
 		// Добавляем классы и атрибуты блока к обёртке (для save.js)
-		const finalClasses = !isEditor && (blockAlign || blockClass)
-			? [
-				wrapperClasses,
-				blockAlign ? `text-${blockAlign}` : '',
-				blockClass,
-			].filter(Boolean).join(' ')
-			: wrapperClasses;
+		const finalClasses =
+			!isEditor && (blockAlign || blockClass)
+				? [
+						wrapperClasses,
+						blockAlign ? `text-${blockAlign}` : '',
+						blockClass,
+					]
+						.filter(Boolean)
+						.join(' ')
+				: wrapperClasses;
 
 		return (
-			<div 
+			<div
 				className={finalClasses}
 				id={!isEditor && blockId ? blockId : undefined}
 				{...(!isEditor ? dataAttributes : {})}
@@ -365,18 +364,30 @@ export const IconRender = ({
 	}
 
 	// Без обёртки - применяем атрибуты блока к самой иконке (для save.js)
-	if (!isEditor && (blockAlign || blockClass || blockId || Object.keys(dataAttributes).length > 0)) {
+	if (
+		!isEditor &&
+		(blockAlign ||
+			blockClass ||
+			blockId ||
+			Object.keys(dataAttributes).length > 0)
+	) {
 		// Для Font Icon (<i>)
 		if (iconType === 'font' && iconName) {
 			const classes = getFontIconClasses({
 				iconName,
 				iconFontSize,
 				iconColor,
-				iconClass: [iconClass, blockAlign ? `text-${blockAlign}` : '', blockClass].filter(Boolean).join(' '),
+				iconClass: [
+					iconClass,
+					blockAlign ? `text-${blockAlign}` : '',
+					blockClass,
+				]
+					.filter(Boolean)
+					.join(' '),
 			});
 
 			return (
-				<i 
+				<i
 					className={classes}
 					id={blockId || undefined}
 					{...dataAttributes}
@@ -387,7 +398,11 @@ export const IconRender = ({
 		// Для SVG иконок обёртку в span
 		return (
 			<span
-				className={[blockAlign ? `text-${blockAlign}` : '', blockClass].filter(Boolean).join(' ') || undefined}
+				className={
+					[blockAlign ? `text-${blockAlign}` : '', blockClass]
+						.filter(Boolean)
+						.join(' ') || undefined
+				}
 				id={blockId || undefined}
 				{...dataAttributes}
 			>
@@ -408,4 +423,3 @@ export const IconRenderSave = (props) => {
 };
 
 export default IconRender;
-

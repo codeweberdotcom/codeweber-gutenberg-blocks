@@ -41,7 +41,7 @@ export const Banner18 = ({ attributes, isEditor = false }) => {
 	// Функция для получения классов секции
 	const getSectionClasses = () => {
 		const classes = ['wrapper'];
-		
+
 		// Если sectionClass содержит bg-light, используем sectionClass напрямую
 		if (sectionClass && sectionClass.includes('bg-light')) {
 			classes.push(sectionClass);
@@ -53,22 +53,22 @@ export const Banner18 = ({ attributes, isEditor = false }) => {
 				classes.push(sectionClass);
 			}
 		}
-		
+
 		return classes.filter(Boolean).join(' ');
 	};
 
 	// Placeholder фоновое изображение для карточки
-	const placeholderBgUrl = isEditor 
-		? (window.location?.origin 
+	const placeholderBgUrl = isEditor
+		? window.location?.origin
 			? `${window.location.origin}/wp-content/themes/codeweber/dist/assets/img/photos/bg22.png`
-			: './assets/img/photos/bg22.png')
+			: './assets/img/photos/bg22.png'
 		: '/wp-content/themes/codeweber/dist/assets/img/photos/bg22.png';
 
 	// Placeholder изображение справа
-	const placeholderRightImageUrl = isEditor 
-		? (window.location?.origin 
+	const placeholderRightImageUrl = isEditor
+		? window.location?.origin
 			? `${window.location.origin}/wp-content/themes/codeweber/dist/assets/img/illustrations/3d6.png`
-			: './assets/img/illustrations/3d6.png')
+			: './assets/img/illustrations/3d6.png'
 		: '/wp-content/themes/codeweber/dist/assets/img/illustrations/3d6.png';
 
 	const imagesToRender = images || [];
@@ -76,25 +76,27 @@ export const Banner18 = ({ attributes, isEditor = false }) => {
 
 	// Рендерим изображение справа
 	const renderRightImage = () => {
-		const imageUrl = hasRightImage ? getImageUrl(imagesToRender[0], imageSize) : placeholderRightImageUrl;
-		const imageAlt = hasRightImage ? (imagesToRender[0].alt || '') : '';
+		const imageUrl = hasRightImage
+			? getImageUrl(imagesToRender[0], imageSize)
+			: placeholderRightImageUrl;
+		const imageAlt = hasRightImage ? imagesToRender[0].alt || '' : '';
 
 		// Для placeholder добавляем srcset для ретина-дисплеев
-		const placeholderSrcset = !hasRightImage 
-			? (isEditor 
-				? (window.location?.origin 
+		const placeholderSrcset = !hasRightImage
+			? isEditor
+				? window.location?.origin
 					? `${window.location.origin}/wp-content/themes/codeweber/dist/assets/img/illustrations/3d6@2x.png 2x`
-					: './assets/img/illustrations/3d6@2x.png 2x')
-				: '/wp-content/themes/codeweber/dist/assets/img/illustrations/3d6@2x.png 2x')
+					: './assets/img/illustrations/3d6@2x.png 2x'
+				: '/wp-content/themes/codeweber/dist/assets/img/illustrations/3d6@2x.png 2x'
 			: undefined;
 
 		return (
 			<div className="col-lg-6">
-				<img 
-					className="img-fluid mb-n18" 
-					src={imageUrl} 
+				<img
+					className="img-fluid mb-n18"
+					src={imageUrl}
 					srcSet={placeholderSrcset}
-					alt={imageAlt} 
+					alt={imageAlt}
 					decoding="async"
 				/>
 			</div>
@@ -120,7 +122,7 @@ export const Banner18 = ({ attributes, isEditor = false }) => {
 		return (
 			<section className={getSectionClasses()}>
 				<div className="container-card">
-					<div 
+					<div
 						className="card image-wrapper bg-full bg-image bg-overlay bg-overlay-light-500 mt-2 mb-5"
 						style={getCardStyles()}
 						data-image-src={getCardBackgroundImageSrc()}
@@ -129,7 +131,12 @@ export const Banner18 = ({ attributes, isEditor = false }) => {
 							<div className="container">
 								<div className="row gx-md-8 gx-xl-12 gy-10 align-items-center text-center text-lg-start">
 									<div className="col-lg-6">
-										<InnerBlocks allowedBlocks={ALLOWED_CODEWEBER_BLOCKS} templateLock={false} />
+										<InnerBlocks
+											allowedBlocks={
+												ALLOWED_CODEWEBER_BLOCKS
+											}
+											templateLock={false}
+										/>
 									</div>
 									{renderRightImage()}
 								</div>
@@ -144,7 +151,7 @@ export const Banner18 = ({ attributes, isEditor = false }) => {
 	return (
 		<section className={getSectionClasses()}>
 			<div className="container-card">
-				<div 
+				<div
 					className="card image-wrapper bg-full bg-image bg-overlay bg-overlay-light-500 mt-2 mb-5"
 					style={getCardStyles()}
 					data-image-src={getCardBackgroundImageSrc()}
@@ -164,33 +171,3 @@ export const Banner18 = ({ attributes, isEditor = false }) => {
 		</section>
 	);
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

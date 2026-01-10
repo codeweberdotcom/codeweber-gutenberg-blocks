@@ -19,7 +19,10 @@ registerBlockType(metadata, {
 	edit: Edit,
 	save: Save,
 	title: __('Accordion', 'codeweber-gutenberg-blocks'),
-	description: __('Bootstrap accordion with multiple items. Supports simple, background, and icon styles.', 'codeweber-gutenberg-blocks'),
+	description: __(
+		'Bootstrap accordion with multiple items. Supports simple, background, and icon styles.',
+		'codeweber-gutenberg-blocks'
+	),
 	keywords: [
 		__('accordion', 'codeweber-gutenberg-blocks'),
 		__('collapse', 'codeweber-gutenberg-blocks'),
@@ -27,11 +30,3 @@ registerBlockType(metadata, {
 		__('tabs', 'codeweber-gutenberg-blocks'),
 	],
 });
-
-
-
-
-
-
-
-

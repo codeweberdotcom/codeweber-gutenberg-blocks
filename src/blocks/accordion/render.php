@@ -280,11 +280,3 @@ $wrapperAttributes = 'class="' . esc_attr(implode(' ', $accordionClasses)) . '" 
 		<?php endif; ?>
 	<?php endif; ?>
 </div>
-
-
-
-
-
-
-
-

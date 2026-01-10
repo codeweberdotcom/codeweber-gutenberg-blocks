@@ -3,15 +3,18 @@ import { __ } from '@wordpress/i18n';
 import { useEffect } from '@wordpress/element';
 import { ImageSimpleSidebar } from './sidebar';
 import { ImageSimpleRender } from '../../components/image/ImageSimpleRender';
-import { 
-	SwiperSlider, 
-	SwiperSlide, 
+import {
+	SwiperSlider,
+	SwiperSlide,
 	getSwiperConfigFromAttributes,
 	initSwiper,
-	destroySwiper 
+	destroySwiper,
 } from '../../components/swiper/SwiperSlider';
 import { initLightbox } from '../../utilities/lightbox';
-import { getRowColsClasses, getGapClasses } from '../../components/grid-control';
+import {
+	getRowColsClasses,
+	getGapClasses,
+} from '../../components/grid-control';
 
 export default function Edit({ attributes, setAttributes, clientId }) {
 	const {
@@ -79,9 +82,10 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 
 	// Для режима background убираем обертку, применяя атрибуты напрямую к контенту
 	const shouldRemoveWrapper = imageRenderType === 'background';
-	
+
 	const blockProps = useBlockProps({
-		className: `cwgb-image-simple-block ${imageRenderType === 'background' ? 'h-100' : ''} ${blockClass}`.trim(),
+		className:
+			`cwgb-image-simple-block ${imageRenderType === 'background' ? 'h-100' : ''} ${blockClass}`.trim(),
 		'data-block': clientId,
 	});
 
@@ -96,24 +100,32 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		const timer = setTimeout(() => {
 			try {
 				// Очистка старых span.bg перед реинициализацией overlay
-				const oldBgSpans = document.querySelectorAll('.cwgb-image-simple-block .overlay > a > span.bg, .cwgb-image-simple-block .overlay > span > span.bg');
-				oldBgSpans.forEach(span => span.remove());
-				
+				const oldBgSpans = document.querySelectorAll(
+					'.cwgb-image-simple-block .overlay > a > span.bg, .cwgb-image-simple-block .overlay > span > span.bg'
+				);
+				oldBgSpans.forEach((span) => span.remove());
+
 				// Swiper Slider - используем утилиту
 				if (displayMode === 'swiper' && initSwiper()) {
 					console.log('✅ Swiper reinitialized (image-simple)');
 				}
-				
+
 				// Overlay (imageHoverOverlay) - добавляет <span class="bg"></span>
-				if (effectType === 'overlay' && typeof window.theme?.imageHoverOverlay === 'function') {
+				if (
+					effectType === 'overlay' &&
+					typeof window.theme?.imageHoverOverlay === 'function'
+				) {
 					window.theme.imageHoverOverlay();
 				}
-				
+
 				// Tooltip (iTooltip)
-				if (effectType === 'tooltip' && typeof window.theme?.iTooltip === 'function') {
+				if (
+					effectType === 'tooltip' &&
+					typeof window.theme?.iTooltip === 'function'
+				) {
 					window.theme.iTooltip();
 				}
-				
+
 				// Lightbox (GLightbox) - используем утилиту
 				if (enableLightbox) {
 					initLightbox();
@@ -166,19 +178,23 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		swiperNavPosition,
 		swiperDotsStyle,
 		swiperContainerType,
-		clientId
+		clientId,
 	]);
 
 	// Функция для получения классов контейнера
 	const getContainerClasses = () => {
 		if (displayMode === 'grid') {
 			const currentGridType = gridType || 'classic';
-			
+
 			if (currentGridType === 'columns-grid') {
 				// Columns Grid: используем row-cols и новые gap атрибуты
-				const rowColsClasses = getRowColsClasses(attributes, 'grid', gridColumns);
+				const rowColsClasses = getRowColsClasses(
+					attributes,
+					'grid',
+					gridColumns
+				);
 				const gapClasses = getGapClasses(attributes, 'grid');
-				
+
 				// Fallback на старые атрибуты gridGapX и gridGapY для обратной совместимости
 				let gapClassesStr = gapClasses.join(' ');
 				if (!gapClassesStr && (gridGapX || gridGapY)) {
@@ -188,7 +204,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 					if (gridGapX) oldGapClasses.push(`gx-${gridGapX}`);
 					gapClassesStr = oldGapClasses.join(' ');
 				}
-				
+
 				return `row ${gapClassesStr} ${rowColsClasses.join(' ')}`;
 			} else {
 				// Classic Grid: только row и gap классы, БЕЗ row-cols-*
@@ -196,7 +212,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 				// Используем getGapClasses для новых gap атрибутов, с fallback на старые
 				const gapClasses = getGapClasses(attributes, 'grid');
 				let gapClassesStr = gapClasses.join(' ');
-				
+
 				// Fallback на старые атрибуты gridGapX и gridGapY для обратной совместимости
 				if (!gapClassesStr && (gridGapX || gridGapY)) {
 					const oldGapClasses = [];
@@ -204,7 +220,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 					if (gridGapX) oldGapClasses.push(`gx-${gridGapX}`);
 					gapClassesStr = oldGapClasses.join(' ');
 				}
-				
+
 				// Classic Grid: только row + gap, без row-cols-*
 				return `row ${gapClassesStr}`.trim();
 			}
@@ -218,7 +234,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		if (displayMode !== 'grid' || gridType !== 'classic') {
 			return '';
 		}
-		
+
 		const colClasses = [];
 		const {
 			gridColumns: colsDefault,
@@ -229,17 +245,17 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 			gridColumnsXl: colsXl,
 			gridColumnsXxl: colsXxl,
 		} = attributes;
-		
+
 		// Base (default) - без префикса
 		if (colsDefault) {
 			colClasses.push(`col-${colsDefault}`);
 		}
-		
+
 		// XS - без префикса (как и default)
 		if (colsXs) {
 			colClasses.push(`col-${colsXs}`);
 		}
-		
+
 		// SM и выше - с префиксами
 		if (colsSm) {
 			colClasses.push(`col-sm-${colsSm}`);
@@ -256,7 +272,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		if (colsXxl) {
 			colClasses.push(`col-xxl-${colsXxl}`);
 		}
-		
+
 		return colClasses.join(' ');
 	};
 
@@ -272,14 +288,18 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 	// Рендерим контент
 	const renderContent = () => {
 		if (images.length === 0) {
-			const placeholderProps = shouldRemoveWrapper 
-				? { ...blockProps, className: `${blockProps.className || ''} cwgb-image-placeholder`.trim() }
+			const placeholderProps = shouldRemoveWrapper
+				? {
+						...blockProps,
+						className:
+							`${blockProps.className || ''} cwgb-image-placeholder`.trim(),
+					}
 				: { className: 'cwgb-image-placeholder' };
-			
+
 			return (
 				<div {...placeholderProps}>
-					<img 
-						src="/wp-content/plugins/codeweber-gutenberg-blocks/placeholder.jpg" 
+					<img
+						src="/wp-content/plugins/codeweber-gutenberg-blocks/placeholder.jpg"
 						alt={__('Placeholder', 'codeweber-gutenberg-blocks')}
 						className="placeholder-image"
 					/>
@@ -287,10 +307,13 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 			);
 		} else if (displayMode === 'single') {
 			// Режим Single - добавляем key с hover эффектами и imageSize для полной переинициализации
-			const singleDivProps = shouldRemoveWrapper 
-				? { ...blockProps, key: `single-${hoverEffectsKey}-${imageSize}` }
+			const singleDivProps = shouldRemoveWrapper
+				? {
+						...blockProps,
+						key: `single-${hoverEffectsKey}-${imageSize}`,
+					}
 				: { key: `single-${hoverEffectsKey}-${imageSize}` };
-			
+
 			return (
 				<div {...singleDivProps}>
 					<ImageSimpleRender
@@ -314,116 +337,160 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		} else if (displayMode === 'grid') {
 			// Режим Grid - добавляем key с hover эффектами и imageSize для полной переинициализации
 			const gridDivProps = shouldRemoveWrapper
-				? { ...blockProps, className: `${blockProps.className || ''} ${getContainerClasses()}`.trim(), key: `grid-${hoverEffectsKey}-${imageSize}` }
-				: { className: getContainerClasses(), key: `grid-${hoverEffectsKey}-${imageSize}` };
-			
+				? {
+						...blockProps,
+						className:
+							`${blockProps.className || ''} ${getContainerClasses()}`.trim(),
+						key: `grid-${hoverEffectsKey}-${imageSize}`,
+					}
+				: {
+						className: getContainerClasses(),
+						key: `grid-${hoverEffectsKey}-${imageSize}`,
+					};
+
 			return (
 				<div {...gridDivProps}>
-						{(loadMoreEnable && displayMode === 'grid' 
-							? images.slice(0, loadMoreInitialCount || images.length)
-							: images
-						).map((image, index) => (
-							<div 
-								key={`${index}-${hoverEffectsKey}-${imageSize}`}
-								className={gridType === 'classic' ? getColClasses() : ''}
-							>
-								<ImageSimpleRender
-									image={image}
-									imageSize={imageSize}
-									borderRadius={borderRadius}
-									enableLightbox={enableLightbox}
-									lightboxGallery={lightboxGallery}
-									simpleEffect={simpleEffect}
-									effectType={effectType}
-									tooltipStyle={tooltipStyle}
-									overlayStyle={overlayStyle}
-									overlayGradient={overlayGradient}
-									overlayColor={overlayColor}
-									cursorStyle={cursorStyle}
-									imageRenderType={imageRenderType}
-									isEditor={true}
-								/>
+					{(loadMoreEnable && displayMode === 'grid'
+						? images.slice(0, loadMoreInitialCount || images.length)
+						: images
+					).map((image, index) => (
+						<div
+							key={`${index}-${hoverEffectsKey}-${imageSize}`}
+							className={
+								gridType === 'classic' ? getColClasses() : ''
+							}
+						>
+							<ImageSimpleRender
+								image={image}
+								imageSize={imageSize}
+								borderRadius={borderRadius}
+								enableLightbox={enableLightbox}
+								lightboxGallery={lightboxGallery}
+								simpleEffect={simpleEffect}
+								effectType={effectType}
+								tooltipStyle={tooltipStyle}
+								overlayStyle={overlayStyle}
+								overlayGradient={overlayGradient}
+								overlayColor={overlayColor}
+								cursorStyle={cursorStyle}
+								imageRenderType={imageRenderType}
+								isEditor={true}
+							/>
+						</div>
+					))}
+					{(() => {
+						// Предустановленные тексты для кнопки/ссылки Load More
+						const loadMoreTexts = {
+							'show-more': __(
+								'Show More',
+								'codeweber-gutenberg-blocks'
+							),
+							'load-more': __(
+								'Load More',
+								'codeweber-gutenberg-blocks'
+							),
+							'show-more-items': __(
+								'Show More Items',
+								'codeweber-gutenberg-blocks'
+							),
+							'more-posts': __(
+								'More Posts',
+								'codeweber-gutenberg-blocks'
+							),
+							'view-all': __(
+								'View All',
+								'codeweber-gutenberg-blocks'
+							),
+							'show-all': __(
+								'Show All',
+								'codeweber-gutenberg-blocks'
+							),
+						};
+
+						const loadMoreTextValue =
+							loadMoreTexts[loadMoreText] ||
+							loadMoreTexts['show-more'];
+						const hasMoreImages =
+							loadMoreEnable &&
+							displayMode === 'grid' &&
+							loadMoreInitialCount > 0 &&
+							images.length > loadMoreInitialCount;
+
+						if (!hasMoreImages) return null;
+
+						// Строим класс кнопки
+						const buttonClasses = ['btn', 'cwgb-load-more-btn'];
+
+						// Добавляем стиль кнопки (solid или outline)
+						if (loadMoreButtonStyle === 'outline') {
+							buttonClasses.push('btn-outline-primary');
+						} else {
+							buttonClasses.push('btn-primary');
+						}
+
+						// Добавляем размер кнопки
+						if (loadMoreButtonSize) {
+							buttonClasses.push(loadMoreButtonSize);
+						}
+
+						const buttonClassName = buttonClasses.join(' ');
+
+						return (
+							<div className="text-center pt-5 w-100">
+								{loadMoreType === 'link' ? (
+									<a
+										href="#"
+										className="hover cwgb-load-more-btn"
+										onClick={(e) => e.preventDefault()}
+										style={{
+											pointerEvents: 'none',
+											cursor: 'default',
+										}}
+									>
+										{loadMoreTextValue}
+									</a>
+								) : (
+									<button
+										className={buttonClassName}
+										type="button"
+										onClick={(e) => e.preventDefault()}
+										disabled
+										style={{
+											pointerEvents: 'none',
+											cursor: 'default',
+										}}
+									>
+										{loadMoreTextValue}
+									</button>
+								)}
 							</div>
-						))}
-						{(() => {
-							// Предустановленные тексты для кнопки/ссылки Load More
-							const loadMoreTexts = {
-								'show-more': __('Show More', 'codeweber-gutenberg-blocks'),
-								'load-more': __('Load More', 'codeweber-gutenberg-blocks'),
-								'show-more-items': __('Show More Items', 'codeweber-gutenberg-blocks'),
-								'more-posts': __('More Posts', 'codeweber-gutenberg-blocks'),
-								'view-all': __('View All', 'codeweber-gutenberg-blocks'),
-								'show-all': __('Show All', 'codeweber-gutenberg-blocks'),
-							};
-							
-							const loadMoreTextValue = loadMoreTexts[loadMoreText] || loadMoreTexts['show-more'];
-							const hasMoreImages = loadMoreEnable && displayMode === 'grid' && loadMoreInitialCount > 0 && images.length > loadMoreInitialCount;
-							
-							if (!hasMoreImages) return null;
-							
-							// Строим класс кнопки
-							const buttonClasses = ['btn', 'cwgb-load-more-btn'];
-							
-							// Добавляем стиль кнопки (solid или outline)
-							if (loadMoreButtonStyle === 'outline') {
-								buttonClasses.push('btn-outline-primary');
-							} else {
-								buttonClasses.push('btn-primary');
-							}
-							
-							// Добавляем размер кнопки
-							if (loadMoreButtonSize) {
-								buttonClasses.push(loadMoreButtonSize);
-							}
-							
-							const buttonClassName = buttonClasses.join(' ');
-							
-							return (
-								<div className="text-center pt-5 w-100">
-									{loadMoreType === 'link' ? (
-										<a 
-											href="#" 
-											className="hover cwgb-load-more-btn" 
-											onClick={(e) => e.preventDefault()}
-											style={{ pointerEvents: 'none', cursor: 'default' }}
-										>
-											{loadMoreTextValue}
-										</a>
-									) : (
-										<button 
-											className={buttonClassName}
-											type="button"
-											onClick={(e) => e.preventDefault()}
-											disabled
-											style={{ pointerEvents: 'none', cursor: 'default' }}
-										>
-											{loadMoreTextValue}
-										</button>
-									)}
-								</div>
-							);
-						})()}
-					</div>
-				);
+						);
+					})()}
+				</div>
+			);
 		} else if (displayMode === 'swiper') {
 			// Режим Swiper - используем компонент SwiperSlider
 			// Для background режима добавляем h-100 к swiper-container и swiper
-			const swiperClassName = imageRenderType === 'background' ? 'h-100' : '';
-			const swiperContainerClassName = imageRenderType === 'background' ? 'h-100' : '';
-			
+			const swiperClassName =
+				imageRenderType === 'background' ? 'h-100' : '';
+			const swiperContainerClassName =
+				imageRenderType === 'background' ? 'h-100' : '';
+
 			// Для swiper мы не можем применить blockProps к SwiperSlider напрямую,
 			// поэтому оборачиваем его в div только для background режима
 			if (shouldRemoveWrapper) {
 				return (
 					<div {...blockProps}>
-						<SwiperSlider 
-							config={swiperConfig} 
+						<SwiperSlider
+							config={swiperConfig}
 							className={swiperContainerClassName}
 							swiperClassName={swiperClassName}
 							uniqueKey={`${swiperUniqueKey}-${imageSize}`}
 						>
 							{images.map((image, index) => (
-								<SwiperSlide key={`${index}-${hoverEffectsKey}-${imageSize}`}>
+								<SwiperSlide
+									key={`${index}-${hoverEffectsKey}-${imageSize}`}
+								>
 									<ImageSimpleRender
 										image={image}
 										imageSize={imageSize}
@@ -447,14 +514,16 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 				);
 			} else {
 				return (
-					<SwiperSlider 
-						config={swiperConfig} 
+					<SwiperSlider
+						config={swiperConfig}
 						className={swiperContainerClassName}
 						swiperClassName={swiperClassName}
 						uniqueKey={`${swiperUniqueKey}-${imageSize}`}
 					>
 						{images.map((image, index) => (
-							<SwiperSlide key={`${index}-${hoverEffectsKey}-${imageSize}`}>
+							<SwiperSlide
+								key={`${index}-${hoverEffectsKey}-${imageSize}`}
+							>
 								<ImageSimpleRender
 									image={image}
 									imageSize={imageSize}
@@ -484,16 +553,16 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 
 	return (
 		<>
-			<ImageSimpleSidebar attributes={attributes} setAttributes={setAttributes} />
+			<ImageSimpleSidebar
+				attributes={attributes}
+				setAttributes={setAttributes}
+			/>
 
 			{shouldRemoveWrapper ? (
 				content
 			) : (
-				<div {...blockProps}>
-					{content}
-				</div>
+				<div {...blockProps}>{content}</div>
 			)}
 		</>
 	);
 }
-

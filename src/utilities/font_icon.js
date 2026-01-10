@@ -1259,5 +1259,3 @@ export const fontIcons = [
 	{ value: 'uil-vkvideo', label: 'vkvideo' },
 	{ value: 'uil-vkmusic', label: 'vkmusic' },
 ];
-
-

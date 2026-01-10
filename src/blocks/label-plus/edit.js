@@ -4,8 +4,19 @@ import {
 	InspectorControls,
 	RichText,
 } from '@wordpress/block-editor';
-import { TabPanel, PanelBody, TextControl, ToggleControl } from '@wordpress/components';
-import { Icon, cog, typography, dragHandle, starFilled } from '@wordpress/icons';
+import {
+	TabPanel,
+	PanelBody,
+	TextControl,
+	ToggleControl,
+} from '@wordpress/components';
+import {
+	Icon,
+	cog,
+	typography,
+	dragHandle,
+	starFilled,
+} from '@wordpress/icons';
 import apiFetch from '@wordpress/api-fetch';
 import { IconRender } from '../../components/icon';
 import { IconControl } from '../../components/icon/IconControl';
@@ -42,19 +53,55 @@ const Edit = ({ attributes, setAttributes }) => {
 
 	// Tab icon with native title tooltip
 	const TabIcon = ({ icon, label }) => (
-		<span 
+		<span
 			title={label}
-			style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+			style={{
+				display: 'flex',
+				alignItems: 'center',
+				justifyContent: 'center',
+			}}
 		>
 			<Icon icon={icon} size={20} />
 		</span>
 	);
 
 	const tabs = [
-		{ name: 'content', title: <TabIcon icon={typography} label={__('Content', 'codeweber-gutenberg-blocks')} /> },
-		{ name: 'position', title: <TabIcon icon={dragHandle} label={__('Position', 'codeweber-gutenberg-blocks')} /> },
-		{ name: 'icon', title: <TabIcon icon={starFilled} label={__('Icon', 'codeweber-gutenberg-blocks')} /> },
-		{ name: 'settings', title: <TabIcon icon={cog} label={__('Settings', 'codeweber-gutenberg-blocks')} /> },
+		{
+			name: 'content',
+			title: (
+				<TabIcon
+					icon={typography}
+					label={__('Content', 'codeweber-gutenberg-blocks')}
+				/>
+			),
+		},
+		{
+			name: 'position',
+			title: (
+				<TabIcon
+					icon={dragHandle}
+					label={__('Position', 'codeweber-gutenberg-blocks')}
+				/>
+			),
+		},
+		{
+			name: 'icon',
+			title: (
+				<TabIcon
+					icon={starFilled}
+					label={__('Icon', 'codeweber-gutenberg-blocks')}
+				/>
+			),
+		},
+		{
+			name: 'settings',
+			title: (
+				<TabIcon
+					icon={cog}
+					label={__('Settings', 'codeweber-gutenberg-blocks')}
+				/>
+			),
+		},
 	];
 
 	const blockProps = useBlockProps({
@@ -70,7 +117,10 @@ const Edit = ({ attributes, setAttributes }) => {
 				// Debug: log card radius from API
 				if (process.env.NODE_ENV !== 'production') {
 					// eslint-disable-next-line no-console
-					console.log('Label+ card radius from API:', res?.card_radius_class);
+					console.log(
+						'Label+ card radius from API:',
+						res?.card_radius_class
+					);
 				}
 				if (res?.card_radius_class !== undefined) {
 					setAttributes({ cardRadiusClass: res.card_radius_class });
@@ -105,19 +155,38 @@ const Edit = ({ attributes, setAttributes }) => {
 							{tab.name === 'content' && (
 								<PanelBody>
 									<TextControl
-										label={__('Title', 'codeweber-gutenberg-blocks')}
+										label={__(
+											'Title',
+											'codeweber-gutenberg-blocks'
+										)}
 										value={counterText}
-										onChange={(value) => setAttributes({ counterText: value })}
+										onChange={(value) =>
+											setAttributes({
+												counterText: value,
+											})
+										}
 									/>
 									<ToggleControl
-										label={__('Add "counter" class', 'codeweber-gutenberg-blocks')}
+										label={__(
+											'Add "counter" class',
+											'codeweber-gutenberg-blocks'
+										)}
 										checked={showCounterClass}
-										onChange={(value) => setAttributes({ showCounterClass: value })}
+										onChange={(value) =>
+											setAttributes({
+												showCounterClass: value,
+											})
+										}
 									/>
 									<TextControl
-										label={__('Label', 'codeweber-gutenberg-blocks')}
+										label={__(
+											'Label',
+											'codeweber-gutenberg-blocks'
+										)}
 										value={labelText}
-										onChange={(value) => setAttributes({ labelText: value })}
+										onChange={(value) =>
+											setAttributes({ labelText: value })
+										}
 									/>
 								</PanelBody>
 							)}
@@ -126,16 +195,36 @@ const Edit = ({ attributes, setAttributes }) => {
 							{tab.name === 'position' && (
 								<PanelBody>
 									<TextControl
-										label={__('Bottom', 'codeweber-gutenberg-blocks')}
+										label={__(
+											'Bottom',
+											'codeweber-gutenberg-blocks'
+										)}
 										value={positionBottom}
-										help={__('Use CSS units, e.g. 10% or 20px', 'codeweber-gutenberg-blocks')}
-										onChange={(value) => setAttributes({ positionBottom: value })}
+										help={__(
+											'Use CSS units, e.g. 10% or 20px',
+											'codeweber-gutenberg-blocks'
+										)}
+										onChange={(value) =>
+											setAttributes({
+												positionBottom: value,
+											})
+										}
 									/>
 									<TextControl
-										label={__('Right', 'codeweber-gutenberg-blocks')}
+										label={__(
+											'Right',
+											'codeweber-gutenberg-blocks'
+										)}
 										value={positionRight}
-										help={__('Use CSS units, e.g. -3% or 0', 'codeweber-gutenberg-blocks')}
-										onChange={(value) => setAttributes({ positionRight: value })}
+										help={__(
+											'Use CSS units, e.g. -3% or 0',
+											'codeweber-gutenberg-blocks'
+										)}
+										onChange={(value) =>
+											setAttributes({
+												positionRight: value,
+											})
+										}
 									/>
 								</PanelBody>
 							)}
@@ -147,7 +236,10 @@ const Edit = ({ attributes, setAttributes }) => {
 										attributes={attributes}
 										setAttributes={setAttributes}
 										prefix=""
-										label={__('Icon Settings', 'codeweber-gutenberg-blocks')}
+										label={__(
+											'Icon Settings',
+											'codeweber-gutenberg-blocks'
+										)}
 										allowSvg={true}
 										allowFont={true}
 										allowCustom={true}
@@ -170,9 +262,18 @@ const Edit = ({ attributes, setAttributes }) => {
 											idKey: 'blockId',
 										}}
 										labels={{
-											classLabel: __('Block Class', 'codeweber-gutenberg-blocks'),
-											dataLabel: __('Block Data', 'codeweber-gutenberg-blocks'),
-											idLabel: __('Block ID', 'codeweber-gutenberg-blocks'),
+											classLabel: __(
+												'Block Class',
+												'codeweber-gutenberg-blocks'
+											),
+											dataLabel: __(
+												'Block Data',
+												'codeweber-gutenberg-blocks'
+											),
+											idLabel: __(
+												'Block ID',
+												'codeweber-gutenberg-blocks'
+											),
 										}}
 									/>
 								</PanelBody>
@@ -215,17 +316,33 @@ const Edit = ({ attributes, setAttributes }) => {
 									tagName="div"
 									className={`h3 mb-0 text-nowrap${showCounterClass ? ' counter' : ''}`}
 									value={counterText}
-									onChange={(value) => setAttributes({ counterText: value })}
-									placeholder={__('25000+', 'codeweber-gutenberg-blocks')}
-									aria-label={__('Title', 'codeweber-gutenberg-blocks')}
+									onChange={(value) =>
+										setAttributes({ counterText: value })
+									}
+									placeholder={__(
+										'25000+',
+										'codeweber-gutenberg-blocks'
+									)}
+									aria-label={__(
+										'Title',
+										'codeweber-gutenberg-blocks'
+									)}
 								/>
 								<RichText
 									tagName="p"
 									className="fs-14 lh-sm mb-0 text-nowrap"
 									value={labelText}
-									onChange={(value) => setAttributes({ labelText: value })}
-									placeholder={__('Happy Clients', 'codeweber-gutenberg-blocks')}
-									aria-label={__('Label', 'codeweber-gutenberg-blocks')}
+									onChange={(value) =>
+										setAttributes({ labelText: value })
+									}
+									placeholder={__(
+										'Happy Clients',
+										'codeweber-gutenberg-blocks'
+									)}
+									aria-label={__(
+										'Label',
+										'codeweber-gutenberg-blocks'
+									)}
 								/>
 							</div>
 						</div>
@@ -237,4 +354,3 @@ const Edit = ({ attributes, setAttributes }) => {
 };
 
 export default Edit;
-

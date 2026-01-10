@@ -71,7 +71,9 @@ const Edit = ({ attributes, setAttributes }) => {
 		'cwgb-logo-block',
 		blockAlign ? `text-${blockAlign}` : '',
 		blockClass,
-	].filter(Boolean).join(' ');
+	]
+		.filter(Boolean)
+		.join(' ');
 
 	// Парсим data-атрибуты
 	const dataAttributes = {};
@@ -88,11 +90,12 @@ const Edit = ({ attributes, setAttributes }) => {
 		className: blockClasses,
 		id: blockId || undefined,
 		...dataAttributes,
-		...(animationEnabled && animationType && { 
-			'data-cue': animationType,
-			'data-duration': animationDuration || 1000,
-			'data-delay': animationDelay || 0,
-		}),
+		...(animationEnabled &&
+			animationType && {
+				'data-cue': animationType,
+				'data-duration': animationDuration || 1000,
+				'data-delay': animationDelay || 0,
+			}),
 	});
 
 	// Получаем URL логотипов для превью
@@ -126,35 +129,38 @@ const Edit = ({ attributes, setAttributes }) => {
 
 	// Рендерим логотип(ы)
 	const renderLogo = () => {
-		const logoContent = logoType === 'both' ? (
-			<>
+		const logoContent =
+			logoType === 'both' ? (
+				<>
+					<img
+						src={logoUrls.dark}
+						alt={__('Logo Dark', 'codeweber-gutenberg-blocks')}
+						className="logo-dark"
+						style={sizeStyle}
+					/>
+					<img
+						src={logoUrls.light}
+						alt={__('Logo Light', 'codeweber-gutenberg-blocks')}
+						className="logo-light"
+						style={sizeStyle}
+					/>
+				</>
+			) : (
 				<img
-					src={logoUrls.dark}
-					alt={__('Logo Dark', 'codeweber-gutenberg-blocks')}
-					className="logo-dark"
+					src={logoType === 'light' ? logoUrls.light : logoUrls.dark}
+					alt={__('Logo', 'codeweber-gutenberg-blocks')}
+					className={
+						logoType === 'light' ? 'logo-light' : 'logo-dark'
+					}
 					style={sizeStyle}
 				/>
-				<img
-					src={logoUrls.light}
-					alt={__('Logo Light', 'codeweber-gutenberg-blocks')}
-					className="logo-light"
-					style={sizeStyle}
-				/>
-			</>
-		) : (
-			<img
-				src={logoType === 'light' ? logoUrls.light : logoUrls.dark}
-				alt={__('Logo', 'codeweber-gutenberg-blocks')}
-				className={logoType === 'light' ? 'logo-light' : 'logo-dark'}
-				style={sizeStyle}
-			/>
-		);
+			);
 
 		// Если ссылка включена, оборачиваем в <a>
 		if (enableLink) {
 			return (
-				<a 
-					href={getLinkUrl()} 
+				<a
+					href={getLinkUrl()}
 					onClick={(e) => e.preventDefault()}
 					style={{ pointerEvents: 'none', cursor: 'default' }}
 				>
@@ -186,7 +192,10 @@ const Edit = ({ attributes, setAttributes }) => {
 
 			{/* Preview */}
 			<div {...blockProps}>
-				<div className="cwgb-logo-preview" style={{ display: 'inline-block' }}>
+				<div
+					className="cwgb-logo-preview"
+					style={{ display: 'inline-block' }}
+				>
 					{renderLogo()}
 				</div>
 			</div>
@@ -195,4 +204,3 @@ const Edit = ({ attributes, setAttributes }) => {
 };
 
 export default Edit;
-

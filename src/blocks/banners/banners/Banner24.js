@@ -1,6 +1,6 @@
 import { getImageUrl } from '../../../utilities/image-url';
-import { 
-	SwiperSlider, 
+import {
+	SwiperSlider,
 	SwiperSlide,
 } from '../../../components/swiper/SwiperSlider';
 
@@ -28,49 +28,49 @@ export const Banner24 = ({ attributes, isEditor = false, clientId = '' }) => {
 	// Функция для получения классов секции
 	const getSectionClasses = () => {
 		const classes = ['wrapper', 'bg-gray'];
-		
+
 		// Добавляем дополнительные классы из sectionClass, если они есть
 		if (sectionClass) {
 			classes.push(sectionClass);
 		}
-		
+
 		return classes.filter(Boolean).join(' ');
 	};
 
 	const imagesToRender = images || [];
 	const hasImage = imagesToRender && imagesToRender.length > 0;
-	
+
 	// Placeholder изображения для слайдов
 	const placeholderImages = [
-		isEditor 
-			? (window.location?.origin 
+		isEditor
+			? window.location?.origin
 				? `${window.location.origin}/wp-content/themes/codeweber/dist/assets/img/photos/cf1.jpg`
-				: './assets/img/photos/cf1.jpg')
+				: './assets/img/photos/cf1.jpg'
 			: '/wp-content/themes/codeweber/dist/assets/img/photos/cf1.jpg',
-		isEditor 
-			? (window.location?.origin 
+		isEditor
+			? window.location?.origin
 				? `${window.location.origin}/wp-content/themes/codeweber/dist/assets/img/photos/cf2.jpg`
-				: './assets/img/photos/cf2.jpg')
+				: './assets/img/photos/cf2.jpg'
 			: '/wp-content/themes/codeweber/dist/assets/img/photos/cf2.jpg',
-		isEditor 
-			? (window.location?.origin 
+		isEditor
+			? window.location?.origin
 				? `${window.location.origin}/wp-content/themes/codeweber/dist/assets/img/photos/cf3.jpg`
-				: './assets/img/photos/cf3.jpg')
+				: './assets/img/photos/cf3.jpg'
 			: '/wp-content/themes/codeweber/dist/assets/img/photos/cf3.jpg',
-		isEditor 
-			? (window.location?.origin 
+		isEditor
+			? window.location?.origin
 				? `${window.location.origin}/wp-content/themes/codeweber/dist/assets/img/photos/cf4.jpg`
-				: './assets/img/photos/cf4.jpg')
+				: './assets/img/photos/cf4.jpg'
 			: '/wp-content/themes/codeweber/dist/assets/img/photos/cf4.jpg',
-		isEditor 
-			? (window.location?.origin 
+		isEditor
+			? window.location?.origin
 				? `${window.location.origin}/wp-content/themes/codeweber/dist/assets/img/photos/cf5.jpg`
-				: './assets/img/photos/cf5.jpg')
+				: './assets/img/photos/cf5.jpg'
 			: '/wp-content/themes/codeweber/dist/assets/img/photos/cf5.jpg',
-		isEditor 
-			? (window.location?.origin 
+		isEditor
+			? window.location?.origin
 				? `${window.location.origin}/wp-content/themes/codeweber/dist/assets/img/photos/cf6.jpg`
-				: './assets/img/photos/cf6.jpg')
+				: './assets/img/photos/cf6.jpg'
 			: '/wp-content/themes/codeweber/dist/assets/img/photos/cf6.jpg',
 	];
 
@@ -99,45 +99,56 @@ export const Banner24 = ({ attributes, isEditor = false, clientId = '' }) => {
 	// Рендерим Swiper с изображениями
 	const renderSwiper = () => {
 		// Используем imagesToRender или placeholder изображения
-		const slideImages = hasImage ? imagesToRender : placeholderImages.map((url, index) => ({ 
-			url, 
-			alt: `Slide ${index + 1}`,
-			id: 0 
-		}));
+		const slideImages = hasImage
+			? imagesToRender
+			: placeholderImages.map((url, index) => ({
+					url,
+					alt: `Slide ${index + 1}`,
+					id: 0,
+				}));
 
 		// Если нет изображений, используем минимум 6 placeholder
-		const slidesToRender = slideImages.length > 0 ? slideImages : placeholderImages.map((url, index) => ({ 
-			url, 
-			alt: `Slide ${index + 1}`,
-			id: 0 
-		}));
+		const slidesToRender =
+			slideImages.length > 0
+				? slideImages
+				: placeholderImages.map((url, index) => ({
+						url,
+						alt: `Slide ${index + 1}`,
+						id: 0,
+					}));
 
 		return (
-			<SwiperSlider 
-				config={swiperConfig} 
+			<SwiperSlider
+				config={swiperConfig}
 				className=""
 				swiperClassName="overflow-visible"
 				{...(isEditor && { uniqueKey: swiperUniqueKey })}
 			>
 				{slidesToRender.map((image, index) => {
-					const imageUrl = hasImage ? getImageUrl(image, imageSize) : image.url;
-					const imageAlt = hasImage ? (image.alt || '') : '';
-					const showLightbox = !isEditor && (enableLightbox !== false);
+					const imageUrl = hasImage
+						? getImageUrl(image, imageSize)
+						: image.url;
+					const imageAlt = hasImage ? image.alt || '' : '';
+					const showLightbox = !isEditor && enableLightbox !== false;
 
 					return (
-						<SwiperSlide key={`banner24-slide-${index}-${swiperUniqueKey}`}>
+						<SwiperSlide
+							key={`banner24-slide-${index}-${swiperUniqueKey}`}
+						>
 							<figure className="rounded">
-								<img 
-									src={imageUrl} 
-									alt={imageAlt} 
+								<img
+									src={imageUrl}
+									alt={imageAlt}
 									decoding="async"
 								/>
 								{showLightbox && (
-									<a 
-										className="item-link" 
+									<a
+										className="item-link"
 										href={imageUrl}
-										data-glightbox 
-										data-gallery={lightboxGallery || "gallery-group"}
+										data-glightbox
+										data-gallery={
+											lightboxGallery || 'gallery-group'
+										}
 									>
 										<i className="uil uil-focus-add"></i>
 									</a>
@@ -160,4 +171,3 @@ export const Banner24 = ({ attributes, isEditor = false, clientId = '' }) => {
 		</section>
 	);
 };
-

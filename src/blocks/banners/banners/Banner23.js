@@ -57,7 +57,7 @@ export const Banner23 = ({ attributes, isEditor = false, clientId = '' }) => {
 	// Используем images для основных изображений
 	// Для thumbs используем те же изображения, но с другим размером (thumbnail)
 	const imagesToRender = images || [];
-	
+
 	// Получаем конфигурацию для основного слайдера
 	const mainSwiperConfig = {
 		margin: swiperMargin || '0',
@@ -75,7 +75,7 @@ export const Banner23 = ({ attributes, isEditor = false, clientId = '' }) => {
 	if (isEditor) {
 		return (
 			<section className={getSectionClasses()}>
-				<div 
+				<div
 					className="swiper-container swiper-thumbs-container swiper-fullscreen nav-dark"
 					data-margin={mainSwiperConfig.margin}
 					data-autoplay={mainSwiperConfig.autoplay}
@@ -90,62 +90,86 @@ export const Banner23 = ({ attributes, isEditor = false, clientId = '' }) => {
 						<div className="swiper-wrapper">
 							{imagesToRender.length > 0 ? (
 								imagesToRender.map((image, index) => {
-									const imageUrl = getImageUrl(image, imageSize || 'full');
+									const imageUrl = getImageUrl(
+										image,
+										imageSize || 'full'
+									);
 									return (
-										<div 
+										<div
 											key={`banner23-main-slide-${index}-${clientId}`}
 											className="swiper-slide bg-overlay bg-overlay-400 bg-dark bg-image"
 											data-image-src={imageUrl}
-											{...(isEditor && { style: { backgroundImage: `url(${imageUrl})` } })}
+											{...(isEditor && {
+												style: {
+													backgroundImage: `url(${imageUrl})`,
+												},
+											})}
 										></div>
 									);
 								})
 							) : (
 								// Placeholder если нет изображений
-								<div 
+								<div
 									className="swiper-slide bg-overlay bg-overlay-400 bg-dark bg-image"
 									data-image-src="/wp-content/themes/codeweber/dist/assets/img/photos/bg28.jpg"
-									{...(isEditor && { style: { backgroundImage: 'url(/wp-content/themes/codeweber/dist/assets/img/photos/bg28.jpg)' } })}
+									{...(isEditor && {
+										style: {
+											backgroundImage:
+												'url(/wp-content/themes/codeweber/dist/assets/img/photos/bg28.jpg)',
+										},
+									})}
 								></div>
 							)}
 						</div>
 						{/*/.swiper-wrapper */}
 					</div>
 					{/* /.swiper */}
-					
+
 					{/* Thumbs Swiper */}
 					<div className="swiper swiper-thumbs">
 						<div className="swiper-wrapper">
 							{imagesToRender.length > 0 ? (
 								imagesToRender.map((image, index) => {
 									// Используем thumbnail размер для миниатюр
-									const thumbUrl = getImageUrl(image, 'thumbnail');
+									const thumbUrl = getImageUrl(
+										image,
+										'thumbnail'
+									);
 									return (
-										<div 
+										<div
 											key={`banner23-thumb-slide-${index}-${clientId}`}
 											className="swiper-slide"
 										>
-											<img src={thumbUrl} alt={image.alt || ''} />
+											<img
+												src={thumbUrl}
+												alt={image.alt || ''}
+											/>
 										</div>
 									);
 								})
 							) : (
 								// Placeholder для thumbs
 								<div className="swiper-slide">
-									<img src="/wp-content/themes/codeweber/dist/assets/img/photos/bg28-th.jpg" alt="" />
+									<img
+										src="/wp-content/themes/codeweber/dist/assets/img/photos/bg28-th.jpg"
+										alt=""
+									/>
 								</div>
 							)}
 						</div>
 						{/*/.swiper-wrapper */}
 					</div>
 					{/* /.swiper */}
-					
+
 					{/* Static Content */}
 					<div className="swiper-static">
 						<div className="container h-100 d-flex align-items-center justify-content-center">
 							<div className="row">
 								<div className="col-lg-8 mx-auto mt-n10 text-center">
-									<InnerBlocks allowedBlocks={ALLOWED_CODEWEBER_BLOCKS} templateLock={false} />
+									<InnerBlocks
+										allowedBlocks={ALLOWED_CODEWEBER_BLOCKS}
+										templateLock={false}
+									/>
 								</div>
 								{/* /column */}
 							</div>
@@ -162,7 +186,7 @@ export const Banner23 = ({ attributes, isEditor = false, clientId = '' }) => {
 
 	return (
 		<section className={getSectionClasses()}>
-			<div 
+			<div
 				className="swiper-container swiper-thumbs-container swiper-fullscreen nav-dark"
 				data-margin={mainSwiperConfig.margin}
 				data-autoplay={mainSwiperConfig.autoplay}
@@ -176,9 +200,12 @@ export const Banner23 = ({ attributes, isEditor = false, clientId = '' }) => {
 					<div className="swiper-wrapper">
 						{imagesToRender.length > 0 ? (
 							imagesToRender.map((image, index) => {
-								const imageUrl = getImageUrl(image, imageSize || 'full');
+								const imageUrl = getImageUrl(
+									image,
+									imageSize || 'full'
+								);
 								return (
-									<div 
+									<div
 										key={`banner23-main-slide-${index}`}
 										className="swiper-slide bg-overlay bg-overlay-400 bg-dark bg-image"
 										data-image-src={imageUrl}
@@ -187,7 +214,7 @@ export const Banner23 = ({ attributes, isEditor = false, clientId = '' }) => {
 							})
 						) : (
 							// Placeholder если нет изображений
-							<div 
+							<div
 								className="swiper-slide bg-overlay bg-overlay-400 bg-dark bg-image"
 								data-image-src="/wp-content/themes/codeweber/dist/assets/img/photos/bg28.jpg"
 							></div>
@@ -196,34 +223,43 @@ export const Banner23 = ({ attributes, isEditor = false, clientId = '' }) => {
 					{/*/.swiper-wrapper */}
 				</div>
 				{/* /.swiper */}
-				
+
 				{/* Thumbs Swiper */}
 				<div className="swiper swiper-thumbs">
 					<div className="swiper-wrapper">
 						{imagesToRender.length > 0 ? (
 							imagesToRender.map((image, index) => {
 								// Используем thumbnail размер для миниатюр
-								const thumbUrl = getImageUrl(image, 'thumbnail');
+								const thumbUrl = getImageUrl(
+									image,
+									'thumbnail'
+								);
 								return (
-									<div 
+									<div
 										key={`banner23-thumb-slide-${index}`}
 										className="swiper-slide"
 									>
-										<img src={thumbUrl} alt={image.alt || ''} />
+										<img
+											src={thumbUrl}
+											alt={image.alt || ''}
+										/>
 									</div>
 								);
 							})
 						) : (
 							// Placeholder для thumbs
 							<div className="swiper-slide">
-								<img src="/wp-content/themes/codeweber/dist/assets/img/photos/bg28-th.jpg" alt="" />
+								<img
+									src="/wp-content/themes/codeweber/dist/assets/img/photos/bg28-th.jpg"
+									alt=""
+								/>
 							</div>
 						)}
 					</div>
 					{/*/.swiper-wrapper */}
 				</div>
 				{/* /.swiper */}
-				
+
 				{/* Static Content */}
 				<div className="swiper-static">
 					<div className="container h-100 d-flex align-items-center justify-content-center">
@@ -243,6 +279,3 @@ export const Banner23 = ({ attributes, isEditor = false, clientId = '' }) => {
 		</section>
 	);
 };
-
-
-

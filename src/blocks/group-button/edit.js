@@ -11,7 +11,13 @@ import {
 } from '@wordpress/block-editor';
 import { TabPanel } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import { Icon, cog, positionCenter, resizeCornerNE, arrowRight } from '@wordpress/icons';
+import {
+	Icon,
+	cog,
+	positionCenter,
+	resizeCornerNE,
+	arrowRight,
+} from '@wordpress/icons';
 import { useEffect } from '@wordpress/element';
 import { PositioningControl } from '../../components/layout/PositioningControl';
 import { SpacingControl } from '../../components/spacing/SpacingControl';
@@ -21,35 +27,80 @@ import { getGroupButtonClassNames, normalizeGroupButtonId } from './utils';
 
 // Tab icon with native title tooltip
 const TabIcon = ({ icon, label }) => (
-	<span title={label} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+	<span
+		title={label}
+		style={{
+			display: 'flex',
+			alignItems: 'center',
+			justifyContent: 'center',
+		}}
+	>
 		<Icon icon={icon} size={20} />
 	</span>
 );
 
 const tabs = [
-	{ name: 'align', title: <TabIcon icon={positionCenter} label={__('Position', 'codeweber-gutenberg-blocks')} /> },
-	{ name: 'spacing', title: <TabIcon icon={resizeCornerNE} label={__('Spacing', 'codeweber-gutenberg-blocks')} /> },
-	{ name: 'animation', title: <TabIcon icon={arrowRight} label={__('Animation', 'codeweber-gutenberg-blocks')} /> },
-	{ name: 'settings', title: <TabIcon icon={cog} label={__('Settings', 'codeweber-gutenberg-blocks')} /> },
+	{
+		name: 'align',
+		title: (
+			<TabIcon
+				icon={positionCenter}
+				label={__('Position', 'codeweber-gutenberg-blocks')}
+			/>
+		),
+	},
+	{
+		name: 'spacing',
+		title: (
+			<TabIcon
+				icon={resizeCornerNE}
+				label={__('Spacing', 'codeweber-gutenberg-blocks')}
+			/>
+		),
+	},
+	{
+		name: 'animation',
+		title: (
+			<TabIcon
+				icon={arrowRight}
+				label={__('Animation', 'codeweber-gutenberg-blocks')}
+			/>
+		),
+	},
+	{
+		name: 'settings',
+		title: (
+			<TabIcon
+				icon={cog}
+				label={__('Settings', 'codeweber-gutenberg-blocks')}
+			/>
+		),
+	},
 ];
 
 // Template для двух кнопок по умолчанию
 const TEMPLATE = [
-	['codeweber-blocks/button', {
-		ButtonContent: 'Обсудить проект',
-		ButtonType: 'solid',
-		ButtonStyle: 'solid',
-		ButtonColor: 'primary',
-		ButtonSize: '',
-		blockClass: 'me-1',
-	}],
-	['codeweber-blocks/button', {
-		ButtonContent: 'Все услуги',
-		ButtonType: 'solid',
-		ButtonStyle: 'outline',
-		ButtonColor: 'primary',
-		ButtonSize: '',
-	}],
+	[
+		'codeweber-blocks/button',
+		{
+			ButtonContent: 'Обсудить проект',
+			ButtonType: 'solid',
+			ButtonStyle: 'solid',
+			ButtonColor: 'primary',
+			ButtonSize: '',
+			blockClass: 'me-1',
+		},
+	],
+	[
+		'codeweber-blocks/button',
+		{
+			ButtonContent: 'Все услуги',
+			ButtonType: 'solid',
+			ButtonStyle: 'outline',
+			ButtonColor: 'primary',
+			ButtonSize: '',
+		},
+	],
 ];
 
 const GroupButtonEdit = ({ attributes, setAttributes, clientId }) => {
@@ -82,28 +133,48 @@ const GroupButtonEdit = ({ attributes, setAttributes, clientId }) => {
 	// Анимация в редакторе (аналогично Card)
 	useEffect(() => {
 		const timer = setTimeout(() => {
-			const currentBlock = document.querySelector(`[data-block="${clientId}"]`);
+			const currentBlock = document.querySelector(
+				`[data-block="${clientId}"]`
+			);
 			if (!currentBlock) {
 				return;
 			}
 
-			const elementWithCue =
-				currentBlock.hasAttribute('data-cue') ? currentBlock : currentBlock.querySelector('[data-cue]');
+			const elementWithCue = currentBlock.hasAttribute('data-cue')
+				? currentBlock
+				: currentBlock.querySelector('[data-cue]');
 
-			if (animationEnabled && animationType && elementWithCue && elementWithCue.hasAttribute('data-cue')) {
-				elementWithCue.classList.remove('cue-hide', 'cue-show', 'cue-sticky');
+			if (
+				animationEnabled &&
+				animationType &&
+				elementWithCue &&
+				elementWithCue.hasAttribute('data-cue')
+			) {
+				elementWithCue.classList.remove(
+					'cue-hide',
+					'cue-show',
+					'cue-sticky'
+				);
 				elementWithCue.removeAttribute('data-show');
 				elementWithCue.style.animationDelay = '';
 				elementWithCue.style.animationDuration = '';
 				elementWithCue.style.opacity = '';
 
-				const animationClasses = Array.from(elementWithCue.classList).filter(cls => 
-					cls.startsWith('fadeIn') || cls.startsWith('slideIn') || 
-					cls.startsWith('zoomIn') || cls.startsWith('zoomOut') ||
-					cls.startsWith('rotateIn') || cls.startsWith('bounceIn') ||
-					cls.startsWith('flipIn')
+				const animationClasses = Array.from(
+					elementWithCue.classList
+				).filter(
+					(cls) =>
+						cls.startsWith('fadeIn') ||
+						cls.startsWith('slideIn') ||
+						cls.startsWith('zoomIn') ||
+						cls.startsWith('zoomOut') ||
+						cls.startsWith('rotateIn') ||
+						cls.startsWith('bounceIn') ||
+						cls.startsWith('flipIn')
 				);
-				animationClasses.forEach(cls => elementWithCue.classList.remove(cls));
+				animationClasses.forEach((cls) =>
+					elementWithCue.classList.remove(cls)
+				);
 
 				elementWithCue.classList.add('cue-hide');
 				elementWithCue.style.opacity = '0';
@@ -112,7 +183,7 @@ const GroupButtonEdit = ({ attributes, setAttributes, clientId }) => {
 					setTimeout(() => {
 						window.reinitScrollCue();
 					}, 50);
-					
+
 					setTimeout(() => {
 						elementWithCue.classList.remove('cue-hide');
 						elementWithCue.classList.add('cue-show');
@@ -124,7 +195,13 @@ const GroupButtonEdit = ({ attributes, setAttributes, clientId }) => {
 		}, 100);
 
 		return () => clearTimeout(timer);
-	}, [animationEnabled, animationType, animationDuration, animationDelay, clientId]);
+	}, [
+		animationEnabled,
+		animationType,
+		animationDuration,
+		animationDelay,
+		clientId,
+	]);
 
 	return (
 		<>
@@ -135,15 +212,34 @@ const GroupButtonEdit = ({ attributes, setAttributes, clientId }) => {
 							{tab.name === 'align' && (
 								<div style={{ padding: '16px' }}>
 									<PositioningControl
-										title={__('Group align', 'codeweber-gutenberg-blocks')}
+										title={__(
+											'Group align',
+											'codeweber-gutenberg-blocks'
+										)}
 										alignItems={groupAlignItems}
-										onAlignItemsChange={(value) => setAttributes({ groupAlignItems: value })}
+										onAlignItemsChange={(value) =>
+											setAttributes({
+												groupAlignItems: value,
+											})
+										}
 										justifyContent={groupJustifyContent}
-										onJustifyContentChange={(value) => setAttributes({ groupJustifyContent: value })}
+										onJustifyContentChange={(value) =>
+											setAttributes({
+												groupJustifyContent: value,
+											})
+										}
 										textAlign={groupTextAlign}
-										onTextAlignChange={(value) => setAttributes({ groupTextAlign: value })}
+										onTextAlignChange={(value) =>
+											setAttributes({
+												groupTextAlign: value,
+											})
+										}
 										position={groupPosition}
-										onPositionChange={(value) => setAttributes({ groupPosition: value })}
+										onPositionChange={(value) =>
+											setAttributes({
+												groupPosition: value,
+											})
+										}
 										noPanel={true}
 									/>
 								</div>
@@ -158,7 +254,9 @@ const GroupButtonEdit = ({ attributes, setAttributes, clientId }) => {
 										spacingLg={spacingLg}
 										spacingXl={spacingXl}
 										spacingXxl={spacingXxl}
-										onChange={(key, value) => setAttributes({ [key]: value })}
+										onChange={(key, value) =>
+											setAttributes({ [key]: value })
+										}
 									/>
 								</div>
 							)}
@@ -181,9 +279,18 @@ const GroupButtonEdit = ({ attributes, setAttributes, clientId }) => {
 											idKey: 'blockId',
 										}}
 										labels={{
-											classLabel: __('Group Class', 'codeweber-gutenberg-blocks'),
-											dataLabel: __('Group Data', 'codeweber-gutenberg-blocks'),
-											idLabel: __('Group ID', 'codeweber-gutenberg-blocks'),
+											classLabel: __(
+												'Group Class',
+												'codeweber-gutenberg-blocks'
+											),
+											dataLabel: __(
+												'Group Data',
+												'codeweber-gutenberg-blocks'
+											),
+											idLabel: __(
+												'Group ID',
+												'codeweber-gutenberg-blocks'
+											),
 										}}
 									/>
 								</div>
@@ -204,4 +311,3 @@ const GroupButtonEdit = ({ attributes, setAttributes, clientId }) => {
 };
 
 export default GroupButtonEdit;
-

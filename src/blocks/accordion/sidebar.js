@@ -16,7 +16,19 @@ import { PostTypeTaxonomyControl } from '../../components/post-type-taxonomy/Pos
 import { PostSortControl } from '../../components/post-sort/PostSortControl';
 
 export const AccordionSidebar = ({ attributes, setAttributes }) => {
-	const { accordionStyle, allowMultiple, iconPosition, iconType, firstItemOpen, mode, postType, selectedTaxonomies, orderBy, order, theme } = attributes;
+	const {
+		accordionStyle,
+		allowMultiple,
+		iconPosition,
+		iconType,
+		firstItemOpen,
+		mode,
+		postType,
+		selectedTaxonomies,
+		orderBy,
+		order,
+		theme,
+	} = attributes;
 
 	const handleStyleChange = (style) => {
 		setAttributes({ accordionStyle: style });
@@ -37,13 +49,21 @@ export const AccordionSidebar = ({ attributes, setAttributes }) => {
 			</div>
 			<div className="button-group-sidebar_33">
 				{[
-					{ label: __('Custom', 'codeweber-gutenberg-blocks'), value: 'custom' },
-					{ label: __('Post', 'codeweber-gutenberg-blocks'), value: 'post' },
+					{
+						label: __('Custom', 'codeweber-gutenberg-blocks'),
+						value: 'custom',
+					},
+					{
+						label: __('Post', 'codeweber-gutenberg-blocks'),
+						value: 'post',
+					},
 				].map((modeOption) => (
 					<Button
 						key={modeOption.value}
 						isPrimary={(mode || 'custom') === modeOption.value}
-						onClick={() => setAttributes({ mode: modeOption.value })}
+						onClick={() =>
+							setAttributes({ mode: modeOption.value })
+						}
 					>
 						{modeOption.label}
 					</Button>
@@ -57,9 +77,16 @@ export const AccordionSidebar = ({ attributes, setAttributes }) => {
 						<PostTypeTaxonomyControl
 							postType={postType || ''}
 							selectedTaxonomies={selectedTaxonomies || {}}
-							onPostTypeChange={(value) => setAttributes({ postType: value })}
-							onTaxonomyChange={(value) => setAttributes({ selectedTaxonomies: value })}
-							help={__('Select the post type to generate accordion items from', 'codeweber-gutenberg-blocks')}
+							onPostTypeChange={(value) =>
+								setAttributes({ postType: value })
+							}
+							onTaxonomyChange={(value) =>
+								setAttributes({ selectedTaxonomies: value })
+							}
+							help={__(
+								'Select the post type to generate accordion items from',
+								'codeweber-gutenberg-blocks'
+							)}
 						/>
 					</div>
 
@@ -68,8 +95,12 @@ export const AccordionSidebar = ({ attributes, setAttributes }) => {
 						<PostSortControl
 							orderBy={orderBy || 'date'}
 							order={order || 'desc'}
-							onOrderByChange={(value) => setAttributes({ orderBy: value })}
-							onOrderChange={(value) => setAttributes({ order: value })}
+							onOrderByChange={(value) =>
+								setAttributes({ orderBy: value })
+							}
+							onOrderChange={(value) =>
+								setAttributes({ order: value })
+							}
 						/>
 					</div>
 				</>
@@ -77,13 +108,24 @@ export const AccordionSidebar = ({ attributes, setAttributes }) => {
 
 			{/* Accordion Style */}
 			<div className="component-sidebar-title">
-				<label>{__('Accordion Style', 'codeweber-gutenberg-blocks')}</label>
+				<label>
+					{__('Accordion Style', 'codeweber-gutenberg-blocks')}
+				</label>
 			</div>
 			<div className="accordion-style-controls button-group-sidebar_33">
 				{[
-					{ label: __('Simple', 'codeweber-gutenberg-blocks'), value: 'simple' },
-					{ label: __('Card', 'codeweber-gutenberg-blocks'), value: 'background' },
-					{ label: __('Icon', 'codeweber-gutenberg-blocks'), value: 'icon' },
+					{
+						label: __('Simple', 'codeweber-gutenberg-blocks'),
+						value: 'simple',
+					},
+					{
+						label: __('Card', 'codeweber-gutenberg-blocks'),
+						value: 'background',
+					},
+					{
+						label: __('Icon', 'codeweber-gutenberg-blocks'),
+						value: 'icon',
+					},
 				].map((style) => (
 					<Button
 						key={style.value}
@@ -97,17 +139,27 @@ export const AccordionSidebar = ({ attributes, setAttributes }) => {
 
 			{/* Icon Position */}
 			<div className="component-sidebar-title">
-				<label>{__('Icon Position', 'codeweber-gutenberg-blocks')}</label>
+				<label>
+					{__('Icon Position', 'codeweber-gutenberg-blocks')}
+				</label>
 			</div>
 			<div className="button-group-sidebar_33">
 				{[
-					{ label: __('Left', 'codeweber-gutenberg-blocks'), value: 'left' },
-					{ label: __('Right', 'codeweber-gutenberg-blocks'), value: 'right' },
+					{
+						label: __('Left', 'codeweber-gutenberg-blocks'),
+						value: 'left',
+					},
+					{
+						label: __('Right', 'codeweber-gutenberg-blocks'),
+						value: 'right',
+					},
 				].map((pos) => (
 					<Button
 						key={pos.value}
 						isPrimary={(iconPosition || 'left') === pos.value}
-						onClick={() => setAttributes({ iconPosition: pos.value })}
+						onClick={() =>
+							setAttributes({ iconPosition: pos.value })
+						}
 					>
 						{pos.label}
 					</Button>
@@ -118,18 +170,42 @@ export const AccordionSidebar = ({ attributes, setAttributes }) => {
 			{accordionStyle !== 'icon' && (
 				<>
 					<div className="component-sidebar-title">
-						<label>{__('Icon Type', 'codeweber-gutenberg-blocks')}</label>
+						<label>
+							{__('Icon Type', 'codeweber-gutenberg-blocks')}
+						</label>
 					</div>
 					<div className="button-group-sidebar_33">
 						{[
-							{ label: __('Type 1', 'codeweber-gutenberg-blocks'), value: 'type-1' },
-							{ label: __('Type 2', 'codeweber-gutenberg-blocks'), value: 'type-2' },
-							{ label: __('Type 3', 'codeweber-gutenberg-blocks'), value: 'type-3' },
+							{
+								label: __(
+									'Type 1',
+									'codeweber-gutenberg-blocks'
+								),
+								value: 'type-1',
+							},
+							{
+								label: __(
+									'Type 2',
+									'codeweber-gutenberg-blocks'
+								),
+								value: 'type-2',
+							},
+							{
+								label: __(
+									'Type 3',
+									'codeweber-gutenberg-blocks'
+								),
+								value: 'type-3',
+							},
 						].map((type) => (
 							<Button
 								key={type.value}
-								isPrimary={(iconType || 'type-1') === type.value}
-								onClick={() => setAttributes({ iconType: type.value })}
+								isPrimary={
+									(iconType || 'type-1') === type.value
+								}
+								onClick={() =>
+									setAttributes({ iconType: type.value })
+								}
 							>
 								{type.label}
 							</Button>
@@ -140,7 +216,10 @@ export const AccordionSidebar = ({ attributes, setAttributes }) => {
 
 			{/* Allow Multiple Open */}
 			<ToggleControl
-				label={__('Allow Multiple Items Open', 'codeweber-gutenberg-blocks')}
+				label={__(
+					'Allow Multiple Items Open',
+					'codeweber-gutenberg-blocks'
+				)}
 				checked={allowMultiple}
 				onChange={handleAllowMultipleChange}
 				help={__(
@@ -151,7 +230,10 @@ export const AccordionSidebar = ({ attributes, setAttributes }) => {
 
 			{/* First item open by default */}
 			<ToggleControl
-				label={__('Open first item by default', 'codeweber-gutenberg-blocks')}
+				label={__(
+					'Open first item by default',
+					'codeweber-gutenberg-blocks'
+				)}
 				checked={firstItemOpen}
 				onChange={(value) => setAttributes({ firstItemOpen: value })}
 				help={__(
@@ -161,18 +243,29 @@ export const AccordionSidebar = ({ attributes, setAttributes }) => {
 			/>
 
 			{/* Theme Selection */}
-			<div className="component-sidebar-title" style={{ marginTop: '16px' }}>
+			<div
+				className="component-sidebar-title"
+				style={{ marginTop: '16px' }}
+			>
 				<label>{__('Theme', 'codeweber-gutenberg-blocks')}</label>
 			</div>
 			<div className="button-group-sidebar_33">
 				{[
-					{ label: __('Light', 'codeweber-gutenberg-blocks'), value: 'light' },
-					{ label: __('Dark', 'codeweber-gutenberg-blocks'), value: 'dark' },
+					{
+						label: __('Light', 'codeweber-gutenberg-blocks'),
+						value: 'light',
+					},
+					{
+						label: __('Dark', 'codeweber-gutenberg-blocks'),
+						value: 'dark',
+					},
 				].map((themeOption) => (
 					<Button
 						key={themeOption.value}
 						isPrimary={(theme || 'light') === themeOption.value}
-						onClick={() => setAttributes({ theme: themeOption.value })}
+						onClick={() =>
+							setAttributes({ theme: themeOption.value })
+						}
 					>
 						{themeOption.label}
 					</Button>
@@ -181,11 +274,3 @@ export const AccordionSidebar = ({ attributes, setAttributes }) => {
 		</PanelBody>
 	);
 };
-
-
-
-
-
-
-
-

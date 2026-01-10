@@ -1,12 +1,12 @@
 /**
  * Plyr Video Player Utility
- * 
+ *
  * Функции для инициализации и уничтожения Plyr плеера
  */
 
 /**
  * Инициализация Plyr плеера
- * 
+ *
  * @param {string} selector - CSS селектор элементов для инициализации (по умолчанию '.player')
  * @returns {boolean} - true если инициализация успешна, false если нет
  */
@@ -22,13 +22,13 @@ export const initPlyr = (selector = '.player') => {
 	}
 
 	const players = document.querySelectorAll(selector);
-	
+
 	if (!players || players.length === 0) {
 		return false;
 	}
 
 	try {
-		players.forEach(player => {
+		players.forEach((player) => {
 			// Пропускаем уже инициализированные плееры
 			if (player.plyr) {
 				return;
@@ -58,7 +58,7 @@ export const initPlyr = (selector = '.player') => {
 
 /**
  * Уничтожение Plyr плеера
- * 
+ *
  * @param {string} selector - CSS селектор элементов для уничтожения (по умолчанию '.player')
  * @returns {boolean} - true если уничтожение успешно, false если нет
  */
@@ -68,13 +68,13 @@ export const destroyPlyr = (selector = '.player') => {
 	}
 
 	const players = document.querySelectorAll(selector);
-	
+
 	if (!players || players.length === 0) {
 		return false;
 	}
 
 	try {
-		players.forEach(player => {
+		players.forEach((player) => {
 			if (player.plyr) {
 				player.plyr.destroy();
 			}
@@ -86,13 +86,3 @@ export const destroyPlyr = (selector = '.player') => {
 		return false;
 	}
 };
-
-
-
-
-
-
-
-
-
-

@@ -36,20 +36,30 @@ export const ImageRender = ({
 		const classes = [];
 
 		// Overlay (только для effectType === 'overlay')
-		if (enableEffect && effectType === 'overlay' && overlayType && overlayType !== 'none') {
+		if (
+			enableEffect &&
+			effectType === 'overlay' &&
+			overlayType &&
+			overlayType !== 'none'
+		) {
 			classes.push('overlay', overlayType);
-			
+
 			if (overlayType === 'overlay-2' && overlayColor) {
 				classes.push('color');
 			}
-			
+
 			if (overlayType === 'overlay-3' && overlayGradient) {
 				classes.push(`overlay-${overlayGradient}`);
 			}
 		}
 
 		// Tooltip (только для effectType === 'tooltip')
-		if (enableEffect && effectType === 'tooltip' && tooltipType && tooltipType !== 'none') {
+		if (
+			enableEffect &&
+			effectType === 'tooltip' &&
+			tooltipType &&
+			tooltipType !== 'none'
+		) {
 			classes.push('itooltip', tooltipType);
 		}
 
@@ -72,13 +82,18 @@ export const ImageRender = ({
 	};
 
 	// Формируем атрибуты для lightbox (используем утилиту)
-	const lightboxAttrs = !isEditor 
+	const lightboxAttrs = !isEditor
 		? getLightboxAttributes(enableLightbox, lightboxGallery, 'image')
 		: {};
 
 	// Формируем title для tooltip
 	const getTooltipTitle = () => {
-		if (enableEffect && effectType === 'tooltip' && tooltipType && tooltipType !== 'none') {
+		if (
+			enableEffect &&
+			effectType === 'tooltip' &&
+			tooltipType &&
+			tooltipType !== 'none'
+		) {
 			// Форматируем title и description как HTML для iTooltip (как в документации темы)
 			let html = '';
 			const titleText = image.title || image.caption;
@@ -96,9 +111,9 @@ export const ImageRender = ({
 	// Формируем классы для caption
 	const getCaptionClasses = () => {
 		const bgMap = {
-			'white': 'bg-white',
-			'dark': 'bg-dark',
-			'primary': 'bg-primary',
+			white: 'bg-white',
+			dark: 'bg-dark',
+			primary: 'bg-primary',
 			'soft-primary': 'bg-soft-primary',
 		};
 
@@ -109,11 +124,11 @@ export const ImageRender = ({
 			'top-center': 'mx-auto mb-auto',
 			'top-left': 'me-auto mb-auto',
 			'top-right': 'ms-auto mb-auto',
-			'center': 'mx-auto my-auto',
+			center: 'mx-auto my-auto',
 		};
 
 		const classes = ['caption', 'rounded'];
-		
+
 		// Padding - парсим формат "y-x" (например "2-3" → py-2 px-3)
 		if (captionPadding) {
 			const [py, px] = captionPadding.split('-');
@@ -121,22 +136,22 @@ export const ImageRender = ({
 				classes.push(`py-${py}`, `px-${px}`);
 			}
 		}
-		
+
 		// Background
 		if (captionBg && bgMap[captionBg]) {
 			classes.push(bgMap[captionBg]);
-			
+
 			// Добавляем text-white для темных фонов (Dark, Primary)
 			if (captionBg === 'dark' || captionBg === 'primary') {
 				classes.push('text-white');
 			}
 		}
-		
+
 		// Position
 		if (captionPosition && positionMap[captionPosition]) {
 			classes.push(positionMap[captionPosition]);
 		}
-		
+
 		return classes.join(' ');
 	};
 
@@ -149,12 +164,20 @@ export const ImageRender = ({
 		// Вариант с Caption (как в Image Slider)
 		if (enableEffect && effectType === 'caption' && image.caption) {
 			return (
-				<div className={`caption-image ${hoverEffect && hoverEffect !== 'none' ? hoverEffect : ''} ${borderRadius || ''}`}>
+				<div
+					className={`caption-image ${hoverEffect && hoverEffect !== 'none' ? hoverEffect : ''} ${borderRadius || ''}`}
+				>
 					<a href="#" onClick={(e) => e.preventDefault()}>
-						<img src={image.url} alt={image.alt || ''} className={borderRadius || ''} />
+						<img
+							src={image.url}
+							alt={image.alt || ''}
+							className={borderRadius || ''}
+						/>
 					</a>
 					<div className="caption-wrapper p-12">
-						<div className={`${captionClasses} mb-0 ${captionFontSize || 'h5'}`.trim()}>
+						<div
+							className={`${captionClasses} mb-0 ${captionFontSize || 'h5'}`.trim()}
+						>
 							{image.caption}
 						</div>
 					</div>
@@ -165,7 +188,9 @@ export const ImageRender = ({
 		// Вариант с иконкой (cursor)
 		if (enableEffect && effectType === 'icon' && iconColor) {
 			return (
-				<figure className={`${figureClasses} cursor-${iconColor}`.trim()}>
+				<figure
+					className={`${figureClasses} cursor-${iconColor}`.trim()}
+				>
 					<a href="#" onClick={(e) => e.preventDefault()}>
 						<img src={image.url} alt={image.alt || ''} />
 					</a>
@@ -188,23 +213,37 @@ export const ImageRender = ({
 							</div>
 						</figcaption>
 					) : overlayType === 'overlay-2' ? (
-						((image.title || image.caption) || image.description) && (
+						(image.title || image.caption || image.description) && (
 							<figcaption>
-								<div className="from-top mb-1 h5">{image.title || image.caption}</div>
-								{image.description && <p className="from-bottom mb-0">{image.description}</p>}
+								<div className="from-top mb-1 h5">
+									{image.title || image.caption}
+								</div>
+								{image.description && (
+									<p className="from-bottom mb-0">
+										{image.description}
+									</p>
+								)}
 							</figcaption>
 						)
 					) : overlayType === 'overlay-3' ? (
-						((image.title || image.caption) || image.description) && (
+						(image.title || image.caption || image.description) && (
 							<figcaption>
-								<div className="from-left mb-1 h5">{image.title || image.caption}</div>
-								{image.description && <p className="from-left mb-0">{image.description}</p>}
+								<div className="from-left mb-1 h5">
+									{image.title || image.caption}
+								</div>
+								{image.description && (
+									<p className="from-left mb-0">
+										{image.description}
+									</p>
+								)}
 							</figcaption>
 						)
 					) : (
 						(image.title || image.caption) && (
 							<figcaption>
-								<div className="from-top mb-0 h5">{image.title || image.caption}</div>
+								<div className="from-top mb-0 h5">
+									{image.title || image.caption}
+								</div>
 							</figcaption>
 						)
 					)}
@@ -251,19 +290,21 @@ export const ImageRender = ({
 		);
 	}
 
-	// Вариант без эффектов или для других типов  
+	// Вариант без эффектов или для других типов
 	return (
 		<figure className={figureClasses}>
 			<a href={image.linkUrl || image.url} {...lightboxAttrs}>
 				<img src={image.url} alt={image.alt || ''} />
 			</a>
-			{overlayType && overlayType !== 'none' && (
+			{overlayType &&
+				overlayType !== 'none' &&
 				(image.title || image.caption) && (
 					<figcaption>
-						<div className="from-top mb-0 h5">{image.title || image.caption}</div>
+						<div className="from-top mb-0 h5">
+							{image.title || image.caption}
+						</div>
 					</figcaption>
-				)
-			)}
+				)}
 		</figure>
 	);
 };
@@ -301,20 +342,30 @@ export const ImageRenderSave = ({
 		const classes = [];
 
 		// Overlay (только для effectType === 'overlay')
-		if (enableEffect && effectType === 'overlay' && overlayType && overlayType !== 'none') {
+		if (
+			enableEffect &&
+			effectType === 'overlay' &&
+			overlayType &&
+			overlayType !== 'none'
+		) {
 			classes.push('overlay', overlayType);
-			
+
 			if (overlayType === 'overlay-2' && overlayColor) {
 				classes.push('color');
 			}
-			
+
 			if (overlayType === 'overlay-3' && overlayGradient) {
 				classes.push(`overlay-${overlayGradient}`);
 			}
 		}
 
 		// Tooltip (только для effectType === 'tooltip')
-		if (enableEffect && effectType === 'tooltip' && tooltipType && tooltipType !== 'none') {
+		if (
+			enableEffect &&
+			effectType === 'tooltip' &&
+			tooltipType &&
+			tooltipType !== 'none'
+		) {
 			classes.push('itooltip', tooltipType);
 		}
 
@@ -337,11 +388,20 @@ export const ImageRenderSave = ({
 	};
 
 	// Формируем атрибуты для lightbox (используем утилиту)
-	const lightboxAttrs = getLightboxAttributes(enableLightbox, lightboxGallery, 'image');
+	const lightboxAttrs = getLightboxAttributes(
+		enableLightbox,
+		lightboxGallery,
+		'image'
+	);
 
 	// Формируем title для tooltip
 	const getTooltipTitle = () => {
-		if (enableEffect && effectType === 'tooltip' && tooltipType && tooltipType !== 'none') {
+		if (
+			enableEffect &&
+			effectType === 'tooltip' &&
+			tooltipType &&
+			tooltipType !== 'none'
+		) {
 			// Форматируем title и description как HTML для iTooltip (как в документации темы)
 			let html = '';
 			const titleText = image.title || image.caption;
@@ -359,9 +419,9 @@ export const ImageRenderSave = ({
 	// Формируем классы для caption
 	const getCaptionClasses = () => {
 		const bgMap = {
-			'white': 'bg-white',
-			'dark': 'bg-dark',
-			'primary': 'bg-primary',
+			white: 'bg-white',
+			dark: 'bg-dark',
+			primary: 'bg-primary',
 			'soft-primary': 'bg-soft-primary',
 		};
 
@@ -372,11 +432,11 @@ export const ImageRenderSave = ({
 			'top-center': 'mx-auto mb-auto',
 			'top-left': 'me-auto mb-auto',
 			'top-right': 'ms-auto mb-auto',
-			'center': 'mx-auto my-auto',
+			center: 'mx-auto my-auto',
 		};
 
 		const classes = ['caption', 'rounded'];
-		
+
 		// Padding - парсим формат "y-x" (например "2-3" → py-2 px-3)
 		if (captionPadding) {
 			const [py, px] = captionPadding.split('-');
@@ -384,22 +444,22 @@ export const ImageRenderSave = ({
 				classes.push(`py-${py}`, `px-${px}`);
 			}
 		}
-		
+
 		// Background
 		if (captionBg && bgMap[captionBg]) {
 			classes.push(bgMap[captionBg]);
-			
+
 			// Добавляем text-white для темных фонов (Dark, Primary)
 			if (captionBg === 'dark' || captionBg === 'primary') {
 				classes.push('text-white');
 			}
 		}
-		
+
 		// Position
 		if (captionPosition && positionMap[captionPosition]) {
 			classes.push(positionMap[captionPosition]);
 		}
-		
+
 		return classes.join(' ');
 	};
 
@@ -410,12 +470,20 @@ export const ImageRenderSave = ({
 	// Вариант с Caption (как в Image Slider)
 	if (enableEffect && effectType === 'caption' && image.caption) {
 		return (
-			<div className={`caption-image ${hoverEffect && hoverEffect !== 'none' ? hoverEffect : ''} ${borderRadius || ''}`}>
+			<div
+				className={`caption-image ${hoverEffect && hoverEffect !== 'none' ? hoverEffect : ''} ${borderRadius || ''}`}
+			>
 				<a href={image.linkUrl || image.url} {...lightboxAttrs}>
-					<img src={image.url} alt={image.alt || ''} className={borderRadius || ''} />
+					<img
+						src={image.url}
+						alt={image.alt || ''}
+						className={borderRadius || ''}
+					/>
 				</a>
 				<div className="caption-wrapper p-12">
-					<div className={`${captionClasses} mb-0 ${captionFontSize || 'h5'}`.trim()}>
+					<div
+						className={`${captionClasses} mb-0 ${captionFontSize || 'h5'}`.trim()}
+					>
 						{image.caption}
 					</div>
 				</div>
@@ -448,23 +516,37 @@ export const ImageRenderSave = ({
 						</div>
 					</figcaption>
 				) : overlayType === 'overlay-2' ? (
-					((image.title || image.caption) || image.description) && (
+					(image.title || image.caption || image.description) && (
 						<figcaption>
-							<div className="from-top mb-1 h5">{image.title || image.caption}</div>
-							{image.description && <p className="from-bottom mb-0">{image.description}</p>}
+							<div className="from-top mb-1 h5">
+								{image.title || image.caption}
+							</div>
+							{image.description && (
+								<p className="from-bottom mb-0">
+									{image.description}
+								</p>
+							)}
 						</figcaption>
 					)
 				) : overlayType === 'overlay-3' ? (
-					((image.title || image.caption) || image.description) && (
+					(image.title || image.caption || image.description) && (
 						<figcaption>
-							<div className="from-left mb-1 h5">{image.title || image.caption}</div>
-							{image.description && <p className="from-left mb-0">{image.description}</p>}
+							<div className="from-left mb-1 h5">
+								{image.title || image.caption}
+							</div>
+							{image.description && (
+								<p className="from-left mb-0">
+									{image.description}
+								</p>
+							)}
 						</figcaption>
 					)
 				) : (
 					(image.title || image.caption) && (
 						<figcaption>
-							<div className="from-top mb-0 h5">{image.title || image.caption}</div>
+							<div className="from-top mb-0 h5">
+								{image.title || image.caption}
+							</div>
 						</figcaption>
 					)
 				)}
@@ -495,4 +577,3 @@ export const ImageRenderSave = ({
 		</figure>
 	);
 };
-

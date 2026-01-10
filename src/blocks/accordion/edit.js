@@ -17,7 +17,21 @@ import { AccordionSidebar } from './sidebar';
 import { IconPicker } from '../../components/icon/IconPicker';
 
 const AccordionEdit = ({ attributes, setAttributes, clientId }) => {
-	const { accordionStyle, allowMultiple, items, accordionId, iconPosition, iconType, firstItemOpen, mode, postType, selectedTaxonomies, orderBy, order, theme } = attributes;
+	const {
+		accordionStyle,
+		allowMultiple,
+		items,
+		accordionId,
+		iconPosition,
+		iconType,
+		firstItemOpen,
+		mode,
+		postType,
+		selectedTaxonomies,
+		orderBy,
+		order,
+		theme,
+	} = attributes;
 	const previousItemsLengthRef = useRef(items?.length || 0);
 	const previousFirstItemOpenRef = useRef(firstItemOpen);
 	const previousClientIdRef = useRef(clientId);
@@ -25,14 +39,16 @@ const AccordionEdit = ({ attributes, setAttributes, clientId }) => {
 	const [iconPickerOpen, setIconPickerOpen] = useState(null); // itemId -> isOpen
 	const [isLoadingPosts, setIsLoadingPosts] = useState(false);
 	const previousPostTypeRef = useRef(postType);
-	const previousSelectedTaxonomiesRef = useRef(JSON.stringify(selectedTaxonomies || {}));
+	const previousSelectedTaxonomiesRef = useRef(
+		JSON.stringify(selectedTaxonomies || {})
+	);
 
 	// Generate unique accordion ID based on clientId (always regenerate to ensure uniqueness)
 	useEffect(() => {
 		// Always generate ID based on clientId to ensure uniqueness even when block is duplicated
 		const clientIdPrefix = clientId.replace(/[^a-z0-9]/gi, '');
 		const expectedAccordionId = `accordion-${clientIdPrefix}`;
-		
+
 		// Always update if ID doesn't match current clientId
 		if (accordionId !== expectedAccordionId) {
 			setAttributes({ accordionId: expectedAccordionId });
@@ -45,18 +61,20 @@ const AccordionEdit = ({ attributes, setAttributes, clientId }) => {
 			previousClientIdRef.current = clientId;
 			return;
 		}
-		
+
 		const clientIdPrefix = clientId.replace(/[^a-z0-9]/gi, '');
-		
+
 		// Check if clientId changed or if any item ID doesn't contain current clientId prefix
 		const clientIdChanged = previousClientIdRef.current !== clientId;
-		const hasInvalidIds = items.some(item => !item.id || !item.id.includes(clientIdPrefix));
-		
+		const hasInvalidIds = items.some(
+			(item) => !item.id || !item.id.includes(clientIdPrefix)
+		);
+
 		// Only update if clientId changed or IDs are invalid
 		if (!clientIdChanged && !hasInvalidIds) {
 			return; // All IDs are valid and clientId hasn't changed
 		}
-		
+
 		// Regenerate IDs for items that don't match current clientId
 		const baseTime = Date.now();
 		const updatedItems = items.map((item, index) => {
@@ -70,7 +88,7 @@ const AccordionEdit = ({ attributes, setAttributes, clientId }) => {
 			}
 			return item;
 		});
-		
+
 		setAttributes({ items: updatedItems });
 		previousClientIdRef.current = clientId;
 	}, [clientId, items, setAttributes]);
@@ -78,20 +96,31 @@ const AccordionEdit = ({ attributes, setAttributes, clientId }) => {
 	// Fetch posts from API when mode is 'post'
 	// В режиме Post ВСЕГДА загружаем данные через REST API, игнорируя сохраненные items
 	useEffect(() => {
-		console.log('[Accordion] useEffect triggered:', { mode, postType, selectedTaxonomies });
-		
+		console.log('[Accordion] useEffect triggered:', {
+			mode,
+			postType,
+			selectedTaxonomies,
+		});
+
 		if (mode !== 'post' || !postType) {
-			console.log('[Accordion] Skipping fetch - mode is not post or postType is empty');
+			console.log(
+				'[Accordion] Skipping fetch - mode is not post or postType is empty'
+			);
 			previousModeRef.current = mode;
 			previousPostTypeRef.current = postType;
-			previousSelectedTaxonomiesRef.current = JSON.stringify(selectedTaxonomies || {});
+			previousSelectedTaxonomiesRef.current = JSON.stringify(
+				selectedTaxonomies || {}
+			);
 			return;
 		}
 
 		// Проверяем, изменились ли postType или selectedTaxonomies
 		const postTypeChanged = previousPostTypeRef.current !== postType;
-		const taxonomiesChanged = previousSelectedTaxonomiesRef.current !== JSON.stringify(selectedTaxonomies || {});
-		const modeChangedToPost = previousModeRef.current !== mode && mode === 'post';
+		const taxonomiesChanged =
+			previousSelectedTaxonomiesRef.current !==
+			JSON.stringify(selectedTaxonomies || {});
+		const modeChangedToPost =
+			previousModeRef.current !== mode && mode === 'post';
 
 		console.log('[Accordion] Change detection:', {
 			postTypeChanged,
@@ -100,13 +129,13 @@ const AccordionEdit = ({ attributes, setAttributes, clientId }) => {
 			previousPostType: previousPostTypeRef.current,
 			currentPostType: postType,
 			previousMode: previousModeRef.current,
-			currentMode: mode
+			currentMode: mode,
 		});
 
 		// В режиме Post ВСЕГДА загружаем свежие данные через REST API при каждом монтировании компонента
 		// Это гарантирует, что редактор всегда показывает актуальные данные из базы,
 		// даже если есть сохраненные items (которые могут быть устаревшими)
-		// 
+		//
 		// Игнорируем сохраненные items, так как они могут быть устаревшими
 		// Загружаем данные при:
 		// 1. Первой загрузке (previousPostTypeRef.current пустой)
@@ -114,11 +143,11 @@ const AccordionEdit = ({ attributes, setAttributes, clientId }) => {
 		// 3. Изменении postType
 		// 4. Изменении таксономий
 		// 5. ИЛИ всегда в режиме Post (для актуальности данных)
-		
+
 		// В режиме Post ВСЕГДА загружаем данные при каждом монтировании компонента
 		// Это гарантирует, что редактор всегда показывает актуальные данные из базы,
 		// даже если есть сохраненные items (которые могут быть устаревшими)
-		// 
+		//
 		// Игнорируем сохраненные items, так как они могут быть устаревшими
 		// Загружаем данные при:
 		// 1. Первой загрузке (previousPostTypeRef.current пустой)
@@ -126,12 +155,14 @@ const AccordionEdit = ({ attributes, setAttributes, clientId }) => {
 		// 3. Изменении postType
 		// 4. Изменении таксономий
 		// 5. ИЛИ всегда в режиме Post (для актуальности данных)
-		
+
 		// В режиме Post ВСЕГДА загружаем данные при каждом монтировании компонента
 		// Это гарантирует, что редактор всегда показывает актуальные данные из базы,
 		// даже если есть сохраненные items (которые могут быть устаревшими)
 		// Игнорируем сохраненные items, так как они могут быть устаревшими
-		console.log('[Accordion] Post mode - always fetching fresh data from database (ignoring saved items)');
+		console.log(
+			'[Accordion] Post mode - always fetching fresh data from database (ignoring saved items)'
+		);
 
 		const fetchPosts = async () => {
 			console.log('[Accordion] Starting to fetch posts for:', postType);
@@ -139,18 +170,30 @@ const AccordionEdit = ({ attributes, setAttributes, clientId }) => {
 			try {
 				// Используем наш кастомный endpoint, который использует WP_Query (как в render.php)
 				const apiPath = `/codeweber-gutenberg-blocks/v1/accordion-posts?post_type=${postType}&selected_taxonomies=${encodeURIComponent(JSON.stringify(selectedTaxonomies || {}))}&orderby=${orderBy || 'date'}&order=${order || 'desc'}`;
-				console.log('[Accordion] Fetching from WP_Query endpoint:', apiPath);
-				
+				console.log(
+					'[Accordion] Fetching from WP_Query endpoint:',
+					apiPath
+				);
+
 				const fetchedPosts = await apiFetch({
 					path: apiPath,
 				});
-				
-				console.log('[Accordion] Fetched posts:', fetchedPosts?.length || 0);
-				console.log('[Accordion] First post sample:', fetchedPosts?.[0]);
-				
+
+				console.log(
+					'[Accordion] Fetched posts:',
+					fetchedPosts?.length || 0
+				);
+				console.log(
+					'[Accordion] First post sample:',
+					fetchedPosts?.[0]
+				);
+
 				// Если получили ошибку или пустой массив
 				if (!Array.isArray(fetchedPosts)) {
-					console.error('[Accordion] API returned non-array:', fetchedPosts);
+					console.error(
+						'[Accordion] API returned non-array:',
+						fetchedPosts
+					);
 					throw new Error('API returned invalid response');
 				}
 
@@ -160,18 +203,30 @@ const AccordionEdit = ({ attributes, setAttributes, clientId }) => {
 				const generatedItems = fetchedPosts.map((post, index) => {
 					return {
 						id: `item-${clientIdPrefix}-${baseTime}-${index}-${post.id}`,
-						title: post.title || __('Untitled', 'codeweber-gutenberg-blocks'),
-						content: post.content || __('No content available', 'codeweber-gutenberg-blocks'),
+						title:
+							post.title ||
+							__('Untitled', 'codeweber-gutenberg-blocks'),
+						content:
+							post.content ||
+							__(
+								'No content available',
+								'codeweber-gutenberg-blocks'
+							),
 						icon: '',
 						isOpen: firstItemOpen && index === 0,
 					};
 				});
 
-				console.log('[Accordion] Generated items:', generatedItems.length);
+				console.log(
+					'[Accordion] Generated items:',
+					generatedItems.length
+				);
 				setAttributes({ items: generatedItems });
 				previousModeRef.current = mode;
 				previousPostTypeRef.current = postType;
-				previousSelectedTaxonomiesRef.current = JSON.stringify(selectedTaxonomies || {});
+				previousSelectedTaxonomiesRef.current = JSON.stringify(
+					selectedTaxonomies || {}
+				);
 			} catch (error) {
 				console.error('[Accordion] Error fetching posts:', error);
 			} finally {
@@ -180,7 +235,16 @@ const AccordionEdit = ({ attributes, setAttributes, clientId }) => {
 		};
 
 		fetchPosts();
-	}, [mode, postType, selectedTaxonomies, orderBy, order, clientId, firstItemOpen, setAttributes]);
+	}, [
+		mode,
+		postType,
+		selectedTaxonomies,
+		orderBy,
+		order,
+		clientId,
+		firstItemOpen,
+		setAttributes,
+	]);
 
 	// Ensure first item open (others closed) when option enabled
 	useEffect(() => {
@@ -189,22 +253,26 @@ const AccordionEdit = ({ attributes, setAttributes, clientId }) => {
 			previousItemsLengthRef.current = items?.length || 0;
 			return;
 		}
-		
+
 		// Only update if items length changed or firstItemOpen toggled
-		const itemsLengthChanged = previousItemsLengthRef.current !== items.length;
-		const firstItemOpenToggled = previousFirstItemOpenRef.current !== firstItemOpen;
-		
+		const itemsLengthChanged =
+			previousItemsLengthRef.current !== items.length;
+		const firstItemOpenToggled =
+			previousFirstItemOpenRef.current !== firstItemOpen;
+
 		if (!itemsLengthChanged && !firstItemOpenToggled) {
 			// Check if already in correct state
-			const needsUpdate = items.some((item, idx) => item.isOpen !== (idx === 0));
+			const needsUpdate = items.some(
+				(item, idx) => item.isOpen !== (idx === 0)
+			);
 			if (!needsUpdate) return;
 		}
-		
+
 		const updated = items.map((item, idx) => ({
 			...item,
 			isOpen: idx === 0,
 		}));
-		
+
 		setAttributes({ items: updated });
 		previousItemsLengthRef.current = items.length;
 		previousFirstItemOpenRef.current = firstItemOpen;
@@ -223,7 +291,10 @@ const AccordionEdit = ({ attributes, setAttributes, clientId }) => {
 		const newItem = {
 			id: `item-${Date.now()}`,
 			title: __('New Item', 'codeweber-gutenberg-blocks'),
-			content: __('Add your content here...', 'codeweber-gutenberg-blocks'),
+			content: __(
+				'Add your content here...',
+				'codeweber-gutenberg-blocks'
+			),
 			icon: '',
 			isOpen: false,
 		};
@@ -335,165 +406,240 @@ const AccordionEdit = ({ attributes, setAttributes, clientId }) => {
 				)}
 				{!isLoadingPosts && items.length === 0 && mode === 'post' && (
 					<div style={{ padding: '20px', textAlign: 'center' }}>
-						{__('No posts found. Please select a post type and check your filters.', 'codeweber-gutenberg-blocks')}
+						{__(
+							'No posts found. Please select a post type and check your filters.',
+							'codeweber-gutenberg-blocks'
+						)}
 					</div>
 				)}
 				{/* В режиме Post показываем items только если они загружены, в режиме Custom - всегда */}
-				{(mode === 'post' ? (items.length > 0 && !isLoadingPosts) : true) && items.map((item, index) => {
-					const headingId = `heading-${item.id}`;
-					const collapseId = `collapse-${item.id}`;
-					
-					return (
-						<div 
-							key={item.id} 
-							className={`${getItemClasses(item, index)} accordion-item-wrapper p-0${accordionStyle === 'simple' ? ' mt-0' : ''}`} 
-							style={{ width: '100%', maxWidth: '100%', position: 'relative' }}
-						>
-							<div className="card-header" id={headingId}>
-								<button
-									className={getButtonClasses(item, index)}
-									type="button"
-									data-bs-toggle="collapse"
-									data-bs-target={`#${collapseId}`}
-									aria-expanded={item.isOpen}
-									aria-controls={collapseId}
-									onClick={(e) => {
-										e.preventDefault();
-										toggleItem(index);
-									}}
-									style={{ pointerEvents: 'auto', cursor: 'pointer' }}
-								>
-									{accordionStyle === 'icon' && (
-										<span 
-											className="icon"
-											onClick={mode === 'custom' ? (e) => {
-												e.stopPropagation();
-												setIconPickerOpen(item.id);
-											} : undefined}
-											style={{ cursor: mode === 'custom' ? 'pointer' : 'default' }}
-											title={mode === 'custom' ? __('Click to change icon', 'codeweber-gutenberg-blocks') : ''}
-										>
-											<i className={item.icon || 'uil uil-plus'}></i>
-										</span>
-									)}
-									{mode === 'custom' ? (
-										<RichText
-											tagName="span"
-											value={item.title}
-											onChange={(value) => updateItem(index, 'title', value)}
-											placeholder={__('Enter title...', 'codeweber-gutenberg-blocks')}
-											withoutInteractiveFormatting
-										/>
-									) : (
-										// В режиме Post - только чтение, как на фронтенде
-										<span>{item.title}</span>
-									)}
-								</button>
-							</div>
-							
-							{/* Item Controls - Absolute positioned, visible on hover - только в режиме Custom */}
-							{mode === 'custom' && (
-								<div className="accordion-item-controls">
-									<Button
-										isSmall
-										onClick={(e) => {
-											e.stopPropagation();
-											moveItem(index, 'up');
-										}}
-										disabled={index === 0}
-										title={__('Move up', 'codeweber-gutenberg-blocks')}
-									>
-										↑
-									</Button>
-									<Button
-										isSmall
-										onClick={(e) => {
-											e.stopPropagation();
-											moveItem(index, 'down');
-										}}
-										disabled={index === items.length - 1}
-										title={__('Move down', 'codeweber-gutenberg-blocks')}
-									>
-										↓
-									</Button>
-									<Button
-										isSmall
-										isDestructive
-										onClick={(e) => {
-											e.stopPropagation();
-											removeItem(index);
-										}}
-										disabled={items.length === 1}
-										title={__('Remove', 'codeweber-gutenberg-blocks')}
-									>
-										×
-									</Button>
-								</div>
-							)}
+				{(mode === 'post'
+					? items.length > 0 && !isLoadingPosts
+					: true) &&
+					items.map((item, index) => {
+						const headingId = `heading-${item.id}`;
+						const collapseId = `collapse-${item.id}`;
+
+						return (
 							<div
-								id={collapseId}
-								className={getCollapseClasses(item, index)}
-								aria-labelledby={headingId}
-								{...(allowMultiple ? {} : { 'data-bs-parent': `#${accordionId}` })}
+								key={item.id}
+								className={`${getItemClasses(item, index)} accordion-item-wrapper p-0${accordionStyle === 'simple' ? ' mt-0' : ''}`}
+								style={{
+									width: '100%',
+									maxWidth: '100%',
+									position: 'relative',
+								}}
 							>
-							<div className="card-body">
-								{mode === 'custom' ? (
-									<RichText
-										tagName="p"
-										value={item.content}
-										onChange={(value) => updateItem(index, 'content', value)}
-										placeholder={__(
-											'Enter content...',
-											'codeweber-gutenberg-blocks'
+								<div className="card-header" id={headingId}>
+									<button
+										className={getButtonClasses(
+											item,
+											index
 										)}
-									/>
-								) : (
-									// В режиме Post - только чтение, как на фронтенде
-									<p>{item.content}</p>
+										type="button"
+										data-bs-toggle="collapse"
+										data-bs-target={`#${collapseId}`}
+										aria-expanded={item.isOpen}
+										aria-controls={collapseId}
+										onClick={(e) => {
+											e.preventDefault();
+											toggleItem(index);
+										}}
+										style={{
+											pointerEvents: 'auto',
+											cursor: 'pointer',
+										}}
+									>
+										{accordionStyle === 'icon' && (
+											<span
+												className="icon"
+												onClick={
+													mode === 'custom'
+														? (e) => {
+																e.stopPropagation();
+																setIconPickerOpen(
+																	item.id
+																);
+															}
+														: undefined
+												}
+												style={{
+													cursor:
+														mode === 'custom'
+															? 'pointer'
+															: 'default',
+												}}
+												title={
+													mode === 'custom'
+														? __(
+																'Click to change icon',
+																'codeweber-gutenberg-blocks'
+															)
+														: ''
+												}
+											>
+												<i
+													className={
+														item.icon ||
+														'uil uil-plus'
+													}
+												></i>
+											</span>
+										)}
+										{mode === 'custom' ? (
+											<RichText
+												tagName="span"
+												value={item.title}
+												onChange={(value) =>
+													updateItem(
+														index,
+														'title',
+														value
+													)
+												}
+												placeholder={__(
+													'Enter title...',
+													'codeweber-gutenberg-blocks'
+												)}
+												withoutInteractiveFormatting
+											/>
+										) : (
+											// В режиме Post - только чтение, как на фронтенде
+											<span>{item.title}</span>
+										)}
+									</button>
+								</div>
+
+								{/* Item Controls - Absolute positioned, visible on hover - только в режиме Custom */}
+								{mode === 'custom' && (
+									<div className="accordion-item-controls">
+										<Button
+											isSmall
+											onClick={(e) => {
+												e.stopPropagation();
+												moveItem(index, 'up');
+											}}
+											disabled={index === 0}
+											title={__(
+												'Move up',
+												'codeweber-gutenberg-blocks'
+											)}
+										>
+											↑
+										</Button>
+										<Button
+											isSmall
+											onClick={(e) => {
+												e.stopPropagation();
+												moveItem(index, 'down');
+											}}
+											disabled={
+												index === items.length - 1
+											}
+											title={__(
+												'Move down',
+												'codeweber-gutenberg-blocks'
+											)}
+										>
+											↓
+										</Button>
+										<Button
+											isSmall
+											isDestructive
+											onClick={(e) => {
+												e.stopPropagation();
+												removeItem(index);
+											}}
+											disabled={items.length === 1}
+											title={__(
+												'Remove',
+												'codeweber-gutenberg-blocks'
+											)}
+										>
+											×
+										</Button>
+									</div>
 								)}
+								<div
+									id={collapseId}
+									className={getCollapseClasses(item, index)}
+									aria-labelledby={headingId}
+									{...(allowMultiple
+										? {}
+										: {
+												'data-bs-parent': `#${accordionId}`,
+											})}
+								>
+									<div className="card-body">
+										{mode === 'custom' ? (
+											<RichText
+												tagName="p"
+												value={item.content}
+												onChange={(value) =>
+													updateItem(
+														index,
+														'content',
+														value
+													)
+												}
+												placeholder={__(
+													'Enter content...',
+													'codeweber-gutenberg-blocks'
+												)}
+											/>
+										) : (
+											// В режиме Post - только чтение, как на фронтенде
+											<p>{item.content}</p>
+										)}
+									</div>
+								</div>
 							</div>
-							</div>
-						</div>
-					);
-				})}
+						);
+					})}
 
 				{/* Add Item Button - только в режиме Custom */}
 				{mode === 'custom' && (
 					<div style={{ marginTop: '16px' }}>
 						<Button isPrimary onClick={addItem}>
-							{__('+ Add Accordion Item', 'codeweber-gutenberg-blocks')}
+							{__(
+								'+ Add Accordion Item',
+								'codeweber-gutenberg-blocks'
+							)}
 						</Button>
 					</div>
 				)}
 
 				{/* Icon Pickers for each item - только в режиме Custom */}
-				{mode === 'custom' && items.map((item, index) => {
-					// Извлекаем имя иконки из класса (например, "uil uil-windows" -> "windows")
-					const getIconName = (iconClass) => {
-						if (!iconClass) return '';
-						const match = iconClass.match(/uil-([^\s]+)/);
-						return match ? match[1] : '';
-					};
+				{mode === 'custom' &&
+					items.map((item, index) => {
+						// Извлекаем имя иконки из класса (например, "uil uil-windows" -> "windows")
+						const getIconName = (iconClass) => {
+							if (!iconClass) return '';
+							const match = iconClass.match(/uil-([^\s]+)/);
+							return match ? match[1] : '';
+						};
 
-					return (
-						<IconPicker
-							key={`icon-picker-${item.id}`}
-							isOpen={iconPickerOpen === item.id}
-							onClose={() => setIconPickerOpen(null)}
-							onSelect={(result) => {
-								// Извлекаем iconName и сохраняем как класс иконки
-								const iconClass = result.iconName ? `uil uil-${result.iconName}` : '';
-								updateItem(index, 'icon', iconClass);
-							}}
-							selectedIcon={getIconName(item.icon)}
-							selectedType="font"
-							initialTab="font"
-							allowFont={true}
-							allowSvgLineal={false}
-							allowSvgSolid={false}
-						/>
-					);
-				})}
+						return (
+							<IconPicker
+								key={`icon-picker-${item.id}`}
+								isOpen={iconPickerOpen === item.id}
+								onClose={() => setIconPickerOpen(null)}
+								onSelect={(result) => {
+									// Извлекаем iconName и сохраняем как класс иконки
+									const iconClass = result.iconName
+										? `uil uil-${result.iconName}`
+										: '';
+									updateItem(index, 'icon', iconClass);
+								}}
+								selectedIcon={getIconName(item.icon)}
+								selectedType="font"
+								initialTab="font"
+								allowFont={true}
+								allowSvgLineal={false}
+								allowSvgSolid={false}
+							/>
+						);
+					})}
 			</div>
 		</>
 	);

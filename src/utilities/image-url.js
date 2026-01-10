@@ -1,12 +1,12 @@
 /**
  * Утилита для получения URL изображения нужного размера
- * 
+ *
  * @package CodeWeber Gutenberg Blocks
  */
 
 /**
  * Получает URL изображения нужного размера
- * 
+ *
  * @param {Object} image - Объект изображения
  * @param {string} image.url - Full size URL
  * @param {Object} image.sizes - Объект с размерами { thumbnail: { source_url }, medium: { source_url }, ... }
@@ -34,7 +34,7 @@ export const getImageUrl = (image, size = 'full') => {
 
 /**
  * Получает размеры изображения (width x height)
- * 
+ *
  * @param {Object} image - Объект изображения
  * @param {string} size - Нужный размер
  * @returns {Object} { width: number, height: number } или null
@@ -49,13 +49,3 @@ export const getImageDimensions = (image, size = 'full') => {
 		height: image.sizes[size].height || null,
 	};
 };
-
-
-
-
-
-
-
-
-
-

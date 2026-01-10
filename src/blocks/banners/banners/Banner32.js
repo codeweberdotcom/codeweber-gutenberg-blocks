@@ -33,7 +33,10 @@ export const Banner32 = ({ attributes, isEditor = false }) => {
 				<div className="row">
 					<div className="col-lg-10 col-xl-9 col-xxl-8 mx-auto">
 						{isEditor ? (
-							<InnerBlocks allowedBlocks={ALLOWED_CODEWEBER_BLOCKS} templateLock={false} />
+							<InnerBlocks
+								allowedBlocks={ALLOWED_CODEWEBER_BLOCKS}
+								templateLock={false}
+							/>
 						) : (
 							<InnerBlocks.Content />
 						)}
@@ -43,6 +46,3 @@ export const Banner32 = ({ attributes, isEditor = false }) => {
 		</section>
 	);
 };
-
-
-

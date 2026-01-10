@@ -21,4 +21,3 @@ registerBlockType(metadata.name, {
 // Ограничение видимости блока выполняется через PHP фильтры
 // в codeweber-forms-gutenberg-restrictions.php
 // JavaScript фильтры здесь не нужны, так как они могут конфликтовать с PHP фильтрами
-

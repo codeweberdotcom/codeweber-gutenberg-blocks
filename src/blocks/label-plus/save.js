@@ -52,7 +52,9 @@ const Save = ({ attributes }) => {
 		'p-0',
 		cardRadiusClass,
 		blockClass,
-	].filter(Boolean).join(' ');
+	]
+		.filter(Boolean)
+		.join(' ');
 
 	return (
 		<div
@@ -102,4 +104,3 @@ const Save = ({ attributes }) => {
 };
 
 export default Save;
-

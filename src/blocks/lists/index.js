@@ -19,7 +19,10 @@ registerBlockType(metadata, {
 	edit: Edit,
 	save: Save,
 	title: __('Lists', 'codeweber-gutenberg-blocks'),
-	description: __('Custom lists with icons, colors, and columns. Supports Custom and Post modes.', 'codeweber-gutenberg-blocks'),
+	description: __(
+		'Custom lists with icons, colors, and columns. Supports Custom and Post modes.',
+		'codeweber-gutenberg-blocks'
+	),
 	keywords: [
 		__('list', 'codeweber-gutenberg-blocks'),
 		__('lists', 'codeweber-gutenberg-blocks'),
@@ -28,11 +31,3 @@ registerBlockType(metadata, {
 		__('columns', 'codeweber-gutenberg-blocks'),
 	],
 });
-
-
-
-
-
-
-
-

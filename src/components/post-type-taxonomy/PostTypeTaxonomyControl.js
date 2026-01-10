@@ -52,12 +52,15 @@ export const PostTypeTaxonomyControl = ({
 							'codeweber_form', // Формы
 							'cw_image_hotspot', // Image Hotspots
 						];
-						
+
 						// Исключаем по ключу
-						if (excluded.includes(key) || excludedCustom.includes(key)) {
+						if (
+							excluded.includes(key) ||
+							excludedCustom.includes(key)
+						) {
 							return false;
 						}
-						
+
 						// Фильтрация по названию (для случаев, когда название отличается от ключа)
 						const typeName = (types[key].name || '').toLowerCase();
 						const excludedNamePatterns = [
@@ -84,12 +87,16 @@ export const PostTypeTaxonomyControl = ({
 							'hotspot',
 							'hotspots',
 						];
-						
+
 						// Исключаем по названию (частичное совпадение)
-						if (excludedNamePatterns.some(pattern => typeName.includes(pattern.toLowerCase()))) {
+						if (
+							excludedNamePatterns.some((pattern) =>
+								typeName.includes(pattern.toLowerCase())
+							)
+						) {
 							return false;
 						}
-						
+
 						return true;
 					})
 					.map((key) => ({
@@ -109,12 +116,30 @@ export const PostTypeTaxonomyControl = ({
 	}, []);
 
 	return (
-		<div className="cwgb-post-type-taxonomy-control" style={{ marginBottom: 0 }}>
-			<div className="cwgb-post-type-taxonomy-control__select" style={{ marginBottom: 0 }}>
+		<div
+			className="cwgb-post-type-taxonomy-control"
+			style={{ marginBottom: 0 }}
+		>
+			<div
+				className="cwgb-post-type-taxonomy-control__select"
+				style={{ marginBottom: 0 }}
+			>
 				<SelectControl
 					label={__('Post Type', 'codeweber-gutenberg-blocks')}
 					value={postType}
-					options={isLoading ? [{ label: __('Loading...', 'codeweber-gutenberg-blocks'), value: '' }] : postTypes}
+					options={
+						isLoading
+							? [
+									{
+										label: __(
+											'Loading...',
+											'codeweber-gutenberg-blocks'
+										),
+										value: '',
+									},
+								]
+							: postTypes
+					}
 					onChange={onPostTypeChange}
 					help={help}
 				/>
@@ -132,11 +157,3 @@ export const PostTypeTaxonomyControl = ({
 		</div>
 	);
 };
-
-
-
-
-
-
-
-

@@ -1,216 +1,215 @@
 {
-    "apiVersion": 3,
-    "name": "codeweber-gutenberg-blocks/heading-subtitle",
-    "version": "0.1.0",
-    "title": "Title",
-    "category": "codeweber-gutenberg-elements",
-    "icon": "heading",
-    "description": "Heading and subtitle block with advanced typography controls.",
-    "supports": {
-        "html": false,
-        "className": false,
-        "customClassName": false,
-        "anchor": true
-    },
-    "attributes": {
-        "enableTitle": {
-            "type": "boolean",
-            "default": true
-        },
-        "enableSubtitle": {
-            "type": "boolean",
-            "default": true
-        },
-        "enableText": {
-            "type": "boolean",
-            "default": false
-        },
-        "title": {
-            "type": "string",
-            "default": ""
-        },
-        "subtitle": {
-            "type": "string",
-            "default": ""
-        },
-        "text": {
-            "type": "string",
-            "default": ""
-        },
-        "order": {
-            "type": "string",
-            "default": "subtitle-first"
-        },
-        "titleTag": {
-            "type": "string",
-            "default": "h2"
-        },
-        "subtitleTag": {
-            "type": "string",
-            "default": "div"
-        },
-        "textTag": {
-            "type": "string",
-            "default": "p"
-        },
-        "titleColor": {
-            "type": "string",
-            "default": ""
-        },
-        "titleColorType": {
-            "type": "string",
-            "default": "solid"
-        },
-        "subtitleColor": {
-            "type": "string",
-            "default": ""
-        },
-        "subtitleColorType": {
-            "type": "string",
-            "default": "solid"
-        },
-        "textColor": {
-            "type": "string",
-            "default": ""
-        },
-        "textColorType": {
-            "type": "string",
-            "default": "solid"
-        },
-        "align": {
-            "type": "string",
-            "default": "left"
-        },
-        "alignItems": {
-            "type": "string",
-            "default": ""
-        },
-        "justifyContent": {
-            "type": "string",
-            "default": ""
-        },
-        "position": {
-            "type": "string",
-            "default": ""
-        },
-        "titleSize": {
-            "type": "string",
-            "default": ""
-        },
-        "subtitleSize": {
-            "type": "string",
-            "default": ""
-        },
-        "titleWeight": {
-            "type": "string",
-            "default": ""
-        },
-        "subtitleWeight": {
-            "type": "string",
-            "default": ""
-        },
-        "textSize": {
-            "type": "string",
-            "default": ""
-        },
-        "textWeight": {
-            "type": "string",
-            "default": ""
-        },
-        "titleTransform": {
-            "type": "string",
-            "default": ""
-        },
-        "subtitleTransform": {
-            "type": "string",
-            "default": ""
-        },
-        "textTransform": {
-            "type": "string",
-            "default": ""
-        },
-        "subtitleLine": {
-            "type": "boolean",
-            "default": true
-        },
-        "lead": {
-            "type": "string",
-            "default": ""
-        },
-        "spacing": {
-            "type": "object",
-            "default": {}
-        },
-        "className": {
-            "type": "string",
-            "default": ""
-        },
-        "titleClass": {
-            "type": "string",
-            "default": ""
-        },
-        "titleData": {
-            "type": "string",
-            "default": ""
-        },
-        "titleId": {
-            "type": "string",
-            "default": ""
-        },
-        "subtitleClass": {
-            "type": "string",
-            "default": "mb-3"
-        },
-        "subtitleData": {
-            "type": "string",
-            "default": ""
-        },
-        "subtitleId": {
-            "type": "string",
-            "default": ""
-        },
-        "textClass": {
-            "type": "string",
-            "default": ""
-        },
-        "textData": {
-            "type": "string",
-            "default": ""
-        },
-        "textId": {
-            "type": "string",
-            "default": ""
-        },
-        "spacingType": {
-            "type": "string",
-            "default": "padding"
-        },
-        "spacingXs": {
-            "type": "string",
-            "default": ""
-        },
-        "spacingSm": {
-            "type": "string",
-            "default": ""
-        },
-        "spacingMd": {
-            "type": "string",
-            "default": ""
-        },
-        "spacingLg": {
-            "type": "string",
-            "default": ""
-        },
-        "spacingXl": {
-            "type": "string",
-            "default": ""
-        },
-        "spacingXxl": {
-            "type": "string",
-            "default": ""
-        }
-    },
-    "textdomain": "codeweber-blocks",
-    "editorScript": "file:./index.js"
+	"apiVersion": 3,
+	"name": "codeweber-gutenberg-blocks/heading-subtitle",
+	"version": "0.1.0",
+	"title": "Title",
+	"category": "codeweber-gutenberg-elements",
+	"icon": "heading",
+	"description": "Heading and subtitle block with advanced typography controls.",
+	"supports": {
+		"html": false,
+		"className": false,
+		"customClassName": false,
+		"anchor": true
+	},
+	"attributes": {
+		"enableTitle": {
+			"type": "boolean",
+			"default": true
+		},
+		"enableSubtitle": {
+			"type": "boolean",
+			"default": true
+		},
+		"enableText": {
+			"type": "boolean",
+			"default": false
+		},
+		"title": {
+			"type": "string",
+			"default": ""
+		},
+		"subtitle": {
+			"type": "string",
+			"default": ""
+		},
+		"text": {
+			"type": "string",
+			"default": ""
+		},
+		"order": {
+			"type": "string",
+			"default": "subtitle-first"
+		},
+		"titleTag": {
+			"type": "string",
+			"default": "h2"
+		},
+		"subtitleTag": {
+			"type": "string",
+			"default": "div"
+		},
+		"textTag": {
+			"type": "string",
+			"default": "p"
+		},
+		"titleColor": {
+			"type": "string",
+			"default": ""
+		},
+		"titleColorType": {
+			"type": "string",
+			"default": "solid"
+		},
+		"subtitleColor": {
+			"type": "string",
+			"default": ""
+		},
+		"subtitleColorType": {
+			"type": "string",
+			"default": "solid"
+		},
+		"textColor": {
+			"type": "string",
+			"default": ""
+		},
+		"textColorType": {
+			"type": "string",
+			"default": "solid"
+		},
+		"align": {
+			"type": "string",
+			"default": "left"
+		},
+		"alignItems": {
+			"type": "string",
+			"default": ""
+		},
+		"justifyContent": {
+			"type": "string",
+			"default": ""
+		},
+		"position": {
+			"type": "string",
+			"default": ""
+		},
+		"titleSize": {
+			"type": "string",
+			"default": ""
+		},
+		"subtitleSize": {
+			"type": "string",
+			"default": ""
+		},
+		"titleWeight": {
+			"type": "string",
+			"default": ""
+		},
+		"subtitleWeight": {
+			"type": "string",
+			"default": ""
+		},
+		"textSize": {
+			"type": "string",
+			"default": ""
+		},
+		"textWeight": {
+			"type": "string",
+			"default": ""
+		},
+		"titleTransform": {
+			"type": "string",
+			"default": ""
+		},
+		"subtitleTransform": {
+			"type": "string",
+			"default": ""
+		},
+		"textTransform": {
+			"type": "string",
+			"default": ""
+		},
+		"subtitleLine": {
+			"type": "boolean",
+			"default": true
+		},
+		"lead": {
+			"type": "string",
+			"default": ""
+		},
+		"spacing": {
+			"type": "object",
+			"default": {}
+		},
+		"className": {
+			"type": "string",
+			"default": ""
+		},
+		"titleClass": {
+			"type": "string",
+			"default": ""
+		},
+		"titleData": {
+			"type": "string",
+			"default": ""
+		},
+		"titleId": {
+			"type": "string",
+			"default": ""
+		},
+		"subtitleClass": {
+			"type": "string",
+			"default": "mb-3"
+		},
+		"subtitleData": {
+			"type": "string",
+			"default": ""
+		},
+		"subtitleId": {
+			"type": "string",
+			"default": ""
+		},
+		"textClass": {
+			"type": "string",
+			"default": ""
+		},
+		"textData": {
+			"type": "string",
+			"default": ""
+		},
+		"textId": {
+			"type": "string",
+			"default": ""
+		},
+		"spacingType": {
+			"type": "string",
+			"default": "padding"
+		},
+		"spacingXs": {
+			"type": "string",
+			"default": ""
+		},
+		"spacingSm": {
+			"type": "string",
+			"default": ""
+		},
+		"spacingMd": {
+			"type": "string",
+			"default": ""
+		},
+		"spacingLg": {
+			"type": "string",
+			"default": ""
+		},
+		"spacingXl": {
+			"type": "string",
+			"default": ""
+		},
+		"spacingXxl": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"textdomain": "codeweber-blocks",
+	"editorScript": "file:./index.js"
 }
-

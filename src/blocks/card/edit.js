@@ -10,8 +10,23 @@ import {
 	InnerBlocks,
 	InspectorControls,
 } from '@wordpress/block-editor';
-import { TabPanel, PanelBody, ToggleControl, ButtonGroup, Button, ComboboxControl } from '@wordpress/components';
-import { Icon, symbol, resizeCornerNE, positionCenter, image, cog, arrowRight } from '@wordpress/icons';
+import {
+	TabPanel,
+	PanelBody,
+	ToggleControl,
+	ButtonGroup,
+	Button,
+	ComboboxControl,
+} from '@wordpress/components';
+import {
+	Icon,
+	symbol,
+	resizeCornerNE,
+	positionCenter,
+	image,
+	cog,
+	arrowRight,
+} from '@wordpress/icons';
 import { border } from '@wordpress/icons';
 import { useEffect } from '@wordpress/element';
 
@@ -22,14 +37,21 @@ import { BackgroundSettingsPanel } from '../../components/background/BackgroundS
 import { BlockMetaFields } from '../../components/block-meta/BlockMetaFields';
 import { AnimationControl } from '../../components/animation/Animation';
 import { colors } from '../../utilities/colors';
-import { generateBackgroundClasses, generateAlignmentClasses } from '../../utilities/class-generators';
+import {
+	generateBackgroundClasses,
+	generateAlignmentClasses,
+} from '../../utilities/class-generators';
 import { getSpacingClasses } from '../section/utils';
 
 // Tab icon with native title tooltip
 const TabIcon = ({ icon, label }) => (
-	<span 
+	<span
 		title={label}
-		style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+		style={{
+			display: 'flex',
+			alignItems: 'center',
+			justifyContent: 'center',
+		}}
 	>
 		<Icon icon={icon} size={20} />
 	</span>
@@ -80,52 +102,115 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 	} = attributes;
 
 	const tabs = [
-		{ name: 'general', title: <TabIcon icon={symbol} label={__('General', 'codeweber-gutenberg-blocks')} /> },
-		{ name: 'borders', title: <TabIcon icon={border} label={__('Borders', 'codeweber-gutenberg-blocks')} /> },
-		{ name: 'spacing', title: <TabIcon icon={resizeCornerNE} label={__('Spacing', 'codeweber-gutenberg-blocks')} /> },
-		{ name: 'align', title: <TabIcon icon={positionCenter} label={__('Position', 'codeweber-gutenberg-blocks')} /> },
-		{ name: 'background', title: <TabIcon icon={image} label={__('Background', 'codeweber-gutenberg-blocks')} /> },
-		...(enableCard ? [{ name: 'animation', title: <TabIcon icon={arrowRight} label={__('Animation', 'codeweber-gutenberg-blocks')} /> }] : []),
-		{ name: 'settings', title: <TabIcon icon={cog} label={__('Settings', 'codeweber-gutenberg-blocks')} /> },
+		{
+			name: 'general',
+			title: (
+				<TabIcon
+					icon={symbol}
+					label={__('General', 'codeweber-gutenberg-blocks')}
+				/>
+			),
+		},
+		{
+			name: 'borders',
+			title: (
+				<TabIcon
+					icon={border}
+					label={__('Borders', 'codeweber-gutenberg-blocks')}
+				/>
+			),
+		},
+		{
+			name: 'spacing',
+			title: (
+				<TabIcon
+					icon={resizeCornerNE}
+					label={__('Spacing', 'codeweber-gutenberg-blocks')}
+				/>
+			),
+		},
+		{
+			name: 'align',
+			title: (
+				<TabIcon
+					icon={positionCenter}
+					label={__('Position', 'codeweber-gutenberg-blocks')}
+				/>
+			),
+		},
+		{
+			name: 'background',
+			title: (
+				<TabIcon
+					icon={image}
+					label={__('Background', 'codeweber-gutenberg-blocks')}
+				/>
+			),
+		},
+		...(enableCard
+			? [
+					{
+						name: 'animation',
+						title: (
+							<TabIcon
+								icon={arrowRight}
+								label={__(
+									'Animation',
+									'codeweber-gutenberg-blocks'
+								)}
+							/>
+						),
+					},
+				]
+			: []),
+		{
+			name: 'settings',
+			title: (
+				<TabIcon
+					icon={cog}
+					label={__('Settings', 'codeweber-gutenberg-blocks')}
+				/>
+			),
+		},
 	];
 
 	// Generate classes for card wrapper
 	const getCardClasses = () => {
 		const classes = [];
-		
+
 		if (enableCard) {
 			classes.push('card');
 		}
-		
+
 		if (overflowHidden) {
 			classes.push('overflow-hidden');
 		}
-		
+
 		if (h100) {
 			classes.push('h-100');
 		}
-		
+
 		if (borderRadius) {
 			classes.push(borderRadius);
 		}
-		
+
 		if (shadow) {
 			classes.push(shadow);
 		}
-		
+
 		if (cardBorder || borderPosition) {
 			classes.push(cardBorder || borderPosition);
 		}
-		
+
 		// Если выбраны цвет или ширина, но нет позиции - применяем обычный border
 		if ((borderColor || borderWidth) && !cardBorder && !borderPosition) {
 			classes.push('border');
 		}
-		
+
 		if (borderWidth) {
 			classes.push(borderWidth);
 		}
-		
+
 		if (borderColor) {
 			const colorType = borderColorType || 'solid';
 			if (colorType === 'soft') {
@@ -136,35 +221,35 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 				classes.push(`border-${borderColor}`);
 			}
 		}
-		
+
 		// Background classes (color, gradient, image)
 		classes.push(...generateBackgroundClasses(attributes));
-		
+
 		// Spacing classes
 		classes.push(...getSpacingClasses(attributes));
-		
+
 		// Alignment classes - применяются к card только если card-body не включен
 		if (!enableCardBody) {
 			classes.push(...generateAlignmentClasses(attributes));
 		}
-		
+
 		// Custom class
 		if (blockClass) {
 			classes.push(blockClass);
 		}
-		
+
 		return classes.filter(Boolean).join(' ');
 	};
 
 	// Generate classes for card-body
 	const getCardBodyClasses = () => {
 		const classes = ['card-body'];
-		
+
 		// Alignment classes - применяются к card-body если он включен
 		if (enableCardBody) {
 			classes.push(...generateAlignmentClasses(attributes));
 		}
-		
+
 		return classes.filter(Boolean).join(' ');
 	};
 
@@ -219,11 +304,14 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 		...(blockId && { id: blockId }),
 		...getDataAttributes(),
 		'data-block': clientId,
-		...(animationEnabled && animationType && { 
-			'data-cue': animationType,
-			...(animationDuration && { 'data-duration': animationDuration }),
-			...(animationDelay && { 'data-delay': animationDelay }),
-		}),
+		...(animationEnabled &&
+			animationType && {
+				'data-cue': animationType,
+				...(animationDuration && {
+					'data-duration': animationDuration,
+				}),
+				...(animationDelay && { 'data-delay': animationDelay }),
+			}),
 	});
 
 	// Реинициализация scrollCue при изменении настроек анимации
@@ -232,35 +320,62 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 
 		// Задержка для применения новых атрибутов в DOM
 		const timer = setTimeout(() => {
-			const currentBlock = document.querySelector(`[data-block="${clientId}"]`);
+			const currentBlock = document.querySelector(
+				`[data-block="${clientId}"]`
+			);
 			if (!currentBlock) {
 				console.warn('⚠️ Block with clientId not found:', clientId);
 				return;
 			}
 
 			// Ищем элемент с data-cue - это сам блок
-			const elementWithCue =
-				currentBlock.hasAttribute('data-cue') ? currentBlock : currentBlock.querySelector('[data-cue]');
+			const elementWithCue = currentBlock.hasAttribute('data-cue')
+				? currentBlock
+				: currentBlock.querySelector('[data-cue]');
 
 			// Если анимация включена и есть тип — настраиваем и обновляем
-			if (animationEnabled && animationType && elementWithCue && elementWithCue.hasAttribute('data-cue')) {
-				console.log('🎬 Resetting animation:', animationType, '| Duration:', animationDuration, '| Delay:', animationDelay);
+			if (
+				animationEnabled &&
+				animationType &&
+				elementWithCue &&
+				elementWithCue.hasAttribute('data-cue')
+			) {
+				console.log(
+					'🎬 Resetting animation:',
+					animationType,
+					'| Duration:',
+					animationDuration,
+					'| Delay:',
+					animationDelay
+				);
 
 				// Шаг 1: Полный сброс состояния
-				elementWithCue.classList.remove('cue-hide', 'cue-show', 'cue-sticky');
+				elementWithCue.classList.remove(
+					'cue-hide',
+					'cue-show',
+					'cue-sticky'
+				);
 				elementWithCue.removeAttribute('data-show');
 				elementWithCue.style.animationDelay = '';
 				elementWithCue.style.animationDuration = '';
 				elementWithCue.style.opacity = '';
-				
+
 				// Удаляем все animation-классы scrollCue
-				const animationClasses = Array.from(elementWithCue.classList).filter(cls => 
-					cls.startsWith('fadeIn') || cls.startsWith('slideIn') || 
-					cls.startsWith('zoomIn') || cls.startsWith('zoomOut') ||
-					cls.startsWith('rotateIn') || cls.startsWith('bounceIn') ||
-					cls.startsWith('flipIn')
+				const animationClasses = Array.from(
+					elementWithCue.classList
+				).filter(
+					(cls) =>
+						cls.startsWith('fadeIn') ||
+						cls.startsWith('slideIn') ||
+						cls.startsWith('zoomIn') ||
+						cls.startsWith('zoomOut') ||
+						cls.startsWith('rotateIn') ||
+						cls.startsWith('bounceIn') ||
+						cls.startsWith('flipIn')
 				);
-				animationClasses.forEach(cls => elementWithCue.classList.remove(cls));
+				animationClasses.forEach((cls) =>
+					elementWithCue.classList.remove(cls)
+				);
 
 				// Шаг 2: Принудительно скрываем элемент (имитируем состояние до срабатывания scrollCue)
 				elementWithCue.classList.add('cue-hide');
@@ -272,7 +387,7 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 					setTimeout(() => {
 						window.reinitScrollCue();
 					}, 50);
-					
+
 					// Второй update и принудительный показ анимации
 					setTimeout(() => {
 						elementWithCue.classList.remove('cue-hide');
@@ -285,7 +400,13 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 		}, 100);
 
 		return () => clearTimeout(timer);
-	}, [animationEnabled, animationType, animationDuration, animationDelay, clientId]);
+	}, [
+		animationEnabled,
+		animationType,
+		animationDuration,
+		animationDelay,
+		clientId,
+	]);
 
 	return (
 		<>
@@ -298,29 +419,53 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 							{tab.name === 'general' && (
 								<PanelBody>
 									<ToggleControl
-										label={__('Enable Card Wrapper', 'codeweber-gutenberg-blocks')}
+										label={__(
+											'Enable Card Wrapper',
+											'codeweber-gutenberg-blocks'
+										)}
 										checked={enableCard}
-										onChange={(value) => setAttributes({ enableCard: value })}
+										onChange={(value) =>
+											setAttributes({ enableCard: value })
+										}
 									/>
 
 									{enableCard && (
 										<ToggleControl
-											label={__('Enable Card Body', 'codeweber-gutenberg-blocks')}
+											label={__(
+												'Enable Card Body',
+												'codeweber-gutenberg-blocks'
+											)}
 											checked={enableCardBody}
-											onChange={(value) => setAttributes({ enableCardBody: value })}
+											onChange={(value) =>
+												setAttributes({
+													enableCardBody: value,
+												})
+											}
 										/>
 									)}
 
 									<ToggleControl
-										label={__('Overflow Hidden', 'codeweber-gutenberg-blocks')}
+										label={__(
+											'Overflow Hidden',
+											'codeweber-gutenberg-blocks'
+										)}
 										checked={overflowHidden}
-										onChange={(value) => setAttributes({ overflowHidden: value })}
+										onChange={(value) =>
+											setAttributes({
+												overflowHidden: value,
+											})
+										}
 									/>
 
 									<ToggleControl
-										label={__('H-100', 'codeweber-gutenberg-blocks')}
+										label={__(
+											'H-100',
+											'codeweber-gutenberg-blocks'
+										)}
 										checked={h100}
-										onChange={(value) => setAttributes({ h100: value })}
+										onChange={(value) =>
+											setAttributes({ h100: value })
+										}
 									/>
 								</PanelBody>
 							)}
@@ -330,23 +475,45 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 								<PanelBody>
 									<BorderSettingsPanel
 										borderRadius={borderRadius}
-										onBorderRadiusChange={(value) => setAttributes({ borderRadius: value })}
+										onBorderRadiusChange={(value) =>
+											setAttributes({
+												borderRadius: value,
+											})
+										}
 										shadow={shadow}
-										onShadowChange={(value) => setAttributes({ shadow: value })}
-										borderPosition={cardBorder || borderPosition}
+										onShadowChange={(value) =>
+											setAttributes({ shadow: value })
+										}
+										borderPosition={
+											cardBorder || borderPosition
+										}
 										borderColor={borderColor}
-										borderColorType={borderColorType || 'solid'}
+										borderColorType={
+											borderColorType || 'solid'
+										}
 										borderWidth={borderWidth}
 										showPosition={true}
 										onBorderPositionChange={(value) => {
-											setAttributes({ 
+											setAttributes({
 												cardBorder: value,
-												borderPosition: value 
+												borderPosition: value,
 											});
 										}}
-										onBorderColorChange={(value) => setAttributes({ borderColor: value })}
-										onBorderColorTypeChange={(value) => setAttributes({ borderColorType: value })}
-										onBorderWidthChange={(value) => setAttributes({ borderWidth: value })}
+										onBorderColorChange={(value) =>
+											setAttributes({
+												borderColor: value,
+											})
+										}
+										onBorderColorTypeChange={(value) =>
+											setAttributes({
+												borderColorType: value,
+											})
+										}
+										onBorderWidthChange={(value) =>
+											setAttributes({
+												borderWidth: value,
+											})
+										}
 									/>
 								</PanelBody>
 							)}
@@ -362,7 +529,9 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 										spacingLg={spacingLg}
 										spacingXl={spacingXl}
 										spacingXxl={spacingXxl}
-										onChange={(key, value) => setAttributes({ [key]: value })}
+										onChange={(key, value) =>
+											setAttributes({ [key]: value })
+										}
 									/>
 								</PanelBody>
 							)}
@@ -372,13 +541,23 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 								<PanelBody>
 									<PositioningControl
 										alignItems={alignItems}
-										onAlignItemsChange={(value) => setAttributes({ alignItems: value })}
+										onAlignItemsChange={(value) =>
+											setAttributes({ alignItems: value })
+										}
 										justifyContent={justifyContent}
-										onJustifyContentChange={(value) => setAttributes({ justifyContent: value })}
+										onJustifyContentChange={(value) =>
+											setAttributes({
+												justifyContent: value,
+											})
+										}
 										textAlign={align}
-										onTextAlignChange={(value) => setAttributes({ align: value })}
+										onTextAlignChange={(value) =>
+											setAttributes({ align: value })
+										}
 										position={position}
-										onPositionChange={(value) => setAttributes({ position: value })}
+										onPositionChange={(value) =>
+											setAttributes({ position: value })
+										}
 										noPanel={true}
 									/>
 								</PanelBody>
@@ -417,9 +596,18 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 											idKey: 'blockId',
 										}}
 										labels={{
-											classLabel: __('Card Class', 'codeweber-gutenberg-blocks'),
-											dataLabel: __('Card Data', 'codeweber-gutenberg-blocks'),
-											idLabel: __('Card ID', 'codeweber-gutenberg-blocks'),
+											classLabel: __(
+												'Card Class',
+												'codeweber-gutenberg-blocks'
+											),
+											dataLabel: __(
+												'Card Data',
+												'codeweber-gutenberg-blocks'
+											),
+											idLabel: __(
+												'Card ID',
+												'codeweber-gutenberg-blocks'
+											),
 										}}
 									/>
 								</PanelBody>
@@ -444,4 +632,3 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 };
 
 export default Edit;
-

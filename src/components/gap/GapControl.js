@@ -40,14 +40,18 @@ export const GapControl = ({
 		<>
 			<div className="mb-3">
 				<div className="component-sidebar-title">
-					<label>{__('Gap Type', 'codeweber-gutenberg-blocks')}</label>
+					<label>
+						{__('Gap Type', 'codeweber-gutenberg-blocks')}
+					</label>
 				</div>
 				<ButtonGroup>
 					{GAP_TYPE_OPTIONS.map((option) => (
 						<Button
 							key={option.value}
 							isPrimary={columnsGapType === option.value}
-							onClick={() => onChange('columnsGapType', option.value)}
+							onClick={() =>
+								onChange('columnsGapType', option.value)
+							}
 						>
 							{option.label}
 						</Button>
@@ -56,7 +60,9 @@ export const GapControl = ({
 			</div>
 			<div className="mb-3">
 				<div className="component-sidebar-title">
-					<label>{__('Extra small (xs)', 'codeweber-gutenberg-blocks')}</label>
+					<label>
+						{__('Extra small (xs)', 'codeweber-gutenberg-blocks')}
+					</label>
 				</div>
 				<SelectControl
 					value={columnsGapXs}
@@ -66,7 +72,9 @@ export const GapControl = ({
 			</div>
 			<div className="mb-3">
 				<div className="component-sidebar-title">
-					<label>{__('Small (sm) ≥576px', 'codeweber-gutenberg-blocks')}</label>
+					<label>
+						{__('Small (sm) ≥576px', 'codeweber-gutenberg-blocks')}
+					</label>
 				</div>
 				<SelectControl
 					value={columnsGapSm}
@@ -76,7 +84,9 @@ export const GapControl = ({
 			</div>
 			<div className="mb-3">
 				<div className="component-sidebar-title">
-					<label>{__('Medium (md) ≥768px', 'codeweber-gutenberg-blocks')}</label>
+					<label>
+						{__('Medium (md) ≥768px', 'codeweber-gutenberg-blocks')}
+					</label>
 				</div>
 				<SelectControl
 					value={columnsGapMd}
@@ -86,7 +96,9 @@ export const GapControl = ({
 			</div>
 			<div className="mb-3">
 				<div className="component-sidebar-title">
-					<label>{__('Large (lg) ≥992px', 'codeweber-gutenberg-blocks')}</label>
+					<label>
+						{__('Large (lg) ≥992px', 'codeweber-gutenberg-blocks')}
+					</label>
 				</div>
 				<SelectControl
 					value={columnsGapLg}
@@ -96,7 +108,12 @@ export const GapControl = ({
 			</div>
 			<div className="mb-3">
 				<div className="component-sidebar-title">
-					<label>{__('Extra large (xl) ≥1200px', 'codeweber-gutenberg-blocks')}</label>
+					<label>
+						{__(
+							'Extra large (xl) ≥1200px',
+							'codeweber-gutenberg-blocks'
+						)}
+					</label>
 				</div>
 				<SelectControl
 					value={columnsGapXl}
@@ -106,7 +123,12 @@ export const GapControl = ({
 			</div>
 			<div className="mb-3">
 				<div className="component-sidebar-title">
-					<label>{__('Extra extra large (xxl) ≥1400px', 'codeweber-gutenberg-blocks')}</label>
+					<label>
+						{__(
+							'Extra extra large (xxl) ≥1400px',
+							'codeweber-gutenberg-blocks'
+						)}
+					</label>
 				</div>
 				<SelectControl
 					value={columnsGapXxl}
@@ -119,4 +141,3 @@ export const GapControl = ({
 };
 
 export default GapControl;
-

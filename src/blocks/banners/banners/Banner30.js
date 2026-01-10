@@ -27,15 +27,13 @@ const ALLOWED_CODEWEBER_BLOCKS = [
 ];
 
 export const Banner30 = ({ attributes, isEditor = false }) => {
-	const {
-		backgroundImageUrl,
-	} = attributes;
+	const { backgroundImageUrl } = attributes;
 
 	// Placeholder фоновое изображение
-	const placeholderBgUrl = isEditor 
-		? (window.location?.origin 
+	const placeholderBgUrl = isEditor
+		? window.location?.origin
 			? `${window.location.origin}/wp-content/themes/codeweber/dist/assets/img/photos/blurry.png`
-			: './assets/img/photos/blurry.png')
+			: './assets/img/photos/blurry.png'
 		: '/wp-content/themes/codeweber/dist/assets/img/photos/blurry.png';
 
 	// Получаем URL фонового изображения
@@ -47,28 +45,70 @@ export const Banner30 = ({ attributes, isEditor = false }) => {
 		return (
 			<section className="wrapper overflow-hidden">
 				<div className="container pt-19 pt-md-21 text-center position-relative">
-					<div className="position-absolute" style={{ top: '-15%', left: '50%', transform: 'translateX(-50%)' }}>
-						<img 
-							src={getBackgroundImageSrc()} 
+					<div
+						className="position-absolute"
+						style={{
+							top: '-15%',
+							left: '50%',
+							transform: 'translateX(-50%)',
+						}}
+					>
+						<img
+							src={getBackgroundImageSrc()}
 							alt=""
 							decoding="async"
 						/>
 					</div>
 					<div className="row position-relative">
 						<div className="col-lg-8 col-xxl-7 mx-auto position-relative">
-							<div className="position-absolute shape grape w-5 d-none d-lg-block" style={{ top: '-5%', left: '-15%' }}>
-								<img src="/wp-content/themes/codeweber/dist/assets/img/svg/pie.svg" className="svg-inject icon-svg w-100 h-100" alt="" />
+							<div
+								className="position-absolute shape grape w-5 d-none d-lg-block"
+								style={{ top: '-5%', left: '-15%' }}
+							>
+								<img
+									src="/wp-content/themes/codeweber/dist/assets/img/svg/pie.svg"
+									className="svg-inject icon-svg w-100 h-100"
+									alt=""
+								/>
 							</div>
-							<div className="position-absolute shape violet w-10 d-none d-lg-block" style={{ bottom: '30%', left: '-20%' }}>
-								<img src="/wp-content/themes/codeweber/dist/assets/img/svg/scribble.svg" className="svg-inject icon-svg w-100 h-100" alt="" />
+							<div
+								className="position-absolute shape violet w-10 d-none d-lg-block"
+								style={{ bottom: '30%', left: '-20%' }}
+							>
+								<img
+									src="/wp-content/themes/codeweber/dist/assets/img/svg/scribble.svg"
+									className="svg-inject icon-svg w-100 h-100"
+									alt=""
+								/>
 							</div>
-							<div className="position-absolute shape fuchsia w-6 d-none d-lg-block" style={{ top: '0%', right: '-25%', transform: 'rotate(70deg)' }}>
-								<img src="/wp-content/themes/codeweber/dist/assets/img/svg/tri.svg" className="svg-inject icon-svg w-100 h-100" alt="" />
+							<div
+								className="position-absolute shape fuchsia w-6 d-none d-lg-block"
+								style={{
+									top: '0%',
+									right: '-25%',
+									transform: 'rotate(70deg)',
+								}}
+							>
+								<img
+									src="/wp-content/themes/codeweber/dist/assets/img/svg/tri.svg"
+									className="svg-inject icon-svg w-100 h-100"
+									alt=""
+								/>
 							</div>
-							<div className="position-absolute shape yellow w-6 d-none d-lg-block" style={{ bottom: '25%', right: '-17%' }}>
-								<img src="/wp-content/themes/codeweber/dist/assets/img/svg/circle.svg" className="svg-inject icon-svg w-100 h-100" alt="" />
+							<div
+								className="position-absolute shape yellow w-6 d-none d-lg-block"
+								style={{ bottom: '25%', right: '-17%' }}
+							>
+								<img
+									src="/wp-content/themes/codeweber/dist/assets/img/svg/circle.svg"
+									className="svg-inject icon-svg w-100 h-100"
+									alt=""
+								/>
 							</div>
-							<InnerBlocks allowedBlocks={ALLOWED_CODEWEBER_BLOCKS} templateLock={false} />
+							<InnerBlocks
+								allowedBlocks={ALLOWED_CODEWEBER_BLOCKS}
+								templateLock={false}
+							/>
 						</div>
 					</div>
 				</div>
@@ -79,26 +119,65 @@ export const Banner30 = ({ attributes, isEditor = false }) => {
 	return (
 		<section className="wrapper overflow-hidden">
 			<div className="container pt-19 pt-md-21 text-center position-relative">
-				<div className="position-absolute" style={{ top: '-15%', left: '50%', transform: 'translateX(-50%)' }}>
-					<img 
-						src={getBackgroundImageSrc()} 
+				<div
+					className="position-absolute"
+					style={{
+						top: '-15%',
+						left: '50%',
+						transform: 'translateX(-50%)',
+					}}
+				>
+					<img
+						src={getBackgroundImageSrc()}
 						alt=""
 						decoding="async"
 					/>
 				</div>
 				<div className="row position-relative">
 					<div className="col-lg-8 col-xxl-7 mx-auto position-relative">
-						<div className="position-absolute shape grape w-5 d-none d-lg-block" style={{ top: '-5%', left: '-15%' }}>
-							<img src="/wp-content/themes/codeweber/dist/assets/img/svg/pie.svg" className="svg-inject icon-svg w-100 h-100" alt="" />
+						<div
+							className="position-absolute shape grape w-5 d-none d-lg-block"
+							style={{ top: '-5%', left: '-15%' }}
+						>
+							<img
+								src="/wp-content/themes/codeweber/dist/assets/img/svg/pie.svg"
+								className="svg-inject icon-svg w-100 h-100"
+								alt=""
+							/>
 						</div>
-						<div className="position-absolute shape violet w-10 d-none d-lg-block" style={{ bottom: '30%', left: '-20%' }}>
-							<img src="/wp-content/themes/codeweber/dist/assets/img/svg/scribble.svg" className="svg-inject icon-svg w-100 h-100" alt="" />
+						<div
+							className="position-absolute shape violet w-10 d-none d-lg-block"
+							style={{ bottom: '30%', left: '-20%' }}
+						>
+							<img
+								src="/wp-content/themes/codeweber/dist/assets/img/svg/scribble.svg"
+								className="svg-inject icon-svg w-100 h-100"
+								alt=""
+							/>
 						</div>
-						<div className="position-absolute shape fuchsia w-6 d-none d-lg-block" style={{ top: '0%', right: '-25%', transform: 'rotate(70deg)' }}>
-							<img src="/wp-content/themes/codeweber/dist/assets/img/svg/tri.svg" className="svg-inject icon-svg w-100 h-100" alt="" />
+						<div
+							className="position-absolute shape fuchsia w-6 d-none d-lg-block"
+							style={{
+								top: '0%',
+								right: '-25%',
+								transform: 'rotate(70deg)',
+							}}
+						>
+							<img
+								src="/wp-content/themes/codeweber/dist/assets/img/svg/tri.svg"
+								className="svg-inject icon-svg w-100 h-100"
+								alt=""
+							/>
 						</div>
-						<div className="position-absolute shape yellow w-6 d-none d-lg-block" style={{ bottom: '25%', right: '-17%' }}>
-							<img src="/wp-content/themes/codeweber/dist/assets/img/svg/circle.svg" className="svg-inject icon-svg w-100 h-100" alt="" />
+						<div
+							className="position-absolute shape yellow w-6 d-none d-lg-block"
+							style={{ bottom: '25%', right: '-17%' }}
+						>
+							<img
+								src="/wp-content/themes/codeweber/dist/assets/img/svg/circle.svg"
+								className="svg-inject icon-svg w-100 h-100"
+								alt=""
+							/>
 						</div>
 						<InnerBlocks.Content />
 					</div>
@@ -107,4 +186,3 @@ export const Banner30 = ({ attributes, isEditor = false }) => {
 		</section>
 	);
 };
-

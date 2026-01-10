@@ -41,7 +41,7 @@ export const Banner8 = ({ attributes, isEditor = false }) => {
 	// Функция для получения классов секции
 	const getSectionClasses = () => {
 		const classes = ['wrapper'];
-		
+
 		// Если sectionClass содержит bg-light, используем sectionClass напрямую
 		if (sectionClass && sectionClass.includes('bg-light')) {
 			classes.push(sectionClass);
@@ -53,7 +53,7 @@ export const Banner8 = ({ attributes, isEditor = false }) => {
 				classes.push(sectionClass);
 			}
 		}
-		
+
 		return classes.filter(Boolean).join(' ');
 	};
 
@@ -77,39 +77,44 @@ export const Banner8 = ({ attributes, isEditor = false }) => {
 
 	const imagesToRender = images || [];
 	const hasImage = imagesToRender && imagesToRender.length > 0;
-	
+
 	// Placeholder изображение - co3.png
-	const placeholderUrl = isEditor 
-		? (window.location?.origin 
+	const placeholderUrl = isEditor
+		? window.location?.origin
 			? `${window.location.origin}/wp-content/themes/codeweber/dist/assets/img/photos/co3.png`
-			: './assets/img/photos/co3.png')
+			: './assets/img/photos/co3.png'
 		: '/wp-content/themes/codeweber/dist/assets/img/photos/co3.png';
 
 	// Рендерим изображение с карточкой
 	const renderImageColumn = () => {
-		const imageUrl = hasImage ? getImageUrl(imagesToRender[0], imageSize) : placeholderUrl;
-		const imageAlt = hasImage ? (imagesToRender[0].alt || '') : '';
+		const imageUrl = hasImage
+			? getImageUrl(imagesToRender[0], imageSize)
+			: placeholderUrl;
+		const imageAlt = hasImage ? imagesToRender[0].alt || '' : '';
 
 		// Для placeholder добавляем srcset для ретина-дисплеев
-		const placeholderSrcset = !hasImage 
-			? (isEditor 
-				? (window.location?.origin 
+		const placeholderSrcset = !hasImage
+			? isEditor
+				? window.location?.origin
 					? `${window.location.origin}/wp-content/themes/codeweber/dist/assets/img/photos/co3@2x.png 2x`
-					: './assets/img/photos/co3@2x.png 2x')
-				: '/wp-content/themes/codeweber/dist/assets/img/photos/co3@2x.png 2x')
+					: './assets/img/photos/co3@2x.png 2x'
+				: '/wp-content/themes/codeweber/dist/assets/img/photos/co3@2x.png 2x'
 			: undefined;
 
 		return (
 			<div className="col-lg-6 order-lg-2 d-flex position-relative">
-				<img 
-					className="img-fluid ms-auto mx-auto me-lg-8" 
+				<img
+					className="img-fluid ms-auto mx-auto me-lg-8"
 					src={imageUrl}
 					srcSet={placeholderSrcset}
 					alt={imageAlt}
 					decoding="async"
 				/>
 				<div>
-					<div className="card shadow-lg position-absolute" style={{ bottom: '10%', right: '-3%' }}>
+					<div
+						className="card shadow-lg position-absolute"
+						style={{ bottom: '10%', right: '-3%' }}
+					>
 						<div className="card-body py-4 px-5">
 							<div className="d-flex flex-row align-items-center">
 								<div>
@@ -118,8 +123,12 @@ export const Banner8 = ({ attributes, isEditor = false }) => {
 									</div>
 								</div>
 								<div>
-									<h3 className="counter mb-0 text-nowrap">25000+</h3>
-									<p className="fs-14 lh-sm mb-0 text-nowrap">Happy Clients</p>
+									<h3 className="counter mb-0 text-nowrap">
+										25000+
+									</h3>
+									<p className="fs-14 lh-sm mb-0 text-nowrap">
+										Happy Clients
+									</p>
 								</div>
 							</div>
 						</div>
@@ -138,7 +147,10 @@ export const Banner8 = ({ attributes, isEditor = false }) => {
 							<div className="row gx-lg-8 gx-xl-0 gy-10 align-items-center">
 								{renderImageColumn()}
 								<div className="col-lg-6 text-center text-lg-start">
-									<InnerBlocks allowedBlocks={ALLOWED_CODEWEBER_BLOCKS} templateLock={false} />
+									<InnerBlocks
+										allowedBlocks={ALLOWED_CODEWEBER_BLOCKS}
+										templateLock={false}
+									/>
 								</div>
 							</div>
 						</div>
@@ -152,7 +164,8 @@ export const Banner8 = ({ attributes, isEditor = false }) => {
 		<section
 			className={getSectionClasses()}
 			style={getSectionStyles()}
-			{...(backgroundType === 'image' && backgroundImageUrl && { 'data-image-src': backgroundImageUrl })}
+			{...(backgroundType === 'image' &&
+				backgroundImageUrl && { 'data-image-src': backgroundImageUrl })}
 		>
 			<div className="container">
 				<div className="card bg-soft-primary rounded-4 mt-2 mb-13 mb-md-17">
@@ -169,33 +182,3 @@ export const Banner8 = ({ attributes, isEditor = false }) => {
 		</section>
 	);
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

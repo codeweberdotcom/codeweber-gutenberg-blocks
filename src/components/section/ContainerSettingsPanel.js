@@ -30,5 +30,3 @@ export const ContainerSettingsPanel = ({
 );
 
 export default ContainerSettingsPanel;
-
-

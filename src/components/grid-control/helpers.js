@@ -1,12 +1,12 @@
 /**
  * Helpers для генерации CSS классов из атрибутов GridControl
- * 
+ *
  * @package CodeWeber Gutenberg Blocks
  */
 
 /**
  * Генерирует классы row-cols для адаптивных колонок
- * 
+ *
  * @param {string} prefix - Префикс (например, 'row-cols')
  * @param {string} value - Значение (например, '3', 'auto', '')
  * @returns {string} CSS класс
@@ -21,13 +21,17 @@ const rowColsClass = (prefix, value) => {
 
 /**
  * Генерирует классы для row-cols с учетом всех breakpoints
- * 
+ *
  * @param {Object} attrs - Объект атрибутов
  * @param {string} prefix - Префикс атрибутов (например, 'grid', 'columns')
  * @param {string} fallbackCount - Fallback значение для количества колонок
  * @returns {Array} Массив CSS классов
  */
-export const getRowColsClasses = (attrs = {}, prefix = 'grid', fallbackCount = null) => {
+export const getRowColsClasses = (
+	attrs = {},
+	prefix = 'grid',
+	fallbackCount = null
+) => {
 	const {
 		[`${prefix}RowCols`]: rowCols,
 		[`${prefix}RowColsSm`]: rowColsSm,
@@ -51,7 +55,7 @@ export const getRowColsClasses = (attrs = {}, prefix = 'grid', fallbackCount = n
 
 /**
  * Генерирует классы gap с учетом всех breakpoints
- * 
+ *
  * @param {Object} attrs - Объект атрибутов
  * @param {string} prefix - Префикс атрибутов (например, 'grid', 'columns')
  * @returns {Array} Массив CSS классов
@@ -59,10 +63,15 @@ export const getRowColsClasses = (attrs = {}, prefix = 'grid', fallbackCount = n
 /**
  * Генерирует классы gap для одного типа (general, x, или y)
  */
-const getGapClassesForType = (attrs = {}, prefix = 'grid', gapTypePrefix = 'g') => {
+const getGapClassesForType = (
+	attrs = {},
+	prefix = 'grid',
+	gapTypePrefix = 'g'
+) => {
 	const classes = [];
-	const suffix = gapTypePrefix === 'g' ? '' : gapTypePrefix === 'gx' ? 'X' : 'Y';
-	
+	const suffix =
+		gapTypePrefix === 'g' ? '' : gapTypePrefix === 'gx' ? 'X' : 'Y';
+
 	const {
 		[`${prefix}Gap${suffix}`]: gapDefault,
 		[`${prefix}Gap${suffix}Xs`]: gapXs,
@@ -75,7 +84,7 @@ const getGapClassesForType = (attrs = {}, prefix = 'grid', gapTypePrefix = 'g') 
 
 	// Базовое значение (default breakpoint) - используем XS если установлен, иначе default
 	// В Bootstrap XS - это базовый breakpoint без префикса
-	const baseGap = (gapXs && gapXs !== '') ? gapXs : gapDefault;
+	const baseGap = gapXs && gapXs !== '' ? gapXs : gapDefault;
 	if (baseGap && baseGap !== '') {
 		classes.push(`${gapTypePrefix}-${baseGap}`);
 	}
@@ -104,18 +113,18 @@ const getGapClassesForType = (attrs = {}, prefix = 'grid', gapTypePrefix = 'g') 
  */
 export const getGapClasses = (attrs = {}, prefix = 'grid') => {
 	const classes = [];
-	
+
 	// Собираем классы для всех трех типов одновременно
-	classes.push(...getGapClassesForType(attrs, prefix, 'g'));   // General (g-*)
-	classes.push(...getGapClassesForType(attrs, prefix, 'gx'));   // Horizontal (gx-*)
-	classes.push(...getGapClassesForType(attrs, prefix, 'gy'));   // Vertical (gy-*)
+	classes.push(...getGapClassesForType(attrs, prefix, 'g')); // General (g-*)
+	classes.push(...getGapClassesForType(attrs, prefix, 'gx')); // Horizontal (gx-*)
+	classes.push(...getGapClassesForType(attrs, prefix, 'gy')); // Vertical (gy-*)
 
 	return classes;
 };
 
 /**
  * Генерирует классы spacing с учетом всех breakpoints
- * 
+ *
  * @param {Object} attrs - Объект атрибутов
  * @param {string} prefix - Префикс атрибутов (например, 'grid', 'columns')
  * @returns {Array} Массив CSS классов
@@ -159,7 +168,7 @@ export const getSpacingClasses = (attrs = {}, prefix = 'grid') => {
 
 /**
  * Генерирует все CSS классы для grid контейнера
- * 
+ *
  * @param {Object} attrs - Объект атрибутов
  * @param {string} prefix - Префикс атрибутов (например, 'grid', 'columns')
  * @param {Object} options - Дополнительные опции
@@ -202,7 +211,7 @@ export const getGridClasses = (attrs = {}, prefix = 'grid', options = {}) => {
 /**
  * Создает объект с дефолтными атрибутами для grid
  * Используется в block.json
- * 
+ *
  * @param {string} prefix - Префикс атрибутов
  * @param {Object} defaults - Дефолтные значения
  * @returns {Object} Объект атрибутов для block.json
@@ -294,4 +303,3 @@ export const createGridAttributes = (prefix = 'grid', defaults = {}) => {
 		},
 	};
 };
-

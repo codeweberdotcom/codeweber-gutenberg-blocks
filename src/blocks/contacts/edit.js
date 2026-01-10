@@ -4,19 +4,24 @@
  * @package CodeWeber Gutenberg Blocks
  */
 
-import {
-	useBlockProps,
-	InspectorControls,
-} from '@wordpress/block-editor';
+import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
 import { useState, useEffect } from '@wordpress/element';
 import React from 'react';
 import apiFetch from '@wordpress/api-fetch';
 import { ContactsSidebar } from './sidebar';
-import { generateColorClass, generateTypographyClasses } from '../../utilities/class-generators';
+import {
+	generateColorClass,
+	generateTypographyClasses,
+} from '../../utilities/class-generators';
 import { IconRender } from '../../components/icon/IconRender';
 
-const ContactsPreview = ({ items, contactsData, format = 'simple', attributes = {} }) => {
+const ContactsPreview = ({
+	items,
+	contactsData,
+	format = 'simple',
+	attributes = {},
+}) => {
 	const {
 		titleTag = 'div',
 		titleColor = '',
@@ -112,27 +117,29 @@ const ContactsPreview = ({ items, contactsData, format = 'simple', attributes = 
 		let iconNameToUse = iconName || iconNameForContact;
 		let svgIconToUse = svgIcon;
 		let customSvgUrlToUse = customSvgUrl;
-		
+
 		// Если тип иконки none или нет данных - не показываем
 		if (iconType === 'none') return null;
-		
+
 		// Для font иконок: если пользователь не выбрал, используем предустановленную
 		if (iconType === 'font') {
 			if (!iconNameToUse) return null;
 		}
-		
+
 		// Для SVG иконок: если пользователь не выбрал, не показываем
 		if (iconType === 'svg' && !svgIconToUse) return null;
-		
+
 		// Для custom иконок: если пользователь не выбрал, не показываем
 		if (iconType === 'custom' && !customSvgUrlToUse) return null;
-		
-		// Для формата 'icon': 
+
+		// Для формата 'icon':
 		// - если iconWrapper = true: только me-4 (без mt-n1) - классы передаются в IconRender
 		// - если iconWrapper = false: me-4 mt-n1 - нужно обернуть в div, т.к. IconRender не создаёт обёртку
 		if (iconWrapper) {
 			// С обёрткой - классы передаются в IconRender через iconWrapperClass
-			const wrapperClassForIcon = iconWrapperClass ? `${iconWrapperClass} me-4` : 'me-4';
+			const wrapperClassForIcon = iconWrapperClass
+				? `${iconWrapperClass} me-4`
+				: 'me-4';
 			return (
 				<IconRender
 					iconType={iconType}
@@ -156,7 +163,9 @@ const ContactsPreview = ({ items, contactsData, format = 'simple', attributes = 
 			);
 		} else {
 			// Без обёртки - оборачиваем в div с классами me-4 mt-n1
-			const wrapperClassForIcon = iconWrapperClass ? `${iconWrapperClass} me-4 mt-n1` : 'me-4 mt-n1';
+			const wrapperClassForIcon = iconWrapperClass
+				? `${iconWrapperClass} me-4 mt-n1`
+				: 'me-4 mt-n1';
 			return (
 				<div className={wrapperClassForIcon}>
 					<IconRender
@@ -189,10 +198,10 @@ const ContactsPreview = ({ items, contactsData, format = 'simple', attributes = 
 		let iconNameToUse = iconName || iconNameForContact;
 		let svgIconToUse = svgIcon;
 		let customSvgUrlToUse = customSvgUrl;
-		
+
 		// Если тип иконки none или нет данных - не показываем
 		if (iconType === 'none') return null;
-		
+
 		// Для font иконок: если пользователь не выбрал, используем предустановленную
 		if (iconType === 'font') {
 			if (!iconNameToUse) return null;
@@ -206,7 +215,7 @@ const ContactsPreview = ({ items, contactsData, format = 'simple', attributes = 
 			}
 			return <i className={iconClasses.filter(Boolean).join(' ')}></i>;
 		}
-		
+
 		// Для SVG иконок
 		if (iconType === 'svg' && svgIconToUse) {
 			// Для SVG используем IconRender, но без обёртки
@@ -232,7 +241,7 @@ const ContactsPreview = ({ items, contactsData, format = 'simple', attributes = 
 				/>
 			);
 		}
-		
+
 		// Для custom иконок
 		if (iconType === 'custom' && customSvgUrlToUse) {
 			return (
@@ -257,7 +266,7 @@ const ContactsPreview = ({ items, contactsData, format = 'simple', attributes = 
 				/>
 			);
 		}
-		
+
 		return null;
 	};
 
@@ -265,224 +274,426 @@ const ContactsPreview = ({ items, contactsData, format = 'simple', attributes = 
 		<div className="codeweber-contacts-preview">
 			{enabledItems.map((item, index) => (
 				<div key={index} className="codeweber-contacts-preview-item">
-					{item.type === 'address' && (() => {
-						const addressType = item.addressType || 'legal';
-						const address = contactsData?.address?.[addressType] || '';
-						if (!address) {
+					{item.type === 'address' &&
+						(() => {
+							const addressType = item.addressType || 'legal';
+							const address =
+								contactsData?.address?.[addressType] || '';
+							if (!address) {
+								return (
+									<div>
+										{format === 'icon' ? (
+											<div
+												className={`d-flex flex-row ${iconWrapperClass || ''}`}
+											>
+												<div>
+													{renderContactIcon(
+														'location-pin-alt'
+													)}
+												</div>
+												<div>
+													{React.createElement(
+														titleTag || 'div',
+														{
+															className:
+																titleClasses,
+														},
+														__(
+															'Address',
+															'codeweber-gutenberg-blocks'
+														)
+													)}
+													{React.createElement(
+														textTag || 'address',
+														{
+															className:
+																textClasses,
+														},
+														__(
+															'Address will be displayed here',
+															'codeweber-gutenberg-blocks'
+														)
+													)}
+												</div>
+											</div>
+										) : format === 'icon-simple' ? (
+											<div>
+												{React.createElement(
+													textTag || 'address',
+													{ className: textClasses },
+													<>
+														{renderSimpleIcon(
+															'location-pin-alt'
+														)}
+														<span>
+															{__(
+																'Address will be displayed here',
+																'codeweber-gutenberg-blocks'
+															)}
+														</span>
+													</>
+												)}
+											</div>
+										) : (
+											<div>
+												{React.createElement(
+													textTag || 'address',
+													{
+														className: `pe-xl-15 pe-xxl-17 ${textClasses}`,
+													},
+													__(
+														'Address will be displayed here',
+														'codeweber-gutenberg-blocks'
+													)
+												)}
+											</div>
+										)}
+									</div>
+								);
+							}
+
 							return (
 								<div>
 									{format === 'icon' ? (
-										<div className={`d-flex flex-row ${iconWrapperClass || ''}`}>
+										<div
+											className={`d-flex flex-row ${iconWrapperClass || ''}`}
+										>
 											<div>
-												{renderContactIcon('location-pin-alt')}
+												{renderContactIcon(
+													'location-pin-alt'
+												)}
 											</div>
 											<div>
-												{React.createElement(titleTag || 'div', { className: titleClasses }, __('Address', 'codeweber-gutenberg-blocks'))}
-												{React.createElement(textTag || 'address', { className: textClasses }, __('Address will be displayed here', 'codeweber-gutenberg-blocks'))}
+												{React.createElement(
+													titleTag || 'div',
+													{ className: titleClasses },
+													__(
+														'Address',
+														'codeweber-gutenberg-blocks'
+													)
+												)}
+												{React.createElement(
+													textTag || 'address',
+													{ className: textClasses },
+													address
+												)}
 											</div>
 										</div>
 									) : format === 'icon-simple' ? (
 										<div>
-											{React.createElement(textTag || 'address', { className: textClasses }, 
+											{React.createElement(
+												textTag || 'address',
+												{ className: textClasses },
 												<>
-													{renderSimpleIcon('location-pin-alt')}
-													<span>{__('Address will be displayed here', 'codeweber-gutenberg-blocks')}</span>
+													{renderSimpleIcon(
+														'location-pin-alt'
+													)}
+													<span>{address}</span>
 												</>
 											)}
 										</div>
 									) : (
 										<div>
-											{React.createElement(textTag || 'address', { className: `pe-xl-15 pe-xxl-17 ${textClasses}` }, __('Address will be displayed here', 'codeweber-gutenberg-blocks'))}
+											<address
+												className={`pe-xl-15 pe-xxl-17 ${textClasses}`}
+											>
+												{address}
+											</address>
 										</div>
 									)}
 								</div>
 							);
-						}
+						})()}
 
-						return (
-							<div>
-								{format === 'icon' ? (
-									<div className={`d-flex flex-row ${iconWrapperClass || ''}`}>
-										<div>
-											{renderContactIcon('location-pin-alt')}
-										</div>
-										<div>
-											{React.createElement(titleTag || 'div', { className: titleClasses }, __('Address', 'codeweber-gutenberg-blocks'))}
-											{React.createElement(textTag || 'address', { className: textClasses }, address)}
-										</div>
-									</div>
-								) : format === 'icon-simple' ? (
+					{item.type === 'email' &&
+						(() => {
+							const email = contactsData?.email || '';
+							if (!email) {
+								return (
 									<div>
-										{React.createElement(textTag || 'address', { className: textClasses }, 
-											<>
-												{renderSimpleIcon('location-pin-alt')}
-												<span>{address}</span>
-											</>
+										{format === 'icon' ? (
+											<div
+												className={`d-flex flex-row ${iconWrapperClass || ''}`}
+											>
+												<div>
+													{renderContactIcon(
+														'envelope'
+													)}
+												</div>
+												<div>
+													{React.createElement(
+														titleTag || 'h5',
+														{
+															className:
+																titleClasses,
+														},
+														__(
+															'E-mail',
+															'codeweber-gutenberg-blocks'
+														)
+													)}
+													<p className="mb-0">
+														<a
+															href="mailto:#"
+															className={`link-body ${textClasses}`}
+														>
+															{__(
+																'Email will be displayed here',
+																'codeweber-gutenberg-blocks'
+															)}
+														</a>
+													</p>
+												</div>
+											</div>
+										) : format === 'icon-simple' ? (
+											<div>
+												<a
+													href="mailto:#"
+													className={`d-flex align-items-center ${textClasses}`}
+												>
+													{renderSimpleIcon(
+														'envelope'
+													)}
+													<span>
+														{__(
+															'Email will be displayed here',
+															'codeweber-gutenberg-blocks'
+														)}
+													</span>
+												</a>
+											</div>
+										) : (
+											<div>
+												<a
+													href="mailto:#"
+													className={textClasses}
+												>
+													{__(
+														'Email will be displayed here',
+														'codeweber-gutenberg-blocks'
+													)}
+												</a>
+											</div>
 										)}
 									</div>
-								) : (
-									<div>
-										<address className={`pe-xl-15 pe-xxl-17 ${textClasses}`}>{address}</address>
-									</div>
-								)}
-							</div>
-						);
-					})()}
+								);
+							}
 
-					{item.type === 'email' && (() => {
-						const email = contactsData?.email || '';
-						if (!email) {
 							return (
 								<div>
 									{format === 'icon' ? (
-										<div className={`d-flex flex-row ${iconWrapperClass || ''}`}>
+										<div
+											className={`d-flex flex-row ${iconWrapperClass || ''}`}
+										>
 											<div>
 												{renderContactIcon('envelope')}
 											</div>
 											<div>
-												{React.createElement(titleTag || 'h5', { className: titleClasses }, __('E-mail', 'codeweber-gutenberg-blocks'))}
+												{React.createElement(
+													titleTag || 'h5',
+													{ className: titleClasses },
+													__(
+														'E-mail',
+														'codeweber-gutenberg-blocks'
+													)
+												)}
 												<p className="mb-0">
-													<a href="mailto:#" className={`link-body ${textClasses}`}>
-														{__('Email will be displayed here', 'codeweber-gutenberg-blocks')}
+													<a
+														href={`mailto:${email}`}
+														className={`link-body ${textClasses}`}
+													>
+														{email}
 													</a>
 												</p>
 											</div>
 										</div>
-								) : format === 'icon-simple' ? (
-									<div>
-										<a href="mailto:#" className={`d-flex align-items-center ${textClasses}`}>
-											{renderSimpleIcon('envelope')}
-											<span>{__('Email will be displayed here', 'codeweber-gutenberg-blocks')}</span>
-										</a>
-									</div>
+									) : format === 'icon-simple' ? (
+										<div>
+											<a
+												href={`mailto:${email}`}
+												className={`d-flex align-items-center ${textClasses}`}
+											>
+												{renderSimpleIcon('envelope')}
+												<span>{email}</span>
+											</a>
+										</div>
 									) : (
 										<div>
-											<a href="mailto:#" className={textClasses}>
-												{__('Email will be displayed here', 'codeweber-gutenberg-blocks')}
+											<a
+												href={`mailto:${email}`}
+												className={textClasses}
+											>
+												{email}
 											</a>
 										</div>
 									)}
 								</div>
 							);
-						}
+						})()}
 
-						return (
-							<div>
-								{format === 'icon' ? (
-									<div className={`d-flex flex-row ${iconWrapperClass || ''}`}>
-										<div>
-											{renderContactIcon('envelope')}
-										</div>
-										<div>
-											{React.createElement(titleTag || 'h5', { className: titleClasses }, __('E-mail', 'codeweber-gutenberg-blocks'))}
-											<p className="mb-0">
-												<a href={`mailto:${email}`} className={`link-body ${textClasses}`}>
-													{email}
+					{item.type === 'phone' &&
+						(() => {
+							const phones = item.phones || [];
+							const phoneData = phones
+								.map(
+									(phoneKey) =>
+										contactsData?.phones?.[phoneKey]
+								)
+								.filter(Boolean);
+
+							if (phoneData.length === 0) {
+								return (
+									<div>
+										{format === 'icon' ? (
+											<div className="d-flex flex-row">
+												<div>
+													{renderContactIcon(
+														'phone-volume'
+													)}
+												</div>
+												<div>
+													{React.createElement(
+														titleTag || 'h5',
+														{
+															className:
+																titleClasses,
+														},
+														__(
+															'Phone',
+															'codeweber-gutenberg-blocks'
+														)
+													)}
+													<a
+														href="tel:#"
+														className={textClasses}
+													>
+														{__(
+															'Phone will be displayed here',
+															'codeweber-gutenberg-blocks'
+														)}
+													</a>
+												</div>
+											</div>
+										) : format === 'icon-simple' ? (
+											<div>
+												<a
+													href="tel:#"
+													className={`d-flex align-items-center ${textClasses}`}
+												>
+													{renderSimpleIcon(
+														'phone-volume'
+													)}
+													<span>
+														{__(
+															'Phone will be displayed here',
+															'codeweber-gutenberg-blocks'
+														)}
+													</span>
 												</a>
-											</p>
-										</div>
+											</div>
+										) : (
+											<div>
+												<a
+													href="tel:#"
+													className={textClasses}
+												>
+													{__(
+														'Phone will be displayed here',
+														'codeweber-gutenberg-blocks'
+													)}
+												</a>
+											</div>
+										)}
 									</div>
-								) : format === 'icon-simple' ? (
-									<div>
-										<a href={`mailto:${email}`} className={`d-flex align-items-center ${textClasses}`}>
-											{renderSimpleIcon('envelope')}
-											<span>{email}</span>
-										</a>
-									</div>
-								) : (
-									<div>
-										<a href={`mailto:${email}`} className={textClasses}>{email}</a>
-									</div>
-								)}
-							</div>
-						);
-					})()}
+								);
+							}
 
-					{item.type === 'phone' && (() => {
-						const phones = item.phones || [];
-						const phoneData = phones
-							.map((phoneKey) => contactsData?.phones?.[phoneKey])
-							.filter(Boolean);
-
-						if (phoneData.length === 0) {
 							return (
 								<div>
 									{format === 'icon' ? (
-										<div className="d-flex flex-row">
+										<div
+											className={`d-flex flex-row ${iconWrapperClass || ''}`}
+										>
 											<div>
-												{renderContactIcon('phone-volume')}
+												{renderContactIcon(
+													'phone-volume'
+												)}
 											</div>
 											<div>
-												{React.createElement(titleTag || 'h5', { className: titleClasses }, __('Phone', 'codeweber-gutenberg-blocks'))}
-												<a href="tel:#" className={textClasses}>
-													{__('Phone will be displayed here', 'codeweber-gutenberg-blocks')}
-												</a>
+												{React.createElement(
+													titleTag || 'h5',
+													{ className: titleClasses },
+													__(
+														'Phone',
+														'codeweber-gutenberg-blocks'
+													)
+												)}
+												{phoneData.map(
+													(phone, phoneIndex) => (
+														<span key={phoneIndex}>
+															<a
+																href={`tel:${phone.clean}`}
+																className={
+																	textClasses
+																}
+															>
+																{phone.display}
+															</a>
+															{phoneIndex <
+																phoneData.length -
+																	1 && <br />}
+														</span>
+													)
+												)}
 											</div>
 										</div>
 									) : format === 'icon-simple' ? (
 										<div>
-											<a href="tel:#" className={`d-flex align-items-center ${textClasses}`}>
-												{renderSimpleIcon('phone-volume')}
-												<span>{__('Phone will be displayed here', 'codeweber-gutenberg-blocks')}</span>
-											</a>
+											{phoneData.map(
+												(phone, phoneIndex) => (
+													<span key={phoneIndex}>
+														<a
+															href={`tel:${phone.clean}`}
+															className={`d-flex align-items-center ${textClasses}`}
+														>
+															{renderSimpleIcon(
+																'phone-volume'
+															)}
+															<span>
+																{phone.display}
+															</span>
+														</a>
+														{phoneIndex <
+															phoneData.length -
+																1 && <br />}
+													</span>
+												)
+											)}
 										</div>
 									) : (
 										<div>
-											<a href="tel:#" className={textClasses}>
-												{__('Phone will be displayed here', 'codeweber-gutenberg-blocks')}
-											</a>
+											{phoneData.map(
+												(phone, phoneIndex) => (
+													<span key={phoneIndex}>
+														<a
+															href={`tel:${phone.clean}`}
+															className={
+																textClasses
+															}
+														>
+															{phone.display}
+														</a>
+														{phoneIndex <
+															phoneData.length -
+																1 && <br />}
+													</span>
+												)
+											)}
 										</div>
 									)}
 								</div>
 							);
-						}
-
-						return (
-							<div>
-								{format === 'icon' ? (
-									<div className={`d-flex flex-row ${iconWrapperClass || ''}`}>
-										<div>
-											{renderContactIcon('phone-volume')}
-										</div>
-										<div>
-											{React.createElement(titleTag || 'h5', { className: titleClasses }, __('Phone', 'codeweber-gutenberg-blocks'))}
-											{phoneData.map((phone, phoneIndex) => (
-												<span key={phoneIndex}>
-													<a href={`tel:${phone.clean}`} className={textClasses}>
-														{phone.display}
-													</a>
-													{phoneIndex < phoneData.length - 1 && <br />}
-												</span>
-											))}
-										</div>
-									</div>
-								) : format === 'icon-simple' ? (
-									<div>
-										{phoneData.map((phone, phoneIndex) => (
-											<span key={phoneIndex}>
-												<a href={`tel:${phone.clean}`} className={`d-flex align-items-center ${textClasses}`}>
-													{renderSimpleIcon('phone-volume')}
-													<span>{phone.display}</span>
-												</a>
-												{phoneIndex < phoneData.length - 1 && <br />}
-											</span>
-										))}
-									</div>
-								) : (
-									<div>
-										{phoneData.map((phone, phoneIndex) => (
-											<span key={phoneIndex}>
-												<a href={`tel:${phone.clean}`} className={textClasses}>
-													{phone.display}
-												</a>
-												{phoneIndex < phoneData.length - 1 && <br />}
-											</span>
-										))}
-									</div>
-								)}
-							</div>
-						);
-					})()}
+						})()}
 				</div>
 			))}
 		</div>
@@ -490,8 +701,8 @@ const ContactsPreview = ({ items, contactsData, format = 'simple', attributes = 
 };
 
 const ContactsEdit = ({ attributes, setAttributes }) => {
-	const { 
-		items = [], 
+	const {
+		items = [],
 		format = 'simple',
 		textColor = '',
 		textColorType = 'solid',
@@ -533,17 +744,25 @@ const ContactsEdit = ({ attributes, setAttributes }) => {
 	return (
 		<>
 			<InspectorControls>
-				<ContactsSidebar attributes={attributes} setAttributes={setAttributes} />
+				<ContactsSidebar
+					attributes={attributes}
+					setAttributes={setAttributes}
+				/>
 			</InspectorControls>
 			<div {...blockProps}>
 				{isLoading || !contactsData ? (
 					<div className="codeweber-contacts-preview-empty">
-						<p>{__('Loading contacts data...', 'codeweber-gutenberg-blocks')}</p>
+						<p>
+							{__(
+								'Loading contacts data...',
+								'codeweber-gutenberg-blocks'
+							)}
+						</p>
 					</div>
 				) : (
-					<ContactsPreview 
-						items={items} 
-						contactsData={contactsData} 
+					<ContactsPreview
+						items={items}
+						contactsData={contactsData}
 						format={format}
 						attributes={attributes}
 					/>
@@ -554,4 +773,3 @@ const ContactsEdit = ({ attributes, setAttributes }) => {
 };
 
 export default ContactsEdit;
-

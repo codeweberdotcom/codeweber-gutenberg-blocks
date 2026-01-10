@@ -19,7 +19,10 @@ registerBlockType(metadata, {
 	edit: Edit,
 	save: Save,
 	title: __('Widget', 'codeweber-gutenberg-blocks'),
-	description: __('Widget container with title and InnerBlocks support.', 'codeweber-gutenberg-blocks'),
+	description: __(
+		'Widget container with title and InnerBlocks support.',
+		'codeweber-gutenberg-blocks'
+	),
 	keywords: [
 		__('widget', 'codeweber-gutenberg-blocks'),
 		__('container', 'codeweber-gutenberg-blocks'),

@@ -40,8 +40,14 @@ export const Banner4 = ({ attributes, isEditor = false }) => {
 
 	// Функция для получения классов секции
 	const getSectionClasses = () => {
-		const classes = ['wrapper', 'position-relative', 'min-vh-70', 'd-lg-flex', 'align-items-center'];
-		
+		const classes = [
+			'wrapper',
+			'position-relative',
+			'min-vh-70',
+			'd-lg-flex',
+			'align-items-center',
+		];
+
 		// Если sectionClass содержит bg-light, используем sectionClass напрямую
 		if (sectionClass && sectionClass.includes('bg-light')) {
 			classes.push(sectionClass);
@@ -53,7 +59,7 @@ export const Banner4 = ({ attributes, isEditor = false }) => {
 				classes.push(sectionClass);
 			}
 		}
-		
+
 		return classes.filter(Boolean).join(' ');
 	};
 
@@ -77,21 +83,23 @@ export const Banner4 = ({ attributes, isEditor = false }) => {
 
 	const imagesToRender = images || [];
 	const hasImage = imagesToRender && imagesToRender.length > 0;
-	
+
 	// Placeholder изображение - about16.jpg
-	const placeholderUrl = isEditor 
-		? (window.location?.origin 
+	const placeholderUrl = isEditor
+		? window.location?.origin
 			? `${window.location.origin}/wp-content/themes/codeweber/dist/assets/img/photos/about16.jpg`
-			: './assets/img/photos/about16.jpg')
+			: './assets/img/photos/about16.jpg'
 		: '/wp-content/themes/codeweber/dist/assets/img/photos/about16.jpg';
 
 	// Рендерим фоновое изображение справа
 	const renderBackgroundImage = () => {
-		const imageUrl = hasImage ? getImageUrl(imagesToRender[0], imageSize) : placeholderUrl;
-		
+		const imageUrl = hasImage
+			? getImageUrl(imagesToRender[0], imageSize)
+			: placeholderUrl;
+
 		if (isEditor) {
 			return (
-				<div 
+				<div
 					className="rounded-4-lg-start col-lg-6 order-lg-2 position-lg-absolute top-0 end-0 image-wrapper bg-image bg-cover h-100 min-vh-50"
 					style={{ backgroundImage: `url(${imageUrl})` }}
 				></div>
@@ -99,7 +107,7 @@ export const Banner4 = ({ attributes, isEditor = false }) => {
 		}
 
 		return (
-			<div 
+			<div
 				className="rounded-4-lg-start col-lg-6 order-lg-2 position-lg-absolute top-0 end-0 image-wrapper bg-image bg-cover h-100 min-vh-50"
 				data-image-src={imageUrl}
 			></div>
@@ -115,7 +123,10 @@ export const Banner4 = ({ attributes, isEditor = false }) => {
 					<div className="row">
 						<div className="col-lg-6">
 							<div className="mt-10 mt-md-11 mt-lg-n10 px-10 px-md-11 ps-lg-0 pe-lg-13 text-center text-lg-start">
-								<InnerBlocks allowedBlocks={ALLOWED_CODEWEBER_BLOCKS} templateLock={false} />
+								<InnerBlocks
+									allowedBlocks={ALLOWED_CODEWEBER_BLOCKS}
+									templateLock={false}
+								/>
 							</div>
 							{/* /div */}
 						</div>
@@ -132,7 +143,8 @@ export const Banner4 = ({ attributes, isEditor = false }) => {
 		<section
 			className={getSectionClasses()}
 			style={getSectionStyles()}
-			{...(backgroundType === 'image' && backgroundImageUrl && { 'data-image-src': backgroundImageUrl })}
+			{...(backgroundType === 'image' &&
+				backgroundImageUrl && { 'data-image-src': backgroundImageUrl })}
 		>
 			{renderBackgroundImage()}
 			{/* /column */}
@@ -152,33 +164,3 @@ export const Banner4 = ({ attributes, isEditor = false }) => {
 		</section>
 	);
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

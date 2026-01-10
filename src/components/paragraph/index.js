@@ -5,7 +5,11 @@
  */
 
 export { ParagraphControl } from './ParagraphControl';
-export { ParagraphRender, ParagraphRenderSave, getParagraphClasses } from './ParagraphRender';
+export {
+	ParagraphRender,
+	ParagraphRenderSave,
+	getParagraphClasses,
+} from './ParagraphRender';
 
 /**
  * Хелпер для добавления атрибутов параграфа в block.json
@@ -15,7 +19,7 @@ export { ParagraphRender, ParagraphRenderSave, getParagraphClasses } from './Par
  */
 export const paragraphAttributes = (prefix = '') => {
 	const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
-	const attr = (name) => prefix ? `${prefix}${capitalize(name)}` : name;
+	const attr = (name) => (prefix ? `${prefix}${capitalize(name)}` : name);
 
 	return {
 		[attr('text')]: {
@@ -60,16 +64,3 @@ export const paragraphAttributes = (prefix = '') => {
 		},
 	};
 };
-
-
-
-
-
-
-
-
-
-
-
-
-

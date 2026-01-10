@@ -1,6 +1,6 @@
 /**
  * BorderRadiusControl Component
- * 
+ *
  * @package CodeWeber Gutenberg Blocks
  */
 
@@ -10,18 +10,18 @@ import { borderRadiusOptions } from '../../utilities/border-radius';
 
 /**
  * BorderRadiusControl Component
- * 
+ *
  * @param {Object} props
  * @param {string} props.value - Current border radius value
  * @param {Function} props.onChange - Callback when value changes
  * @param {string} props.label - Label for the control
  * @param {string} props.help - Help text
  */
-export const BorderRadiusControl = ({ 
-	value = '', 
-	onChange, 
+export const BorderRadiusControl = ({
+	value = '',
+	onChange,
 	label = __('Border Radius', 'codeweber-gutenberg-blocks'),
-	help = '' 
+	help = '',
 }) => {
 	return (
 		<SelectControl
@@ -35,7 +35,3 @@ export const BorderRadiusControl = ({
 };
 
 export default BorderRadiusControl;
-
-
-
-

@@ -1,21 +1,11 @@
 /**
  * Image Hover Component Exports
- * 
+ *
  * @package CodeWeber Gutenberg Blocks
  */
 
-export { 
+export {
 	ImageHoverControl,
 	getImageHoverClasses,
 	getTooltipTitle,
 } from './ImageHoverControl';
-
-
-
-
-
-
-
-
-
-

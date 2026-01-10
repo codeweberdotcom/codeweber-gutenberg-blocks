@@ -161,7 +161,12 @@ export const getClassNames = (attributes) => {
 		classes.push(`${ButtonShape}`);
 
 	// Добавляем классы для link
-	if (ButtonType === 'link' && HoverType && HoverType !== 'none' && HoverType.trim() !== '') {
+	if (
+		ButtonType === 'link' &&
+		HoverType &&
+		HoverType !== 'none' &&
+		HoverType.trim() !== ''
+	) {
 		// Добавляем класс hover только если HoverType не 'none' и не пустой
 		classes.push(HoverType);
 		// Добавляем классы LinkColor и LinkTextColor

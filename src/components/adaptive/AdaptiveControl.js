@@ -31,7 +31,9 @@ export const AdaptiveControl = ({
 		<>
 			<div className="mb-3">
 				<div className="component-sidebar-title">
-					<label>{__('Extra small (xs)', 'codeweber-gutenberg-blocks')}</label>
+					<label>
+						{__('Extra small (xs)', 'codeweber-gutenberg-blocks')}
+					</label>
 				</div>
 				<SelectControl
 					value={columnColXs}
@@ -41,7 +43,9 @@ export const AdaptiveControl = ({
 			</div>
 			<div className="mb-3">
 				<div className="component-sidebar-title">
-					<label>{__('Small (sm) ≥576px', 'codeweber-gutenberg-blocks')}</label>
+					<label>
+						{__('Small (sm) ≥576px', 'codeweber-gutenberg-blocks')}
+					</label>
 				</div>
 				<SelectControl
 					value={columnColSm}
@@ -51,7 +55,9 @@ export const AdaptiveControl = ({
 			</div>
 			<div className="mb-3">
 				<div className="component-sidebar-title">
-					<label>{__('Medium (md) ≥768px', 'codeweber-gutenberg-blocks')}</label>
+					<label>
+						{__('Medium (md) ≥768px', 'codeweber-gutenberg-blocks')}
+					</label>
 				</div>
 				<SelectControl
 					value={columnColMd}
@@ -61,7 +67,9 @@ export const AdaptiveControl = ({
 			</div>
 			<div className="mb-3">
 				<div className="component-sidebar-title">
-					<label>{__('Large (lg) ≥992px', 'codeweber-gutenberg-blocks')}</label>
+					<label>
+						{__('Large (lg) ≥992px', 'codeweber-gutenberg-blocks')}
+					</label>
 				</div>
 				<SelectControl
 					value={columnColLg}
@@ -71,7 +79,12 @@ export const AdaptiveControl = ({
 			</div>
 			<div className="mb-3">
 				<div className="component-sidebar-title">
-					<label>{__('Extra large (xl) ≥1200px', 'codeweber-gutenberg-blocks')}</label>
+					<label>
+						{__(
+							'Extra large (xl) ≥1200px',
+							'codeweber-gutenberg-blocks'
+						)}
+					</label>
 				</div>
 				<SelectControl
 					value={columnColXl}
@@ -81,7 +94,12 @@ export const AdaptiveControl = ({
 			</div>
 			<div className="mb-3">
 				<div className="component-sidebar-title">
-					<label>{__('Extra extra large (xxl) ≥1400px', 'codeweber-gutenberg-blocks')}</label>
+					<label>
+						{__(
+							'Extra extra large (xxl) ≥1400px',
+							'codeweber-gutenberg-blocks'
+						)}
+					</label>
 				</div>
 				<SelectControl
 					value={columnColXxl}
@@ -94,4 +112,3 @@ export const AdaptiveControl = ({
 };
 
 export default AdaptiveControl;
-

@@ -11,4 +11,3 @@ const ContactsSave = () => {
 };
 
 export default ContactsSave;
-

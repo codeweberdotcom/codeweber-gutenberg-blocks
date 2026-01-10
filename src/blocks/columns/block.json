@@ -1,54 +1,54 @@
 {
-    "apiVersion": 3,
-    "name": "codeweber-blocks/columns",
-    "version": "0.1.0",
-    "title": "Columns",
-    "category": "codeweber-gutenberg-elements",
-    "icon": "columns",
-    "description": "Custom columns block with layout controls.",
-    "supports": {
-        "html": false,
-        "customClassName": false,
-        "anchor": true,
-        "align": false
-    },
-    "attributes": {
-        "columnsType": {
-            "type": "string",
-            "default": "classic"
-        },
-        "columnsGutterX": {
-            "type": "string",
-            "default": ""
-        },
-        "columnsGutterY": {
-            "type": "string",
-            "default": ""
-        },
-        "columnsCount": {
-            "type": "number",
-            "default": 2
-        },
-        "columnsAlignItems": {
-            "type": "string",
-            "default": ""
-        },
-        "columnsJustifyContent": {
-            "type": "string",
-            "default": ""
-        },
-        "columnsTextAlign": {
-            "type": "string",
-            "default": ""
-        },
-        "columnsPosition": {
-            "type": "string",
-            "default": ""
-        },
-        "columnsClass": {
-            "type": "string",
-            "default": ""
-        },
+	"apiVersion": 3,
+	"name": "codeweber-blocks/columns",
+	"version": "0.1.0",
+	"title": "Columns",
+	"category": "codeweber-gutenberg-elements",
+	"icon": "columns",
+	"description": "Custom columns block with layout controls.",
+	"supports": {
+		"html": false,
+		"customClassName": false,
+		"anchor": true,
+		"align": false
+	},
+	"attributes": {
+		"columnsType": {
+			"type": "string",
+			"default": "classic"
+		},
+		"columnsGutterX": {
+			"type": "string",
+			"default": ""
+		},
+		"columnsGutterY": {
+			"type": "string",
+			"default": ""
+		},
+		"columnsCount": {
+			"type": "number",
+			"default": 2
+		},
+		"columnsAlignItems": {
+			"type": "string",
+			"default": ""
+		},
+		"columnsJustifyContent": {
+			"type": "string",
+			"default": ""
+		},
+		"columnsTextAlign": {
+			"type": "string",
+			"default": ""
+		},
+		"columnsPosition": {
+			"type": "string",
+			"default": ""
+		},
+		"columnsClass": {
+			"type": "string",
+			"default": ""
+		},
 		"columnsData": {
 			"type": "string",
 			"default": ""
@@ -145,7 +145,5 @@
 	"textdomain": "codeweber-blocks",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
-    "style": "file:./style-index.css"
+	"style": "file:./style-index.css"
 }
-
-

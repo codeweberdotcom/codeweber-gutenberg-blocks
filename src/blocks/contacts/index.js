@@ -25,7 +25,10 @@ registerBlockType(metadata, {
 	edit: Edit,
 	save: Save,
 	title: __('Contacts', 'codeweber-gutenberg-blocks'),
-	description: __('Display contact information from Codeweber theme Redux settings.', 'codeweber-gutenberg-blocks'),
+	description: __(
+		'Display contact information from Codeweber theme Redux settings.',
+		'codeweber-gutenberg-blocks'
+	),
 	keywords: [
 		__('contacts', 'codeweber-gutenberg-blocks'),
 		__('address', 'codeweber-gutenberg-blocks'),

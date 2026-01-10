@@ -51,4 +51,3 @@ $content = $html_block_post->post_content;
 
 // Выводим только контент без оберток
 echo $content;
-

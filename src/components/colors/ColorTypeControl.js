@@ -40,5 +40,3 @@ export const ColorTypeControl = ({
 );
 
 export default ColorTypeControl;
-
-

@@ -5,7 +5,10 @@
  */
 
 import { InnerBlocks } from '@wordpress/block-editor';
-import { generateBackgroundClasses, generateAlignmentClasses } from '../../utilities/class-generators';
+import {
+	generateBackgroundClasses,
+	generateAlignmentClasses,
+} from '../../utilities/class-generators';
 import { getSpacingClasses } from '../section/utils';
 
 /**
@@ -44,41 +47,41 @@ const Save = ({ attributes }) => {
 	// Generate classes for card wrapper
 	const getCardClasses = () => {
 		const classes = [];
-		
+
 		if (enableCard) {
 			classes.push('card');
 		}
-		
+
 		if (overflowHidden) {
 			classes.push('overflow-hidden');
 		}
-		
+
 		if (h100) {
 			classes.push('h-100');
 		}
-		
+
 		if (borderRadius) {
 			classes.push(borderRadius);
 		}
-		
+
 		if (shadow) {
 			classes.push(shadow);
 		}
-		
+
 		if (cardBorder || borderPosition) {
 			classes.push(cardBorder || borderPosition);
 		}
-		
+
 		// Если выбраны цвет или ширина, но нет позиции - применяем обычный border
 		if ((borderColor || borderWidth) && !cardBorder && !borderPosition) {
 			classes.push('border');
 		}
-		
+
 		if (borderWidth) {
 			classes.push(borderWidth);
 		}
-		
-			if (borderColor) {
+
+		if (borderColor) {
 			const colorType = borderColorType || 'solid';
 			if (colorType === 'soft') {
 				classes.push(`border-soft-${borderColor}`);
@@ -88,35 +91,35 @@ const Save = ({ attributes }) => {
 				classes.push(`border-${borderColor}`);
 			}
 		}
-		
+
 		// Background classes (color, gradient, image)
 		classes.push(...generateBackgroundClasses(attributes));
-		
+
 		// Spacing classes
 		classes.push(...getSpacingClasses(attributes));
-		
+
 		// Alignment classes - применяются к card только если card-body не включен
 		if (!enableCardBody) {
 			classes.push(...generateAlignmentClasses(attributes));
 		}
-		
+
 		// Custom class
 		if (blockClass) {
 			classes.push(blockClass);
 		}
-		
+
 		return classes.filter(Boolean).join(' ');
 	};
 
 	// Generate classes for card-body
 	const getCardBodyClasses = () => {
 		const classes = ['card-body'];
-		
+
 		// Alignment classes - применяются к card-body если он включен
 		if (enableCardBody) {
 			classes.push(...generateAlignmentClasses(attributes));
 		}
-		
+
 		return classes.filter(Boolean).join(' ');
 	};
 
@@ -146,14 +149,21 @@ const Save = ({ attributes }) => {
 		<div
 			{...(cardClasses && { className: cardClasses })}
 			{...(blockId && { id: blockId })}
-			{...(backgroundType === 'image' && backgroundImageUrl && { 'data-image-src': backgroundImageUrl })}
-			{...(backgroundType === 'pattern' && backgroundPatternUrl && { 'data-image-src': backgroundPatternUrl })}
+			{...(backgroundType === 'image' &&
+				backgroundImageUrl && { 'data-image-src': backgroundImageUrl })}
+			{...(backgroundType === 'pattern' &&
+				backgroundPatternUrl && {
+					'data-image-src': backgroundPatternUrl,
+				})}
 			{...dataAttributes}
-			{...(animationEnabled && animationType && { 
-				'data-cue': animationType,
-				...(animationDuration && { 'data-duration': animationDuration }),
-				...(animationDelay && { 'data-delay': animationDelay }),
-			})}
+			{...(animationEnabled &&
+				animationType && {
+					'data-cue': animationType,
+					...(animationDuration && {
+						'data-duration': animationDuration,
+					}),
+					...(animationDelay && { 'data-delay': animationDelay }),
+				})}
 		>
 			{enableCardBody ? (
 				<div className={getCardBodyClasses()}>
@@ -167,4 +177,3 @@ const Save = ({ attributes }) => {
 };
 
 export default Save;
-

@@ -37,7 +37,9 @@ const ListsEdit = ({ attributes, setAttributes, clientId }) => {
 
 	const previousModeRef = useRef(mode);
 	const previousPostTypeRef = useRef(postType);
-	const previousSelectedTaxonomiesRef = useRef(JSON.stringify(selectedTaxonomies || {}));
+	const previousSelectedTaxonomiesRef = useRef(
+		JSON.stringify(selectedTaxonomies || {})
+	);
 	const [isLoadingPosts, setIsLoadingPosts] = useState(false);
 
 	// Ensure all item IDs are unique and contain clientId
@@ -47,7 +49,9 @@ const ListsEdit = ({ attributes, setAttributes, clientId }) => {
 		}
 
 		const clientIdPrefix = clientId.replace(/[^a-z0-9]/gi, '');
-		const hasInvalidIds = items.some(item => !item.id || !item.id.includes(clientIdPrefix));
+		const hasInvalidIds = items.some(
+			(item) => !item.id || !item.id.includes(clientIdPrefix)
+		);
 
 		if (!hasInvalidIds) {
 			return;
@@ -73,13 +77,18 @@ const ListsEdit = ({ attributes, setAttributes, clientId }) => {
 		if (mode !== 'post' || !postType) {
 			previousModeRef.current = mode;
 			previousPostTypeRef.current = postType;
-			previousSelectedTaxonomiesRef.current = JSON.stringify(selectedTaxonomies || {});
+			previousSelectedTaxonomiesRef.current = JSON.stringify(
+				selectedTaxonomies || {}
+			);
 			return;
 		}
 
 		const postTypeChanged = previousPostTypeRef.current !== postType;
-		const taxonomiesChanged = previousSelectedTaxonomiesRef.current !== JSON.stringify(selectedTaxonomies || {});
-		const modeChangedToPost = previousModeRef.current !== mode && mode === 'post';
+		const taxonomiesChanged =
+			previousSelectedTaxonomiesRef.current !==
+			JSON.stringify(selectedTaxonomies || {});
+		const modeChangedToPost =
+			previousModeRef.current !== mode && mode === 'post';
 
 		// Always fetch fresh data in Post mode
 		const fetchPosts = async () => {
@@ -95,7 +104,9 @@ const ListsEdit = ({ attributes, setAttributes, clientId }) => {
 						endpoint = postTypeInfo.rest_base;
 					}
 				} catch (error) {
-					console.warn('Could not fetch post type info, using default endpoint');
+					console.warn(
+						'Could not fetch post type info, using default endpoint'
+					);
 				}
 
 				// Build query params
@@ -107,12 +118,17 @@ const ListsEdit = ({ attributes, setAttributes, clientId }) => {
 				});
 
 				// Add taxonomy filters
-				if (selectedTaxonomies && Object.keys(selectedTaxonomies).length > 0) {
-					Object.entries(selectedTaxonomies).forEach(([taxonomy, termIds]) => {
-						if (termIds && termIds.length > 0) {
-							queryParams.append(taxonomy, termIds.join(','));
+				if (
+					selectedTaxonomies &&
+					Object.keys(selectedTaxonomies).length > 0
+				) {
+					Object.entries(selectedTaxonomies).forEach(
+						([taxonomy, termIds]) => {
+							if (termIds && termIds.length > 0) {
+								queryParams.append(taxonomy, termIds.join(','));
+							}
 						}
-					});
+					);
 				}
 
 				const fetchedPosts = await apiFetch({
@@ -123,7 +139,10 @@ const ListsEdit = ({ attributes, setAttributes, clientId }) => {
 				const clientIdPrefix = clientId.replace(/[^a-z0-9]/gi, '');
 				const transformedItems = fetchedPosts.map((post, index) => ({
 					id: `item-${clientIdPrefix}-${post.id}-${Date.now()}-${index}`,
-					text: post.title?.rendered || post.title || __('Untitled', 'codeweber-gutenberg-blocks'),
+					text:
+						post.title?.rendered ||
+						post.title ||
+						__('Untitled', 'codeweber-gutenberg-blocks'),
 					url: post.link || '',
 				}));
 
@@ -139,8 +158,19 @@ const ListsEdit = ({ attributes, setAttributes, clientId }) => {
 		fetchPosts();
 		previousModeRef.current = mode;
 		previousPostTypeRef.current = postType;
-		previousSelectedTaxonomiesRef.current = JSON.stringify(selectedTaxonomies || {});
-	}, [mode, postType, selectedTaxonomies, postsPerPage, orderBy, order, clientId, setAttributes]);
+		previousSelectedTaxonomiesRef.current = JSON.stringify(
+			selectedTaxonomies || {}
+		);
+	}, [
+		mode,
+		postType,
+		selectedTaxonomies,
+		postsPerPage,
+		orderBy,
+		order,
+		clientId,
+		setAttributes,
+	]);
 
 	const updateItem = (index, field, value) => {
 		const newItems = [...items];
@@ -185,7 +215,7 @@ const ListsEdit = ({ attributes, setAttributes, clientId }) => {
 	// Get list classes
 	const getListClasses = () => {
 		const classes = [];
-		
+
 		if (listType === 'unordered') {
 			classes.push('unordered-list');
 		} else if (listType === 'icon') {
@@ -229,8 +259,8 @@ const ListsEdit = ({ attributes, setAttributes, clientId }) => {
 		if (!listData) return {};
 		const dataAttrs = {};
 		const pairs = listData.split(',');
-		pairs.forEach(pair => {
-			const [key, value] = pair.split('=').map(s => s.trim());
+		pairs.forEach((pair) => {
+			const [key, value] = pair.split('=').map((s) => s.trim());
 			if (key && value) {
 				dataAttrs[`data-${key}`] = value;
 			}
@@ -255,15 +285,27 @@ const ListsEdit = ({ attributes, setAttributes, clientId }) => {
 				)}
 				{!isLoadingPosts && items.length === 0 && mode === 'post' && (
 					<div style={{ padding: '20px', textAlign: 'center' }}>
-						{__('No posts found. Please select a post type and check your filters.', 'codeweber-gutenberg-blocks')}
+						{__(
+							'No posts found. Please select a post type and check your filters.',
+							'codeweber-gutenberg-blocks'
+						)}
 					</div>
 				)}
-				{(mode === 'post' ? (items.length > 0 && !isLoadingPosts) : true) && (
+				{(mode === 'post'
+					? items.length > 0 && !isLoadingPosts
+					: true) && (
 					<ul className={getListClasses()}>
 						{items.map((item, index) => (
 							<li key={item.id} style={{ position: 'relative' }}>
 								{listType === 'icon' && (
-									<span><i className={iconClass || 'uil uil-arrow-right'}></i></span>
+									<span>
+										<i
+											className={
+												iconClass ||
+												'uil uil-arrow-right'
+											}
+										></i>
+									</span>
 								)}
 								<span>
 									{mode === 'custom' ? (
@@ -271,50 +313,78 @@ const ListsEdit = ({ attributes, setAttributes, clientId }) => {
 											<RichText
 												tagName="span"
 												value={item.text}
-												onChange={(value) => updateItem(index, 'text', value)}
-												placeholder={__('Enter list item...', 'codeweber-gutenberg-blocks')}
+												onChange={(value) =>
+													updateItem(
+														index,
+														'text',
+														value
+													)
+												}
+												placeholder={__(
+													'Enter list item...',
+													'codeweber-gutenberg-blocks'
+												)}
 												withoutInteractiveFormatting
 											/>
-											<div className="lists-item-controls" style={{
-												position: 'absolute',
-												right: '10px',
-												top: '-18px',
-												display: 'flex',
-												gap: '4px',
-												zIndex: 10,
-											}}>
+											<div
+												className="lists-item-controls"
+												style={{
+													position: 'absolute',
+													right: '10px',
+													top: '-18px',
+													display: 'flex',
+													gap: '4px',
+													zIndex: 10,
+												}}
+											>
 												<Button
 													isSmall
-													onClick={() => moveItem(index, 'up')}
+													onClick={() =>
+														moveItem(index, 'up')
+													}
 													disabled={index === 0}
-													title={__('Move up', 'codeweber-gutenberg-blocks')}
+													title={__(
+														'Move up',
+														'codeweber-gutenberg-blocks'
+													)}
 												>
 													↑
 												</Button>
 												<Button
 													isSmall
-													onClick={() => moveItem(index, 'down')}
-													disabled={index === items.length - 1}
-													title={__('Move down', 'codeweber-gutenberg-blocks')}
+													onClick={() =>
+														moveItem(index, 'down')
+													}
+													disabled={
+														index ===
+														items.length - 1
+													}
+													title={__(
+														'Move down',
+														'codeweber-gutenberg-blocks'
+													)}
 												>
 													↓
 												</Button>
 												<Button
 													isSmall
 													isDestructive
-													onClick={() => removeItem(index)}
-													title={__('Remove', 'codeweber-gutenberg-blocks')}
+													onClick={() =>
+														removeItem(index)
+													}
+													title={__(
+														'Remove',
+														'codeweber-gutenberg-blocks'
+													)}
 												>
 													×
 												</Button>
 											</div>
 										</>
+									) : enableLinks && item.url ? (
+										<a href={item.url}>{item.text}</a>
 									) : (
-										enableLinks && item.url ? (
-											<a href={item.url}>{item.text}</a>
-										) : (
-											<span>{item.text}</span>
-										)
+										<span>{item.text}</span>
 									)}
 								</span>
 							</li>
@@ -336,11 +406,3 @@ const ListsEdit = ({ attributes, setAttributes, clientId }) => {
 };
 
 export default ListsEdit;
-
-
-
-
-
-
-
-

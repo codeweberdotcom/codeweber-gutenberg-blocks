@@ -84,8 +84,8 @@ const MenuSave = ({ attributes }) => {
 		if (!menuData) return {};
 		const dataAttrs = {};
 		const pairs = menuData.split(',');
-		pairs.forEach(pair => {
-			const [key, value] = pair.split('=').map(s => s.trim());
+		pairs.forEach((pair) => {
+			const [key, value] = pair.split('=').map((s) => s.trim());
 			if (key && value) {
 				dataAttrs[`data-${key}`] = value;
 			}
@@ -96,11 +96,15 @@ const MenuSave = ({ attributes }) => {
 	// Generate title classes
 	const getTitleClasses = () => {
 		const classes = ['widget-title'];
-		
+
 		// Color classes
 		let hasColorClass = false;
 		if (titleColor) {
-			const colorClass = generateColorClass(titleColor, titleColorType, 'text');
+			const colorClass = generateColorClass(
+				titleColor,
+				titleColorType,
+				'text'
+			);
 			if (colorClass) {
 				classes.push(colorClass);
 				hasColorClass = true;
@@ -117,7 +121,10 @@ const MenuSave = ({ attributes }) => {
 		}
 
 		// Typography classes
-		const typographyClasses = generateTypographyClasses(attributes, 'title');
+		const typographyClasses = generateTypographyClasses(
+			attributes,
+			'title'
+		);
 		classes.push(...typographyClasses);
 
 		// Custom class
@@ -133,11 +140,22 @@ const MenuSave = ({ attributes }) => {
 			{items.map((item) => (
 				<li key={item.id} className={itemClass || ''}>
 					{listType === 'icon' && (
-						<span><i className={iconClass || 'uil uil-arrow-right'}></i></span>
+						<span>
+							<i
+								className={iconClass || 'uil uil-arrow-right'}
+							></i>
+						</span>
 					)}
-					<span className={theme === 'dark' ? 'text-white' : 'text-dark'}>
+					<span
+						className={
+							theme === 'dark' ? 'text-white' : 'text-dark'
+						}
+					>
 						<a href={item.url || '#'}>
-							<RichText.Content tagName="span" value={item.text} />
+							<RichText.Content
+								tagName="span"
+								value={item.text}
+							/>
 						</a>
 					</span>
 				</li>
@@ -166,4 +184,3 @@ const MenuSave = ({ attributes }) => {
 };
 
 export default MenuSave;
-

@@ -10,15 +10,15 @@
  * @returns {string} CSS class
  */
 export const generateColorClass = (color, colorType, prefix = 'text') => {
-    if (!color) return '';
+	if (!color) return '';
 
-    if (colorType === 'soft') {
-        return `${prefix}-soft-${color}`;
-    } else if (colorType === 'pale') {
-        return `${prefix}-pale-${color}`;
-    } else {
-        return `${prefix}-${color}`;
-    }
+	if (colorType === 'soft') {
+		return `${prefix}-soft-${color}`;
+	} else if (colorType === 'pale') {
+		return `${prefix}-pale-${color}`;
+	} else {
+		return `${prefix}-${color}`;
+	}
 };
 
 /**
@@ -28,35 +28,35 @@ export const generateColorClass = (color, colorType, prefix = 'text') => {
  * @returns {string[]} Array of classes
  */
 export const generateTypographyClasses = (attrs, prefix) => {
-    const classes = [];
+	const classes = [];
 
-    const size = attrs[`${prefix}Size`];
-    const weight = attrs[`${prefix}Weight`];
-    const transform = attrs[`${prefix}Transform`];
-    const line = attrs[`${prefix}Line`];
-    const tag = attrs[`${prefix}Tag`];
+	const size = attrs[`${prefix}Size`];
+	const weight = attrs[`${prefix}Weight`];
+	const transform = attrs[`${prefix}Transform`];
+	const line = attrs[`${prefix}Line`];
+	const tag = attrs[`${prefix}Tag`];
 
-    if (tag && tag.startsWith('display-')) {
-        classes.push(tag);
-    }
+	if (tag && tag.startsWith('display-')) {
+		classes.push(tag);
+	}
 
-    if (size) {
-        classes.push(size);
-    }
+	if (size) {
+		classes.push(size);
+	}
 
-    if (weight) {
-        classes.push(weight);
-    }
+	if (weight) {
+		classes.push(weight);
+	}
 
-    if (transform) {
-        classes.push(transform);
-    }
+	if (transform) {
+		classes.push(transform);
+	}
 
-    if (line) {
-        classes.push('text-line');
-    }
+	if (line) {
+		classes.push('text-line');
+	}
 
-    return classes;
+	return classes;
 };
 
 /**
@@ -65,44 +65,57 @@ export const generateTypographyClasses = (attrs, prefix) => {
  * @returns {string[]} Array of classes
  */
 export const generateBackgroundClasses = (attrs) => {
-    const classes = [];
+	const classes = [];
 
-    const { backgroundType, backgroundColor, backgroundColorType, backgroundGradient, backgroundSize, backgroundOverlay } = attrs;
+	const {
+		backgroundType,
+		backgroundColor,
+		backgroundColorType,
+		backgroundGradient,
+		backgroundSize,
+		backgroundOverlay,
+	} = attrs;
 
-    switch (backgroundType) {
-        case 'color':
-            if (backgroundColorType === 'gradient' && backgroundGradient) {
-                classes.push(backgroundGradient);
-            } else if (backgroundColor) {
-                classes.push(generateColorClass(backgroundColor, backgroundColorType, 'bg'));
-            }
-            break;
-        case 'image':
-            classes.push('image-wrapper', 'bg-image');
-            if (backgroundSize) {
-                classes.push(backgroundSize);
-            }
-            // Only add overlay classes if backgroundOverlay is not empty
-            if (backgroundOverlay && backgroundOverlay !== '') {
-                classes.push(backgroundOverlay);
-            }
-            break;
-        case 'pattern':
-            classes.push('pattern-wrapper', 'bg-image', 'text-white');
-            if (backgroundSize) {
-                classes.push(backgroundSize);
-            }
-            break;
-        case 'video':
-            classes.push('video-wrapper', 'ratio', 'ratio-16x9');
-            // Only add overlay classes if backgroundOverlay is not empty
-            if (backgroundOverlay && backgroundOverlay !== '') {
-                classes.push(backgroundOverlay);
-            }
-            break;
-    }
+	switch (backgroundType) {
+		case 'color':
+			if (backgroundColorType === 'gradient' && backgroundGradient) {
+				classes.push(backgroundGradient);
+			} else if (backgroundColor) {
+				classes.push(
+					generateColorClass(
+						backgroundColor,
+						backgroundColorType,
+						'bg'
+					)
+				);
+			}
+			break;
+		case 'image':
+			classes.push('image-wrapper', 'bg-image');
+			if (backgroundSize) {
+				classes.push(backgroundSize);
+			}
+			// Only add overlay classes if backgroundOverlay is not empty
+			if (backgroundOverlay && backgroundOverlay !== '') {
+				classes.push(backgroundOverlay);
+			}
+			break;
+		case 'pattern':
+			classes.push('pattern-wrapper', 'bg-image', 'text-white');
+			if (backgroundSize) {
+				classes.push(backgroundSize);
+			}
+			break;
+		case 'video':
+			classes.push('video-wrapper', 'ratio', 'ratio-16x9');
+			// Only add overlay classes if backgroundOverlay is not empty
+			if (backgroundOverlay && backgroundOverlay !== '') {
+				classes.push(backgroundOverlay);
+			}
+			break;
+	}
 
-    return classes;
+	return classes;
 };
 
 /**
@@ -111,7 +124,7 @@ export const generateBackgroundClasses = (attrs) => {
  * @returns {string} CSS class
  */
 export const generateTextColorClass = (textColor) => {
-    return textColor || '';
+	return textColor || '';
 };
 
 /**
@@ -120,8 +133,8 @@ export const generateTextColorClass = (textColor) => {
  * @returns {string} CSS class
  */
 export const generateTextAlignClass = (align) => {
-    if (!align) return '';
-    return align.startsWith('text-') ? align : `text-${align}`;
+	if (!align) return '';
+	return align.startsWith('text-') ? align : `text-${align}`;
 };
 
 /**
@@ -130,7 +143,7 @@ export const generateTextAlignClass = (align) => {
  * @returns {string} CSS class
  */
 export const generateAlignItemsClass = (alignItems) => {
-    return alignItems || '';
+	return alignItems || '';
 };
 
 /**
@@ -139,7 +152,7 @@ export const generateAlignItemsClass = (alignItems) => {
  * @returns {string} CSS class
  */
 export const generateJustifyContentClass = (justifyContent) => {
-    return justifyContent || '';
+	return justifyContent || '';
 };
 
 /**
@@ -148,7 +161,7 @@ export const generateJustifyContentClass = (justifyContent) => {
  * @returns {string} CSS class
  */
 export const generatePositionClass = (position) => {
-    return position || '';
+	return position || '';
 };
 
 /**
@@ -158,7 +171,7 @@ export const generatePositionClass = (position) => {
  * @returns {string} CSS class
  */
 export const generateLeadClass = (lead, tag) => {
-    return lead && tag === 'p' ? 'lead' : '';
+	return lead && tag === 'p' ? 'lead' : '';
 };
 
 /**
@@ -172,8 +185,8 @@ export const generateLeadClass = (lead, tag) => {
  * @returns {boolean} Is valid
  */
 export const validateColor = (color, allowedColors = []) => {
-    if (!color) return true; // Empty is valid
-    return allowedColors.includes(color);
+	if (!color) return true; // Empty is valid
+	return allowedColors.includes(color);
 };
 
 /**
@@ -183,8 +196,8 @@ export const validateColor = (color, allowedColors = []) => {
  * @returns {boolean} Is valid
  */
 export const validateSize = (size, allowedSizes = []) => {
-    if (!size) return true;
-    return allowedSizes.includes(size);
+	if (!size) return true;
+	return allowedSizes.includes(size);
 };
 
 /**
@@ -194,8 +207,8 @@ export const validateSize = (size, allowedSizes = []) => {
  * @returns {boolean} Is valid
  */
 export const validateTag = (tag, allowedTags = []) => {
-    if (!tag) return true;
-    return allowedTags.includes(tag);
+	if (!tag) return true;
+	return allowedTags.includes(tag);
 };
 
 /**
@@ -204,19 +217,19 @@ export const validateTag = (tag, allowedTags = []) => {
  * @returns {string[]} Array of spacing classes
  */
 export const generateSpacingClasses = (attrs) => {
-    const classes = [];
-    
-    // Padding
-    if (attrs.paddingTop) classes.push(`pt-${attrs.paddingTop}`);
-    if (attrs.paddingBottom) classes.push(`pb-${attrs.paddingBottom}`);
-    if (attrs.paddingLeft) classes.push(`ps-${attrs.paddingLeft}`);
-    if (attrs.paddingRight) classes.push(`pe-${attrs.paddingRight}`);
-    
-    // Margin
-    if (attrs.marginTop) classes.push(`mt-${attrs.marginTop}`);
-    if (attrs.marginBottom) classes.push(`mb-${attrs.marginBottom}`);
-    
-    return classes;
+	const classes = [];
+
+	// Padding
+	if (attrs.paddingTop) classes.push(`pt-${attrs.paddingTop}`);
+	if (attrs.paddingBottom) classes.push(`pb-${attrs.paddingBottom}`);
+	if (attrs.paddingLeft) classes.push(`ps-${attrs.paddingLeft}`);
+	if (attrs.paddingRight) classes.push(`pe-${attrs.paddingRight}`);
+
+	// Margin
+	if (attrs.marginTop) classes.push(`mt-${attrs.marginTop}`);
+	if (attrs.marginBottom) classes.push(`mb-${attrs.marginBottom}`);
+
+	return classes;
 };
 
 /**
@@ -225,35 +238,37 @@ export const generateSpacingClasses = (attrs) => {
  * @returns {string[]} Array of alignment classes
  */
 export const generateAlignmentClasses = (attrs) => {
-    const classes = [];
-    
-    // Определяем, нужен ли flex контейнер для вертикального/горизонтального выравнивания
-    const needsFlex = (attrs.alignItems && attrs.alignItems.trim() !== '') || (attrs.justifyContent && attrs.justifyContent.trim() !== '');
-    
-    // Если есть alignItems или justifyContent, добавляем d-flex и flex-column
-    if (needsFlex) {
-        classes.push('d-flex', 'flex-column');
-    }
-    
-    // Text align
-    if (attrs.align) {
-        classes.push(generateTextAlignClass(attrs.align));
-    }
-    
-    // Align items
-    if (attrs.alignItems) {
-        classes.push(generateAlignItemsClass(attrs.alignItems));
-    }
-    
-    // Justify content
-    if (attrs.justifyContent) {
-        classes.push(generateJustifyContentClass(attrs.justifyContent));
-    }
-    
-    // Position
-    if (attrs.position) {
-        classes.push(generatePositionClass(attrs.position));
-    }
-    
-    return classes.filter(Boolean);
+	const classes = [];
+
+	// Определяем, нужен ли flex контейнер для вертикального/горизонтального выравнивания
+	const needsFlex =
+		(attrs.alignItems && attrs.alignItems.trim() !== '') ||
+		(attrs.justifyContent && attrs.justifyContent.trim() !== '');
+
+	// Если есть alignItems или justifyContent, добавляем d-flex и flex-column
+	if (needsFlex) {
+		classes.push('d-flex', 'flex-column');
+	}
+
+	// Text align
+	if (attrs.align) {
+		classes.push(generateTextAlignClass(attrs.align));
+	}
+
+	// Align items
+	if (attrs.alignItems) {
+		classes.push(generateAlignItemsClass(attrs.alignItems));
+	}
+
+	// Justify content
+	if (attrs.justifyContent) {
+		classes.push(generateJustifyContentClass(attrs.justifyContent));
+	}
+
+	// Position
+	if (attrs.position) {
+		classes.push(generatePositionClass(attrs.position));
+	}
+
+	return classes.filter(Boolean);
 };

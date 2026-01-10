@@ -640,4 +640,3 @@ if (empty($enabled_items)) {
 
         <?php endif; ?>
     <?php endforeach; ?>
-

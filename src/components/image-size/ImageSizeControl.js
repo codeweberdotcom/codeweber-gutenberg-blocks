@@ -1,6 +1,6 @@
 /**
  * ImageSizeControl - компонент для выбора размера изображения
- * 
+ *
  * @package CodeWeber Gutenberg Blocks
  */
 
@@ -10,7 +10,7 @@ import { useImageSizes } from '../../hooks/useImageSizes';
 
 /**
  * ImageSizeControl Component
- * 
+ *
  * @param {Object} props
  * @param {string} props.value - Текущее значение
  * @param {Function} props.onChange - Callback при изменении
@@ -47,11 +47,11 @@ export const ImageSizeControl = ({
 
 	// Фильтруем размеры по availableSizes если передан
 	if (availableSizes && availableSizes.length > 0) {
-		sizes = sizes.filter(size => availableSizes.includes(size.value));
+		sizes = sizes.filter((size) => availableSizes.includes(size.value));
 	}
 
 	// Форматируем опции для SelectControl
-	const options = sizes.map(size => ({
+	const options = sizes.map((size) => ({
 		value: size.value,
 		label: size.label,
 	}));
@@ -70,9 +70,13 @@ export const ImageSizeControl = ({
 			value={value}
 			options={options}
 			onChange={onChange}
-			help={help || (showLoading && loading ? __('Loading sizes...', 'codeweber-gutenberg-blocks') : undefined)}
+			help={
+				help ||
+				(showLoading && loading
+					? __('Loading sizes...', 'codeweber-gutenberg-blocks')
+					: undefined)
+			}
 			disabled={loading && showLoading}
 		/>
 	);
 };
-

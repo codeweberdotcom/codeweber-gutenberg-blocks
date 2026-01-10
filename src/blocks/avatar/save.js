@@ -29,7 +29,9 @@ const Save = ({ attributes }) => {
 		'cwgb-avatar-block',
 		blockAlign ? `text-${blockAlign}` : '',
 		blockClass,
-	].filter(Boolean).join(' ');
+	]
+		.filter(Boolean)
+		.join(' ');
 
 	// Parse data attributes
 	const dataAttributes = {};
@@ -45,7 +47,10 @@ const Save = ({ attributes }) => {
 	// Helper function to get initials from name
 	const getInitials = (fullName) => {
 		if (!fullName) return 'AB';
-		const words = fullName.trim().split(' ').filter(w => w.length > 0);
+		const words = fullName
+			.trim()
+			.split(' ')
+			.filter((w) => w.length > 0);
 		if (words.length === 0) return 'AB';
 		if (words.length === 1) {
 			return words[0].substring(0, 2).toUpperCase();
@@ -56,7 +61,7 @@ const Save = ({ attributes }) => {
 	// Avatar classes
 	const getAvatarClasses = () => {
 		const classes = ['avatar'];
-		
+
 		// Background and text color for letters fallback
 		if (bgColor) {
 			classes.push(`bg-${bgColor}`);
@@ -64,12 +69,12 @@ const Save = ({ attributes }) => {
 		if (textColor) {
 			classes.push(`text-${textColor}`);
 		}
-		
+
 		// Size
 		if (size) {
 			classes.push(`w-${size}`, `h-${size}`);
 		}
-		
+
 		return classes.join(' ');
 	};
 
@@ -89,7 +94,11 @@ const Save = ({ attributes }) => {
 							</span>
 						</figure>
 						<div>
-							<h6><a href="#" className="link-dark">User</a></h6>
+							<h6>
+								<a href="#" className="link-dark">
+									User
+								</a>
+							</h6>
 							<span className="post-meta fs-15">Position</span>
 						</div>
 					</div>
@@ -105,7 +114,10 @@ const Save = ({ attributes }) => {
 							style={showName ? { marginRight: '12px' } : {}}
 						/>
 					) : (
-						<span className={getAvatarClasses()} style={showName ? { marginRight: '12px' } : {}}>
+						<span
+							className={getAvatarClasses()}
+							style={showName ? { marginRight: '12px' } : {}}
+						>
 							<span>{getInitials(name)}</span>
 						</span>
 					)}
@@ -120,11 +132,7 @@ const Save = ({ attributes }) => {
 									</a>
 								</div>
 							) : (
-								name && (
-									<div className="h6 mb-0">
-										{name}
-									</div>
-								)
+								name && <div className="h6 mb-0">{name}</div>
 							)}
 							{position && (
 								<span className="post-meta fs-15 d-block">
@@ -140,9 +148,3 @@ const Save = ({ attributes }) => {
 };
 
 export default Save;
-
-
-
-
-
-

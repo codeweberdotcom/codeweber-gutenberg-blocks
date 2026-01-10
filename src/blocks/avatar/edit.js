@@ -64,7 +64,9 @@ const Edit = ({ attributes, setAttributes }) => {
 		'cwgb-avatar-block',
 		blockAlign ? `text-${blockAlign}` : '',
 		blockClass,
-	].filter(Boolean).join(' ');
+	]
+		.filter(Boolean)
+		.join(' ');
 
 	// Parse data attributes
 	const dataAttributes = {};
@@ -86,7 +88,10 @@ const Edit = ({ attributes, setAttributes }) => {
 	// Helper function to get initials from name
 	const getInitials = (fullName) => {
 		if (!fullName) return 'AB';
-		const words = fullName.trim().split(' ').filter(w => w.length > 0);
+		const words = fullName
+			.trim()
+			.split(' ')
+			.filter((w) => w.length > 0);
 		if (words.length === 0) return 'AB';
 		if (words.length === 1) {
 			return words[0].substring(0, 2).toUpperCase();
@@ -97,7 +102,7 @@ const Edit = ({ attributes, setAttributes }) => {
 	// Avatar classes
 	const getAvatarClasses = () => {
 		const classes = ['avatar'];
-		
+
 		// Background and text color for letters fallback
 		if (bgColor) {
 			classes.push(`bg-${bgColor}`);
@@ -105,12 +110,12 @@ const Edit = ({ attributes, setAttributes }) => {
 		if (textColor) {
 			classes.push(`text-${textColor}`);
 		}
-		
+
 		// Size
 		if (size) {
 			classes.push(`w-${size}`, `h-${size}`);
 		}
-		
+
 		return classes.join(' ');
 	};
 
@@ -148,12 +153,16 @@ const Edit = ({ attributes, setAttributes }) => {
 							{loadingUser ? (
 								<figure className="user-avatar">
 									<div className="cwgb-avatar-placeholder">
-										{__('Loading...', 'codeweber-gutenberg-blocks')}
+										{__(
+											'Loading...',
+											'codeweber-gutenberg-blocks'
+										)}
 									</div>
 								</figure>
 							) : userData ? (
 								<figure className="user-avatar">
-									{userData.avatar_urls && userData.avatar_urls[96] ? (
+									{userData.avatar_urls &&
+									userData.avatar_urls[96] ? (
 										<img
 											className="rounded-circle"
 											src={userData.avatar_urls[96]}
@@ -161,22 +170,34 @@ const Edit = ({ attributes, setAttributes }) => {
 										/>
 									) : (
 										<span className={getAvatarClasses()}>
-											<span>{getInitials(userData.name)}</span>
+											<span>
+												{getInitials(userData.name)}
+											</span>
 										</span>
 									)}
 								</figure>
 							) : (
 								<figure className="user-avatar">
 									<div className="cwgb-avatar-placeholder">
-										{__('Select a user', 'codeweber-gutenberg-blocks')}
+										{__(
+											'Select a user',
+											'codeweber-gutenberg-blocks'
+										)}
 									</div>
 								</figure>
 							)}
 							{userData && (
 								<div>
 									<h6>
-										<a href={userData.link || '#'} className="link-dark">
-											{userData.name || __('Name', 'codeweber-gutenberg-blocks')}
+										<a
+											href={userData.link || '#'}
+											className="link-dark"
+										>
+											{userData.name ||
+												__(
+													'Name',
+													'codeweber-gutenberg-blocks'
+												)}
 										</a>
 									</h6>
 									{userData.meta?.user_position && (
@@ -189,7 +210,9 @@ const Edit = ({ attributes, setAttributes }) => {
 						</div>
 					</div>
 				) : (
-					<div className={showName ? 'd-flex align-items-center' : ''}>
+					<div
+						className={showName ? 'd-flex align-items-center' : ''}
+					>
 						{/* Avatar */}
 						{imageUrl ? (
 							<img
@@ -199,7 +222,10 @@ const Edit = ({ attributes, setAttributes }) => {
 								style={showName ? { marginRight: '12px' } : {}}
 							/>
 						) : (
-							<span className={getAvatarClasses()} style={showName ? { marginRight: '12px' } : {}}>
+							<span
+								className={getAvatarClasses()}
+								style={showName ? { marginRight: '12px' } : {}}
+							>
 								<span>{getInitials(name)}</span>
 							</span>
 						)}
@@ -209,15 +235,20 @@ const Edit = ({ attributes, setAttributes }) => {
 							<div>
 								{nameLink ? (
 									<div className="h6 mb-0">
-										<a href={nameLink} className="link-dark">
-											{name || __('Name', 'codeweber-gutenberg-blocks')}
+										<a
+											href={nameLink}
+											className="link-dark"
+										>
+											{name ||
+												__(
+													'Name',
+													'codeweber-gutenberg-blocks'
+												)}
 										</a>
 									</div>
 								) : (
 									name && (
-										<div className="h6 mb-0">
-											{name}
-										</div>
+										<div className="h6 mb-0">{name}</div>
 									)
 								)}
 								{position && (
@@ -235,9 +266,3 @@ const Edit = ({ attributes, setAttributes }) => {
 };
 
 export default Edit;
-
-
-
-
-
-

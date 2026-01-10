@@ -1,6 +1,6 @@
 /**
  * Media Block
- * 
+ *
  * Display image or video with effects, masks and lightbox
  */
 import { registerBlockType } from '@wordpress/blocks';

@@ -72,8 +72,8 @@ const ListsSave = ({ attributes }) => {
 		if (!listData) return {};
 		const dataAttrs = {};
 		const pairs = listData.split(',');
-		pairs.forEach(pair => {
-			const [key, value] = pair.split('=').map(s => s.trim());
+		pairs.forEach((pair) => {
+			const [key, value] = pair.split('=').map((s) => s.trim());
 			if (key && value) {
 				dataAttrs[`data-${key}`] = value;
 			}
@@ -87,10 +87,19 @@ const ListsSave = ({ attributes }) => {
 				{items.map((item) => (
 					<li key={item.id}>
 						{listType === 'icon' && (
-							<span><i className={iconClass || 'uil uil-arrow-right'}></i></span>
+							<span>
+								<i
+									className={
+										iconClass || 'uil uil-arrow-right'
+									}
+								></i>
+							</span>
 						)}
 						<span>
-							<RichText.Content tagName="span" value={item.text} />
+							<RichText.Content
+								tagName="span"
+								value={item.text}
+							/>
 						</span>
 					</li>
 				))}
@@ -100,11 +109,3 @@ const ListsSave = ({ attributes }) => {
 };
 
 export default ListsSave;
-
-
-
-
-
-
-
-

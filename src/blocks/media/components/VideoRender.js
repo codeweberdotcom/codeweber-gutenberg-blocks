@@ -1,6 +1,10 @@
 import { __ } from '@wordpress/i18n';
 
-export const VideoRender = ({ attributes, isEditor = false, setAttributes }) => {
+export const VideoRender = ({
+	attributes,
+	isEditor = false,
+	setAttributes,
+}) => {
 	const {
 		videoType,
 		videoUrl,
@@ -24,7 +28,7 @@ export const VideoRender = ({ attributes, isEditor = false, setAttributes }) => 
 		if (videoType === 'vk' && videoVkId) {
 			console.log('🔍 VK - Starting parsing:', videoVkId);
 			let vkSrc = '';
-			
+
 			// Если это iframe код - извлекаем src
 			if (videoVkId.includes('<iframe')) {
 				const srcMatch = videoVkId.match(/src=["']([^"']+)["']/);
@@ -34,15 +38,23 @@ export const VideoRender = ({ attributes, isEditor = false, setAttributes }) => 
 				}
 			}
 			// Если это прямая ссылка
-			else if (videoVkId.includes('vkvideo.ru') || videoVkId.includes('vk.com/video')) {
+			else if (
+				videoVkId.includes('vkvideo.ru') ||
+				videoVkId.includes('vk.com/video')
+			) {
 				try {
-					const url = new URL(videoVkId.includes('http') ? videoVkId : `https://${videoVkId}`);
+					const url = new URL(
+						videoVkId.includes('http')
+							? videoVkId
+							: `https://${videoVkId}`
+					);
 					console.log('🔍 VK - Parsed URL:', url.href);
 					if (url.pathname.includes('video_ext.php')) {
 						vkSrc = url.href;
 						console.log('✅ VK - Already embed URL:', vkSrc);
 					} else {
-						const videoIdMatch = url.pathname.match(/video(-?\d+)_(\d+)/);
+						const videoIdMatch =
+							url.pathname.match(/video(-?\d+)_(\d+)/);
 						if (videoIdMatch) {
 							const oid = videoIdMatch[1];
 							const id = videoIdMatch[2];
@@ -68,10 +80,10 @@ export const VideoRender = ({ attributes, isEditor = false, setAttributes }) => 
 			console.log('🎯 VK - Final URL:', vkSrc);
 			return vkSrc;
 		}
-		
+
 		if (videoType === 'rutube' && videoRutubeId) {
 			let rutubeId = videoRutubeId;
-			
+
 			// Если это iframe код
 			if (videoRutubeId.includes('<iframe')) {
 				const srcMatch = videoRutubeId.match(/src=["']([^"']+)["']/);
@@ -85,8 +97,14 @@ export const VideoRender = ({ attributes, isEditor = false, setAttributes }) => 
 			// Если это полная ссылка
 			else if (videoRutubeId.includes('rutube.ru')) {
 				try {
-					const url = new URL(videoRutubeId.includes('http') ? videoRutubeId : `https://${videoRutubeId}`);
-					const idMatch = url.pathname.match(/\/(?:video|embed)\/([a-f0-9]+)/);
+					const url = new URL(
+						videoRutubeId.includes('http')
+							? videoRutubeId
+							: `https://${videoRutubeId}`
+					);
+					const idMatch = url.pathname.match(
+						/\/(?:video|embed)\/([a-f0-9]+)/
+					);
 					if (idMatch && idMatch[1]) {
 						rutubeId = idMatch[1];
 					}
@@ -94,23 +112,32 @@ export const VideoRender = ({ attributes, isEditor = false, setAttributes }) => 
 					// Silently handle parsing errors
 				}
 			}
-			
+
 			const finalUrl = `https://rutube.ru/play/embed/${rutubeId}`;
 			return finalUrl;
 		}
-		
+
 		return '';
 	};
 
 	// Если включен Video Lightbox - рендерим превью с ссылкой
-	if (videoLightbox && (videoType === 'html5' || videoType === 'vimeo' || videoType === 'youtube' || videoType === 'vk' || videoType === 'rutube')) {
+	if (
+		videoLightbox &&
+		(videoType === 'html5' ||
+			videoType === 'vimeo' ||
+			videoType === 'youtube' ||
+			videoType === 'vk' ||
+			videoType === 'rutube')
+	) {
 		let videoLightboxUrl = '';
 		let glightboxAttr = '';
 		let hiddenIframe = null;
-		
+
 		// Используем сохраненный uniqueId или генерируем на основе видео ID (для save)
-		const uniqueId = lightboxUniqueId || `video-${(videoVkId || videoRutubeId || videoYoutubeId || videoVimeoId || 'default').substr(0, 9).replace(/[^a-z0-9]/gi, '')}`;
-		
+		const uniqueId =
+			lightboxUniqueId ||
+			`video-${(videoVkId || videoRutubeId || videoYoutubeId || videoVimeoId || 'default').substr(0, 9).replace(/[^a-z0-9]/gi, '')}`;
+
 		// YouTube и Vimeo - используют нативную поддержку GLightbox
 		if (videoType === 'youtube') {
 			videoLightboxUrl = `https://www.youtube.com/watch?v=${videoYoutubeId}`;
@@ -118,7 +145,7 @@ export const VideoRender = ({ attributes, isEditor = false, setAttributes }) => 
 		} else if (videoType === 'vimeo') {
 			videoLightboxUrl = `https://vimeo.com/${videoVimeoId}`;
 			glightboxAttr = ''; // GLightbox автоматически определяет Vimeo
-		} 
+		}
 		// HTML5 - прямой URL видеофайла
 		else if (videoType === 'html5') {
 			videoLightboxUrl = videoUrl;
@@ -128,11 +155,11 @@ export const VideoRender = ({ attributes, isEditor = false, setAttributes }) => 
 		else if (videoType === 'vk' || videoType === 'rutube') {
 			const embedUrl = getVideoEmbedUrl();
 			if (!embedUrl) return null;
-			
+
 			// Ссылка на скрытый контейнер
 			videoLightboxUrl = `#${uniqueId}`;
 			glightboxAttr = 'width: auto;';
-			
+
 			// Скрытый iframe контейнер - минимальная обёртка
 			hiddenIframe = (
 				<div id={uniqueId} style={{ display: 'none' }}>
@@ -141,55 +168,77 @@ export const VideoRender = ({ attributes, isEditor = false, setAttributes }) => 
 						allow="autoplay; encrypted-media; fullscreen; picture-in-picture; clipboard-write;"
 						frameBorder="0"
 						allowFullScreen
-						style={{ width: '100%', height: '100%', aspectRatio: '16/9' }}
+						style={{
+							width: '100%',
+							height: '100%',
+							aspectRatio: '16/9',
+						}}
 					/>
 				</div>
 			);
 		}
-		
+
 		if (!videoLightboxUrl) {
 			return null;
 		}
 
 		const href = isEditor ? '#' : videoLightboxUrl;
 		const onClickHandler = isEditor ? (e) => e.preventDefault() : undefined;
-		const linkStyle = isEditor ? { pointerEvents: 'none', cursor: 'default' } : undefined;
+		const linkStyle = isEditor
+			? { pointerEvents: 'none', cursor: 'default' }
+			: undefined;
 
 		return (
 			<>
 				{hiddenIframe}
 				<figure className="position-relative">
-					<a 
-						href={href} 
+					<a
+						href={href}
 						onClick={onClickHandler}
-						data-glightbox={!isEditor && glightboxAttr ? glightboxAttr : undefined}
+						data-glightbox={
+							!isEditor && glightboxAttr
+								? glightboxAttr
+								: undefined
+						}
 						style={linkStyle}
 					>
-					{videoPoster.url ? (
-						<img src={videoPoster.url} alt={videoPoster.alt || ''} />
-					) : (
-						<div 
-							style={{
-								width: '100%',
-								paddingTop: '56.25%', // 16:9 aspect ratio
-								background: '#000',
-								position: 'relative',
-							}}
-						/>
-					)}
-					{showPlayIcon && (
-						<button 
-							type="button" 
-							className="video-play-btn position-absolute top-50 start-50 translate-middle"
-							aria-label="Play"
-						>
-							<svg width="117" height="135" viewBox="0 0 117 135" fill="none" xmlns="http://www.w3.org/2000/svg">
-								<path d="M0 0L116.978 67.2L0 134.4V0Z" fill="currentColor"/>
-							</svg>
-						</button>
-					)}
-				</a>
-			</figure>
+						{videoPoster.url ? (
+							<img
+								src={videoPoster.url}
+								alt={videoPoster.alt || ''}
+							/>
+						) : (
+							<div
+								style={{
+									width: '100%',
+									paddingTop: '56.25%', // 16:9 aspect ratio
+									background: '#000',
+									position: 'relative',
+								}}
+							/>
+						)}
+						{showPlayIcon && (
+							<button
+								type="button"
+								className="video-play-btn position-absolute top-50 start-50 translate-middle"
+								aria-label="Play"
+							>
+								<svg
+									width="117"
+									height="135"
+									viewBox="0 0 117 135"
+									fill="none"
+									xmlns="http://www.w3.org/2000/svg"
+								>
+									<path
+										d="M0 0L116.978 67.2L0 134.4V0Z"
+										fill="currentColor"
+									/>
+								</svg>
+							</button>
+						)}
+					</a>
+				</figure>
 			</>
 		);
 	}
@@ -201,9 +250,13 @@ export const VideoRender = ({ attributes, isEditor = false, setAttributes }) => 
 			return (
 				<div style={{ position: 'relative' }}>
 					{videoPoster.url ? (
-						<img src={videoPoster.url} alt="" style={{ width: '100%', height: 'auto' }} />
+						<img
+							src={videoPoster.url}
+							alt=""
+							style={{ width: '100%', height: 'auto' }}
+						/>
 					) : (
-						<div 
+						<div
 							style={{
 								width: '100%',
 								paddingTop: '56.25%',
@@ -225,7 +278,10 @@ export const VideoRender = ({ attributes, isEditor = false, setAttributes }) => 
 							borderRadius: '4px',
 						}}
 					>
-						{__('Video Player (Preview)', 'codeweber-gutenberg-blocks')}
+						{__(
+							'Video Player (Preview)',
+							'codeweber-gutenberg-blocks'
+						)}
 					</div>
 				</div>
 			);
@@ -337,12 +393,27 @@ export const VideoRender = ({ attributes, isEditor = false, setAttributes }) => 
 				}}
 			>
 				<p style={{ margin: 0, color: '#666' }}>
-					{videoType === 'html5' && __('Upload video file', 'codeweber-gutenberg-blocks')}
-					{videoType === 'vimeo' && __('Enter Vimeo video ID', 'codeweber-gutenberg-blocks')}
-					{videoType === 'youtube' && __('Enter YouTube video ID', 'codeweber-gutenberg-blocks')}
-					{videoType === 'vk' && __('Enter VK video ID', 'codeweber-gutenberg-blocks')}
-					{videoType === 'rutube' && __('Enter Rutube video ID', 'codeweber-gutenberg-blocks')}
-					{videoType === 'embed' && __('Paste embed code', 'codeweber-gutenberg-blocks')}
+					{videoType === 'html5' &&
+						__('Upload video file', 'codeweber-gutenberg-blocks')}
+					{videoType === 'vimeo' &&
+						__(
+							'Enter Vimeo video ID',
+							'codeweber-gutenberg-blocks'
+						)}
+					{videoType === 'youtube' &&
+						__(
+							'Enter YouTube video ID',
+							'codeweber-gutenberg-blocks'
+						)}
+					{videoType === 'vk' &&
+						__('Enter VK video ID', 'codeweber-gutenberg-blocks')}
+					{videoType === 'rutube' &&
+						__(
+							'Enter Rutube video ID',
+							'codeweber-gutenberg-blocks'
+						)}
+					{videoType === 'embed' &&
+						__('Paste embed code', 'codeweber-gutenberg-blocks')}
 				</p>
 			</div>
 		);
@@ -350,4 +421,3 @@ export const VideoRender = ({ attributes, isEditor = false, setAttributes }) => 
 
 	return null;
 };
-

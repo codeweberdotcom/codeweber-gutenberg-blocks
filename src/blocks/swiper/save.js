@@ -5,11 +5,14 @@
  */
 
 import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
-import { getSwiperContainerClasses, getSwiperDataAttributes } from '../../components/swiper';
+import {
+	getSwiperContainerClasses,
+	getSwiperDataAttributes,
+} from '../../components/swiper';
 
 const SwiperSave = ({ attributes }) => {
 	const { swiperClass, swiperId, swiperData } = attributes;
-	
+
 	const swiperConfig = {
 		margin: attributes.swiperMargin,
 		nav: attributes.swiperNav,
@@ -32,7 +35,8 @@ const SwiperSave = ({ attributes }) => {
 		dotsStyle: attributes.swiperDotsStyle,
 	};
 
-	const containerClasses = `${getSwiperContainerClasses(swiperConfig)} mb-10 ${swiperClass || ''}`.trim();
+	const containerClasses =
+		`${getSwiperContainerClasses(swiperConfig)} mb-10 ${swiperClass || ''}`.trim();
 	const dataAttrs = getSwiperDataAttributes(swiperConfig);
 
 	const blockProps = useBlockProps.save({
@@ -56,4 +60,3 @@ const SwiperSave = ({ attributes }) => {
 };
 
 export default SwiperSave;
-

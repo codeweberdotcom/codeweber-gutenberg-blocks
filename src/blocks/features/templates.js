@@ -1,6 +1,6 @@
 /**
  * Features Block Templates
- * 
+ *
  * @package CodeWeber Gutenberg Blocks
  */
 
@@ -36,28 +36,32 @@ export const getFeaturesTemplates = () => [
 				iconColor: 'yellow',
 				buttonColor: 'yellow',
 				title: '24/7 Support',
-				paragraph: 'Nulla vitae elit libero, a pharetra augue. Donec id elit non mi porta gravida at eget metus. Cras justo.',
+				paragraph:
+					'Nulla vitae elit libero, a pharetra augue. Donec id elit non mi porta gravida at eget metus. Cras justo.',
 			},
 			{
 				iconName: 'shield-exclamation',
 				iconColor: 'red',
 				buttonColor: 'red',
 				title: 'Secure Payments',
-				paragraph: 'Nulla vitae elit libero, a pharetra augue. Donec id elit non mi porta gravida at eget metus. Cras justo.',
+				paragraph:
+					'Nulla vitae elit libero, a pharetra augue. Donec id elit non mi porta gravida at eget metus. Cras justo.',
 			},
 			{
 				iconName: 'laptop-cloud',
 				iconColor: 'leaf',
 				buttonColor: 'leaf',
 				title: 'Daily Updates',
-				paragraph: 'Nulla vitae elit libero, a pharetra augue. Donec id elit non mi porta gravida at eget metus. Cras justo.',
+				paragraph:
+					'Nulla vitae elit libero, a pharetra augue. Donec id elit non mi porta gravida at eget metus. Cras justo.',
 			},
 			{
 				iconName: 'chart-line',
 				iconColor: 'blue',
 				buttonColor: 'blue',
 				title: 'Market Research',
-				paragraph: 'Nulla vitae elit libero, a pharetra augue. Donec id elit non mi porta gravida at eget metus. Cras justo.',
+				paragraph:
+					'Nulla vitae elit libero, a pharetra augue. Donec id elit non mi porta gravida at eget metus. Cras justo.',
 			},
 		],
 	},
@@ -90,8 +94,14 @@ export const getFeaturesTemplates = () => [
 		},
 		firstColumn: {
 			subtitle: __('Features', 'codeweber-gutenberg-blocks'),
-			title: __('We create conditions in which it is profitable to work', 'codeweber-gutenberg-blocks'),
-			text: __('Learn why clients choose us and what benefits they get from working with our company.', 'codeweber-gutenberg-blocks'),
+			title: __(
+				'We create conditions in which it is profitable to work',
+				'codeweber-gutenberg-blocks'
+			),
+			text: __(
+				'Learn why clients choose us and what benefits they get from working with our company.',
+				'codeweber-gutenberg-blocks'
+			),
 			subtitleLine: false,
 			enableText: true,
 			h100: true,
@@ -100,31 +110,48 @@ export const getFeaturesTemplates = () => [
 			{
 				iconName: 'shield-exclamation',
 				title: __('Fast Delivery', 'codeweber-gutenberg-blocks'),
-				paragraph: __('Get orders in the shortest time with quality and reliability guarantees at every stage of delivery.', 'codeweber-gutenberg-blocks'),
+				paragraph: __(
+					'Get orders in the shortest time with quality and reliability guarantees at every stage of delivery.',
+					'codeweber-gutenberg-blocks'
+				),
 			},
 			{
 				iconName: 'laptop-cloud',
 				title: __('Competitive Prices', 'codeweber-gutenberg-blocks'),
-				paragraph: __('Save budget thanks to special offers and flexible discount system for regular customers.', 'codeweber-gutenberg-blocks'),
+				paragraph: __(
+					'Save budget thanks to special offers and flexible discount system for regular customers.',
+					'codeweber-gutenberg-blocks'
+				),
 			},
 			{
 				iconName: 'chart-line',
 				title: __('Quality Guarantee', 'codeweber-gutenberg-blocks'),
-				paragraph: __('Confidence in every product thanks to strict quality control and proven production standards.', 'codeweber-gutenberg-blocks'),
+				paragraph: __(
+					'Confidence in every product thanks to strict quality control and proven production standards.',
+					'codeweber-gutenberg-blocks'
+				),
 			},
 			{
 				iconName: 'webcam',
 				title: __('Individual Approach', 'codeweber-gutenberg-blocks'),
-				paragraph: __('Personal solutions for your tasks taking into account all features and requirements of your business.', 'codeweber-gutenberg-blocks'),
+				paragraph: __(
+					'Personal solutions for your tasks taking into account all features and requirements of your business.',
+					'codeweber-gutenberg-blocks'
+				),
 				h100: false,
 			},
 			{
 				iconName: 'suitcase',
-				title: __('Experience & Expertise', 'codeweber-gutenberg-blocks'),
-				paragraph: __('Work with professionals who have years of experience and deep knowledge in their field.', 'codeweber-gutenberg-blocks'),
+				title: __(
+					'Experience & Expertise',
+					'codeweber-gutenberg-blocks'
+				),
+				paragraph: __(
+					'Work with professionals who have years of experience and deep knowledge in their field.',
+					'codeweber-gutenberg-blocks'
+				),
 				h100: false,
 			},
 		],
 	},
 ];
-

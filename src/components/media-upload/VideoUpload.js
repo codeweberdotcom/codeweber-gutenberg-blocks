@@ -1,10 +1,15 @@
 import { __ } from '@wordpress/i18n';
 import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
-import { Button, SelectControl, TextControl, TextareaControl } from '@wordpress/components';
+import {
+	Button,
+	SelectControl,
+	TextControl,
+	TextareaControl,
+} from '@wordpress/components';
 
 /**
  * VideoUpload - универсальный компонент для загрузки видео
- * 
+ *
  * @param {Object} props
  * @param {string} props.videoType - Тип видео (html5, vimeo, youtube, embed)
  * @param {Function} props.onVideoTypeChange - Callback при смене типа видео
@@ -50,7 +55,10 @@ export const VideoUpload = ({
 	return (
 		<div className="cwgb-video-upload">
 			{label && (
-				<div className="component-sidebar-title" style={{ marginBottom: '8px' }}>
+				<div
+					className="component-sidebar-title"
+					style={{ marginBottom: '8px' }}
+				>
 					<label>{label}</label>
 				</div>
 			)}
@@ -61,10 +69,28 @@ export const VideoUpload = ({
 					label={__('Video Type', 'codeweber-gutenberg-blocks')}
 					value={videoType}
 					options={[
-						{ label: __('HTML5 Video', 'codeweber-gutenberg-blocks'), value: 'html5' },
-						{ label: __('Vimeo', 'codeweber-gutenberg-blocks'), value: 'vimeo' },
-						{ label: __('YouTube', 'codeweber-gutenberg-blocks'), value: 'youtube' },
-						{ label: __('Embed Code', 'codeweber-gutenberg-blocks'), value: 'embed' },
+						{
+							label: __(
+								'HTML5 Video',
+								'codeweber-gutenberg-blocks'
+							),
+							value: 'html5',
+						},
+						{
+							label: __('Vimeo', 'codeweber-gutenberg-blocks'),
+							value: 'vimeo',
+						},
+						{
+							label: __('YouTube', 'codeweber-gutenberg-blocks'),
+							value: 'youtube',
+						},
+						{
+							label: __(
+								'Embed Code',
+								'codeweber-gutenberg-blocks'
+							),
+							value: 'embed',
+						},
 					]}
 					onChange={onVideoTypeChange}
 				/>
@@ -92,10 +118,21 @@ export const VideoUpload = ({
 											marginBottom: '12px',
 										}}
 									>
-										<div style={{ fontSize: '48px', color: '#8b5cf6', marginBottom: '8px' }}>
+										<div
+											style={{
+												fontSize: '48px',
+												color: '#8b5cf6',
+												marginBottom: '8px',
+											}}
+										>
 											🎥
 										</div>
-										<div style={{ color: '#666', fontSize: '14px' }}>
+										<div
+											style={{
+												color: '#666',
+												fontSize: '14px',
+											}}
+										>
 											{buttonText || defaultButtonText}
 										</div>
 									</div>
@@ -118,13 +155,22 @@ export const VideoUpload = ({
 								)}
 
 								<div style={{ display: 'flex', gap: '8px' }}>
-									<Button onClick={open} variant={buttonVariant}>
+									<Button
+										onClick={open}
+										variant={buttonVariant}
+									>
 										{buttonText || defaultButtonText}
 									</Button>
 
 									{videoUrl && (
-										<Button onClick={() => onChange('')} isDestructive>
-											{__('Remove', 'codeweber-gutenberg-blocks')}
+										<Button
+											onClick={() => onChange('')}
+											isDestructive
+										>
+											{__(
+												'Remove',
+												'codeweber-gutenberg-blocks'
+											)}
 										</Button>
 									)}
 								</div>
@@ -150,7 +196,10 @@ export const VideoUpload = ({
 					label={__('YouTube Video ID', 'codeweber-gutenberg-blocks')}
 					value={youtubeId || ''}
 					onChange={onYoutubeIdChange}
-					help={__('Example: j_Y2Gwaj7Gs', 'codeweber-gutenberg-blocks')}
+					help={__(
+						'Example: j_Y2Gwaj7Gs',
+						'codeweber-gutenberg-blocks'
+					)}
 				/>
 			)}
 
@@ -160,11 +209,13 @@ export const VideoUpload = ({
 					label={__('Embed Code', 'codeweber-gutenberg-blocks')}
 					value={embedCode || ''}
 					onChange={onEmbedCodeChange}
-					help={__('Paste iframe or embed code', 'codeweber-gutenberg-blocks')}
+					help={__(
+						'Paste iframe or embed code',
+						'codeweber-gutenberg-blocks'
+					)}
 					rows={5}
 				/>
 			)}
 		</div>
 	);
 };
-

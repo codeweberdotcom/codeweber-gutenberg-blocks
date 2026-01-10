@@ -6,7 +6,15 @@
 	"category": "codeweber-gutenberg-blocks",
 	"icon": "star-filled",
 	"description": "Features wrapper block that manages child feature blocks. Creates 4 columns with feature blocks automatically.",
-	"keywords": ["features", "feature", "icon", "title", "button", "card", "columns"],
+	"keywords": [
+		"features",
+		"feature",
+		"icon",
+		"title",
+		"button",
+		"card",
+		"columns"
+	],
 	"supports": {
 		"html": false,
 		"className": false,
@@ -295,4 +303,3 @@
 	"editorStyle": "file:./index.css",
 	"style": "file:./style-index.css"
 }
-

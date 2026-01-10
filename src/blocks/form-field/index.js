@@ -15,7 +15,5 @@ import Save from './save';
  */
 registerBlockType(metadata, {
 	edit: Edit,
-	save: Save
+	save: Save,
 });
-
-

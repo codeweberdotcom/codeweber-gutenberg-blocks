@@ -264,4 +264,3 @@ echo $yandex_maps->render_map($map_settings, $markers);
 echo '</div>';
 
 ?>
-

@@ -1,6 +1,6 @@
 /**
  * PostSortControl - компонент для сортировки постов
- * 
+ *
  * @package CodeWeber Gutenberg Blocks
  */
 
@@ -9,7 +9,7 @@ import { SelectControl } from '@wordpress/components';
 
 /**
  * PostSortControl Component
- * 
+ *
  * @param {Object} props
  * @param {string} props.orderBy - Текущее значение сортировки (orderby)
  * @param {string} props.order - Текущее направление сортировки (order)
@@ -25,16 +25,28 @@ export const PostSortControl = ({
 	const orderByOptions = [
 		{ label: __('Date', 'codeweber-gutenberg-blocks'), value: 'date' },
 		{ label: __('Title', 'codeweber-gutenberg-blocks'), value: 'title' },
-		{ label: __('Modified Date', 'codeweber-gutenberg-blocks'), value: 'modified' },
-		{ label: __('Comment Count', 'codeweber-gutenberg-blocks'), value: 'comment_count' },
+		{
+			label: __('Modified Date', 'codeweber-gutenberg-blocks'),
+			value: 'modified',
+		},
+		{
+			label: __('Comment Count', 'codeweber-gutenberg-blocks'),
+			value: 'comment_count',
+		},
 		{ label: __('Random', 'codeweber-gutenberg-blocks'), value: 'rand' },
 		{ label: __('ID', 'codeweber-gutenberg-blocks'), value: 'id' },
 		{ label: __('Author', 'codeweber-gutenberg-blocks'), value: 'author' },
-		{ label: __('Menu Order', 'codeweber-gutenberg-blocks'), value: 'menu_order' },
+		{
+			label: __('Menu Order', 'codeweber-gutenberg-blocks'),
+			value: 'menu_order',
+		},
 	];
 
 	const orderOptions = [
-		{ label: __('Descending', 'codeweber-gutenberg-blocks'), value: 'desc' },
+		{
+			label: __('Descending', 'codeweber-gutenberg-blocks'),
+			value: 'desc',
+		},
 		{ label: __('Ascending', 'codeweber-gutenberg-blocks'), value: 'asc' },
 	];
 
@@ -45,28 +57,24 @@ export const PostSortControl = ({
 				value={orderBy}
 				options={orderByOptions}
 				onChange={onOrderByChange}
-				help={__('Select how to sort the posts', 'codeweber-gutenberg-blocks')}
+				help={__(
+					'Select how to sort the posts',
+					'codeweber-gutenberg-blocks'
+				)}
 			/>
-			
+
 			<div style={{ marginTop: '16px' }}>
 				<SelectControl
 					label={__('Order', 'codeweber-gutenberg-blocks')}
 					value={order}
 					options={orderOptions}
 					onChange={onOrderChange}
-					help={__('Select sort direction', 'codeweber-gutenberg-blocks')}
+					help={__(
+						'Select sort direction',
+						'codeweber-gutenberg-blocks'
+					)}
 				/>
 			</div>
 		</>
 	);
 };
-
-
-
-
-
-
-
-
-
-

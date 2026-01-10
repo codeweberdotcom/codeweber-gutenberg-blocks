@@ -123,4 +123,3 @@ foreach ($dataAttrs as $key => $value) {
 		</div>
 	</div>
 </div>
-

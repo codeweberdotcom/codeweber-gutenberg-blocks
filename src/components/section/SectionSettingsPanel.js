@@ -5,7 +5,10 @@ const TEXT_COLOR_OPTIONS = [
 	{ label: __('None', 'codeweber-gutenberg-blocks'), value: 'none' },
 	{ label: __('White', 'codeweber-gutenberg-blocks'), value: 'text-white' },
 	{ label: __('Dark', 'codeweber-gutenberg-blocks'), value: 'text-dark' },
-	{ label: __('Inverse', 'codeweber-gutenberg-blocks'), value: 'text-inverse' },
+	{
+		label: __('Inverse', 'codeweber-gutenberg-blocks'),
+		value: 'text-inverse',
+	},
 ];
 
 const MIN_HEIGHT_OPTIONS = [
@@ -82,5 +85,3 @@ export const SectionSettingsPanel = ({
 );
 
 export default SectionSettingsPanel;
-
-

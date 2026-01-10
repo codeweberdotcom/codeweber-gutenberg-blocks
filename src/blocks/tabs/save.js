@@ -8,12 +8,22 @@ import { useBlockProps } from '@wordpress/block-editor';
 import { serialize } from '@wordpress/blocks';
 
 const TabsSave = ({ attributes }) => {
-	const { tabStyle, tabRounded, tabAlignment, tabBackground, items, tabsId, tabsClass, tabsData, innerBlocksByTab } = attributes;
+	const {
+		tabStyle,
+		tabRounded,
+		tabAlignment,
+		tabBackground,
+		items,
+		tabsId,
+		tabsClass,
+		tabsData,
+		innerBlocksByTab,
+	} = attributes;
 
 	// Get tabs classes
 	const getTabsClasses = () => {
 		const classes = ['nav', 'nav-tabs'];
-		
+
 		if (tabStyle === 'basic') {
 			classes.push('nav-tabs-basic');
 		} else if (tabStyle === 'pills') {
@@ -22,14 +32,14 @@ const TabsSave = ({ attributes }) => {
 			classes.push('nav-tabs-fanny');
 			// Always force width-auto for fanny style
 			classes.push('width-auto');
-			
+
 			// Tab rounded classes
 			if (tabRounded) {
 				// custom class for targeting + bootstrap rounded utility
 				classes.push(`tab-${tabRounded}`);
 				classes.push(tabRounded); // e.g. rounded, rounded-0, rounded-pill
 			}
-			
+
 			// Tab alignment classes
 			if (tabAlignment === 'center') {
 				classes.push('mx-auto');
@@ -37,13 +47,13 @@ const TabsSave = ({ attributes }) => {
 				classes.push('ms-auto');
 			}
 			// Left is default, no class needed
-			
+
 			// Tab background classes
 			if (tabBackground === true) {
 				classes.push('bg-white', 'p-1', 'shadow-xl');
 			}
 		}
-		
+
 		if (tabsClass) {
 			classes.push(tabsClass);
 		}
@@ -80,7 +90,14 @@ const TabsSave = ({ attributes }) => {
 							aria-controls={item.id}
 						>
 							{item.icon && (
-								<i className={item.icon} style={{ marginRight: item.title ? '0.5rem' : '0' }}></i>
+								<i
+									className={item.icon}
+									style={{
+										marginRight: item.title
+											? '0.5rem'
+											: '0',
+									}}
+								></i>
 							)}
 							{item.title}
 						</a>
@@ -92,8 +109,11 @@ const TabsSave = ({ attributes }) => {
 			<div className="tab-content">
 				{items.map((item, index) => {
 					const tabInnerBlocks = innerBlocksByTab?.[item.id] || [];
-					const serializedContent = tabInnerBlocks.length > 0 ? serialize(tabInnerBlocks) : '';
-					
+					const serializedContent =
+						tabInnerBlocks.length > 0
+							? serialize(tabInnerBlocks)
+							: '';
+
 					return (
 						<div
 							key={item.id}
@@ -101,7 +121,9 @@ const TabsSave = ({ attributes }) => {
 							id={item.id}
 							role="tabpanel"
 							aria-labelledby={`tab-${item.id}`}
-							dangerouslySetInnerHTML={{ __html: serializedContent }}
+							dangerouslySetInnerHTML={{
+								__html: serializedContent,
+							}}
 						/>
 					);
 				})}
@@ -111,10 +133,3 @@ const TabsSave = ({ attributes }) => {
 };
 
 export default TabsSave;
-
-
-
-
-
-
-

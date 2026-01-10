@@ -218,4 +218,3 @@ if ($enableTitle && $title) {
 		<?php echo $menuContent; ?>
 	<?php endif; ?>
 </div>
-

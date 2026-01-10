@@ -28,28 +28,31 @@ const ALLOWED_CODEWEBER_BLOCKS = [
 ];
 
 export const Banner27 = ({ attributes, isEditor = false }) => {
-	const {
-		backgroundType,
-		backgroundImageUrl,
-		sectionClass,
-	} = attributes;
+	const { backgroundType, backgroundImageUrl, sectionClass } = attributes;
 
 	// Placeholder фоновое изображение
-	const placeholderBgUrl = isEditor 
-		? (window.location?.origin 
+	const placeholderBgUrl = isEditor
+		? window.location?.origin
 			? `${window.location.origin}/wp-content/themes/codeweber/dist/assets/img/photos/bg37.jpg`
-			: './assets/img/photos/bg37.jpg')
+			: './assets/img/photos/bg37.jpg'
 		: '/wp-content/themes/codeweber/dist/assets/img/photos/bg37.jpg';
 
 	// Функция для получения классов секции
 	const getSectionClasses = () => {
-		const classes = ['wrapper', 'image-wrapper', 'bg-cover', 'bg-image', 'bg-xs-none', 'bg-gray'];
-		
+		const classes = [
+			'wrapper',
+			'image-wrapper',
+			'bg-cover',
+			'bg-image',
+			'bg-xs-none',
+			'bg-gray',
+		];
+
 		// Добавляем дополнительные классы из sectionClass, если они есть
 		if (sectionClass) {
 			classes.push(sectionClass);
 		}
-		
+
 		return classes.filter(Boolean).join(' ');
 	};
 
@@ -70,15 +73,18 @@ export const Banner27 = ({ attributes, isEditor = false }) => {
 
 	if (isEditor) {
 		return (
-			<section 
-				className={getSectionClasses()} 
+			<section
+				className={getSectionClasses()}
 				style={getSectionStyles()}
 				data-image-src={getBackgroundImageSrc()}
 			>
 				<div className="container pt-17 pb-15 py-sm-17 py-xxl-20">
 					<div className="row">
 						<div className="col-sm-6 col-xxl-5 text-center text-sm-start">
-							<InnerBlocks allowedBlocks={ALLOWED_CODEWEBER_BLOCKS} templateLock={false} />
+							<InnerBlocks
+								allowedBlocks={ALLOWED_CODEWEBER_BLOCKS}
+								templateLock={false}
+							/>
 						</div>
 					</div>
 				</div>
@@ -102,4 +108,3 @@ export const Banner27 = ({ attributes, isEditor = false }) => {
 		</section>
 	);
 };
-

@@ -1,6 +1,11 @@
-import { getGridClasses, getSpacingClasses, getGapClasses } from '../../components/grid-control';
+import {
+	getGridClasses,
+	getSpacingClasses,
+	getGapClasses,
+} from '../../components/grid-control';
 
-export const normalizeColumnsId = (value = '') => value.replace(/^#/, '').trim();
+export const normalizeColumnsId = (value = '') =>
+	value.replace(/^#/, '').trim();
 
 export const normalizeColumnsData = (value = '') => {
 	if (!value) return {};

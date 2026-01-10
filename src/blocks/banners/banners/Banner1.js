@@ -41,7 +41,7 @@ export const Banner1 = ({ attributes, isEditor = false }) => {
 	// Функция для получения классов секции
 	const getSectionClasses = () => {
 		const classes = ['wrapper'];
-		
+
 		// Если sectionClass содержит bg-gradient-primary, используем sectionClass напрямую
 		// и не добавляем стандартные классы фона (чтобы не конфликтовали)
 		if (sectionClass && sectionClass.includes('bg-gradient-primary')) {
@@ -54,7 +54,7 @@ export const Banner1 = ({ attributes, isEditor = false }) => {
 				classes.push(sectionClass);
 			}
 		}
-		
+
 		return classes.filter(Boolean).join(' ');
 	};
 
@@ -78,12 +78,12 @@ export const Banner1 = ({ attributes, isEditor = false }) => {
 
 	const imagesToRender = images || [];
 	const hasImage = imagesToRender && imagesToRender.length > 0;
-	
+
 	// Placeholder изображение
-	const placeholderUrl = isEditor 
-		? (window.location?.origin 
+	const placeholderUrl = isEditor
+		? window.location?.origin
 			? `${window.location.origin}/wp-content/themes/codeweber/dist/assets/img/illustrations/i2.png`
-			: './assets/img/illustrations/i2.png')
+			: './assets/img/illustrations/i2.png'
 		: '/wp-content/themes/codeweber/dist/assets/img/illustrations/i2.png';
 
 	// Рендерим изображение
@@ -91,25 +91,25 @@ export const Banner1 = ({ attributes, isEditor = false }) => {
 		// Определяем изображение для рендеринга
 		const image = hasImage ? imagesToRender[0] : null;
 		const imageUrl = image ? getImageUrl(image, imageSize) : placeholderUrl;
-		const imageAlt = image ? (image.alt || '') : '';
+		const imageAlt = image ? image.alt || '' : '';
 
 		// Для placeholder добавляем srcset для ретина-дисплеев
-		const placeholderSrcset = !hasImage 
-			? (isEditor 
-				? (window.location?.origin 
+		const placeholderSrcset = !hasImage
+			? isEditor
+				? window.location?.origin
 					? `${window.location.origin}/wp-content/themes/codeweber/dist/assets/img/illustrations/i2@2x.png 2x`
-					: './assets/img/illustrations/i2@2x.png 2x')
-				: '/wp-content/themes/codeweber/dist/assets/img/illustrations/i2@2x.png 2x')
+					: './assets/img/illustrations/i2@2x.png 2x'
+				: '/wp-content/themes/codeweber/dist/assets/img/illustrations/i2@2x.png 2x'
 			: undefined;
 
 		// Для этого баннера всегда используем простой img с классом w-auto
 		return (
 			<figure>
-				<img 
-					className="w-auto" 
-					src={imageUrl} 
+				<img
+					className="w-auto"
+					src={imageUrl}
 					srcSet={placeholderSrcset}
-					alt={imageAlt} 
+					alt={imageAlt}
 					decoding="async"
 				/>
 			</figure>
@@ -121,12 +121,13 @@ export const Banner1 = ({ attributes, isEditor = false }) => {
 			<section className={getSectionClasses()} style={getSectionStyles()}>
 				<div className="container pt-10 pt-md-14 pb-8 text-center">
 					<div className="row gx-lg-8 gx-xl-12 gy-10 align-items-center">
-						<div className="col-lg-7">
-							{renderImage()}
-						</div>
+						<div className="col-lg-7">{renderImage()}</div>
 						{/* /column */}
 						<div className="col-md-10 offset-md-1 offset-lg-0 col-lg-5 text-center text-lg-start">
-							<InnerBlocks allowedBlocks={ALLOWED_CODEWEBER_BLOCKS} templateLock={false} />
+							<InnerBlocks
+								allowedBlocks={ALLOWED_CODEWEBER_BLOCKS}
+								templateLock={false}
+							/>
 						</div>
 						{/* /column */}
 					</div>
@@ -141,13 +142,12 @@ export const Banner1 = ({ attributes, isEditor = false }) => {
 		<section
 			className={getSectionClasses()}
 			style={getSectionStyles()}
-			{...(backgroundType === 'image' && backgroundImageUrl && { 'data-image-src': backgroundImageUrl })}
+			{...(backgroundType === 'image' &&
+				backgroundImageUrl && { 'data-image-src': backgroundImageUrl })}
 		>
 			<div className="container pt-10 pt-md-14 pb-8 text-center">
 				<div className="row gx-lg-8 gx-xl-12 gy-10 align-items-center">
-					<div className="col-lg-7">
-						{renderImage()}
-					</div>
+					<div className="col-lg-7">{renderImage()}</div>
 					{/* /column */}
 					<div className="col-md-10 offset-md-1 offset-lg-0 col-lg-5 text-center text-lg-start">
 						<InnerBlocks.Content />
@@ -160,4 +160,3 @@ export const Banner1 = ({ attributes, isEditor = false }) => {
 		</section>
 	);
 };
-

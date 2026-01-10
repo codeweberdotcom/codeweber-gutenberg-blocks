@@ -19,7 +19,10 @@ registerBlockType(metadata, {
 	edit: Edit,
 	save: Save,
 	title: __('Tabs', 'codeweber-gutenberg-blocks'),
-	description: __('Bootstrap tabs with multiple items. Supports basic and pills styles with icons.', 'codeweber-gutenberg-blocks'),
+	description: __(
+		'Bootstrap tabs with multiple items. Supports basic and pills styles with icons.',
+		'codeweber-gutenberg-blocks'
+	),
 	keywords: [
 		__('tabs', 'codeweber-gutenberg-blocks'),
 		__('tab', 'codeweber-gutenberg-blocks'),
@@ -27,10 +30,3 @@ registerBlockType(metadata, {
 		__('nav', 'codeweber-gutenberg-blocks'),
 	],
 });
-
-
-
-
-
-
-

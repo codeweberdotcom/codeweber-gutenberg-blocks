@@ -27,18 +27,15 @@ const ALLOWED_CODEWEBER_BLOCKS = [
 ];
 
 export const Banner20 = ({ attributes, isEditor = false }) => {
-	const {
-		videoUrl,
-		backgroundImageUrl,
-		sectionClass,
-	} = attributes;
+	const { videoUrl, backgroundImageUrl, sectionClass } = attributes;
 
 	// Placeholder для видео и poster
-	const placeholderVideoUrl = '/wp-content/themes/codeweber/dist/assets/media/movie2.mp4';
-	const placeholderPosterUrl = isEditor 
-		? (window.location?.origin 
+	const placeholderVideoUrl =
+		'/wp-content/themes/codeweber/dist/assets/media/movie2.mp4';
+	const placeholderPosterUrl = isEditor
+		? window.location?.origin
 			? `${window.location.origin}/wp-content/themes/codeweber/dist/assets/img/photos/movie2.jpg`
-			: './assets/img/photos/movie2.jpg')
+			: './assets/img/photos/movie2.jpg'
 		: '/wp-content/themes/codeweber/dist/assets/img/photos/movie2.jpg';
 
 	// Получаем URL видео и poster
@@ -47,32 +44,50 @@ export const Banner20 = ({ attributes, isEditor = false }) => {
 
 	// Функция для получения классов секции
 	const getSectionClasses = () => {
-		const classes = ['video-wrapper', 'bg-overlay', 'bg-overlay-gradient', 'px-0', 'mt-0', 'min-vh-80'];
-		
+		const classes = [
+			'video-wrapper',
+			'bg-overlay',
+			'bg-overlay-gradient',
+			'px-0',
+			'mt-0',
+			'min-vh-80',
+		];
+
 		if (sectionClass) {
 			classes.push(sectionClass);
 		}
-		
+
 		return classes.filter(Boolean).join(' ');
 	};
 
 	if (isEditor) {
 		return (
 			<section className={getSectionClasses()}>
-				<video 
-					poster={posterSrc} 
+				<video
+					poster={posterSrc}
 					src={videoSrc}
 					autoPlay
 					loop
 					playsInline
 					muted
-					style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', top: 0, left: 0, zIndex: -1 }}
+					style={{
+						width: '100%',
+						height: '100%',
+						objectFit: 'cover',
+						position: 'absolute',
+						top: 0,
+						left: 0,
+						zIndex: -1,
+					}}
 				/>
 				<div className="video-content">
 					<div className="container text-center">
 						<div className="row">
 							<div className="col-lg-8 col-xl-6 text-center text-white mx-auto">
-								<InnerBlocks allowedBlocks={ALLOWED_CODEWEBER_BLOCKS} templateLock={false} />
+								<InnerBlocks
+									allowedBlocks={ALLOWED_CODEWEBER_BLOCKS}
+									templateLock={false}
+								/>
 							</div>
 						</div>
 					</div>
@@ -83,8 +98,8 @@ export const Banner20 = ({ attributes, isEditor = false }) => {
 
 	return (
 		<section className={getSectionClasses()}>
-			<video 
-				poster={posterSrc} 
+			<video
+				poster={posterSrc}
 				src={videoSrc}
 				autoPlay
 				loop
@@ -103,4 +118,3 @@ export const Banner20 = ({ attributes, isEditor = false }) => {
 		</section>
 	);
 };
-

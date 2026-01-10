@@ -16,7 +16,15 @@ import {
 import { __ } from '@wordpress/i18n';
 import { useEffect, useRef, createElement } from '@wordpress/element';
 import { useSelect, useDispatch } from '@wordpress/data';
-import { Icon, cog, inbox, comment, shield, justifySpaceBetween, positionCenter } from '@wordpress/icons';
+import {
+	Icon,
+	cog,
+	inbox,
+	comment,
+	shield,
+	justifySpaceBetween,
+	positionCenter,
+} from '@wordpress/icons';
 import { TagControl } from '../../components/tag/TagControl';
 import { BlockMetaFields } from '../../components/block-meta/BlockMetaFields';
 import { GridControl, getGapClasses } from '../../components/grid-control';
@@ -26,7 +34,11 @@ import { PositioningControl } from '../../components/layout/PositioningControl';
 const TabIcon = ({ icon, label }) => (
 	<span
 		title={label}
-		style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+		style={{
+			display: 'flex',
+			alignItems: 'center',
+			justifyContent: 'center',
+		}}
 	>
 		<Icon icon={icon} size={20} />
 	</span>
@@ -76,7 +88,9 @@ const FormEdit = ({ attributes, setAttributes, clientId }) => {
 		const editor = select('core/editor');
 		return {
 			postId: editor?.getCurrentPostId ? editor.getCurrentPostId() : null,
-			postType: editor?.getCurrentPostType ? editor.getCurrentPostType() : null,
+			postType: editor?.getCurrentPostType
+				? editor.getCurrentPostType()
+				: null,
 		};
 	}, []);
 
@@ -92,8 +106,14 @@ const FormEdit = ({ attributes, setAttributes, clientId }) => {
 
 	// Инициализируем дефолтные значения для сообщений, если они пустые
 	useEffect(() => {
-		const defaultSuccessMessage = __('Thank you! Your message has been sent.', 'codeweber-gutenberg-blocks');
-		const defaultErrorMessage = __('An error occurred. Please try again.', 'codeweber-gutenberg-blocks');
+		const defaultSuccessMessage = __(
+			'Thank you! Your message has been sent.',
+			'codeweber-gutenberg-blocks'
+		);
+		const defaultErrorMessage = __(
+			'An error occurred. Please try again.',
+			'codeweber-gutenberg-blocks'
+		);
 
 		const updates = {};
 		if (!successMessage || successMessage.trim() === '') {
@@ -109,9 +129,12 @@ const FormEdit = ({ attributes, setAttributes, clientId }) => {
 	}, []); // Выполняется только при монтировании компонента
 
 	// Получаем innerBlocks для сохранения в атрибуты
-	const innerBlocks = useSelect((select) => {
-		return select('core/block-editor').getBlocks(clientId) || [];
-	}, [clientId]);
+	const innerBlocks = useSelect(
+		(select) => {
+			return select('core/block-editor').getBlocks(clientId) || [];
+		},
+		[clientId]
+	);
 
 	// Для замены innerBlocks при применении шаблона
 	const { replaceInnerBlocks } = useDispatch(blockEditorStore);
@@ -119,96 +142,159 @@ const FormEdit = ({ attributes, setAttributes, clientId }) => {
 	// Функция для получения шаблона блоков
 	const getTemplateBlocks = () => {
 		// Базовый блок Title для всех форм
-		const titleBlock = ['codeweber-gutenberg-blocks/heading-subtitle', {
-			enableTitle: true,
-			enableSubtitle: false,
-			enableText: true,
-			title: __('Feedback form', 'codeweber-gutenberg-blocks'),
-			subtitle: '',
-			text: __('Write to us — we\'ll be happy to answer your questions.', 'codeweber-gutenberg-blocks'),
-			titleTag: 'h2',
-			textTag: 'p',
-		}];
+		const titleBlock = [
+			'codeweber-gutenberg-blocks/heading-subtitle',
+			{
+				enableTitle: true,
+				enableSubtitle: false,
+				enableText: true,
+				title: __('Feedback form', 'codeweber-gutenberg-blocks'),
+				subtitle: '',
+				text: __(
+					"Write to us — we'll be happy to answer your questions.",
+					'codeweber-gutenberg-blocks'
+				),
+				titleTag: 'h2',
+				textTag: 'p',
+			},
+		];
 
 		if (formType === 'testimonial') {
 			return [
 				titleBlock,
-				['codeweber-blocks/form-field', {
-					fieldType: 'textarea',
-					fieldName: 'testimonial_text',
-					fieldLabel: __('Your Review', 'codeweber-gutenberg-blocks'),
-					isRequired: true,
-				}],
-				['codeweber-blocks/form-field', {
-					fieldType: 'rating',
-					fieldName: 'rating',
-					fieldLabel: __('Rating', 'codeweber-gutenberg-blocks'),
-					isRequired: true,
-				}],
-				['codeweber-blocks/form-field', {
-					fieldType: 'text',
-					fieldName: 'name',
-					fieldLabel: __('Your Name', 'codeweber-gutenberg-blocks'),
-					isRequired: true,
-					showForGuestsOnly: true,
-				}],
-				['codeweber-blocks/form-field', {
-					fieldType: 'email',
-					fieldName: 'author_email',
-					fieldLabel: __('Your Email', 'codeweber-gutenberg-blocks'),
-					isRequired: true,
-					showForGuestsOnly: true,
-				}],
-				['codeweber-blocks/form-field', {
-					fieldType: 'author_role',
-					fieldName: 'role',
-					fieldLabel: __('Your Position', 'codeweber-gutenberg-blocks'),
-				}],
-				['codeweber-blocks/form-field', {
-					fieldType: 'text',
-					fieldName: 'company',
-					fieldLabel: __('Company', 'codeweber-gutenberg-blocks'),
-				}],
-				['codeweber-blocks/form-field', {
-					fieldType: 'consents_block',
-					width: 'col-12',
-				}],
-				['codeweber-blocks/submit-button', {
-					buttonText: __('Submit Review', 'codeweber-gutenberg-blocks'),
-					buttonClass: 'btn btn-primary',
-				}],
+				[
+					'codeweber-blocks/form-field',
+					{
+						fieldType: 'textarea',
+						fieldName: 'testimonial_text',
+						fieldLabel: __(
+							'Your Review',
+							'codeweber-gutenberg-blocks'
+						),
+						isRequired: true,
+					},
+				],
+				[
+					'codeweber-blocks/form-field',
+					{
+						fieldType: 'rating',
+						fieldName: 'rating',
+						fieldLabel: __('Rating', 'codeweber-gutenberg-blocks'),
+						isRequired: true,
+					},
+				],
+				[
+					'codeweber-blocks/form-field',
+					{
+						fieldType: 'text',
+						fieldName: 'name',
+						fieldLabel: __(
+							'Your Name',
+							'codeweber-gutenberg-blocks'
+						),
+						isRequired: true,
+						showForGuestsOnly: true,
+					},
+				],
+				[
+					'codeweber-blocks/form-field',
+					{
+						fieldType: 'email',
+						fieldName: 'author_email',
+						fieldLabel: __(
+							'Your Email',
+							'codeweber-gutenberg-blocks'
+						),
+						isRequired: true,
+						showForGuestsOnly: true,
+					},
+				],
+				[
+					'codeweber-blocks/form-field',
+					{
+						fieldType: 'author_role',
+						fieldName: 'role',
+						fieldLabel: __(
+							'Your Position',
+							'codeweber-gutenberg-blocks'
+						),
+					},
+				],
+				[
+					'codeweber-blocks/form-field',
+					{
+						fieldType: 'text',
+						fieldName: 'company',
+						fieldLabel: __('Company', 'codeweber-gutenberg-blocks'),
+					},
+				],
+				[
+					'codeweber-blocks/form-field',
+					{
+						fieldType: 'consents_block',
+						width: 'col-12',
+					},
+				],
+				[
+					'codeweber-blocks/submit-button',
+					{
+						buttonText: __(
+							'Submit Review',
+							'codeweber-gutenberg-blocks'
+						),
+						buttonClass: 'btn btn-primary',
+					},
+				],
 			];
 		}
 
 		// Дефолтный шаблон для обычных форм
 		return [
 			titleBlock,
-			['codeweber-blocks/form-field', {
-				fieldType: 'text',
-				fieldName: 'name',
-				fieldLabel: __('Name', 'codeweber-gutenberg-blocks'),
-				isRequired: true,
-			}],
-			['codeweber-blocks/form-field', {
-				fieldType: 'email',
-				fieldName: 'email',
-				fieldLabel: __('Email', 'codeweber-gutenberg-blocks'),
-				isRequired: true,
-			}],
-			['codeweber-blocks/form-field', {
-				fieldType: 'textarea',
-				fieldName: 'message',
-				fieldLabel: __('Message', 'codeweber-gutenberg-blocks'),
-				isRequired: true,
-			}],
-			['codeweber-blocks/form-field', {
-				fieldType: 'consents_block',
-				width: 'col-12',
-			}],
-			['codeweber-blocks/submit-button', {
-				buttonText: __('Send Message', 'codeweber-gutenberg-blocks'),
-				buttonClass: 'btn btn-primary',
-			}],
+			[
+				'codeweber-blocks/form-field',
+				{
+					fieldType: 'text',
+					fieldName: 'name',
+					fieldLabel: __('Name', 'codeweber-gutenberg-blocks'),
+					isRequired: true,
+				},
+			],
+			[
+				'codeweber-blocks/form-field',
+				{
+					fieldType: 'email',
+					fieldName: 'email',
+					fieldLabel: __('Email', 'codeweber-gutenberg-blocks'),
+					isRequired: true,
+				},
+			],
+			[
+				'codeweber-blocks/form-field',
+				{
+					fieldType: 'textarea',
+					fieldName: 'message',
+					fieldLabel: __('Message', 'codeweber-gutenberg-blocks'),
+					isRequired: true,
+				},
+			],
+			[
+				'codeweber-blocks/form-field',
+				{
+					fieldType: 'consents_block',
+					width: 'col-12',
+				},
+			],
+			[
+				'codeweber-blocks/submit-button',
+				{
+					buttonText: __(
+						'Send Message',
+						'codeweber-gutenberg-blocks'
+					),
+					buttonClass: 'btn btn-primary',
+				},
+			],
 		];
 	};
 
@@ -217,7 +303,8 @@ const FormEdit = ({ attributes, setAttributes, clientId }) => {
 	useEffect(() => {
 		if (innerBlocks.length === 0 && !hasAppliedTemplateRef.current) {
 			const template = getTemplateBlocks();
-			const templateBlocks = createBlocksFromInnerBlocksTemplate(template);
+			const templateBlocks =
+				createBlocksFromInnerBlocksTemplate(template);
 			replaceInnerBlocks(clientId, templateBlocks, false);
 			hasAppliedTemplateRef.current = true;
 		}
@@ -234,8 +321,8 @@ const FormEdit = ({ attributes, setAttributes, clientId }) => {
 
 		// Извлекаем атрибуты из innerBlocks
 		const fields = innerBlocks
-			.filter(block => block.name === 'codeweber-blocks/form-field')
-			.map(block => block.attributes || {});
+			.filter((block) => block.name === 'codeweber-blocks/form-field')
+			.map((block) => block.attributes || {});
 
 		// Обновляем только если изменилось
 		if (JSON.stringify(fields) !== JSON.stringify(formFields || [])) {
@@ -248,13 +335,69 @@ const FormEdit = ({ attributes, setAttributes, clientId }) => {
 	});
 
 	const tabs = [
-		{ name: 'form', title: <TabIcon icon={cog} label={__('Form', 'codeweber-gutenberg-blocks')} /> },
-		{ name: 'email', title: <TabIcon icon={inbox} label={__('Email', 'codeweber-gutenberg-blocks')} /> },
-		{ name: 'messages', title: <TabIcon icon={comment} label={__('Messages', 'codeweber-gutenberg-blocks')} /> },
-		{ name: 'security', title: <TabIcon icon={shield} label={__('Security', 'codeweber-gutenberg-blocks')} /> },
-		{ name: 'align', title: <TabIcon icon={positionCenter} label={__('Position', 'codeweber-gutenberg-blocks')} /> },
-		{ name: 'gap', title: <TabIcon icon={justifySpaceBetween} label={__('Gap', 'codeweber-gutenberg-blocks')} /> },
-		{ name: 'settings', title: <TabIcon icon={cog} label={__('Settings', 'codeweber-gutenberg-blocks')} /> },
+		{
+			name: 'form',
+			title: (
+				<TabIcon
+					icon={cog}
+					label={__('Form', 'codeweber-gutenberg-blocks')}
+				/>
+			),
+		},
+		{
+			name: 'email',
+			title: (
+				<TabIcon
+					icon={inbox}
+					label={__('Email', 'codeweber-gutenberg-blocks')}
+				/>
+			),
+		},
+		{
+			name: 'messages',
+			title: (
+				<TabIcon
+					icon={comment}
+					label={__('Messages', 'codeweber-gutenberg-blocks')}
+				/>
+			),
+		},
+		{
+			name: 'security',
+			title: (
+				<TabIcon
+					icon={shield}
+					label={__('Security', 'codeweber-gutenberg-blocks')}
+				/>
+			),
+		},
+		{
+			name: 'align',
+			title: (
+				<TabIcon
+					icon={positionCenter}
+					label={__('Position', 'codeweber-gutenberg-blocks')}
+				/>
+			),
+		},
+		{
+			name: 'gap',
+			title: (
+				<TabIcon
+					icon={justifySpaceBetween}
+					label={__('Gap', 'codeweber-gutenberg-blocks')}
+				/>
+			),
+		},
+		{
+			name: 'settings',
+			title: (
+				<TabIcon
+					icon={cog}
+					label={__('Settings', 'codeweber-gutenberg-blocks')}
+				/>
+			),
+		},
 	];
 
 	return (
@@ -265,27 +408,80 @@ const FormEdit = ({ attributes, setAttributes, clientId }) => {
 						<>
 							{/* FORM TAB */}
 							{tab.name === 'form' && (
-								<PanelBody title={__('Form Settings', 'codeweber-gutenberg-blocks')} initialOpen={true}>
+								<PanelBody
+									title={__(
+										'Form Settings',
+										'codeweber-gutenberg-blocks'
+									)}
+									initialOpen={true}
+								>
 									<SelectControl
-										label={__('Form Type', 'codeweber-gutenberg-blocks')}
+										label={__(
+											'Form Type',
+											'codeweber-gutenberg-blocks'
+										)}
 										value={formType || 'form'}
 										options={[
-											{ label: __('Regular Form', 'codeweber-gutenberg-blocks'), value: 'form' },
-											{ label: __('Newsletter Subscription', 'codeweber-gutenberg-blocks'), value: 'newsletter' },
-											{ label: __('Testimonial Form', 'codeweber-gutenberg-blocks'), value: 'testimonial' },
-											{ label: __('Resume Form', 'codeweber-gutenberg-blocks'), value: 'resume' },
-											{ label: __('Callback Request', 'codeweber-gutenberg-blocks'), value: 'callback' },
+											{
+												label: __(
+													'Regular Form',
+													'codeweber-gutenberg-blocks'
+												),
+												value: 'form',
+											},
+											{
+												label: __(
+													'Newsletter Subscription',
+													'codeweber-gutenberg-blocks'
+												),
+												value: 'newsletter',
+											},
+											{
+												label: __(
+													'Testimonial Form',
+													'codeweber-gutenberg-blocks'
+												),
+												value: 'testimonial',
+											},
+											{
+												label: __(
+													'Resume Form',
+													'codeweber-gutenberg-blocks'
+												),
+												value: 'resume',
+											},
+											{
+												label: __(
+													'Callback Request',
+													'codeweber-gutenberg-blocks'
+												),
+												value: 'callback',
+											},
 										]}
-										onChange={(value) => setAttributes({ formType: value })}
-										help={__('Select the type of form. This determines how the form is processed.', 'codeweber-gutenberg-blocks')}
+										onChange={(value) =>
+											setAttributes({ formType: value })
+										}
+										help={__(
+											'Select the type of form. This determines how the form is processed.',
+											'codeweber-gutenberg-blocks'
+										)}
 										__nextHasNoMarginBottom
 										__next40pxDefaultSize
 									/>
 									<TextControl
-										label={__('Form ID', 'codeweber-gutenberg-blocks')}
-										value={formId || (postId ? String(postId) : '')}
+										label={__(
+											'Form ID',
+											'codeweber-gutenberg-blocks'
+										)}
+										value={
+											formId ||
+											(postId ? String(postId) : '')
+										}
 										disabled={true}
-										help={__('Form ID is assigned automatically from the CPT Form ID and cannot be changed here.', 'codeweber-gutenberg-blocks')}
+										help={__(
+											'Form ID is assigned automatically from the CPT Form ID and cannot be changed here.',
+											'codeweber-gutenberg-blocks'
+										)}
 										__nextHasNoMarginBottom
 										__next40pxDefaultSize
 									/>
@@ -294,35 +490,68 @@ const FormEdit = ({ attributes, setAttributes, clientId }) => {
 
 							{/* EMAIL TAB */}
 							{tab.name === 'email' && (
-								<PanelBody title={__('Email Settings', 'codeweber-gutenberg-blocks')} initialOpen={true}>
+								<PanelBody
+									title={__(
+										'Email Settings',
+										'codeweber-gutenberg-blocks'
+									)}
+									initialOpen={true}
+								>
 									<TextControl
-										label={__('Recipient Email', 'codeweber-gutenberg-blocks')}
+										label={__(
+											'Recipient Email',
+											'codeweber-gutenberg-blocks'
+										)}
 										type="email"
 										value={recipientEmail}
-										onChange={(value) => setAttributes({ recipientEmail: value })}
-										help={__('Email address to receive form submissions', 'codeweber-gutenberg-blocks')}
+										onChange={(value) =>
+											setAttributes({
+												recipientEmail: value,
+											})
+										}
+										help={__(
+											'Email address to receive form submissions',
+											'codeweber-gutenberg-blocks'
+										)}
 										__nextHasNoMarginBottom
 										__next40pxDefaultSize
 									/>
 									<TextControl
-										label={__('Sender Email', 'codeweber-gutenberg-blocks')}
+										label={__(
+											'Sender Email',
+											'codeweber-gutenberg-blocks'
+										)}
 										type="email"
 										value={senderEmail}
-										onChange={(value) => setAttributes({ senderEmail: value })}
+										onChange={(value) =>
+											setAttributes({
+												senderEmail: value,
+											})
+										}
 										__nextHasNoMarginBottom
 										__next40pxDefaultSize
 									/>
 									<TextControl
-										label={__('Sender Name', 'codeweber-gutenberg-blocks')}
+										label={__(
+											'Sender Name',
+											'codeweber-gutenberg-blocks'
+										)}
 										value={senderName}
-										onChange={(value) => setAttributes({ senderName: value })}
+										onChange={(value) =>
+											setAttributes({ senderName: value })
+										}
 										__nextHasNoMarginBottom
 										__next40pxDefaultSize
 									/>
 									<TextControl
-										label={__('Email Subject', 'codeweber-gutenberg-blocks')}
+										label={__(
+											'Email Subject',
+											'codeweber-gutenberg-blocks'
+										)}
 										value={subject}
-										onChange={(value) => setAttributes({ subject: value })}
+										onChange={(value) =>
+											setAttributes({ subject: value })
+										}
 										__nextHasNoMarginBottom
 										__next40pxDefaultSize
 									/>
@@ -331,62 +560,151 @@ const FormEdit = ({ attributes, setAttributes, clientId }) => {
 
 							{/* MESSAGES TAB */}
 							{tab.name === 'messages' && (
-								<PanelBody title={__('Messages', 'codeweber-gutenberg-blocks')} initialOpen={true}>
+								<PanelBody
+									title={__(
+										'Messages',
+										'codeweber-gutenberg-blocks'
+									)}
+									initialOpen={true}
+								>
 									<TextareaControl
-										label={__('Success Message', 'codeweber-gutenberg-blocks')}
-										value={successMessage || __('Thank you! Your message has been sent.', 'codeweber-gutenberg-blocks')}
-										onChange={(value) => setAttributes({ successMessage: value })}
-										help={__('Message shown after successful form submission', 'codeweber-gutenberg-blocks')}
+										label={__(
+											'Success Message',
+											'codeweber-gutenberg-blocks'
+										)}
+										value={
+											successMessage ||
+											__(
+												'Thank you! Your message has been sent.',
+												'codeweber-gutenberg-blocks'
+											)
+										}
+										onChange={(value) =>
+											setAttributes({
+												successMessage: value,
+											})
+										}
+										help={__(
+											'Message shown after successful form submission',
+											'codeweber-gutenberg-blocks'
+										)}
 									/>
 									<TextareaControl
-										label={__('Error Message', 'codeweber-gutenberg-blocks')}
-										value={errorMessage || __('An error occurred. Please try again.', 'codeweber-gutenberg-blocks')}
-										onChange={(value) => setAttributes({ errorMessage: value })}
-										help={__('Message shown when form submission fails', 'codeweber-gutenberg-blocks')}
+										label={__(
+											'Error Message',
+											'codeweber-gutenberg-blocks'
+										)}
+										value={
+											errorMessage ||
+											__(
+												'An error occurred. Please try again.',
+												'codeweber-gutenberg-blocks'
+											)
+										}
+										onChange={(value) =>
+											setAttributes({
+												errorMessage: value,
+											})
+										}
+										help={__(
+											'Message shown when form submission fails',
+											'codeweber-gutenberg-blocks'
+										)}
 									/>
 								</PanelBody>
 							)}
 
 							{/* SECURITY TAB */}
 							{tab.name === 'security' && (
-								<PanelBody title={__('Security', 'codeweber-gutenberg-blocks')} initialOpen={true}>
+								<PanelBody
+									title={__(
+										'Security',
+										'codeweber-gutenberg-blocks'
+									)}
+									initialOpen={true}
+								>
 									<ToggleControl
-										label={__('Enable Captcha', 'codeweber-gutenberg-blocks')}
+										label={__(
+											'Enable Captcha',
+											'codeweber-gutenberg-blocks'
+										)}
 										checked={enableCaptcha}
-										onChange={(value) => setAttributes({ enableCaptcha: value })}
+										onChange={(value) =>
+											setAttributes({
+												enableCaptcha: value,
+											})
+										}
 										__nextHasNoMarginBottom
 									/>
 									{enableCaptcha && (
 										<SelectControl
-											label={__('Captcha Type', 'codeweber-gutenberg-blocks')}
+											label={__(
+												'Captcha Type',
+												'codeweber-gutenberg-blocks'
+											)}
 											value={captchaType}
 											options={[
-												{ label: __('Honeypot', 'codeweber-gutenberg-blocks'), value: 'honeypot' },
+												{
+													label: __(
+														'Honeypot',
+														'codeweber-gutenberg-blocks'
+													),
+													value: 'honeypot',
+												},
 											]}
-											onChange={(value) => setAttributes({ captchaType: value })}
+											onChange={(value) =>
+												setAttributes({
+													captchaType: value,
+												})
+											}
 											__nextHasNoMarginBottom
 											__next40pxDefaultSize
 										/>
 									)}
 									<ToggleControl
-										label={__('Enable Rate Limiting', 'codeweber-gutenberg-blocks')}
+										label={__(
+											'Enable Rate Limiting',
+											'codeweber-gutenberg-blocks'
+										)}
 										checked={enableRateLimit}
-										onChange={(value) => setAttributes({ enableRateLimit: value })}
+										onChange={(value) =>
+											setAttributes({
+												enableRateLimit: value,
+											})
+										}
 										__nextHasNoMarginBottom
 									/>
 									{enableRateLimit && (
 										<>
 											<TextControl
-												label={__('Max Submissions', 'codeweber-gutenberg-blocks')}
+												label={__(
+													'Max Submissions',
+													'codeweber-gutenberg-blocks'
+												)}
 												type="number"
 												value={rateLimitCount}
-												onChange={(value) => setAttributes({ rateLimitCount: parseInt(value) || 5 })}
+												onChange={(value) =>
+													setAttributes({
+														rateLimitCount:
+															parseInt(value) ||
+															5,
+													})
+												}
 											/>
 											<TextControl
-												label={__('Time Period (seconds)', 'codeweber-gutenberg-blocks')}
+												label={__(
+													'Time Period (seconds)',
+													'codeweber-gutenberg-blocks'
+												)}
 												type="number"
 												value={rateLimitPeriod}
-												onChange={(value) => setAttributes({ rateLimitPeriod: parseInt(value) || 60 })}
+												onChange={(value) =>
+													setAttributes({
+														rateLimitPeriod:
+															parseInt(value) ||
+															60,
+													})
+												}
 											/>
 										</>
 									)}
@@ -397,15 +715,34 @@ const FormEdit = ({ attributes, setAttributes, clientId }) => {
 							{tab.name === 'align' && (
 								<div style={{ padding: '16px' }}>
 									<PositioningControl
-										title={__('Form Align', 'codeweber-gutenberg-blocks')}
+										title={__(
+											'Form Align',
+											'codeweber-gutenberg-blocks'
+										)}
 										alignItems={formAlignItems}
-										onAlignItemsChange={(value) => setAttributes({ formAlignItems: value })}
+										onAlignItemsChange={(value) =>
+											setAttributes({
+												formAlignItems: value,
+											})
+										}
 										justifyContent={formJustifyContent}
-										onJustifyContentChange={(value) => setAttributes({ formJustifyContent: value })}
+										onJustifyContentChange={(value) =>
+											setAttributes({
+												formJustifyContent: value,
+											})
+										}
 										textAlign={formTextAlign}
-										onTextAlignChange={(value) => setAttributes({ formTextAlign: value })}
+										onTextAlignChange={(value) =>
+											setAttributes({
+												formTextAlign: value,
+											})
+										}
 										position={formPosition}
-										onPositionChange={(value) => setAttributes({ formPosition: value })}
+										onPositionChange={(value) =>
+											setAttributes({
+												formPosition: value,
+											})
+										}
 										noPanel={true}
 									/>
 								</div>
@@ -427,7 +764,13 @@ const FormEdit = ({ attributes, setAttributes, clientId }) => {
 
 							{/* SETTINGS TAB */}
 							{tab.name === 'settings' && (
-								<PanelBody title={__('Advanced', 'codeweber-gutenberg-blocks')} initialOpen={true}>
+								<PanelBody
+									title={__(
+										'Advanced',
+										'codeweber-gutenberg-blocks'
+									)}
+									initialOpen={true}
+								>
 									<BlockMetaFields
 										attributes={attributes}
 										setAttributes={setAttributes}
@@ -437,9 +780,18 @@ const FormEdit = ({ attributes, setAttributes, clientId }) => {
 											idKey: 'blockId',
 										}}
 										labels={{
-											classLabel: __('Block Class', 'codeweber-gutenberg-blocks'),
-											dataLabel: __('Block Data', 'codeweber-gutenberg-blocks'),
-											idLabel: __('Block ID', 'codeweber-gutenberg-blocks'),
+											classLabel: __(
+												'Block Class',
+												'codeweber-gutenberg-blocks'
+											),
+											dataLabel: __(
+												'Block Data',
+												'codeweber-gutenberg-blocks'
+											),
+											idLabel: __(
+												'Block ID',
+												'codeweber-gutenberg-blocks'
+											),
 										}}
 									/>
 								</PanelBody>
@@ -453,8 +805,13 @@ const FormEdit = ({ attributes, setAttributes, clientId }) => {
 				<div className="form-preview">
 					{(() => {
 						const gapClasses = getGapClasses(attributes, 'form');
-						const rowClasses = ['row', ...gapClasses].filter(Boolean);
-						const rowClassName = rowClasses.length > 1 ? rowClasses.join(' ') : 'row g-4';
+						const rowClasses = ['row', ...gapClasses].filter(
+							Boolean
+						);
+						const rowClassName =
+							rowClasses.length > 1
+								? rowClasses.join(' ')
+								: 'row g-4';
 
 						// Добавляем классы выравнивания к элементу с row и gap (для редактора)
 						const alignmentClasses = [];
@@ -462,7 +819,10 @@ const FormEdit = ({ attributes, setAttributes, clientId }) => {
 							alignmentClasses.push(formAlignItems.trim());
 						}
 						if (formJustifyContent) {
-							alignmentClasses.push('d-flex', formJustifyContent.trim());
+							alignmentClasses.push(
+								'd-flex',
+								formJustifyContent.trim()
+							);
 						}
 						if (formTextAlign) {
 							alignmentClasses.push(formTextAlign.trim());
@@ -471,17 +831,28 @@ const FormEdit = ({ attributes, setAttributes, clientId }) => {
 							alignmentClasses.push(formPosition.trim());
 						}
 
-						const finalRowClassName = [rowClassName, ...alignmentClasses].filter(Boolean).join(' ');
+						const finalRowClassName = [
+							rowClassName,
+							...alignmentClasses,
+						]
+							.filter(Boolean)
+							.join(' ');
 
-					return (
-						<div className={`form-fields-preview ${finalRowClassName}`}>
-							<InnerBlocks
-								allowedBlocks={['codeweber-blocks/form-field', 'codeweber-blocks/submit-button', 'codeweber-gutenberg-blocks/heading-subtitle']}
-								template={getTemplateBlocks()}
-								templateLock={false}
-							/>
-						</div>
-					);
+						return (
+							<div
+								className={`form-fields-preview ${finalRowClassName}`}
+							>
+								<InnerBlocks
+									allowedBlocks={[
+										'codeweber-blocks/form-field',
+										'codeweber-blocks/submit-button',
+										'codeweber-gutenberg-blocks/heading-subtitle',
+									]}
+									template={getTemplateBlocks()}
+									templateLock={false}
+								/>
+							</div>
+						);
 					})()}
 				</div>
 			</div>
@@ -490,4 +861,3 @@ const FormEdit = ({ attributes, setAttributes, clientId }) => {
 };
 
 export default FormEdit;
-

@@ -18,25 +18,8 @@ const Save = ({ attributes }) => {
 	}
 
 	return (
-		<ParagraphRenderSave
-			attributes={attributes}
-			prefix=""
-			tag={textTag}
-		/>
+		<ParagraphRenderSave attributes={attributes} prefix="" tag={textTag} />
 	);
 };
 
 export default Save;
-
-
-
-
-
-
-
-
-
-
-
-
-

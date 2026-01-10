@@ -6,13 +6,7 @@
 	"category": "codeweber-gutenberg-elements",
 	"icon": "phone",
 	"description": "Display contact information from Codeweber theme Redux settings (address, email, phone).",
-	"keywords": [
-		"contacts",
-		"address",
-		"email",
-		"phone",
-		"contact"
-	],
+	"keywords": ["contacts", "address", "email", "phone", "contact"],
 	"supports": {
 		"html": false,
 		"customClassName": true,
@@ -176,4 +170,3 @@
 	"style": "file:./style-index.css",
 	"render": "file:./render.php"
 }
-

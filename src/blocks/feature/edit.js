@@ -10,9 +10,25 @@ import {
 	InspectorControls,
 	RichText,
 } from '@wordpress/block-editor';
-import { TabPanel, PanelBody, ButtonGroup, Button, TextControl, ToggleControl } from '@wordpress/components';
+import {
+	TabPanel,
+	PanelBody,
+	ButtonGroup,
+	Button,
+	TextControl,
+	ToggleControl,
+} from '@wordpress/components';
 import { useEffect } from '@wordpress/element';
-import { Icon, symbol, typography, button, addCard, cog, arrowRight, border } from '@wordpress/icons';
+import {
+	Icon,
+	symbol,
+	typography,
+	button,
+	addCard,
+	cog,
+	arrowRight,
+	border,
+} from '@wordpress/icons';
 
 import { IconControl, IconRender } from '../../components/icon';
 import { HeadingContentControl } from '../../components/heading/HeadingContentControl';
@@ -31,9 +47,13 @@ import { ComboboxControl } from '@wordpress/components';
 
 // Tab icon with native title tooltip
 const TabIcon = ({ icon, label }) => (
-	<span 
+	<span
 		title={label}
-		style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+		style={{
+			display: 'flex',
+			alignItems: 'center',
+			justifyContent: 'center',
+		}}
 	>
 		<Icon icon={icon} size={20} />
 	</span>
@@ -129,17 +149,73 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 
 	// Динамический массив табов
 	const tabs = [
-		{ name: 'feature', title: <TabIcon icon={symbol} label={__('Feature', 'codeweber-gutenberg-blocks')} /> },
-		{ name: 'title', title: <TabIcon icon={typography} label={__('Title', 'codeweber-gutenberg-blocks')} /> },
-		{ name: 'button', title: <TabIcon icon={button} label={__('Button', 'codeweber-gutenberg-blocks')} /> },
-		{ name: 'card', title: <TabIcon icon={addCard} label={__('Card', 'codeweber-gutenberg-blocks')} /> },
-		{ name: 'borders', title: <TabIcon icon={border} label={__('Borders', 'codeweber-gutenberg-blocks')} /> },
+		{
+			name: 'feature',
+			title: (
+				<TabIcon
+					icon={symbol}
+					label={__('Feature', 'codeweber-gutenberg-blocks')}
+				/>
+			),
+		},
+		{
+			name: 'title',
+			title: (
+				<TabIcon
+					icon={typography}
+					label={__('Title', 'codeweber-gutenberg-blocks')}
+				/>
+			),
+		},
+		{
+			name: 'button',
+			title: (
+				<TabIcon
+					icon={button}
+					label={__('Button', 'codeweber-gutenberg-blocks')}
+				/>
+			),
+		},
+		{
+			name: 'card',
+			title: (
+				<TabIcon
+					icon={addCard}
+					label={__('Card', 'codeweber-gutenberg-blocks')}
+				/>
+			),
+		},
+		{
+			name: 'borders',
+			title: (
+				<TabIcon
+					icon={border}
+					label={__('Borders', 'codeweber-gutenberg-blocks')}
+				/>
+			),
+		},
 	];
-	
+
 	// Добавляем табы Settings и Animation только если Card включен
 	if (enableCard) {
-		tabs.push({ name: 'animation', title: <TabIcon icon={arrowRight} label={__('Animation', 'codeweber-gutenberg-blocks')} /> });
-		tabs.push({ name: 'settings', title: <TabIcon icon={cog} label={__('Settings', 'codeweber-gutenberg-blocks')} /> });
+		tabs.push({
+			name: 'animation',
+			title: (
+				<TabIcon
+					icon={arrowRight}
+					label={__('Animation', 'codeweber-gutenberg-blocks')}
+				/>
+			),
+		});
+		tabs.push({
+			name: 'settings',
+			title: (
+				<TabIcon
+					icon={cog}
+					label={__('Settings', 'codeweber-gutenberg-blocks')}
+				/>
+			),
+		});
 	}
 
 	// Установка значений по умолчанию для иконки при создании блока
@@ -182,7 +258,9 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 
 		// Задержка для применения новых атрибутов в DOM
 		const timer = setTimeout(() => {
-			const currentBlock = document.querySelector(`[data-block="${clientId}"]`);
+			const currentBlock = document.querySelector(
+				`[data-block="${clientId}"]`
+			);
 			if (!currentBlock) {
 				console.warn('⚠️ Block with clientId not found:', clientId);
 				return;
@@ -195,24 +273,48 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 				currentBlock.querySelector('div[data-cue]');
 
 			// Если анимация включена и есть тип — настраиваем и обновляем
-			if (animationEnabled && animationType && elementWithCue && elementWithCue.hasAttribute('data-cue')) {
-				console.log('🎬 Resetting animation:', animationType, '| Duration:', animationDuration, '| Delay:', animationDelay);
+			if (
+				animationEnabled &&
+				animationType &&
+				elementWithCue &&
+				elementWithCue.hasAttribute('data-cue')
+			) {
+				console.log(
+					'🎬 Resetting animation:',
+					animationType,
+					'| Duration:',
+					animationDuration,
+					'| Delay:',
+					animationDelay
+				);
 
 				// Шаг 1: Полный сброс состояния
-				elementWithCue.classList.remove('cue-hide', 'cue-show', 'cue-sticky');
+				elementWithCue.classList.remove(
+					'cue-hide',
+					'cue-show',
+					'cue-sticky'
+				);
 				elementWithCue.removeAttribute('data-show');
 				elementWithCue.style.animationDelay = '';
 				elementWithCue.style.animationDuration = '';
 				elementWithCue.style.opacity = '';
-				
+
 				// Удаляем все animation-классы scrollCue
-				const animationClasses = Array.from(elementWithCue.classList).filter(cls => 
-					cls.startsWith('fadeIn') || cls.startsWith('slideIn') || 
-					cls.startsWith('zoomIn') || cls.startsWith('zoomOut') ||
-					cls.startsWith('rotateIn') || cls.startsWith('bounceIn') ||
-					cls.startsWith('flipIn')
+				const animationClasses = Array.from(
+					elementWithCue.classList
+				).filter(
+					(cls) =>
+						cls.startsWith('fadeIn') ||
+						cls.startsWith('slideIn') ||
+						cls.startsWith('zoomIn') ||
+						cls.startsWith('zoomOut') ||
+						cls.startsWith('rotateIn') ||
+						cls.startsWith('bounceIn') ||
+						cls.startsWith('flipIn')
 				);
-				animationClasses.forEach(cls => elementWithCue.classList.remove(cls));
+				animationClasses.forEach((cls) =>
+					elementWithCue.classList.remove(cls)
+				);
 
 				// Шаг 2: Принудительно скрываем элемент (имитируем состояние до срабатывания scrollCue)
 				elementWithCue.classList.add('cue-hide');
@@ -224,13 +326,13 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 					setTimeout(() => {
 						window.reinitScrollCue();
 					}, 50);
-					
+
 					// Второй update и принудительный показ анимации
 					setTimeout(() => {
 						elementWithCue.classList.remove('cue-hide');
 						elementWithCue.classList.add('cue-show');
 						elementWithCue.style.opacity = '';
-						
+
 						// Применяем CSS-анимацию вручную для preview в редакторе
 						if (animationDuration) {
 							elementWithCue.style.animationDuration = `${animationDuration}ms`;
@@ -238,10 +340,10 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 						if (animationDelay) {
 							elementWithCue.style.animationDelay = `${animationDelay}ms`;
 						}
-						
+
 						// Добавляем класс анимации для мгновенного preview
 						elementWithCue.classList.add(animationType);
-						
+
 						window.reinitScrollCue();
 						console.log('✅ Animation reinitialized and triggered');
 					}, 200);
@@ -251,34 +353,50 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 
 			// Если анимация отключена или тип пустой — очищаем и обновляем
 			if (!animationEnabled || !animationType) {
-				console.log('🔴 Animation disabled or type empty - cleaning up');
-				
+				console.log(
+					'🔴 Animation disabled or type empty - cleaning up'
+				);
+
 				const target =
 					elementWithCue ||
-					(currentBlock.hasAttribute('data-cue') ? currentBlock : null) ||
+					(currentBlock.hasAttribute('data-cue')
+						? currentBlock
+						: null) ||
 					currentBlock.firstElementChild;
 
 				if (target) {
-					target.classList.remove('cue-hide', 'cue-show', 'cue-sticky');
+					target.classList.remove(
+						'cue-hide',
+						'cue-show',
+						'cue-sticky'
+					);
 					target.removeAttribute('data-show');
-					
+
 					// Сбрасываем inline-стили анимации
 					target.style.animationDelay = '';
 					target.style.animationDuration = '';
-					
+
 					// Удаляем все animation-классы scrollCue
-					const animationClasses = Array.from(target.classList).filter(cls => 
-						cls.startsWith('fadeIn') || cls.startsWith('slideIn') || 
-						cls.startsWith('zoomIn') || cls.startsWith('zoomOut') ||
-						cls.startsWith('rotateIn') || cls.startsWith('bounceIn') ||
-						cls.startsWith('flipIn')
+					const animationClasses = Array.from(
+						target.classList
+					).filter(
+						(cls) =>
+							cls.startsWith('fadeIn') ||
+							cls.startsWith('slideIn') ||
+							cls.startsWith('zoomIn') ||
+							cls.startsWith('zoomOut') ||
+							cls.startsWith('rotateIn') ||
+							cls.startsWith('bounceIn') ||
+							cls.startsWith('flipIn')
 					);
-					animationClasses.forEach(cls => target.classList.remove(cls));
+					animationClasses.forEach((cls) =>
+						target.classList.remove(cls)
+					);
 				}
 
 				if (typeof window.reinitScrollCue === 'function') {
 					window.reinitScrollCue();
-					
+
 					// Дополнительный вызов для надежности
 					setTimeout(() => {
 						window.reinitScrollCue();
@@ -289,45 +407,51 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 		}, 200);
 
 		return () => clearTimeout(timer);
-	}, [animationEnabled, animationType, animationDuration, animationDelay, clientId]);
+	}, [
+		animationEnabled,
+		animationType,
+		animationDuration,
+		animationDelay,
+		clientId,
+	]);
 
 	// Generate classes for card wrapper
 	const getCardClasses = () => {
 		const classes = [];
-		
+
 		if (enableCard) {
 			classes.push('card');
 		}
-		
+
 		if (overflowHidden) {
 			classes.push('overflow-hidden');
 		}
-		
+
 		if (h100) {
 			classes.push('h-100');
 		}
-		
+
 		if (borderRadius) {
 			classes.push(borderRadius);
 		}
-		
+
 		if (shadow) {
 			classes.push(shadow);
 		}
-		
+
 		if (cardBorder || borderPosition) {
 			classes.push(cardBorder || borderPosition);
 		}
-		
+
 		// Если выбраны цвет или ширина, но нет позиции - применяем обычный border
 		if ((borderColor || borderWidth) && !cardBorder && !borderPosition) {
 			classes.push('border');
 		}
-		
+
 		if (borderWidth) {
 			classes.push(borderWidth);
 		}
-		
+
 		if (borderColor) {
 			const colorType = borderColorType || 'solid';
 			if (colorType === 'soft') {
@@ -336,54 +460,58 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 				classes.push(`border-${borderColor}`);
 			}
 		}
-		
+
 		// Background classes
-		classes.push(...generateBackgroundClasses({
-			backgroundType,
-			backgroundColor,
-			backgroundColorType,
-			backgroundGradient,
-			backgroundImageUrl,
-			backgroundSize,
-			backgroundPatternUrl,
-			backgroundOverlay,
-		}));
-		
+		classes.push(
+			...generateBackgroundClasses({
+				backgroundType,
+				backgroundColor,
+				backgroundColorType,
+				backgroundGradient,
+				backgroundImageUrl,
+				backgroundSize,
+				backgroundPatternUrl,
+				backgroundOverlay,
+			})
+		);
+
 		// Spacing classes
-		classes.push(...getSpacingClasses({
-			spacingType,
-			spacingXs,
-			spacingSm,
-			spacingMd,
-			spacingLg,
-			spacingXl,
-			spacingXxl,
-		}));
-		
+		classes.push(
+			...getSpacingClasses({
+				spacingType,
+				spacingXs,
+				spacingSm,
+				spacingMd,
+				spacingLg,
+				spacingXl,
+				spacingXxl,
+			})
+		);
+
 		// Custom class
 		if (blockClass) {
 			classes.push(blockClass);
 		}
-		
+
 		return classes.filter(Boolean).join(' ');
 	};
 
 	// Generate inline styles for background preview in editor
 	const getCardStyles = () => {
 		const styles = {};
-		
+
 		if (backgroundType === 'image' && backgroundImageUrl) {
 			styles.backgroundImage = `url(${backgroundImageUrl})`;
 			styles.backgroundRepeat = 'no-repeat';
 			styles.backgroundSize = backgroundSize || 'cover';
 			styles.backgroundPosition = 'center center';
 		}
-		
+
 		if (backgroundType === 'pattern' && backgroundPatternUrl) {
 			styles.backgroundImage = `url(${backgroundPatternUrl})`;
 			styles.backgroundRepeat = 'repeat';
 		}
-		
+
 		return Object.keys(styles).length > 0 ? styles : null;
 	};
 
@@ -414,19 +542,25 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 		className: getCardClasses(),
 		style: getCardStyles(),
 		id: blockId || undefined,
-		...(backgroundType === 'image' && backgroundImageUrl && { 'data-image-src': backgroundImageUrl }),
-		...(backgroundType === 'pattern' && backgroundPatternUrl && { 'data-image-src': backgroundPatternUrl }),
+		...(backgroundType === 'image' &&
+			backgroundImageUrl && { 'data-image-src': backgroundImageUrl }),
+		...(backgroundType === 'pattern' &&
+			backgroundPatternUrl && { 'data-image-src': backgroundPatternUrl }),
 		...getDataAttributes(),
-		...(animationEnabled && animationType && { 
-			'data-cue': animationType,
-			...(animationDuration && { 'data-duration': animationDuration }),
-			...(animationDelay && { 'data-delay': animationDelay }),
-		}),
+		...(animationEnabled &&
+			animationType && {
+				'data-cue': animationType,
+				...(animationDuration && {
+					'data-duration': animationDuration,
+				}),
+				...(animationDelay && { 'data-delay': animationDelay }),
+			}),
 	});
-	
+
 	// Layout classes применяются к card-body или card, не к основному контейнеру
 	// Для feature-3 не нужны классы на основном контейнере
-	const layoutClasses = featureLayout === 'horizontal' ? 'd-flex flex-row' : '';
+	const layoutClasses =
+		featureLayout === 'horizontal' ? 'd-flex flex-row' : '';
 
 	// Render content based on layout
 	const renderContent = () => {
@@ -519,9 +653,7 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 		if (featureLayout === 'horizontal') {
 			return (
 				<>
-					<div>
-						{iconElement}
-					</div>
+					<div>{iconElement}</div>
 					<div>
 						{titleElement}
 						{paragraphElement}
@@ -555,27 +687,40 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 								<PanelBody>
 									<ButtonGroup>
 										<Button
-											variant={featureLayout === 'vertical' ? 'primary' : 'secondary'}
+											variant={
+												featureLayout === 'vertical'
+													? 'primary'
+													: 'secondary'
+											}
 											onClick={() => {
-												setAttributes({ 
+												setAttributes({
 													featureLayout: 'vertical',
 													iconWrapperStyle: 'btn',
 													iconBtnVariant: 'soft',
 													iconColor: 'yellow',
-													iconWrapperClass: 'pe-none mb-5',
+													iconWrapperClass:
+														'pe-none mb-5',
 													titleClass: '',
 													buttonColor: 'yellow',
 												});
 											}}
 										>
-											{__('Feature 1', 'codeweber-gutenberg-blocks')}
+											{__(
+												'Feature 1',
+												'codeweber-gutenberg-blocks'
+											)}
 										</Button>
 										<Button
-											variant={featureLayout === 'horizontal' ? 'primary' : 'secondary'}
+											variant={
+												featureLayout === 'horizontal'
+													? 'primary'
+													: 'secondary'
+											}
 											onClick={() => {
-												setAttributes({ 
+												setAttributes({
 													featureLayout: 'horizontal',
-													iconWrapperStyle: 'btn-circle',
+													iconWrapperStyle:
+														'btn-circle',
 													iconBtnVariant: 'solid',
 													iconColor: 'primary',
 													iconWrapperClass: 'me-5',
@@ -584,26 +729,38 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 												});
 											}}
 										>
-											{__('Feature 2', 'codeweber-gutenberg-blocks')}
+											{__(
+												'Feature 2',
+												'codeweber-gutenberg-blocks'
+											)}
 										</Button>
 										<Button
-											variant={featureLayout === 'feature-3' ? 'primary' : 'secondary'}
+											variant={
+												featureLayout === 'feature-3'
+													? 'primary'
+													: 'secondary'
+											}
 											onClick={() => {
-												setAttributes({ 
+												setAttributes({
 													featureLayout: 'feature-3',
-													iconWrapperStyle: 'btn-circle',
+													iconWrapperStyle:
+														'btn-circle',
 													iconBtnVariant: 'soft',
 													iconColor: 'primary',
-													iconWrapperClass: 'pe-none me-5',
+													iconWrapperClass:
+														'pe-none me-5',
 													titleClass: 'mb-1',
 													buttonColor: 'yellow',
 												});
 											}}
 										>
-											{__('Feature 3', 'codeweber-gutenberg-blocks')}
+											{__(
+												'Feature 3',
+												'codeweber-gutenberg-blocks'
+											)}
 										</Button>
 									</ButtonGroup>
-									
+
 									<IconControl
 										attributes={attributes}
 										setAttributes={setAttributes}
@@ -625,15 +782,22 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 										setAttributes={(updates) => {
 											// Map text back to paragraph
 											const mappedUpdates = {};
-											Object.keys(updates).forEach((key) => {
-												if (key === 'text') {
-													mappedUpdates.paragraph = updates[key];
-												} else if (key === 'enableText') {
-													mappedUpdates.enableParagraph = updates[key];
-												} else {
-													mappedUpdates[key] = updates[key];
+											Object.keys(updates).forEach(
+												(key) => {
+													if (key === 'text') {
+														mappedUpdates.paragraph =
+															updates[key];
+													} else if (
+														key === 'enableText'
+													) {
+														mappedUpdates.enableParagraph =
+															updates[key];
+													} else {
+														mappedUpdates[key] =
+															updates[key];
+													}
 												}
-											});
+											);
 											setAttributes(mappedUpdates);
 										}}
 										hideSubtitle={true}
@@ -645,23 +809,38 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 												// Map paragraph attributes to text for HeadingTypographyControl
 												textTag: paragraphTag,
 												textColor: paragraphColor,
-												textColorType: paragraphColorType,
+												textColorType:
+													paragraphColorType,
 												textSize: paragraphSize,
 												textWeight: paragraphWeight,
-												textTransform: paragraphTransform,
+												textTransform:
+													paragraphTransform,
 												textClass: paragraphClass,
 											}}
 											setAttributes={(updates) => {
 												// Map text attributes back to paragraph
 												const mappedUpdates = {};
-												Object.keys(updates).forEach((key) => {
-													if (key.startsWith('text')) {
-														const paragraphKey = key.replace(/^text/, 'paragraph');
-														mappedUpdates[paragraphKey] = updates[key];
-													} else {
-														mappedUpdates[key] = updates[key];
+												Object.keys(updates).forEach(
+													(key) => {
+														if (
+															key.startsWith(
+																'text'
+															)
+														) {
+															const paragraphKey =
+																key.replace(
+																	/^text/,
+																	'paragraph'
+																);
+															mappedUpdates[
+																paragraphKey
+															] = updates[key];
+														} else {
+															mappedUpdates[key] =
+																updates[key];
+														}
 													}
-												});
+												);
 												setAttributes(mappedUpdates);
 											}}
 											hideSubtitle={true}
@@ -674,33 +853,71 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 							{tab.name === 'button' && (
 								<PanelBody>
 									<ToggleControl
-										label={__('Enable Button', 'codeweber-gutenberg-blocks')}
+										label={__(
+											'Enable Button',
+											'codeweber-gutenberg-blocks'
+										)}
 										checked={enableButton}
-										onChange={(value) => setAttributes({ enableButton: value })}
+										onChange={(value) =>
+											setAttributes({
+												enableButton: value,
+											})
+										}
 									/>
 									{enableButton && (
 										<>
 											<TextControl
-												label={__('Button Text', 'codeweber-gutenberg-blocks')}
+												label={__(
+													'Button Text',
+													'codeweber-gutenberg-blocks'
+												)}
 												value={buttonText}
-												onChange={(value) => setAttributes({ buttonText: value })}
+												onChange={(value) =>
+													setAttributes({
+														buttonText: value,
+													})
+												}
 											/>
 											<TextControl
-												label={__('Button URL', 'codeweber-gutenberg-blocks')}
+												label={__(
+													'Button URL',
+													'codeweber-gutenberg-blocks'
+												)}
 												value={buttonUrl}
-												onChange={(value) => setAttributes({ buttonUrl: value })}
+												onChange={(value) =>
+													setAttributes({
+														buttonUrl: value,
+													})
+												}
 											/>
 											<ComboboxControl
-												label={__('Button Color', 'codeweber-gutenberg-blocks')}
+												label={__(
+													'Button Color',
+													'codeweber-gutenberg-blocks'
+												)}
 												value={buttonColor}
 												options={colors}
-												onChange={(value) => setAttributes({ buttonColor: value })}
+												onChange={(value) =>
+													setAttributes({
+														buttonColor: value,
+													})
+												}
 											/>
 											<TextControl
-												label={__('Button Classes', 'codeweber-gutenberg-blocks')}
+												label={__(
+													'Button Classes',
+													'codeweber-gutenberg-blocks'
+												)}
 												value={buttonClass}
-												onChange={(value) => setAttributes({ buttonClass: value })}
-												help={__('Default: more hover', 'codeweber-gutenberg-blocks')}
+												onChange={(value) =>
+													setAttributes({
+														buttonClass: value,
+													})
+												}
+												help={__(
+													'Default: more hover',
+													'codeweber-gutenberg-blocks'
+												)}
 											/>
 										</>
 									)}
@@ -711,32 +928,62 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 							{tab.name === 'card' && (
 								<PanelBody>
 									<ToggleControl
-										label={__('Enable Card Wrapper', 'codeweber-gutenberg-blocks')}
+										label={__(
+											'Enable Card Wrapper',
+											'codeweber-gutenberg-blocks'
+										)}
 										checked={enableCard}
-										onChange={(value) => setAttributes({ enableCard: value })}
+										onChange={(value) =>
+											setAttributes({ enableCard: value })
+										}
 									/>
 									{enableCard && (
 										<ToggleControl
-											label={__('Enable Card Body', 'codeweber-gutenberg-blocks')}
+											label={__(
+												'Enable Card Body',
+												'codeweber-gutenberg-blocks'
+											)}
 											checked={enableCardBody}
-											onChange={(value) => setAttributes({ enableCardBody: value })}
+											onChange={(value) =>
+												setAttributes({
+													enableCardBody: value,
+												})
+											}
 										/>
 									)}
 									<ToggleControl
-										label={__('Overflow Hidden', 'codeweber-gutenberg-blocks')}
+										label={__(
+											'Overflow Hidden',
+											'codeweber-gutenberg-blocks'
+										)}
 										checked={overflowHidden}
-										onChange={(value) => setAttributes({ overflowHidden: value })}
+										onChange={(value) =>
+											setAttributes({
+												overflowHidden: value,
+											})
+										}
 									/>
 									<ToggleControl
-										label={__('H-100', 'codeweber-gutenberg-blocks')}
+										label={__(
+											'H-100',
+											'codeweber-gutenberg-blocks'
+										)}
 										checked={h100}
-										onChange={(value) => setAttributes({ h100: value })}
+										onChange={(value) =>
+											setAttributes({ h100: value })
+										}
 									/>
 									<BorderSettingsPanel
 										borderRadius={borderRadius}
-										onBorderRadiusChange={(value) => setAttributes({ borderRadius: value })}
+										onBorderRadiusChange={(value) =>
+											setAttributes({
+												borderRadius: value,
+											})
+										}
 										shadow={shadow}
-										onShadowChange={(value) => setAttributes({ shadow: value })}
+										onShadowChange={(value) =>
+											setAttributes({ shadow: value })
+										}
 										showBorder={false}
 									/>
 									<div style={{ marginTop: '16px' }}>
@@ -748,7 +995,9 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 											spacingLg={spacingLg}
 											spacingXl={spacingXl}
 											spacingXxl={spacingXxl}
-											onChange={(key, value) => setAttributes({ [key]: value })}
+											onChange={(key, value) =>
+												setAttributes({ [key]: value })
+											}
 										/>
 									</div>
 									<div style={{ marginTop: '16px' }}>
@@ -765,25 +1014,47 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 								<PanelBody>
 									<BorderSettingsPanel
 										borderRadius={borderRadius}
-										onBorderRadiusChange={(value) => setAttributes({ borderRadius: value })}
+										onBorderRadiusChange={(value) =>
+											setAttributes({
+												borderRadius: value,
+											})
+										}
 										shadow={shadow}
-										onShadowChange={(value) => setAttributes({ shadow: value })}
-										borderPosition={cardBorder || borderPosition}
+										onShadowChange={(value) =>
+											setAttributes({ shadow: value })
+										}
+										borderPosition={
+											cardBorder || borderPosition
+										}
 										borderColor={borderColor}
-										borderColorType={borderColorType || 'solid'}
+										borderColorType={
+											borderColorType || 'solid'
+										}
 										borderWidth={borderWidth}
 										showPosition={true}
 										showBorderRadius={true}
 										showShadow={true}
 										onBorderPositionChange={(value) => {
-											setAttributes({ 
+											setAttributes({
 												cardBorder: value,
-												borderPosition: value 
+												borderPosition: value,
 											});
 										}}
-										onBorderColorChange={(value) => setAttributes({ borderColor: value })}
-										onBorderColorTypeChange={(value) => setAttributes({ borderColorType: value })}
-										onBorderWidthChange={(value) => setAttributes({ borderWidth: value })}
+										onBorderColorChange={(value) =>
+											setAttributes({
+												borderColor: value,
+											})
+										}
+										onBorderColorTypeChange={(value) =>
+											setAttributes({
+												borderColorType: value,
+											})
+										}
+										onBorderWidthChange={(value) =>
+											setAttributes({
+												borderWidth: value,
+											})
+										}
 									/>
 								</PanelBody>
 							)}
@@ -810,9 +1081,18 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 											idKey: 'blockId',
 										}}
 										labels={{
-											classLabel: __('Card Class', 'codeweber-gutenberg-blocks'),
-											dataLabel: __('Card Data', 'codeweber-gutenberg-blocks'),
-											idLabel: __('Card ID', 'codeweber-gutenberg-blocks'),
+											classLabel: __(
+												'Card Class',
+												'codeweber-gutenberg-blocks'
+											),
+											dataLabel: __(
+												'Card Data',
+												'codeweber-gutenberg-blocks'
+											),
+											idLabel: __(
+												'Card ID',
+												'codeweber-gutenberg-blocks'
+											),
 										}}
 									/>
 								</div>
@@ -829,14 +1109,10 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 							{renderContent()}
 						</div>
 					) : (
-						<div className={layoutClasses}>
-							{renderContent()}
-						</div>
+						<div className={layoutClasses}>{renderContent()}</div>
 					)
 				) : (
-					<div className={layoutClasses}>
-						{renderContent()}
-					</div>
+					<div className={layoutClasses}>{renderContent()}</div>
 				)}
 			</div>
 		</>
@@ -844,4 +1120,3 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 };
 
 export default Edit;
-

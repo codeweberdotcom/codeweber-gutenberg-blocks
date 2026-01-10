@@ -1,15 +1,15 @@
 /**
  * Swiper Slider Component
- * 
+ *
  * Universal component for rendering Swiper sliders
  * Can be used with any content (images, cards, etc.)
- * 
+ *
  * @package CodeWeber Gutenberg Blocks
  */
 
 /**
  * Get Swiper container classes
- * 
+ *
  * @param {Object} config - Swiper configuration
  * @returns {string} Class names string
  */
@@ -57,7 +57,7 @@ export const getSwiperContainerClasses = (config = {}) => {
 
 /**
  * Get Swiper data attributes
- * 
+ *
  * @param {Object} config - Swiper configuration
  * @returns {Object} Data attributes object
  */
@@ -137,7 +137,7 @@ export const getSwiperDataAttributes = (config = {}) => {
 /**
  * Initialize Swiper
  * Should be called after DOM changes
- * 
+ *
  * @param {string} selector - Optional CSS selector
  * @returns {boolean} Success status
  */
@@ -158,14 +158,16 @@ export const initSwiper = (selector = null) => {
 	}
 
 	// Fallback: log warning if Swiper is not available
-	console.warn('Swiper initialization function not available. Please ensure theme.js is loaded.');
+	console.warn(
+		'Swiper initialization function not available. Please ensure theme.js is loaded.'
+	);
 	return false;
 };
 
 /**
  * Cleanup Swiper instances
  * Should be called before unmounting or reinitializing
- * 
+ *
  * @param {string} selector - Optional CSS selector
  * @returns {boolean} Success status
  */
@@ -197,7 +199,7 @@ export const destroySwiper = (selector = null) => {
 /**
  * SwiperSlider Component
  * Renders Swiper slider structure with slides
- * 
+ *
  * @param {Object} props - Component props
  * @param {Array} props.children - Slide content (array of React elements)
  * @param {Object} props.config - Swiper configuration
@@ -215,12 +217,15 @@ export const SwiperSlider = ({
 	swiperClassName = '',
 	uniqueKey = '',
 }) => {
-	const containerClasses = `${getSwiperContainerClasses(config)} ${className}`.trim();
+	const containerClasses =
+		`${getSwiperContainerClasses(config)} ${className}`.trim();
 	const dataAttrs = getSwiperDataAttributes(config);
-	
+
 	// Add ticker class to wrapper for continuous scrolling when itemsAuto is enabled
 	// Also add wrapperClassName from Settings tab
-	let wrapperClasses = config.itemsAuto ? 'swiper-wrapper ticker' : 'swiper-wrapper';
+	let wrapperClasses = config.itemsAuto
+		? 'swiper-wrapper ticker'
+		: 'swiper-wrapper';
 	if (wrapperClassName) {
 		wrapperClasses += ' ' + wrapperClassName;
 	}
@@ -232,9 +237,7 @@ export const SwiperSlider = ({
 	return (
 		<div key={uniqueKey} className={containerClasses} {...dataAttrs}>
 			<div className={swiperClasses}>
-				<div className={wrapperClasses}>
-					{children}
-				</div>
+				<div className={wrapperClasses}>{children}</div>
 			</div>
 		</div>
 	);
@@ -243,13 +246,17 @@ export const SwiperSlider = ({
 /**
  * SwiperSlide Component
  * Wrapper for individual slide content
- * 
+ *
  * @param {Object} props - Component props
  * @param {React.ReactNode} props.children - Slide content
  * @param {string} props.className - Additional classes
  * @returns {JSX.Element} Slide wrapper
  */
-export const SwiperSlide = ({ children, className = '', slideClassName = '' }) => {
+export const SwiperSlide = ({
+	children,
+	className = '',
+	slideClassName = '',
+}) => {
 	let slideClasses = 'swiper-slide';
 	if (className) {
 		slideClasses += ' ' + className;
@@ -258,18 +265,14 @@ export const SwiperSlide = ({ children, className = '', slideClassName = '' }) =
 		slideClasses += ' ' + slideClassName;
 	}
 	slideClasses = slideClasses.trim();
-	
-	return (
-		<div className={slideClasses}>
-			{children}
-		</div>
-	);
+
+	return <div className={slideClasses}>{children}</div>;
 };
 
 /**
  * Generate Swiper configuration from attributes
  * Helper function to create config object from block attributes
- * 
+ *
  * @param {Object} attributes - Block attributes
  * @returns {Object} Swiper configuration
  */
@@ -303,4 +306,3 @@ export const getSwiperConfigFromAttributes = (attributes) => {
 		dotsStyle: attributes.swiperDotsStyle,
 	};
 };
-

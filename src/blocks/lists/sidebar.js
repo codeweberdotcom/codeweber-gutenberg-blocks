@@ -53,17 +53,27 @@ export const ListsSidebar = ({ attributes, setAttributes }) => {
 			>
 				{/* Mode Selection */}
 				<div className="component-sidebar-title">
-					<label>{__('Data Source', 'codeweber-gutenberg-blocks')}</label>
+					<label>
+						{__('Data Source', 'codeweber-gutenberg-blocks')}
+					</label>
 				</div>
 				<div className="button-group-sidebar_33">
 					{[
-						{ label: __('Custom', 'codeweber-gutenberg-blocks'), value: 'custom' },
-						{ label: __('Post', 'codeweber-gutenberg-blocks'), value: 'post' },
+						{
+							label: __('Custom', 'codeweber-gutenberg-blocks'),
+							value: 'custom',
+						},
+						{
+							label: __('Post', 'codeweber-gutenberg-blocks'),
+							value: 'post',
+						},
 					].map((modeOption) => (
 						<Button
 							key={modeOption.value}
 							isPrimary={(mode || 'custom') === modeOption.value}
-							onClick={() => setAttributes({ mode: modeOption.value })}
+							onClick={() =>
+								setAttributes({ mode: modeOption.value })
+							}
 						>
 							{modeOption.label}
 						</Button>
@@ -76,9 +86,16 @@ export const ListsSidebar = ({ attributes, setAttributes }) => {
 						<PostTypeTaxonomyControl
 							postType={postType || ''}
 							selectedTaxonomies={selectedTaxonomies || {}}
-							onPostTypeChange={(value) => setAttributes({ postType: value })}
-							onTaxonomyChange={(value) => setAttributes({ selectedTaxonomies: value })}
-							help={__('Select the post type to generate list items from', 'codeweber-gutenberg-blocks')}
+							onPostTypeChange={(value) =>
+								setAttributes({ postType: value })
+							}
+							onTaxonomyChange={(value) =>
+								setAttributes({ selectedTaxonomies: value })
+							}
+							help={__(
+								'Select the post type to generate list items from',
+								'codeweber-gutenberg-blocks'
+							)}
 						/>
 					</div>
 				)}
@@ -90,47 +107,83 @@ export const ListsSidebar = ({ attributes, setAttributes }) => {
 							<PostSortControl
 								orderBy={orderBy || 'date'}
 								order={order || 'desc'}
-								onOrderByChange={(value) => setAttributes({ orderBy: value })}
-								onOrderChange={(value) => setAttributes({ order: value })}
+								onOrderByChange={(value) =>
+									setAttributes({ orderBy: value })
+								}
+								onOrderChange={(value) =>
+									setAttributes({ order: value })
+								}
 							/>
 						</div>
 
 						<div style={{ marginTop: '16px' }}>
 							<RangeControl
-								label={__('Posts Per Page', 'codeweber-gutenberg-blocks')}
+								label={__(
+									'Posts Per Page',
+									'codeweber-gutenberg-blocks'
+								)}
 								value={postsPerPage || 10}
-								onChange={(value) => setAttributes({ postsPerPage: value })}
+								onChange={(value) =>
+									setAttributes({ postsPerPage: value })
+								}
 								min={1}
 								max={50}
 								initialPosition={10}
-								help={__('Number of posts to display', 'codeweber-gutenberg-blocks')}
+								help={__(
+									'Number of posts to display',
+									'codeweber-gutenberg-blocks'
+								)}
 							/>
 						</div>
 
 						<div style={{ marginTop: '16px' }}>
 							<ToggleControl
-								label={__('Enable Links', 'codeweber-gutenberg-blocks')}
+								label={__(
+									'Enable Links',
+									'codeweber-gutenberg-blocks'
+								)}
 								checked={enableLinks || false}
-								onChange={(value) => setAttributes({ enableLinks: value })}
-								help={__('Enable links to post pages', 'codeweber-gutenberg-blocks')}
+								onChange={(value) =>
+									setAttributes({ enableLinks: value })
+								}
+								help={__(
+									'Enable links to post pages',
+									'codeweber-gutenberg-blocks'
+								)}
 							/>
 						</div>
 					</>
 				)}
 
 				{/* List Type */}
-				<div className="component-sidebar-title" style={{ marginTop: '16px' }}>
-					<label>{__('List Type', 'codeweber-gutenberg-blocks')}</label>
+				<div
+					className="component-sidebar-title"
+					style={{ marginTop: '16px' }}
+				>
+					<label>
+						{__('List Type', 'codeweber-gutenberg-blocks')}
+					</label>
 				</div>
 				<div className="button-group-sidebar_50">
 					{[
-						{ label: __('Unordered', 'codeweber-gutenberg-blocks'), value: 'unordered' },
-						{ label: __('Icon', 'codeweber-gutenberg-blocks'), value: 'icon' },
+						{
+							label: __(
+								'Unordered',
+								'codeweber-gutenberg-blocks'
+							),
+							value: 'unordered',
+						},
+						{
+							label: __('Icon', 'codeweber-gutenberg-blocks'),
+							value: 'icon',
+						},
 					].map((type) => (
 						<Button
 							key={type.value}
 							isPrimary={(listType || 'unordered') === type.value}
-							onClick={() => setAttributes({ listType: type.value })}
+							onClick={() =>
+								setAttributes({ listType: type.value })
+							}
 						>
 							{type.label}
 						</Button>
@@ -138,16 +191,33 @@ export const ListsSidebar = ({ attributes, setAttributes }) => {
 				</div>
 
 				{/* Bullet Color */}
-				<div className="component-sidebar-title" style={{ marginTop: '16px' }}>
-					<label>{__('Bullet Color', 'codeweber-gutenberg-blocks')}</label>
+				<div
+					className="component-sidebar-title"
+					style={{ marginTop: '16px' }}
+				>
+					<label>
+						{__('Bullet Color', 'codeweber-gutenberg-blocks')}
+					</label>
 				</div>
 				<SelectControl
 					value={bulletColor || 'primary'}
 					options={[
-						{ label: __('Primary', 'codeweber-gutenberg-blocks'), value: 'primary' },
-						{ label: __('None', 'codeweber-gutenberg-blocks'), value: 'none' },
-						{ label: __('Light', 'codeweber-gutenberg-blocks'), value: 'light' },
-						{ label: __('White', 'codeweber-gutenberg-blocks'), value: 'white' },
+						{
+							label: __('Primary', 'codeweber-gutenberg-blocks'),
+							value: 'primary',
+						},
+						{
+							label: __('None', 'codeweber-gutenberg-blocks'),
+							value: 'none',
+						},
+						{
+							label: __('Light', 'codeweber-gutenberg-blocks'),
+							value: 'light',
+						},
+						{
+							label: __('White', 'codeweber-gutenberg-blocks'),
+							value: 'white',
+						},
 					]}
 					onChange={(value) => setAttributes({ bulletColor: value })}
 				/>
@@ -156,10 +226,18 @@ export const ListsSidebar = ({ attributes, setAttributes }) => {
 				{listType === 'icon' && (
 					<div style={{ marginTop: '16px' }}>
 						<ToggleControl
-							label={__('Bullet Background', 'codeweber-gutenberg-blocks')}
+							label={__(
+								'Bullet Background',
+								'codeweber-gutenberg-blocks'
+							)}
 							checked={bulletBg || false}
-							onChange={(value) => setAttributes({ bulletBg: value })}
-							help={__('Enable background color for bullet icons', 'codeweber-gutenberg-blocks')}
+							onChange={(value) =>
+								setAttributes({ bulletBg: value })
+							}
+							help={__(
+								'Enable background color for bullet icons',
+								'codeweber-gutenberg-blocks'
+							)}
 						/>
 					</div>
 				)}
@@ -168,7 +246,9 @@ export const ListsSidebar = ({ attributes, setAttributes }) => {
 				{listType === 'icon' && (
 					<div style={{ marginTop: '16px' }}>
 						<div className="component-sidebar-title">
-							<label>{__('Icon', 'codeweber-gutenberg-blocks')}</label>
+							<label>
+								{__('Icon', 'codeweber-gutenberg-blocks')}
+							</label>
 						</div>
 						<Button
 							isPrimary
@@ -178,15 +258,31 @@ export const ListsSidebar = ({ attributes, setAttributes }) => {
 							{__('Select Icon', 'codeweber-gutenberg-blocks')}
 						</Button>
 						{iconClass && (
-							<div style={{ marginTop: '8px', padding: '8px', background: '#f0f0f1', borderRadius: '4px', fontSize: '12px' }}>
-								<strong>{__('Current icon:', 'codeweber-gutenberg-blocks')}</strong> {iconClass}
+							<div
+								style={{
+									marginTop: '8px',
+									padding: '8px',
+									background: '#f0f0f1',
+									borderRadius: '4px',
+									fontSize: '12px',
+								}}
+							>
+								<strong>
+									{__(
+										'Current icon:',
+										'codeweber-gutenberg-blocks'
+									)}
+								</strong>{' '}
+								{iconClass}
 							</div>
 						)}
 						<IconPicker
 							isOpen={iconPickerOpen}
 							onClose={() => setIconPickerOpen(false)}
 							onSelect={(result) => {
-								const iconClass = result.iconName ? `uil uil-${result.iconName}` : '';
+								const iconClass = result.iconName
+									? `uil uil-${result.iconName}`
+									: '';
 								setAttributes({ iconClass });
 							}}
 							selectedIcon={getIconName(iconClass)}
@@ -200,14 +296,22 @@ export const ListsSidebar = ({ attributes, setAttributes }) => {
 				)}
 
 				{/* Text Color */}
-				<div className="component-sidebar-title" style={{ marginTop: '16px' }}>
-					<label>{__('Text Color', 'codeweber-gutenberg-blocks')}</label>
+				<div
+					className="component-sidebar-title"
+					style={{ marginTop: '16px' }}
+				>
+					<label>
+						{__('Text Color', 'codeweber-gutenberg-blocks')}
+					</label>
 				</div>
 				<SelectControl
 					value={textColor || ''}
 					options={[
-						{ label: __('Default', 'codeweber-gutenberg-blocks'), value: '' },
-						...colors.map(color => ({
+						{
+							label: __('Default', 'codeweber-gutenberg-blocks'),
+							value: '',
+						},
+						...colors.map((color) => ({
 							label: color.label,
 							value: color.value,
 						})),
@@ -235,11 +339,3 @@ export const ListsSidebar = ({ attributes, setAttributes }) => {
 		</>
 	);
 };
-
-
-
-
-
-
-
-

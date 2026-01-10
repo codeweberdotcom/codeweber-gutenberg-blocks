@@ -20,4 +20,3 @@ export { Banner27 } from './Banner27';
 export { Banner29 } from './Banner29';
 export { Banner30 } from './Banner30';
 export { Banner32 } from './Banner32';
-

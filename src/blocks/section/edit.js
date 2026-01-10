@@ -5,8 +5,18 @@ import {
 } from '@wordpress/block-editor';
 import { SectionSidebar } from './sidebar';
 import { __ } from '@wordpress/i18n';
-import { normalizeMinHeightClass, getContainerClassNames, getSpacingClasses, getAngledClasses, getWaveConfig, WAVE_SVGS } from './utils';
-import { generateBackgroundClasses, generateTextColorClass } from '../../utilities/class-generators';
+import {
+	normalizeMinHeightClass,
+	getContainerClassNames,
+	getSpacingClasses,
+	getAngledClasses,
+	getWaveConfig,
+	WAVE_SVGS,
+} from './utils';
+import {
+	generateBackgroundClasses,
+	generateTextColorClass,
+} from '../../utilities/class-generators';
 
 const normalizeSectionId = (value = '') => value.replace(/^#/, '').trim();
 
@@ -105,7 +115,9 @@ const SectionEdit = ({ attributes, setAttributes }) => {
 		className: `wrapper dash-border ${getSectionClasses(attributes)} ${sectionFrame ? 'section-frame' : ''} ${overflowHidden ? 'overflow-hidden' : ''} ${positionRelative ? 'position-relative' : ''} ${normalizedMinHeight} ${sectionClass}`,
 		id: safeSectionId || undefined,
 		role: 'region',
-		'aria-label': safeSectionId ? `Section ${safeSectionId}` : 'Content section',
+		'aria-label': safeSectionId
+			? `Section ${safeSectionId}`
+			: 'Content section',
 	});
 
 	const getSectionStyles = () => {
@@ -122,7 +134,8 @@ const SectionEdit = ({ attributes, setAttributes }) => {
 				styles.backgroundSize = 'auto';
 			}
 			styles.backgroundPosition = 'center';
-			styles.backgroundAttachment = backgroundSize === 'bg-full' ? 'scroll' : 'fixed';
+			styles.backgroundAttachment =
+				backgroundSize === 'bg-full' ? 'scroll' : 'fixed';
 		}
 
 		if (backgroundType === 'pattern' && backgroundPatternUrl) {
@@ -151,30 +164,33 @@ const SectionEdit = ({ attributes, setAttributes }) => {
 					setAttributes={setAttributes}
 				/>
 			</InspectorControls>
-			<section
-				{...blockProps}
-				style={getSectionStyles()}
-			>
+			<section {...blockProps} style={getSectionStyles()}>
 				{/* Top Wave Divider */}
 				{waveConfig.hasTopWave && (
-					<div 
+					<div
 						className="divider text-light"
-						style={{ 
-							position: 'absolute', 
-							top: 0, 
-							left: 0, 
+						style={{
+							position: 'absolute',
+							top: 0,
+							left: 0,
 							right: 0,
 							transform: 'rotate(180deg)',
 							zIndex: 1,
-							lineHeight: 0
+							lineHeight: 0,
 						}}
-						dangerouslySetInnerHTML={{ __html: WAVE_SVGS[waveConfig.topType] }}
+						dangerouslySetInnerHTML={{
+							__html: WAVE_SVGS[waveConfig.topType],
+						}}
 					/>
 				)}
 
 				{backgroundType === 'video' && backgroundVideoUrl ? (
 					<video
-						poster={backgroundVideoUrl ? `./assets/img/photos/movie2.jpg` : undefined}
+						poster={
+							backgroundVideoUrl
+								? `./assets/img/photos/movie2.jpg`
+								: undefined
+						}
 						src={backgroundVideoUrl}
 						autoPlay
 						loop
@@ -183,26 +199,27 @@ const SectionEdit = ({ attributes, setAttributes }) => {
 						style={{ width: '100%', height: 'auto' }}
 					></video>
 				) : null}
-				<div className={`${backgroundType === 'video' ? 'video-content' : ''} ${containerType} ${containerClassNames}`.trim()}>
-					<InnerBlocks
-						template={TEMPLATE}
-						templateLock={false}
-					/>
+				<div
+					className={`${backgroundType === 'video' ? 'video-content' : ''} ${containerType} ${containerClassNames}`.trim()}
+				>
+					<InnerBlocks template={TEMPLATE} templateLock={false} />
 				</div>
 
 				{/* Bottom Wave Divider */}
 				{waveConfig.hasBottomWave && (
-					<div 
+					<div
 						className="divider text-light"
-						style={{ 
-							position: 'absolute', 
-							bottom: 0, 
-							left: 0, 
+						style={{
+							position: 'absolute',
+							bottom: 0,
+							left: 0,
 							right: 0,
 							zIndex: 1,
-							lineHeight: 0
+							lineHeight: 0,
 						}}
-						dangerouslySetInnerHTML={{ __html: WAVE_SVGS[waveConfig.bottomType] }}
+						dangerouslySetInnerHTML={{
+							__html: WAVE_SVGS[waveConfig.bottomType],
+						}}
 					/>
 				)}
 			</section>
@@ -211,5 +228,3 @@ const SectionEdit = ({ attributes, setAttributes }) => {
 };
 
 export default SectionEdit;
-
-

@@ -49,5 +49,3 @@ export const updateSettings = async (data) => {
 	}
 	return options;
 };
-
-

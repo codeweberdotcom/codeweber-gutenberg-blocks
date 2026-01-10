@@ -23,4 +23,3 @@ registerBlockType(metadata.name, {
 	edit: Edit,
 	save: () => null, // Используем render.php для рендеринга
 });
-

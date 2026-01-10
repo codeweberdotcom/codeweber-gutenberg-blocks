@@ -2,12 +2,15 @@ import { InnerBlocks } from '@wordpress/block-editor';
 import { generateBackgroundClasses } from '../../../utilities/class-generators';
 import { ImageSimpleRender } from '../../../components/image/ImageSimpleRender';
 import { getImageUrl } from '../../../utilities/image-url';
-import { 
-	SwiperSlider, 
-	SwiperSlide, 
+import {
+	SwiperSlider,
+	SwiperSlide,
 	getSwiperConfigFromAttributes,
 } from '../../../components/swiper/SwiperSlider';
-import { getRowColsClasses, getGapClasses } from '../../../components/grid-control';
+import {
+	getRowColsClasses,
+	getGapClasses,
+} from '../../../components/grid-control';
 
 // Все блоки Codeweber Gutenberg Blocks (исключая сам banners, чтобы избежать рекурсии)
 const ALLOWED_CODEWEBER_BLOCKS = [
@@ -107,25 +110,39 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 	const getContainerClasses = () => {
 		if (displayMode === 'grid') {
 			const currentGridType = gridType || 'classic';
-			
+
 			if (currentGridType === 'columns-grid') {
-				const rowColsClasses = getRowColsClasses(attributes, 'grid', gridColumns);
+				const rowColsClasses = getRowColsClasses(
+					attributes,
+					'grid',
+					gridColumns
+				);
 				const gapClasses = getGapClasses(attributes, 'grid');
 				let gapClassesStr = gapClasses.join(' ');
-				if (!gapClassesStr && (attributes.gridGapX || attributes.gridGapY)) {
+				if (
+					!gapClassesStr &&
+					(attributes.gridGapX || attributes.gridGapY)
+				) {
 					const oldGapClasses = [];
-					if (attributes.gridGapY) oldGapClasses.push(`gy-${attributes.gridGapY}`);
-					if (attributes.gridGapX) oldGapClasses.push(`gx-${attributes.gridGapX}`);
+					if (attributes.gridGapY)
+						oldGapClasses.push(`gy-${attributes.gridGapY}`);
+					if (attributes.gridGapX)
+						oldGapClasses.push(`gx-${attributes.gridGapX}`);
 					gapClassesStr = oldGapClasses.join(' ');
 				}
 				return `row ${gapClassesStr} ${rowColsClasses.join(' ')}`;
 			} else {
 				const gapClasses = getGapClasses(attributes, 'grid');
 				let gapClassesStr = gapClasses.join(' ');
-				if (!gapClassesStr && (attributes.gridGapX || attributes.gridGapY)) {
+				if (
+					!gapClassesStr &&
+					(attributes.gridGapX || attributes.gridGapY)
+				) {
 					const oldGapClasses = [];
-					if (attributes.gridGapY) oldGapClasses.push(`gy-${attributes.gridGapY}`);
-					if (attributes.gridGapX) oldGapClasses.push(`gx-${attributes.gridGapX}`);
+					if (attributes.gridGapY)
+						oldGapClasses.push(`gy-${attributes.gridGapY}`);
+					if (attributes.gridGapX)
+						oldGapClasses.push(`gx-${attributes.gridGapX}`);
 					gapClassesStr = oldGapClasses.join(' ');
 				}
 				return `row ${gapClassesStr}`.trim();
@@ -139,7 +156,7 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 		if (displayMode !== 'grid' || gridType !== 'classic') {
 			return '';
 		}
-		
+
 		const colClasses = [];
 		const {
 			gridColumns: colsDefault,
@@ -150,7 +167,7 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 			gridColumnsXl: colsXl,
 			gridColumnsXxl: colsXxl,
 		} = attributes;
-		
+
 		if (colsDefault) {
 			colClasses.push(`col-${colsDefault}`);
 		}
@@ -172,7 +189,7 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 		if (colsXxl) {
 			colClasses.push(`col-xxl-${colsXxl}`);
 		}
-		
+
 		return colClasses.join(' ');
 	};
 
@@ -188,34 +205,45 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 	const renderImageColumn = () => {
 		const positionClass = imagePosition === 'right' ? 'end-0' : 'start-0';
 		// Если задан imageColumnClass, используем его, иначе стандартные классы
-		const wrapperClasses = imageColumnClass 
+		const wrapperClasses = imageColumnClass
 			? imageColumnClass.trim()
 			: `col-lg-6 position-lg-absolute top-0 ${positionClass} h-100 d-flex align-items-center justify-content-center`;
-		
+
 		// Используем массив images для обоих режимов
 		const imagesToRender = images || [];
 
 		// Если изображений нет, показываем placeholder
-		if ((imageType === 'image-simple' || imageType === 'background') && (!imagesToRender || imagesToRender.length === 0)) {
+		if (
+			(imageType === 'image-simple' || imageType === 'background') &&
+			(!imagesToRender || imagesToRender.length === 0)
+		) {
 			// Путь к placeholder изображению из темы
-			const placeholderUrl = isEditor 
-				? (window.location?.origin 
+			const placeholderUrl = isEditor
+				? window.location?.origin
 					? `${window.location.origin}/wp-content/themes/codeweber/dist/assets/img/photos/about32.jpg`
-					: './assets/img/photos/about32.jpg')
+					: './assets/img/photos/about32.jpg'
 				: '/wp-content/themes/codeweber/dist/assets/img/photos/about32.jpg';
 
 			return (
 				<div className={wrapperClasses}>
-					<div 
+					<div
 						className="image-wrapper bg-image bg-cover h-100 w-100"
 						data-image-src={placeholderUrl}
-						{...(isEditor && { style: { backgroundImage: `url(${placeholderUrl})` } })}
+						{...(isEditor && {
+							style: {
+								backgroundImage: `url(${placeholderUrl})`,
+							},
+						})}
 					></div>
 				</div>
 			);
 		}
 
-		if ((imageType === 'image-simple' || imageType === 'background') && imagesToRender && imagesToRender.length > 0) {
+		if (
+			(imageType === 'image-simple' || imageType === 'background') &&
+			imagesToRender &&
+			imagesToRender.length > 0
+		) {
 			// Для режима background рендерим напрямую без ImageSimpleRender (и в редакторе, и на фронтенде)
 			if (imageType === 'background') {
 				// Рендерим в зависимости от displayMode
@@ -223,10 +251,14 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 					const imageUrl = getImageUrl(imagesToRender[0], imageSize);
 					return (
 						<div className={wrapperClasses}>
-							<div 
+							<div
 								className={`image-wrapper bg-image bg-cover h-100 w-100 ${borderRadius || ''}`.trim()}
 								data-image-src={imageUrl}
-								{...(isEditor && { style: { backgroundImage: `url(${imageUrl})` } })}
+								{...(isEditor && {
+									style: {
+										backgroundImage: `url(${imageUrl})`,
+									},
+								})}
 							></div>
 						</div>
 					);
@@ -235,16 +267,27 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 						<div className={wrapperClasses}>
 							<div className={getContainerClasses()}>
 								{imagesToRender.map((image, index) => {
-									const imageUrl = getImageUrl(image, imageSize);
+									const imageUrl = getImageUrl(
+										image,
+										imageSize
+									);
 									return (
-										<div 
+										<div
 											key={`banner-image-${index}-${imageSize}`}
-											className={gridType === 'classic' ? getColClasses() : ''}
+											className={
+												gridType === 'classic'
+													? getColClasses()
+													: ''
+											}
 										>
-											<div 
+											<div
 												className={`image-wrapper bg-image bg-cover h-100 w-100 ${borderRadius || ''}`.trim()}
 												data-image-src={imageUrl}
-												{...(isEditor && { style: { backgroundImage: `url(${imageUrl})` } })}
+												{...(isEditor && {
+													style: {
+														backgroundImage: `url(${imageUrl})`,
+													},
+												})}
 											></div>
 										</div>
 									);
@@ -258,20 +301,31 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 
 					return (
 						<div className={wrapperClasses}>
-							<SwiperSlider 
-								config={swiperConfig} 
+							<SwiperSlider
+								config={swiperConfig}
 								className={swiperContainerClassName}
 								swiperClassName={swiperClassName}
-								{...(isEditor && { uniqueKey: `${swiperUniqueKey}-${imageSize}` })}
+								{...(isEditor && {
+									uniqueKey: `${swiperUniqueKey}-${imageSize}`,
+								})}
 							>
 								{imagesToRender.map((image, index) => {
-									const imageUrl = getImageUrl(image, imageSize);
+									const imageUrl = getImageUrl(
+										image,
+										imageSize
+									);
 									return (
-										<SwiperSlide key={`banner-swiper-${index}-${imageSize}`}>
-											<div 
+										<SwiperSlide
+											key={`banner-swiper-${index}-${imageSize}`}
+										>
+											<div
 												className={`image-wrapper bg-image bg-cover h-100 w-100 ${borderRadius || ''}`.trim()}
 												data-image-src={imageUrl}
-												{...(isEditor && { style: { backgroundImage: `url(${imageUrl})` } })}
+												{...(isEditor && {
+													style: {
+														backgroundImage: `url(${imageUrl})`,
+													},
+												})}
 											></div>
 										</SwiperSlide>
 									);
@@ -281,10 +335,10 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 					);
 				}
 			}
-			
+
 			// Для image-simple используем ImageSimpleRender
 			const renderType = imageRenderType;
-			
+
 			// Рендерим в зависимости от displayMode
 			if (displayMode === 'single') {
 				return (
@@ -312,9 +366,13 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 					<div className={wrapperClasses}>
 						<div className={getContainerClasses()}>
 							{imagesToRender.map((image, index) => (
-								<div 
+								<div
 									key={`banner-image-${index}-${hoverEffectsKey}-${imageSize}`}
-									className={gridType === 'classic' ? getColClasses() : ''}
+									className={
+										gridType === 'classic'
+											? getColClasses()
+											: ''
+									}
 								>
 									<ImageSimpleRender
 										image={image}
@@ -338,19 +396,29 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 					</div>
 				);
 			} else if (displayMode === 'swiper') {
-				const swiperClassName = (imageType === 'background' || imageType === 'image-simple') ? 'h-100' : '';
-				const swiperContainerClassName = (imageType === 'background' || imageType === 'image-simple') ? 'h-100 w-100' : 'w-100';
+				const swiperClassName =
+					imageType === 'background' || imageType === 'image-simple'
+						? 'h-100'
+						: '';
+				const swiperContainerClassName =
+					imageType === 'background' || imageType === 'image-simple'
+						? 'h-100 w-100'
+						: 'w-100';
 
 				return (
 					<div className={wrapperClasses}>
-						<SwiperSlider 
-							config={swiperConfig} 
+						<SwiperSlider
+							config={swiperConfig}
 							className={swiperContainerClassName}
 							swiperClassName={swiperClassName}
-							{...(isEditor && { uniqueKey: `${swiperUniqueKey}-${imageSize}` })}
+							{...(isEditor && {
+								uniqueKey: `${swiperUniqueKey}-${imageSize}`,
+							})}
 						>
 							{imagesToRender.map((image, index) => (
-								<SwiperSlide key={`banner-swiper-${index}-${hoverEffectsKey}-${imageSize}`}>
+								<SwiperSlide
+									key={`banner-swiper-${index}-${hoverEffectsKey}-${imageSize}`}
+								>
 									<ImageSimpleRender
 										image={image}
 										imageSize={imageSize}
@@ -374,30 +442,52 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 				);
 			}
 		}
-		
+
 		return null;
 	};
 
-	const contentColumnClasses = imagePosition === 'right' ? 'col-lg-6' : 'col-lg-6 offset-lg-6';
+	const contentColumnClasses =
+		imagePosition === 'right' ? 'col-lg-6' : 'col-lg-6 offset-lg-6';
 	// Если задан contentColumnRightWrapperClass, используем его, иначе стандартные классы wrapper'а
-	const contentPaddingClasses = contentColumnRightWrapperClass 
+	const contentPaddingClasses = contentColumnRightWrapperClass
 		? contentColumnRightWrapperClass.trim()
-		: (imagePosition === 'right' ? 'py-12 py-lg-16 pe-lg-12 py-xxl-18 pe-xxl-16 ps-lg-0' : 'py-12 py-lg-16 ps-lg-12 py-xxl-18 ps-xxl-16 pe-lg-0');
+		: imagePosition === 'right'
+			? 'py-12 py-lg-16 pe-lg-12 py-xxl-18 pe-xxl-16 ps-lg-0'
+			: 'py-12 py-lg-16 ps-lg-12 py-xxl-18 ps-xxl-16 pe-lg-0';
 
 	if (isEditor) {
 		return (
-			<section className={`${getSectionClasses()} position-relative min-vh-60 d-lg-flex align-items-center`} style={getSectionStyles()}>
+			<section
+				className={`${getSectionClasses()} position-relative min-vh-60 d-lg-flex align-items-center`}
+				style={getSectionStyles()}
+			>
 				{renderImageColumn()}
 				<div className="container position-relative">
 					{videoUrl && (
-						<a href={videoUrl} className="btn btn-circle btn-primary btn-play ripple mx-auto position-absolute d-none d-lg-flex" style={{ top: '50%', left: '50%', transform: 'translate(-50%,-50%)', zIndex: 3 }} data-glightbox data-gallery="desktop-video">
+						<a
+							href={videoUrl}
+							className="btn btn-circle btn-primary btn-play ripple mx-auto position-absolute d-none d-lg-flex"
+							style={{
+								top: '50%',
+								left: '50%',
+								transform: 'translate(-50%,-50%)',
+								zIndex: 3,
+							}}
+							data-glightbox
+							data-gallery="desktop-video"
+						>
 							<i className="icn-caret-right"></i>
 						</a>
 					)}
 					<div className="row gx-0">
 						<div className={contentColumnClasses}>
-							<div className={`${contentPaddingClasses} position-relative`}>
-								<InnerBlocks allowedBlocks={ALLOWED_CODEWEBER_BLOCKS} templateLock={false} />
+							<div
+								className={`${contentPaddingClasses} position-relative`}
+							>
+								<InnerBlocks
+									allowedBlocks={ALLOWED_CODEWEBER_BLOCKS}
+									templateLock={false}
+								/>
 							</div>
 						</div>
 					</div>
@@ -410,18 +500,32 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 		<section
 			className={`${getSectionClasses()} position-relative min-vh-60 d-lg-flex align-items-center`}
 			style={getSectionStyles()}
-			{...(backgroundType === 'image' && backgroundImageUrl && { 'data-image-src': backgroundImageUrl })}
+			{...(backgroundType === 'image' &&
+				backgroundImageUrl && { 'data-image-src': backgroundImageUrl })}
 		>
 			{renderImageColumn()}
 			<div className="container position-relative">
 				{videoUrl && (
-					<a href={videoUrl} className="btn btn-circle btn-primary btn-play ripple mx-auto position-absolute d-none d-lg-flex" style={{ top: '50%', left: '50%', transform: 'translate(-50%,-50%)', zIndex: 3 }} data-glightbox data-gallery="desktop-video">
+					<a
+						href={videoUrl}
+						className="btn btn-circle btn-primary btn-play ripple mx-auto position-absolute d-none d-lg-flex"
+						style={{
+							top: '50%',
+							left: '50%',
+							transform: 'translate(-50%,-50%)',
+							zIndex: 3,
+						}}
+						data-glightbox
+						data-gallery="desktop-video"
+					>
 						<i className="icn-caret-right"></i>
 					</a>
 				)}
 				<div className="row gx-0">
 					<div className={contentColumnClasses}>
-						<div className={`${contentPaddingClasses} position-relative`}>
+						<div
+							className={`${contentPaddingClasses} position-relative`}
+						>
 							<InnerBlocks.Content />
 						</div>
 					</div>
@@ -430,4 +534,3 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 		</section>
 	);
 };
-

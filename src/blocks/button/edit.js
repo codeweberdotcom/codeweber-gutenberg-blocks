@@ -9,10 +9,7 @@ import { getClassNames } from '../button/buttonclass';
 import { __ } from '@wordpress/i18n';
 import { useState } from '@wordpress/element';
 
-
 // Функция для обработки иконки
-
-
 
 const ButtonEdit = ({ attributes, setAttributes }) => {
 	const {
@@ -57,14 +54,25 @@ const ButtonEdit = ({ attributes, setAttributes }) => {
 	const getIconComponent = (iconClass, onClick) => {
 		if (!iconClass) return null;
 		return (
-			<i 
+			<i
 				className={iconClass}
-				onClick={onClick ? (e) => {
-					e.stopPropagation();
-					onClick();
-				} : undefined}
+				onClick={
+					onClick
+						? (e) => {
+								e.stopPropagation();
+								onClick();
+							}
+						: undefined
+				}
 				style={onClick ? { cursor: 'pointer' } : {}}
-				title={onClick ? __('Click to change icon', 'codeweber-gutenberg-blocks') : ''}
+				title={
+					onClick
+						? __(
+								'Click to change icon',
+								'codeweber-gutenberg-blocks'
+							)
+						: ''
+				}
 			></i>
 		);
 	};
@@ -100,7 +108,9 @@ const ButtonEdit = ({ attributes, setAttributes }) => {
 					/>
 				</InspectorControls>
 				{ButtonType === 'social' ? (
-					<nav className={`nav social${SocialIconStyle === 'style_2' ? ' social-muted' : ''}`}>
+					<nav
+						className={`nav social${SocialIconStyle === 'style_2' ? ' social-muted' : ''}`}
+					>
 						<a
 							href="#"
 							className={
@@ -117,12 +127,16 @@ const ButtonEdit = ({ attributes, setAttributes }) => {
 							// DON'T add glightbox attributes in editor
 							// {...(hasGlightbox && { 'data-glightbox': DataGlightbox })}
 							// {...(hasGallery && { 'data-gallery': DataGallery })}
-							{...(hasBsToggle && { 'data-bs-toggle': DataBsToggle })}
+							{...(hasBsToggle && {
+								'data-bs-toggle': DataBsToggle,
+							})}
 							{...(hasBsTarget && {
 								'data-bs-target': `#${DataBsTarget}`,
 							})}
 						>
-							<i className={`uil uil-${SocialIconClass}${SocialIconClass === 'facebook' ? '-f' : ''}`}></i>
+							<i
+								className={`uil uil-${SocialIconClass}${SocialIconClass === 'facebook' ? '-f' : ''}`}
+							></i>
 						</a>
 					</nav>
 				) : (
@@ -130,7 +144,7 @@ const ButtonEdit = ({ attributes, setAttributes }) => {
 						{...blockProps}
 						style={{
 							pointerEvents: 'auto',
-							cursor: 'default'
+							cursor: 'default',
 						}}
 						href="#"
 						// Применяем сгенерированный класс
@@ -157,7 +171,10 @@ const ButtonEdit = ({ attributes, setAttributes }) => {
 								tagName="span"
 								value={ButtonContent}
 								onChange={onChangeButtonContent}
-								placeholder={__('Enter button text...', 'codeweber-gutenberg-blocks')}
+								placeholder={__(
+									'Enter button text...',
+									'codeweber-gutenberg-blocks'
+								)}
 								className="button-content"
 							/>
 						)}
@@ -171,5 +188,3 @@ const ButtonEdit = ({ attributes, setAttributes }) => {
 };
 
 export default ButtonEdit;
-
-

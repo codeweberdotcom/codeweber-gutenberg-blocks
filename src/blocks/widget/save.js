@@ -5,7 +5,10 @@
  */
 
 import { useBlockProps, RichText, InnerBlocks } from '@wordpress/block-editor';
-import { generateColorClass, generateTypographyClasses } from '../../utilities/class-generators';
+import {
+	generateColorClass,
+	generateTypographyClasses,
+} from '../../utilities/class-generators';
 
 const WidgetSave = ({ attributes }) => {
 	const {
@@ -22,8 +25,8 @@ const WidgetSave = ({ attributes }) => {
 		if (!attributes.widgetData) return {};
 		const dataAttrs = {};
 		const pairs = attributes.widgetData.split(',');
-		pairs.forEach(pair => {
-			const [key, value] = pair.split('=').map(s => s.trim());
+		pairs.forEach((pair) => {
+			const [key, value] = pair.split('=').map((s) => s.trim());
 			if (key && value) {
 				dataAttrs[`data-${key}`] = value;
 			}
@@ -36,11 +39,15 @@ const WidgetSave = ({ attributes }) => {
 	// Generate title classes
 	const getTitleClasses = () => {
 		const classes = ['widget-title'];
-		
+
 		// Color classes
 		let hasColorClass = false;
 		if (titleColor) {
-			const colorClass = generateColorClass(titleColor, titleColorType, 'text');
+			const colorClass = generateColorClass(
+				titleColor,
+				titleColorType,
+				'text'
+			);
 			if (colorClass) {
 				classes.push(colorClass);
 				hasColorClass = true;
@@ -53,7 +60,10 @@ const WidgetSave = ({ attributes }) => {
 		}
 
 		// Typography classes
-		const typographyClasses = generateTypographyClasses(attributes, 'title');
+		const typographyClasses = generateTypographyClasses(
+			attributes,
+			'title'
+		);
 		classes.push(...typographyClasses);
 
 		// Custom class
@@ -90,4 +100,3 @@ const WidgetSave = ({ attributes }) => {
 };
 
 export default WidgetSave;
-

@@ -199,9 +199,3 @@ ob_start();
 </div>
 <?php
 // Output is already in ob_start() from Plugin.php
-
-
-
-
-
-

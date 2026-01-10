@@ -1,4 +1,5 @@
-export const normalizeGroupButtonId = (value = '') => value.replace(/^#/, '').trim();
+export const normalizeGroupButtonId = (value = '') =>
+	value.replace(/^#/, '').trim();
 
 export const normalizeGroupButtonData = (value = '') => {
 	if (!value) return {};
@@ -37,12 +38,12 @@ export const getGroupButtonClassNames = (attrs = {}, mode = 'save') => {
 
 	// Базовые классы обертки - всегда d-flex
 	classes.push('d-flex');
-	
+
 	// Justify Content - добавляем только если задан
 	if (groupJustifyContent) {
 		classes.push(groupJustifyContent.trim());
 	}
-	
+
 	if (groupAlignItems) {
 		classes.push(groupAlignItems.trim());
 	}
@@ -87,4 +88,3 @@ export const getSpacingClasses = (attrs = {}) => {
 
 	return classes;
 };
-

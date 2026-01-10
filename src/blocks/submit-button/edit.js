@@ -14,7 +14,11 @@ import { PositioningControl } from '../../components/layout/PositioningControl';
 const TabIcon = ({ icon, label }) => (
 	<span
 		title={label}
-		style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+		style={{
+			display: 'flex',
+			alignItems: 'center',
+			justifyContent: 'center',
+		}}
 	>
 		<Icon icon={icon} size={20} />
 	</span>
@@ -38,9 +42,33 @@ export default function Edit({ attributes, setAttributes }) {
 	});
 
 	const tabs = [
-		{ name: 'button', title: <TabIcon icon={cog} label={__('Button', 'codeweber-gutenberg-blocks')} /> },
-		{ name: 'position', title: <TabIcon icon={positionCenter} label={__('Position', 'codeweber-gutenberg-blocks')} /> },
-		{ name: 'settings', title: <TabIcon icon={cog} label={__('Settings', 'codeweber-gutenberg-blocks')} /> },
+		{
+			name: 'button',
+			title: (
+				<TabIcon
+					icon={cog}
+					label={__('Button', 'codeweber-gutenberg-blocks')}
+				/>
+			),
+		},
+		{
+			name: 'position',
+			title: (
+				<TabIcon
+					icon={positionCenter}
+					label={__('Position', 'codeweber-gutenberg-blocks')}
+				/>
+			),
+		},
+		{
+			name: 'settings',
+			title: (
+				<TabIcon
+					icon={cog}
+					label={__('Settings', 'codeweber-gutenberg-blocks')}
+				/>
+			),
+		},
 	];
 
 	return (
@@ -51,17 +79,38 @@ export default function Edit({ attributes, setAttributes }) {
 						<>
 							{/* BUTTON TAB */}
 							{tab.name === 'button' && (
-								<PanelBody title={__('Button Settings', 'codeweber-gutenberg-blocks')} initialOpen={true}>
+								<PanelBody
+									title={__(
+										'Button Settings',
+										'codeweber-gutenberg-blocks'
+									)}
+									initialOpen={true}
+								>
 									<TextControl
-										label={__('Button Text', 'codeweber-gutenberg-blocks')}
+										label={__(
+											'Button Text',
+											'codeweber-gutenberg-blocks'
+										)}
 										value={buttonText}
-										onChange={(value) => setAttributes({ buttonText: value })}
+										onChange={(value) =>
+											setAttributes({ buttonText: value })
+										}
 									/>
 									<TextControl
-										label={__('Button Classes', 'codeweber-gutenberg-blocks')}
+										label={__(
+											'Button Classes',
+											'codeweber-gutenberg-blocks'
+										)}
 										value={buttonClass}
-										onChange={(value) => setAttributes({ buttonClass: value })}
-										help={__('Bootstrap classes: btn btn-primary', 'codeweber-gutenberg-blocks')}
+										onChange={(value) =>
+											setAttributes({
+												buttonClass: value,
+											})
+										}
+										help={__(
+											'Bootstrap classes: btn btn-primary',
+											'codeweber-gutenberg-blocks'
+										)}
 									/>
 								</PanelBody>
 							)}
@@ -70,15 +119,34 @@ export default function Edit({ attributes, setAttributes }) {
 							{tab.name === 'position' && (
 								<div style={{ padding: '16px' }}>
 									<PositioningControl
-										title={__('Button Position', 'codeweber-gutenberg-blocks')}
+										title={__(
+											'Button Position',
+											'codeweber-gutenberg-blocks'
+										)}
 										alignItems={buttonAlignItems}
-										onAlignItemsChange={(value) => setAttributes({ buttonAlignItems: value })}
+										onAlignItemsChange={(value) =>
+											setAttributes({
+												buttonAlignItems: value,
+											})
+										}
 										justifyContent={buttonJustifyContent}
-										onJustifyContentChange={(value) => setAttributes({ buttonJustifyContent: value })}
+										onJustifyContentChange={(value) =>
+											setAttributes({
+												buttonJustifyContent: value,
+											})
+										}
 										textAlign={buttonTextAlign}
-										onTextAlignChange={(value) => setAttributes({ buttonTextAlign: value })}
+										onTextAlignChange={(value) =>
+											setAttributes({
+												buttonTextAlign: value,
+											})
+										}
 										position={buttonPosition}
-										onPositionChange={(value) => setAttributes({ buttonPosition: value })}
+										onPositionChange={(value) =>
+											setAttributes({
+												buttonPosition: value,
+											})
+										}
 										noPanel={true}
 									/>
 								</div>
@@ -86,21 +154,42 @@ export default function Edit({ attributes, setAttributes }) {
 
 							{/* SETTINGS TAB */}
 							{tab.name === 'settings' && (
-								<PanelBody title={__('Advanced', 'codeweber-gutenberg-blocks')} initialOpen={false}>
+								<PanelBody
+									title={__(
+										'Advanced',
+										'codeweber-gutenberg-blocks'
+									)}
+									initialOpen={false}
+								>
 									<TextControl
-										label={__('Block Class', 'codeweber-gutenberg-blocks')}
+										label={__(
+											'Block Class',
+											'codeweber-gutenberg-blocks'
+										)}
 										value={blockClass}
-										onChange={(value) => setAttributes({ blockClass: value })}
+										onChange={(value) =>
+											setAttributes({ blockClass: value })
+										}
 									/>
 									<TextControl
-										label={__('Block Data', 'codeweber-gutenberg-blocks')}
+										label={__(
+											'Block Data',
+											'codeweber-gutenberg-blocks'
+										)}
 										value={blockData}
-										onChange={(value) => setAttributes({ blockData: value })}
+										onChange={(value) =>
+											setAttributes({ blockData: value })
+										}
 									/>
 									<TextControl
-										label={__('Block ID', 'codeweber-gutenberg-blocks')}
+										label={__(
+											'Block ID',
+											'codeweber-gutenberg-blocks'
+										)}
 										value={blockId}
-										onChange={(value) => setAttributes({ blockId: value })}
+										onChange={(value) =>
+											setAttributes({ blockId: value })
+										}
 									/>
 								</PanelBody>
 							)}
@@ -125,7 +214,9 @@ export default function Edit({ attributes, setAttributes }) {
 					positionClasses.push(buttonTextAlign.trim());
 				}
 
-				const positionWrapperClass = positionClasses.filter(Boolean).join(' ');
+				const positionWrapperClass = positionClasses
+					.filter(Boolean)
+					.join(' ');
 
 				const buttonElement = (
 					<button
@@ -134,7 +225,8 @@ export default function Edit({ attributes, setAttributes }) {
 						disabled
 					>
 						<i className="uil uil-send fs-13"></i>
-						{buttonText || __('Send Message', 'codeweber-gutenberg-blocks')}
+						{buttonText ||
+							__('Send Message', 'codeweber-gutenberg-blocks')}
 					</button>
 				);
 
@@ -155,4 +247,3 @@ export default function Edit({ attributes, setAttributes }) {
 		</>
 	);
 }
-

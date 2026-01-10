@@ -14,13 +14,7 @@ import { YandexMapSidebar } from './sidebar';
  * Edit Component
  */
 const Edit = ({ attributes, setAttributes }) => {
-	const {
-		dataSource,
-		height,
-		blockClass,
-		blockId,
-		blockData,
-	} = attributes;
+	const { dataSource, height, blockClass, blockId, blockData } = attributes;
 
 	const blockProps = useBlockProps({
 		className: 'cwgb-yandex-map-block-edit',
@@ -76,11 +70,26 @@ const Edit = ({ attributes, setAttributes }) => {
 						<span style={{ fontSize: '48px' }}>🗺️</span>
 						<p style={{ margin: 0, color: '#666' }}>
 							{dataSource === 'offices'
-								? __('Offices Map Preview', 'codeweber-gutenberg-blocks')
-								: __('Custom Markers Map Preview', 'codeweber-gutenberg-blocks')}
+								? __(
+										'Offices Map Preview',
+										'codeweber-gutenberg-blocks'
+									)
+								: __(
+										'Custom Markers Map Preview',
+										'codeweber-gutenberg-blocks'
+									)}
 						</p>
-						<p style={{ margin: 0, fontSize: '12px', color: '#999' }}>
-							{__('Map will be rendered on the frontend', 'codeweber-gutenberg-blocks')}
+						<p
+							style={{
+								margin: 0,
+								fontSize: '12px',
+								color: '#999',
+							}}
+						>
+							{__(
+								'Map will be rendered on the frontend',
+								'codeweber-gutenberg-blocks'
+							)}
 						</p>
 					</div>
 				</Placeholder>
@@ -90,4 +99,3 @@ const Edit = ({ attributes, setAttributes }) => {
 };
 
 export default Edit;
-

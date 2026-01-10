@@ -5,10 +5,7 @@
  */
 
 import { __ } from '@wordpress/i18n';
-import {
-	PanelBody,
-	TabPanel,
-} from '@wordpress/components';
+import { PanelBody, TabPanel } from '@wordpress/components';
 import { Icon, typography, cog } from '@wordpress/icons';
 import { BlockMetaFields } from '../../components/block-meta/BlockMetaFields';
 import { HeadingContentControl } from '../../components/heading/HeadingContentControl';
@@ -16,9 +13,13 @@ import { HeadingTypographyControl } from '../../components/heading/HeadingTypogr
 
 // Tab icon with native title tooltip
 const TabIcon = ({ icon, label }) => (
-	<span 
+	<span
 		title={label}
-		style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+		style={{
+			display: 'flex',
+			alignItems: 'center',
+			justifyContent: 'center',
+		}}
 	>
 		<Icon icon={icon} size={20} />
 	</span>
@@ -27,8 +28,24 @@ const TabIcon = ({ icon, label }) => (
 export const WidgetSidebar = ({ attributes, setAttributes }) => {
 	// Define tabs
 	const tabs = [
-		{ name: 'title', title: <TabIcon icon={typography} label={__('Title', 'codeweber-gutenberg-blocks')} /> },
-		{ name: 'settings', title: <TabIcon icon={cog} label={__('Settings', 'codeweber-gutenberg-blocks')} /> },
+		{
+			name: 'title',
+			title: (
+				<TabIcon
+					icon={typography}
+					label={__('Title', 'codeweber-gutenberg-blocks')}
+				/>
+			),
+		},
+		{
+			name: 'settings',
+			title: (
+				<TabIcon
+					icon={cog}
+					label={__('Settings', 'codeweber-gutenberg-blocks')}
+				/>
+			),
+		},
 	];
 
 	return (
@@ -37,7 +54,13 @@ export const WidgetSidebar = ({ attributes, setAttributes }) => {
 				<>
 					{/* TITLE TAB */}
 					{tab.name === 'title' && (
-						<PanelBody title={__('Title Settings', 'codeweber-gutenberg-blocks')} initialOpen={true}>
+						<PanelBody
+							title={__(
+								'Title Settings',
+								'codeweber-gutenberg-blocks'
+							)}
+							initialOpen={true}
+						>
 							<HeadingContentControl
 								attributes={{
 									...attributes,
@@ -62,7 +85,13 @@ export const WidgetSidebar = ({ attributes, setAttributes }) => {
 
 					{/* SETTINGS TAB */}
 					{tab.name === 'settings' && (
-						<PanelBody title={__('Block Settings', 'codeweber-gutenberg-blocks')} initialOpen={true}>
+						<PanelBody
+							title={__(
+								'Block Settings',
+								'codeweber-gutenberg-blocks'
+							)}
+							initialOpen={true}
+						>
 							<BlockMetaFields
 								attributes={attributes}
 								setAttributes={setAttributes}
@@ -79,4 +108,3 @@ export const WidgetSidebar = ({ attributes, setAttributes }) => {
 		</TabPanel>
 	);
 };
-

@@ -125,8 +125,3 @@ add_filter('loco_file_written', function($path) {
 	}
 	return $path;
 });
-
-
-
-
-

@@ -1,6 +1,15 @@
 import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
-import { normalizeMinHeightClass, getContainerClassNames, getAngledClasses, getWaveConfig, WAVE_SVGS } from './utils';
-import { generateBackgroundClasses, generateTextColorClass } from '../../utilities/class-generators';
+import {
+	normalizeMinHeightClass,
+	getContainerClassNames,
+	getAngledClasses,
+	getWaveConfig,
+	WAVE_SVGS,
+} from './utils';
+import {
+	generateBackgroundClasses,
+	generateTextColorClass,
+} from '../../utilities/class-generators';
 
 const normalizeSectionId = (value = '') => value.replace(/^#/, '').trim();
 
@@ -109,7 +118,9 @@ const SectionSave = ({ attributes }) => {
 		className: `wrapper ${getSectionClasses(attributes)} ${sectionFrame ? 'section-frame' : ''} ${overflowHidden ? 'overflow-hidden' : ''} ${positionRelative ? 'position-relative' : ''} ${normalizedMinHeight} ${sectionClass}`,
 		id: safeSectionId || undefined,
 		role: 'region',
-		'aria-label': safeSectionId ? `Section ${safeSectionId}` : 'Content section',
+		'aria-label': safeSectionId
+			? `Section ${safeSectionId}`
+			: 'Content section',
 	});
 
 	const getSectionStyles = () => {
@@ -121,9 +132,9 @@ const SectionSave = ({ attributes }) => {
 		if (!dataString || dataString.trim() === '') return {};
 
 		const attributes = {};
-		const pairs = dataString.split(',').map(pair => pair.trim());
+		const pairs = dataString.split(',').map((pair) => pair.trim());
 
-		pairs.forEach(pair => {
+		pairs.forEach((pair) => {
 			if (!pair) {
 				return;
 			}
@@ -146,19 +157,27 @@ const SectionSave = ({ attributes }) => {
 	// Create wave SVG element for React
 	const createWaveSvg = (waveType, position) => {
 		if (!waveType || !WAVE_SVGS[waveType]) return null;
-		
+
 		// Parse SVG string to get viewBox and path
-		const svgMatch = WAVE_SVGS[waveType].match(/viewBox="([^"]+)".*d="([^"]+)"/);
+		const svgMatch = WAVE_SVGS[waveType].match(
+			/viewBox="([^"]+)".*d="([^"]+)"/
+		);
 		if (!svgMatch) return null;
 
 		const [, viewBox, pathD] = svgMatch;
 
 		return (
-			<div className={`divider text-light${position === 'top' ? ' divider-top' : ''}`}>
-				<svg 
-					xmlns="http://www.w3.org/2000/svg" 
+			<div
+				className={`divider text-light${position === 'top' ? ' divider-top' : ''}`}
+			>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
 					viewBox={viewBox}
-					style={position === 'top' ? { transform: 'rotate(180deg)' } : undefined}
+					style={
+						position === 'top'
+							? { transform: 'rotate(180deg)' }
+							: undefined
+					}
 				>
 					<path fill="currentColor" d={pathD} />
 				</svg>
@@ -169,8 +188,12 @@ const SectionSave = ({ attributes }) => {
 	return (
 		<section
 			{...blockProps}
-			{...(backgroundType === 'image' && backgroundImageUrl && { 'data-image-src': backgroundImageUrl })}
-			{...(backgroundType === 'pattern' && backgroundPatternUrl && { 'data-image-src': backgroundPatternUrl })}
+			{...(backgroundType === 'image' &&
+				backgroundImageUrl && { 'data-image-src': backgroundImageUrl })}
+			{...(backgroundType === 'pattern' &&
+				backgroundPatternUrl && {
+					'data-image-src': backgroundPatternUrl,
+				})}
 			{...dataAttributes}
 		>
 			{/* Top Wave Divider */}
@@ -179,7 +202,11 @@ const SectionSave = ({ attributes }) => {
 			{backgroundType === 'video' ? (
 				<>
 					<video
-						poster={backgroundVideoUrl ? `./assets/img/photos/movie2.jpg` : undefined}
+						poster={
+							backgroundVideoUrl
+								? `./assets/img/photos/movie2.jpg`
+								: undefined
+						}
 						src={backgroundVideoUrl}
 						autoPlay
 						loop
@@ -187,23 +214,26 @@ const SectionSave = ({ attributes }) => {
 						muted
 					></video>
 					<div className="video-content">
-						<div className={`${containerType} ${containerClassNames}`.trim()}>
+						<div
+							className={`${containerType} ${containerClassNames}`.trim()}
+						>
 							<InnerBlocks.Content />
 						</div>
 					</div>
 				</>
 			) : (
-				<div className={`${containerType} ${containerClassNames}`.trim()}>
+				<div
+					className={`${containerType} ${containerClassNames}`.trim()}
+				>
 					<InnerBlocks.Content />
 				</div>
 			)}
 
 			{/* Bottom Wave Divider */}
-			{waveConfig.hasBottomWave && createWaveSvg(waveConfig.bottomType, 'bottom')}
+			{waveConfig.hasBottomWave &&
+				createWaveSvg(waveConfig.bottomType, 'bottom')}
 		</section>
 	);
 };
 
 export default SectionSave;
-
-

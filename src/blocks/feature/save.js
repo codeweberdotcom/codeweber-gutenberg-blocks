@@ -94,40 +94,40 @@ const Save = ({ attributes }) => {
 	// Generate classes for card wrapper
 	const getCardClasses = () => {
 		const classes = [];
-		
+
 		if (enableCard) {
 			classes.push('card');
 		}
-		
+
 		if (overflowHidden) {
 			classes.push('overflow-hidden');
 		}
-		
+
 		if (h100) {
 			classes.push('h-100');
 		}
-		
+
 		if (borderRadius) {
 			classes.push(borderRadius);
 		}
-		
+
 		if (shadow) {
 			classes.push(shadow);
 		}
-		
+
 		if (cardBorder || borderPosition) {
 			classes.push(cardBorder || borderPosition);
 		}
-		
+
 		// Если выбраны цвет или ширина, но нет позиции - применяем обычный border
 		if ((borderColor || borderWidth) && !cardBorder && !borderPosition) {
 			classes.push('border');
 		}
-		
+
 		if (borderWidth) {
 			classes.push(borderWidth);
 		}
-		
+
 		if (borderColor) {
 			const colorType = borderColorType || 'solid';
 			if (colorType === 'soft') {
@@ -136,35 +136,39 @@ const Save = ({ attributes }) => {
 				classes.push(`border-${borderColor}`);
 			}
 		}
-		
+
 		// Background classes
-		classes.push(...generateBackgroundClasses({
-			backgroundType,
-			backgroundColor,
-			backgroundColorType,
-			backgroundGradient,
-			backgroundImageUrl,
-			backgroundSize,
-			backgroundPatternUrl,
-			backgroundOverlay,
-		}));
-		
+		classes.push(
+			...generateBackgroundClasses({
+				backgroundType,
+				backgroundColor,
+				backgroundColorType,
+				backgroundGradient,
+				backgroundImageUrl,
+				backgroundSize,
+				backgroundPatternUrl,
+				backgroundOverlay,
+			})
+		);
+
 		// Spacing classes
-		classes.push(...getSpacingClasses({
-			spacingType,
-			spacingXs,
-			spacingSm,
-			spacingMd,
-			spacingLg,
-			spacingXl,
-			spacingXxl,
-		}));
-		
+		classes.push(
+			...getSpacingClasses({
+				spacingType,
+				spacingXs,
+				spacingSm,
+				spacingMd,
+				spacingLg,
+				spacingXl,
+				spacingXxl,
+			})
+		);
+
 		// Custom class
 		if (blockClass) {
 			classes.push(blockClass);
 		}
-		
+
 		return classes.filter(Boolean).join(' ');
 	};
 
@@ -247,10 +251,7 @@ const Save = ({ attributes }) => {
 
 	// Button
 	const buttonElement = enableButton ? (
-		<a
-			href={buttonUrl}
-			className={getButtonClasses()}
-		>
+		<a href={buttonUrl} className={getButtonClasses()}>
 			{buttonText}
 		</a>
 	) : null;
@@ -273,9 +274,7 @@ const Save = ({ attributes }) => {
 		if (featureLayout === 'horizontal') {
 			return (
 				<>
-					<div>
-						{iconElement}
-					</div>
+					<div>{iconElement}</div>
 					<div>
 						{titleElement}
 						{paragraphElement}
@@ -302,26 +301,30 @@ const Save = ({ attributes }) => {
 	const blockProps = useBlockProps.save({
 		className: cardClasses,
 		id: blockId,
-		...(backgroundType === 'image' && backgroundImageUrl && { 'data-image-src': backgroundImageUrl }),
-		...(backgroundType === 'pattern' && backgroundPatternUrl && { 'data-image-src': backgroundPatternUrl }),
+		...(backgroundType === 'image' &&
+			backgroundImageUrl && { 'data-image-src': backgroundImageUrl }),
+		...(backgroundType === 'pattern' &&
+			backgroundPatternUrl && { 'data-image-src': backgroundPatternUrl }),
 		...dataAttributes,
-		...(animationEnabled && animationType && { 
-			'data-cue': animationType,
-			...(animationDuration && { 'data-duration': animationDuration }),
-			...(animationDelay && { 'data-delay': animationDelay }),
-		}),
+		...(animationEnabled &&
+			animationType && {
+				'data-cue': animationType,
+				...(animationDuration && {
+					'data-duration': animationDuration,
+				}),
+				...(animationDelay && { 'data-delay': animationDelay }),
+			}),
 	});
-	
+
 	// Layout classes применяются к card-body или card, не к основному контейнеру
-	const layoutClasses = featureLayout === 'horizontal' ? 'd-flex flex-row' : '';
+	const layoutClasses =
+		featureLayout === 'horizontal' ? 'd-flex flex-row' : '';
 
 	// If card is disabled, just output content with layout
 	if (!enableCard) {
 		return (
 			<div {...blockProps}>
-				<div className={layoutClasses}>
-					{renderContent()}
-				</div>
+				<div className={layoutClasses}>{renderContent()}</div>
 			</div>
 		);
 	}
@@ -333,13 +336,10 @@ const Save = ({ attributes }) => {
 					{renderContent()}
 				</div>
 			) : (
-				<div className={layoutClasses}>
-					{renderContent()}
-				</div>
+				<div className={layoutClasses}>{renderContent()}</div>
 			)}
 		</div>
 	);
 };
 
 export default Save;
-

@@ -86,12 +86,18 @@ export const OfficesQueryControl = ({ attributes, setAttributes }) => {
 	const orderByOptions = [
 		{ label: __('Title', 'codeweber-gutenberg-blocks'), value: 'title' },
 		{ label: __('Date', 'codeweber-gutenberg-blocks'), value: 'date' },
-		{ label: __('Menu Order', 'codeweber-gutenberg-blocks'), value: 'menu_order' },
+		{
+			label: __('Menu Order', 'codeweber-gutenberg-blocks'),
+			value: 'menu_order',
+		},
 	];
 
 	const orderOptions = [
 		{ label: __('Ascending', 'codeweber-gutenberg-blocks'), value: 'asc' },
-		{ label: __('Descending', 'codeweber-gutenberg-blocks'), value: 'desc' },
+		{
+			label: __('Descending', 'codeweber-gutenberg-blocks'),
+			value: 'desc',
+		},
 	];
 
 	const cityOptions = cities.map((city) => ({
@@ -103,15 +109,24 @@ export const OfficesQueryControl = ({ attributes, setAttributes }) => {
 		<VStack spacing={4}>
 			<RangeControl
 				label={__('Posts Per Page', 'codeweber-gutenberg-blocks')}
-				value={officesQuery.postsPerPage === -1 ? 0 : officesQuery.postsPerPage}
-				onChange={(value) => updateQuery('postsPerPage', value === 0 ? -1 : value)}
+				value={
+					officesQuery.postsPerPage === -1
+						? 0
+						: officesQuery.postsPerPage
+				}
+				onChange={(value) =>
+					updateQuery('postsPerPage', value === 0 ? -1 : value)
+				}
 				min={0}
 				max={100}
 				step={1}
 				help={
 					officesQuery.postsPerPage === -1
 						? __('Show all offices', 'codeweber-gutenberg-blocks')
-						: __('Limit number of offices', 'codeweber-gutenberg-blocks')
+						: __(
+								'Limit number of offices',
+								'codeweber-gutenberg-blocks'
+							)
 				}
 			/>
 
@@ -130,12 +145,17 @@ export const OfficesQueryControl = ({ attributes, setAttributes }) => {
 			/>
 
 			{!isLoading && cities.length > 0 && (
-				<BaseControl label={__('Filter by Cities', 'codeweber-gutenberg-blocks')}>
+				<BaseControl
+					label={__('Filter by Cities', 'codeweber-gutenberg-blocks')}
+				>
 					<select
 						multiple
 						value={officesQuery.selectedCities || []}
 						onChange={(e) => {
-							const selected = Array.from(e.target.selectedOptions, (option) => option.value);
+							const selected = Array.from(
+								e.target.selectedOptions,
+								(option) => option.value
+							);
 							updateQuery('selectedCities', selected);
 						}}
 						style={{ width: '100%', minHeight: '100px' }}
@@ -146,20 +166,40 @@ export const OfficesQueryControl = ({ attributes, setAttributes }) => {
 							</option>
 						))}
 					</select>
-					<p style={{ fontSize: '12px', color: '#666', marginTop: '4px' }}>
-						{__('Hold Ctrl/Cmd to select multiple cities', 'codeweber-gutenberg-blocks')}
+					<p
+						style={{
+							fontSize: '12px',
+							color: '#666',
+							marginTop: '4px',
+						}}
+					>
+						{__(
+							'Hold Ctrl/Cmd to select multiple cities',
+							'codeweber-gutenberg-blocks'
+						)}
 					</p>
 				</BaseControl>
 			)}
 
 			{!isLoading && categories.length > 0 && (
-				<BaseControl label={__('Filter by Categories', 'codeweber-gutenberg-blocks')}>
+				<BaseControl
+					label={__(
+						'Filter by Categories',
+						'codeweber-gutenberg-blocks'
+					)}
+				>
 					<select
 						multiple
 						value={officesQuery.selectedCategories || []}
 						onChange={(e) => {
-							const selected = Array.from(e.target.selectedOptions, (option) => option.value);
-							updateQuery('selectedCategories', selected.map((id) => parseInt(id)));
+							const selected = Array.from(
+								e.target.selectedOptions,
+								(option) => option.value
+							);
+							updateQuery(
+								'selectedCategories',
+								selected.map((id) => parseInt(id))
+							);
 						}}
 						style={{ width: '100%', minHeight: '100px' }}
 					>
@@ -169,8 +209,17 @@ export const OfficesQueryControl = ({ attributes, setAttributes }) => {
 							</option>
 						))}
 					</select>
-					<p style={{ fontSize: '12px', color: '#666', marginTop: '4px' }}>
-						{__('Hold Ctrl/Cmd to select multiple categories', 'codeweber-gutenberg-blocks')}
+					<p
+						style={{
+							fontSize: '12px',
+							color: '#666',
+							marginTop: '4px',
+						}}
+					>
+						{__(
+							'Hold Ctrl/Cmd to select multiple categories',
+							'codeweber-gutenberg-blocks'
+						)}
 					</p>
 				</BaseControl>
 			)}

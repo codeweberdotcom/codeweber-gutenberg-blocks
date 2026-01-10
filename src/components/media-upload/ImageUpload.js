@@ -4,7 +4,7 @@ import { Button } from '@wordpress/components';
 
 /**
  * ImageUpload - универсальный компонент для загрузки изображения
- * 
+ *
  * @param {Object} props
  * @param {Object} props.image - Объект изображения { id, url, alt, ... }
  * @param {Function} props.onChange - Callback при выборе изображения
@@ -39,7 +39,8 @@ export const ImageUpload = ({
 				if (descriptionHtml) {
 					const tempDiv = document.createElement('div');
 					tempDiv.innerHTML = descriptionHtml;
-					description = tempDiv.textContent || tempDiv.innerText || '';
+					description =
+						tempDiv.textContent || tempDiv.innerText || '';
 					description = description.trim();
 				}
 
@@ -70,7 +71,10 @@ export const ImageUpload = ({
 	return (
 		<div className="cwgb-image-upload">
 			{label && (
-				<div className="component-sidebar-title" style={{ marginBottom: '8px' }}>
+				<div
+					className="component-sidebar-title"
+					style={{ marginBottom: '8px' }}
+				>
 					<label>{label}</label>
 				</div>
 			)}
@@ -96,10 +100,21 @@ export const ImageUpload = ({
 										marginBottom: '12px',
 									}}
 								>
-									<div style={{ fontSize: '48px', color: '#8b5cf6', marginBottom: '8px' }}>
+									<div
+										style={{
+											fontSize: '48px',
+											color: '#8b5cf6',
+											marginBottom: '8px',
+										}}
+									>
 										📷
 									</div>
-									<div style={{ color: '#666', fontSize: '14px' }}>
+									<div
+										style={{
+											color: '#666',
+											fontSize: '14px',
+										}}
+									>
 										{buttonText || defaultButtonText}
 									</div>
 								</div>
@@ -111,23 +126,47 @@ export const ImageUpload = ({
 											<img
 												src={image.url}
 												alt={image.alt || ''}
-												style={{ width: '100%', height: 'auto', borderRadius: '4px' }}
+												style={{
+													width: '100%',
+													height: 'auto',
+													borderRadius: '4px',
+												}}
 											/>
 										</div>
 									)}
 
-									<div style={{ display: 'flex', gap: '8px' }}>
-										<Button onClick={open} variant={buttonVariant}>
-											{buttonText || __('Change Image', 'codeweber-gutenberg-blocks')}
+									<div
+										style={{ display: 'flex', gap: '8px' }}
+									>
+										<Button
+											onClick={open}
+											variant={buttonVariant}
+										>
+											{buttonText ||
+												__(
+													'Change Image',
+													'codeweber-gutenberg-blocks'
+												)}
 										</Button>
 
 										<Button
 											onClick={() =>
-												onChange({ id: 0, url: '', sizes: {}, alt: '', title: '', caption: '', description: '' })
+												onChange({
+													id: 0,
+													url: '',
+													sizes: {},
+													alt: '',
+													title: '',
+													caption: '',
+													description: '',
+												})
 											}
 											isDestructive
 										>
-											{__('Remove', 'codeweber-gutenberg-blocks')}
+											{__(
+												'Remove',
+												'codeweber-gutenberg-blocks'
+											)}
 										</Button>
 									</div>
 								</>
@@ -139,4 +178,3 @@ export const ImageUpload = ({
 		</div>
 	);
 };
-

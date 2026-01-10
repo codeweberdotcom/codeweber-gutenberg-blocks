@@ -12,9 +12,13 @@ import { LoadMoreControl } from '../../components/load-more';
 
 // Tab icon with native title tooltip
 const TabIcon = ({ icon, label }) => (
-	<span 
+	<span
 		title={label}
-		style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+		style={{
+			display: 'flex',
+			alignItems: 'center',
+			justifyContent: 'center',
+		}}
 	>
 		<Icon icon={icon} size={20} />
 	</span>
@@ -22,11 +26,51 @@ const TabIcon = ({ icon, label }) => (
 
 export const ImageSimpleSidebar = ({ attributes, setAttributes }) => {
 	const tabs = [
-		{ name: 'images', title: <TabIcon icon={image} label={__('Images', 'codeweber-gutenberg-blocks')} /> },
-		{ name: 'layout', title: <TabIcon icon={grid} label={__('Layout', 'codeweber-gutenberg-blocks')} /> },
-		{ name: 'effects', title: <TabIcon icon={starFilled} label={__('Effects', 'codeweber-gutenberg-blocks')} /> },
-		{ name: 'lightbox', title: <TabIcon icon={search} label={__('Lightbox', 'codeweber-gutenberg-blocks')} /> },
-		{ name: 'settings', title: <TabIcon icon={cog} label={__('Settings', 'codeweber-gutenberg-blocks')} /> },
+		{
+			name: 'images',
+			title: (
+				<TabIcon
+					icon={image}
+					label={__('Images', 'codeweber-gutenberg-blocks')}
+				/>
+			),
+		},
+		{
+			name: 'layout',
+			title: (
+				<TabIcon
+					icon={grid}
+					label={__('Layout', 'codeweber-gutenberg-blocks')}
+				/>
+			),
+		},
+		{
+			name: 'effects',
+			title: (
+				<TabIcon
+					icon={starFilled}
+					label={__('Effects', 'codeweber-gutenberg-blocks')}
+				/>
+			),
+		},
+		{
+			name: 'lightbox',
+			title: (
+				<TabIcon
+					icon={search}
+					label={__('Lightbox', 'codeweber-gutenberg-blocks')}
+				/>
+			),
+		},
+		{
+			name: 'settings',
+			title: (
+				<TabIcon
+					icon={cog}
+					label={__('Settings', 'codeweber-gutenberg-blocks')}
+				/>
+			),
+		},
 	];
 
 	return (
@@ -39,20 +83,40 @@ export const ImageSimpleSidebar = ({ attributes, setAttributes }) => {
 							<PanelBody>
 								<div className="mb-3">
 									<div className="component-sidebar-title">
-										<label>{__('Render Type', 'codeweber-gutenberg-blocks')}</label>
+										<label>
+											{__(
+												'Render Type',
+												'codeweber-gutenberg-blocks'
+											)}
+										</label>
 									</div>
 									<ButtonGroup>
 										<button
 											className={`components-button ${attributes.imageRenderType === 'img' ? 'is-primary' : 'is-secondary'}`}
-											onClick={() => setAttributes({ imageRenderType: 'img' })}
+											onClick={() =>
+												setAttributes({
+													imageRenderType: 'img',
+												})
+											}
 										>
-											{__('Image Tag', 'codeweber-gutenberg-blocks')}
+											{__(
+												'Image Tag',
+												'codeweber-gutenberg-blocks'
+											)}
 										</button>
 										<button
 											className={`components-button ${attributes.imageRenderType === 'background' ? 'is-primary' : 'is-secondary'}`}
-											onClick={() => setAttributes({ imageRenderType: 'background' })}
+											onClick={() =>
+												setAttributes({
+													imageRenderType:
+														'background',
+												})
+											}
 										>
-											{__('Background', 'codeweber-gutenberg-blocks')}
+											{__(
+												'Background',
+												'codeweber-gutenberg-blocks'
+											)}
 										</button>
 									</ButtonGroup>
 								</div>
@@ -74,10 +138,22 @@ export const ImageSimpleSidebar = ({ attributes, setAttributes }) => {
 
 								{/* Load More - только для Grid режима */}
 								{attributes.displayMode === 'grid' && (
-									<div style={{ marginTop: '24px', paddingTop: '24px', borderTop: '1px solid #ddd' }}>
-										<PanelBody title={__('Load More', 'codeweber-gutenberg-blocks')} initialOpen={false}>
-											<LoadMoreControl 
-												attributes={attributes} 
+									<div
+										style={{
+											marginTop: '24px',
+											paddingTop: '24px',
+											borderTop: '1px solid #ddd',
+										}}
+									>
+										<PanelBody
+											title={__(
+												'Load More',
+												'codeweber-gutenberg-blocks'
+											)}
+											initialOpen={false}
+										>
+											<LoadMoreControl
+												attributes={attributes}
 												setAttributes={setAttributes}
 												attributePrefix="loadMore"
 											/>
@@ -88,7 +164,11 @@ export const ImageSimpleSidebar = ({ attributes, setAttributes }) => {
 								<div style={{ marginTop: '16px' }}>
 									<BorderRadiusControl
 										value={attributes.borderRadius}
-										onChange={(value) => setAttributes({ borderRadius: value })}
+										onChange={(value) =>
+											setAttributes({
+												borderRadius: value,
+											})
+										}
 									/>
 								</div>
 							</PanelBody>
@@ -126,9 +206,18 @@ export const ImageSimpleSidebar = ({ attributes, setAttributes }) => {
 										idKey: 'blockId',
 									}}
 									labels={{
-										classLabel: __('Block Class', 'codeweber-gutenberg-blocks'),
-										dataLabel: __('Block Data', 'codeweber-gutenberg-blocks'),
-										idLabel: __('Block ID', 'codeweber-gutenberg-blocks'),
+										classLabel: __(
+											'Block Class',
+											'codeweber-gutenberg-blocks'
+										),
+										dataLabel: __(
+											'Block Data',
+											'codeweber-gutenberg-blocks'
+										),
+										idLabel: __(
+											'Block ID',
+											'codeweber-gutenberg-blocks'
+										),
 									}}
 								/>
 							</PanelBody>
@@ -139,4 +228,3 @@ export const ImageSimpleSidebar = ({ attributes, setAttributes }) => {
 		</InspectorControls>
 	);
 };
-

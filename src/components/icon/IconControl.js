@@ -35,7 +35,9 @@ import { gradientcolors } from '../../utilities/gradient_colors';
  * Получение значения атрибута с префиксом
  */
 const getAttr = (attributes, prefix, name) => {
-	const attrName = prefix ? `${prefix}${name.charAt(0).toUpperCase()}${name.slice(1)}` : name;
+	const attrName = prefix
+		? `${prefix}${name.charAt(0).toUpperCase()}${name.slice(1)}`
+		: name;
 	return attributes[attrName];
 };
 
@@ -43,7 +45,9 @@ const getAttr = (attributes, prefix, name) => {
  * Установка значения атрибута с префиксом
  */
 const setAttr = (setAttributes, prefix, name, value) => {
-	const attrName = prefix ? `${prefix}${name.charAt(0).toUpperCase()}${name.slice(1)}` : name;
+	const attrName = prefix
+		? `${prefix}${name.charAt(0).toUpperCase()}${name.slice(1)}`
+		: name;
 	setAttributes({ [attrName]: value });
 };
 
@@ -86,11 +90,15 @@ export const IconControl = ({
 	const iconColor2 = getAttr(attributes, prefix, 'iconColor2') || '';
 	const iconClass = getAttr(attributes, prefix, 'iconClass') || '';
 	const iconWrapper = getAttr(attributes, prefix, 'iconWrapper') || false;
-	const iconWrapperStyle = getAttr(attributes, prefix, 'iconWrapperStyle') || '';
+	const iconWrapperStyle =
+		getAttr(attributes, prefix, 'iconWrapperStyle') || '';
 	const iconBtnSize = getAttr(attributes, prefix, 'iconBtnSize') || '';
-	const iconBtnVariant = getAttr(attributes, prefix, 'iconBtnVariant') || 'soft';
-	const iconWrapperClass = getAttr(attributes, prefix, 'iconWrapperClass') || '';
-	const iconGradientColor = getAttr(attributes, prefix, 'iconGradientColor') || 'gradient-1';
+	const iconBtnVariant =
+		getAttr(attributes, prefix, 'iconBtnVariant') || 'soft';
+	const iconWrapperClass =
+		getAttr(attributes, prefix, 'iconWrapperClass') || '';
+	const iconGradientColor =
+		getAttr(attributes, prefix, 'iconGradientColor') || 'gradient-1';
 	const customSvgUrl = getAttr(attributes, prefix, 'customSvgUrl') || '';
 	const customSvgId = getAttr(attributes, prefix, 'customSvgId') || null;
 
@@ -107,7 +115,9 @@ export const IconControl = ({
 	const getSelectedType = () => {
 		if (iconType === 'font') return 'font';
 		if (iconType === 'svg') {
-			return svgStyle === 'solid' || svgStyle === 'solid-mono' || svgStyle === 'solid-duo'
+			return svgStyle === 'solid' ||
+				svgStyle === 'solid-mono' ||
+				svgStyle === 'solid-duo'
 				? 'svg-solid'
 				: 'svg-lineal';
 		}
@@ -148,7 +158,9 @@ export const IconControl = ({
 					label={__('Icon Type', 'codeweber-gutenberg-blocks')}
 					value={iconType}
 					options={availableTypes}
-					onChange={(value) => setAttr(setAttributes, prefix, 'iconType', value)}
+					onChange={(value) =>
+						setAttr(setAttributes, prefix, 'iconType', value)
+					}
 					__nextHasNoMarginBottom
 				/>
 			)}
@@ -157,7 +169,10 @@ export const IconControl = ({
 			{!hideIconPicker && (iconType === 'font' || iconType === 'svg') && (
 				<>
 					<BaseControl
-						label={__('Selected Icon', 'codeweber-gutenberg-blocks')}
+						label={__(
+							'Selected Icon',
+							'codeweber-gutenberg-blocks'
+						)}
 						className="icon-control-preview"
 					>
 						<div className="icon-control-preview-wrapper">
@@ -182,8 +197,14 @@ export const IconControl = ({
 								className="icon-control-select-btn"
 							>
 								{iconName || svgIcon
-									? __('Change Icon', 'codeweber-gutenberg-blocks')
-									: __('Select Icon', 'codeweber-gutenberg-blocks')}
+									? __(
+											'Change Icon',
+											'codeweber-gutenberg-blocks'
+										)
+									: __(
+											'Select Icon',
+											'codeweber-gutenberg-blocks'
+										)}
 							</Button>
 						</div>
 					</BaseControl>
@@ -194,18 +215,26 @@ export const IconControl = ({
 						onSelect={handleIconSelect}
 						selectedIcon={iconType === 'font' ? iconName : svgIcon}
 						selectedType={getSelectedType()}
-						initialTab={iconType === 'font' ? 'font' : getSelectedType()}
+						initialTab={
+							iconType === 'font' ? 'font' : getSelectedType()
+						}
 					/>
 				</>
 			)}
 
 			{/* Кастомный SVG */}
 			{!hideIconPicker && iconType === 'custom' && (
-				<BaseControl label={__('Custom SVG', 'codeweber-gutenberg-blocks')}>
+				<BaseControl
+					label={__('Custom SVG', 'codeweber-gutenberg-blocks')}
+				>
 					<div className="icon-control-custom-svg">
 						{customSvgUrl ? (
 							<div className="icon-control-custom-svg-preview">
-								<img src={customSvgUrl} alt="" className="icon-svg icon-svg-sm" />
+								<img
+									src={customSvgUrl}
+									alt=""
+									className="icon-svg icon-svg-sm"
+								/>
 								<Button
 									variant="link"
 									isDestructive
@@ -221,8 +250,14 @@ export const IconControl = ({
 									allowedTypes={['image/svg+xml']}
 									value={customSvgId}
 									render={({ open }) => (
-										<Button variant="secondary" onClick={open}>
-											{__('Upload SVG', 'codeweber-gutenberg-blocks')}
+										<Button
+											variant="secondary"
+											onClick={open}
+										>
+											{__(
+												'Upload SVG',
+												'codeweber-gutenberg-blocks'
+											)}
 										</Button>
 									)}
 								/>
@@ -242,23 +277,40 @@ export const IconControl = ({
 							// Если иконка из lineal - только lineal стиль доступен
 							// Если из solid - доступны solid/solid-mono/solid-duo
 							svgStyle === 'lineal'
-								? svgIconStyles.filter((s) => s.value === 'lineal')
-								: svgIconStyles.filter((s) => s.value !== 'lineal')
+								? svgIconStyles.filter(
+										(s) => s.value === 'lineal'
+									)
+								: svgIconStyles.filter(
+										(s) => s.value !== 'lineal'
+									)
 						}
-						onChange={(value) => setAttr(setAttributes, prefix, 'svgStyle', value)}
+						onChange={(value) =>
+							setAttr(setAttributes, prefix, 'svgStyle', value)
+						}
 						__nextHasNoMarginBottom
 						help={
 							svgStyle === 'lineal'
-								? __('For Lineal icons, only outline style is available', 'codeweber-gutenberg-blocks')
-								: __('For Solid icons, filled styles are available', 'codeweber-gutenberg-blocks')
+								? __(
+										'For Lineal icons, only outline style is available',
+										'codeweber-gutenberg-blocks'
+									)
+								: __(
+										'For Solid icons, filled styles are available',
+										'codeweber-gutenberg-blocks'
+									)
 						}
 					/>
 
 					<SelectControl
 						label={__('Size', 'codeweber-gutenberg-blocks')}
 						value={iconSize}
-						options={iconSvgSizes.map((s) => ({ value: s.value, label: s.label }))}
-						onChange={(value) => setAttr(setAttributes, prefix, 'iconSize', value)}
+						options={iconSvgSizes.map((s) => ({
+							value: s.value,
+							label: s.label,
+						}))}
+						onChange={(value) =>
+							setAttr(setAttributes, prefix, 'iconSize', value)
+						}
 						__nextHasNoMarginBottom
 					/>
 				</>
@@ -270,7 +322,9 @@ export const IconControl = ({
 					label={__('Font Size', 'codeweber-gutenberg-blocks')}
 					value={iconFontSize}
 					options={iconFontSizes}
-					onChange={(value) => setAttr(setAttributes, prefix, 'iconFontSize', value)}
+					onChange={(value) =>
+						setAttr(setAttributes, prefix, 'iconFontSize', value)
+					}
 					__nextHasNoMarginBottom
 				/>
 			)}
@@ -280,8 +334,13 @@ export const IconControl = ({
 				<SelectControl
 					label={__('Size', 'codeweber-gutenberg-blocks')}
 					value={iconSize}
-					options={iconSvgSizes.map((s) => ({ value: s.value, label: s.label }))}
-					onChange={(value) => setAttr(setAttributes, prefix, 'iconSize', value)}
+					options={iconSvgSizes.map((s) => ({
+						value: s.value,
+						label: s.label,
+					}))}
+					onChange={(value) =>
+						setAttr(setAttributes, prefix, 'iconSize', value)
+					}
 					__nextHasNoMarginBottom
 				/>
 			)}
@@ -292,20 +351,53 @@ export const IconControl = ({
 					{/* Для solid-duo используем предустановленные комбинации */}
 					{iconType === 'svg' && svgStyle === 'solid-duo' ? (
 						<SelectControl
-							label={__('Color Combination', 'codeweber-gutenberg-blocks')}
-							value={iconColor && iconColor2 ? `${iconColor}-${iconColor2}` : ''}
+							label={__(
+								'Color Combination',
+								'codeweber-gutenberg-blocks'
+							)}
+							value={
+								iconColor && iconColor2
+									? `${iconColor}-${iconColor2}`
+									: ''
+							}
 							options={[
-								{ value: '', label: __('Select combination', 'codeweber-gutenberg-blocks') },
+								{
+									value: '',
+									label: __(
+										'Select combination',
+										'codeweber-gutenberg-blocks'
+									),
+								},
 								...iconDuoColors,
 							]}
 							onChange={(value) => {
 								if (value) {
 									const [color1, color2] = value.split('-');
-									setAttr(setAttributes, prefix, 'iconColor', color1);
-									setAttr(setAttributes, prefix, 'iconColor2', color2);
+									setAttr(
+										setAttributes,
+										prefix,
+										'iconColor',
+										color1
+									);
+									setAttr(
+										setAttributes,
+										prefix,
+										'iconColor2',
+										color2
+									);
 								} else {
-									setAttr(setAttributes, prefix, 'iconColor', '');
-									setAttr(setAttributes, prefix, 'iconColor2', '');
+									setAttr(
+										setAttributes,
+										prefix,
+										'iconColor',
+										''
+									);
+									setAttr(
+										setAttributes,
+										prefix,
+										'iconColor2',
+										''
+									);
 								}
 							}}
 							__nextHasNoMarginBottom
@@ -315,7 +407,14 @@ export const IconControl = ({
 							label={__('Color', 'codeweber-gutenberg-blocks')}
 							value={iconColor}
 							options={iconColors}
-							onChange={(value) => setAttr(setAttributes, prefix, 'iconColor', value)}
+							onChange={(value) =>
+								setAttr(
+									setAttributes,
+									prefix,
+									'iconColor',
+									value
+								)
+							}
 							__nextHasNoMarginBottom
 						/>
 					)}
@@ -325,14 +424,27 @@ export const IconControl = ({
 			{/* Дополнительные классы */}
 			{iconType !== 'none' && (
 				<BaseControl
-					label={__('Additional icon class', 'codeweber-gutenberg-blocks')}
-					help={__('For example: me-4, mb-3, etc.', 'codeweber-gutenberg-blocks')}
+					label={__(
+						'Additional icon class',
+						'codeweber-gutenberg-blocks'
+					)}
+					help={__(
+						'For example: me-4, mb-3, etc.',
+						'codeweber-gutenberg-blocks'
+					)}
 				>
 					<input
 						type="text"
 						className="components-text-control__input"
 						value={iconClass}
-						onChange={(e) => setAttr(setAttributes, prefix, 'iconClass', e.target.value)}
+						onChange={(e) =>
+							setAttr(
+								setAttributes,
+								prefix,
+								'iconClass',
+								e.target.value
+							)
+						}
 						placeholder="me-4"
 					/>
 				</BaseControl>
@@ -342,25 +454,47 @@ export const IconControl = ({
 			{showWrapper && iconType !== 'none' && (
 				<>
 					<ToggleControl
-						label={__('Wrap in div.icon', 'codeweber-gutenberg-blocks')}
-						help={__('Adds wrapper for positioning or styling', 'codeweber-gutenberg-blocks')}
+						label={__(
+							'Wrap in div.icon',
+							'codeweber-gutenberg-blocks'
+						)}
+						help={__(
+							'Adds wrapper for positioning or styling',
+							'codeweber-gutenberg-blocks'
+						)}
 						checked={iconWrapper}
-						onChange={(value) => setAttr(setAttributes, prefix, 'iconWrapper', value)}
+						onChange={(value) =>
+							setAttr(setAttributes, prefix, 'iconWrapper', value)
+						}
 						__nextHasNoMarginBottom
 					/>
 
 					{iconWrapper && (
 						<>
 							<BaseControl
-								label={__('Wrapper Style', 'codeweber-gutenberg-blocks')}
+								label={__(
+									'Wrapper Style',
+									'codeweber-gutenberg-blocks'
+								)}
 								__nextHasNoMarginBottom
 							>
 								<ButtonGroup className="icon-wrapper-style-buttons">
 									{iconWrapperStyles.map((style) => (
 										<Button
 											key={style.value}
-											variant={iconWrapperStyle === style.value ? 'primary' : 'secondary'}
-											onClick={() => setAttr(setAttributes, prefix, 'iconWrapperStyle', style.value)}
+											variant={
+												iconWrapperStyle === style.value
+													? 'primary'
+													: 'secondary'
+											}
+											onClick={() =>
+												setAttr(
+													setAttributes,
+													prefix,
+													'iconWrapperStyle',
+													style.value
+												)
+											}
 											size="compact"
 										>
 											{style.label}
@@ -370,18 +504,34 @@ export const IconControl = ({
 							</BaseControl>
 
 							{/* Настройки кнопки */}
-							{(iconWrapperStyle === 'btn' || iconWrapperStyle === 'btn-circle') && (
+							{(iconWrapperStyle === 'btn' ||
+								iconWrapperStyle === 'btn-circle') && (
 								<>
 									<BaseControl
-										label={__('Button Variant', 'codeweber-gutenberg-blocks')}
+										label={__(
+											'Button Variant',
+											'codeweber-gutenberg-blocks'
+										)}
 										__nextHasNoMarginBottom
 									>
 										<ButtonGroup className="icon-wrapper-style-buttons">
 											{iconBtnVariants.map((variant) => (
 												<Button
 													key={variant.value}
-													variant={iconBtnVariant === variant.value ? 'primary' : 'secondary'}
-													onClick={() => setAttr(setAttributes, prefix, 'iconBtnVariant', variant.value)}
+													variant={
+														iconBtnVariant ===
+														variant.value
+															? 'primary'
+															: 'secondary'
+													}
+													onClick={() =>
+														setAttr(
+															setAttributes,
+															prefix,
+															'iconBtnVariant',
+															variant.value
+														)
+													}
 													size="compact"
 												>
 													{variant.label}
@@ -393,25 +543,48 @@ export const IconControl = ({
 									{/* Настройки градиента - показываются только если выбран вариант gradient */}
 									{iconBtnVariant === 'gradient' && (
 										<ComboboxControl
-											label={__('Gradient Color', 'codeweber-gutenberg-blocks')}
+											label={__(
+												'Gradient Color',
+												'codeweber-gutenberg-blocks'
+											)}
 											value={iconGradientColor}
 											options={gradientcolors}
 											onChange={(newGradient) =>
-												setAttr(setAttributes, prefix, 'iconGradientColor', newGradient)
+												setAttr(
+													setAttributes,
+													prefix,
+													'iconGradientColor',
+													newGradient
+												)
 											}
 										/>
 									)}
 
 									<BaseControl
-										label={__('Button Size', 'codeweber-gutenberg-blocks')}
+										label={__(
+											'Button Size',
+											'codeweber-gutenberg-blocks'
+										)}
 										__nextHasNoMarginBottom
 									>
 										<ButtonGroup className="icon-wrapper-style-buttons">
 											{iconBtnSizes.map((size) => (
 												<Button
 													key={size.value}
-													variant={iconBtnSize === size.value ? 'primary' : 'secondary'}
-													onClick={() => setAttr(setAttributes, prefix, 'iconBtnSize', size.value)}
+													variant={
+														iconBtnSize ===
+														size.value
+															? 'primary'
+															: 'secondary'
+													}
+													onClick={() =>
+														setAttr(
+															setAttributes,
+															prefix,
+															'iconBtnSize',
+															size.value
+														)
+													}
 													size="compact"
 												>
 													{size.label}
@@ -423,14 +596,27 @@ export const IconControl = ({
 							)}
 
 							<BaseControl
-								label={__('Additional wrapper classes', 'codeweber-gutenberg-blocks')}
-								help={__('For example: pe-none, mb-5', 'codeweber-gutenberg-blocks')}
+								label={__(
+									'Additional wrapper classes',
+									'codeweber-gutenberg-blocks'
+								)}
+								help={__(
+									'For example: pe-none, mb-5',
+									'codeweber-gutenberg-blocks'
+								)}
 							>
 								<input
 									type="text"
 									className="components-text-control__input"
 									value={iconWrapperClass}
-									onChange={(e) => setAttr(setAttributes, prefix, 'iconWrapperClass', e.target.value)}
+									onChange={(e) =>
+										setAttr(
+											setAttributes,
+											prefix,
+											'iconWrapperClass',
+											e.target.value
+										)
+									}
 									placeholder="pe-none mb-5"
 								/>
 							</BaseControl>
@@ -443,4 +629,3 @@ export const IconControl = ({
 };
 
 export default IconControl;
-

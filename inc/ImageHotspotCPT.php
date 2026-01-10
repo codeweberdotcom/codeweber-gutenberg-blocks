@@ -415,20 +415,6 @@ class ImageHotspotCPT {
 			GUTENBERG_BLOCKS_VERSION
 		);
 
-		// Подключаем скрипт фронтенда
-		wp_enqueue_script(
-			'cw-hotspot-frontend',
-			GUTENBERG_BLOCKS_URL . 'includes/js/image-hotspot-frontend.js',
-			['jquery'],
-			GUTENBERG_BLOCKS_VERSION,
-			true
-		);
-
-		// Fetch система темы уже предоставляет fetch_vars через fetch-handler.js
-
-		// Bootstrap Popover будет инициализирован через скрипт фронтенда
-
-
 		// Получаем атрибуты шорткода
 		$atts = shortcode_atts([
 			'id' => 0,
@@ -477,15 +463,28 @@ class ImageHotspotCPT {
 		];
 		$settings_data = wp_parse_args($settings_data, $default_settings);
 
+		// Подключаем скрипт фронтенда
+		wp_enqueue_script(
+			'cw-hotspot-frontend',
+			GUTENBERG_BLOCKS_URL . 'includes/js/image-hotspot-frontend.js',
+			['jquery'],
+			GUTENBERG_BLOCKS_VERSION,
+			true
+		);
+
+		// Fetch система темы уже предоставляет fetch_vars через fetch-handler.js
+
+		// Bootstrap Popover будет инициализирован через скрипт фронтенда
+
 
 		// Рендерим HTML
 		ob_start();
 		?>
-		<div class="cw-image-hotspot-container cw-image-hotspot-<?php echo esc_attr($hotspot_id); ?>"
+		<div class="cw-image-hotspot-container cw-image-hotspot-<?php echo esc_attr($hotspot_id); ?> w-100"
 		     data-hotspot-id="<?php echo esc_attr($hotspot_id); ?>">
-			<div class="cw-hotspot-annotation-box">
+			<div class="cw-hotspot-annotation-box w-100">
 				<img src="<?php echo esc_url($image_url); ?>"
-				     class="cw-hotspot-main-image"
+				     class="cw-hotspot-main-image w-100"
 				     alt="<?php echo esc_attr($post->post_title); ?>" />
 				<?php if (!empty($hotspots)): ?>
 					<?php foreach ($hotspots as $hotspot): ?>

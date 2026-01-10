@@ -1,12 +1,15 @@
 import { InnerBlocks } from '@wordpress/block-editor';
 import { generateBackgroundClasses } from '../../../utilities/class-generators';
 import { ImageSimpleRender } from '../../../components/image/ImageSimpleRender';
-import { 
-	SwiperSlider, 
-	SwiperSlide, 
+import {
+	SwiperSlider,
+	SwiperSlide,
 	getSwiperConfigFromAttributes,
 } from '../../../components/swiper/SwiperSlider';
-import { getRowColsClasses, getGapClasses } from '../../../components/grid-control';
+import {
+	getRowColsClasses,
+	getGapClasses,
+} from '../../../components/grid-control';
 
 // Все блоки Codeweber Gutenberg Blocks (исключая сам banners, чтобы избежать рекурсии)
 const ALLOWED_CODEWEBER_BLOCKS = [
@@ -102,25 +105,39 @@ export const Banner3 = ({ attributes, isEditor = false, clientId = '' }) => {
 	const getContainerClasses = () => {
 		if (displayMode === 'grid') {
 			const currentGridType = gridType || 'classic';
-			
+
 			if (currentGridType === 'columns-grid') {
-				const rowColsClasses = getRowColsClasses(attributes, 'grid', gridColumns);
+				const rowColsClasses = getRowColsClasses(
+					attributes,
+					'grid',
+					gridColumns
+				);
 				const gapClasses = getGapClasses(attributes, 'grid');
 				let gapClassesStr = gapClasses.join(' ');
-				if (!gapClassesStr && (attributes.gridGapX || attributes.gridGapY)) {
+				if (
+					!gapClassesStr &&
+					(attributes.gridGapX || attributes.gridGapY)
+				) {
 					const oldGapClasses = [];
-					if (attributes.gridGapY) oldGapClasses.push(`gy-${attributes.gridGapY}`);
-					if (attributes.gridGapX) oldGapClasses.push(`gx-${attributes.gridGapX}`);
+					if (attributes.gridGapY)
+						oldGapClasses.push(`gy-${attributes.gridGapY}`);
+					if (attributes.gridGapX)
+						oldGapClasses.push(`gx-${attributes.gridGapX}`);
 					gapClassesStr = oldGapClasses.join(' ');
 				}
 				return `row ${gapClassesStr} ${rowColsClasses.join(' ')}`;
 			} else {
 				const gapClasses = getGapClasses(attributes, 'grid');
 				let gapClassesStr = gapClasses.join(' ');
-				if (!gapClassesStr && (attributes.gridGapX || attributes.gridGapY)) {
+				if (
+					!gapClassesStr &&
+					(attributes.gridGapX || attributes.gridGapY)
+				) {
 					const oldGapClasses = [];
-					if (attributes.gridGapY) oldGapClasses.push(`gy-${attributes.gridGapY}`);
-					if (attributes.gridGapX) oldGapClasses.push(`gx-${attributes.gridGapX}`);
+					if (attributes.gridGapY)
+						oldGapClasses.push(`gy-${attributes.gridGapY}`);
+					if (attributes.gridGapX)
+						oldGapClasses.push(`gx-${attributes.gridGapX}`);
 					gapClassesStr = oldGapClasses.join(' ');
 				}
 				return `row ${gapClassesStr}`.trim();
@@ -134,7 +151,7 @@ export const Banner3 = ({ attributes, isEditor = false, clientId = '' }) => {
 		if (displayMode !== 'grid' || gridType !== 'classic') {
 			return '';
 		}
-		
+
 		const colClasses = [];
 		const {
 			gridColumns: colsDefault,
@@ -145,7 +162,7 @@ export const Banner3 = ({ attributes, isEditor = false, clientId = '' }) => {
 			gridColumnsXl: colsXl,
 			gridColumnsXxl: colsXxl,
 		} = attributes;
-		
+
 		if (colsDefault) {
 			colClasses.push(`col-${colsDefault}`);
 		}
@@ -167,7 +184,7 @@ export const Banner3 = ({ attributes, isEditor = false, clientId = '' }) => {
 		if (colsXxl) {
 			colClasses.push(`col-xxl-${colsXxl}`);
 		}
-		
+
 		return colClasses.join(' ');
 	};
 
@@ -181,12 +198,12 @@ export const Banner3 = ({ attributes, isEditor = false, clientId = '' }) => {
 	const swiperUniqueKey = `swiper-${swiperEffect}-${swiperSpeed}-${swiperItems}-${swiperItemsXs}-${swiperItemsMd}-${swiperItemsXl}-${swiperMargin || '30'}-${swiperLoop}-${swiperAutoplay}-${swiperNav}-${swiperDots}-${hoverEffectsKey}-${clientId}`;
 
 	const imagesToRender = images || [];
-	
+
 	// Placeholder изображение
-	const placeholderUrl = isEditor 
-		? (window.location?.origin 
+	const placeholderUrl = isEditor
+		? window.location?.origin
 			? `${window.location.origin}/wp-content/themes/codeweber/dist/assets/img/photos/about13.jpg`
-			: './assets/img/photos/about13.jpg')
+			: './assets/img/photos/about13.jpg'
 		: '/wp-content/themes/codeweber/dist/assets/img/photos/about13.jpg';
 
 	// Рендерим изображение/изображения
@@ -232,9 +249,11 @@ export const Banner3 = ({ attributes, isEditor = false, clientId = '' }) => {
 			return (
 				<div className={getContainerClasses()}>
 					{imagesToRender.map((image, index) => (
-						<div 
+						<div
 							key={`banner-image-${index}-${hoverEffectsKey}-${imageSize}`}
-							className={gridType === 'classic' ? getColClasses() : ''}
+							className={
+								gridType === 'classic' ? getColClasses() : ''
+							}
 						>
 							<ImageSimpleRender
 								image={image}
@@ -258,13 +277,17 @@ export const Banner3 = ({ attributes, isEditor = false, clientId = '' }) => {
 			);
 		} else if (displayMode === 'swiper') {
 			return (
-				<SwiperSlider 
-					config={swiperConfig} 
+				<SwiperSlider
+					config={swiperConfig}
 					className="w-100"
-					{...(isEditor && { uniqueKey: `${swiperUniqueKey}-${imageSize}` })}
+					{...(isEditor && {
+						uniqueKey: `${swiperUniqueKey}-${imageSize}`,
+					})}
 				>
 					{imagesToRender.map((image, index) => (
-						<SwiperSlide key={`banner-swiper-${index}-${hoverEffectsKey}-${imageSize}`}>
+						<SwiperSlide
+							key={`banner-swiper-${index}-${hoverEffectsKey}-${imageSize}`}
+						>
 							<ImageSimpleRender
 								image={image}
 								imageSize={imageSize}
@@ -296,18 +319,28 @@ export const Banner3 = ({ attributes, isEditor = false, clientId = '' }) => {
 				<div className="container pt-7 pt-md-11 pb-8">
 					<div className="row gx-0 gy-10 align-items-center">
 						<div className="col-lg-6">
-							<InnerBlocks allowedBlocks={ALLOWED_CODEWEBER_BLOCKS} templateLock={false} />
+							<InnerBlocks
+								allowedBlocks={ALLOWED_CODEWEBER_BLOCKS}
+								templateLock={false}
+							/>
 						</div>
 						{/* /column */}
 						<div className="col-lg-5 offset-lg-1 mb-n18">
 							<div className="position-relative">
 								{videoUrl && (
-									<a 
-										href={videoUrl} 
-										className="btn btn-circle btn-primary btn-play ripple mx-auto mb-6 position-absolute" 
-										style={{ top: '50%', left: '50%', transform: 'translate(-50%,-50%)', zIndex: 3 }} 
+									<a
+										href={videoUrl}
+										className="btn btn-circle btn-primary btn-play ripple mx-auto mb-6 position-absolute"
+										style={{
+											top: '50%',
+											left: '50%',
+											transform: 'translate(-50%,-50%)',
+											zIndex: 3,
+										}}
 										data-glightbox
-										{...(isEditor && { onClick: (e) => e.preventDefault() })}
+										{...(isEditor && {
+											onClick: (e) => e.preventDefault(),
+										})}
 									>
 										<i className="icn-caret-right"></i>
 									</a>
@@ -329,7 +362,8 @@ export const Banner3 = ({ attributes, isEditor = false, clientId = '' }) => {
 		<section
 			className={getSectionClasses()}
 			style={getSectionStyles()}
-			{...(backgroundType === 'image' && backgroundImageUrl && { 'data-image-src': backgroundImageUrl })}
+			{...(backgroundType === 'image' &&
+				backgroundImageUrl && { 'data-image-src': backgroundImageUrl })}
 		>
 			<div className="container pt-7 pt-md-11 pb-8">
 				<div className="row gx-0 gy-10 align-items-center">
@@ -340,10 +374,15 @@ export const Banner3 = ({ attributes, isEditor = false, clientId = '' }) => {
 					<div className="col-lg-5 offset-lg-1 mb-n18">
 						<div className="position-relative">
 							{videoUrl && (
-								<a 
-									href={videoUrl} 
-									className="btn btn-circle btn-primary btn-play ripple mx-auto mb-6 position-absolute" 
-									style={{ top: '50%', left: '50%', transform: 'translate(-50%,-50%)', zIndex: 3 }} 
+								<a
+									href={videoUrl}
+									className="btn btn-circle btn-primary btn-play ripple mx-auto mb-6 position-absolute"
+									style={{
+										top: '50%',
+										left: '50%',
+										transform: 'translate(-50%,-50%)',
+										zIndex: 3,
+									}}
 									data-glightbox
 								>
 									<i className="icn-caret-right"></i>
@@ -361,6 +400,3 @@ export const Banner3 = ({ attributes, isEditor = false, clientId = '' }) => {
 		</section>
 	);
 };
-
-
-

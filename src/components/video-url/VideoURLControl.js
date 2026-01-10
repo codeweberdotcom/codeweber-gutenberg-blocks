@@ -1,12 +1,17 @@
 import { __ } from '@wordpress/i18n';
 import { TextControl, TextareaControl } from '@wordpress/components';
 import { useState } from '@wordpress/element';
-import { parseVKVideoURL, parseRutubeVideoURL, parseYouTubeVideoURL, parseVimeoVideoURL } from '../../utilities/videoUrlParsers';
+import {
+	parseVKVideoURL,
+	parseRutubeVideoURL,
+	parseYouTubeVideoURL,
+	parseVimeoVideoURL,
+} from '../../utilities/videoUrlParsers';
 
 /**
  * VideoURLControl Component
  * Universal component for VK, Rutube, YouTube, Vimeo video URLs
- * 
+ *
  * @param {Object} props
  * @param {string} props.videoType - Type of video: 'vk', 'rutube', 'youtube', 'vimeo'
  * @param {string} props.value - Current video URL/ID
@@ -34,26 +39,49 @@ export const VideoURLControl = ({
 		switch (videoType) {
 			case 'vk':
 				return {
-					label: __('VK Video URL or iframe', 'codeweber-gutenberg-blocks'),
-					help: __('Paste VK video embed URL or full iframe code - URL will be extracted automatically', 'codeweber-gutenberg-blocks'),
-					placeholder: 'https://vkvideo.ru/video_ext.php?oid=...&id=... or paste iframe',
+					label: __(
+						'VK Video URL or iframe',
+						'codeweber-gutenberg-blocks'
+					),
+					help: __(
+						'Paste VK video embed URL or full iframe code - URL will be extracted automatically',
+						'codeweber-gutenberg-blocks'
+					),
+					placeholder:
+						'https://vkvideo.ru/video_ext.php?oid=...&id=... or paste iframe',
 				};
 			case 'rutube':
 				return {
-					label: __('Rutube Video URL or ID', 'codeweber-gutenberg-blocks'),
-					help: __('Paste Rutube embed URL, video ID, or full iframe code - URL will be extracted automatically', 'codeweber-gutenberg-blocks'),
-					placeholder: 'https://rutube.ru/play/embed/... or paste iframe or 32-char ID',
+					label: __(
+						'Rutube Video URL or ID',
+						'codeweber-gutenberg-blocks'
+					),
+					help: __(
+						'Paste Rutube embed URL, video ID, or full iframe code - URL will be extracted automatically',
+						'codeweber-gutenberg-blocks'
+					),
+					placeholder:
+						'https://rutube.ru/play/embed/... or paste iframe or 32-char ID',
 				};
 			case 'youtube':
 				return {
-					label: __('YouTube Video URL or ID', 'codeweber-gutenberg-blocks'),
-					help: __('Enter YouTube video URL or video ID', 'codeweber-gutenberg-blocks'),
+					label: __(
+						'YouTube Video URL or ID',
+						'codeweber-gutenberg-blocks'
+					),
+					help: __(
+						'Enter YouTube video URL or video ID',
+						'codeweber-gutenberg-blocks'
+					),
 					placeholder: 'https://youtube.com/watch?v=... or video ID',
 				};
 			case 'vimeo':
 				return {
 					label: __('Vimeo Video ID', 'codeweber-gutenberg-blocks'),
-					help: __('Enter Vimeo video ID', 'codeweber-gutenberg-blocks'),
+					help: __(
+						'Enter Vimeo video ID',
+						'codeweber-gutenberg-blocks'
+					),
 					placeholder: '123456789',
 				};
 			default:
@@ -72,7 +100,11 @@ export const VideoURLControl = ({
 		// Parse URL based on video type
 		switch (videoType) {
 			case 'vk':
-				parsedData = parseVKVideoURL(newValue, enhanceQuality, forLightbox);
+				parsedData = parseVKVideoURL(
+					newValue,
+					enhanceQuality,
+					forLightbox
+				);
 				break;
 			case 'rutube':
 				parsedData = parseRutubeVideoURL(newValue, enhanceQuality);
@@ -91,21 +123,28 @@ export const VideoURLControl = ({
 		onChange(parsedData.url || newValue, parsedData);
 
 		// Auto-load poster if enabled
-		if (autoloadPoster && onPosterLoad && (videoType === 'vk' || videoType === 'rutube')) {
+		if (
+			autoloadPoster &&
+			onPosterLoad &&
+			(videoType === 'vk' || videoType === 'rutube')
+		) {
 			if (videoType === 'vk' && parsedData.oid && parsedData.id) {
 				setIsLoadingPoster(true);
 				try {
 					const response = await wp.apiFetch({
 						path: `/codeweber-gutenberg-blocks/v1/vk-thumbnail?oid=${encodeURIComponent(parsedData.oid)}&id=${encodeURIComponent(parsedData.id)}`,
-						method: 'GET'
+						method: 'GET',
 					});
 					if (response.success && response.thumbnail_url) {
 						onPosterLoad({
 							id: 0,
 							url: response.thumbnail_url,
-							alt: response.title || 'VK video thumbnail'
+							alt: response.title || 'VK video thumbnail',
 						});
-						console.log('✅ VK poster auto-loaded:', response.thumbnail_url);
+						console.log(
+							'✅ VK poster auto-loaded:',
+							response.thumbnail_url
+						);
 					}
 				} catch (error) {
 					console.error('❌ Could not fetch VK poster:', error);
@@ -117,13 +156,13 @@ export const VideoURLControl = ({
 				try {
 					const response = await wp.apiFetch({
 						path: `/codeweber-gutenberg-blocks/v1/rutube-thumbnail/${parsedData.videoId}`,
-						method: 'GET'
+						method: 'GET',
 					});
 					if (response.success && response.thumbnail_url) {
 						onPosterLoad({
 							id: 0,
 							url: response.thumbnail_url,
-							alt: response.title || 'Rutube video thumbnail'
+							alt: response.title || 'Rutube video thumbnail',
 						});
 					}
 				} catch (error) {
@@ -149,36 +188,39 @@ export const VideoURLControl = ({
 				placeholder={config.placeholder}
 				{...extraProps}
 			/>
-			
+
 			{/* Loading indicator */}
 			{isLoadingPoster && (
-				<div style={{
-					marginTop: '8px',
-					marginBottom: '8px',
-					padding: '8px 12px',
-					backgroundColor: '#f0f6fc',
-					border: '1px solid #0073aa',
-					borderRadius: '4px',
-					color: '#0073aa',
-					fontSize: '13px',
-					fontWeight: '500',
-					display: 'flex',
-					alignItems: 'center',
-					gap: '8px'
-				}}>
-					<span style={{ 
-						display: 'inline-block',
-						width: '14px',
-						height: '14px',
-						border: '2px solid #0073aa',
-						borderTopColor: 'transparent',
-						borderRadius: '50%',
-						animation: 'spin 0.6s linear infinite'
-					}}></span>
+				<div
+					style={{
+						marginTop: '8px',
+						marginBottom: '8px',
+						padding: '8px 12px',
+						backgroundColor: '#f0f6fc',
+						border: '1px solid #0073aa',
+						borderRadius: '4px',
+						color: '#0073aa',
+						fontSize: '13px',
+						fontWeight: '500',
+						display: 'flex',
+						alignItems: 'center',
+						gap: '8px',
+					}}
+				>
+					<span
+						style={{
+							display: 'inline-block',
+							width: '14px',
+							height: '14px',
+							border: '2px solid #0073aa',
+							borderTopColor: 'transparent',
+							borderRadius: '50%',
+							animation: 'spin 0.6s linear infinite',
+						}}
+					></span>
 					{__('Loading poster...', 'codeweber-gutenberg-blocks')}
 				</div>
 			)}
 		</>
 	);
 };
-

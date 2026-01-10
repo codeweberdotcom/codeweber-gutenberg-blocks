@@ -65,9 +65,24 @@ export const getColumnBackgroundClasses = (attrs = {}) => {
 };
 
 export const getColumnStyles = (attrs = {}) => {
-	const { backgroundType, backgroundImageUrl, backgroundPatternUrl, backgroundSize } = attrs;
-	if (backgroundType === 'image' && backgroundImageUrl && backgroundImageUrl !== 'null' && backgroundImageUrl.trim() !== '') {
-		const size = backgroundSize === 'bg-cover' ? 'cover' : backgroundSize === 'bg-full' ? '100% 100%' : 'auto';
+	const {
+		backgroundType,
+		backgroundImageUrl,
+		backgroundPatternUrl,
+		backgroundSize,
+	} = attrs;
+	if (
+		backgroundType === 'image' &&
+		backgroundImageUrl &&
+		backgroundImageUrl !== 'null' &&
+		backgroundImageUrl.trim() !== ''
+	) {
+		const size =
+			backgroundSize === 'bg-cover'
+				? 'cover'
+				: backgroundSize === 'bg-full'
+					? '100% 100%'
+					: 'auto';
 		return {
 			backgroundImage: `url(${backgroundImageUrl})`,
 			backgroundRepeat: 'no-repeat',
@@ -76,8 +91,18 @@ export const getColumnStyles = (attrs = {}) => {
 		};
 	}
 
-	if (backgroundType === 'pattern' && backgroundPatternUrl && backgroundPatternUrl !== 'null' && backgroundPatternUrl.trim() !== '') {
-		const size = backgroundSize === 'bg-cover' ? 'cover' : backgroundSize === 'bg-full' ? '100% 100%' : 'auto';
+	if (
+		backgroundType === 'pattern' &&
+		backgroundPatternUrl &&
+		backgroundPatternUrl !== 'null' &&
+		backgroundPatternUrl.trim() !== ''
+	) {
+		const size =
+			backgroundSize === 'bg-cover'
+				? 'cover'
+				: backgroundSize === 'bg-full'
+					? '100% 100%'
+					: 'auto';
 		return {
 			backgroundImage: `url(${backgroundPatternUrl})`,
 			backgroundRepeat: 'repeat',
@@ -109,14 +134,14 @@ export const getColumnClassNames = (attrs = {}, mode = 'save') => {
 	classes.push(...getColumnBackgroundClasses(attrs));
 	classes.push(...getAdaptiveClasses(attrs));
 	classes.push(...getSpacingClasses(attrs));
-	
+
 	// Определяем, нужен ли flex контейнер
 	const needsFlex = columnAlignItems || columnJustifyContent;
-	
+
 	if (needsFlex) {
 		classes.push('d-flex', 'flex-column');
 	}
-	
+
 	if (columnAlignItems) {
 		classes.push(columnAlignItems.trim());
 	}
@@ -152,11 +177,21 @@ export const getAdaptiveClasses = (attrs = {}) => {
 	// Проверяем, есть ли хотя бы один непустой breakpoint кроме Xs
 	// Если есть - это Classic Grid, и класс 'col' не должен добавляться
 	const hasClassicGridBreakpoint =
-		(columnColSm !== undefined && columnColSm !== null && columnColSm !== '') ||
-		(columnColMd !== undefined && columnColMd !== null && columnColMd !== '') ||
-		(columnColLg !== undefined && columnColLg !== null && columnColLg !== '') ||
-		(columnColXl !== undefined && columnColXl !== null && columnColXl !== '') ||
-		(columnColXxl !== undefined && columnColXxl !== null && columnColXxl !== '');
+		(columnColSm !== undefined &&
+			columnColSm !== null &&
+			columnColSm !== '') ||
+		(columnColMd !== undefined &&
+			columnColMd !== null &&
+			columnColMd !== '') ||
+		(columnColLg !== undefined &&
+			columnColLg !== null &&
+			columnColLg !== '') ||
+		(columnColXl !== undefined &&
+			columnColXl !== null &&
+			columnColXl !== '') ||
+		(columnColXxl !== undefined &&
+			columnColXxl !== null &&
+			columnColXxl !== '');
 
 	// Обрабатываем Base (columnCol) - базовый класс без breakpoint префикса
 	if (columnCol !== undefined && columnCol !== null && columnCol !== '') {
@@ -172,7 +207,12 @@ export const getAdaptiveClasses = (attrs = {}) => {
 		if (columnColXs === '') {
 			// Добавляем класс 'col' только если это НЕ Classic Grid (т.е. Columns Grid режим)
 			// и если Base (columnCol) не задан
-			if (!hasClassicGridBreakpoint && (columnCol === undefined || columnCol === null || columnCol === '')) {
+			if (
+				!hasClassicGridBreakpoint &&
+				(columnCol === undefined ||
+					columnCol === null ||
+					columnCol === '')
+			) {
 				classes.push('col');
 			}
 		} else if (columnColXs === 'auto') {
@@ -183,20 +223,50 @@ export const getAdaptiveClasses = (attrs = {}) => {
 	}
 
 	// Обрабатываем остальные breakpoints
-	if (columnColSm !== undefined && columnColSm !== null && columnColSm !== '') {
-		classes.push(columnColSm === 'auto' ? 'col-sm-auto' : `col-sm-${columnColSm}`);
+	if (
+		columnColSm !== undefined &&
+		columnColSm !== null &&
+		columnColSm !== ''
+	) {
+		classes.push(
+			columnColSm === 'auto' ? 'col-sm-auto' : `col-sm-${columnColSm}`
+		);
 	}
-	if (columnColMd !== undefined && columnColMd !== null && columnColMd !== '') {
-		classes.push(columnColMd === 'auto' ? 'col-md-auto' : `col-md-${columnColMd}`);
+	if (
+		columnColMd !== undefined &&
+		columnColMd !== null &&
+		columnColMd !== ''
+	) {
+		classes.push(
+			columnColMd === 'auto' ? 'col-md-auto' : `col-md-${columnColMd}`
+		);
 	}
-	if (columnColLg !== undefined && columnColLg !== null && columnColLg !== '') {
-		classes.push(columnColLg === 'auto' ? 'col-lg-auto' : `col-lg-${columnColLg}`);
+	if (
+		columnColLg !== undefined &&
+		columnColLg !== null &&
+		columnColLg !== ''
+	) {
+		classes.push(
+			columnColLg === 'auto' ? 'col-lg-auto' : `col-lg-${columnColLg}`
+		);
 	}
-	if (columnColXl !== undefined && columnColXl !== null && columnColXl !== '') {
-		classes.push(columnColXl === 'auto' ? 'col-xl-auto' : `col-xl-${columnColXl}`);
+	if (
+		columnColXl !== undefined &&
+		columnColXl !== null &&
+		columnColXl !== ''
+	) {
+		classes.push(
+			columnColXl === 'auto' ? 'col-xl-auto' : `col-xl-${columnColXl}`
+		);
 	}
-	if (columnColXxl !== undefined && columnColXxl !== null && columnColXxl !== '') {
-		classes.push(columnColXxl === 'auto' ? 'col-xxl-auto' : `col-xxl-${columnColXxl}`);
+	if (
+		columnColXxl !== undefined &&
+		columnColXxl !== null &&
+		columnColXxl !== ''
+	) {
+		classes.push(
+			columnColXxl === 'auto' ? 'col-xxl-auto' : `col-xxl-${columnColXxl}`
+		);
 	}
 
 	return classes;

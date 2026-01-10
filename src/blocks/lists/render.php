@@ -198,11 +198,3 @@ foreach ($wrapperAttrs as $key => $value) {
 		</ul>
 	<?php endif; ?>
 </div>
-
-
-
-
-
-
-
-

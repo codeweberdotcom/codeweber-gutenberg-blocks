@@ -5,7 +5,11 @@
  */
 
 import { InnerBlocks } from '@wordpress/block-editor';
-import { getGroupButtonClassNames, normalizeGroupButtonId, normalizeGroupButtonData } from './utils';
+import {
+	getGroupButtonClassNames,
+	normalizeGroupButtonId,
+	normalizeGroupButtonData,
+} from './utils';
 
 const GroupButtonSave = ({ attributes }) => {
 	const {
@@ -20,11 +24,14 @@ const GroupButtonSave = ({ attributes }) => {
 	const blockProps = {
 		className: getGroupButtonClassNames(attributes),
 		id: normalizeGroupButtonId(blockId) || undefined,
-		...(animationEnabled && animationType && { 
-			'data-cue': animationType,
-			...(animationDuration && { 'data-duration': animationDuration }),
-			...(animationDelay && { 'data-delay': animationDelay }),
-		}),
+		...(animationEnabled &&
+			animationType && {
+				'data-cue': animationType,
+				...(animationDuration && {
+					'data-duration': animationDuration,
+				}),
+				...(animationDelay && { 'data-delay': animationDelay }),
+			}),
 		...normalizeGroupButtonData(blockData),
 	};
 

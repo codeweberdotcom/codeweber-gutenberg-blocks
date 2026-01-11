@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Codeweber Gutenberg Blocks\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-02 20:06+0000\n"
-"PO-Revision-Date: 2026-01-10 00:40+0000\n"
+"PO-Revision-Date: 2026-01-11 14:09+0000\n"
 "Last-Translator: Codeweber\n"
 "Language-Team: Русский\n"
 "Language: ru_RU\n"
@@ -170,7 +170,7 @@ msgstr "Принимаемые типы"
 
 #: src/src/blocks/accordion/index.js src/src/blocks/accordion/index.js
 msgid "Accordion"
-msgstr "Аккордеон"
+msgstr "Accordion"
 
 #: src/src/blocks/accordion/index.js src/src/blocks/accordion/index.js
 msgid "accordion"
@@ -886,7 +886,7 @@ msgstr "Цвет маркера"
 #: src/src/components/load-more/LoadMoreControl.js
 #: src/src/components/load-more/LoadMoreControl.js
 msgid "Button"
-msgstr "Кнопка"
+msgstr "Button"
 
 #: src/src/blocks/button/sidebar.js src/src/blocks/button/sidebar.js
 msgid "Button Class"
@@ -2207,7 +2207,7 @@ msgstr "Быстрая доставка"
 #: src/src/blocks/feature/edit.js src/src/blocks/feature/edit.js
 #: src/src/blocks/features/edit.js src/src/blocks/features/edit.js
 msgid "Feature"
-msgstr "Преимущества"
+msgstr "Feature"
 
 #: src/src/blocks/feature/edit.js src/src/blocks/feature/edit.js
 #: src/src/blocks/features/edit.js src/src/blocks/features/edit.js
@@ -2225,9 +2225,8 @@ msgid "Feature 3"
 msgstr "Тип 3"
 
 #: src/src/blocks/features/edit.js src/src/blocks/features/edit.js
-#, fuzzy
 msgid "Feature Settings"
-msgstr "Настройки аватара"
+msgstr "Настройки Преимуществ"
 
 #: src/src/blocks/features/templates.js src/src/blocks/features/templates.js
 msgid "Features"
@@ -2294,15 +2293,13 @@ msgid "File Upload"
 msgstr "Загрузка файла"
 
 #: src/src/blocks/form-field/edit.js src/src/blocks/form-field/edit.js
-#, fuzzy
 msgid "File Upload Field"
 msgstr "Загрузка файла"
 
 #: src/src/blocks/yandex-map/controls/OfficesQueryControl.js
 #: src/src/blocks/yandex-map/controls/OfficesQueryControl.js
-#, fuzzy
 msgid "Filter by Categories"
-msgstr "Фильтр по таксономиям"
+msgstr "Фильтр по категории"
 
 #: src/src/blocks/yandex-map/sidebar.js src/src/blocks/yandex-map/sidebar.js
 #, fuzzy
@@ -3076,7 +3073,7 @@ msgstr "Тип списка"
 
 #: src/src/blocks/lists/index.js src/src/blocks/lists/index.js
 msgid "Lists"
-msgstr "Списки"
+msgstr "Lists"
 
 #: src/src/blocks/lists/index.js src/src/blocks/lists/index.js
 msgid "lists"
@@ -3477,9 +3474,8 @@ msgid "nav"
 msgstr "нав"
 
 #: src/src/blocks/swiper/edit.js src/src/blocks/swiper/edit.js
-#, fuzzy
 msgid "Nav Style"
-msgstr "Стиль вкладки"
+msgstr "Стиль Nav"
 
 #: src/src/blocks/image-simple/controls/LayoutControl.js
 #: src/src/blocks/image-simple/controls/LayoutControl.js
@@ -3926,14 +3922,13 @@ msgstr "Бледный"
 #: src/src/components/paragraph/ParagraphControl.js
 #: src/src/components/paragraph/ParagraphControl.js
 msgid "Paragraph"
-msgstr "Параграф"
+msgstr "Paragraph"
 
 #: src/src/blocks/paragraph/edit.js src/src/blocks/paragraph/edit.js
 #: src/src/components/heading/HeadingTypographyControl.js
 #: src/src/components/heading/HeadingTypographyControl.js
-#, fuzzy
 msgid "Paragraph Class"
-msgstr "CSS класс параграфа"
+msgstr "Класс параграфа"
 
 #: src/src/components/heading/HeadingTypographyControl.js
 #: src/src/components/heading/HeadingTypographyControl.js
@@ -4189,9 +4184,8 @@ msgstr "Основной"
 
 #: src/src/components/image-hover/ImageHoverControl.js
 #: src/src/components/image-hover/ImageHoverControl.js
-#, fuzzy
 msgid "Primary Color"
-msgstr "Цвет параграфа"
+msgstr "Основной цвет"
 
 #: src/src/blocks/features/templates.js src/src/blocks/features/templates.js
 msgid "Quality Guarantee"
@@ -5179,7 +5173,7 @@ msgstr "Стиль SVG"
 #: src/src/blocks/image-simple/controls/LayoutControl.js
 #: src/src/blocks/image-simple/controls/LayoutControl.js
 msgid "Swiper"
-msgstr "Слайдер"
+msgstr "Swiper"
 
 #: src/src/blocks/swiper/edit.js src/src/blocks/swiper/edit.js
 msgid "Swiper Class"
@@ -5240,7 +5234,7 @@ msgstr "Заголовок вкладки..."
 
 #: src/src/blocks/tabs/index.js src/src/blocks/tabs/index.js
 msgid "Tabs"
-msgstr "Вкладки"
+msgstr "Tabs"
 
 #: src/src/blocks/accordion/index.js src/src/blocks/accordion/index.js
 #: src/src/blocks/tabs/index.js src/src/blocks/tabs/index.js
@@ -5365,7 +5359,7 @@ msgstr "Временной период (секунды)"
 #: src/src/components/post-sort/PostSortControl.js
 #: src/src/components/post-sort/PostSortControl.js
 msgid "Title"
-msgstr "Заголовок"
+msgstr "Title"
 
 #: src/src/blocks/heading-subtitle/edit.js
 #: src/src/blocks/heading-subtitle/edit.js

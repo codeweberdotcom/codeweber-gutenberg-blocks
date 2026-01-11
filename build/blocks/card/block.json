@@ -18,6 +18,10 @@
     "anchor": true
   },
   "attributes": {
+    "cardType": {
+      "type": "string",
+      "default": "card"
+    },
     "enableCard": {
       "type": "boolean",
       "default": true

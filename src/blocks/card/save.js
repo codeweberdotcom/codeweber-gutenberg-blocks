@@ -16,6 +16,7 @@ import { getSpacingClasses } from '../section/utils';
  */
 const Save = ({ attributes }) => {
 	const {
+		cardType,
 		enableCard,
 		enableCardBody,
 		overflowHidden,
@@ -48,47 +49,50 @@ const Save = ({ attributes }) => {
 	const getCardClasses = () => {
 		const classes = [];
 
-		if (enableCard) {
-			classes.push('card');
-		}
+		// Card-specific classes only apply in card mode
+		if (cardType === 'card') {
+			if (enableCard) {
+				classes.push('card');
+			}
 
-		if (overflowHidden) {
-			classes.push('overflow-hidden');
-		}
+			if (overflowHidden) {
+				classes.push('overflow-hidden');
+			}
 
-		if (h100) {
-			classes.push('h-100');
-		}
+			if (h100) {
+				classes.push('h-100');
+			}
 
-		if (borderRadius) {
-			classes.push(borderRadius);
-		}
+			if (borderRadius) {
+				classes.push(borderRadius);
+			}
 
-		if (shadow) {
-			classes.push(shadow);
-		}
+			if (shadow) {
+				classes.push(shadow);
+			}
 
-		if (cardBorder || borderPosition) {
-			classes.push(cardBorder || borderPosition);
-		}
+			if (cardBorder || borderPosition) {
+				classes.push(cardBorder || borderPosition);
+			}
 
-		// Если выбраны цвет или ширина, но нет позиции - применяем обычный border
-		if ((borderColor || borderWidth) && !cardBorder && !borderPosition) {
-			classes.push('border');
-		}
+			// Если выбраны цвет или ширина, но нет позиции - применяем обычный border
+			if ((borderColor || borderWidth) && !cardBorder && !borderPosition) {
+				classes.push('border');
+			}
 
-		if (borderWidth) {
-			classes.push(borderWidth);
-		}
+			if (borderWidth) {
+				classes.push(borderWidth);
+			}
 
-		if (borderColor) {
-			const colorType = borderColorType || 'solid';
-			if (colorType === 'soft') {
-				classes.push(`border-soft-${borderColor}`);
-			} else if (colorType === 'pale') {
-				classes.push(`border-pale-${borderColor}`);
-			} else {
-				classes.push(`border-${borderColor}`);
+			if (borderColor) {
+				const colorType = borderColorType || 'solid';
+				if (colorType === 'soft') {
+					classes.push(`border-soft-${borderColor}`);
+				} else if (colorType === 'pale') {
+					classes.push(`border-pale-${borderColor}`);
+				} else {
+					classes.push(`border-${borderColor}`);
+				}
 			}
 		}
 
@@ -98,8 +102,11 @@ const Save = ({ attributes }) => {
 		// Spacing classes
 		classes.push(...getSpacingClasses(attributes));
 
-		// Alignment classes - применяются к card только если card-body не включен
-		if (!enableCardBody) {
+		// Alignment classes - применяются к card только если card-body не включен (только для card mode)
+		if (cardType === 'card' && !enableCardBody) {
+			classes.push(...generateAlignmentClasses(attributes));
+		} else if (cardType === 'wrapper') {
+			// Для wrapper всегда применяем alignment
 			classes.push(...generateAlignmentClasses(attributes));
 		}
 
@@ -140,8 +147,8 @@ const Save = ({ attributes }) => {
 	const cardClasses = getCardClasses();
 	const dataAttributes = getDataAttributes();
 
-	// If card is disabled, just output InnerBlocks
-	if (!enableCard) {
+	// If card type is card and card is disabled, just output InnerBlocks
+	if (cardType === 'card' && !enableCard) {
 		return <InnerBlocks.Content />;
 	}
 
@@ -165,7 +172,7 @@ const Save = ({ attributes }) => {
 					...(animationDelay && { 'data-delay': animationDelay }),
 				})}
 		>
-			{enableCardBody ? (
+			{cardType === 'card' && enableCardBody ? (
 				<div className={getCardBodyClasses()}>
 					<InnerBlocks.Content />
 				</div>

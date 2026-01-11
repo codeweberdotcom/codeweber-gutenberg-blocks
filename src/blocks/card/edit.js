@@ -62,6 +62,7 @@ const TabIcon = ({ icon, label }) => (
  */
 const Edit = ({ attributes, setAttributes, clientId }) => {
 	const {
+		cardType,
 		enableCard,
 		enableCardBody,
 		overflowHidden,
@@ -147,7 +148,7 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 				/>
 			),
 		},
-		...(enableCard
+		...(cardType === 'card' && enableCard
 			? [
 					{
 						name: 'animation',
@@ -178,47 +179,50 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 	const getCardClasses = () => {
 		const classes = [];
 
-		if (enableCard) {
-			classes.push('card');
-		}
+		// Card-specific classes only apply in card mode
+		if (cardType === 'card') {
+			if (enableCard) {
+				classes.push('card');
+			}
 
-		if (overflowHidden) {
-			classes.push('overflow-hidden');
-		}
+			if (overflowHidden) {
+				classes.push('overflow-hidden');
+			}
 
-		if (h100) {
-			classes.push('h-100');
-		}
+			if (h100) {
+				classes.push('h-100');
+			}
 
-		if (borderRadius) {
-			classes.push(borderRadius);
-		}
+			if (borderRadius) {
+				classes.push(borderRadius);
+			}
 
-		if (shadow) {
-			classes.push(shadow);
-		}
+			if (shadow) {
+				classes.push(shadow);
+			}
 
-		if (cardBorder || borderPosition) {
-			classes.push(cardBorder || borderPosition);
-		}
+			if (cardBorder || borderPosition) {
+				classes.push(cardBorder || borderPosition);
+			}
 
-		// Если выбраны цвет или ширина, но нет позиции - применяем обычный border
-		if ((borderColor || borderWidth) && !cardBorder && !borderPosition) {
-			classes.push('border');
-		}
+			// Если выбраны цвет или ширина, но нет позиции - применяем обычный border
+			if ((borderColor || borderWidth) && !cardBorder && !borderPosition) {
+				classes.push('border');
+			}
 
-		if (borderWidth) {
-			classes.push(borderWidth);
-		}
+			if (borderWidth) {
+				classes.push(borderWidth);
+			}
 
-		if (borderColor) {
-			const colorType = borderColorType || 'solid';
-			if (colorType === 'soft') {
-				classes.push(`border-soft-${borderColor}`);
-			} else if (colorType === 'pale') {
-				classes.push(`border-pale-${borderColor}`);
-			} else {
-				classes.push(`border-${borderColor}`);
+			if (borderColor) {
+				const colorType = borderColorType || 'solid';
+				if (colorType === 'soft') {
+					classes.push(`border-soft-${borderColor}`);
+				} else if (colorType === 'pale') {
+					classes.push(`border-pale-${borderColor}`);
+				} else {
+					classes.push(`border-${borderColor}`);
+				}
 			}
 		}
 
@@ -228,8 +232,11 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 		// Spacing classes
 		classes.push(...getSpacingClasses(attributes));
 
-		// Alignment classes - применяются к card только если card-body не включен
-		if (!enableCardBody) {
+		// Alignment classes - применяются к card только если card-body не включен (только для card mode)
+		if (cardType === 'card' && !enableCardBody) {
+			classes.push(...generateAlignmentClasses(attributes));
+		} else if (cardType === 'wrapper') {
+			// Для wrapper всегда применяем alignment
 			classes.push(...generateAlignmentClasses(attributes));
 		}
 
@@ -418,55 +425,107 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 							{/* GENERAL TAB */}
 							{tab.name === 'general' && (
 								<PanelBody>
-									<ToggleControl
-										label={__(
-											'Enable Card Wrapper',
-											'codeweber-gutenberg-blocks'
-										)}
-										checked={enableCard}
-										onChange={(value) =>
-											setAttributes({ enableCard: value })
-										}
-									/>
-
-									{enableCard && (
-										<ToggleControl
-											label={__(
-												'Enable Card Body',
+									<div style={{ marginBottom: '16px' }}>
+										<label
+											style={{
+												display: 'block',
+												marginBottom: '8px',
+												fontWeight: 600,
+											}}
+										>
+											{__(
+												'Type',
 												'codeweber-gutenberg-blocks'
 											)}
-											checked={enableCardBody}
-											onChange={(value) =>
-												setAttributes({
-													enableCardBody: value,
-												})
-											}
-										/>
+										</label>
+										<ButtonGroup>
+											<Button
+												isPressed={cardType === 'card'}
+												onClick={() =>
+													setAttributes({
+														cardType: 'card',
+													})
+												}
+											>
+												{__(
+													'Card',
+													'codeweber-gutenberg-blocks'
+												)}
+											</Button>
+											<Button
+												isPressed={cardType === 'wrapper'}
+												onClick={() =>
+													setAttributes({
+														cardType: 'wrapper',
+													})
+												}
+											>
+												{__(
+													'Wrapper',
+													'codeweber-gutenberg-blocks'
+												)}
+											</Button>
+										</ButtonGroup>
+									</div>
+
+									{cardType === 'card' && (
+										<>
+											<ToggleControl
+												label={__(
+													'Включить обертку карточки',
+													'codeweber-gutenberg-blocks'
+												)}
+												checked={enableCard}
+												onChange={(value) =>
+													setAttributes({
+														enableCard: value,
+													})
+												}
+											/>
+
+											{enableCard && (
+												<ToggleControl
+													label={__(
+														'Включить тело карточки',
+														'codeweber-gutenberg-blocks'
+													)}
+													checked={enableCardBody}
+													onChange={(value) =>
+														setAttributes({
+															enableCardBody:
+																value,
+														})
+													}
+												/>
+											)}
+
+											<ToggleControl
+												label={__(
+													'Скрыть переполнение',
+													'codeweber-gutenberg-blocks'
+												)}
+												checked={overflowHidden}
+												onChange={(value) =>
+													setAttributes({
+														overflowHidden: value,
+													})
+												}
+											/>
+
+											<ToggleControl
+												label={__(
+													'H-100',
+													'codeweber-gutenberg-blocks'
+												)}
+												checked={h100}
+												onChange={(value) =>
+													setAttributes({
+														h100: value,
+													})
+												}
+											/>
+										</>
 									)}
-
-									<ToggleControl
-										label={__(
-											'Overflow Hidden',
-											'codeweber-gutenberg-blocks'
-										)}
-										checked={overflowHidden}
-										onChange={(value) =>
-											setAttributes({
-												overflowHidden: value,
-											})
-										}
-									/>
-
-									<ToggleControl
-										label={__(
-											'H-100',
-											'codeweber-gutenberg-blocks'
-										)}
-										checked={h100}
-										onChange={(value) =>
-											setAttributes({ h100: value })
-										}
-									/>
 								</PanelBody>
 							)}
 
@@ -575,7 +634,9 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 							)}
 
 							{/* ANIMATION TAB - Показывается только если Card включен */}
-							{tab.name === 'animation' && enableCard && (
+							{tab.name === 'animation' &&
+								cardType === 'card' &&
+								enableCard && (
 								<div style={{ padding: '16px' }}>
 									<AnimationControl
 										attributes={attributes}
@@ -619,7 +680,7 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 
 			{/* Card Preview */}
 			<div {...blockProps} style={getCardStyles()}>
-				{enableCard && enableCardBody ? (
+				{cardType === 'card' && enableCard && enableCardBody ? (
 					<div className={getCardBodyClasses()}>
 						<InnerBlocks />
 					</div>

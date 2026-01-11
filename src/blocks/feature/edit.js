@@ -45,6 +45,12 @@ import { getSpacingClasses } from '../section/utils';
 import { colors } from '../../utilities/colors';
 import { ComboboxControl } from '@wordpress/components';
 
+// Добавляем опцию "Default" в начало списка цветов для кнопки
+const buttonColors = [
+	{ label: __('Default', 'codeweber-gutenberg-blocks'), value: '' },
+	...colors,
+];
+
 // Tab icon with native title tooltip
 const TabIcon = ({ icon, label }) => (
 	<span
@@ -890,7 +896,7 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 													'codeweber-gutenberg-blocks'
 												)}
 												value={buttonColor}
-												options={colors}
+												options={buttonColors}
 												onChange={(value) =>
 													setAttributes({
 														buttonColor: value || '',

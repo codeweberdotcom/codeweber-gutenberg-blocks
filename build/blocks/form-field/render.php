@@ -261,13 +261,3 @@ if ($field_type === 'select') {
 
 // For other field types, return null to use save.js
 return null;
-
-
-
-
-
-
-
-
-
-

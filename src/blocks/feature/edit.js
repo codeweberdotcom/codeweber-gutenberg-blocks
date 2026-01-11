@@ -241,12 +241,6 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 			hasUpdates = true;
 		}
 
-		// Устанавливаем цвет кнопки primary, если не установлен
-		if (!buttonColor || buttonColor === 'yellow') {
-			updates.buttonColor = 'primary';
-			hasUpdates = true;
-		}
-
 		if (hasUpdates) {
 			setAttributes(updates);
 		}
@@ -899,9 +893,10 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 												options={colors}
 												onChange={(value) =>
 													setAttributes({
-														buttonColor: value,
+														buttonColor: value || '',
 													})
 												}
+												allowReset={true}
 											/>
 											<TextControl
 												label={__(

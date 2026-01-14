@@ -58,7 +58,7 @@ require_once plugin_dir_path(__FILE__) . 'settings/options_page/restapi.php';
 	$blocks = [
 		'accordion', 'banners', 'button', 'card', 'column', 'columns', 'feature',
 		'heading-subtitle', 'icon', 'image-simple', 'paragraph', 'section',
-		'label-plus', 'yandex-map', 'swiper'
+		'label-plus', 'yandex-map', 'swiper', 'cta'
 	];
 
 	foreach ($blocks as $block) {

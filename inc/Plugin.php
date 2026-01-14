@@ -164,6 +164,7 @@ class Plugin {
 		'group-button',
 		'widget',
 		'contacts',
+		'cta',
 	];
 	}
 
@@ -412,6 +413,7 @@ class Plugin {
 			'yandex-map',
 			'swiper',
 			'group-button',
+			'cta',
 		];
 
 		foreach ($blocks as $block_name) {

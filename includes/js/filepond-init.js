@@ -13,12 +13,6 @@
 	 * Initialize FilePond for file inputs
 	 */
 	function initFilePond() {
-		// Log version for debugging cache issues
-		console.log(
-			'FilePond Init Script v2.0 loaded at',
-			new Date().toISOString()
-		);
-
 		// Check if FilePond is loaded
 		if (typeof FilePond === 'undefined') {
 			console.warn('FilePond library not loaded');
@@ -31,17 +25,8 @@
 		);
 
 		if (fileInputs.length === 0) {
-			console.log(
-				'FilePond: No file inputs with data-filepond="true" found'
-			);
 			return;
 		}
-
-		console.log(
-			'FilePond: Found ' +
-				fileInputs.length +
-				' file input(s) to initialize'
-		);
 
 		// Register FilePond plugins if needed
 		// FilePond.registerPlugin(...);
@@ -115,10 +100,6 @@
 					});
 
 					config.acceptedFileTypes = acceptedTypes;
-					console.log(
-						'FilePond: Accepted file types:',
-						acceptedTypes
-					);
 				}
 			}
 
@@ -295,10 +276,6 @@
 
 			// Create FilePond instance
 			try {
-				console.log(
-					'FilePond: Initializing for input #' + input.id,
-					config
-				);
 				const pond = FilePond.create(input, config);
 
 				// Явно устанавливаем атрибут accept на внутреннем input элементе FilePond
@@ -509,11 +486,6 @@
 									messageContainer
 								);
 							}
-							console.log(
-								'FilePond: Created message container under field',
-								originalInputId,
-								messageContainer
-							);
 						} else {
 							console.warn(
 								'FilePond: Could not find pondRoot or parentElement for',
@@ -885,9 +857,6 @@
 						}
 					}
 				});
-				console.log(
-					'FilePond: Successfully initialized for input #' + input.id
-				);
 			} catch (error) {
 				console.error(
 					'FilePond: Error initializing for input #' + input.id + ':',

@@ -1,0 +1,83 @@
+{
+	"apiVersion": 3,
+	"name": "codeweber-blocks/cta",
+	"version": "0.1.0",
+	"title": "CTA",
+	"category": "codeweber-gutenberg-blocks",
+	"icon": "megaphone",
+	"description": "Call to Action block with multiple predefined layouts",
+	"supports": {
+		"html": false,
+		"customClassName": true,
+		"anchor": true
+	},
+	"attributes": {
+		"ctaType": {
+			"type": "string",
+			"default": "cta-1"
+		},
+		"backgroundType": {
+			"type": "string",
+			"default": "none"
+		},
+		"backgroundColor": {
+			"type": "string",
+			"default": ""
+		},
+		"backgroundColorType": {
+			"type": "string",
+			"default": "solid"
+		},
+		"backgroundGradient": {
+			"type": "string",
+			"default": ""
+		},
+		"backgroundImageId": {
+			"type": "number",
+			"default": 0
+		},
+		"backgroundImageUrl": {
+			"type": "string",
+			"default": ""
+		},
+		"backgroundImageSize": {
+			"type": "string",
+			"default": "full"
+		},
+		"backgroundSize": {
+			"type": "string",
+			"default": ""
+		},
+		"backgroundOverlay": {
+			"type": "string",
+			"default": ""
+		},
+		"backgroundPatternUrl": {
+			"type": "string",
+			"default": ""
+		},
+		"sectionClass": {
+			"type": "string",
+			"default": ""
+		},
+		"containerClass": {
+			"type": "string",
+			"default": ""
+		},
+		"blockClass": {
+			"type": "string",
+			"default": ""
+		},
+		"blockId": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"textdomain": "codeweber-blocks",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
+}
+
+
+

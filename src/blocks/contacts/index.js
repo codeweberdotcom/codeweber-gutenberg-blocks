@@ -37,3 +37,5 @@ registerBlockType(metadata, {
 		__('contact', 'codeweber-gutenberg-blocks'),
 	],
 });
+
+

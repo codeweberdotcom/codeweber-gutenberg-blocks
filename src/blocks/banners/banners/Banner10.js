@@ -161,3 +161,5 @@ export const Banner10 = ({ attributes, isEditor = false }) => {
 		</>
 	);
 };
+
+

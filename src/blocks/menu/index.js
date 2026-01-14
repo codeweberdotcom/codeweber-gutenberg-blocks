@@ -30,3 +30,5 @@ registerBlockType(metadata, {
 		__('list', 'codeweber-gutenberg-blocks'),
 	],
 });
+
+

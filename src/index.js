@@ -28,6 +28,7 @@ const loadBlocks = async () => {
 		import('./blocks/widget/index'),
 		import('./blocks/contacts/index'),
 		import('./blocks/post-grid/index'),
+		import('./blocks/cta/index'),
 	];
 
 	await Promise.all(blocks);

@@ -14,10 +14,6 @@
 		"anchor": true
 	},
 	"attributes": {
-		"cardType": {
-			"type": "string",
-			"default": "card"
-		},
 		"enableCard": {
 			"type": "boolean",
 			"default": true
@@ -49,18 +45,6 @@
 		"borderColor": {
 			"type": "string",
 			"default": ""
-		},
-		"borderPosition": {
-			"type": "string",
-			"default": ""
-		},
-		"borderWidth": {
-			"type": "string",
-			"default": ""
-		},
-		"borderColorType": {
-			"type": "string",
-			"default": "solid"
 		},
 		"backgroundType": {
 			"type": "string",
@@ -180,3 +164,4 @@
 	"editorStyle": "file:./index.css",
 	"style": "file:./style-index.css"
 }
+

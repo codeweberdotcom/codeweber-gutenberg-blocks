@@ -10,3 +10,5 @@ registerBlockType(metadata.name, {
 	edit: Edit,
 	save: () => null, // Динамический блок - рендерится на сервере
 });
+
+

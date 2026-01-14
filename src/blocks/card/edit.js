@@ -148,7 +148,7 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 				/>
 			),
 		},
-		...(cardType === 'card' && enableCard
+		...((cardType === 'card' && enableCard) || cardType === 'wrapper'
 			? [
 					{
 						name: 'animation',
@@ -633,10 +633,10 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 								</PanelBody>
 							)}
 
-							{/* ANIMATION TAB - Показывается только если Card включен */}
+							{/* ANIMATION TAB - Показывается для Card (если включен) и для Wrapper */}
 							{tab.name === 'animation' &&
-								cardType === 'card' &&
-								enableCard && (
+								((cardType === 'card' && enableCard) ||
+									cardType === 'wrapper') && (
 								<div style={{ padding: '16px' }}>
 									<AnimationControl
 										attributes={attributes}

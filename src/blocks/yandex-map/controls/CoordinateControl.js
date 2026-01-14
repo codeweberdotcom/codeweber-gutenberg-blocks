@@ -47,3 +47,5 @@ export const CoordinateControl = ({ label, value, onChange }) => {
 		</BaseControl>
 	);
 };
+
+

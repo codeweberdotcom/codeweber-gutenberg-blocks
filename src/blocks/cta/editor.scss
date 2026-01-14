@@ -1,0 +1,71 @@
+// CTA Block Editor Styles
+
+.wp-block-codeweber-blocks-cta {
+	// Editor styles for CTA block
+}
+
+// Исправление отображения CTA2 в редакторе
+// Обертки Gutenberg нарушают flexbox layout, используем display: contents для их обхода
+.cta-block.cta-cta-2 {
+	// Убираем padding у card в редакторе
+	.card {
+		padding: 0 !important;
+	}
+	
+	.card-body {
+		.block-editor-inner-blocks {
+			display: contents;
+			
+			.block-editor-block-list__layout {
+				// Не используем display: contents, чтобы flexbox работал правильно
+				display: flex;
+				flex-direction: row;
+				align-items: center;
+				justify-content: space-between;
+				gap: 0;
+			}
+		}
+		
+		// Убираем нижний margin у блоков
+		.block-editor-block-list__layout .wp-block {
+			margin-bottom: 0 !important;
+		}
+		
+		// Первый блок (текст) - занимает доступное пространство, но не сжимается слишком сильно
+		.block-editor-block-list__layout > div:first-child {
+			flex: 1 0 auto;
+			min-width: fit-content;
+			max-width: 100%;
+		}
+		
+		// Последний блок (кнопки/group-button) - занимает только необходимое пространство
+		.block-editor-block-list__layout > div:last-child {
+			flex: 0 0 auto;
+			flex-shrink: 0;
+			flex-grow: 0;
+			width: auto;
+			max-width: none;
+		}
+		
+		// Исправление для блока group-button
+		.wp-block-codeweber-blocks-group-button {
+			flex-shrink: 0;
+			flex-grow: 0;
+			min-width: auto;
+		}
+		
+		// Исправление сжатия кнопки
+		.wp-block-codeweber-blocks-button {
+			flex-shrink: 0;
+			flex-grow: 0;
+			min-width: auto;
+			white-space: nowrap;
+			
+			a {
+				white-space: nowrap;
+			}
+		}
+	}
+}
+
+

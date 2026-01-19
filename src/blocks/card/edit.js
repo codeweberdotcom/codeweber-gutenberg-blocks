@@ -100,6 +100,7 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 		animationType,
 		animationDuration,
 		animationDelay,
+		animationInterval,
 	} = attributes;
 
 	const tabs = [
@@ -318,6 +319,8 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 					'data-duration': animationDuration,
 				}),
 				...(animationDelay && { 'data-delay': animationDelay }),
+				// data-interval выводится всегда, даже если равен 0
+				'data-interval': animationInterval !== undefined ? animationInterval : 0,
 			}),
 	});
 

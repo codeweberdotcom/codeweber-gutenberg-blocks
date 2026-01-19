@@ -61,6 +61,10 @@
 		"animationDelay": {
 			"type": "number",
 			"default": 0
+		},
+		"animationInterval": {
+			"type": "number",
+			"default": 0
 		}
 	},
 	"textdomain": "codeweber-gutenberg-blocks",

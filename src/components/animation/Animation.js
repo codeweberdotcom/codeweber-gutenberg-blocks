@@ -54,6 +54,7 @@ export const AnimationControl = ({ attributes, setAttributes }) => {
 		animationType,
 		animationDuration,
 		animationDelay,
+		animationInterval,
 	} = attributes;
 
 	return (
@@ -106,6 +107,17 @@ export const AnimationControl = ({ attributes, setAttributes }) => {
 						min={0}
 						max={5000}
 						step={100}
+					/>
+					<RangeControl
+						label={__('Interval (ms)', 'codeweber-gutenberg-blocks')}
+						value={animationInterval !== undefined ? animationInterval : 0}
+						onChange={(value) =>
+							setAttributes({ animationInterval: value })
+						}
+						min={-2000}
+						max={2000}
+						step={100}
+						help={__('Time interval between elements. Can be negative.', 'codeweber-gutenberg-blocks')}
 					/>
 				</>
 			)}

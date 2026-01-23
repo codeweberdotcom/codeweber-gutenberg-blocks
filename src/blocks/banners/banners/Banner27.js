@@ -1,32 +1,6 @@
 import { InnerBlocks } from '@wordpress/block-editor';
 import { generateBackgroundClasses } from '../../../utilities/class-generators';
 
-// Все блоки Codeweber Gutenberg Blocks (исключая сам banners, чтобы избежать рекурсии)
-const ALLOWED_CODEWEBER_BLOCKS = [
-	'codeweber-blocks/accordion',
-	'codeweber-blocks/avatar',
-	'codeweber-blocks/banner',
-	'codeweber-blocks/button',
-	'codeweber-blocks/section',
-	'codeweber-blocks/column',
-	'codeweber-blocks/columns',
-	'codeweber-gutenberg-blocks/heading-subtitle',
-	'codeweber-blocks/icon',
-	'codeweber-blocks/lists',
-	'codeweber-blocks/media',
-	'codeweber-blocks/paragraph',
-	'codeweber-blocks/card',
-	'codeweber-blocks/feature',
-	'codeweber-blocks/image-simple',
-	'codeweber-blocks/post-grid',
-	'codeweber-blocks/tabs',
-	'codeweber-blocks/label-plus',
-	'codeweber-blocks/form',
-	'codeweber-blocks/form-field',
-	'codeweber-blocks/submit-button',
-	'codeweber-blocks/divider',
-];
-
 export const Banner27 = ({ attributes, isEditor = false }) => {
 	const { backgroundType, backgroundImageUrl, sectionClass } = attributes;
 
@@ -81,10 +55,7 @@ export const Banner27 = ({ attributes, isEditor = false }) => {
 				<div className="container pt-17 pb-15 py-sm-17 py-xxl-20">
 					<div className="row">
 						<div className="col-sm-6 col-xxl-5 text-center text-sm-start">
-							<InnerBlocks
-								allowedBlocks={ALLOWED_CODEWEBER_BLOCKS}
-								templateLock={false}
-							/>
+							<InnerBlocks templateLock={false} />
 						</div>
 					</div>
 				</div>

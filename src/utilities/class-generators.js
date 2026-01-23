@@ -107,7 +107,7 @@ export const generateBackgroundClasses = (attrs) => {
 			}
 			break;
 		case 'video':
-			classes.push('video-wrapper', 'ratio', 'ratio-16x9');
+			classes.push('video-wrapper');
 			// Only add overlay classes if backgroundOverlay is not empty
 			if (backgroundOverlay && backgroundOverlay !== '') {
 				classes.push(backgroundOverlay);

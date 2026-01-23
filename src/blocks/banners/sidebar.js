@@ -4,9 +4,10 @@ import {
 	SelectControl,
 	TabPanel,
 	ButtonGroup,
+	Button,
 } from '@wordpress/components';
 import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
-import { Icon, layout as layoutIcon, image, cog } from '@wordpress/icons';
+import { Icon, layout as layoutIcon, image, cog, video } from '@wordpress/icons';
 import BackgroundSettingsPanel from '../../components/background/BackgroundSettingsPanel';
 import { VideoURLControl } from '../../components/video-url/VideoURLControl';
 import { ImageControl } from '../../components/image/ImageControl';
@@ -118,8 +119,11 @@ export const BannersSidebar = ({ attributes, setAttributes }) => {
 		backgroundGradient,
 		backgroundSize,
 		sectionClass,
+		columnClass,
 		videoUrl,
 		videoId,
+		modalVideoId,
+		modalVideoUrl,
 		images,
 		imageSize,
 		borderRadius,
@@ -242,15 +246,20 @@ export const BannersSidebar = ({ attributes, setAttributes }) => {
 				/>
 			),
 		},
-		{
-			name: 'images',
-			title: (
-				<TabIcon
-					icon={image}
-					label={__('Images', 'codeweber-gutenberg-blocks')}
-				/>
-			),
-		},
+		// Скрываем вкладку Images для banner-15
+		...(bannerType !== 'banner-15'
+			? [
+					{
+						name: 'images',
+						title: (
+							<TabIcon
+								icon={image}
+								label={__('Images', 'codeweber-gutenberg-blocks')}
+							/>
+						),
+					},
+				]
+			: []),
 		{
 			name: 'background',
 			title: (
@@ -260,6 +269,20 @@ export const BannersSidebar = ({ attributes, setAttributes }) => {
 				/>
 			),
 		},
+		// Добавляем вкладку Video только для banner-34
+		...(bannerType === 'banner-34'
+			? [
+					{
+						name: 'video',
+						title: (
+							<TabIcon
+								icon={video}
+								label={__('Video', 'codeweber-gutenberg-blocks')}
+							/>
+						),
+					},
+				]
+			: []),
 		{
 			name: 'settings',
 			title: (
@@ -453,7 +476,7 @@ export const BannersSidebar = ({ attributes, setAttributes }) => {
 							<BackgroundSettingsPanel
 								attributes={attributes}
 								setAttributes={setAttributes}
-								allowVideo={bannerType === 'banner-34'}
+								allowVideo={bannerType === 'banner-34' || bannerType === 'banner-15'}
 								backgroundImageSize={backgroundImageSize}
 								imageSizeLabel={backgroundImageSizeLabel}
 								availableImageSizes={availableImageSizes}
@@ -477,6 +500,153 @@ export const BannersSidebar = ({ attributes, setAttributes }) => {
 								</div>
 							)}
 						</div>
+					)}
+
+					{tab.name === 'video' && bannerType === 'banner-34' && (
+						<PanelBody
+							title={__('Video', 'codeweber-gutenberg-blocks')}
+							initialOpen={true}
+						>
+							<div className="mb-3">
+								<div className="component-sidebar-title">
+									<label>
+										{__(
+											'Modal Video',
+											'codeweber-gutenberg-blocks'
+										)}
+									</label>
+								</div>
+								<MediaUploadCheck>
+									<MediaUpload
+										onSelect={(media) => {
+											setAttributes({
+												modalVideoId: media?.id || 0,
+												modalVideoUrl: media?.url || '',
+											});
+										}}
+										allowedTypes={['video']}
+										value={modalVideoId}
+										render={({ open }) => (
+											<>
+												{!modalVideoUrl && (
+													<div
+														onClick={open}
+														style={{
+															width: '100%',
+															height: '100px',
+															backgroundColor: '#f0f0f0',
+															border: '2px dashed #ccc',
+															borderRadius: '4px',
+															display: 'flex',
+															alignItems: 'center',
+															justifyContent: 'center',
+															cursor: 'pointer',
+															transition: 'all 0.2s ease',
+															marginBottom: '15px',
+														}}
+													>
+														<div
+															style={{
+																textAlign: 'center',
+																color: '#666',
+															}}
+														>
+															<div
+																style={{
+																	fontSize: '20px',
+																	marginBottom: '4px',
+																}}
+															>
+																🎥
+															</div>
+															<div
+																style={{
+																	fontSize: '12px',
+																	fontWeight: '500',
+																}}
+															>
+																{__(
+																	'Select Video',
+																	'codeweber-gutenberg-blocks'
+																)}
+															</div>
+														</div>
+													</div>
+												)}
+												{modalVideoUrl && (
+													<div
+														onClick={(event) => {
+															event.preventDefault();
+															open();
+														}}
+														style={{
+															marginTop: '12px',
+															marginBottom: '12px',
+															display: 'flex',
+															alignItems: 'center',
+															justifyContent: 'center',
+															minHeight: '140px',
+															backgroundColor: '#000',
+															border: '1px solid #ddd',
+															borderRadius: '4px',
+															overflow: 'hidden',
+															cursor: 'pointer',
+															position: 'relative',
+														}}
+													>
+														<video
+															src={modalVideoUrl}
+															style={{
+																width: '100%',
+																height: 'auto',
+																display: 'block',
+															}}
+															muted
+															loop
+															autoPlay
+															playsInline
+														/>
+														<Button
+															isLink
+															onClick={(event) => {
+																event.stopPropagation();
+																setAttributes({
+																	modalVideoId: 0,
+																	modalVideoUrl: '',
+																});
+															}}
+															style={{
+																position: 'absolute',
+																top: '6px',
+																right: '6px',
+																backgroundColor:
+																	'rgba(220, 53, 69, 0.8)',
+																borderRadius: '50%',
+																width: '20px',
+																height: '20px',
+																display: 'flex',
+																alignItems: 'center',
+																justifyContent: 'center',
+																color: '#fff',
+																textDecoration: 'none',
+															}}
+														>
+															<i
+																className="uil uil-times"
+																style={{
+																	margin: 0,
+																	fontSize: '12px',
+																}}
+															></i>
+														</Button>
+													</div>
+												)}
+											</>
+										)}
+									/>
+								</MediaUploadCheck>
+							</div>
+						</PanelBody>
 					)}
 
 					{tab.name === 'settings' && (
@@ -506,6 +676,30 @@ export const BannersSidebar = ({ attributes, setAttributes }) => {
 									)}
 								/>
 							</div>
+							{bannerType === 'banner-15' && (
+								<div className="mb-3">
+									<label>
+										{__(
+											'Column Class',
+											'codeweber-gutenberg-blocks'
+										)}
+									</label>
+									<input
+										type="text"
+										className="components-text-control__input"
+										value={columnClass || ''}
+										onChange={(e) =>
+											setAttributes({
+												columnClass: e.target.value,
+											})
+										}
+										placeholder={__(
+											'CSS classes for column',
+											'codeweber-gutenberg-blocks'
+										)}
+									/>
+								</div>
+							)}
 							{bannerType === 'banner-34' && (
 								<>
 									<div className="mb-3">

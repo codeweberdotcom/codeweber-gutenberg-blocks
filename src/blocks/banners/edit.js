@@ -34,32 +34,6 @@ import {
 	Banner32,
 } from './banners';
 
-// Все блоки Codeweber Gutenberg Blocks (исключая сам banners, чтобы избежать рекурсии)
-const ALLOWED_CODEWEBER_BLOCKS = [
-	'codeweber-blocks/accordion',
-	'codeweber-blocks/avatar',
-	'codeweber-blocks/banner',
-	'codeweber-blocks/button',
-	'codeweber-blocks/section',
-	'codeweber-blocks/column',
-	'codeweber-blocks/columns',
-	'codeweber-gutenberg-blocks/heading-subtitle',
-	'codeweber-blocks/icon',
-	'codeweber-blocks/lists',
-	'codeweber-blocks/media',
-	'codeweber-blocks/paragraph',
-	'codeweber-blocks/card',
-	'codeweber-blocks/feature',
-	'codeweber-blocks/image-simple',
-	'codeweber-blocks/post-grid',
-	'codeweber-blocks/tabs',
-	'codeweber-blocks/label-plus',
-	'codeweber-blocks/form',
-	'codeweber-blocks/form-field',
-	'codeweber-blocks/submit-button',
-	'codeweber-blocks/divider',
-];
-
 const BannersEdit = ({ attributes, setAttributes, clientId }) => {
 	const { bannerType } = attributes;
 

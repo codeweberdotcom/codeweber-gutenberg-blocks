@@ -1,193 +1,178 @@
 import { InnerBlocks } from '@wordpress/block-editor';
-import { getImageUrl } from '../../../utilities/image-url';
-import {
-	SwiperSlider,
-	SwiperSlide,
-	getSwiperConfigFromAttributes,
-} from '../../../components/swiper/SwiperSlider';
-
-// Все блоки Codeweber Gutenberg Blocks (исключая сам banners, чтобы избежать рекурсии)
-const ALLOWED_CODEWEBER_BLOCKS = [
-	'codeweber-blocks/accordion',
-	'codeweber-blocks/avatar',
-	'codeweber-blocks/banner',
-	'codeweber-blocks/button',
-	'codeweber-blocks/section',
-	'codeweber-blocks/column',
-	'codeweber-blocks/columns',
-	'codeweber-gutenberg-blocks/heading-subtitle',
-	'codeweber-blocks/icon',
-	'codeweber-blocks/lists',
-	'codeweber-blocks/media',
-	'codeweber-blocks/paragraph',
-	'codeweber-blocks/card',
-	'codeweber-blocks/feature',
-	'codeweber-blocks/image-simple',
-	'codeweber-blocks/post-grid',
-	'codeweber-blocks/tabs',
-	'codeweber-blocks/label-plus',
-	'codeweber-blocks/form',
-	'codeweber-blocks/form-field',
-	'codeweber-blocks/submit-button',
-	'codeweber-blocks/divider',
-];
+import { generateBackgroundClasses } from '../../../utilities/class-generators';
 
 export const Banner15 = ({ attributes, isEditor = false, clientId = '' }) => {
 	const {
-		images,
-		imageSize,
-		swiperEffect,
-		swiperSpeed,
-		swiperItems,
-		swiperMargin,
-		swiperLoop,
-		swiperAutoplay,
-		swiperAutoplayTime,
-		swiperNav,
-		swiperDots,
+		backgroundType,
+		backgroundImageUrl,
+		backgroundSize,
+		sectionClass,
+		columnClass,
 		videoUrl,
+		backgroundVideoUrl,
 	} = attributes;
 
-	const imagesToRender = images || [];
-	const hasImage = imagesToRender && imagesToRender.length > 0;
+	// Placeholder фоновое изображение
+	const placeholderBgUrl = isEditor
+		? window.location?.origin
+			? `${window.location.origin}/wp-content/themes/codeweber/dist/assets/img/photos/bg7.jpg`
+			: './assets/img/photos/bg7.jpg'
+		: '/wp-content/themes/codeweber/dist/assets/img/photos/bg7.jpg';
 
-	// Placeholder фоновые изображения для слайдов
-	const placeholderBgImages = [
-		isEditor
-			? window.location?.origin
-				? `${window.location.origin}/wp-content/themes/codeweber/dist/assets/img/photos/bg7.jpg`
-				: './assets/img/photos/bg7.jpg'
-			: '/wp-content/themes/codeweber/dist/assets/img/photos/bg7.jpg',
-		isEditor
-			? window.location?.origin
-				? `${window.location.origin}/wp-content/themes/codeweber/dist/assets/img/photos/bg8.jpg`
-				: './assets/img/photos/bg8.jpg'
-			: '/wp-content/themes/codeweber/dist/assets/img/photos/bg8.jpg',
-		isEditor
-			? window.location?.origin
-				? `${window.location.origin}/wp-content/themes/codeweber/dist/assets/img/photos/bg9.jpg`
-				: './assets/img/photos/bg9.jpg'
-			: '/wp-content/themes/codeweber/dist/assets/img/photos/bg9.jpg',
-	];
+	// Функция для получения классов секции
+	const getSectionClasses = () => {
+		const classes = [
+			'wrapper',
+			'px-0',
+			'mt-0',
+			'min-vh-80',
+		];
 
-	// Конфигурация Swiper для этого баннера
-	const swiperConfig = {
-		effect: swiperEffect || 'slide',
-		speed: swiperSpeed || 500,
-		items: swiperItems || '1',
-		itemsXs: '1',
-		itemsMd: '1',
-		itemsXl: '1',
-		margin: swiperMargin || '0',
-		loop: swiperLoop !== undefined ? swiperLoop : false,
-		autoplay: swiperAutoplay !== undefined ? swiperAutoplay : true,
-		autoplayTime: swiperAutoplayTime || 5000,
-		nav: swiperNav !== undefined ? swiperNav : true,
-		dots: swiperDots !== undefined ? swiperDots : true,
-		dotsStyle: '',
-		navStyle: '',
-		navPosition: '',
-	};
+		// Добавляем классы фона из атрибутов (включая bg-image, bg-overlay и т.д.)
+		const bgClasses = generateBackgroundClasses(attributes);
+		classes.push(...bgClasses);
 
-	// Генерируем уникальный ключ для Swiper
-	const swiperUniqueKey = `swiper-banner15-${clientId}-${imagesToRender.length}`;
-
-	// Классы для контента каждого слайда (варианты расположения)
-	const slideContentClasses = [
-		'col-md-10 offset-md-1 col-lg-7 offset-lg-0 col-xl-6 col-xxl-5 text-center text-lg-start justify-content-center align-self-center align-items-start',
-		'col-md-11 col-lg-8 col-xl-7 col-xxl-6 mx-auto text-center justify-content-center align-self-center',
-		'col-md-10 offset-md-1 col-lg-7 offset-lg-5 col-xl-6 offset-xl-6 col-xxl-5 offset-xxl-6 text-center text-lg-start justify-content-center align-self-center align-items-start',
-	];
-
-	// Рендерим Swiper со слайдами
-	const renderSwiper = () => {
-		// Используем imagesToRender или placeholder изображения
-		const slideImages = hasImage
-			? imagesToRender
-			: placeholderBgImages.map((url, index) => ({
-					url,
-					alt: `Slide ${index + 1}`,
-					id: 0,
-				}));
-
-		// Всегда минимум 3 слайда (если меньше, добавляем placeholder)
-		let slidesToRender = slideImages;
-		if (slidesToRender.length < 3) {
-			slidesToRender = [
-				...slidesToRender,
-				...placeholderBgImages
-					.slice(slidesToRender.length)
-					.map((url, index) => ({
-						url,
-						alt: `Slide ${slidesToRender.length + index + 1}`,
-						id: 0,
-					})),
-			].slice(0, 3);
+		// Добавляем дополнительные классы из sectionClass, если они есть
+		if (sectionClass) {
+			classes.push(sectionClass);
 		}
 
-		return (
-			<SwiperSlider
-				config={swiperConfig}
-				className="swiper-hero dots-over"
-				{...(isEditor && { uniqueKey: swiperUniqueKey })}
-			>
-				{slidesToRender.map((image, index) => {
-					const imageUrl =
-						hasImage && image.id
-							? getImageUrl(image, imageSize)
-							: image.url;
-					const contentClasses =
-						slideContentClasses[index % slideContentClasses.length];
-					const isVideoSlide = !hasImage && index === 1 && videoUrl;
-
-					return (
-						<SwiperSlide
-							key={`banner15-slide-${index}-${swiperUniqueKey}`}
-						>
-							<div
-								className="h-100 bg-overlay bg-overlay-400 bg-dark"
-								style={{
-									backgroundImage: `url(${imageUrl})`,
-									backgroundSize: 'cover',
-									backgroundPosition: 'center',
-									backgroundRepeat: 'no-repeat',
-								}}
-							>
-								<div className="container h-100">
-									<div className="row h-100">
-										<div className={contentClasses}>
-											{isEditor && index === 0 ? (
-												<InnerBlocks
-													allowedBlocks={
-														ALLOWED_CODEWEBER_BLOCKS
-													}
-													templateLock={false}
-												/>
-											) : !isEditor ? (
-												<InnerBlocks.Content />
-											) : null}
-											{isVideoSlide && (
-												<div className="animate__animated animate__slideInUp animate__delay-3s">
-													<a
-														href={videoUrl}
-														className="btn btn-circle btn-white btn-play ripple mx-auto mb-5"
-														data-glightbox
-													>
-														<i className="icn-caret-right"></i>
-													</a>
-												</div>
-											)}
-										</div>
-									</div>
-								</div>
-							</div>
-						</SwiperSlide>
-					);
-				})}
-			</SwiperSlider>
-		);
+		return classes.filter(Boolean).join(' ');
 	};
 
-	// Для Banner15 нет обёртки section, это просто swiper-container
-	return renderSwiper();
+	// Получаем URL фонового изображения для data-image-src (только для типа image)
+	const getBackgroundImageSrc = () => {
+		if (backgroundType === 'image' && backgroundImageUrl) {
+			return backgroundImageUrl;
+		}
+		return null;
+	};
+
+	// Функция для получения стилей секции
+	const getSectionStyles = () => {
+		const styles = {};
+		
+		// Применяем стили только для типа 'image'
+		if (backgroundType === 'image' && backgroundImageUrl) {
+			styles.backgroundImage = `url(${backgroundImageUrl})`;
+			styles.backgroundRepeat = 'no-repeat';
+			if (backgroundSize === 'bg-cover') {
+				styles.backgroundSize = 'cover';
+			} else if (backgroundSize === 'bg-full') {
+				styles.backgroundSize = '100% 100%';
+			} else {
+				styles.backgroundSize = 'auto';
+			}
+			styles.backgroundPosition = 'center';
+		} else if (backgroundType === 'pattern' && attributes.backgroundPatternUrl) {
+			// Для паттерна
+			styles.backgroundImage = `url(${attributes.backgroundPatternUrl})`;
+			styles.backgroundRepeat = 'repeat';
+			styles.backgroundPosition = 'center';
+		} else if (backgroundType === 'color') {
+			// Для цвета применяем через inline стили
+			if (attributes.backgroundColorType === 'solid' && attributes.backgroundColor) {
+				styles.backgroundColor = attributes.backgroundColor;
+			} else if (attributes.backgroundColorType === 'gradient' && attributes.backgroundGradient) {
+				styles.backgroundImage = attributes.backgroundGradient;
+			}
+		}
+		// Для типа 'none' стили не применяются
+		
+		return Object.keys(styles).length > 0 ? styles : undefined;
+	};
+
+	// Классы для контента
+	const contentClasses = columnClass || 
+		'col-md-10 offset-md-1 col-lg-7 offset-lg-0 col-xl-6 col-xxl-5 text-center text-lg-start justify-content-center align-self-center align-items-start';
+
+	const renderContent = () => (
+		<div className="container h-100">
+			<div className="row h-100">
+				<div className={contentClasses}>
+					{isEditor ? (
+						<InnerBlocks
+							templateLock={false}
+						/>
+					) : (
+						<InnerBlocks.Content />
+					)}
+					{videoUrl && (
+						<div className="animate__animated animate__slideInUp animate__delay-3s">
+							<a
+								href={videoUrl}
+								className="btn btn-circle btn-white btn-play ripple mx-auto mb-5"
+								data-glightbox
+							>
+								<i className="icn-caret-right"></i>
+							</a>
+						</div>
+					)}
+				</div>
+			</div>
+		</div>
+	);
+
+	if (isEditor) {
+		return (
+			<section
+				className={getSectionClasses()}
+				style={getSectionStyles()}
+				{...(getBackgroundImageSrc() && { 'data-image-src': getBackgroundImageSrc() })}
+			>
+				{backgroundType === 'video' && backgroundVideoUrl ? (
+					<>
+						<video
+							poster={
+								backgroundVideoUrl
+									? `${window.location?.origin || ''}/wp-content/themes/codeweber/dist/assets/img/photos/movie2.jpg`
+									: undefined
+							}
+							src={backgroundVideoUrl}
+							autoPlay
+							loop
+							playsInline
+							muted
+							style={{ width: '100%', height: 'auto' }}
+						></video>
+						<div className="video-content">
+							{renderContent()}
+						</div>
+					</>
+				) : (
+					renderContent()
+				)}
+			</section>
+		);
+	}
+
+	return (
+		<section
+			className={getSectionClasses()}
+			style={getSectionStyles()}
+			{...(getBackgroundImageSrc() && { 'data-image-src': getBackgroundImageSrc() })}
+		>
+			{backgroundType === 'video' && backgroundVideoUrl ? (
+				<>
+					<video
+						poster={
+							backgroundVideoUrl
+								? '/wp-content/themes/codeweber/dist/assets/img/photos/movie2.jpg'
+								: undefined
+						}
+						src={backgroundVideoUrl}
+						autoPlay
+						loop
+						playsInline
+						muted
+					></video>
+					<div className="video-content">
+						{renderContent()}
+					</div>
+				</>
+			) : (
+				renderContent()
+			)}
+		</section>
+	);
 };

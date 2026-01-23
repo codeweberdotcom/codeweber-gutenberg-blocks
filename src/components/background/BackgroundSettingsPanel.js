@@ -58,6 +58,8 @@ export const BackgroundSettingsPanel = ({
 		backgroundPatternUrl,
 		backgroundSize,
 		backgroundOverlay,
+		backgroundVideoId,
+		backgroundVideoUrl,
 	} = attributes;
 
 	const typeOptions = useMemo(() => {
@@ -85,6 +87,13 @@ export const BackgroundSettingsPanel = ({
 	const handlePatternSelect = (media) => {
 		setAttributes({
 			backgroundPatternUrl: media?.url || '',
+		});
+	};
+
+	const handleVideoSelect = (media) => {
+		setAttributes({
+			backgroundVideoId: media?.id || 0,
+			backgroundVideoUrl: media?.url || '',
 		});
 	};
 
@@ -378,6 +387,145 @@ export const BackgroundSettingsPanel = ({
 	const defaultImagePicker = renderDefaultMediaPicker(imagePickerProps);
 	const defaultPatternPicker = renderDefaultMediaPicker(patternPickerProps);
 
+	// Video picker component
+	const renderVideoPicker = () => {
+		const videoPickerProps = {
+			label: __('Background Video', 'codeweber-gutenberg-blocks'),
+			url: backgroundVideoUrl,
+			value: backgroundVideoId,
+			onSelect: handleVideoSelect,
+			onRemove: () =>
+				setAttributes({ backgroundVideoId: 0, backgroundVideoUrl: '' }),
+			placeholderIcon: '🎥',
+			placeholderLabel: __('Select Video', 'codeweber-gutenberg-blocks'),
+		};
+
+		return (
+			<div className="mb-3">
+				<div className="component-sidebar-title">
+					<label>{videoPickerProps.label}</label>
+				</div>
+				<MediaUploadCheck>
+					<MediaUpload
+						onSelect={videoPickerProps.onSelect}
+						allowedTypes={['video']}
+						value={videoPickerProps.value}
+						render={({ open }) => (
+							<>
+								{!videoPickerProps.url && (
+									<div
+										className="video-placeholder"
+										onClick={open}
+										style={{
+											width: '100%',
+											height: '100px',
+											backgroundColor: '#f0f0f0',
+											border: '2px dashed #ccc',
+											borderRadius: '4px',
+											display: 'flex',
+											alignItems: 'center',
+											justifyContent: 'center',
+											cursor: 'pointer',
+											transition: 'all 0.2s ease',
+											marginBottom: '15px',
+										}}
+									>
+										<div
+											style={{
+												textAlign: 'center',
+												color: '#666',
+											}}
+										>
+											<div
+												style={{
+													fontSize: '20px',
+													marginBottom: '4px',
+												}}
+											>
+												{videoPickerProps.placeholderIcon}
+											</div>
+											<div
+												style={{
+													fontSize: '12px',
+													fontWeight: '500',
+												}}
+											>
+												{videoPickerProps.placeholderLabel}
+											</div>
+										</div>
+									</div>
+								)}
+								{videoPickerProps.url && (
+									<div
+										onClick={(event) => {
+											event.preventDefault();
+											open();
+										}}
+										style={{
+											marginTop: '12px',
+											marginBottom: '12px',
+											display: 'flex',
+											alignItems: 'center',
+											justifyContent: 'center',
+											minHeight: '80px',
+											backgroundColor: '#000',
+											border: '1px solid #ddd',
+											borderRadius: '4px',
+											overflow: 'hidden',
+											cursor: 'pointer',
+											position: 'relative',
+										}}
+									>
+										<div
+											style={{
+												color: '#fff',
+												fontSize: '14px',
+												fontWeight: '500',
+												textAlign: 'center',
+												padding: '10px',
+											}}
+										>
+											🎥 {__('Video loaded', 'codeweber-gutenberg-blocks')}
+										</div>
+										<Button
+											isLink
+											onClick={(event) => {
+												event.stopPropagation();
+												videoPickerProps.onRemove();
+											}}
+											style={{
+												position: 'absolute',
+												top: '6px',
+												right: '6px',
+												backgroundColor: 'rgba(220, 53, 69, 0.8)',
+												borderRadius: '50%',
+												width: '20px',
+												height: '20px',
+												display: 'flex',
+												alignItems: 'center',
+												justifyContent: 'center',
+												color: '#fff',
+												textDecoration: 'none',
+											}}
+										>
+											<i
+												className="uil uil-times"
+												style={{
+													margin: 0,
+													fontSize: '12px',
+												}}
+											></i>
+										</Button>
+									</div>
+								)}
+							</>
+						)}
+					/>
+				</MediaUploadCheck>
+			</div>
+		);
+	};
+
 	return (
 		<>
 			<div className="component-sidebar-title">
@@ -453,6 +601,13 @@ export const BackgroundSettingsPanel = ({
 						? renderPatternPicker(patternPickerProps)
 						: defaultPatternPicker}
 					{sizeButtons}
+					{overlayControl}
+				</>
+			)}
+
+			{backgroundType === 'video' && (
+				<>
+					{renderVideoPicker()}
 					{overlayControl}
 				</>
 			)}

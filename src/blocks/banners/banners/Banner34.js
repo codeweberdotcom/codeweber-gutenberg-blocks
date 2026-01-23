@@ -12,31 +12,21 @@ import {
 	getGapClasses,
 } from '../../../components/grid-control';
 
-// Все блоки Codeweber Gutenberg Blocks (исключая сам banners, чтобы избежать рекурсии)
-const ALLOWED_CODEWEBER_BLOCKS = [
-	'codeweber-blocks/accordion',
-	'codeweber-blocks/avatar',
-	'codeweber-blocks/banner',
-	'codeweber-blocks/button',
-	'codeweber-blocks/section',
-	'codeweber-blocks/column',
-	'codeweber-blocks/columns',
-	'codeweber-gutenberg-blocks/heading-subtitle',
-	'codeweber-blocks/icon',
-	'codeweber-blocks/lists',
-	'codeweber-blocks/media',
-	'codeweber-blocks/paragraph',
-	'codeweber-blocks/card',
-	'codeweber-blocks/feature',
-	'codeweber-blocks/image-simple',
-	'codeweber-blocks/post-grid',
-	'codeweber-blocks/tabs',
-	'codeweber-blocks/label-plus',
-	'codeweber-blocks/form',
-	'codeweber-blocks/form-field',
-	'codeweber-blocks/submit-button',
-	'codeweber-blocks/divider',
-];
+// Функция для преобразования абсолютного URL в относительный путь
+const getRelativeUrl = (url) => {
+	if (!url) return '';
+	try {
+		const urlObj = new URL(url);
+		return urlObj.pathname + urlObj.search + urlObj.hash;
+	} catch (e) {
+		// Если это уже относительный путь, возвращаем как есть
+		if (url.startsWith('/') || url.startsWith('./')) {
+			return url;
+		}
+		// Если не удалось распарсить, возвращаем исходный URL
+		return url;
+	}
+};
 
 export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 	const {
@@ -59,6 +49,7 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 		backgroundSize,
 		sectionClass,
 		videoUrl,
+		modalVideoUrl,
 		displayMode = 'single',
 		gridType,
 		gridColumns,
@@ -234,7 +225,24 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 								backgroundImage: `url(${placeholderUrl})`,
 							},
 						})}
-					></div>
+					>
+						{modalVideoUrl && (
+							<a
+								href={getRelativeUrl(modalVideoUrl)}
+								className="btn btn-circle btn-primary btn-play ripple mx-auto position-absolute d-lg-none"
+								style={{
+									top: '50%',
+									left: '50%',
+									transform: 'translate(-50%,-50%)',
+									zIndex: 3,
+								}}
+								data-glightbox
+								data-gallery="mobile-video"
+							>
+								<i className="icn-caret-right"></i>
+							</a>
+						)}
+					</div>
 				</div>
 			);
 		}
@@ -259,7 +267,24 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 										backgroundImage: `url(${imageUrl})`,
 									},
 								})}
-							></div>
+							>
+								{modalVideoUrl && (
+									<a
+										href={getRelativeUrl(modalVideoUrl)}
+										className="btn btn-circle btn-primary btn-play ripple mx-auto position-absolute d-lg-none"
+										style={{
+											top: '50%',
+											left: '50%',
+											transform: 'translate(-50%,-50%)',
+											zIndex: 3,
+										}}
+										data-glightbox
+										data-gallery="mobile-video"
+									>
+										<i className="icn-caret-right"></i>
+									</a>
+								)}
+							</div>
 						</div>
 					);
 				} else if (displayMode === 'grid') {
@@ -463,9 +488,9 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 			>
 				{renderImageColumn()}
 				<div className="container position-relative">
-					{videoUrl && (
+					{modalVideoUrl && (
 						<a
-							href={videoUrl}
+							href={getRelativeUrl(modalVideoUrl)}
 							className="btn btn-circle btn-primary btn-play ripple mx-auto position-absolute d-none d-lg-flex"
 							style={{
 								top: '50%',
@@ -484,10 +509,7 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 							<div
 								className={`${contentPaddingClasses} position-relative`}
 							>
-								<InnerBlocks
-									allowedBlocks={ALLOWED_CODEWEBER_BLOCKS}
-									templateLock={false}
-								/>
+								<InnerBlocks templateLock={false} />
 							</div>
 						</div>
 					</div>
@@ -505,9 +527,9 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 		>
 			{renderImageColumn()}
 			<div className="container position-relative">
-				{videoUrl && (
+				{modalVideoUrl && (
 					<a
-						href={videoUrl}
+						href={getRelativeUrl(modalVideoUrl)}
 						className="btn btn-circle btn-primary btn-play ripple mx-auto position-absolute d-none d-lg-flex"
 						style={{
 							top: '50%',

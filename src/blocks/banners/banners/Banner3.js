@@ -11,32 +11,6 @@ import {
 	getGapClasses,
 } from '../../../components/grid-control';
 
-// Все блоки Codeweber Gutenberg Blocks (исключая сам banners, чтобы избежать рекурсии)
-const ALLOWED_CODEWEBER_BLOCKS = [
-	'codeweber-blocks/accordion',
-	'codeweber-blocks/avatar',
-	'codeweber-blocks/banner',
-	'codeweber-blocks/button',
-	'codeweber-blocks/section',
-	'codeweber-blocks/column',
-	'codeweber-blocks/columns',
-	'codeweber-gutenberg-blocks/heading-subtitle',
-	'codeweber-blocks/icon',
-	'codeweber-blocks/lists',
-	'codeweber-blocks/media',
-	'codeweber-blocks/paragraph',
-	'codeweber-blocks/card',
-	'codeweber-blocks/feature',
-	'codeweber-blocks/image-simple',
-	'codeweber-blocks/post-grid',
-	'codeweber-blocks/tabs',
-	'codeweber-blocks/label-plus',
-	'codeweber-blocks/form',
-	'codeweber-blocks/form-field',
-	'codeweber-blocks/submit-button',
-	'codeweber-blocks/divider',
-];
-
 export const Banner3 = ({ attributes, isEditor = false, clientId = '' }) => {
 	const {
 		videoUrl,
@@ -319,10 +293,7 @@ export const Banner3 = ({ attributes, isEditor = false, clientId = '' }) => {
 				<div className="container pt-7 pt-md-11 pb-8">
 					<div className="row gx-0 gy-10 align-items-center">
 						<div className="col-lg-6">
-							<InnerBlocks
-								allowedBlocks={ALLOWED_CODEWEBER_BLOCKS}
-								templateLock={false}
-							/>
+							<InnerBlocks templateLock={false} />
 						</div>
 						{/* /column */}
 						<div className="col-lg-5 offset-lg-1 mb-n18">

@@ -2,32 +2,6 @@ import { InnerBlocks } from '@wordpress/block-editor';
 import { generateBackgroundClasses } from '../../../utilities/class-generators';
 import { getImageUrl } from '../../../utilities/image-url';
 
-// Все блоки Codeweber Gutenberg Blocks (исключая сам banners, чтобы избежать рекурсии)
-const ALLOWED_CODEWEBER_BLOCKS = [
-	'codeweber-blocks/accordion',
-	'codeweber-blocks/avatar',
-	'codeweber-blocks/banner',
-	'codeweber-blocks/button',
-	'codeweber-blocks/section',
-	'codeweber-blocks/column',
-	'codeweber-blocks/columns',
-	'codeweber-gutenberg-blocks/heading-subtitle',
-	'codeweber-blocks/icon',
-	'codeweber-blocks/lists',
-	'codeweber-blocks/media',
-	'codeweber-blocks/paragraph',
-	'codeweber-blocks/card',
-	'codeweber-blocks/feature',
-	'codeweber-blocks/image-simple',
-	'codeweber-blocks/post-grid',
-	'codeweber-blocks/tabs',
-	'codeweber-blocks/label-plus',
-	'codeweber-blocks/form',
-	'codeweber-blocks/form-field',
-	'codeweber-blocks/submit-button',
-	'codeweber-blocks/divider',
-];
-
 export const Banner10 = ({ attributes, isEditor = false }) => {
 	const {
 		images,
@@ -126,10 +100,7 @@ export const Banner10 = ({ attributes, isEditor = false }) => {
 					<div className="container pt-11 pt-md-13 pb-11 pb-md-19 pb-lg-22 text-center">
 						<div className="row">
 							<div className="col-lg-8 col-xl-7 col-xxl-6 mx-auto">
-								<InnerBlocks
-									allowedBlocks={ALLOWED_CODEWEBER_BLOCKS}
-									templateLock={false}
-								/>
+								<InnerBlocks templateLock={false} />
 							</div>
 						</div>
 					</div>
@@ -161,6 +132,14 @@ export const Banner10 = ({ attributes, isEditor = false }) => {
 		</>
 	);
 };
+
+
+
+
+
+
+
+
 
 
 

@@ -88,6 +88,14 @@
 			"type": "string",
 			"default": ""
 		},
+		"modalVideoId": {
+			"type": "number",
+			"default": 0
+		},
+		"modalVideoUrl": {
+			"type": "string",
+			"default": ""
+		},
 		"backgroundImageId": {
 			"type": "number",
 			"default": 0
@@ -120,7 +128,27 @@
 			"type": "string",
 			"default": "bg-cover"
 		},
+		"backgroundVideoId": {
+			"type": "number",
+			"default": 0
+		},
+		"backgroundVideoUrl": {
+			"type": "string",
+			"default": ""
+		},
+		"backgroundPatternUrl": {
+			"type": "string",
+			"default": ""
+		},
+		"backgroundOverlay": {
+			"type": "string",
+			"default": ""
+		},
 		"sectionClass": {
+			"type": "string",
+			"default": ""
+		},
+		"columnClass": {
 			"type": "string",
 			"default": ""
 		},

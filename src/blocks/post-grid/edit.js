@@ -77,6 +77,8 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		loadMoreButtonSize,
 		loadMoreButtonStyle = 'solid',
 		template = 'default',
+		titleTag = 'h3',
+		titleClass = '',
 		enableLink = false,
 		selectedTaxonomies = {},
 	} = attributes;
@@ -1030,6 +1032,8 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 										isEditor={true}
 										enableLink={enableLink || false}
 										postType={postType}
+										titleTag={titleTag}
+										titleClass={titleClass}
 									/>
 								) : (
 									<ImageSimpleRender
@@ -1182,6 +1186,8 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 										isEditor={true}
 										enableLink={enableLink || false}
 										postType={postType}
+										titleTag={titleTag}
+										titleClass={titleClass}
 									/>
 								) : (
 									<ImageSimpleRender

@@ -38,6 +38,12 @@ $block_data = isset($attributes['blockData']) ? $attributes['blockData'] : '';
 $template = isset($attributes['template']) ? $attributes['template'] : 'default';
 $selected_taxonomies = isset($attributes['selectedTaxonomies']) ? $attributes['selectedTaxonomies'] : [];
 
+// Title tag and classes from block (with allowed values)
+$allowed_title_tags = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'div', 'span'];
+$title_tag = isset($attributes['titleTag']) ? $attributes['titleTag'] : 'h3';
+$title_tag = in_array($title_tag, $allowed_title_tags, true) ? $title_tag : 'h3';
+$title_class = isset($attributes['titleClass']) ? sanitize_text_field($attributes['titleClass']) : '';
+
 // Генерируем уникальный ID для блока, если он не задан (необходимо для Load More)
 if (empty($block_id)) {
 	// Используем стабильный хеш от ключевых атрибутов блока для генерации уникального ID
@@ -392,7 +398,13 @@ if (!function_exists('get_swiper_data_attributes')) {
 if (!function_exists('render_post_grid_item')) {
 	function render_post_grid_item($post, $attributes, $image_url, $image_size, $grid_type, $col_classes, $is_swiper = false) {
 		$template = isset($attributes['template']) ? $attributes['template'] : 'default';
-		
+
+		// Title tag and classes from block (allowed in this scope)
+		$allowed_title_tags = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'div', 'span'];
+		$title_tag = isset($attributes['titleTag']) ? $attributes['titleTag'] : 'h3';
+		$title_tag = in_array($title_tag, $allowed_title_tags, true) ? $title_tag : 'h3';
+		$title_class = isset($attributes['titleClass']) ? sanitize_text_field($attributes['titleClass']) : '';
+
 		// Загружаем новую систему шаблонов из темы, если доступна
 		$post_card_templates_path = get_template_directory() . '/functions/post-card-templates.php';
 		if (file_exists($post_card_templates_path) && !function_exists('cw_render_post_card')) {
@@ -425,8 +437,8 @@ if (!function_exists('render_post_grid_item')) {
 					'show_comments' => false,
 					'title_length' => 0,
 					'excerpt_length' => 0,
-					'title_tag' => 'h2',
-					'title_class' => '',
+					'title_tag' => $title_tag,
+					'title_class' => $title_class,
 				];
 				
 				// Размер изображения по умолчанию для clients
@@ -447,8 +459,8 @@ if (!function_exists('render_post_grid_item')) {
 					'show_comments' => false,
 					'title_length' => 0,
 					'excerpt_length' => 0,
-					'title_tag' => 'h2',
-					'title_class' => '',
+					'title_tag' => $title_tag,
+					'title_class' => $title_class,
 				];
 				
 				// Определяем шаблон для testimonials
@@ -528,8 +540,8 @@ if (!function_exists('render_post_grid_item')) {
 					'show_comments' => false,
 					'title_length' => 0,
 					'excerpt_length' => 80, // Показываем ответ FAQ
-					'title_tag' => 'h4',
-					'title_class' => '',
+					'title_tag' => $title_tag,
+					'title_class' => $title_class,
 				];
 				
 				$template_args = [
@@ -658,8 +670,8 @@ if (!function_exists('render_post_grid_item')) {
 					'show_comments' => true,
 					'title_length' => 56,
 					'excerpt_length' => 0,
-					'title_tag' => 'h2',
-					'title_class' => '',
+					'title_tag' => $title_tag,
+					'title_class' => $title_class,
 				];
 				
 				// Для card-content и slider включаем excerpt

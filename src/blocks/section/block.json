@@ -73,6 +73,10 @@
 			"type": "string",
 			"default": "container"
 		},
+		"sectionTag": {
+			"type": "string",
+			"default": "section"
+		},
 		"sectionFrame": {
 			"type": "boolean",
 			"default": false

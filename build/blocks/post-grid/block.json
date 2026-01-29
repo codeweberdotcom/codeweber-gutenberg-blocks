@@ -277,6 +277,14 @@
       "type": "string",
       "default": "default"
     },
+    "titleTag": {
+      "type": "string",
+      "default": "h3"
+    },
+    "titleClass": {
+      "type": "string",
+      "default": ""
+    },
     "enableLink": {
       "type": "boolean",
       "default": false

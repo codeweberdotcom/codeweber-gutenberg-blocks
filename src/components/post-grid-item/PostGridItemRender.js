@@ -2,6 +2,8 @@ import { __ } from '@wordpress/i18n';
 import { ImageSimpleRender } from '../image/ImageSimpleRender';
 import { getImageUrl } from '../../utilities/image-url';
 
+const ALLOWED_TITLE_TAGS = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'div', 'span'];
+
 export const PostGridItemRender = ({
 	post,
 	template = 'default',
@@ -17,7 +19,25 @@ export const PostGridItemRender = ({
 	isEditor = false,
 	enableLink = false,
 	postType = 'post',
+	titleTag = 'h3',
+	titleClass = '',
 }) => {
+	const TitleTag = ALLOWED_TITLE_TAGS.includes(titleTag) ? titleTag : 'h3';
+	const titleClassName =
+		titleClass && titleClass.trim() !== ''
+			? titleClass.trim()
+			: 'post-title h3 mt-1 mb-3';
+	const titleClassNameSlider =
+		titleClass && titleClass.trim() !== '' ? titleClass.trim() : 'post-title h4';
+	const titleClassNameOverlay =
+		titleClass && titleClass.trim() !== '' ? titleClass.trim() : 'h5 mb-0';
+	const titleClassNameFaq =
+		titleClass && titleClass.trim() !== '' ? titleClass.trim() : 'mb-0';
+	const titleClassNameStaff =
+		titleClass && titleClass.trim() !== '' ? titleClass.trim() : 'h4 mb-1';
+	const titleClassNameTestimonial =
+		titleClass && titleClass.trim() !== '' ? titleClass.trim() : 'mb-1';
+
 	const postLink = post.linkUrl || '#';
 	const postTitle = post.title || '';
 	const postDescription = post.description || '';
@@ -113,7 +133,11 @@ export const PostGridItemRender = ({
 						</span>
 					</div>
 					<div>
-						{faqTitle && <h4 className="mb-0">{faqTitle}</h4>}
+						{faqTitle && (
+							<TitleTag className={titleClassNameFaq}>
+								{faqTitle}
+							</TitleTag>
+						)}
 						{contentLimited && (
 							<p className="mb-0">{contentLimited}</p>
 						)}
@@ -174,7 +198,9 @@ export const PostGridItemRender = ({
 							<div className="blockquote-details">
 								<div className="info p-0">
 									{authorName && (
-										<h5 className="mb-1">{authorName}</h5>
+										<TitleTag className={titleClassNameTestimonial}>
+											{authorName}
+										</TitleTag>
 									)}
 									{authorRole && (
 										<p className="mb-0">{authorRole}</p>
@@ -221,9 +247,9 @@ export const PostGridItemRender = ({
 										</figure>
 										<div>
 											{authorName && (
-												<div className="h6 mb-0">
+												<TitleTag className={titleClassNameTestimonial}>
 													{authorName}
-												</div>
+												</TitleTag>
 											)}
 											{authorRole && (
 												<span className="post-meta fs-15">
@@ -240,9 +266,9 @@ export const PostGridItemRender = ({
 								) : (
 									<div className="info p-0">
 										{authorName && (
-											<h5 className="mb-1">
+											<TitleTag className={titleClassNameTestimonial}>
 												{authorName}
-											</h5>
+											</TitleTag>
 										)}
 										{authorRole && (
 											<p className="mb-0">{authorRole}</p>
@@ -285,9 +311,9 @@ export const PostGridItemRender = ({
 										</figure>
 										<div>
 											{authorName && (
-												<div className="h6 mb-0">
+												<TitleTag className={titleClassNameTestimonial}>
 													{authorName}
-												</div>
+												</TitleTag>
 											)}
 											{authorRole && (
 												<span className="post-meta fs-15">
@@ -304,9 +330,9 @@ export const PostGridItemRender = ({
 								) : (
 									<div className="info">
 										{authorName && (
-											<h5 className="mb-1">
+											<TitleTag className={titleClassNameTestimonial}>
 												{authorName}
-											</h5>
+											</TitleTag>
 										)}
 										{authorRole && (
 											<p className="mb-0">{authorRole}</p>
@@ -354,9 +380,9 @@ export const PostGridItemRender = ({
 										</figure>
 										<div>
 											{authorName && (
-												<div className="h6 mb-0">
+												<TitleTag className={titleClassNameTestimonial}>
 													{authorName}
-												</div>
+												</TitleTag>
 											)}
 											{authorRole && (
 												<span className="post-meta fs-15">
@@ -373,9 +399,9 @@ export const PostGridItemRender = ({
 								) : (
 									<div className="info">
 										{authorName && (
-											<h5 className="mb-1">
+											<TitleTag className={titleClassNameTestimonial}>
 												{authorName}
-											</h5>
+											</TitleTag>
 										)}
 										{authorRole && (
 											<p className="mb-0">{authorRole}</p>
@@ -431,7 +457,11 @@ export const PostGridItemRender = ({
 								alt={post.alt || fullName}
 							/>
 						)}
-						{fullName && <h3 className="h4 mb-1">{fullName}</h3>}
+						{fullName && (
+							<TitleTag className={titleClassNameStaff}>
+								{fullName}
+							</TitleTag>
+						)}
 						{position && (
 							<div className="meta mb-1">{position}</div>
 						)}
@@ -509,7 +539,9 @@ export const PostGridItemRender = ({
 									)}
 									<div className="card-body px-6 py-5">
 										{fullName && (
-											<h4 className="mb-1">{fullName}</h4>
+											<TitleTag className={titleClassNameStaff}>
+												{fullName}
+											</TitleTag>
 										)}
 										{position && (
 											<p className="mb-0">{position}</p>
@@ -547,7 +579,9 @@ export const PostGridItemRender = ({
 								)}
 								<div className="card-body px-6 py-5">
 									{fullName && (
-										<h4 className="mb-1">{fullName}</h4>
+										<TitleTag className={titleClassNameStaff}>
+											{fullName}
+										</TitleTag>
 									)}
 									{position && (
 										<p className="mb-0">{position}</p>
@@ -579,7 +613,11 @@ export const PostGridItemRender = ({
 								alt={post.alt || fullName}
 							/>
 						)}
-						{fullName && <h3 className="h4 mb-1">{fullName}</h3>}
+						{fullName && (
+							<TitleTag className={titleClassNameStaff}>
+								{fullName}
+							</TitleTag>
+						)}
 						{position && (
 							<div className="meta mb-1">{position}</div>
 						)}
@@ -639,7 +677,11 @@ export const PostGridItemRender = ({
 							)}
 						</>
 					)}
-					{fullName && <h3 className="h4 mb-1">{fullName}</h3>}
+					{fullName && (
+						<TitleTag className={titleClassNameStaff}>
+							{fullName}
+						</TitleTag>
+					)}
 					{position && <div className="meta mb-1">{position}</div>}
 					{company && <div className={badgeClass}>{company}</div>}
 					{description && (
@@ -697,7 +739,9 @@ export const PostGridItemRender = ({
 								)}
 								<div className="card-body px-6 py-5">
 									{fullName && (
-										<h4 className="mb-1">{fullName}</h4>
+										<TitleTag className={titleClassNameStaff}>
+											{fullName}
+										</TitleTag>
 									)}
 									{position && (
 										<p className="mb-0">{position}</p>
@@ -721,7 +765,9 @@ export const PostGridItemRender = ({
 							)}
 							<div className="card-body px-6 py-5">
 								{fullName && (
-									<h4 className="mb-1">{fullName}</h4>
+									<TitleTag className={titleClassNameStaff}>
+										{fullName}
+									</TitleTag>
 								)}
 								{position && <p className="mb-0">{position}</p>}
 							</div>
@@ -771,7 +817,7 @@ export const PostGridItemRender = ({
 									)}
 								</a>
 							</div>
-							<h2 className="post-title h3 mt-1 mb-3">
+							<TitleTag className={titleClassName}>
 								<a
 									className="link-dark"
 									href={isEditor ? '#' : postLink}
@@ -783,7 +829,7 @@ export const PostGridItemRender = ({
 								>
 									{titleLimited}
 								</a>
-							</h2>
+							</TitleTag>
 						</div>
 						<div className="post-footer mt-auto">
 							<ul className="post-meta d-flex mb-0">
@@ -859,7 +905,7 @@ export const PostGridItemRender = ({
 									)}
 								</a>
 							</div>
-							<h2 className="post-title h3 mt-1 mb-3">
+							<TitleTag className={titleClassName}>
 								<a
 									className="link-dark"
 									href={isEditor ? '#' : postLink}
@@ -871,7 +917,7 @@ export const PostGridItemRender = ({
 								>
 									{titleLimited}
 								</a>
-							</h2>
+							</TitleTag>
 						</div>
 						{excerptLimited && (
 							<div className="post-content">
@@ -925,9 +971,9 @@ export const PostGridItemRender = ({
 								{__('Category', 'codeweber-gutenberg-blocks')}
 							</span>
 						</div>
-						<h2 className="post-title h3 mt-1 mb-3">
+						<TitleTag className={titleClassName}>
 							<span className="link-dark">{titleLimited}</span>
-						</h2>
+						</TitleTag>
 					</div>
 					<div className="post-footer p-4 mt-auto">
 						<ul className="post-meta">
@@ -1005,7 +1051,7 @@ export const PostGridItemRender = ({
 								{__('0', 'codeweber-gutenberg-blocks')}
 							</a>
 						</div>
-						<h3 className="post-title h4" title={postTitle}>
+						<TitleTag className={titleClassNameSlider} title={postTitle}>
 							<a
 								className="link-dark"
 								href={isEditor ? '#' : postLink}
@@ -1017,7 +1063,7 @@ export const PostGridItemRender = ({
 							>
 								{titleLimited}
 							</a>
-						</h3>
+						</TitleTag>
 						{excerptLimited && (
 							<div className="body-l-l mb-4 post-excerpt">
 								{excerptLimited}
@@ -1055,7 +1101,7 @@ export const PostGridItemRender = ({
 					>
 						<div className="bottom-overlay post-meta fs-16 justify-content-between position-absolute zindex-1 d-flex flex-column h-100 w-100 p-5">
 							<div className="d-flex w-100 justify-content-end"></div>
-							<h2 className="h5 mb-0">{titleLimited}</h2>
+							<TitleTag className={titleClassNameOverlay}>{titleLimited}</TitleTag>
 						</div>
 						<img src={imageUrl} alt={post.alt || postTitle} />
 					</a>
@@ -1111,7 +1157,7 @@ export const PostGridItemRender = ({
 					>
 						<div className="bottom-overlay post-meta fs-16 justify-content-between position-absolute zindex-1 d-flex flex-column h-100 w-100 p-5">
 							<div className="d-flex w-100 justify-content-end"></div>
-							<h2 className="h5 mb-0">{titleLimited}</h2>
+							<TitleTag className={titleClassNameOverlay}>{titleLimited}</TitleTag>
 						</div>
 						<img
 							src={imageUrl}
@@ -1191,7 +1237,7 @@ export const PostGridItemRender = ({
 					>
 						<div className="bottom-overlay post-meta fs-16 justify-content-between position-absolute zindex-1 d-flex flex-column h-100 w-100 p-5">
 							<div className="d-flex w-100 justify-content-end"></div>
-							<h2 className="h5 mb-0">{titleLimited}</h2>
+							<TitleTag className={titleClassNameOverlay}>{titleLimited}</TitleTag>
 						</div>
 						<img
 							src={imageUrl}
@@ -1340,7 +1386,7 @@ export const PostGridItemRender = ({
 							{__('Category', 'codeweber-gutenberg-blocks')}
 						</a>
 					</div>
-					<h2 className="post-title h3 mt-1 mb-3">
+					<TitleTag className={titleClassName}>
 						<a
 							className="link-dark"
 							href={isEditor ? '#' : postLink}
@@ -1350,7 +1396,7 @@ export const PostGridItemRender = ({
 						>
 							{titleLimited}
 						</a>
-					</h2>
+					</TitleTag>
 				</div>
 				<div className="post-footer">
 					<ul className="post-meta">

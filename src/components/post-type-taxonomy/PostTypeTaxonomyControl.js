@@ -1,5 +1,5 @@
 import { __ } from '@wordpress/i18n';
-import { SelectControl } from '@wordpress/components';
+import { PanelBody, SelectControl } from '@wordpress/components';
 import { useEffect, useState } from '@wordpress/element';
 import apiFetch from '@wordpress/api-fetch';
 import { TaxonomyFilterControl } from '../taxonomy-filter';
@@ -146,13 +146,18 @@ export const PostTypeTaxonomyControl = ({
 			</div>
 
 			{postType && (
-				<div style={{ marginTop: '16px' }}>
+				<PanelBody
+					className="panel__body"
+					title={__('Filter by taxonomies', 'codeweber-gutenberg-blocks')}
+					initialOpen={false}
+					style={{ marginTop: '16px' }}
+				>
 					<TaxonomyFilterControl
 						postType={postType}
 						selectedTaxonomies={selectedTaxonomies || {}}
 						onChange={onTaxonomyChange}
 					/>
-				</div>
+				</PanelBody>
 			)}
 		</div>
 	);

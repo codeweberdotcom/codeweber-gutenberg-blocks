@@ -1,5 +1,5 @@
 import { __ } from '@wordpress/i18n';
-import { PanelBody, Button, ToggleControl } from '@wordpress/components';
+import { PanelBody, Button, ToggleControl, SelectControl } from '@wordpress/components';
 
 const TEXT_COLOR_OPTIONS = [
 	{ label: __('None', 'codeweber-gutenberg-blocks'), value: 'none' },
@@ -22,12 +22,24 @@ const MIN_HEIGHT_OPTIONS = [
 	{ label: '100vh', value: 'min-vh-100' },
 ];
 
+const SECTION_TAG_OPTIONS = [
+	{ label: 'section', value: 'section' },
+	{ label: 'header', value: 'header' },
+	{ label: 'footer', value: 'footer' },
+	{ label: 'article', value: 'article' },
+	{ label: 'aside', value: 'aside' },
+	{ label: 'address', value: 'address' },
+	{ label: 'nav', value: 'nav' },
+];
+
 export const SectionSettingsPanel = ({
+	sectionTag,
 	textColor,
 	sectionFrame,
 	overflowHidden,
 	positionRelative,
 	minHeight,
+	onSectionTagChange,
 	onTextColorChange,
 	onSectionChange,
 }) => (
@@ -36,6 +48,12 @@ export const SectionSettingsPanel = ({
 		className="custom-panel-body"
 		initialOpen={true}
 	>
+		<SelectControl
+			label={__('Wrapper Tag', 'codeweber-gutenberg-blocks')}
+			value={sectionTag || 'section'}
+			options={SECTION_TAG_OPTIONS}
+			onChange={onSectionTagChange}
+		/>
 		<div className="component-sidebar-title">
 			<label>{__('Text Color', 'codeweber-gutenberg-blocks')}</label>
 		</div>

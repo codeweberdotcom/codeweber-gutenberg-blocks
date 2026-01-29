@@ -13,6 +13,16 @@ import {
 
 const normalizeSectionId = (value = '') => value.replace(/^#/, '').trim();
 
+const ALLOWED_SECTION_TAGS = [
+	'section',
+	'header',
+	'footer',
+	'article',
+	'aside',
+	'address',
+	'nav',
+];
+
 const normalizeDataAttributeName = (key = '') => {
 	if (!key) {
 		return null;
@@ -95,6 +105,7 @@ const SectionSave = ({ attributes }) => {
 		containerAlignItems,
 		containerJustifyContent,
 		containerPosition,
+		sectionTag,
 		sectionFrame,
 		overflowHidden,
 		positionRelative,
@@ -103,6 +114,10 @@ const SectionSave = ({ attributes }) => {
 		sectionData,
 		sectionId,
 	} = attributes;
+
+	const Tag = ALLOWED_SECTION_TAGS.includes(sectionTag)
+		? sectionTag
+		: 'section';
 
 	const normalizedMinHeight = normalizeMinHeightClass(minHeight);
 	const safeSectionId = normalizeSectionId(sectionId);
@@ -186,7 +201,7 @@ const SectionSave = ({ attributes }) => {
 	};
 
 	return (
-		<section
+		<Tag
 			{...blockProps}
 			{...(backgroundType === 'image' &&
 				backgroundImageUrl && { 'data-image-src': backgroundImageUrl })}
@@ -232,7 +247,7 @@ const SectionSave = ({ attributes }) => {
 			{/* Bottom Wave Divider */}
 			{waveConfig.hasBottomWave &&
 				createWaveSvg(waveConfig.bottomType, 'bottom')}
-		</section>
+		</Tag>
 	);
 };
 

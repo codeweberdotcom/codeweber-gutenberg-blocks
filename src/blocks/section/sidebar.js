@@ -61,6 +61,7 @@ export const SectionSidebar = ({ attributes, setAttributes }) => {
 		containerAlignItems,
 		containerJustifyContent,
 		containerPosition,
+		sectionTag,
 		sectionFrame,
 		overflowHidden,
 		positionRelative,
@@ -689,11 +690,15 @@ export const SectionSidebar = ({ attributes, setAttributes }) => {
 					{tab.name === 'section' && (
 						<>
 							<SectionSettingsPanel
+								sectionTag={sectionTag || 'section'}
 								textColor={textColor}
 								sectionFrame={sectionFrame}
 								overflowHidden={overflowHidden}
 								positionRelative={positionRelative}
 								minHeight={minHeight}
+								onSectionTagChange={(value) =>
+									setAttributes({ sectionTag: value })
+								}
 								onTextColorChange={handleTextColorChange}
 								onSectionChange={handleSectionChange}
 							/>

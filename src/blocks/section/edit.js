@@ -73,6 +73,16 @@ const getSectionClasses = (attrs) => {
 	return classes.filter(Boolean).join(' ');
 };
 
+const ALLOWED_SECTION_TAGS = [
+	'section',
+	'header',
+	'footer',
+	'article',
+	'aside',
+	'address',
+	'nav',
+];
+
 const SectionEdit = ({ attributes, setAttributes }) => {
 	const {
 		backgroundType,
@@ -92,6 +102,7 @@ const SectionEdit = ({ attributes, setAttributes }) => {
 		containerAlignItems,
 		containerJustifyContent,
 		containerPosition,
+		sectionTag,
 		sectionFrame,
 		overflowHidden,
 		positionRelative,
@@ -100,6 +111,10 @@ const SectionEdit = ({ attributes, setAttributes }) => {
 		sectionData,
 		sectionId,
 	} = attributes;
+
+	const Tag = ALLOWED_SECTION_TAGS.includes(sectionTag)
+		? sectionTag
+		: 'section';
 
 	const normalizedMinHeight = normalizeMinHeightClass(minHeight);
 	const safeSectionId = normalizeSectionId(sectionId);
@@ -164,7 +179,7 @@ const SectionEdit = ({ attributes, setAttributes }) => {
 					setAttributes={setAttributes}
 				/>
 			</InspectorControls>
-			<section {...blockProps} style={getSectionStyles()}>
+			<Tag {...blockProps} style={getSectionStyles()}>
 				{/* Top Wave Divider */}
 				{waveConfig.hasTopWave && (
 					<div
@@ -222,7 +237,7 @@ const SectionEdit = ({ attributes, setAttributes }) => {
 						}}
 					/>
 				)}
-			</section>
+			</Tag>
 		</>
 	);
 };

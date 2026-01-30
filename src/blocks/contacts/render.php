@@ -54,6 +54,10 @@ $iconBtnVariant = isset($attributes['iconBtnVariant']) ? $attributes['iconBtnVar
 $iconWrapperClass = isset($attributes['iconWrapperClass']) ? $attributes['iconWrapperClass'] : 'mb-3';
 $iconGradientColor = isset($attributes['iconGradientColor']) ? $attributes['iconGradientColor'] : 'gradient-1';
 $customSvgUrl = isset($attributes['customSvgUrl']) ? $attributes['customSvgUrl'] : '';
+$block_class = isset($attributes['blockClass']) ? $attributes['blockClass'] : '';
+$block_id = isset($attributes['blockId']) ? $attributes['blockId'] : '';
+$block_data = isset($attributes['blockData']) ? $attributes['blockData'] : '';
+$item_class = isset($attributes['itemClass']) ? $attributes['itemClass'] : '';
 
 if (empty($items)) {
     return;
@@ -515,8 +519,9 @@ if (empty($enabled_items)) {
 <?php foreach ($enabled_items as $item): ?>
         <?php
         $type = isset($item['type']) ? $item['type'] : '';
+        $item_class_attr = $item_class ? ' class="' . esc_attr($item_class) . '"' : '';
         ?>
-
+        <?php if ($item_class): ?><div<?php echo $item_class_attr; ?>><?php endif; ?>
         <?php if ($type === 'address'): ?>
             <?php
             $addressType = isset($item['addressType']) ? $item['addressType'] : 'legal';
@@ -607,9 +612,6 @@ if (empty($enabled_items)) {
                             <a href="tel:<?php echo esc_attr($phone_data['clean']); ?>" class="<?php echo esc_attr($textClasses); ?>">
                                 <?php echo esc_html($phone_data['display']); ?>
                             </a>
-                            <?php if ($index < count($phone_values) - 1): ?>
-                                <br>
-                            <?php endif; ?>
                         <?php endforeach; ?>
                     </div>
                 </div>
@@ -620,9 +622,6 @@ if (empty($enabled_items)) {
                             <?php echo render_contacts_simple_icon('phone-volume', $iconType, $iconName, $svgIcon, $svgStyle, $iconSize, $iconColor, $iconColor2, $iconClass, $customSvgUrl); ?>
                             <span><?php echo esc_html($phone_data['display']); ?></span>
                         </a>
-                        <?php if ($index < count($phone_values) - 1): ?>
-                            <br>
-                        <?php endif; ?>
                     <?php endforeach; ?>
                 </div>
             <?php else: ?>
@@ -631,12 +630,11 @@ if (empty($enabled_items)) {
                         <a href="tel:<?php echo esc_attr($phone_data['clean']); ?>" class="<?php echo esc_attr($textClasses); ?>">
                             <?php echo esc_html($phone_data['display']); ?>
                         </a>
-                        <?php if ($index < count($phone_values) - 1): ?>
-                            <br>
-                        <?php endif; ?>
                     <?php endforeach; ?>
                 </div>
             <?php endif; ?>
 
         <?php endif; ?>
+        <?php if ($item_class): ?></div><?php endif; ?>
     <?php endforeach; ?>
+</div>

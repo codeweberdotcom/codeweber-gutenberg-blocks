@@ -147,10 +147,10 @@ const Edit = ({ attributes, setAttributes }) => {
 				</>
 			) : (
 				<img
-					src={logoType === 'light' ? logoUrls.light : logoUrls.dark}
+					src={logoType === 'light' ? logoUrls.dark : logoUrls.light}
 					alt={__('Logo', 'codeweber-gutenberg-blocks')}
 					className={
-						logoType === 'light' ? 'logo-light' : 'logo-dark'
+						logoType === 'light' ? 'logo-dark' : 'logo-light'
 					}
 					style={sizeStyle}
 				/>

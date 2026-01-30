@@ -34,6 +34,7 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 		menuId,
 		menuData,
 		itemClass,
+		linkClass,
 		enableWidget,
 		enableTitle,
 		title,
@@ -327,6 +328,14 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 									<>
 										<a
 											href={item.url || '#'}
+											className={[
+												theme === 'dark'
+													? 'text-white'
+													: 'text-dark',
+												linkClass || '',
+											]
+												.filter(Boolean)
+												.join(' ')}
 											style={{ pointerEvents: 'none' }}
 										>
 											<RichText
@@ -403,6 +412,14 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 								) : (
 									<a
 										href={item.url || '#'}
+										className={[
+											theme === 'dark'
+												? 'text-white'
+												: 'text-dark',
+											linkClass || '',
+										]
+											.filter(Boolean)
+											.join(' ')}
 										style={{ pointerEvents: 'none' }}
 									>
 										{item.text}

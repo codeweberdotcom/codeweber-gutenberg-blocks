@@ -31,6 +31,7 @@ $menuClass = isset($attributes['menuClass']) ? $attributes['menuClass'] : 'list-
 $menuId = isset($attributes['menuId']) ? $attributes['menuId'] : '';
 $menuData = isset($attributes['menuData']) ? $attributes['menuData'] : '';
 $itemClass = isset($attributes['itemClass']) ? $attributes['itemClass'] : '';
+$linkClass = isset($attributes['linkClass']) ? $attributes['linkClass'] : '';
 $enableWidget = isset($attributes['enableWidget']) ? (bool) $attributes['enableWidget'] : false;
 $enableTitle = isset($attributes['enableTitle']) ? (bool) $attributes['enableTitle'] : false;
 $title = isset($attributes['title']) ? $attributes['title'] : '';
@@ -151,7 +152,9 @@ if (empty($itemsToRender)) {
 			$menuContent .= '<span><i class="' . esc_attr($iconClass) . '"></i></span>';
 		}
 		$menuContent .= '<span class="' . esc_attr($textThemeClass) . '">';
-		$menuContent .= '<a href="' . esc_url($item['url']) . '" class="' . esc_attr($textThemeClass) . '">' . esc_html($item['text']) . '</a>';
+		$aClasses = array_filter(array_merge([$textThemeClass], $linkClass ? explode(' ', trim($linkClass)) : []));
+		$aClassAttr = !empty($aClasses) ? ' class="' . esc_attr(implode(' ', $aClasses)) . '"' : '';
+		$menuContent .= '<a href="' . esc_url($item['url']) . '"' . $aClassAttr . '>' . esc_html($item['text']) . '</a>';
 		$menuContent .= '</span>';
 		$menuContent .= '</li>';
 	}

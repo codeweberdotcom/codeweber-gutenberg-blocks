@@ -162,6 +162,22 @@
 		"textClass": {
 			"type": "string",
 			"default": ""
+		},
+		"blockClass": {
+			"type": "string",
+			"default": ""
+		},
+		"blockId": {
+			"type": "string",
+			"default": ""
+		},
+		"blockData": {
+			"type": "string",
+			"default": ""
+		},
+		"itemClass": {
+			"type": "string",
+			"default": ""
 		}
 	},
 	"textdomain": "codeweber-gutenberg-blocks",

@@ -20,6 +20,7 @@ const MenuSave = ({ attributes }) => {
 		menuId,
 		menuData,
 		itemClass,
+		linkClass,
 		enableWidget,
 		enableTitle,
 		title,
@@ -151,7 +152,17 @@ const MenuSave = ({ attributes }) => {
 							theme === 'dark' ? 'text-white' : 'text-dark'
 						}
 					>
-						<a href={item.url || '#'}>
+						<a
+							href={item.url || '#'}
+							className={
+								[
+									theme === 'dark' ? 'text-white' : 'text-dark',
+									linkClass || '',
+								]
+									.filter(Boolean)
+									.join(' ')
+							}
+						>
 							<RichText.Content
 								tagName="span"
 								value={item.text}

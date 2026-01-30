@@ -86,6 +86,10 @@
       "type": "string",
       "default": ""
     },
+    "linkClass": {
+      "type": "string",
+      "default": ""
+    },
     "enableWidget": {
       "type": "boolean",
       "default": false

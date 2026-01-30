@@ -53,6 +53,7 @@ const ContactsPreview = ({
 		iconWrapperClass = 'mb-3',
 		iconGradientColor = 'gradient-1',
 		customSvgUrl = '',
+		itemClass = '',
 	} = attributes;
 	if (!items || items.length === 0) {
 		return (
@@ -273,7 +274,15 @@ const ContactsPreview = ({
 	return (
 		<div className="codeweber-contacts-preview">
 			{enabledItems.map((item, index) => (
-				<div key={index} className="codeweber-contacts-preview-item">
+				<div
+					key={index}
+					className={[
+						'codeweber-contacts-preview-item',
+						itemClass || '',
+					]
+						.filter(Boolean)
+						.join(' ')}
+				>
 					{item.type === 'address' &&
 						(() => {
 							const addressType = item.addressType || 'legal';
@@ -639,9 +648,6 @@ const ContactsPreview = ({
 															>
 																{phone.display}
 															</a>
-															{phoneIndex <
-																phoneData.length -
-																	1 && <br />}
 														</span>
 													)
 												)}
@@ -663,9 +669,6 @@ const ContactsPreview = ({
 																{phone.display}
 															</span>
 														</a>
-														{phoneIndex <
-															phoneData.length -
-																1 && <br />}
 													</span>
 												)
 											)}
@@ -683,9 +686,6 @@ const ContactsPreview = ({
 														>
 															{phone.display}
 														</a>
-														{phoneIndex <
-															phoneData.length -
-																1 && <br />}
 													</span>
 												)
 											)}
@@ -709,12 +709,28 @@ const ContactsEdit = ({ attributes, setAttributes }) => {
 		iconColor = 'primary',
 		iconFontSize = 'fs-28',
 		iconSize = 'md',
+		blockClass = '',
+		blockId = '',
+		blockData = '',
 	} = attributes;
 	const [contactsData, setContactsData] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
 
+	// Parse data attributes (key=value,key2=value2)
+	const getDataAttributes = () => {
+		if (!blockData) return {};
+		const dataAttrs = {};
+		blockData.split(',').forEach((pair) => {
+			const [key, value] = pair.split('=').map((s) => s?.trim());
+			if (key && value) dataAttrs[`data-${key}`] = value;
+		});
+		return dataAttrs;
+	};
+
 	const blockProps = useBlockProps({
-		className: 'codeweber-contacts-block',
+		className: ['codeweber-contacts-block', blockClass].filter(Boolean).join(' '),
+		id: blockId || undefined,
+		...getDataAttributes(),
 	});
 
 	useEffect(() => {

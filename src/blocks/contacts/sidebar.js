@@ -10,13 +10,15 @@ import {
 	Button,
 	ToggleControl,
 	SelectControl,
+	TextControl,
 	CheckboxControl,
 	TabPanel,
 	ComboboxControl,
 } from '@wordpress/components';
-import { Icon, trash, starFilled, typography } from '@wordpress/icons';
+import { Icon, trash, starFilled, typography, cog } from '@wordpress/icons';
 import { HeadingTypographyControl } from '../../components/heading/HeadingTypographyControl';
 import { IconControl } from '../../components/icon/IconControl';
+import { BlockMetaFields } from '../../components/block-meta/BlockMetaFields';
 
 // Tab icon with native title tooltip
 const TabIcon = ({ icon, label }) => (
@@ -33,7 +35,7 @@ const TabIcon = ({ icon, label }) => (
 );
 
 export const ContactsSidebar = ({ attributes, setAttributes }) => {
-	const { items = [], format = 'simple' } = attributes;
+	const { items = [], format = 'simple', itemClass = '' } = attributes;
 
 	const updateItem = (index, updates) => {
 		const newItems = [...items];
@@ -111,6 +113,15 @@ export const ContactsSidebar = ({ attributes, setAttributes }) => {
 				<TabIcon
 					icon={starFilled}
 					label={__('Icon', 'codeweber-gutenberg-blocks')}
+				/>
+			),
+		},
+		{
+			name: 'settings',
+			title: (
+				<TabIcon
+					icon={cog}
+					label={__('Settings', 'codeweber-gutenberg-blocks')}
 				/>
 			),
 		},
@@ -410,7 +421,58 @@ export const ContactsSidebar = ({ attributes, setAttributes }) => {
 							attributes={attributes}
 							setAttributes={setAttributes}
 							prefix=""
+							showWrapper={false}
 						/>
+					)}
+
+					{tab.name === 'settings' && (
+						<PanelBody
+							title={__(
+								'Block Settings',
+								'codeweber-gutenberg-blocks'
+							)}
+							initialOpen={true}
+						>
+							<BlockMetaFields
+								attributes={attributes}
+								setAttributes={setAttributes}
+								fieldKeys={{
+									classKey: 'blockClass',
+									dataKey: 'blockData',
+									idKey: 'blockId',
+								}}
+								labels={{
+									classLabel: __(
+										'Block Class',
+										'codeweber-gutenberg-blocks'
+									),
+									dataLabel: __(
+										'Block Data',
+										'codeweber-gutenberg-blocks'
+									),
+									idLabel: __(
+										'Block ID',
+										'codeweber-gutenberg-blocks'
+									),
+								}}
+							/>
+							<div style={{ marginTop: '16px' }}>
+								<TextControl
+									label={__(
+										'Item Class',
+										'codeweber-gutenberg-blocks'
+									)}
+									value={itemClass}
+									onChange={(value) =>
+										setAttributes({ itemClass: value })
+									}
+									help={__(
+										'CSS classes for each contact item wrapper (address, email, phone).',
+										'codeweber-gutenberg-blocks'
+									)}
+								/>
+							</div>
+						</PanelBody>
 					)}
 				</>
 			)}

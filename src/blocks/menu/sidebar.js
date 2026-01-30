@@ -47,6 +47,7 @@ export const MenuSidebar = ({ attributes, setAttributes, wpMenus = [] }) => {
 		textColor,
 		menuClass,
 		itemClass,
+		linkClass,
 		enableWidget,
 		enableTitle,
 		title,
@@ -644,6 +645,24 @@ export const MenuSidebar = ({ attributes, setAttributes, wpMenus = [] }) => {
 									}
 									help={__(
 										'Additional CSS classes for menu items (li elements)',
+										'codeweber-gutenberg-blocks'
+									)}
+								/>
+							</div>
+
+							{/* Link Class */}
+							<div style={{ marginTop: '16px' }}>
+								<TextControl
+									label={__(
+										'Link Classes',
+										'codeweber-gutenberg-blocks'
+									)}
+									value={linkClass || ''}
+									onChange={(value) =>
+										setAttributes({ linkClass: value })
+									}
+									help={__(
+										'CSS classes for link elements (<a>)',
 										'codeweber-gutenberg-blocks'
 									)}
 								/>

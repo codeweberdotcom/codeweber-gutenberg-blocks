@@ -70,7 +70,7 @@ export const WidgetSidebar = ({ attributes, setAttributes }) => {
 								setAttributes={setAttributes}
 								hideSubtitle={true}
 								hideText={true}
-								hideTitle={true}
+								hideTitle={false}
 							/>
 							<div style={{ marginTop: '16px' }}>
 								<HeadingTypographyControl

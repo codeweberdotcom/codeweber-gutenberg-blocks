@@ -19,10 +19,22 @@ import {
 } from './ctas';
 
 const CTAEdit = ({ attributes, setAttributes, clientId }) => {
-	const { ctaType } = attributes;
+	const { ctaType, blockClass, blockId, blockData } = attributes;
 
+	const blockWrapperClass = ['cta-block', `cta-${ctaType}`, blockClass].filter(Boolean).join(' ');
+	const dataAttributes = {};
+	if (blockData && typeof blockData === 'string') {
+		blockData.split(',').forEach((pair) => {
+			const [key, value] = pair.split('=').map((s) => s && s.trim());
+			if (key && value) {
+				dataAttributes[`data-${key}`] = value;
+			}
+		});
+	}
 	const blockProps = useBlockProps({
-		className: `cta-block cta-${ctaType}`,
+		className: blockWrapperClass,
+		id: blockId || undefined,
+		...dataAttributes,
 	});
 
 	const { replaceInnerBlocks, updateBlockAttributes } = useDispatch(blockEditorStore);

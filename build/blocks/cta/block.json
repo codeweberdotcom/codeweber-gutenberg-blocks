@@ -64,11 +64,23 @@
       "type": "string",
       "default": ""
     },
+    "cardClass": {
+      "type": "string",
+      "default": ""
+    },
+    "cardBodyClass": {
+      "type": "string",
+      "default": ""
+    },
     "blockClass": {
       "type": "string",
       "default": ""
     },
     "blockId": {
+      "type": "string",
+      "default": ""
+    },
+    "blockData": {
       "type": "string",
       "default": ""
     }

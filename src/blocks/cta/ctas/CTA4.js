@@ -1,6 +1,23 @@
 import { InnerBlocks } from '@wordpress/block-editor';
 import { generateBackgroundClasses } from '../../../utilities/class-generators';
 
+const getBlockWrapperProps = (attributes) => {
+	const { blockClass, blockId, blockData } = attributes;
+	const id = blockId ? String(blockId).replace(/^#/, '') : undefined;
+	const dataAttrs = {};
+	if (blockData && typeof blockData === 'string') {
+		blockData.split(',').forEach((pair) => {
+			const eq = pair.indexOf('=');
+			if (eq > 0) {
+				const key = pair.slice(0, eq).trim();
+				const value = pair.slice(eq + 1).trim();
+				if (key) dataAttrs[`data-${key}`] = value;
+			}
+		});
+	}
+	return { id, ...dataAttrs };
+};
+
 export const CTA4 = ({ attributes, isEditor = false }) => {
 	const {
 		backgroundType,
@@ -9,6 +26,9 @@ export const CTA4 = ({ attributes, isEditor = false }) => {
 		backgroundOverlay,
 		sectionClass,
 		containerClass,
+		cardClass,
+		cardBodyClass,
+		blockClass,
 	} = attributes;
 
 	// Функция для получения классов секции
@@ -21,6 +41,7 @@ export const CTA4 = ({ attributes, isEditor = false }) => {
 		if (sectionClass) {
 			classes.push(sectionClass);
 		}
+		if (blockClass) classes.push(blockClass);
 
 		return classes.filter(Boolean).join(' ');
 	};
@@ -40,8 +61,14 @@ export const CTA4 = ({ attributes, isEditor = false }) => {
 		} else {
 			classes.push('bg-overlay', 'bg-overlay-300');
 		}
+		if (cardClass) classes.push(cardClass);
 
 		return classes.filter(Boolean).join(' ');
+	};
+
+	const getCardBodyClasses = () => {
+		const base = 'card-body p-10 p-xl-12';
+		return cardBodyClass ? `${base} ${cardBodyClass}`.trim() : base;
 	};
 
 	// Используем backgroundImageUrl из атрибутов, если оно задано, иначе используем изображение по умолчанию из темы
@@ -71,13 +98,16 @@ export const CTA4 = ({ attributes, isEditor = false }) => {
 		return Object.keys(styles).length > 0 ? styles : undefined;
 	};
 
+	const wrapperProps = getBlockWrapperProps(attributes);
+
 	if (isEditor) {
 		return (
 			<div
 				className={getCardClasses()}
 				style={getCardStyles()}
+				{...wrapperProps}
 			>
-				<div className="card-body p-10 p-xl-12">
+				<div className={getCardBodyClasses()}>
 					<InnerBlocks
 						templateLock={false}
 					/>
@@ -87,13 +117,13 @@ export const CTA4 = ({ attributes, isEditor = false }) => {
 	}
 
 	return (
-		<section className={getSectionClasses()}>
+		<section className={getSectionClasses()} {...wrapperProps}>
 			<div className={`container pb-13 pb-md-15 ${containerClass || ''}`}>
 				<div
 					className={getCardClasses()}
 					data-image-src={imageSrc}
 				>
-					<div className="card-body p-10 p-xl-12">
+					<div className={getCardBodyClasses()}>
 						<div className="row text-center">
 							<div className="col-xl-11 col-xxl-9 mx-auto">
 								<InnerBlocks.Content />

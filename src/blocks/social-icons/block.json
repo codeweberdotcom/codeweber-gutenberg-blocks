@@ -1,0 +1,74 @@
+{
+	"apiVersion": 3,
+	"name": "codeweber-blocks/social-icons",
+	"version": "0.1.0",
+	"title": "Social Icons",
+	"category": "codeweber-gutenberg-elements",
+	"icon": "share",
+	"description": "Display social network links as icons. Use theme settings or custom links.",
+	"keywords": ["social", "icons", "links", "share"],
+	"supports": {
+		"html": false,
+		"customClassName": true,
+		"anchor": true
+	},
+	"attributes": {
+		"dataSource": {
+			"type": "string",
+			"default": "theme"
+		},
+		"styleType": {
+			"type": "string",
+			"default": "type1"
+		},
+		"size": {
+			"type": "string",
+			"default": "md"
+		},
+		"buttonColor": {
+			"type": "string",
+			"default": "primary"
+		},
+		"buttonStyle": {
+			"type": "string",
+			"default": "solid"
+		},
+		"buttonForm": {
+			"type": "string",
+			"default": "circle"
+		},
+		"navClass": {
+			"type": "string",
+			"default": ""
+		},
+		"themeEnabledSlugs": {
+			"type": "array",
+			"default": []
+		},
+		"items": {
+			"type": "array",
+			"default": [
+				{ "id": "item-1", "icon": "facebook-f", "url": "#", "label": "Facebook" },
+				{ "id": "item-2", "icon": "twitter", "url": "#", "label": "Twitter" },
+				{ "id": "item-3", "icon": "instagram", "url": "#", "label": "Instagram" }
+			]
+		},
+		"blockClass": {
+			"type": "string",
+			"default": ""
+		},
+		"blockId": {
+			"type": "string",
+			"default": ""
+		},
+		"blockData": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"textdomain": "codeweber-gutenberg-blocks",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"render": "file:./render.php"
+}

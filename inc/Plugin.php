@@ -55,6 +55,9 @@ class Plugin {
 
 		// Фильтр для рендеринга contacts блока
 		add_filter('pre_render_block', __CLASS__ . '::pre_render_contacts_block', 10, 2);
+
+		// Фильтр для рендеринга social-icons блока
+		add_filter('pre_render_block', __CLASS__ . '::pre_render_social_icons_block', 10, 2);
 	}
 
 	public static function init(): void {
@@ -86,6 +89,9 @@ class Plugin {
 
 		// Register REST API endpoint for contacts
 		add_action('rest_api_init', __CLASS__ . '::register_contacts_endpoint');
+
+		// Register REST API endpoint for social-icons preview (editor = frontend)
+		add_action('rest_api_init', __CLASS__ . '::register_social_icons_preview_endpoint');
 
 		// Load JavaScript translations after scripts are enqueued
 		add_action('enqueue_block_editor_assets', __CLASS__ . '::loadJSTranslations', 100);
@@ -165,6 +171,7 @@ class Plugin {
 		'widget',
 		'contacts',
 		'cta',
+		'social-icons',
 	];
 	}
 
@@ -1172,6 +1179,71 @@ class Plugin {
 	}
 
 	/**
+	 * Register REST API endpoint for social-icons block preview (same HTML as frontend)
+	 */
+	public static function register_social_icons_preview_endpoint() {
+		register_rest_route('codeweber-gutenberg-blocks/v1', '/social-icons-preview', [
+			'methods' => 'POST',
+			'callback' => __CLASS__ . '::social_icons_preview_callback',
+			'permission_callback' => '__return_true',
+			'args' => [
+				'attributes' => [
+					'required' => false,
+					'type' => 'object',
+					'default' => [],
+				],
+			],
+		]);
+		register_rest_route('codeweber-gutenberg-blocks/v1', '/social-icons-list', [
+			'methods' => 'GET',
+			'callback' => __CLASS__ . '::social_icons_list_callback',
+			'permission_callback' => '__return_true',
+		]);
+	}
+
+	/**
+	 * REST: list of social networks from theme (get_option('socials_urls')) with non-empty URL
+	 */
+	public static function social_icons_list_callback() {
+		$socials = get_option('socials_urls');
+		if (!is_array($socials)) {
+			return new \WP_REST_Response(['socials' => []], 200);
+		}
+		$list = [];
+		foreach ($socials as $slug => $url) {
+			if ($url !== '' && $url !== null) {
+				$label = $slug;
+				if (strpos(strtolower($label), 'vk') === 0) {
+					$label = strtoupper(substr($label, 0, 2)) . substr($label, 2);
+				} else {
+					$label = ucfirst($label);
+				}
+				$list[] = ['slug' => $slug, 'url' => $url, 'label' => $label];
+			}
+		}
+		return new \WP_REST_Response(['socials' => $list], 200);
+	}
+
+	/**
+	 * REST API callback: render social-icons block HTML (same as frontend)
+	 */
+	public static function social_icons_preview_callback($request) {
+		$attributes = $request->get_param('attributes');
+		if (!is_array($attributes)) {
+			$attributes = [];
+		}
+		$render_path = self::getBasePath() . '/build/blocks/social-icons/render.php';
+		if (!file_exists($render_path)) {
+			return new \WP_REST_Response(['html' => ''], 200);
+		}
+		ob_start();
+		extract(['attributes' => $attributes, 'content' => '', 'block' => null, 'parsed_block' => null], EXTR_SKIP);
+		require $render_path;
+		$html = ob_get_clean();
+		return new \WP_REST_Response(['html' => $html], 200);
+	}
+
+	/**
 	 * REST API callback for getting contacts data
 	 */
 	public static function get_contacts_callback($request) {
@@ -1492,6 +1564,38 @@ class Plugin {
 			return $rendered;
 		} else {
 			return '<!-- Contacts block: render.php file not found at ' . $render_path . ' -->';
+		}
+
+		return $pre_render;
+	}
+
+	/**
+	 * Pre-render social-icons block
+	 */
+	public static function pre_render_social_icons_block($pre_render, $parsed_block) {
+		if (!isset($parsed_block['blockName']) || $parsed_block['blockName'] !== 'codeweber-blocks/social-icons') {
+			return $pre_render;
+		}
+
+		$render_path = self::getBasePath() . '/build/blocks/social-icons/render.php';
+		if (file_exists($render_path)) {
+			$block_instance = new \WP_Block($parsed_block);
+			$attributes = $parsed_block['attrs'] ?? [];
+			if (empty($attributes) && property_exists($block_instance, 'attributes')) {
+				$attributes = $block_instance->attributes ?? [];
+			}
+			$content = $parsed_block['innerHTML'] ?? '';
+
+			extract([
+				'attributes' => $attributes,
+				'content' => $content,
+				'block' => $block_instance,
+				'parsed_block' => $parsed_block,
+			], EXTR_SKIP);
+
+			ob_start();
+			require $render_path;
+			return ob_get_clean();
 		}
 
 		return $pre_render;

@@ -1,6 +1,23 @@
 import { InnerBlocks } from '@wordpress/block-editor';
 import { generateBackgroundClasses } from '../../../utilities/class-generators';
 
+const getBlockWrapperProps = (attributes) => {
+	const { blockClass, blockId, blockData } = attributes;
+	const id = blockId ? String(blockId).replace(/^#/, '') : undefined;
+	const dataAttrs = {};
+	if (blockData && typeof blockData === 'string') {
+		blockData.split(',').forEach((pair) => {
+			const eq = pair.indexOf('=');
+			if (eq > 0) {
+				const key = pair.slice(0, eq).trim();
+				const value = pair.slice(eq + 1).trim();
+				if (key) dataAttrs[`data-${key}`] = value;
+			}
+		});
+	}
+	return { id, ...dataAttrs };
+};
+
 export const CTA2 = ({ attributes, isEditor = false }) => {
 	const {
 		backgroundType,
@@ -9,65 +26,61 @@ export const CTA2 = ({ attributes, isEditor = false }) => {
 		backgroundOverlay,
 		sectionClass,
 		containerClass,
+		cardClass,
+		cardBodyClass,
+		blockClass,
 	} = attributes;
 
-	// Функция для получения классов секции
+	// Функция для получения классов секции (не используется как верхний элемент в CTA2)
 	const getSectionClasses = () => {
 		const classes = ['wrapper', 'bg-light'];
-
 		const bgClasses = generateBackgroundClasses(attributes);
 		classes.push(...bgClasses);
-
-		if (sectionClass) {
-			classes.push(sectionClass);
-		}
-
+		if (sectionClass) classes.push(sectionClass);
 		return classes.filter(Boolean).join(' ');
 	};
 
-	// Функция для получения классов карточки
+	// Классы карточки: применяем настройки бэкграунда к card через generateBackgroundClasses
 	const getCardClasses = () => {
-		const classes = [
-			'card',
-			'image-wrapper',
-			'bg-full',
-			'bg-image',
-		];
-
-		if (backgroundOverlay) {
-			classes.push(backgroundOverlay);
-		} else {
+		const classes = ['card'];
+		const bgClasses = generateBackgroundClasses(attributes);
+		classes.push(...bgClasses);
+		// Дефолтный оверлей для типа image, если не выбран
+		if (backgroundType === 'image' && !backgroundOverlay) {
 			classes.push('bg-overlay', 'bg-overlay-400');
 		}
-
+		if (blockClass) classes.push(blockClass);
+		if (cardClass) classes.push(cardClass);
 		return classes.filter(Boolean).join(' ');
 	};
 
-	// Используем backgroundImageUrl из атрибутов, если оно задано, иначе используем изображение по умолчанию из темы
+	const getCardBodyClasses = () => {
+		const base = 'card-body p-6 p-md-11 d-lg-flex flex-row align-items-lg-center justify-content-md-between text-center text-lg-start';
+		return cardBodyClass ? `${base} ${cardBodyClass}`.trim() : base;
+	};
+
+	const wrapperProps = getBlockWrapperProps(attributes);
+
+	// Картинка фона только при типе "Image"
 	const defaultImageUrl = isEditor
 		? window.location?.origin
 			? `${window.location.origin}/wp-content/themes/codeweber/dist/assets/img/photos/bg3.jpg`
 			: '/wp-content/themes/codeweber/dist/assets/img/photos/bg3.jpg'
 		: '/wp-content/themes/codeweber/dist/assets/img/photos/bg3.jpg';
-	
-	const imageSrc = backgroundImageUrl || defaultImageUrl;
+	const imageSrc = backgroundType === 'image' ? (backgroundImageUrl || defaultImageUrl) : '';
 
-	// Функция для получения стилей карточки (для редактора)
+	// Inline-стили карточки для редактора (только при фоне типа Image)
 	const getCardStyles = () => {
-		const styles = {};
-		if (imageSrc) {
-			styles.backgroundImage = `url(${imageSrc})`;
-			styles.backgroundRepeat = 'no-repeat';
-			if (backgroundSize === 'bg-cover') {
-				styles.backgroundSize = 'cover';
-			} else if (backgroundSize === 'bg-full') {
-				styles.backgroundSize = '100% 100%';
-			} else {
-				styles.backgroundSize = 'auto';
-			}
-			styles.backgroundPosition = 'center';
-		}
-		return Object.keys(styles).length > 0 ? styles : undefined;
+		if (backgroundType !== 'image' || !imageSrc) return undefined;
+		const styles = {
+			backgroundImage: `url(${imageSrc})`,
+			backgroundRepeat: 'no-repeat',
+			backgroundPosition: 'center',
+		};
+		if (backgroundSize === 'bg-cover') styles.backgroundSize = 'cover';
+		else if (backgroundSize === 'bg-full') styles.backgroundSize = '100% 100%';
+		else styles.backgroundSize = 'auto';
+		return styles;
 	};
 
 	if (isEditor) {
@@ -75,8 +88,10 @@ export const CTA2 = ({ attributes, isEditor = false }) => {
 			<div
 				className={getCardClasses()}
 				style={getCardStyles()}
+				{...(imageSrc ? { 'data-image-src': imageSrc } : {})}
+				{...wrapperProps}
 			>
-				<div className="card-body p-6 p-md-11 d-lg-flex flex-row align-items-lg-center justify-content-md-between text-center text-lg-start">
+				<div className={getCardBodyClasses()}>
 					<InnerBlocks
 						templateLock={false}
 					/>
@@ -88,9 +103,10 @@ export const CTA2 = ({ attributes, isEditor = false }) => {
 	return (
 		<div
 			className={getCardClasses()}
-			data-image-src={imageSrc}
+			{...(imageSrc ? { 'data-image-src': imageSrc } : {})}
+			{...wrapperProps}
 		>
-			<div className="card-body p-6 p-md-11 d-lg-flex flex-row align-items-lg-center justify-content-md-between text-center text-lg-start">
+			<div className={getCardBodyClasses()}>
 				<InnerBlocks.Content />
 			</div>
 		</div>

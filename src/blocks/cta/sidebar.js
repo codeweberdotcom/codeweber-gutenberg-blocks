@@ -1,7 +1,8 @@
 import { __ } from '@wordpress/i18n';
-import { PanelBody, SelectControl, TabPanel } from '@wordpress/components';
+import { PanelBody, SelectControl, TabPanel, TextControl } from '@wordpress/components';
 import { Icon, layout as layoutIcon, image, cog } from '@wordpress/icons';
 import BackgroundSettingsPanel from '../../components/background/BackgroundSettingsPanel';
+import { BlockMetaFields } from '../../components/block-meta/BlockMetaFields';
 
 // Tab icon with native title tooltip
 const TabIcon = ({ icon, label }) => (
@@ -41,6 +42,8 @@ export const CTASidebar = ({ attributes, setAttributes }) => {
 		backgroundPatternUrl,
 		sectionClass,
 		containerClass,
+		cardClass,
+		cardBodyClass,
 		blockClass,
 		blockId,
 	} = attributes;
@@ -102,7 +105,44 @@ export const CTASidebar = ({ attributes, setAttributes }) => {
 
 					{tab.name === 'settings' && (
 						<PanelBody title={__('Settings', 'codeweber-gutenberg-blocks')}>
-							{/* Дополнительные настройки можно добавить здесь */}
+							<TextControl
+								label={__('Класс Section', 'codeweber-gutenberg-blocks')}
+								value={sectionClass || ''}
+								onChange={(value) => setAttributes({ sectionClass: value || '' })}
+								help={__('Дополнительные классы для секции (wrapper)', 'codeweber-gutenberg-blocks')}
+							/>
+							<TextControl
+								label={__('Класс Container', 'codeweber-gutenberg-blocks')}
+								value={containerClass || ''}
+								onChange={(value) => setAttributes({ containerClass: value || '' })}
+								help={__('Дополнительные классы для контейнера', 'codeweber-gutenberg-blocks')}
+							/>
+							<TextControl
+								label={__('Класс Card', 'codeweber-gutenberg-blocks')}
+								value={cardClass || ''}
+								onChange={(value) => setAttributes({ cardClass: value || '' })}
+								help={__('Дополнительные классы для карточки (CTA 2, 4)', 'codeweber-gutenberg-blocks')}
+							/>
+							<TextControl
+								label={__('Класс Card Body', 'codeweber-gutenberg-blocks')}
+								value={cardBodyClass || ''}
+								onChange={(value) => setAttributes({ cardBodyClass: value || '' })}
+								help={__('Дополнительные классы для body карточки (CTA 2, 4)', 'codeweber-gutenberg-blocks')}
+							/>
+							<BlockMetaFields
+								attributes={attributes}
+								setAttributes={setAttributes}
+								fieldKeys={{
+									classKey: 'blockClass',
+									dataKey: 'blockData',
+									idKey: 'blockId',
+								}}
+								labels={{
+									classLabel: __('Block Class', 'codeweber-gutenberg-blocks'),
+									dataLabel: __('Block Data', 'codeweber-gutenberg-blocks'),
+									idLabel: __('Block ID', 'codeweber-gutenberg-blocks'),
+								}}
+							/>
 						</PanelBody>
 					)}
 				</>

@@ -1,12 +1,30 @@
 import { InnerBlocks } from '@wordpress/block-editor';
 import { generateBackgroundClasses } from '../../../utilities/class-generators';
 
+const getBlockWrapperProps = (attributes) => {
+	const { blockClass, blockId, blockData } = attributes;
+	const id = blockId ? String(blockId).replace(/^#/, '') : undefined;
+	const dataAttrs = {};
+	if (blockData && typeof blockData === 'string') {
+		blockData.split(',').forEach((pair) => {
+			const eq = pair.indexOf('=');
+			if (eq > 0) {
+				const key = pair.slice(0, eq).trim();
+				const value = pair.slice(eq + 1).trim();
+				if (key) dataAttrs[`data-${key}`] = value;
+			}
+		});
+	}
+	return { id, ...dataAttrs };
+};
+
 export const CTA6 = ({ attributes, isEditor = false }) => {
 	const {
 		backgroundType,
 		backgroundGradient,
 		sectionClass,
 		containerClass,
+		blockClass,
 	} = attributes;
 
 	// Функция для получения классов секции
@@ -19,13 +37,16 @@ export const CTA6 = ({ attributes, isEditor = false }) => {
 		if (sectionClass) {
 			classes.push(sectionClass);
 		}
+		if (blockClass) classes.push(blockClass);
 
 		return classes.filter(Boolean).join(' ');
 	};
 
+	const wrapperProps = getBlockWrapperProps(attributes);
+
 	if (isEditor) {
 		return (
-			<div className={getSectionClasses()}>
+			<div className={getSectionClasses()} {...wrapperProps}>
 				<InnerBlocks
 					templateLock={false}
 				/>
@@ -34,7 +55,7 @@ export const CTA6 = ({ attributes, isEditor = false }) => {
 	}
 
 	return (
-		<section className={getSectionClasses()}>
+		<section className={getSectionClasses()} {...wrapperProps}>
 			<div
 				className={`container py-15 py-md-17 text-center ${containerClass || ''}`}
 			>

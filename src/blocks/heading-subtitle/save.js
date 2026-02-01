@@ -72,8 +72,12 @@ const HeadingSubtitleSave = ({ attributes }) => {
 		);
 	}
 
-	// Возвращаем элементы без обёртки
-	return <>{elements}</>;
+	// Обёртка с Bootstrap-классами для вертикального позиционирования
+	return (
+		<div className="d-flex flex-column">
+			{elements}
+		</div>
+	);
 };
 
 export default HeadingSubtitleSave;

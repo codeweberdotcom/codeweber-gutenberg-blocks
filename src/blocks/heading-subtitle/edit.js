@@ -397,7 +397,9 @@ const HeadingSubtitleEdit = ({ attributes, setAttributes }) => {
 			</InspectorControls>
 			<div {...blockProps}>
 				{elements.length > 0 ? (
-					elements
+					<div className="d-flex flex-column">
+						{elements}
+					</div>
 				) : (
 					<div>{__('Title Block', 'codeweber-gutenberg-blocks')}</div>
 				)}

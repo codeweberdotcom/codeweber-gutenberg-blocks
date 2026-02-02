@@ -23,6 +23,8 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 	const {
 		mode,
 		wpMenuId,
+		depth,
+		orientation,
 		theme,
 		listType,
 		bulletColor,
@@ -118,7 +120,7 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 						path: `/wp/v2/menu-items?menus=${wpMenuId}&per_page=100`,
 					});
 
-					// Transform menu items to list items
+					// Transform menu items to list items (with parent for depth filtering)
 					const clientIdPrefix = clientId.replace(/[^a-z0-9]/gi, '');
 					const transformedItems = menuItems.map((item, index) => ({
 						id: `item-${clientIdPrefix}-${item.id}-${Date.now()}-${index}`,
@@ -127,6 +129,8 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 							item.title ||
 							__('Untitled', 'codeweber-gutenberg-blocks'),
 						url: item.url || item.meta?.menu_item_url || '#',
+						parent: parseInt(item.meta?.menu_item_parent ?? item.parent ?? 0, 10),
+						wpId: item.id,
 					}));
 
 					setAttributes({ items: transformedItems });
@@ -220,8 +224,33 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 			classes.push(`text-${textColor}`);
 		}
 
+		// Orientation
+		classes.push('d-flex');
+		classes.push((orientation || 'horizontal') === 'vertical' ? 'flex-column' : 'flex-row');
+
 		return classes.join(' ');
 	};
+
+	// Filter items by depth for wp-menu mode (depth 0 = all levels)
+	const getItemsForDisplay = () => {
+		if (mode !== 'wp-menu' || !items?.length) return items || [];
+		const depthLimit = typeof depth === 'number' ? depth : 0;
+		if (depthLimit === 0) return items;
+
+		const getItemDepth = (item, visited = new Set()) => {
+			const parentId = parseInt(item.parent, 10);
+			if (!parentId) return 1;
+			if (visited.has(parentId)) return 1;
+			visited.add(parentId);
+			const parentItem = items.find((i) => parseInt(i.wpId, 10) === parentId);
+			if (!parentItem) return 1;
+			return 1 + getItemDepth(parentItem, visited);
+		};
+
+		return items.filter((item) => getItemDepth(item) <= depthLimit);
+	};
+
+	const displayItems = getItemsForDisplay();
 
 	const blockProps = useBlockProps({
 		id: menuId || undefined,
@@ -299,10 +328,12 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 				</div>
 			)}
 			{(mode === 'wp-menu'
-				? items.length > 0 && !isLoadingMenu
+				? displayItems.length > 0 && !isLoadingMenu
 				: true) && (
 				<ul className={getListClasses()}>
-					{items.map((item, index) => (
+					{displayItems.map((item, displayIndex) => {
+						const actualIndex = items.findIndex((i) => i.id === item.id);
+						return (
 						<li
 							key={item.id}
 							className={itemClass || ''}
@@ -343,7 +374,7 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 												value={item.text}
 												onChange={(value) =>
 													updateItem(
-														index,
+														actualIndex >= 0 ? actualIndex : displayIndex,
 														'text',
 														value
 													)
@@ -369,9 +400,9 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 											<Button
 												isSmall
 												onClick={() =>
-													moveItem(index, 'up')
+													moveItem(actualIndex >= 0 ? actualIndex : displayIndex, 'up')
 												}
-												disabled={index === 0}
+												disabled={actualIndex <= 0}
 												title={__(
 													'Move up',
 													'codeweber-gutenberg-blocks'
@@ -382,10 +413,10 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 											<Button
 												isSmall
 												onClick={() =>
-													moveItem(index, 'down')
+													moveItem(actualIndex >= 0 ? actualIndex : displayIndex, 'down')
 												}
 												disabled={
-													index === items.length - 1
+													actualIndex >= items.length - 1 || actualIndex < 0
 												}
 												title={__(
 													'Move down',
@@ -398,7 +429,7 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 												isSmall
 												isDestructive
 												onClick={() =>
-													removeItem(index)
+													removeItem(actualIndex >= 0 ? actualIndex : displayIndex)
 												}
 												title={__(
 													'Remove',
@@ -427,7 +458,8 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 								)}
 							</span>
 						</li>
-					))}
+					);
+					})}
 				</ul>
 			)}
 			{mode === 'custom' && (

@@ -21,6 +21,14 @@
 			"type": "number",
 			"default": 0
 		},
+		"depth": {
+			"type": "number",
+			"default": 0
+		},
+		"orientation": {
+			"type": "string",
+			"default": "horizontal"
+		},
 		"theme": {
 			"type": "string",
 			"default": "light"

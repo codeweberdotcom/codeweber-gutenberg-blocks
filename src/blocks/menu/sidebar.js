@@ -12,6 +12,7 @@ import {
 	SelectControl,
 	TextControl,
 	TabPanel,
+	RangeControl,
 } from '@wordpress/components';
 import { Icon, menu, list, typography, edit, cog } from '@wordpress/icons';
 import { useState } from '@wordpress/element';
@@ -39,6 +40,8 @@ export const MenuSidebar = ({ attributes, setAttributes, wpMenus = [] }) => {
 	const {
 		mode,
 		wpMenuId,
+		depth,
+		orientation,
 		theme,
 		listType,
 		bulletColor,
@@ -234,40 +237,90 @@ export const MenuSidebar = ({ attributes, setAttributes, wpMenus = [] }) => {
 
 							{/* WordPress Menu Selection - показываем только в режиме WP Menu */}
 							{mode === 'wp-menu' && (
-								<div style={{ marginTop: '16px' }}>
-									<SelectControl
-										label={__(
-											'WordPress Menu',
-											'codeweber-gutenberg-blocks'
-										)}
-										value={wpMenuId || 0}
-										options={[
-											{
-												label: __(
-													'Select a menu...',
-													'codeweber-gutenberg-blocks'
-												),
-												value: 0,
-											},
-											...wpMenus.map((menu) => ({
-												label:
-													menu.name ||
-													`Menu ${menu.id}`,
-												value: menu.id,
-											})),
-										]}
-										onChange={(value) =>
-											setAttributes({
-												wpMenuId: parseInt(value, 10),
-											})
-										}
-										help={__(
-											'Select a WordPress menu to display',
-											'codeweber-gutenberg-blocks'
-										)}
-									/>
-								</div>
+								<>
+									<div style={{ marginTop: '16px' }}>
+										<SelectControl
+											label={__(
+												'WordPress Menu',
+												'codeweber-gutenberg-blocks'
+											)}
+											value={wpMenuId || 0}
+											options={[
+												{
+													label: __(
+														'Select a menu...',
+														'codeweber-gutenberg-blocks'
+													),
+													value: 0,
+												},
+												...wpMenus.map((menu) => ({
+													label:
+														menu.name ||
+														`Menu ${menu.id}`,
+													value: menu.id,
+												})),
+											]}
+											onChange={(value) =>
+												setAttributes({
+													wpMenuId: parseInt(value, 10),
+												})
+											}
+											help={__(
+												'Select a WordPress menu to display',
+												'codeweber-gutenberg-blocks'
+											)}
+										/>
+									</div>
+									<div style={{ marginTop: '16px' }}>
+										<RangeControl
+											label={__(
+												'Menu depth (levels)',
+												'codeweber-gutenberg-blocks'
+											)}
+											value={depth ?? 0}
+											onChange={(value) =>
+												setAttributes({ depth: value ?? 0 })
+											}
+											min={0}
+											max={5}
+											help={__(
+												'0 = all levels, 1 = top level only, 2 = top + 1 sublevel, etc.',
+												'codeweber-gutenberg-blocks'
+											)}
+										/>
+									</div>
+								</>
 							)}
+
+							{/* Orientation - Vertical / Horizontal */}
+							<div
+								className="component-sidebar-title"
+								style={{ marginTop: '16px' }}
+							>
+								<label>
+									{__('Orientation', 'codeweber-gutenberg-blocks')}
+								</label>
+							</div>
+							<div className="button-group-sidebar_50">
+								{[
+									{
+										label: __('Horizontal', 'codeweber-gutenberg-blocks'),
+										value: 'horizontal',
+									},
+									{
+										label: __('Vertical', 'codeweber-gutenberg-blocks'),
+										value: 'vertical',
+									},
+								].map((opt) => (
+									<Button
+										key={opt.value}
+										isPrimary={(orientation || 'horizontal') === opt.value}
+										onClick={() => setAttributes({ orientation: opt.value })}
+									>
+										{opt.label}
+									</Button>
+								))}
+							</div>
 
 							{/* Theme Toggle - Dark/Light */}
 							<div

@@ -9,6 +9,7 @@ import { useBlockProps, RichText } from '@wordpress/block-editor';
 const MenuSave = ({ attributes }) => {
 	const {
 		mode,
+		orientation,
 		theme,
 		listType,
 		bulletColor,
@@ -72,6 +73,10 @@ const MenuSave = ({ attributes }) => {
 		if (textColor) {
 			classes.push(`text-${textColor}`);
 		}
+
+		// Orientation
+		classes.push('d-flex');
+		classes.push((orientation || 'horizontal') === 'vertical' ? 'flex-column' : 'flex-row');
 
 		return classes.join(' ');
 	};

@@ -1,0 +1,42 @@
+{
+	"apiVersion": 3,
+	"name": "codeweber-blocks/nav-menu",
+	"version": "0.1.0",
+	"title": "Nav Menu",
+	"category": "codeweber-gutenberg-elements",
+	"icon": "menu",
+	"description": "Navigation menu container. Add any blocks inside, including Menu block, buttons, search, etc.",
+	"keywords": ["nav", "menu", "navbar", "navigation", "header"],
+	"supports": {
+		"html": false,
+		"customClassName": true,
+		"anchor": true,
+		"innerBlocks": true
+	},
+	"attributes": {
+		"offcanvasTitle": {
+			"type": "string",
+			"default": ""
+		},
+		"showOffcanvasHeader": {
+			"type": "boolean",
+			"default": true
+		},
+		"offcanvasTheme": {
+			"type": "string",
+			"default": "dark"
+		},
+		"bodyClass": {
+			"type": "string",
+			"default": "ms-lg-auto d-flex flex-column h-100"
+		},
+		"navClass": {
+			"type": "string",
+			"default": "navbar-nav"
+		}
+	},
+	"textdomain": "codeweber-gutenberg-blocks",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
+}

@@ -1,0 +1,17 @@
+/**
+ * Nav Menu Block - Editor Styles
+ */
+
+.wp-block-codeweber-blocks-nav-menu {
+	.offcanvas-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 1rem;
+	}
+
+	.offcanvas-body {
+		padding: 1rem;
+		min-height: 100px;
+	}
+}

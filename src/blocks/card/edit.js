@@ -17,6 +17,7 @@ import {
 	ButtonGroup,
 	Button,
 	ComboboxControl,
+	TextControl,
 } from '@wordpress/components';
 import {
 	Icon,
@@ -94,6 +95,7 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 		justifyContent,
 		position,
 		blockClass,
+		cardBodyClass,
 		blockId,
 		blockData,
 		animationEnabled,
@@ -256,6 +258,10 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 		// Alignment classes - применяются к card-body если он включен
 		if (enableCardBody) {
 			classes.push(...generateAlignmentClasses(attributes));
+		}
+
+		if (cardBodyClass) {
+			classes.push(cardBodyClass);
 		}
 
 		return classes.filter(Boolean).join(' ');
@@ -674,6 +680,24 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 											),
 										}}
 									/>
+									{cardType === 'card' && enableCardBody && (
+										<TextControl
+											label={__(
+												'Card Body Class',
+												'codeweber-gutenberg-blocks'
+											)}
+											value={cardBodyClass || ''}
+											placeholder={__(
+												'custom classes',
+												'codeweber-gutenberg-blocks'
+											)}
+											onChange={(value) =>
+												setAttributes({
+													cardBodyClass: value,
+												})
+											}
+										/>
+									)}
 								</PanelBody>
 							)}
 						</>

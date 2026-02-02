@@ -37,6 +37,7 @@ const Save = ({ attributes }) => {
 		backgroundPatternUrl,
 		backgroundOverlay,
 		blockClass,
+		cardBodyClass,
 		blockId,
 		blockData,
 		animationEnabled,
@@ -125,6 +126,10 @@ const Save = ({ attributes }) => {
 		// Alignment classes - применяются к card-body если он включен
 		if (enableCardBody) {
 			classes.push(...generateAlignmentClasses(attributes));
+		}
+
+		if (cardBodyClass) {
+			classes.push(cardBodyClass);
 		}
 
 		return classes.filter(Boolean).join(' ');

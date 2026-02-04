@@ -52,6 +52,8 @@ export const MenuSidebar = ({ attributes, setAttributes, wpMenus = [] }) => {
 		itemClass,
 		linkClass,
 		enableWidget,
+		enableMegaMenu,
+		columns,
 		enableTitle,
 		title,
 		titleTag,
@@ -188,6 +190,43 @@ export const MenuSidebar = ({ attributes, setAttributes, wpMenus = [] }) => {
 									'codeweber-gutenberg-blocks'
 								)}
 							/>
+
+							<ToggleControl
+								label={__(
+									'Enable Mega Menu',
+									'codeweber-gutenberg-blocks'
+								)}
+								checked={enableMegaMenu || false}
+								onChange={(value) =>
+									setAttributes({ enableMegaMenu: value })
+								}
+								help={__(
+									'Use div tag and h6 size for title',
+									'codeweber-gutenberg-blocks'
+								)}
+							/>
+
+							{enableMegaMenu && (
+								<SelectControl
+									label={__(
+										'Columns',
+										'codeweber-gutenberg-blocks'
+									)}
+									value={String(columns ?? 1)}
+									options={[
+										{ label: __('1 column', 'codeweber-gutenberg-blocks'), value: '1' },
+										{ label: __('2 columns', 'codeweber-gutenberg-blocks'), value: '2' },
+										{ label: __('3 columns', 'codeweber-gutenberg-blocks'), value: '3' },
+									]}
+									onChange={(value) =>
+										setAttributes({ columns: parseInt(value, 10) })
+									}
+									help={__(
+										'Number of columns for mega menu layout',
+										'codeweber-gutenberg-blocks'
+									)}
+								/>
+							)}
 
 							{/* Mode Selection */}
 							<div
@@ -732,51 +771,24 @@ export const MenuSidebar = ({ attributes, setAttributes, wpMenus = [] }) => {
 							)}
 							initialOpen={true}
 						>
-							{/* Widget Toggle - показываем только если widget не включен */}
-							{!enableWidget && (
-								<div
-									style={{
-										marginBottom: '16px',
-										padding: '12px',
-										background: '#f0f0f1',
-										borderRadius: '4px',
-									}}
-								>
-									<p
-										style={{
-											margin: '0 0 12px 0',
-											fontSize: '13px',
-											color: '#757575',
-										}}
-									>
-										{__(
-											'Enable Widget Wrapper first to use title feature.',
-											'codeweber-gutenberg-blocks'
-										)}
-									</p>
-								</div>
-							)}
-
 							{/* Title Toggle */}
-							{enableWidget && (
-								<ToggleControl
-									label={__(
-										'Enable Title',
-										'codeweber-gutenberg-blocks'
-									)}
-									checked={enableTitle || false}
-									onChange={(value) =>
-										setAttributes({ enableTitle: value })
-									}
-									help={__(
-										'Add widget title',
-										'codeweber-gutenberg-blocks'
-									)}
-								/>
-							)}
+							<ToggleControl
+								label={__(
+									'Enable Title',
+									'codeweber-gutenberg-blocks'
+								)}
+								checked={enableTitle || false}
+								onChange={(value) =>
+									setAttributes({ enableTitle: value })
+								}
+								help={__(
+									'Add widget title',
+									'codeweber-gutenberg-blocks'
+								)}
+							/>
 
-							{/* Title Settings - показываем только если widget и title включены */}
-							{enableWidget && enableTitle && (
+							{/* Title Settings */}
+							{enableTitle && (
 								<>
 									<div style={{ marginTop: '16px' }}>
 										<HeadingContentControl
@@ -802,8 +814,8 @@ export const MenuSidebar = ({ attributes, setAttributes, wpMenus = [] }) => {
 								</>
 							)}
 
-							{/* Сообщение если widget включен, но title нет */}
-							{enableWidget && !enableTitle && (
+							{/* Сообщение если title не включен */}
+							{!enableTitle && (
 								<div
 									style={{
 										marginTop: '16px',

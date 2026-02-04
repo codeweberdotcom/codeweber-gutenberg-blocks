@@ -38,6 +38,8 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 		itemClass,
 		linkClass,
 		enableWidget,
+		enableMegaMenu,
+		columns,
 		enableTitle,
 		title,
 		titleTag,
@@ -191,6 +193,12 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 
 	// Get list classes
 	const getListClasses = () => {
+		if (enableMegaMenu) {
+			const cols = columns ?? 1;
+			const ccClass = cols === 2 ? 'cc-2' : cols === 3 ? 'cc-3' : '';
+			return ['list-unstyled', ccClass, 'pb-lg-1'].filter(Boolean).join(' ');
+		}
+
 		const classes = [];
 
 		// Base classes from menuClass attribute
@@ -203,28 +211,22 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 		} else if (listType === 'icon') {
 			classes.push('icon-list');
 		}
-		// Если listType === 'none', не добавляем никаких классов списка
 
-		// Bullet color (только если не 'none' и listType не 'none')
 		if (listType !== 'none' && bulletColor && bulletColor !== 'none') {
 			classes.push(`bullet-${bulletColor}`);
 		}
 
-		// Bullet background (only for icon-list)
 		if (listType === 'icon' && bulletBg) {
 			classes.push('bullet-bg');
-			// Add soft color class if bulletColor is set
 			if (bulletColor && bulletColor !== 'none') {
 				classes.push(`bullet-soft-${bulletColor}`);
 			}
 		}
 
-		// Text color
 		if (textColor) {
 			classes.push(`text-${textColor}`);
 		}
 
-		// Orientation
 		classes.push('d-flex');
 		classes.push((orientation || 'horizontal') === 'vertical' ? 'flex-column' : 'flex-row');
 
@@ -272,7 +274,9 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 
 	// Generate title classes
 	const getTitleClasses = () => {
-		const classes = ['widget-title'];
+		const classes = [];
+		if (enableWidget) classes.push('widget-title');
+		if (enableMegaMenu) classes.push('dropdown-header');
 
 		// Color classes
 		let hasColorClass = false;
@@ -297,9 +301,12 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 			}
 		}
 
-		// Typography classes
+		// Typography classes (mega menu: force h6 size)
+		const typographyAttrs = enableMegaMenu
+			? { ...attributes, titleSize: 'h6' }
+			: attributes;
 		const typographyClasses = generateTypographyClasses(
-			attributes,
+			typographyAttrs,
 			'title'
 		);
 		classes.push(...typographyClasses);
@@ -333,10 +340,92 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 				<ul className={getListClasses()}>
 					{displayItems.map((item, displayIndex) => {
 						const actualIndex = items.findIndex((i) => i.id === item.id);
+						const liThemeClass = theme === 'dark' ? 'text-white' : 'text-dark';
+						const liClasses = [liThemeClass, itemClass || ''].filter(Boolean).join(' ');
+						if (enableMegaMenu) {
+							return (
+								<li key={item.id} className={liClasses} style={mode === 'custom' ? { position: 'relative' } : undefined}>
+									{mode === 'custom' ? (
+										<>
+											<a
+												href={item.url || '#'}
+												className="dropdown-item"
+												style={{ pointerEvents: 'none' }}
+											>
+												<RichText
+													tagName="span"
+													value={item.text}
+													onChange={(value) =>
+														updateItem(
+															actualIndex >= 0 ? actualIndex : displayIndex,
+															'text',
+															value
+														)
+													}
+													placeholder={__(
+														'Enter menu item...',
+														'codeweber-gutenberg-blocks'
+													)}
+													withoutInteractiveFormatting
+												/>
+											</a>
+											<div
+												className="menu-item-controls"
+												style={{
+													position: 'absolute',
+													right: '10px',
+													top: '-18px',
+													display: 'flex',
+													gap: '4px',
+													zIndex: 10,
+												}}
+											>
+												<Button
+													isSmall
+													onClick={() =>
+														moveItem(actualIndex >= 0 ? actualIndex : displayIndex, 'up')
+													}
+													disabled={actualIndex <= 0}
+													title={__('Move up', 'codeweber-gutenberg-blocks')}
+												>
+													↑
+												</Button>
+												<Button
+													isSmall
+													onClick={() =>
+														moveItem(actualIndex >= 0 ? actualIndex : displayIndex, 'down')
+													}
+													disabled={
+														actualIndex >= items.length - 1 || actualIndex < 0
+													}
+													title={__('Move down', 'codeweber-gutenberg-blocks')}
+												>
+													↓
+												</Button>
+												<Button
+													isSmall
+													isDestructive
+													onClick={() =>
+														removeItem(actualIndex >= 0 ? actualIndex : displayIndex)
+													}
+													title={__('Remove', 'codeweber-gutenberg-blocks')}
+												>
+													×
+												</Button>
+											</div>
+										</>
+									) : (
+										<a href={item.url || '#'} className="dropdown-item">
+											{item.text}
+										</a>
+									)}
+								</li>
+							);
+						}
 						return (
 						<li
 							key={item.id}
-							className={itemClass || ''}
+							className={liClasses}
 							style={{ position: 'relative' }}
 						>
 							{listType === 'icon' && (
@@ -489,7 +578,7 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 					<div className="widget">
 						{enableTitle && (
 							<RichText
-								tagName={titleTag || 'h4'}
+								tagName={enableMegaMenu ? 'div' : (titleTag || 'h4')}
 								value={title}
 								onChange={(value) =>
 									setAttributes({ title: value })
@@ -504,7 +593,23 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 						{menuContent}
 					</div>
 				) : (
-					menuContent
+					<>
+						{enableTitle && (
+							<RichText
+								tagName={enableMegaMenu ? 'div' : (titleTag || 'h4')}
+								value={title}
+								onChange={(value) =>
+									setAttributes({ title: value })
+								}
+								placeholder={__(
+									'Enter title...',
+									'codeweber-gutenberg-blocks'
+								)}
+								className={getTitleClasses()}
+							/>
+						)}
+						{menuContent}
+					</>
 				)}
 			</div>
 		</>

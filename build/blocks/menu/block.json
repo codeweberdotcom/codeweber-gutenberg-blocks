@@ -102,6 +102,14 @@
       "type": "boolean",
       "default": false
     },
+    "enableMegaMenu": {
+      "type": "boolean",
+      "default": false
+    },
+    "columns": {
+      "type": "number",
+      "default": 1
+    },
     "enableTitle": {
       "type": "boolean",
       "default": false

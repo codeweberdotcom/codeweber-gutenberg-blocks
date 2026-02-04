@@ -5,6 +5,10 @@
  */
 
 import { useBlockProps, RichText } from '@wordpress/block-editor';
+import {
+	generateColorClass,
+	generateTypographyClasses,
+} from '../../utilities/class-generators';
 
 const MenuSave = ({ attributes }) => {
 	const {
@@ -23,6 +27,8 @@ const MenuSave = ({ attributes }) => {
 		itemClass,
 		linkClass,
 		enableWidget,
+		enableMegaMenu,
+		columns,
 		enableTitle,
 		title,
 		titleTag,
@@ -41,6 +47,11 @@ const MenuSave = ({ attributes }) => {
 
 	// Get list classes
 	const getListClasses = () => {
+		if (enableMegaMenu) {
+			const cols = columns ?? 1;
+			const ccClass = cols === 2 ? 'cc-2' : cols === 3 ? 'cc-3' : '';
+			return ['list-unstyled', ccClass, 'pb-lg-1'].filter(Boolean).join(' ');
+		}
 		const classes = [];
 
 		// Base classes from menuClass attribute
@@ -101,7 +112,9 @@ const MenuSave = ({ attributes }) => {
 
 	// Generate title classes
 	const getTitleClasses = () => {
-		const classes = ['widget-title'];
+		const classes = [];
+		if (enableWidget) classes.push('widget-title');
+		if (enableMegaMenu) classes.push('dropdown-header');
 
 		// Color classes
 		let hasColorClass = false;
@@ -126,9 +139,12 @@ const MenuSave = ({ attributes }) => {
 			}
 		}
 
-		// Typography classes
+		// Typography classes (mega menu: force h6 size)
+		const typographyAttrs = enableMegaMenu
+			? { ...attributes, titleSize: 'h6' }
+			: attributes;
 		const typographyClasses = generateTypographyClasses(
-			attributes,
+			typographyAttrs,
 			'title'
 		);
 		classes.push(...typographyClasses);
@@ -141,41 +157,52 @@ const MenuSave = ({ attributes }) => {
 		return classes.filter(Boolean).join(' ');
 	};
 
+	const liThemeClass = theme === 'dark' ? 'text-white' : 'text-dark';
+	const liClasses = [liThemeClass, itemClass || ''].filter(Boolean).join(' ');
+
 	const content = (
 		<ul className={getListClasses()}>
-			{items.map((item) => (
-				<li key={item.id} className={itemClass || ''}>
-					{listType === 'icon' && (
-						<span>
-							<i
-								className={iconClass || 'uil uil-arrow-right'}
-							></i>
-						</span>
-					)}
-					<span
-						className={
-							theme === 'dark' ? 'text-white' : 'text-dark'
-						}
-					>
-						<a
-							href={item.url || '#'}
+			{items.map((item) =>
+				enableMegaMenu ? (
+					<li key={item.id} className={liClasses}>
+						<a href={item.url || '#'} className="dropdown-item">
+							<RichText.Content tagName="span" value={item.text} />
+						</a>
+					</li>
+				) : (
+					<li key={item.id} className={liClasses}>
+						{listType === 'icon' && (
+							<span>
+								<i
+									className={iconClass || 'uil uil-arrow-right'}
+								></i>
+							</span>
+						)}
+						<span
 							className={
-								[
-									theme === 'dark' ? 'text-white' : 'text-dark',
-									linkClass || '',
-								]
-									.filter(Boolean)
-									.join(' ')
+								theme === 'dark' ? 'text-white' : 'text-dark'
 							}
 						>
-							<RichText.Content
-								tagName="span"
-								value={item.text}
-							/>
-						</a>
-					</span>
-				</li>
-			))}
+							<a
+								href={item.url || '#'}
+								className={
+									[
+										theme === 'dark' ? 'text-white' : 'text-dark',
+										linkClass || '',
+									]
+										.filter(Boolean)
+										.join(' ')
+								}
+							>
+								<RichText.Content
+									tagName="span"
+									value={item.text}
+								/>
+							</a>
+						</span>
+					</li>
+				)
+			)}
 		</ul>
 	);
 
@@ -185,7 +212,7 @@ const MenuSave = ({ attributes }) => {
 				<div className="widget">
 					{enableTitle && title && (
 						<RichText.Content
-							tagName={titleTag || 'h4'}
+							tagName={enableMegaMenu ? 'div' : (titleTag || 'h4')}
 							value={title}
 							className={getTitleClasses()}
 						/>
@@ -193,7 +220,16 @@ const MenuSave = ({ attributes }) => {
 					{content}
 				</div>
 			) : (
-				content
+				<>
+					{enableTitle && title && (
+						<RichText.Content
+							tagName={enableMegaMenu ? 'div' : (titleTag || 'h4')}
+							value={title}
+							className={getTitleClasses()}
+						/>
+					)}
+					{content}
+				</>
 			)}
 		</div>
 	);

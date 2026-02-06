@@ -10,11 +10,16 @@ import { RichText } from '@wordpress/block-editor';
 
 const normalizeCell = (c) =>
 	typeof c === 'string'
-		? { content: c, colspan: 1 }
-		: { content: c?.content ?? '', colspan: Math.max(1, c?.colspan ?? 1) };
+		? { content: c, colspan: 1, rowspan: 1 }
+		: {
+				content: c?.content ?? '',
+				colspan: Math.max(1, c?.colspan ?? 1),
+				rowspan: Math.max(1, c?.rowspan ?? 1),
+		  };
 
 const TablesSave = ({ attributes }) => {
 	const {
+		sourceMode,
 		tableDark,
 		tableStriped,
 		tableBordered,
@@ -25,9 +30,44 @@ const TablesSave = ({ attributes }) => {
 		rows,
 	} = attributes;
 
+	// CSV mode: server-side render only, no saved content
+	if (sourceMode === 'csv') {
+		return null;
+	}
+
 	const headerCellsNorm = (headerCells || []).map(normalizeCell);
 	const getRowCells = (row) => (row?.cells || []).map(normalizeCell);
 	const totalHeaderCols = headerCellsNorm.reduce((s, c) => s + c.colspan, 0);
+
+	const getCoveredColsForRow = (rowIndex) => {
+		const covered = new Set();
+		for (let r = 0; r < rows.length; r++) {
+			const cells = getRowCells(rows[r]);
+			let col = 0;
+			let cellIdx = 0;
+			while (col < totalHeaderCols && cellIdx < cells.length) {
+				if (covered.has(`${r}:${col}`)) {
+					col++;
+					continue;
+				}
+				const cell = cells[cellIdx];
+				const rowspan = cell.rowspan ?? 1;
+				const colspan = cell.colspan ?? 1;
+				for (let i = 1; i < rowspan; i++) {
+					for (let j = 0; j < colspan; j++) {
+						covered.add(`${r + i}:${col + j}`);
+					}
+				}
+				col += colspan;
+				cellIdx++;
+			}
+		}
+		let count = 0;
+		for (let c = 0; c < totalHeaderCols; c++) {
+			if (covered.has(`${rowIndex}:${c}`)) count++;
+		}
+		return count;
+	};
 
 	const getTableClasses = () => {
 		const classes = ['table'];
@@ -62,7 +102,9 @@ const TablesSave = ({ attributes }) => {
 				{rows.map((row, rowIndex) => {
 					const rowCells = getRowCells(row);
 					const totalRowCols = rowCells.reduce((s, c) => s + c.colspan, 0);
-					const padColspan = totalHeaderCols - totalRowCols;
+					const coveredCols = getCoveredColsForRow(rowIndex);
+					const freeCols = totalHeaderCols - coveredCols;
+					const padColspan = Math.max(0, freeCols - totalRowCols);
 					return (
 						<tr key={rowIndex}>
 							{rowCells.map((cell, colIndex) => {
@@ -73,6 +115,9 @@ const TablesSave = ({ attributes }) => {
 										key={colIndex}
 										{...cellProps}
 										colSpan={cell.colspan > 1 ? cell.colspan : undefined}
+										rowSpan={
+											(cell.rowspan ?? 1) > 1 ? cell.rowspan : undefined
+										}
 									>
 										<RichText.Content value={cell.content} />
 									</CellTag>

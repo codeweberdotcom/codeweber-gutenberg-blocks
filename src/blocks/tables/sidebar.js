@@ -5,10 +5,14 @@
  */
 
 import { __ } from '@wordpress/i18n';
-import { PanelBody, ToggleControl } from '@wordpress/components';
+import { PanelBody, ToggleControl, SelectControl } from '@wordpress/components';
+import { useEffect, useState } from '@wordpress/element';
+import apiFetch from '@wordpress/api-fetch';
 
 export const TablesSidebar = ({ attributes, setAttributes }) => {
 	const {
+		sourceMode,
+		csvDocumentId,
 		tableDark,
 		tableStriped,
 		tableBordered,
@@ -17,8 +21,48 @@ export const TablesSidebar = ({ attributes, setAttributes }) => {
 		responsive,
 	} = attributes;
 
+	const [documents, setDocuments] = useState([]);
+	const [loadingDocs, setLoadingDocs] = useState(false);
+
+	useEffect(() => {
+		if (sourceMode !== 'csv') return;
+		setLoadingDocs(true);
+		apiFetch({ path: '/codeweber-gutenberg-blocks/v1/documents-csv' })
+			.then((data) => {
+				setDocuments(Array.isArray(data) ? data : []);
+			})
+			.catch(() => setDocuments([]))
+			.finally(() => setLoadingDocs(false));
+	}, [sourceMode]);
+
 	return (
 		<>
+			<PanelBody
+				title={__('Data Source', 'codeweber-gutenberg-blocks')}
+				initialOpen={true}
+			>
+				<SelectControl
+					label={__('Display mode', 'codeweber-gutenberg-blocks')}
+					value={sourceMode || 'manual'}
+					options={[
+						{ value: 'manual', label: __('Manual table', 'codeweber-gutenberg-blocks') },
+						{ value: 'csv', label: __('CSV/XLS/XLSX from Documents', 'codeweber-gutenberg-blocks') },
+					]}
+					onChange={(v) => setAttributes({ sourceMode: v, csvDocumentId: v === 'csv' ? csvDocumentId : 0 })}
+				/>
+				{sourceMode === 'csv' && (
+					<SelectControl
+						label={__('Document (CSV/XLS/XLSX)', 'codeweber-gutenberg-blocks')}
+						value={String(csvDocumentId || '')}
+						options={[
+							{ value: '', label: loadingDocs ? __('Loading…', 'codeweber-gutenberg-blocks') : __('— Select document —', 'codeweber-gutenberg-blocks') },
+							...documents.map((d) => ({ value: String(d.id), label: d.title })),
+						]}
+						disabled={loadingDocs}
+						onChange={(v) => setAttributes({ csvDocumentId: v ? parseInt(v, 10) : 0 })}
+					/>
+				)}
+			</PanelBody>
 			<PanelBody
 				title={__('Table Settings', 'codeweber-gutenberg-blocks')}
 				className="custom-panel-body"

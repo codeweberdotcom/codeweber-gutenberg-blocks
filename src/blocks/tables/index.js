@@ -36,14 +36,31 @@ const deprecationCellFormat = {
 		return {
 			...attributes,
 			headerCells: (attributes.headerCells || []).map((c) =>
-				typeof c === 'string' ? { content: c, colspan: 1 } : c
+				typeof c === 'string'
+					? { content: c, colspan: 1, rowspan: 1 }
+					: { ...c, rowspan: c.rowspan ?? 1 }
 			),
 			rows: (attributes.rows || []).map((row) => ({
 				...row,
 				cells: (row.cells || []).map((c) =>
-					typeof c === 'string' ? { content: c, colspan: 1 } : c
+					typeof c === 'string'
+						? { content: c, colspan: 1, rowspan: 1 }
+						: { ...c, rowspan: c.rowspan ?? 1 }
 				),
 			})),
+		};
+	},
+};
+
+const deprecationSourceMode = {
+	isEligible(attributes) {
+		return attributes.sourceMode === undefined;
+	},
+	migrate(attributes) {
+		return {
+			...attributes,
+			sourceMode: 'manual',
+			csvDocumentId: 0,
 		};
 	},
 };
@@ -54,7 +71,7 @@ const deprecationCellFormat = {
 registerBlockType(metadata, {
 	edit: Edit,
 	save: Save,
-	deprecated: [deprecationCardWrapper, deprecationCellFormat],
+	deprecated: [deprecationCardWrapper, deprecationCellFormat, deprecationSourceMode],
 	title: __('Tables', 'codeweber-gutenberg-blocks'),
 	description: __(
 		'Bootstrap 5 tables. Supports Simple, Dark, Striped, Bordered, Borderless, Hoverable, and Responsive styles.',

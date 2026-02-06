@@ -13,6 +13,14 @@
 		"anchor": true
 	},
 	"attributes": {
+		"sourceMode": {
+			"type": "string",
+			"default": "manual"
+		},
+		"csvDocumentId": {
+			"type": "number",
+			"default": 0
+		},
 		"tableDark": {
 			"type": "boolean",
 			"default": false

@@ -58,6 +58,9 @@ class Plugin {
 
 		// Фильтр для рендеринга social-icons блока
 		add_filter('pre_render_block', __CLASS__ . '::pre_render_social_icons_block', 10, 2);
+
+		// Фильтр для рендеринга tables блока (manual + CSV из documents CPT)
+		add_filter('pre_render_block', __CLASS__ . '::pre_render_tables_block', 10, 2);
 	}
 
 	public static function init(): void {
@@ -92,6 +95,9 @@ class Plugin {
 
 		// Register REST API endpoint for social-icons preview (editor = frontend)
 		add_action('rest_api_init', __CLASS__ . '::register_social_icons_preview_endpoint');
+
+		// Register REST API endpoint for tables: documents list (CSV) and CSV content
+		add_action('rest_api_init', __CLASS__ . '::register_tables_documents_endpoint');
 
 		// Load JavaScript translations after scripts are enqueued
 		add_action('enqueue_block_editor_assets', __CLASS__ . '::loadJSTranslations', 100);
@@ -1600,6 +1606,110 @@ class Plugin {
 		}
 
 		return $pre_render;
+	}
+
+	/**
+	 * Pre-render tables block (manual mode + CSV from documents CPT)
+	 */
+	public static function pre_render_tables_block($pre_render, $parsed_block) {
+		if (!isset($parsed_block['blockName']) || $parsed_block['blockName'] !== 'codeweber-blocks/tables') {
+			return $pre_render;
+		}
+
+		$render_path = self::getBasePath() . '/build/blocks/tables/render.php';
+		if (file_exists($render_path)) {
+			$attributes = $parsed_block['attrs'] ?? [];
+			$content = $parsed_block['innerHTML'] ?? '';
+			$block_instance = new \WP_Block($parsed_block);
+
+			extract([
+				'attributes' => $attributes,
+				'content' => $content,
+				'block' => $block_instance,
+			], EXTR_SKIP);
+
+			ob_start();
+			require $render_path;
+			return ob_get_clean();
+		}
+
+		return $pre_render;
+	}
+
+	/**
+	 * REST API: documents list (CSV only) and CSV content for tables block
+	 */
+	public static function register_tables_documents_endpoint() {
+		register_rest_route('codeweber-gutenberg-blocks/v1', '/documents-csv', [
+			'methods' => 'GET',
+			'callback' => __CLASS__ . '::get_documents_csv_list',
+			'permission_callback' => '__return_true',
+		]);
+		register_rest_route('codeweber-gutenberg-blocks/v1', '/documents/(?P<id>\d+)/csv', [
+			'methods' => 'GET',
+			'callback' => __CLASS__ . '::get_document_csv_content',
+			'permission_callback' => '__return_true',
+			'args' => [
+				'id' => [
+					'required' => true,
+					'type' => 'integer',
+					'validate_callback' => function ($param) {
+						return is_numeric($param) && (int) $param > 0;
+					},
+				],
+			],
+		]);
+	}
+
+	public static function get_documents_csv_list(\WP_REST_Request $request) {
+		if (!post_type_exists('documents')) {
+			return new \WP_REST_Response([], 200);
+		}
+		$posts = get_posts([
+			'post_type' => 'documents',
+			'post_status' => 'publish',
+			'posts_per_page' => -1,
+			'orderby' => 'title',
+			'order' => 'ASC',
+		]);
+		$items = [];
+		foreach ($posts as $post) {
+			$file_url = get_post_meta($post->ID, '_document_file', true);
+			if (!$file_url) continue;
+			$ext = strtolower(pathinfo($file_url, PATHINFO_EXTENSION));
+			if (!in_array($ext, ['csv', 'xls', 'xlsx'], true)) continue;
+			$items[] = [
+				'id' => $post->ID,
+				'title' => $post->post_title,
+				'file_url' => $file_url,
+			];
+		}
+		return new \WP_REST_Response($items, 200);
+	}
+
+	public static function get_document_csv_content(\WP_REST_Request $request) {
+		$post_id = (int) $request->get_param('id');
+		$post = get_post($post_id);
+		if (!$post || $post->post_type !== 'documents') {
+			return new \WP_Error('invalid_document', __('Document not found.', 'codeweber-gutenberg-blocks'), ['status' => 404]);
+		}
+		$file_meta = get_post_meta($post_id, '_document_file', true);
+		if (!$file_meta) {
+			return new \WP_Error('no_file', __('No file attached to this document.', 'codeweber-gutenberg-blocks'), ['status' => 404]);
+		}
+		$file_url = is_numeric($file_meta) ? wp_get_attachment_url((int) $file_meta) : $file_meta;
+		if (!$file_url) {
+			return new \WP_Error('no_file', __('No file attached to this document.', 'codeweber-gutenberg-blocks'), ['status' => 404]);
+		}
+		$ext = strtolower(pathinfo($file_url, PATHINFO_EXTENSION));
+		if (!in_array($ext, ['csv', 'xls', 'xlsx'], true)) {
+			return new \WP_Error('not_supported', __('Document file must be CSV, XLS or XLSX.', 'codeweber-gutenberg-blocks'), ['status' => 400]);
+		}
+		$result = \Codeweber\Blocks\SpreadsheetHelper::parse_from_url($file_url, $ext);
+		if (!empty($result['error'])) {
+			return new \WP_Error('file_unreadable', $result['error'], ['status' => 500]);
+		}
+		return new \WP_REST_Response(['rows' => $result['rows']], 200);
 	}
 }
 

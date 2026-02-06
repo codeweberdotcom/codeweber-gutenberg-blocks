@@ -13,15 +13,23 @@ import {
 } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
 import { Button } from '@wordpress/components';
+import { useEffect, useState } from '@wordpress/element';
+import apiFetch from '@wordpress/api-fetch';
 import { TablesSidebar } from './sidebar';
 
 const normalizeCell = (c) =>
 	typeof c === 'string'
-		? { content: c, colspan: 1 }
-		: { content: c?.content ?? '', colspan: Math.max(1, c?.colspan ?? 1) };
+		? { content: c, colspan: 1, rowspan: 1 }
+		: {
+				content: c?.content ?? '',
+				colspan: Math.max(1, c?.colspan ?? 1),
+				rowspan: Math.max(1, c?.rowspan ?? 1),
+		  };
 
 const TablesEdit = ({ attributes, setAttributes }) => {
 	const {
+		sourceMode,
+		csvDocumentId,
 		tableDark,
 		tableStriped,
 		tableBordered,
@@ -31,6 +39,26 @@ const TablesEdit = ({ attributes, setAttributes }) => {
 		headerCells,
 		rows,
 	} = attributes;
+
+	const [csvPreview, setCsvPreview] = useState({ header: [], rows: [] });
+	const [csvLoading, setCsvLoading] = useState(false);
+
+	useEffect(() => {
+		if (sourceMode !== 'csv' || !csvDocumentId) {
+			setCsvPreview({ header: [], rows: [] });
+			return;
+		}
+		setCsvLoading(true);
+		apiFetch({ path: `/codeweber-gutenberg-blocks/v1/documents/${csvDocumentId}/csv` })
+			.then((data) => {
+				setCsvPreview({
+					header: data?.rows?.[0] || [],
+					rows: data?.rows?.slice(1) || [],
+				});
+			})
+			.catch(() => setCsvPreview({ header: [], rows: [] }))
+			.finally(() => setCsvLoading(false));
+	}, [sourceMode, csvDocumentId]);
 
 	const headerCellsNorm = (headerCells || []).map(normalizeCell);
 	const getRowCells = (row) => (row?.cells || []).map(normalizeCell);
@@ -57,7 +85,7 @@ const TablesEdit = ({ attributes, setAttributes }) => {
 		const currentCells = getRowCells(newRows[rowIndex]);
 		const newCells = [...currentCells];
 		while (newCells.length <= cellIndex) {
-			newCells.push({ content: '', colspan: 1 });
+			newCells.push({ content: '', colspan: 1, rowspan: 1 });
 		}
 		newCells[cellIndex] = { ...newCells[cellIndex], content: value };
 		newRows[rowIndex] = { ...newRows[rowIndex], cells: newCells };
@@ -73,6 +101,7 @@ const TablesEdit = ({ attributes, setAttributes }) => {
 					return {
 						content: (c.content + ' ' + next.content).trim(),
 						colspan: c.colspan + next.colspan,
+						rowspan: c.rowspan ?? 1,
 					};
 				}
 				if (i === index + 1) return null;
@@ -87,11 +116,12 @@ const TablesEdit = ({ attributes, setAttributes }) => {
 		if (!cell || cell.colspan <= 1) return;
 		const newHeader = [
 			...headerCellsNorm.slice(0, index),
-			{ content: cell.content, colspan: 1 },
-			{ content: '', colspan: 1 },
+			{ content: cell.content, colspan: 1, rowspan: 1 },
+			{ content: '', colspan: 1, rowspan: 1 },
 			...Array.from({ length: cell.colspan - 2 }, () => ({
 				content: '',
 				colspan: 1,
+				rowspan: 1,
 			})),
 			...headerCellsNorm.slice(index + 1),
 		];
@@ -109,6 +139,7 @@ const TablesEdit = ({ attributes, setAttributes }) => {
 					return {
 						content: (c.content + ' ' + next.content).trim(),
 						colspan: c.colspan + next.colspan,
+						rowspan: c.rowspan ?? 1,
 					};
 				}
 				if (i === cellIndex + 1) return null;
@@ -126,15 +157,121 @@ const TablesEdit = ({ attributes, setAttributes }) => {
 		const newRows = [...rows];
 		const newCells = [
 			...cells.slice(0, cellIndex),
-			{ content: cell.content, colspan: 1 },
-			{ content: '', colspan: 1 },
+			{ content: cell.content, colspan: 1, rowspan: 1 },
+			{ content: '', colspan: 1, rowspan: 1 },
 			...Array.from({ length: cell.colspan - 2 }, () => ({
 				content: '',
 				colspan: 1,
+				rowspan: 1,
 			})),
 			...cells.slice(cellIndex + 1),
 		];
 		newRows[rowIndex] = { ...newRows[rowIndex], cells: newCells };
+		setAttributes({ rows: newRows });
+	};
+
+	// Layout: для каждой строки — массив { cell, colIndex, cellIndex, rowspan, colspan }
+	// coveredSet: Set "row:col" для покрытых rowspan ячеек
+	const buildBodyLayout = () => {
+		const covered = new Set();
+		const layout = [];
+		for (let r = 0; r < rows.length; r++) {
+			layout[r] = [];
+			const cells = getRowCells(rows[r]);
+			let col = 0;
+			let cellIdx = 0;
+			while (col < totalHeaderCols && cellIdx < cells.length) {
+				if (covered.has(`${r}:${col}`)) {
+					col++;
+					continue;
+				}
+				const cell = cells[cellIdx];
+				const rowspan = cell.rowspan ?? 1;
+				const colspan = cell.colspan ?? 1;
+				layout[r].push({
+					cell,
+					colIndex: col,
+					cellIndex: cellIdx,
+					rowspan,
+					colspan,
+				});
+				for (let i = 1; i < rowspan; i++) {
+					for (let j = 0; j < colspan; j++) {
+						covered.add(`${r + i}:${col + j}`);
+					}
+				}
+				col += colspan;
+				cellIdx++;
+			}
+		}
+		return { layout, covered };
+	};
+
+	const getCoveredColsForRow = (rowIndex) => {
+		const { covered } = buildBodyLayout();
+		let count = 0;
+		for (let c = 0; c < totalHeaderCols; c++) {
+			if (covered.has(`${rowIndex}:${c}`)) count++;
+		}
+		return count;
+	};
+
+	const mergeRowCellsDown = (rowIndex, cellIndex) => {
+		if (rowIndex >= rows.length - 1) return;
+		const { layout } = buildBodyLayout();
+		const rowLayout = layout[rowIndex];
+		const item = rowLayout?.find((x) => x.cellIndex === cellIndex);
+		if (!item) return;
+		const { colIndex, colspan } = item;
+		// Ищем ячейку в следующей строке в той же колонке
+		const nextRowLayout = layout[rowIndex + 1];
+		const nextItem = nextRowLayout?.find(
+			(x) => x.colIndex >= colIndex && x.colIndex < colIndex + colspan
+		);
+		if (!nextItem) return; // уже объединено или нет строки
+		const newRows = [...rows];
+		const currentCells = getRowCells(newRows[rowIndex]);
+		const nextCells = getRowCells(newRows[rowIndex + 1]);
+		const currentCell = currentCells[cellIndex];
+		const nextCell = nextCells[nextItem.cellIndex];
+		const mergedCell = {
+			content: (currentCell.content + ' ' + nextCell.content).trim(),
+			colspan: currentCell.colspan,
+			rowspan: (currentCell.rowspan ?? 1) + (nextCell.rowspan ?? 1),
+		};
+		const newCurrentCells = currentCells.map((c, i) =>
+			i === cellIndex ? mergedCell : c
+		);
+		const newNextCells = nextCells.filter((_, i) => i !== nextItem.cellIndex);
+		newRows[rowIndex] = { ...newRows[rowIndex], cells: newCurrentCells };
+		newRows[rowIndex + 1] = { ...newRows[rowIndex + 1], cells: newNextCells };
+		setAttributes({ rows: newRows });
+	};
+
+	const splitRowCellDown = (rowIndex, cellIndex) => {
+		const cells = getRowCells(rows[rowIndex]);
+		const cell = cells[cellIndex];
+		if (!cell || (cell.rowspan ?? 1) <= 1) return;
+		const newRows = [...rows];
+		const newCurrentCells = cells.map((c, i) =>
+			i === cellIndex ? { ...c, rowspan: 1 } : c
+		);
+		// Вставляем новую ячейку в следующую строку
+		const { layout } = buildBodyLayout();
+		const nextRowLayout = layout[rowIndex + 1];
+		const item = layout[rowIndex]?.find((x) => x.cellIndex === cellIndex);
+		if (!item || !nextRowLayout) return;
+		const { colIndex } = item;
+		const idx = nextRowLayout.findIndex((x) => x.colIndex >= colIndex);
+		const insertIdx = idx === -1 ? nextRowLayout.length : idx;
+		const nextCells = getRowCells(newRows[rowIndex + 1]);
+		const newNextCells = [
+			...nextCells.slice(0, insertIdx),
+			{ content: '', colspan: cell.colspan, rowspan: 1 },
+			...nextCells.slice(insertIdx),
+		];
+		newRows[rowIndex] = { ...newRows[rowIndex], cells: newCurrentCells };
+		newRows[rowIndex + 1] = { ...newRows[rowIndex + 1], cells: newNextCells };
 		setAttributes({ rows: newRows });
 	};
 
@@ -163,7 +300,11 @@ const TablesEdit = ({ attributes, setAttributes }) => {
 	};
 
 	const addRow = () => {
-		const emptyCells = headerCellsNorm.map(() => ({ content: '', colspan: 1 }));
+		const emptyCells = headerCellsNorm.map(() => ({
+			content: '',
+			colspan: 1,
+			rowspan: 1,
+		}));
 		setAttributes({
 			rows: [...rows, { cells: emptyCells }],
 		});
@@ -181,10 +322,15 @@ const TablesEdit = ({ attributes, setAttributes }) => {
 	const updateRowPadCell = (rowIndex, value) => {
 		const rowCells = getRowCells(rows[rowIndex]);
 		const totalRowCols = rowCells.reduce((s, c) => s + c.colspan, 0);
-		const padColspan = totalHeaderCols - totalRowCols;
+		const coveredCols = getCoveredColsForRow(rowIndex);
+		const freeCols = totalHeaderCols - coveredCols;
+		const padColspan = Math.max(0, freeCols - totalRowCols);
 		if (padColspan <= 0) return;
 		const newRows = [...rows];
-		const newCells = [...rowCells, { content: value, colspan: padColspan }];
+		const newCells = [
+			...rowCells,
+			{ content: value, colspan: padColspan, rowspan: 1 },
+		];
 		newRows[rowIndex] = { ...newRows[rowIndex], cells: newCells };
 		setAttributes({ rows: newRows });
 	};
@@ -261,7 +407,21 @@ const TablesEdit = ({ attributes, setAttributes }) => {
 				{rows.map((row, rowIndex) => {
 					const rowCells = getRowCells(row);
 					const totalRowCols = rowCells.reduce((s, c) => s + c.colspan, 0);
-					const padColspan = totalHeaderCols - totalRowCols;
+					const coveredCols = getCoveredColsForRow(rowIndex);
+					const freeCols = totalHeaderCols - coveredCols;
+					const padColspan = Math.max(0, freeCols - totalRowCols);
+					const { layout: bodyLayout } = buildBodyLayout();
+					const canMergeDown = (rIdx, cIdx) => {
+						if (rIdx >= rows.length - 1) return false;
+						const item = bodyLayout[rIdx]?.find((x) => x.cellIndex === cIdx);
+						if (!item) return false;
+						const next = bodyLayout[rIdx + 1]?.find(
+							(x) =>
+								x.colIndex >= item.colIndex &&
+								x.colIndex < item.colIndex + item.colspan
+						);
+						return !!next;
+					};
 					return (
 						<tr key={rowIndex} className="tables-editor-row">
 							{rowCells.map((cell, colIndex) => {
@@ -272,6 +432,9 @@ const TablesEdit = ({ attributes, setAttributes }) => {
 										key={colIndex}
 										{...cellProps}
 										colSpan={cell.colspan > 1 ? cell.colspan : undefined}
+										rowSpan={
+											(cell.rowspan ?? 1) > 1 ? cell.rowspan : undefined
+										}
 									>
 										{colIndex === 0 && (
 											<span className="tables-row-actions">
@@ -322,6 +485,38 @@ const TablesEdit = ({ attributes, setAttributes }) => {
 													⊣
 												</Button>
 											)}
+											{canMergeDown(rowIndex, colIndex) && (
+												<Button
+													isSmall
+													isSecondary
+													onClick={(e) => {
+														e.stopPropagation();
+														mergeRowCellsDown(rowIndex, colIndex);
+													}}
+													title={__(
+														'Merge with cell below',
+														'codeweber-gutenberg-blocks'
+													)}
+												>
+													⇕
+												</Button>
+											)}
+											{(cell.rowspan ?? 1) > 1 && (
+												<Button
+													isSmall
+													isSecondary
+													onClick={(e) => {
+														e.stopPropagation();
+														splitRowCellDown(rowIndex, colIndex);
+													}}
+													title={__(
+														'Split cell vertically',
+														'codeweber-gutenberg-blocks'
+													)}
+												>
+													⊤
+												</Button>
+											)}
 										</div>
 										<RichText
 											tagName="span"
@@ -355,6 +550,30 @@ const TablesEdit = ({ attributes, setAttributes }) => {
 		</table>
 	);
 
+	const isCsvMode = sourceMode === 'csv';
+	const csvTableContent = (
+		<table className={getTableClasses()}>
+			<thead>
+				<tr>
+					{csvPreview.header.map((cell, i) => (
+						<th key={i} scope="col">
+							{String(cell)}
+						</th>
+					))}
+				</tr>
+			</thead>
+			<tbody>
+				{csvPreview.rows.map((row, ri) => (
+					<tr key={ri}>
+						{row.map((cell, ci) => (
+							<td key={ci}>{String(cell)}</td>
+						))}
+					</tr>
+				))}
+			</tbody>
+		</table>
+	);
+
 	return (
 		<>
 			<InspectorControls>
@@ -365,19 +584,39 @@ const TablesEdit = ({ attributes, setAttributes }) => {
 			</InspectorControls>
 
 			<div {...blockProps}>
-				{responsive ? (
-					<div className="table-responsive">{tableContent}</div>
+				{isCsvMode ? (
+					<>
+						{csvLoading ? (
+							<p>{__('Loading CSV…', 'codeweber-gutenberg-blocks')}</p>
+						) : csvDocumentId && (csvPreview.header.length > 0 || csvPreview.rows.length > 0) ? (
+							responsive ? (
+								<div className="table-responsive">{csvTableContent}</div>
+							) : (
+								csvTableContent
+							)
+						) : (
+							<p className="tables-csv-placeholder">
+								{__('Select a CSV document in the sidebar. Table updates when the document changes.', 'codeweber-gutenberg-blocks')}
+							</p>
+						)}
+					</>
 				) : (
-					tableContent
+					<>
+						{responsive ? (
+							<div className="table-responsive">{tableContent}</div>
+						) : (
+							tableContent
+						)}
+						<div className="tables-block-actions">
+							<Button isSmall isSecondary onClick={addColumn}>
+								{__('+ Add Column', 'codeweber-gutenberg-blocks')}
+							</Button>
+							<Button isSmall isSecondary onClick={addRow}>
+								{__('+ Add Row', 'codeweber-gutenberg-blocks')}
+							</Button>
+						</div>
+					</>
 				)}
-				<div className="tables-block-actions">
-					<Button isSmall isSecondary onClick={addColumn}>
-						{__('+ Add Column', 'codeweber-gutenberg-blocks')}
-					</Button>
-					<Button isSmall isSecondary onClick={addRow}>
-						{__('+ Add Row', 'codeweber-gutenberg-blocks')}
-					</Button>
-				</div>
 			</div>
 		</>
 	);

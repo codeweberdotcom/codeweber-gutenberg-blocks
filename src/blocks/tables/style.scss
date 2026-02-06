@@ -1,0 +1,15 @@
+/**
+ * Tables Block - Frontend Styles
+ *
+ * @package CodeWeber Gutenberg Blocks
+ *
+ * Bootstrap 5 table styles are provided by the theme.
+ * This file contains minimal overrides if needed.
+ */
+
+.wp-block-codeweber-blocks-tables {
+	.table-responsive {
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+	}
+}

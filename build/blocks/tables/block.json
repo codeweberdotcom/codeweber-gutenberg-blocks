@@ -1,0 +1,88 @@
+{
+  "apiVersion": 3,
+  "name": "codeweber-blocks/tables",
+  "version": "0.1.0",
+  "title": "Tables",
+  "category": "codeweber-gutenberg-elements",
+  "icon": "editor-table",
+  "description": "Bootstrap 5 tables. Supports Simple, Dark, Striped, Bordered, Borderless, Hoverable, and Responsive styles.",
+  "keywords": [
+    "table",
+    "tables",
+    "bootstrap",
+    "data"
+  ],
+  "supports": {
+    "html": false,
+    "customClassName": true,
+    "anchor": true
+  },
+  "attributes": {
+    "tableDark": {
+      "type": "boolean",
+      "default": false
+    },
+    "tableStriped": {
+      "type": "boolean",
+      "default": false
+    },
+    "tableBordered": {
+      "type": "boolean",
+      "default": false
+    },
+    "tableBorderless": {
+      "type": "boolean",
+      "default": false
+    },
+    "tableHover": {
+      "type": "boolean",
+      "default": false
+    },
+    "responsive": {
+      "type": "boolean",
+      "default": true
+    },
+    "headerCells": {
+      "type": "array",
+      "default": [
+        "#",
+        "First",
+        "Last",
+        "Handle"
+      ]
+    },
+    "rows": {
+      "type": "array",
+      "default": [
+        {
+          "cells": [
+            "1",
+            "Mark",
+            "Otto",
+            "@mdo"
+          ]
+        },
+        {
+          "cells": [
+            "2",
+            "Jacob",
+            "Thornton",
+            "@fat"
+          ]
+        },
+        {
+          "cells": [
+            "3",
+            "Larry the Bird",
+            "@twitter",
+            ""
+          ]
+        }
+      ]
+    }
+  },
+  "textdomain": "codeweber-gutenberg-blocks",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

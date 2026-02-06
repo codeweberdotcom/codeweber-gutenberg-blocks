@@ -159,6 +159,7 @@ class Plugin {
 		'image-simple',
 		'post-grid',
 		'tabs',
+		'tables',
 		'label-plus',
 		'form',
 		'form-field',

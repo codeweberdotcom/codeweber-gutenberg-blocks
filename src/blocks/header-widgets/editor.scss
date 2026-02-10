@@ -1,0 +1,22 @@
+/**
+ * Header Widgets Block - Editor Styles
+ */
+
+.header-widgets-inspector .components-button.has-icon {
+	justify-content: center;
+	min-width: 0;
+	padding: 0;
+}
+
+.header-widgets-container {
+	.block-editor-block-list__layout {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		flex-wrap: wrap;
+	}
+
+	.block-editor-block-list__block {
+		margin-bottom: 0 !important;
+	}
+}

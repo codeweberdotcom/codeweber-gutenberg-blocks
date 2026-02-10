@@ -56,6 +56,14 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 	const [isLoadingMenu, setIsLoadingMenu] = useState(false);
 	const [wpMenus, setWpMenus] = useState([]);
 
+	// Ensure item.text is always a string (API may return { rendered: "..." } for HTML menu items)
+	const safeItemText = (item) => {
+		const t = item?.text;
+		if (typeof t === 'string') return t;
+		if (t && typeof t === 'object' && 'rendered' in t) return t.rendered != null ? String(t.rendered) : '';
+		return '';
+	};
+
 	// Fetch WordPress menus on mount
 	useEffect(() => {
 		const fetchMenus = async () => {
@@ -122,14 +130,28 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 						path: `/wp/v2/menu-items?menus=${wpMenuId}&per_page=100`,
 					});
 
+					// Exclude invalid items (menu-item-invalid: Некорректно)
+					// REST API returns 'invalid', status trash/draft
+					const validItems = (Array.isArray(menuItems) ? menuItems : []).filter(
+						(item) =>
+							item.status !== 'trash' &&
+							item.status !== 'draft' &&
+							!item.invalid &&
+							!item._invalid
+					);
+
 					// Transform menu items to list items (with parent for depth filtering)
+					// title can be object { rendered: "..." } for HTML menu items - always extract string
 					const clientIdPrefix = clientId.replace(/[^a-z0-9]/gi, '');
-					const transformedItems = menuItems.map((item, index) => ({
+					const getItemText = (item) => {
+						const t = item.title;
+						if (typeof t === 'string') return t;
+						if (t && typeof t === 'object' && 'rendered' in t) return t.rendered != null ? String(t.rendered) : '';
+						return __('Untitled', 'codeweber-gutenberg-blocks');
+					};
+					const transformedItems = validItems.map((item, index) => ({
 						id: `item-${clientIdPrefix}-${item.id}-${Date.now()}-${index}`,
-						text:
-							item.title?.rendered ||
-							item.title ||
-							__('Untitled', 'codeweber-gutenberg-blocks'),
+						text: getItemText(item),
 						url: item.url || item.meta?.menu_item_url || '#',
 						parent: parseInt(item.meta?.menu_item_parent ?? item.parent ?? 0, 10),
 						wpId: item.id,
@@ -354,7 +376,7 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 											>
 												<RichText
 													tagName="span"
-													value={item.text}
+													value={safeItemText(item)}
 													onChange={(value) =>
 														updateItem(
 															actualIndex >= 0 ? actualIndex : displayIndex,
@@ -416,7 +438,7 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 										</>
 									) : (
 										<a href={item.url || '#'} className="dropdown-item">
-											{item.text}
+											{safeItemText(item)}
 										</a>
 									)}
 								</li>
@@ -460,7 +482,7 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 										>
 											<RichText
 												tagName="span"
-												value={item.text}
+												value={safeItemText(item)}
 												onChange={(value) =>
 													updateItem(
 														actualIndex >= 0 ? actualIndex : displayIndex,
@@ -542,7 +564,7 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 											.join(' ')}
 										style={{ pointerEvents: 'none' }}
 									>
-										{item.text}
+										{safeItemText(item)}
 									</a>
 								)}
 							</span>

@@ -4,6 +4,47 @@
  * @package CodeWeber Gutenberg Blocks
  */
 
+// Base list styles (editor has these; frontend needs them too)
+.wp-block-codeweber-blocks-menu {
+	position: relative;
+
+	ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+
+		li {
+			span {
+				display: inline-flex;
+				align-items: center;
+			}
+
+			i {
+				font-size: 1rem;
+			}
+
+			a {
+				color: inherit;
+				text-decoration: none;
+			}
+		}
+	}
+
+	// Vertical layout fallback (Bootstrap d-flex/flex-column may not load)
+	ul.d-flex.flex-column {
+		display: flex;
+		flex-direction: column;
+	}
+
+	// Horizontal layout fallback
+	ul.d-flex.flex-row {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+	}
+}
+
 // Dark/Light theme support
 .menu-dark {
 	a {

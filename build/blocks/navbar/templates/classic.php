@@ -1,0 +1,77 @@
+<?php
+/**
+ * Navbar Block - Classic template (no Redux, no topbar).
+ * Layout: model 1 = center nav, model 2 = right nav.
+ *
+ * @package CodeWeber Gutenberg Blocks
+ * @var string $home_link     Home URL.
+ * @var string $logo_variant  Logo variant for get_custom_logo_type: light/dark/both.
+ * @var string $logo_mobile   Mobile logo variant.
+ * @var string $menu_loc        Menu theme_location.
+ * @var bool   $center_nav      Nav center (true) or right (false).
+ * @var int    $menu_depth      Menu depth.
+ * @var string $wrapper_class   Header wrapper classes.
+ * @var string $nav_class       Nav classes (navbar-light/dark etc).
+ * @var string $offcanvas_class Offcanvas theme class.
+ * @var string $navbar_other_inner_blocks Rendered inner blocks for navbar-other.
+ * @var string $after_nav_html            HTML from offcanvas-toggle items, output after </nav>.
+ * @var bool   $for_editor_preview       True when rendering for editor preview (placeholder for InnerBlocks).
+ */
+if (!defined('ABSPATH')) {
+	exit;
+}
+$navbar_other_class = $center_nav ? 'navbar-other w-100 d-flex ms-auto' : 'navbar-other ms-lg-4';
+$walker = class_exists('WP_Bootstrap_Navwalker') ? new WP_Bootstrap_Navwalker() : null;
+$logo_fn = function_exists('get_custom_logo_type') ? 'get_custom_logo_type' : null;
+$logo_fb = has_custom_logo() ? get_custom_logo() : '<span class="site-title">' . esc_html(get_bloginfo('name')) . '</span>';
+?>
+<header class="<?php echo esc_attr($wrapper_class); ?>">
+	<nav class="navbar navbar-expand-lg classic <?php echo esc_attr($nav_class); ?>">
+		<div class="container flex-lg-row flex-nowrap align-items-center">
+			<div class="navbar-brand w-100">
+				<a href="<?php echo esc_url($home_link); ?>"><?php echo $logo_fn ? $logo_fn($logo_variant) : $logo_fb; ?></a>
+				<?php if (is_active_sidebar('navbar-brand-1')) { dynamic_sidebar('navbar-brand-1'); } ?>
+			</div>
+			<div class="navbar-collapse offcanvas offcanvas-nav offcanvas-start <?php echo esc_attr($offcanvas_class); ?>">
+				<div class="offcanvas-header d-lg-none">
+					<a href="<?php echo esc_url($home_link); ?>"><?php echo $logo_fn ? $logo_fn($logo_mobile) : $logo_fb; ?></a>
+					<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+				</div>
+				<div class="offcanvas-body ms-lg-auto d-flex flex-column h-100">
+					<?php
+					if (is_active_sidebar('navbar-offcanvas-before-1')) {
+						dynamic_sidebar('navbar-offcanvas-before-1');
+					}
+					wp_nav_menu([
+						'theme_location' => $menu_loc,
+						'depth'          => $menu_depth,
+						'container'      => '',
+						'menu_class'     => 'navbar-nav',
+						'fallback_cb'    => $walker ? 'WP_Bootstrap_Navwalker::fallback' : 'wp_page_menu',
+						'walker'         => $walker,
+					]);
+					if (is_active_sidebar('navbar-offcanvas-after-1')) {
+						dynamic_sidebar('navbar-offcanvas-after-1');
+					}
+					?>
+				</div>
+			</div>
+			<div class="<?php echo esc_attr($navbar_other_class); ?>">
+				<?php if (is_active_sidebar('navbar-other-1')) { dynamic_sidebar('navbar-other-1'); } ?>
+				<ul class="navbar-nav flex-row align-items-center ms-auto">
+					<?php if (!empty($for_editor_preview)) { ?>
+						<li class="nav-item">
+							<div id="navbar-other-innerblocks" class="navbar-other-innerblocks-slot d-flex align-items-center" style="pointer-events:auto;min-height:40px;min-width:120px;border:1px dashed rgba(0,0,0,.2);border-radius:4px"></div>
+						</li>
+					<?php } elseif (!empty($navbar_other_inner_blocks)) { ?>
+						<?php echo $navbar_other_inner_blocks; ?>
+					<?php } ?>
+					<li class="nav-item d-lg-none">
+						<button class="hamburger offcanvas-nav-btn" aria-label="<?php esc_attr_e('Menu', 'codeweber-gutenberg-blocks'); ?>"><span></span></button>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<?php if (!empty($after_nav_html)) { echo $after_nav_html; } ?>
+</header>

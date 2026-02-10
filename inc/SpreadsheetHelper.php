@@ -186,4 +186,100 @@ class SpreadsheetHelper {
 		@unlink($tmp);
 		return $result;
 	}
+
+	/**
+	 * Get absolute file path for a document.
+	 *
+	 * @param int $document_id Post ID of document.
+	 * @return string|false Absolute path or false.
+	 */
+	public static function get_document_file_path($document_id) {
+		$file_meta = get_post_meta($document_id, '_document_file', true);
+		if (!$file_meta) {
+			return false;
+		}
+		if (is_numeric($file_meta)) {
+			$path = get_attached_file((int) $file_meta);
+			if ($path && file_exists($path)) {
+				return $path;
+			}
+		}
+		$file_url = is_numeric($file_meta) ? wp_get_attachment_url((int) $file_meta) : $file_meta;
+		if (!$file_url) {
+			return false;
+		}
+		return self::url_to_file_path($file_url);
+	}
+
+	/**
+	 * Write rows to document file (CSV or XLSX). XLS is read-only.
+	 *
+	 * @param int   $document_id Post ID of document.
+	 * @param array $rows        Array of rows (each row is array of cell values).
+	 * @return true|\WP_Error
+	 */
+	public static function write_file($document_id, $rows) {
+		$file_path = self::get_document_file_path($document_id);
+		if (!$file_path || !file_exists($file_path)) {
+			return new \WP_Error('file_not_found', __('File not found.', 'codeweber-gutenberg-blocks'));
+		}
+		if (!is_writable($file_path)) {
+			return new \WP_Error('file_not_writable', __('File is not writable.', 'codeweber-gutenberg-blocks'));
+		}
+		$ext = strtolower(pathinfo($file_path, PATHINFO_EXTENSION));
+		if ($ext === 'csv') {
+			return self::write_csv($file_path, $rows);
+		}
+		if ($ext === 'xlsx') {
+			return self::write_xlsx($file_path, $rows);
+		}
+		if ($ext === 'xls') {
+			return new \WP_Error('unsupported', __('XLS format is read-only. Use XLSX or CSV for editing.', 'codeweber-gutenberg-blocks'));
+		}
+		return new \WP_Error('unsupported', __('Unsupported file format for writing.', 'codeweber-gutenberg-blocks'));
+	}
+
+	/**
+	 * Write rows to CSV file.
+	 *
+	 * @param string $file_path Path to CSV file.
+	 * @param array  $rows      Array of rows.
+	 * @return true|\WP_Error
+	 */
+	protected static function write_csv($file_path, $rows) {
+		$fp = fopen($file_path, 'w');
+		if (!$fp) {
+			return new \WP_Error('write_failed', __('Could not open file for writing.', 'codeweber-gutenberg-blocks'));
+		}
+		foreach ($rows as $row) {
+			if (!is_array($row)) {
+				$row = [$row];
+			}
+			fputcsv($fp, $row);
+		}
+		fclose($fp);
+		return true;
+	}
+
+	/**
+	 * Write rows to XLSX file.
+	 *
+	 * @param string $file_path Path to XLSX file.
+	 * @param array  $rows      Array of rows.
+	 * @return true|\WP_Error
+	 */
+	protected static function write_xlsx($file_path, $rows) {
+		$lib = dirname(__DIR__) . '/lib/SimpleXLSXGen.php';
+		if (!file_exists($lib)) {
+			return new \WP_Error('library_not_found', __('XLSX writer library not found.', 'codeweber-gutenberg-blocks'));
+		}
+		require_once $lib;
+		try {
+			$xlsx = \Shuchkin\SimpleXLSXGen::fromArray($rows);
+			$xlsx->saveAs($file_path);
+			return true;
+		} catch (\Throwable $e) {
+			return new \WP_Error('write_failed', $e->getMessage());
+		}
+	}
 }

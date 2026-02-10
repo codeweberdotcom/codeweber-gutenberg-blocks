@@ -1,0 +1,87 @@
+{
+  "apiVersion": 3,
+  "name": "codeweber-blocks/navbar",
+  "version": "0.1.0",
+  "title": "Navbar",
+  "category": "codeweber-gutenberg-blocks",
+  "icon": "menu-alt",
+  "description": "Navbar block with multiple predefined header templates (Classic, Fancy, Extended, etc.)",
+  "keywords": [
+    "navbar",
+    "header",
+    "navigation",
+    "menu"
+  ],
+  "supports": {
+    "html": false,
+    "customClassName": true,
+    "anchor": true,
+    "innerBlocks": true
+  },
+  "attributes": {
+    "navbarType": {
+      "type": "string",
+      "default": "navbar-1"
+    },
+    "menuLocation": {
+      "type": "string",
+      "default": ""
+    },
+    "menuLocationRight": {
+      "type": "string",
+      "default": ""
+    },
+    "menuDepth": {
+      "type": "number",
+      "default": 4
+    },
+    "navbarColor": {
+      "type": "string",
+      "default": "light"
+    },
+    "logoColor": {
+      "type": "string",
+      "default": "auto"
+    },
+    "centerBarTheme": {
+      "type": "string",
+      "default": "auto"
+    },
+    "mobileOffcanvasTheme": {
+      "type": "string",
+      "default": "light"
+    },
+    "stickyNavbar": {
+      "type": "boolean",
+      "default": false
+    },
+    "transparentOnTop": {
+      "type": "boolean",
+      "default": false
+    },
+    "wrapperClass": {
+      "type": "string",
+      "default": ""
+    },
+    "navClass": {
+      "type": "string",
+      "default": ""
+    },
+    "blockClass": {
+      "type": "string",
+      "default": ""
+    },
+    "blockId": {
+      "type": "string",
+      "default": ""
+    },
+    "homeLink": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "textdomain": "codeweber-gutenberg-blocks",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

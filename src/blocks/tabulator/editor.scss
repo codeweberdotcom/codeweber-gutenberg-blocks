@@ -1,0 +1,33 @@
+/**
+ * Tabulator Block - Editor styles
+ *
+ * @package CodeWeber Gutenberg Blocks
+ */
+
+.wp-block-codeweber-blocks-tabulator {
+	.tabulator-block-placeholder,
+	.tabulator-block-loading,
+	.tabulator-block-error,
+	.tabulator-block-empty {
+		padding: 1.5rem;
+		text-align: center;
+		background: #f0f0f0;
+		border: 1px dashed #ccc;
+		border-radius: 4px;
+
+		p {
+			margin: 0;
+			color: #666;
+		}
+	}
+
+	.tabulator-editor-container {
+		width: 100%;
+	}
+
+	.cw-tabulator-export {
+		display: flex;
+		gap: 0.5rem;
+		margin-bottom: 0.75rem;
+	}
+}

@@ -173,33 +173,31 @@ const ButtonSave = ({ attributes }) => {
 		<>
 			{hiddenIframe}
 			{attributes.ButtonType === 'social' ? (
-				<nav
-					className={`nav social${attributes.SocialIconStyle === 'style_2' ? ' social-muted' : ''}`}
+				<a
+					href={LinkUrl}
+					className={
+						attributes.SocialIconStyle === 'style_1'
+							? `btn btn-circle ${attributes.ButtonSize} btn-${attributes.SocialIconClass}`
+							: attributes.SocialIconStyle === 'style_2'
+								? `btn btn-circle ${attributes.ButtonSize} btn-${attributes.SocialIconClass} social-muted`
+								: `btn btn-circle ${attributes.ButtonSize} btn-${attributes.SocialIconClass}`
+					}
+					id={buttonId}
+					data-value={DataValue || undefined}
+					{...(hasGlightbox && {
+						'data-glightbox': DataGlightbox,
+					})}
+					{...(hasGallery && { 'data-gallery': DataGallery })}
+					{...(hasBsToggle && { 'data-bs-toggle': DataBsToggle })}
+					{...(hasBsTarget && {
+						'data-bs-target': `#${DataBsTarget}`,
+					})}
+					{...dataAttributes}
 				>
-					<a
-						href={LinkUrl}
-						className={
-							attributes.SocialIconStyle === 'style_1'
-								? `btn btn-circle ${attributes.ButtonSize} btn-${attributes.SocialIconClass}`
-								: ''
-						}
-						id={buttonId}
-						data-value={DataValue || undefined}
-						{...(hasGlightbox && {
-							'data-glightbox': DataGlightbox,
-						})}
-						{...(hasGallery && { 'data-gallery': DataGallery })}
-						{...(hasBsToggle && { 'data-bs-toggle': DataBsToggle })}
-						{...(hasBsTarget && {
-							'data-bs-target': `#${DataBsTarget}`,
-						})}
-						{...dataAttributes}
-					>
-						<i
-							className={`uil uil-${attributes.SocialIconClass}${attributes.SocialIconClass === 'facebook' ? '-f' : ''}`}
-						></i>
-					</a>
-				</nav>
+					<i
+						className={`uil uil-${attributes.SocialIconClass}${attributes.SocialIconClass === 'facebook' ? '-f' : ''}`}
+					></i>
+				</a>
 			) : (
 				<a
 					href={linkProps.href || undefined}

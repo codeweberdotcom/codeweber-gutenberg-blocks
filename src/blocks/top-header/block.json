@@ -1,0 +1,34 @@
+{
+	"apiVersion": 3,
+	"name": "codeweber-blocks/top-header",
+	"version": "0.1.0",
+	"title": "Top Header",
+	"category": "codeweber-gutenberg-blocks",
+	"icon": "arrow-up-alt",
+	"description": "Top bar with address, email and phone from Redux. Use in custom headers.",
+	"keywords": ["top header", "topbar", "header", "address", "email", "phone"],
+	"supports": {
+		"html": false,
+		"customClassName": true,
+		"anchor": true
+	},
+	"attributes": {
+		"showAddress": { "type": "boolean", "default": true },
+		"showEmail": { "type": "boolean", "default": true },
+		"showPhone": { "type": "boolean", "default": true },
+		"phones": {
+			"type": "array",
+			"default": ["phone_01"]
+		},
+		"backgroundColor": { "type": "string", "default": "primary" },
+		"textColor": { "type": "string", "default": "white" },
+		"blockClass": { "type": "string", "default": "" },
+		"blockId": { "type": "string", "default": "" },
+		"blockData": { "type": "string", "default": "" }
+	},
+	"textdomain": "codeweber-gutenberg-blocks",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"render": "file:./render.php"
+}

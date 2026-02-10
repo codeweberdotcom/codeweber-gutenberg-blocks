@@ -1,0 +1,62 @@
+<?php
+/**
+ * Navbar Block - Fancy template (no Redux, no topbar).
+ * Layout: model 4 = right nav, model 5 = center nav.
+ *
+ * @package CodeWeber Gutenberg Blocks
+ * @var string $home_link     Home URL.
+ * @var string $logo_variant  Logo variant for get_custom_logo_type.
+ * @var string $logo_mobile   Mobile logo variant.
+ * @var string $menu_loc        Menu theme_location.
+ * @var bool   $center_nav      Nav center (true) or right (false).
+ * @var int    $menu_depth      Menu depth.
+ * @var string $wrapper_class   Header wrapper classes.
+ * @var string $nav_class       Nav classes.
+ * @var string $offcanvas_class              Offcanvas theme class.
+ * @var string $navbar_collapse_wrapper_class Center bar classes (bg-light/dark, navbar-light/dark) for fancy.
+ */
+if (!defined('ABSPATH')) {
+	exit;
+}
+$navbar_other_class = $center_nav ? 'navbar-other w-100 d-flex ms-auto' : 'navbar-other ms-lg-4';
+$walker = class_exists('WP_Bootstrap_Navwalker') ? new WP_Bootstrap_Navwalker() : null;
+$logo_fn = function_exists('get_custom_logo_type') ? 'get_custom_logo_type' : null;
+$logo_fb = has_custom_logo() ? get_custom_logo() : '<span class="site-title">' . esc_html(get_bloginfo('name')) . '</span>';
+?>
+<header class="<?php echo esc_attr($wrapper_class); ?>">
+	<nav class="navbar navbar-expand-lg fancy <?php echo esc_attr($nav_class); ?>">
+		<div class="container">
+			<div class="navbar-collapse-wrapper d-flex flex-row flex-nowrap w-100 justify-content-between align-items-center <?php echo esc_attr($navbar_collapse_wrapper_class ?: 'bg-light navbar-light'); ?>">
+				<div class="navbar-brand w-100">
+					<a href="<?php echo esc_url($home_link); ?>"><?php echo $logo_fn ? $logo_fn($logo_variant) : $logo_fb; ?></a>
+				</div>
+				<div class="navbar-collapse offcanvas offcanvas-nav offcanvas-start <?php echo esc_attr($offcanvas_class); ?>">
+					<div class="offcanvas-header d-lg-none">
+						<a href="<?php echo esc_url($home_link); ?>"><?php echo $logo_fn ? $logo_fn($logo_mobile) : $logo_fb; ?></a>
+						<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+					</div>
+					<div class="offcanvas-body ms-lg-auto d-flex flex-column h-100">
+						<?php
+						wp_nav_menu([
+							'theme_location' => $menu_loc,
+							'depth'          => $menu_depth,
+							'container'      => '',
+							'menu_class'     => 'navbar-nav',
+							'fallback_cb'    => $walker ? 'WP_Bootstrap_Navwalker::fallback' : 'wp_page_menu',
+							'walker'         => $walker,
+						]);
+						?>
+					</div>
+				</div>
+				<div class="<?php echo esc_attr($navbar_other_class); ?>">
+					<ul class="navbar-nav flex-row align-items-center ms-auto">
+						<li class="nav-item d-lg-none">
+							<button class="hamburger offcanvas-nav-btn" aria-label="<?php esc_attr_e('Menu', 'codeweber-gutenberg-blocks'); ?>"><span></span></button>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</nav>
+	<?php if (!empty($after_nav_html)) { echo $after_nav_html; } ?>
+</header>

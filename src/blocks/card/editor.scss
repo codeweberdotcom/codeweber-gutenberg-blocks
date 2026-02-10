@@ -18,6 +18,10 @@
 	.block-editor-inner-blocks {
 		min-height: 50px;
 	}
+
+	.block-editor-block-list__layout > div {
+		display: inline-flex !important;
+	}
 	
 	/* Визуализация card-body в редакторе */
 	&.card .card-body {

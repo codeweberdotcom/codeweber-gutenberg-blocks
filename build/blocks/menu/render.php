@@ -56,6 +56,12 @@ if ($mode === 'wp-menu' && $wpMenuId > 0) {
 	$itemsToRender = []; // для fallback
 	$menu_items = wp_get_nav_menu_items($wpMenuId);
 	if ($menu_items && !is_wp_error($menu_items)) {
+		// Exclude invalid/deleted items (trash status, non-existent objects)
+		$menu_items = array_filter($menu_items, function ($item) {
+			return empty($item->_invalid);
+		});
+		$menu_items = array_values($menu_items);
+
 		foreach ($menu_items as $menu_item) {
 			$itemsToRender[] = array(
 				'id' => 'menu-item-' . $menu_item->ID,
@@ -253,12 +259,10 @@ if ($enableMegaMenu) {
 	} else {
 		$menuContent = '<p>' . esc_html__('No menu items found.', 'codeweber-gutenberg-blocks') . '</p>';
 	}
-} elseif ($mode === 'wp-menu' && $wpMenuId > 0 && class_exists('WP_Bootstrap_Navwalker')) {
-	// Используем wp_nav_menu с WP_Bootstrap_Navwalker (Bootstrap dropdown, data-bs-toggle)
+} elseif ($mode === 'wp-menu' && $wpMenuId > 0 && class_exists('WP_Bootstrap_Navwalker') && $orientation !== 'vertical') {
+	// wp_nav_menu + Walker только для горизонтального меню (navbar-nav)
+	// Вертикальное меню — через fallback (list-unstyled, d-flex, flex-column)
 	$bootstrap_menu_class = 'navbar-nav';
-	if ($orientation === 'vertical') {
-		$bootstrap_menu_class .= ' flex-column';
-	}
 	$nav_args = array(
 		'menu'            => $wpMenuId,
 		'depth'           => $depth,

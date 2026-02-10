@@ -1,0 +1,54 @@
+/**
+ * Navbar Block - Editor Styles
+ */
+
+.wp-block-codeweber-blocks-navbar {
+	// ServerSideRender shows theme output
+	border: 1px dashed #ddd;
+	border-radius: 4px;
+	min-height: 60px;
+
+	// Prevent interaction with preview HTML, but allow InnerBlocks in #navbar-other-innerblocks
+	> div {
+		pointer-events: none;
+
+		#navbar-other-innerblocks {
+			pointer-events: auto;
+		}
+	}
+
+	// Inner blocks container in navbar-other - flex layout
+	#navbar-other-innerblocks > div > div {
+		display: flex;
+		align-items: center;
+	}
+
+	// Inner blocks in navbar-other - no margin
+	.block-editor-block-list__block,
+	.wp-block-codeweber-blocks-social-icons {
+		margin-bottom: 0 !important;
+	}
+
+	// Compact block appender - smaller add block button, gray for visibility on light/dark
+	.block-editor-button-block-appender,
+	.block-editor-inner-blocks__content .block-editor-button-block-appender {
+		min-width: 28px !important;
+		width: 28px !important;
+		height: 28px !important;
+		padding: 4px !important;
+		color: #6c757d !important;
+		background-color: rgba(108, 117, 125, 0.15) !important;
+		border: 1px solid rgba(108, 117, 125, 0.35) !important;
+
+		&:hover {
+			color: #495057 !important;
+			background-color: rgba(108, 117, 125, 0.25) !important;
+			border-color: rgba(108, 117, 125, 0.5) !important;
+		}
+
+		svg {
+			width: 16px !important;
+			height: 16px !important;
+		}
+	}
+}

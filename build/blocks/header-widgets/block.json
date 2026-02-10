@@ -1,0 +1,60 @@
+{
+  "apiVersion": 3,
+  "name": "codeweber-blocks/header-widgets",
+  "version": "0.1.0",
+  "title": "Header Widgets",
+  "category": "codeweber-gutenberg-blocks",
+  "icon": "layout",
+  "description": "Header/navbar elements: offcanvas toggle, buttons. Enable/disable and reorder items.",
+  "keywords": [
+    "header",
+    "widgets",
+    "navbar",
+    "offcanvas",
+    "button"
+  ],
+  "parent": [
+    "codeweber-blocks/navbar"
+  ],
+  "supports": {
+    "html": false,
+    "customClassName": false,
+    "anchor": false
+  },
+  "attributes": {
+    "items": {
+      "type": "array",
+      "default": [
+        {
+          "id": "search-1",
+          "type": "search",
+          "enabled": true,
+          "order": 0,
+          "iconClass": "uil uil-search",
+          "offcanvasTarget": "#offcanvas-search"
+        },
+        {
+          "id": "offcanvas-info-1",
+          "type": "offcanvas-info",
+          "enabled": true,
+          "order": 1,
+          "iconClass": "uil uil-info-circle",
+          "offcanvasTarget": "#offcanvas-info"
+        },
+        {
+          "id": "custom-offcanvas-1",
+          "type": "custom-offcanvas",
+          "enabled": true,
+          "order": 2,
+          "iconClass": "uil uil-info-circle",
+          "offcanvasTarget": "#offcanvas-info"
+        }
+      ]
+    }
+  },
+  "textdomain": "codeweber-gutenberg-blocks",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}

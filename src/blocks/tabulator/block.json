@@ -1,0 +1,66 @@
+{
+  "apiVersion": 3,
+  "name": "codeweber-blocks/tabulator",
+  "version": "0.1.0",
+  "title": "Tabulator",
+  "category": "codeweber-gutenberg-elements",
+  "icon": "editor-table",
+  "description": "Interactive Tabulator table from Documents (CSV/XLS/XLSX). Supports sorting, filtering, resizable columns.",
+  "keywords": ["tabulator", "table", "spreadsheet", "data", "documents"],
+  "supports": {
+    "html": false,
+    "customClassName": true,
+    "anchor": true
+  },
+  "attributes": {
+    "documentId": {
+      "type": "number",
+      "default": 0
+    },
+    "height": {
+      "type": "string",
+      "default": "400px"
+    },
+    "layout": {
+      "type": "string",
+      "default": "fitColumns"
+    },
+    "theme": {
+      "type": "string",
+      "default": "midnight"
+    },
+    "sortable": {
+      "type": "boolean",
+      "default": true
+    },
+    "resizableColumns": {
+      "type": "boolean",
+      "default": true
+    },
+    "movableColumns": {
+      "type": "boolean",
+      "default": true
+    },
+    "headerFilter": {
+      "type": "boolean",
+      "default": true
+    },
+    "columnMinWidth": {
+      "type": "number",
+      "default": 80
+    },
+    "columnMaxWidth": {
+      "type": "number",
+      "default": 400
+    },
+    "exportEnabled": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "textdomain": "codeweber-gutenberg-blocks",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}

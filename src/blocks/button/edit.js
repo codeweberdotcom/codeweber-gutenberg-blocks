@@ -7,7 +7,7 @@ import { LinkTypeSelector } from '../../utilities/link_type';
 import { ButtonSidebar } from '../button/sidebar';
 import { getClassNames } from '../button/buttonclass';
 import { __ } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
+import { useState, useRef, useLayoutEffect } from '@wordpress/element';
 
 // Функция для обработки иконки
 
@@ -38,6 +38,13 @@ const ButtonEdit = ({ attributes, setAttributes }) => {
 	} = attributes;
 
 	const [iconPickerOpen, setIconPickerOpen] = useState(false);
+	const buttonContentRef = useRef(null);
+
+	// Override white-space: pre-wrap from RichText (inline style can't be overridden by CSS)
+	useLayoutEffect(() => {
+		const el = buttonContentRef.current?.querySelector?.('.button-content');
+		if (el) el.style.whiteSpace = 'nowrap';
+	});
 
 	const onChangeButtonContent = (newContent) =>
 		setAttributes({ ButtonContent: newContent });
@@ -108,37 +115,32 @@ const ButtonEdit = ({ attributes, setAttributes }) => {
 					/>
 				</InspectorControls>
 				{ButtonType === 'social' ? (
-					<nav
-						className={`nav social${SocialIconStyle === 'style_2' ? ' social-muted' : ''}`}
+					<a
+						href="#"
+						className={
+							SocialIconStyle === 'style_1'
+								? `btn btn-circle ${ButtonSize} btn-${SocialIconClass}`
+								: SocialIconStyle === 'style_2'
+									? `btn btn-circle ${ButtonSize} btn-${SocialIconClass} social-muted`
+									: `btn btn-circle ${ButtonSize} btn-${SocialIconClass}`
+						}
+						onClick={(event) => {
+							event.preventDefault();
+							event.stopPropagation();
+							return false;
+						}}
+						data-value={DataValue || undefined}
+						{...(hasBsToggle && {
+							'data-bs-toggle': DataBsToggle,
+						})}
+						{...(hasBsTarget && {
+							'data-bs-target': `#${DataBsTarget}`,
+						})}
 					>
-						<a
-							href="#"
-							className={
-								SocialIconStyle === 'style_1'
-									? `btn btn-circle ${ButtonSize} btn-${SocialIconClass}`
-									: ''
-							}
-							onClick={(event) => {
-								event.preventDefault();
-								event.stopPropagation();
-								return false;
-							}}
-							data-value={DataValue || undefined}
-							// DON'T add glightbox attributes in editor
-							// {...(hasGlightbox && { 'data-glightbox': DataGlightbox })}
-							// {...(hasGallery && { 'data-gallery': DataGallery })}
-							{...(hasBsToggle && {
-								'data-bs-toggle': DataBsToggle,
-							})}
-							{...(hasBsTarget && {
-								'data-bs-target': `#${DataBsTarget}`,
-							})}
-						>
-							<i
-								className={`uil uil-${SocialIconClass}${SocialIconClass === 'facebook' ? '-f' : ''}`}
-							></i>
-						</a>
-					</nav>
+						<i
+							className={`uil uil-${SocialIconClass}${SocialIconClass === 'facebook' ? '-f' : ''}`}
+						></i>
+					</a>
 				) : (
 					<a
 						{...blockProps}
@@ -167,16 +169,18 @@ const ButtonEdit = ({ attributes, setAttributes }) => {
 						{getIconComponent(SocialIcon)}
 
 						{!shouldHideText && (
-							<RichText
-								tagName="span"
-								value={ButtonContent}
-								onChange={onChangeButtonContent}
-								placeholder={__(
-									'Enter button text...',
-									'codeweber-gutenberg-blocks'
-								)}
-								className="button-content"
-							/>
+							<span ref={buttonContentRef}>
+								<RichText
+									tagName="span"
+									value={ButtonContent}
+									onChange={onChangeButtonContent}
+									placeholder={__(
+										'Enter button text...',
+										'codeweber-gutenberg-blocks'
+									)}
+									className="button-content"
+								/>
+							</span>
 						)}
 
 						{getIconComponent(RightIcon)}

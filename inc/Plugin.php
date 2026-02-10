@@ -29,6 +29,12 @@ class Plugin {
 		// Enqueue global editor styles
 		add_action('enqueue_block_editor_assets', __CLASS__ . '::enqueueEditorGlobalStyles');
 
+		// Inject editor styles into iframe (for WP 6.3+ iframed editor)
+		add_filter('block_editor_settings_all', __CLASS__ . '::addEditorGlobalStylesToSettings', 10, 2);
+
+		// Header widgets blocks: only in CPT header
+		add_filter('allowed_block_types_all', __CLASS__ . '::filterHeaderWidgetsBlocksByPostType', 10, 2);
+
 		// Enqueue frontend scripts
 		add_action('wp_enqueue_scripts', __CLASS__ . '::gutenbergBlocksExternalLibraries');
 
@@ -61,6 +67,12 @@ class Plugin {
 
 		// Фильтр для рендеринга tables блока (manual + CSV из documents CPT)
 		add_filter('pre_render_block', __CLASS__ . '::pre_render_tables_block', 10, 2);
+
+		// Фильтр для рендеринга navbar блока
+		add_filter('pre_render_block', __CLASS__ . '::pre_render_navbar_block', 10, 2);
+
+		// Фильтр для рендеринга top-header блока
+		add_filter('pre_render_block', __CLASS__ . '::pre_render_top_header_block', 10, 2);
 	}
 
 	public static function init(): void {
@@ -99,6 +111,12 @@ class Plugin {
 		// Register REST API endpoint for tables: documents list (CSV) and CSV content
 		add_action('rest_api_init', __CLASS__ . '::register_tables_documents_endpoint');
 
+		// Register REST API endpoint for navbar block preview (editor)
+		add_action('rest_api_init', __CLASS__ . '::register_navbar_preview_endpoint');
+
+		// Register REST API endpoint for sidebars list
+		add_action('rest_api_init', __CLASS__ . '::register_sidebars_endpoint');
+
 		// Load JavaScript translations after scripts are enqueued
 		add_action('enqueue_block_editor_assets', __CLASS__ . '::loadJSTranslations', 100);
 	}
@@ -122,9 +140,12 @@ class Plugin {
 		wp_enqueue_style(
 			'codeweber-blocks-editor-global',
 			self::getBaseUrl() . '/includes/css/editor-global.css',
-			[],
+			['wp-edit-blocks'],
 			GUTENBERG_BLOCKS_VERSION
 		);
+
+		// Tabulator CSS for tabulator block (script loaded via block dependency)
+		wp_enqueue_style('tabulator-editor');
 
 		// Enqueue scrollCue init script for editor
 		wp_enqueue_script(
@@ -138,15 +159,61 @@ class Plugin {
 		// Pass plugin URL to JavaScript for placeholder image via inline script
 		wp_add_inline_script(
 			'codeweber-blocks-scrollcue-init',
-			'window.codeweberBlocksData = window.codeweberBlocksData || {}; window.codeweberBlocksData.pluginUrl = ' . wp_json_encode(self::getBaseUrl()) . ';',
+			'window.codeweberBlocksData = window.codeweberBlocksData || {}; window.codeweberBlocksData.pluginUrl = ' . wp_json_encode(rtrim(self::getBaseUrl(), '/') . '/') . ';',
 			'before'
 		);
+	}
+
+	/**
+	 * Add editor global styles to block editor settings (for iframed editor).
+	 *
+	 * @param array<string, mixed> $editor_settings
+	 * @param \WP_Block_Editor_Context $editor_context
+	 * @return array<string, mixed>
+	 */
+	public static function addEditorGlobalStylesToSettings(array $editor_settings, $editor_context): array {
+		$css_file = dirname(__DIR__) . '/includes/css/editor-global.css';
+		if (!is_readable($css_file)) {
+			return $editor_settings;
+		}
+		$css = file_get_contents($css_file);
+		if ($css === false) {
+			return $editor_settings;
+		}
+		$editor_settings['styles'] = $editor_settings['styles'] ?? [];
+		$editor_settings['styles'][] = ['css' => $css];
+		return $editor_settings;
+	}
+
+	/**
+	 * Restrict header widgets blocks to CPT header only.
+	 *
+	 * @param bool|string[] $allowed_block_types
+	 * @param \WP_Block_Editor_Context $block_editor_context
+	 * @return bool|string[]
+	 */
+	public static function filterHeaderWidgetsBlocksByPostType($allowed_block_types, $block_editor_context) {
+		$header_blocks = ['codeweber-blocks/header-widgets'];
+
+		$post = $block_editor_context->post ?? null;
+		$post_type = $post ? get_post_type($post) : '';
+
+		if ($post_type === 'header') {
+			return $allowed_block_types;
+		}
+
+		if (is_array($allowed_block_types)) {
+			return array_values(array_diff($allowed_block_types, $header_blocks));
+		}
+
+		return $allowed_block_types;
 	}
 
 	public static function getBlocksName(): array {
 	return [
 		'accordion',
 		'avatar',
+		'header-widgets',
 		'banners',
 		'button',
 		'section',
@@ -166,6 +233,7 @@ class Plugin {
 		'post-grid',
 		'tabs',
 		'tables',
+		'tabulator',
 		'label-plus',
 		'form',
 		'form-field',
@@ -178,7 +246,9 @@ class Plugin {
 		'widget',
 		'contacts',
 		'cta',
+		'navbar',
 		'social-icons',
+		'top-header',
 	];
 	}
 
@@ -355,12 +425,48 @@ class Plugin {
 		// Фильтр для перевода метаданных блоков (title, description)
 		add_filter('block_type_metadata_settings', [__CLASS__, 'translate_block_metadata'], 10, 2);
 
+		// Tabulator for tabulator block - register early so block can depend on it
+		$tabulator_base = rtrim(self::getBaseUrl(), '/') . '/assets/vendor/tabulator/';
+		wp_register_style(
+			'tabulator-editor',
+			$tabulator_base . 'tabulator_midnight.min.css',
+			[],
+			'6.3.0'
+		);
+		wp_register_style(
+			'tabulator-editor-modern',
+			$tabulator_base . 'tabulator_modern.min.css',
+			[],
+			'6.3.0'
+		);
+		wp_register_style(
+			'tabulator-editor-default',
+			$tabulator_base . 'tabulator.min.css',
+			[],
+			'6.3.0'
+		);
+		wp_register_script(
+			'tabulator-editor',
+			$tabulator_base . 'tabulator.min.js',
+			[],
+			'6.3.0',
+			false
+		);
+
 		foreach (self::getBlocksName() as $block_name) {
 			$block_type = register_block_type($blocks_path . $block_name);
 
 			// Устанавливаем переводы СРАЗУ после успешной регистрации
 			if ($block_type) {
 				$script_handle = 'codeweber-blocks-' . $block_name . '-editor-script';
+
+				// Tabulator block: add tabulator-editor as dependency
+				if ($block_name === 'tabulator') {
+					global $wp_scripts;
+					if (isset($wp_scripts->registered[$script_handle])) {
+						$wp_scripts->registered[$script_handle]->deps[] = 'tabulator-editor';
+					}
+				}
 
 				// Проверяем что скрипт действительно зарегистрирован
 				global $wp_scripts;
@@ -1178,11 +1284,36 @@ class Plugin {
 			'permission_callback' => '__return_true',
 		]);
 
-		// #region agent log
-		$log_entry = json_encode(['location' => 'Plugin.php:1161', 'message' => 'register_contacts_endpoint completed', 'data' => [], 'timestamp' => time() * 1000, 'sessionId' => 'debug-session', 'runId' => 'run1', 'hypothesisId' => 'ALL']);
-		@file_put_contents(ABSPATH . '.cursor/debug.log', $log_entry . "\n", FILE_APPEND);
-		error_log('DEBUG: register_contacts_endpoint completed');
-		// #endregion
+	}
+
+	/**
+	 * Register REST API endpoint for sidebars list (navbar widget areas)
+	 */
+	public static function register_sidebars_endpoint() {
+		register_rest_route('codeweber-gutenberg-blocks/v1', '/sidebars', [
+			'methods' => 'GET',
+			'callback' => __CLASS__ . '::get_sidebars_callback',
+			'permission_callback' => '__return_true',
+		]);
+	}
+
+	/**
+	 * REST: list of registered sidebars (id, name)
+	 */
+	public static function get_sidebars_callback() {
+		global $wp_registered_sidebars;
+		$list = [
+			['value' => '', 'label' => __('— None —', 'codeweber-gutenberg-blocks')],
+		];
+		if (is_array($wp_registered_sidebars)) {
+			foreach ($wp_registered_sidebars as $id => $sidebar) {
+				$list[] = [
+					'value' => $id,
+					'label' => isset($sidebar['name']) ? $sidebar['name'] : $id,
+				];
+			}
+		}
+		return new \WP_REST_Response(['sidebars' => $list], 200);
 	}
 
 	/**
@@ -1637,6 +1768,63 @@ class Plugin {
 	}
 
 	/**
+	 * Pre-render navbar block (always uses PHP render via theme header templates)
+	 */
+	public static function pre_render_navbar_block($pre_render, $parsed_block) {
+		if (!isset($parsed_block['blockName']) || $parsed_block['blockName'] !== 'codeweber-blocks/navbar') {
+			return $pre_render;
+		}
+
+		$render_path = self::getBasePath() . '/build/blocks/navbar/render.php';
+		if (file_exists($render_path)) {
+			$attributes = $parsed_block['attrs'] ?? [];
+			$content = $parsed_block['innerHTML'] ?? '';
+			$block_instance = new \WP_Block($parsed_block);
+
+			extract([
+				'attributes' => $attributes,
+				'content' => $content,
+				'block' => $block_instance,
+				'parsed_block' => $parsed_block,
+			], EXTR_SKIP);
+
+			ob_start();
+			require $render_path;
+			return ob_get_clean();
+		}
+
+		return $pre_render;
+	}
+
+	/**
+	 * Pre-render top-header block
+	 */
+	public static function pre_render_top_header_block($pre_render, $parsed_block) {
+		if (!isset($parsed_block['blockName']) || $parsed_block['blockName'] !== 'codeweber-blocks/top-header') {
+			return $pre_render;
+		}
+
+		$render_path = self::getBasePath() . '/build/blocks/top-header/render.php';
+		if (file_exists($render_path)) {
+			$attributes = $parsed_block['attrs'] ?? [];
+			$content = $parsed_block['innerHTML'] ?? '';
+			$block_instance = new \WP_Block($parsed_block);
+
+			extract([
+				'attributes' => $attributes,
+				'content' => $content,
+				'block' => $block_instance,
+			], EXTR_SKIP);
+
+			ob_start();
+			require $render_path;
+			return ob_get_clean();
+		}
+
+		return $pre_render;
+	}
+
+	/**
 	 * REST API: documents list (CSV only) and CSV content for tables block
 	 */
 	public static function register_tables_documents_endpoint() {
@@ -1659,6 +1847,93 @@ class Plugin {
 				],
 			],
 		]);
+		register_rest_route('codeweber-gutenberg-blocks/v1', '/documents/(?P<id>\d+)/spreadsheet', [
+			'methods' => 'POST',
+			'callback' => __CLASS__ . '::save_document_spreadsheet',
+			'permission_callback' => function () {
+				return current_user_can('edit_posts');
+			},
+			'args' => [
+				'id' => [
+					'required' => true,
+					'type' => 'integer',
+					'validate_callback' => function ($param) {
+						return is_numeric($param) && (int) $param > 0;
+					},
+				],
+			],
+		]);
+	}
+
+	/**
+	 * Register REST API endpoint for navbar block preview in editor
+	 */
+	public static function register_navbar_preview_endpoint() {
+		register_rest_route('codeweber-gutenberg-blocks/v1', '/navbar-preview', [
+			'methods' => 'GET',
+			'callback' => __CLASS__ . '::navbar_preview_callback',
+			'permission_callback' => function () {
+				return current_user_can('edit_posts');
+			},
+			'args' => [
+				'navbarType' => ['required' => false, 'type' => 'string', 'default' => 'navbar-1'],
+				'menuLocation' => ['required' => false, 'type' => 'string', 'default' => ''],
+				'menuLocationRight' => ['required' => false, 'type' => 'string', 'default' => ''],
+				'menuDepth' => ['required' => false, 'type' => 'integer', 'default' => 4],
+				'navbarColor' => ['required' => false, 'type' => 'string', 'default' => 'light'],
+				'logoColor' => ['required' => false, 'type' => 'string', 'default' => 'auto'],
+				'centerBarTheme' => ['required' => false, 'type' => 'string', 'default' => 'auto'],
+				'mobileOffcanvasTheme' => ['required' => false, 'type' => 'string', 'default' => 'light'],
+				'stickyNavbar' => ['required' => false, 'type' => 'string', 'default' => '0'],
+				'transparentOnTop' => ['required' => false, 'type' => 'string', 'default' => '0'],
+				'wrapperClass' => ['required' => false, 'type' => 'string', 'default' => ''],
+				'navClass' => ['required' => false, 'type' => 'string', 'default' => ''],
+				'blockClass' => ['required' => false, 'type' => 'string', 'default' => ''],
+				'blockId' => ['required' => false, 'type' => 'string', 'default' => ''],
+				'homeLink' => ['required' => false, 'type' => 'string', 'default' => ''],
+			],
+		]);
+	}
+
+	/**
+	 * REST: Render navbar block HTML for editor preview
+	 */
+	public static function navbar_preview_callback(\WP_REST_Request $request) {
+		$attributes = [
+			'navbarType' => $request->get_param('navbarType') ?: 'navbar-1',
+			'menuLocation' => $request->get_param('menuLocation') ?: '',
+			'menuLocationRight' => $request->get_param('menuLocationRight') ?: '',
+			'menuDepth' => (int) ($request->get_param('menuDepth') ?? 4),
+			'navbarColor' => $request->get_param('navbarColor') ?: 'light',
+			'logoColor' => $request->get_param('logoColor') ?: 'auto',
+			'centerBarTheme' => $request->get_param('centerBarTheme') ?: 'auto',
+			'mobileOffcanvasTheme' => $request->get_param('mobileOffcanvasTheme') ?: 'light',
+			'stickyNavbar' => $request->get_param('stickyNavbar') === '1',
+			'transparentOnTop' => $request->get_param('transparentOnTop') === '1',
+			'wrapperClass' => $request->get_param('wrapperClass') ?: '',
+			'navClass' => $request->get_param('navClass') ?: '',
+			'blockClass' => $request->get_param('blockClass') ?: '',
+			'blockId' => $request->get_param('blockId') ?: '',
+			'homeLink' => $request->get_param('homeLink') ?: '',
+		];
+
+		$render_path = self::getBasePath() . '/build/blocks/navbar/render.php';
+		if (!file_exists($render_path)) {
+			return new \WP_REST_Response(['html' => '<!-- Navbar render.php not found -->'], 200);
+		}
+
+		ob_start();
+		$content = '';
+		$block_instance = null;
+		$parsed_block = ['innerBlocks' => []];
+		$for_editor_preview = true;
+		extract(compact('attributes', 'content', 'block_instance', 'parsed_block', 'for_editor_preview'), EXTR_SKIP);
+		require $render_path;
+		$html = ob_get_clean();
+
+		$response = new \WP_REST_Response(['html' => $html], 200);
+		$response->header('Cache-Control', 'no-cache, no-store, must-revalidate');
+		return $response;
 	}
 
 	public static function get_documents_csv_list(\WP_REST_Request $request) {
@@ -1709,7 +1984,40 @@ class Plugin {
 		if (!empty($result['error'])) {
 			return new \WP_Error('file_unreadable', $result['error'], ['status' => 500]);
 		}
-		return new \WP_REST_Response(['rows' => $result['rows']], 200);
+		$rows = $result['rows'];
+		// Process shortcodes in each cell for Tabulator display
+		foreach ($rows as $ri => $row) {
+			foreach ($row as $ci => $cell) {
+				$rows[$ri][$ci] = do_shortcode((string) $cell);
+			}
+		}
+		return new \WP_REST_Response(['rows' => $rows], 200);
+	}
+
+	/**
+	 * REST API: save spreadsheet data to document file (CSV/XLSX).
+	 *
+	 * @param \WP_REST_Request $request
+	 * @return \WP_REST_Response|\WP_Error
+	 */
+	public static function save_document_spreadsheet(\WP_REST_Request $request) {
+		$post_id = (int) $request->get_param('id');
+		$post = get_post($post_id);
+		if (!$post || $post->post_type !== 'documents') {
+			return new \WP_Error('invalid_document', __('Document not found.', 'codeweber-gutenberg-blocks'), ['status' => 404]);
+		}
+		if (!current_user_can('edit_post', $post_id)) {
+			return new \WP_Error('forbidden', __('You do not have permission to edit this document.', 'codeweber-gutenberg-blocks'), ['status' => 403]);
+		}
+		$body = json_decode($request->get_body(), true);
+		if (empty($body['rows']) || !is_array($body['rows'])) {
+			return new \WP_Error('invalid_data', __('Invalid rows data.', 'codeweber-gutenberg-blocks'), ['status' => 400]);
+		}
+		$result = SpreadsheetHelper::write_file($post_id, $body['rows']);
+		if (is_wp_error($result)) {
+			return new \WP_REST_Response(['success' => false, 'message' => $result->get_error_message()], 500);
+		}
+		return new \WP_REST_Response(['success' => true], 200);
 	}
 }
 

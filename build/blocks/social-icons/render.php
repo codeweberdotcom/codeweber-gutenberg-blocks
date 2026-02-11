@@ -67,9 +67,11 @@ if ($data_source === 'theme') {
 		if (!empty($socials_filtered)) {
 			// Build same HTML as theme social_links() with icon mapping
 			$size_classes = [
-				'lg' => ['fs-60', 'btn-lg'],
-				'md' => ['fs-45', 'btn-md'],
-				'sm' => ['', 'btn-sm'],
+				'xs'  => ['fs-30', 'btn-xs'],
+				'sm'  => ['', 'btn-sm'],
+				'md'  => ['fs-45', 'btn-md'],
+				'lg'  => ['fs-60', 'btn-lg'],
+				'elg' => ['fs-60', 'btn-elg'],
 			];
 			$btn_size_class  = isset($size_classes[ $size ][1]) ? $size_classes[ $size ][1] : 'btn-md';
 			$btn_form_class  = ($button_form === 'block') ? 'btn-block' : 'btn-circle';
@@ -123,25 +125,25 @@ if ($data_source === 'theme') {
 				$label      = $original_social;
 				$btnlabel   = (stripos($label, 'vk') === 0) ? strtoupper(substr($label, 0, 2)) . substr($label, 2) : ucfirst($label);
 				if ($style_type === 'type1') {
-					$output .= '<a href="' . esc_url($url) . '" class="btn ' . esc_attr($btn_form_class) . ' lh-1 has-ripple ' . esc_attr($btn_size_class) . ' btn-' . esc_attr($social) . '" target="_blank" rel="noopener"><i class="' . $icon_class . '"></i></a>';
+					$output .= '<a href="' . esc_url($url) . '" class="btn ' . esc_attr($btn_form_class) . ' has-ripple ' . esc_attr($btn_size_class) . ' btn-' . esc_attr($social) . '" target="_blank" rel="noopener"><i class="' . $icon_class . '"></i></a>';
 				} elseif ($style_type === 'type5') {
-					$output .= '<a href="' . esc_url($url) . '" class="btn ' . esc_attr($btn_form_class) . ' lh-1 has-ripple ' . esc_attr($btn_size_class) . ' btn-dark" target="_blank" rel="noopener"><i class="' . $icon_class . '"></i></a>';
+					$output .= '<a href="' . esc_url($url) . '" class="btn ' . esc_attr($btn_form_class) . ' has-ripple ' . esc_attr($btn_size_class) . ' btn-dark" target="_blank" rel="noopener"><i class="' . $icon_class . '"></i></a>';
 				} elseif ($style_type === 'type2' || $style_type === 'type3' || $style_type === 'type4') {
-					$output .= '<a href="' . esc_url($url) . '" class="lh-1 has-ripple" target="_blank" rel="noopener" title="' . esc_attr($label) . '"><i class="' . $icon_class . '"></i></a>';
+					$output .= '<a href="' . esc_url($url) . '" class="has-ripple" target="_blank" rel="noopener" title="' . esc_attr($label) . '"><i class="' . $icon_class . '"></i></a>';
 				} elseif ($style_type === 'type6') {
-					$output .= '<a role="button" href="' . esc_url($url) . '" target="_blank" rel="noopener" title="' . esc_attr($label) . '" class="btn btn-icon btn-sm border btn-icon-start btn-white justify-content-between w-100 fs-16 lh-1 has-ripple"><i class="fs-20 ' . $icon_class . '"></i>' . esc_html($btnlabel) . '</a>';
+					$output .= '<a role="button" href="' . esc_url($url) . '" target="_blank" rel="noopener" title="' . esc_attr($label) . '" class="btn btn-icon ' . esc_attr($btn_size_class) . ' border btn-icon-start btn-white justify-content-between w-100 fs-16 has-ripple"><i class="fs-20 lh-1 ' . $icon_class . '"></i>' . esc_html($btnlabel) . '</a>';
 				} elseif ($style_type === 'type7') {
-					$output .= '<a role="button" href="' . esc_url($url) . '" target="_blank" rel="noopener" title="' . esc_attr($label) . '" class="btn btn-icon btn-sm btn-icon-start btn-' . esc_attr($original_social) . ' justify-content-between w-100 lh-1 has-ripple"><i class="fs-20 ' . $icon_class . '"></i>' . esc_html($btnlabel) . '</a>';
+					$output .= '<a role="button" href="' . esc_url($url) . '" target="_blank" rel="noopener" title="' . esc_attr($label) . '" class="btn btn-icon ' . esc_attr($btn_size_class) . ' btn-icon-start btn-' . esc_attr($original_social) . ' justify-content-between w-100 has-ripple"><i class="fs-20 lh-1 ' . $icon_class . '"></i>' . esc_html($btnlabel) . '</a>';
 				} elseif ($style_type === 'type8') {
 					$btn_color = !empty($button_color) ? esc_attr($button_color) : 'primary';
 					$btn_style = ($button_style === 'outline') ? 'outline' : 'solid';
-					$btn_class = ($btn_style === 'outline') ? 'btn ' . esc_attr($btn_form_class) . ' lh-1 has-ripple btn-outline-' . $btn_color . ' ' . esc_attr($btn_size_class) : 'btn ' . esc_attr($btn_form_class) . ' lh-1 has-ripple btn-' . $btn_color . ' ' . esc_attr($btn_size_class);
+					$btn_class = ($btn_style === 'outline') ? 'btn ' . esc_attr($btn_form_class) . ' has-ripple btn-outline-' . $btn_color . ' ' . esc_attr($btn_size_class) : 'btn ' . esc_attr($btn_form_class) . ' has-ripple btn-' . $btn_color . ' ' . esc_attr($btn_size_class);
 					$output .= '<a href="' . esc_url($url) . '" class="' . $btn_class . '" target="_blank" rel="noopener" title="' . esc_attr($label) . '"><i class="' . $icon_class . '"></i></a>';
 				} elseif ($style_type === 'type9') {
-					$btn_class = 'btn ' . esc_attr($btn_form_class) . ' lh-1 has-ripple btn-outline-primary ' . esc_attr($btn_size_class);
+					$btn_class = 'btn ' . esc_attr($btn_form_class) . ' has-ripple btn-outline-primary ' . esc_attr($btn_size_class);
 					$output .= '<a href="' . esc_url($url) . '" class="' . $btn_class . '" target="_blank" rel="noopener" title="' . esc_attr($label) . '"><i class="' . $icon_class . '"></i></a>';
 				} else {
-					$output .= '<a href="' . esc_url($url) . '" class="lh-1 has-ripple" target="_blank" rel="noopener" title="' . esc_attr($label) . '"><i class="' . $icon_class . '"></i></a>';
+					$output .= '<a href="' . esc_url($url) . '" class="has-ripple" target="_blank" rel="noopener" title="' . esc_attr($label) . '"><i class="' . $icon_class . '"></i></a>';
 				}
 			}
 			$output .= '</nav>';
@@ -156,9 +158,11 @@ if ($data_source === 'theme') {
 // Custom mode: render from items
 if ($data_source === 'custom' && !empty($items)) {
 	$size_classes = [
-		'lg' => ['fs-60', 'btn-lg'],
-		'md' => ['fs-45', 'btn-md'],
-		'sm' => ['', 'btn-sm'],
+		'xs'  => ['fs-30', 'btn-xs'],
+		'sm'  => ['', 'btn-sm'],
+		'md'  => ['fs-45', 'btn-md'],
+		'lg'  => ['fs-60', 'btn-lg'],
+		'elg' => ['fs-60', 'btn-elg'],
 	];
 	$btn_size_class = isset($size_classes[ $size ][1]) ? $size_classes[ $size ][1] : 'btn-md';
 	$btn_form_class = ($button_form === 'block') ? 'btn-block' : 'btn-circle';
@@ -192,29 +196,29 @@ if ($data_source === 'custom' && !empty($items)) {
 		$btnlabel   = ucfirst($label);
 
 		if ($style_type === 'type1') {
-			$output .= '<a href="' . esc_url($url) . '" class="btn ' . esc_attr($btn_form_class) . ' lh-1 has-ripple ' . esc_attr($btn_size_class) . ' btn-' . esc_attr($icon) . '" target="_blank" rel="noopener"><i class="' . $icon_class . '"></i></a>';
+			$output .= '<a href="' . esc_url($url) . '" class="btn ' . esc_attr($btn_form_class) . ' has-ripple ' . esc_attr($btn_size_class) . ' btn-' . esc_attr($icon) . '" target="_blank" rel="noopener"><i class="' . $icon_class . '"></i></a>';
 		} elseif ($style_type === 'type5') {
-			$output .= '<a href="' . esc_url($url) . '" class="btn ' . esc_attr($btn_form_class) . ' lh-1 has-ripple ' . esc_attr($btn_size_class) . ' btn-dark" target="_blank" rel="noopener"><i class="' . $icon_class . '"></i></a>';
+			$output .= '<a href="' . esc_url($url) . '" class="btn ' . esc_attr($btn_form_class) . ' has-ripple ' . esc_attr($btn_size_class) . ' btn-dark" target="_blank" rel="noopener"><i class="' . $icon_class . '"></i></a>';
 		} elseif ($style_type === 'type2' || $style_type === 'type3' || $style_type === 'type4') {
-			$output .= '<a href="' . esc_url($url) . '" class="lh-1 has-ripple" target="_blank" rel="noopener" title="' . esc_attr($label) . '"><i class="' . $icon_class . '"></i></a>';
+			$output .= '<a href="' . esc_url($url) . '" class="has-ripple" target="_blank" rel="noopener" title="' . esc_attr($label) . '"><i class="' . $icon_class . '"></i></a>';
 		} elseif ($style_type === 'type6') {
-			$output .= '<a role="button" href="' . esc_url($url) . '" target="_blank" rel="noopener" title="' . esc_attr($label) . '" class="btn btn-icon btn-sm border btn-icon-start btn-white justify-content-between w-100 fs-16 lh-1 has-ripple"><i class="fs-20 ' . $icon_class . '"></i>' . esc_html($btnlabel) . '</a>';
+			$output .= '<a role="button" href="' . esc_url($url) . '" target="_blank" rel="noopener" title="' . esc_attr($label) . '" class="btn btn-icon ' . esc_attr($btn_size_class) . ' border btn-icon-start btn-white justify-content-between w-100 fs-16 has-ripple"><i class="fs-20 lh-1 ' . $icon_class . '"></i>' . esc_html($btnlabel) . '</a>';
 		} elseif ($style_type === 'type7') {
-			$output .= '<a role="button" href="' . esc_url($url) . '" target="_blank" rel="noopener" title="' . esc_attr($label) . '" class="btn btn-icon btn-sm btn-icon-start btn-' . esc_attr($icon) . ' justify-content-between w-100 lh-1 has-ripple"><i class="fs-20 ' . $icon_class . '"></i>' . esc_html($btnlabel) . '</a>';
+			$output .= '<a role="button" href="' . esc_url($url) . '" target="_blank" rel="noopener" title="' . esc_attr($label) . '" class="btn btn-icon ' . esc_attr($btn_size_class) . ' btn-icon-start btn-' . esc_attr($icon) . ' justify-content-between w-100 has-ripple"><i class="fs-20 lh-1 ' . $icon_class . '"></i>' . esc_html($btnlabel) . '</a>';
 		} elseif ($style_type === 'type8') {
 			$btn_color = !empty($button_color) ? esc_attr($button_color) : 'primary';
 			$btn_style = ($button_style === 'outline') ? 'outline' : 'solid';
 			if ($btn_style === 'outline') {
-				$btn_class = 'btn ' . esc_attr($btn_form_class) . ' lh-1 has-ripple btn-outline-' . $btn_color . ' ' . esc_attr($btn_size_class);
+				$btn_class = 'btn ' . esc_attr($btn_form_class) . ' has-ripple btn-outline-' . $btn_color . ' ' . esc_attr($btn_size_class);
 			} else {
-				$btn_class = 'btn ' . esc_attr($btn_form_class) . ' lh-1 has-ripple btn-' . $btn_color . ' ' . esc_attr($btn_size_class);
+				$btn_class = 'btn ' . esc_attr($btn_form_class) . ' has-ripple btn-' . $btn_color . ' ' . esc_attr($btn_size_class);
 			}
 			$output .= '<a href="' . esc_url($url) . '" class="' . $btn_class . '" target="_blank" rel="noopener" title="' . esc_attr($label) . '"><i class="' . $icon_class . '"></i></a>';
 		} elseif ($style_type === 'type9') {
-			$btn_class = 'btn ' . esc_attr($btn_form_class) . ' lh-1 has-ripple btn-outline-primary ' . esc_attr($btn_size_class);
+			$btn_class = 'btn ' . esc_attr($btn_form_class) . ' has-ripple btn-outline-primary ' . esc_attr($btn_size_class);
 			$output .= '<a href="' . esc_url($url) . '" class="' . $btn_class . '" target="_blank" rel="noopener" title="' . esc_attr($label) . '"><i class="' . $icon_class . '"></i></a>';
 		} else {
-			$output .= '<a href="' . esc_url($url) . '" class="lh-1 has-ripple" target="_blank" rel="noopener" title="' . esc_attr($label) . '"><i class="' . $icon_class . '"></i></a>';
+			$output .= '<a href="' . esc_url($url) . '" class="has-ripple" target="_blank" rel="noopener" title="' . esc_attr($label) . '"><i class="' . $icon_class . '"></i></a>';
 		}
 	}
 

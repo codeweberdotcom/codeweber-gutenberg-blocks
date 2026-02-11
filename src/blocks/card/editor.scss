@@ -19,7 +19,7 @@
 		min-height: 50px;
 	}
 
-	.block-editor-block-list__layout > div {
+	.block-editor-block-list__layout > div:empty:not([class]) {
 		display: inline-flex !important;
 	}
 	

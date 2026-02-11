@@ -248,6 +248,7 @@ class Plugin {
 		'cta',
 		'navbar',
 		'social-icons',
+		'social-wrapper',
 		'top-header',
 	];
 	}

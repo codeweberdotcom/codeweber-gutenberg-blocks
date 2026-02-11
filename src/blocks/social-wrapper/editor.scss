@@ -1,0 +1,13 @@
+/* Social Wrapper editor */
+.nav.social .block-editor-inner-blocks {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	align-items: center;
+}
+
+.nav.social .block-editor-block-list__layout {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+}

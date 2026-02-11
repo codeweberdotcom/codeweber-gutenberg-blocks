@@ -9,9 +9,21 @@ import { getClassNames } from '../button/buttonclass';
 import { __ } from '@wordpress/i18n';
 import { useState, useRef, useLayoutEffect } from '@wordpress/element';
 
+// Font-size for social icon when Style 2/3 — как в теме .btn-circle (theme _buttons.scss)
+const getSocialIconSizeRem = (buttonSize) => {
+	const map = {
+		'btn-xs': '0.7rem',
+		'btn-sm': '0.85rem',
+		'': '1rem',
+		'btn-lg': '1.4rem',
+		'btn-elg': '1.6rem',
+	};
+	return map[buttonSize] || '1rem';
+};
+
 // Функция для обработки иконки
 
-const ButtonEdit = ({ attributes, setAttributes }) => {
+const ButtonEdit = ({ attributes, setAttributes, clientId }) => {
 	const {
 		anchor,
 		LinkUrl,
@@ -35,6 +47,7 @@ const ButtonEdit = ({ attributes, setAttributes }) => {
 		DataGallery,
 		DataBsToggle,
 		DataBsTarget,
+		blockClass,
 	} = attributes;
 
 	const [iconPickerOpen, setIconPickerOpen] = useState(false);
@@ -112,18 +125,28 @@ const ButtonEdit = ({ attributes, setAttributes }) => {
 						setAttributes={setAttributes}
 						iconPickerOpen={iconPickerOpen}
 						setIconPickerOpen={setIconPickerOpen}
+						clientId={clientId}
 					/>
 				</InspectorControls>
 				{ButtonType === 'social' ? (
 					<a
 						href="#"
-						className={
-							SocialIconStyle === 'style_1'
-								? `btn btn-circle ${ButtonSize} btn-${SocialIconClass}`
-								: SocialIconStyle === 'style_2'
-									? `btn btn-circle ${ButtonSize} btn-${SocialIconClass} social-muted`
-									: `btn btn-circle ${ButtonSize} btn-${SocialIconClass}`
-						}
+						className={[
+							SocialIconStyle === 'style_1' &&
+								[
+									'btn',
+									'btn-circle',
+									'has-ripple',
+									ButtonSize,
+									SocialIconClass && `btn-${SocialIconClass}`,
+									blockClass,
+								]
+									.filter(Boolean)
+									.join(' '),
+							SocialIconStyle !== 'style_1' && [blockClass, 'has-ripple'].filter(Boolean).join(' '),
+						]
+							.filter(Boolean)
+							.join(' ') || undefined}
 						onClick={(event) => {
 							event.preventDefault();
 							event.stopPropagation();
@@ -138,7 +161,18 @@ const ButtonEdit = ({ attributes, setAttributes }) => {
 						})}
 					>
 						<i
-							className={`uil uil-${SocialIconClass}${SocialIconClass === 'facebook' ? '-f' : ''}`}
+							className={`uil uil-${
+								SocialIconClass === 'facebook'
+									? 'facebook-f'
+									: SocialIconClass === 'vkmusic'
+										? 'vk-music'
+										: SocialIconClass
+							}`}
+							style={
+								SocialIconStyle === 'style_2' || SocialIconStyle === 'style_3'
+									? { fontSize: getSocialIconSizeRem(ButtonSize) }
+									: undefined
+							}
 						></i>
 					</a>
 				) : (
@@ -164,8 +198,18 @@ const ButtonEdit = ({ attributes, setAttributes }) => {
 							'data-bs-target': `#${DataBsTarget}`,
 						})}
 					>
-						{getIconComponent(LeftIcon)}
-						{getIconComponent(CircleIcon)}
+						{ButtonType === 'icon' &&
+						(ButtonStyle === 'gradient' ||
+							ButtonStyle === 'outline-gradient')
+							? LeftIcon && <span>{getIconComponent(LeftIcon)}</span>
+							: getIconComponent(LeftIcon)}
+						{ButtonType === 'circle' &&
+						(ButtonStyle === 'gradient' ||
+							ButtonStyle === 'outline-gradient') ? (
+							<span>{getIconComponent(CircleIcon)}</span>
+						) : (
+							getIconComponent(CircleIcon)
+						)}
 						{getIconComponent(SocialIcon)}
 
 						{!shouldHideText && (
@@ -183,7 +227,11 @@ const ButtonEdit = ({ attributes, setAttributes }) => {
 							</span>
 						)}
 
-						{getIconComponent(RightIcon)}
+						{ButtonType === 'icon' &&
+						(ButtonStyle === 'gradient' ||
+							ButtonStyle === 'outline-gradient')
+							? RightIcon && <span>{getIconComponent(RightIcon)}</span>
+							: getIconComponent(RightIcon)}
 					</a>
 				)}
 			</div>

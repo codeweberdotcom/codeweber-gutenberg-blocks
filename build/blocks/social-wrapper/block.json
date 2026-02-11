@@ -1,0 +1,55 @@
+{
+  "apiVersion": 3,
+  "name": "codeweber-blocks/social-wrapper",
+  "version": "0.1.0",
+  "title": "Social Wrapper",
+  "category": "codeweber-gutenberg-elements",
+  "icon": "share",
+  "description": "Wrapper for social buttons. Only Button blocks (Social type) inside. Size, style and class are set here and applied to all child buttons.",
+  "keywords": [
+    "social",
+    "wrapper",
+    "buttons",
+    "nav"
+  ],
+  "supports": {
+    "html": false,
+    "customClassName": true,
+    "anchor": true,
+    "innerBlocks": true
+  },
+  "attributes": {
+    "ButtonSize": {
+      "type": "string",
+      "default": ""
+    },
+    "SocialIconStyle": {
+      "type": "string",
+      "default": "style_1"
+    },
+    "blockClass": {
+      "type": "string",
+      "default": ""
+    },
+    "wrapperClass": {
+      "type": "string",
+      "default": ""
+    },
+    "navClass": {
+      "type": "string",
+      "default": "nav social"
+    },
+    "blockData": {
+      "type": "string",
+      "default": ""
+    },
+    "blockId": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "textdomain": "codeweber-gutenberg-blocks",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

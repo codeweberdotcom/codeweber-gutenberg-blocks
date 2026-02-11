@@ -33,9 +33,11 @@ const STYLE_OPTIONS = [
 ];
 
 const SIZE_OPTIONS = [
-	{ value: 'sm', label: __('Small', 'codeweber-gutenberg-blocks') },
-	{ value: 'md', label: __('Medium', 'codeweber-gutenberg-blocks') },
-	{ value: 'lg', label: __('Large', 'codeweber-gutenberg-blocks') },
+	{ label: 'ExSm', value: 'xs' },
+	{ label: 'Sm', value: 'sm' },
+	{ label: 'Md', value: 'md' },
+	{ label: 'Lg', value: 'lg' },
+	{ label: 'ExLg', value: 'elg' },
 ];
 
 const DATA_SOURCE_OPTIONS = [
@@ -125,12 +127,20 @@ export const SocialIconsSidebar = ({ attributes, setAttributes }) => {
 					onChange={(value) => setAttributes({ styleType: value })}
 				/>
 
-				<SelectControl
-					label={__('Size', 'codeweber-gutenberg-blocks')}
-					value={size}
-					options={SIZE_OPTIONS}
-					onChange={(value) => setAttributes({ size: value })}
-				/>
+				<div className="component-sidebar-title">
+					<label>{__('Size', 'codeweber-gutenberg-blocks')}</label>
+				</div>
+				<div className="button-size-controls button-group-sidebar_33">
+					{SIZE_OPTIONS.map((opt) => (
+						<Button
+							key={opt.value}
+							isPrimary={size === opt.value}
+							onClick={() => setAttributes({ size: opt.value })}
+						>
+							{opt.label}
+						</Button>
+					))}
+				</div>
 
 				{(styleType === 'type8' || styleType === 'type9') && (
 					<>

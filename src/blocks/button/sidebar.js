@@ -6,6 +6,7 @@ import { shapes } from '../../utilities/shapes';
 import { fontIcons } from '../../utilities/font_icon';
 import { fontIconsSocial } from '../../utilities/font_icon_social';
 import { useState, useEffect } from '@wordpress/element';
+import { useSelect } from '@wordpress/data';
 import {
 	PanelBody,
 	Button,
@@ -21,6 +22,7 @@ export const ButtonSidebar = ({
 	setAttributes,
 	iconPickerOpen,
 	setIconPickerOpen,
+	clientId,
 }) => {
 	const {
 		ButtonSize,
@@ -40,6 +42,20 @@ export const ButtonSidebar = ({
 		RightIcon,
 		CircleIcon,
 	} = attributes;
+
+	// Проверка: кнопка внутри Social Wrapper — только тип Social, размер/стиль/класс задаются в обёртке
+	const isInsideSocialWrapper = useSelect(
+		(select) => {
+			if (!clientId) return false;
+			const { getBlockParents, getBlock } = select('core/block-editor');
+			const parents = getBlockParents(clientId);
+			const directParentId = parents[0];
+			if (!directParentId) return false;
+			const parent = getBlock(directParentId);
+			return parent?.name === 'codeweber-blocks/social-wrapper';
+		},
+		[clientId]
+	);
 
 	// Извлекаем имя иконки из класса (например, "uil uil-windows" -> "windows")
 	const getIconName = (iconClass) => {
@@ -235,31 +251,41 @@ export const ButtonSidebar = ({
 			title={__('Button Settings', 'codeweber-gutenberg-blocks')}
 			className="custom-panel-body"
 		>
-			{/* Тип кнопки */}
-			<div className="component-sidebar-title">
-				<label>{__('Button Type', 'codeweber-gutenberg-blocks')}</label>
-			</div>
-			<div className="button-type-controls button-group-sidebar_33">
-				{[
-					{ label: 'Solid', value: 'solid' },
-					{ label: 'Circle', value: 'circle' },
-					{ label: 'Social', value: 'social' },
-					{ label: 'Icon', value: 'icon' },
-					{ label: 'Expand', value: 'expand' },
-					{ label: 'Play', value: 'play' },
-					{ label: 'Link', value: 'link' },
-				].map((type) => (
-					<Button
-						key={type.value}
-						isPrimary={ButtonType === type.value}
-						onClick={() => handleButtonTypeChange(type.value)}
-					>
-						{type.label}
-					</Button>
-				))}
-			</div>
+			{/* Тип кнопки: внутри Social Wrapper доступен только Social */}
+			{!isInsideSocialWrapper && (
+				<>
+					<div className="component-sidebar-title">
+						<label>{__('Button Type', 'codeweber-gutenberg-blocks')}</label>
+					</div>
+					<div className="button-type-controls button-group-sidebar_33">
+						{[
+							{ label: 'Solid', value: 'solid' },
+							{ label: 'Circle', value: 'circle' },
+							{ label: 'Social', value: 'social' },
+							{ label: 'Icon', value: 'icon' },
+							{ label: 'Expand', value: 'expand' },
+							{ label: 'Play', value: 'play' },
+							{ label: 'Link', value: 'link' },
+						].map((type) => (
+							<Button
+								key={type.value}
+								isPrimary={ButtonType === type.value}
+								onClick={() => handleButtonTypeChange(type.value)}
+							>
+								{type.label}
+							</Button>
+						))}
+					</div>
+				</>
+			)}
+			{isInsideSocialWrapper && (
+				<p className="description" style={{ marginBottom: '1em' }}>
+					{__('Type: Social (set by Social Wrapper)', 'codeweber-gutenberg-blocks')}
+				</p>
+			)}
 
-			{(ButtonType === 'solid' ||
+			{!isInsideSocialWrapper &&
+				(ButtonType === 'solid' ||
 				ButtonType === 'circle' ||
 				ButtonType === 'social' ||
 				ButtonType === 'icon') && (
@@ -293,7 +319,7 @@ export const ButtonSidebar = ({
 			)}
 
 			{/* Форма кнопки */}
-			{(ButtonType === 'icon' || ButtonType === 'solid') && (
+			{!isInsideSocialWrapper && (ButtonType === 'icon' || ButtonType === 'solid') && (
 				<div className="button-shape-controls">
 					<div className="component-sidebar-title">
 						<label>
@@ -317,7 +343,7 @@ export const ButtonSidebar = ({
 			)}
 
 			{/* Стиль кнопки */}
-			{(ButtonType === 'icon' ||
+			{!isInsideSocialWrapper && (ButtonType === 'icon' ||
 				ButtonType === 'solid' ||
 				ButtonType === 'circle' ||
 				ButtonType === 'expand' ||
@@ -371,8 +397,8 @@ export const ButtonSidebar = ({
 				</div>
 			)}
 
-			{/* Цвет кнопки */}
-			{(ButtonType === 'icon' ||
+			{/* Цвет кнопки (скрыт внутри Social Wrapper) */}
+			{!isInsideSocialWrapper && (ButtonType === 'icon' ||
 				ButtonType === 'solid' ||
 				ButtonType === 'circle' ||
 				ButtonType === 'expand' ||
@@ -389,7 +415,7 @@ export const ButtonSidebar = ({
 				)}
 
 			{/* Градиентный цвет */}
-			{(ButtonType === 'icon' ||
+			{!isInsideSocialWrapper && (ButtonType === 'icon' ||
 				ButtonType === 'solid' ||
 				ButtonType === 'circle' ||
 				ButtonType === 'expand' ||
@@ -577,7 +603,7 @@ export const ButtonSidebar = ({
 				</>
 			)}
 
-			{/* Социальные иконки */}
+			{/* Социальные иконки: класс иконки и стиль (стиль скрыт внутри Social Wrapper) */}
 			{ButtonType === 'social' && (
 				<ComboboxControl
 					label={__(
@@ -592,8 +618,8 @@ export const ButtonSidebar = ({
 				/>
 			)}
 
-			{/* Социальные иконки - стиль */}
-			{ButtonType === 'social' && (
+			{/* Социальные иконки - стиль (задаётся в Social Wrapper) */}
+			{!isInsideSocialWrapper && ButtonType === 'social' && (
 				<>
 					<div className="social-icon-style-controls button-group-sidebar">
 						<div className="component-sidebar-title">
@@ -629,7 +655,8 @@ export const ButtonSidebar = ({
 				</>
 			)}
 
-			{/* Block Meta Fields */}
+			{/* Block Meta Fields (класс кнопки задаётся в Social Wrapper) */}
+			{!isInsideSocialWrapper && (
 			<BlockMetaFields
 				attributes={attributes}
 				setAttributes={setAttributes}
@@ -647,6 +674,7 @@ export const ButtonSidebar = ({
 					idLabel: __('Button ID', 'codeweber-gutenberg-blocks'),
 				}}
 			/>
+			)}
 		</PanelBody>
 	);
 };

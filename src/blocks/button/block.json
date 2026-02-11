@@ -68,6 +68,14 @@
 			"type": "string",
 			"default": ""
 		},
+		"CircleIcon": {
+			"type": "string",
+			"default": "uil uil-arrow-right"
+		},
+		"SocialIcon": {
+			"type": "string",
+			"default": ""
+		},
 		"LinkType": {
 			"type": "string",
 			"default": "external"

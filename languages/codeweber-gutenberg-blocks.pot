@@ -4545,8 +4545,6 @@ msgstr ""
 #: src/blocks/search/render.php
 #: src/blocks/search/edit.js
 msgid "Type keyword"
-msgstr ""
-
-#: src/blocks/search/sidebar.js
+msgstr ""#: src/blocks/search/sidebar.js
 msgid "Leave empty to use \"Type keyword\" (translatable in Loco)."
 msgstr ""

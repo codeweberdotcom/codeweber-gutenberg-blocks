@@ -53,6 +53,9 @@ add_action('init', __NAMESPACE__ . '\Plugin::init', 20);
 // Подключаем REST API для опций и телефонов (подключаем рано, чтобы REST API зарегистрировался)
 require_once plugin_dir_path(__FILE__) . 'settings/options_page/restapi.php';
 
+// Card block: радиус границы по умолчанию из Redux
+require_once plugin_dir_path(__FILE__) . 'src/blocks/card/init.php';
+
 // Загрузка переводов для JavaScript
 	add_action('init', function() {
 	$blocks = [

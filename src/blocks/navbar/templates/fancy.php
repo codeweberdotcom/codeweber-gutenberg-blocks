@@ -14,6 +14,8 @@
  * @var string $nav_class       Nav classes.
  * @var string $offcanvas_class              Offcanvas theme class.
  * @var string $navbar_collapse_wrapper_class Center bar classes (bg-light/dark, navbar-light/dark) for fancy.
+ * @var string $navbar_other_inner_blocks    Rendered inner blocks for navbar-other (header-widgets etc.).
+ * @var bool   $for_editor_preview           True when rendering for editor preview (placeholder for InnerBlocks).
  */
 if (!defined('ABSPATH')) {
 	exit;
@@ -50,6 +52,13 @@ $logo_fb = has_custom_logo() ? get_custom_logo() : '<span class="site-title">' .
 				</div>
 				<div class="<?php echo esc_attr($navbar_other_class); ?>">
 					<ul class="navbar-nav flex-row align-items-center ms-auto">
+						<?php if (!empty($for_editor_preview)) { ?>
+							<li class="nav-item">
+								<div id="navbar-other-innerblocks" class="navbar-other-innerblocks-slot d-flex align-items-center" style="pointer-events:auto;min-height:40px;min-width:120px;border:1px dashed rgba(0,0,0,.2);border-radius:4px"></div>
+							</li>
+						<?php } elseif (!empty($navbar_other_inner_blocks)) { ?>
+							<?php echo $navbar_other_inner_blocks; ?>
+						<?php } ?>
 						<li class="nav-item d-lg-none">
 							<button class="hamburger offcanvas-nav-btn" aria-label="<?php esc_attr_e('Menu', 'codeweber-gutenberg-blocks'); ?>"><span></span></button>
 						</li>

@@ -5,3 +5,29 @@
 .wp-block-codeweber-blocks-navbar {
 	// Theme header templates provide their own styles
 }
+
+// Offcanvas info panel: social icons layout
+.wp-block-codeweber-blocks-navbar .offcanvas-social-wrap {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	align-items: center;
+
+	.nav {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		align-items: center;
+		margin: 0;
+		padding: 0;
+		border: none;
+	}
+
+	a,
+	.btn {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		flex-shrink: 0;
+	}
+}

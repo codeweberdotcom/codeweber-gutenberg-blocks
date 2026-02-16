@@ -31,6 +31,7 @@ const AccordionEdit = ({ attributes, setAttributes, clientId }) => {
 		orderBy,
 		order,
 		theme,
+		buttonBackgroundColor,
 	} = attributes;
 	const previousItemsLengthRef = useRef(items?.length || 0);
 	const previousFirstItemOpenRef = useRef(firstItemOpen);
@@ -358,6 +359,9 @@ const AccordionEdit = ({ attributes, setAttributes, clientId }) => {
 	// Get item classes
 	const getItemClasses = (item, index) => {
 		const classes = ['card', 'accordion-item'];
+		if (buttonBackgroundColor) {
+			classes.push(`bg-${buttonBackgroundColor}`);
+		}
 		if (accordionStyle === 'simple') {
 			classes.push('plain');
 		} else if (accordionStyle === 'icon') {
@@ -513,6 +517,28 @@ const AccordionEdit = ({ attributes, setAttributes, clientId }) => {
 								{/* Item Controls - Absolute positioned, visible on hover - только в режиме Custom */}
 								{mode === 'custom' && (
 									<div className="accordion-item-controls">
+										{accordionStyle === 'icon' && (
+											<Button
+												isSmall
+												onClick={(e) => {
+													e.stopPropagation();
+													setIconPickerOpen(item.id);
+												}}
+												title={__(
+													'Select icon',
+													'codeweber-gutenberg-blocks'
+												)}
+												className="accordion-item-control-icon"
+											>
+												<i
+													className={
+														item.icon ||
+														'uil uil-plus'
+													}
+													aria-hidden
+												/>
+											</Button>
+										)}
 										<Button
 											isSmall
 											onClick={(e) => {

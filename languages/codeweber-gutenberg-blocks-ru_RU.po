@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Codeweber Gutenberg Blocks\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-02 20:06+0000\n"
-"PO-Revision-Date: 2026-01-11 14:10+0000\n"
+"PO-Revision-Date: 2026-02-15 21:25+0000\n"
 "Last-Translator: Codeweber\n"
 "Language-Team: Русский\n"
 "Language: ru_RU\n"
@@ -20,7 +20,7 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-0: node_modules\n"
 "X-Poedit-SearchPathExcluded-1: build\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Loco-Version: 2.8.0; wp-6.9; php-8.1.10"
+"X-Loco-Version: 2.8.1; wp-6.9.1; php-8.1.10"
 
 #: src/src/blocks/accordion/edit.js src/src/blocks/accordion/edit.js
 msgid "+ Add Accordion Item"
@@ -2997,6 +2997,10 @@ msgstr ""
 msgid "Leave empty if name should not be a link"
 msgstr "Оставьте пустым, если имя не должно быть ссылкой"
 
+#: src/blocks/search/sidebar.js
+msgid "Leave empty to use \"Type keyword\" (translatable in Loco)."
+msgstr ""
+
 #: inc/ImageHotspotCPT.php:268
 msgid "Left"
 msgstr "Слева"
@@ -3147,6 +3151,10 @@ msgstr "Загрузка пользователей..."
 msgid "Loading..."
 msgstr "Загрузка..."
 
+#: src/blocks/navbar/edit.js
+msgid "Loading navbar..."
+msgstr "Загрузка навбара..."
+
 #: src/src/blocks/yandex-map/sidebar.js src/src/blocks/yandex-map/sidebar.js
 msgid "Logo"
 msgstr "Логотип"
@@ -3182,9 +3190,8 @@ msgid "Main"
 msgstr "Основное"
 
 #: src/src/blocks/yandex-map/sidebar.js src/src/blocks/yandex-map/sidebar.js
-#, fuzzy
 msgid "Map"
-msgstr "Gap"
+msgstr "Карта"
 
 #: src/src/blocks/yandex-map/sidebar.js src/src/blocks/yandex-map/sidebar.js
 #, fuzzy
@@ -3205,9 +3212,8 @@ msgid "Map Height"
 msgstr "Высота карты"
 
 #: src/src/blocks/yandex-map/sidebar.js src/src/blocks/yandex-map/sidebar.js
-#, fuzzy
 msgid "Map Settings"
-msgstr "Настройки Gap"
+msgstr "Настройки карты"
 
 #: src/src/blocks/yandex-map/sidebar.js src/src/blocks/yandex-map/sidebar.js
 #, fuzzy
@@ -5491,6 +5497,10 @@ msgstr "Тип 2"
 msgid "Type 3"
 msgstr "Тип 3"
 
+#: src/blocks/search/render.php src/blocks/search/edit.js
+msgid "Type keyword"
+msgstr "Поиск по сайту"
+
 #: src/src/utilities/link_type.js src/src/utilities/link_type.js
 msgid "Type link"
 msgstr "Тип ссылки"
@@ -5917,3 +5927,126 @@ msgstr "— Выбрать пользователя —"
 #: src/src/blocks/form-field/edit.js src/src/blocks/form-field/edit.js
 msgid "— Select —"
 msgstr "— Выбрать —"
+
+#: src/blocks/header-widgets/edit.js
+msgid "Header Widgets"
+msgstr "Виджеты шапки"
+
+#: src/blocks/header-widgets/edit.js
+msgid "Enable/disable and reorder elements."
+msgstr "Включение, отключение и изменение порядка элементов."
+
+#: src/blocks/header-widgets/edit.js
+msgid "Order items in side menu"
+msgstr "Порядок пунктов в боковом меню"
+
+#: src/blocks/header-widgets/edit.js
+msgid ""
+"Enable/disable and reorder. Only enabled items are shown in the offcanvas "
+"panel."
+msgstr ""
+"Включение, отключение и порядок. В панели оффканваса отображаются только "
+"включённые пункты."
+
+#: src/blocks/header-widgets/edit.js
+msgid "Drag to reorder"
+msgstr "Перетащите для изменения порядка"
+
+#: src/blocks/header-widgets/edit.js
+msgid "Offcanvas Info"
+msgstr "Инфо в оффканвасе"
+
+#: src/blocks/header-widgets/edit.js
+msgid "Custom Offcanvas"
+msgstr "Свой оффканвас"
+
+#: src/blocks/header-widgets/edit.js
+msgid "Social icons (offcanvas)"
+msgstr "Соц. иконки (оффканвас)"
+
+#: src/blocks/header-widgets/edit.js
+msgid "Theme default"
+msgstr "По умолчанию темы"
+
+#: src/blocks/header-widgets/edit.js
+msgid "Toggle info"
+msgstr "Инфо (переключатель)"
+
+#: src/blocks/header-widgets/edit.js
+msgid "Social icon type"
+msgstr "Тип иконок соцсетей"
+
+#: src/blocks/header-widgets/edit.js
+msgid "Social button size"
+msgstr "Размер кнопок соцсетей"
+
+#: src/blocks/header-widgets/edit.js
+msgid "Social button style"
+msgstr "Стиль кнопок соцсетей"
+
+#: src/blocks/header-widgets/edit.js
+msgid "Phones"
+msgstr "Телефоны"
+
+#: src/blocks/header-widgets/edit.js
+msgid "Socials"
+msgstr "Соцсети"
+
+#: src/blocks/header-widgets/edit.js
+msgid "Widget 1"
+msgstr "Виджет 1"
+
+#: src/blocks/header-widgets/edit.js
+msgid "Widget 2"
+msgstr "Виджет 2"
+
+#: src/blocks/header-widgets/edit.js
+msgid "Widget 3"
+msgstr "Виджет 3"
+
+#: src/blocks/header-widgets/edit.js
+msgid "More"
+msgstr "Ещё"
+
+#: src/blocks/header-widgets/edit.js
+msgid "Less"
+msgstr "Свернуть"
+
+#: src/blocks/header-widgets/edit.js
+msgid "Search display"
+msgstr "Отображение поиска"
+
+#: src/blocks/header-widgets/edit.js
+msgid "Menu"
+msgstr "Меню"
+
+#: src/blocks/header-widgets/edit.js
+msgid "Factual address"
+msgstr "Фактический адрес"
+
+#: src/blocks/header-widgets/edit.js
+#: src/blocks/navbar/templates/offcanvas-info-panel.php
+msgid "Address"
+msgstr "Адрес"
+
+#: src/blocks/header-widgets/edit.js
+#: src/blocks/navbar/templates/offcanvas-info-panel.php
+msgid "Legal address"
+msgstr "Юридический адрес"
+
+#: src/blocks/header-widgets/edit.js
+#: src/blocks/navbar/templates/offcanvas-info-panel.php
+msgid "Requisites"
+msgstr "Реквизиты"
+
+#: src/blocks/header-widgets/edit.js
+msgid "HTML after nav"
+msgstr "HTML после навигации"
+
+#: src/blocks/header-widgets/edit.js
+msgid "Output after closing </nav>. Multiple items output in order."
+msgstr "Вывод после закрытия </nav>. Несколько элементов выводятся по порядку."
+
+#: src/blocks/header-widgets/edit.js
+msgid "Search"
+msgstr "Поиск"

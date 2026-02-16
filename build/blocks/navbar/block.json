@@ -78,6 +78,10 @@
     "homeLink": {
       "type": "string",
       "default": ""
+    },
+    "showOffcanvasInPreview": {
+      "type": "boolean",
+      "default": false
     }
   },
   "textdomain": "codeweber-gutenberg-blocks",

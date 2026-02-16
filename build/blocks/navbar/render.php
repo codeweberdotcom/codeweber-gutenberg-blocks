@@ -147,9 +147,12 @@ $render_navbar_inner = function ($blocks) use (&$render_navbar_inner) {
 };
 $navbar_other_inner_blocks = $render_navbar_inner($parsed_block['innerBlocks'] ?? []);
 
-// Collect afterNavHtml and search template from header-widgets blocks
+// Collect afterNavHtml, search template, and offcanvas-info panel from header-widgets blocks
 $after_nav_html_parts = [];
 $has_search_enabled = false;
+$offcanvas_info_target = '';
+$offcanvas_info_element_ids = [];
+$offcanvas_info_theme = 'light';
 foreach ($parsed_block['innerBlocks'] ?? [] as $inner_block) {
 	if (($inner_block['blockName'] ?? '') !== 'codeweber-blocks/header-widgets') {
 		continue;
@@ -162,17 +165,76 @@ foreach ($parsed_block['innerBlocks'] ?? [] as $inner_block) {
 	foreach ($items as $it) {
 		if (!empty($it['enabled']) && ($it['type'] ?? '') === 'search') {
 			$has_search_enabled = true;
-			break 2;
+		}
+		// First enabled offcanvas-info: use its config for the panel
+		if (empty($offcanvas_info_element_ids) && !empty($it['enabled']) && ($it['type'] ?? '') === 'offcanvas-info') {
+			$target = isset($it['offcanvasTarget']) && (string) $it['offcanvasTarget'] !== '' ? trim($it['offcanvasTarget']) : '#offcanvas-info';
+			if (strpos($target, '#') === 0) {
+				$target = substr($target, 1);
+			}
+			$offcanvas_info_target = $target;
+			$offcanvas_info_theme = isset($it['offcanvasInfoTheme']) && $it['offcanvasInfoTheme'] === 'dark' ? 'dark' : 'light';
+			$offcanvas_social_overrides = [];
+			if (!empty($it['socialType'])) {
+				$offcanvas_social_overrides['social-type'] = $it['socialType'];
+			}
+			if (!empty($it['socialButtonSize'])) {
+				$offcanvas_social_overrides['social-button-size-offcanvas'] = $it['socialButtonSize'];
+			}
+			if (!empty($it['socialButtonStyle'])) {
+				$offcanvas_social_overrides['social-button-style-offcanvas'] = $it['socialButtonStyle'];
+			}
+			$elements = isset($it['offcanvasElements']) && is_array($it['offcanvasElements']) ? $it['offcanvasElements'] : [];
+			foreach ($elements as $el) {
+				if (!empty($el['enabled']) && !empty($el['id'])) {
+					$offcanvas_info_element_ids[] = $el['id'];
+				}
+			}
+			// Default order if none saved (same as Redux: description, phones, map, socials)
+			if (empty($offcanvas_info_element_ids)) {
+				$offcanvas_info_element_ids = ['description', 'phones', 'map', 'socials'];
+			}
 		}
 	}
 	$enabled = array_filter($items, function ($it) use ($valid_types) {
-		return !empty($it['enabled']) && in_array($it['type'] ?? '', $valid_types, true) && ($it['type'] ?? '') !== 'search' && !empty(trim($it['afterNavHtml'] ?? ''));
+		if (empty($it['enabled']) || ($it['type'] ?? '') === 'search' || !in_array($it['type'] ?? '', $valid_types, true)) {
+			return false;
+		}
+		$type = $it['type'] ?? '';
+		if ($type === 'custom-offcanvas' || $type === 'offcanvas-toggle') {
+			return !empty(trim($it['offcanvasHeaderHtml'] ?? '')) || !empty(trim($it['offcanvasBodyHtml'] ?? ''));
+		}
+		return !empty(trim($it['afterNavHtml'] ?? ''));
 	});
 	usort($enabled, function ($a, $b) {
 		return ($a['order'] ?? 0) - ($b['order'] ?? 0);
 	});
+	$custom_offcanvas_index = 0;
 	foreach ($enabled as $it) {
-		$after_nav_html_parts[] = wp_kses_post($it['afterNavHtml']);
+		$type = $it['type'] ?? '';
+		if ($type === 'custom-offcanvas' || $type === 'offcanvas-toggle') {
+			$body_html = trim($it['offcanvasBodyHtml'] ?? '');
+			$custom_theme = isset($it['customOffcanvasTheme']) && $it['customOffcanvasTheme'] === 'dark' ? 'dark' : 'light';
+			$custom_offcanvas_classes = $custom_theme === 'dark' ? 'offcanvas offcanvas-end text-inverse offcanvas-dark' : 'offcanvas offcanvas-end offcanvas-light';
+			$custom_btn_close_class = $custom_theme === 'dark' ? 'btn-close btn-close-white' : 'btn-close';
+			$inner = '';
+			// Всегда выводим offcanvas-header с кнопкой закрытия (контент поля — по желанию)
+			$inner .= '<div class="offcanvas-header">' . wp_kses_post($it['offcanvasHeaderHtml'] ?? '') . '<button type="button" class="' . esc_attr($custom_btn_close_class) . '" data-bs-dismiss="offcanvas" aria-label="' . esc_attr__('Close', 'codeweber-gutenberg-blocks') . '"></button></div>';
+			if ($body_html !== '') {
+				$inner .= '<div class="offcanvas-body">' . wp_kses_post($it['offcanvasBodyHtml']) . '</div>';
+			}
+			$custom_id = isset($it['customOffcanvasTarget']) && (string) $it['customOffcanvasTarget'] !== '' ? trim($it['customOffcanvasTarget']) : '';
+			if (strpos($custom_id, '#') === 0) {
+				$custom_id = substr($custom_id, 1);
+			}
+			if ($custom_id === '') {
+				$custom_offcanvas_index++;
+				$custom_id = $custom_offcanvas_index === 1 ? 'offcanvas-custom' : 'offcanvas-custom-' . $custom_offcanvas_index;
+			}
+			$after_nav_html_parts[] = '<div class="' . esc_attr($custom_offcanvas_classes) . '" id="' . esc_attr($custom_id) . '" data-bs-scroll="true">' . $inner . '</div>';
+		} else {
+			$after_nav_html_parts[] = wp_kses_post($it['afterNavHtml']);
+		}
 	}
 }
 // When Search is enabled: prepend offcanvas-search template (theme template, overridable in child)
@@ -183,6 +245,16 @@ if ($has_search_enabled) {
 	$after_nav_html = $search_template . implode('', $after_nav_html_parts);
 } else {
 	$after_nav_html = implode('', $after_nav_html_parts);
+}
+// Offcanvas Info panel (block-driven, same layout as Redux theme)
+if ($offcanvas_info_target !== '' && !empty($offcanvas_info_element_ids)) {
+	ob_start();
+	$offcanvas_target_id = $offcanvas_info_target;
+	$offcanvas_element_ids = $offcanvas_info_element_ids;
+	$offcanvas_theme = $offcanvas_info_theme;
+	$offcanvas_social_overrides = isset($offcanvas_social_overrides) ? $offcanvas_social_overrides : [];
+	require $plugin_dir . 'templates/offcanvas-info-panel.php';
+	$after_nav_html .= ob_get_clean();
 }
 
 // Variables passed to template

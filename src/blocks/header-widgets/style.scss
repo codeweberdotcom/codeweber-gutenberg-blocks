@@ -6,3 +6,8 @@
 .wp-block-codeweber-blocks-header-widgets {
 	display: contents;
 }
+
+// Search dropdown (when Search display = Dropdown): hide toggle caret
+.wp-block-codeweber-blocks-header-widgets .cwgb-search-block .dropdown-toggle::after {
+	display: none !important;
+}

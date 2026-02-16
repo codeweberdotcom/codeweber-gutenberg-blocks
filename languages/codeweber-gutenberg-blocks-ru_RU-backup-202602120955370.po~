@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Codeweber Gutenberg Blocks\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-02 20:06+0000\n"
-"PO-Revision-Date: 2026-01-11 14:08+0000\n"
+"PO-Revision-Date: 2026-02-11 22:07+0000\n"
 "Last-Translator: Codeweber\n"
 "Language-Team: Русский\n"
 "Language: ru_RU\n"
@@ -170,7 +170,7 @@ msgstr "Принимаемые типы"
 
 #: src/src/blocks/accordion/index.js src/src/blocks/accordion/index.js
 msgid "Accordion"
-msgstr "Аккордеон"
+msgstr "Accordion"
 
 #: src/src/blocks/accordion/index.js src/src/blocks/accordion/index.js
 msgid "accordion"
@@ -886,7 +886,7 @@ msgstr "Цвет маркера"
 #: src/src/components/load-more/LoadMoreControl.js
 #: src/src/components/load-more/LoadMoreControl.js
 msgid "Button"
-msgstr "Кнопка"
+msgstr "Button"
 
 #: src/src/blocks/button/sidebar.js src/src/blocks/button/sidebar.js
 msgid "Button Class"
@@ -981,7 +981,7 @@ msgstr "Тип капчи"
 #: src/src/components/post-grid-template/PostGridTemplateControl.js
 #: src/src/components/post-grid-template/PostGridTemplateControl.js
 msgid "Card"
-msgstr "Карточка"
+msgstr "Card"
 
 #: src/src/blocks/card/edit.js src/src/blocks/card/edit.js
 #: src/src/blocks/feature/edit.js src/src/blocks/feature/edit.js
@@ -2997,6 +2997,10 @@ msgstr ""
 msgid "Leave empty if name should not be a link"
 msgstr "Оставьте пустым, если имя не должно быть ссылкой"
 
+#: src/blocks/search/sidebar.js
+msgid "Leave empty to use \"Type keyword\" (translatable in Loco)."
+msgstr ""
+
 #: inc/ImageHotspotCPT.php:268
 msgid "Left"
 msgstr "Слева"
@@ -4434,7 +4438,7 @@ msgstr "Поиск иконки..."
 
 #: src/src/blocks/section/sidebar.js src/src/blocks/section/sidebar.js
 msgid "Section"
-msgstr "Секция"
+msgstr "Section"
 
 #: src/src/blocks/banners/sidebar.js src/src/blocks/banners/sidebar.js
 msgid "Section Classes"
@@ -5359,7 +5363,7 @@ msgstr "Временной период (секунды)"
 #: src/src/components/post-sort/PostSortControl.js
 #: src/src/components/post-sort/PostSortControl.js
 msgid "Title"
-msgstr "Заголовок"
+msgstr "Title"
 
 #: src/src/blocks/heading-subtitle/edit.js
 #: src/src/blocks/heading-subtitle/edit.js
@@ -5490,6 +5494,10 @@ msgstr "Тип 2"
 #: src/src/blocks/accordion/sidebar.js src/src/blocks/accordion/sidebar.js
 msgid "Type 3"
 msgstr "Тип 3"
+
+#: src/blocks/search/render.php src/blocks/search/edit.js
+msgid "Type keyword"
+msgstr "Поиск по сайту"
 
 #: src/src/utilities/link_type.js src/src/utilities/link_type.js
 msgid "Type link"

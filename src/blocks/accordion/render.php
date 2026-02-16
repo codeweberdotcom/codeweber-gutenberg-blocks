@@ -27,6 +27,7 @@ $mode = isset($attributes['mode']) ? $attributes['mode'] : 'custom';
 $accordionStyle = isset($attributes['accordionStyle']) ? $attributes['accordionStyle'] : 'simple';
 $allowMultiple = isset($attributes['allowMultiple']) ? (bool) $attributes['allowMultiple'] : false;
 $accordionId = isset($attributes['accordionId']) ? $attributes['accordionId'] : '';
+$buttonBackgroundColor = isset($attributes['buttonBackgroundColor']) ? $attributes['buttonBackgroundColor'] : '';
 $iconPosition = isset($attributes['iconPosition']) ? $attributes['iconPosition'] : 'left';
 $iconType = isset($attributes['iconType']) ? $attributes['iconType'] : 'type-1';
 $firstItemOpen = isset($attributes['firstItemOpen']) ? (bool) $attributes['firstItemOpen'] : false;
@@ -203,8 +204,11 @@ $wrapperAttributes = 'class="' . esc_attr(implode(' ', $accordionClasses)) . '" 
 			// Определяем, открыт ли элемент
 			$isOpen = isset($item['isOpen']) ? (bool) $item['isOpen'] : false;
 			
-			// Классы для элемента
+			// Классы для элемента (card)
 			$itemClasses = ['card', 'accordion-item'];
+			if (!empty($buttonBackgroundColor)) {
+				$itemClasses[] = 'bg-' . esc_attr(sanitize_html_class($buttonBackgroundColor));
+			}
 			if ($accordionStyle === 'simple') {
 				$itemClasses[] = 'plain';
 			} elseif ($accordionStyle === 'icon') {
@@ -259,8 +263,9 @@ $wrapperAttributes = 'class="' . esc_attr(implode(' ', $accordionClasses)) . '" 
 						aria-expanded="<?php echo $isOpen ? 'true' : 'false'; ?>"
 						aria-controls="<?php echo esc_attr($collapseId); ?>"
 					>
-						<?php if ($accordionStyle === 'icon' && !empty($itemIcon)) : ?>
-							<span class="icon"><i class="<?php echo esc_attr($itemIcon); ?>"></i></span>
+						<?php if ($accordionStyle === 'icon') : ?>
+							<?php $displayIcon = !empty($itemIcon) ? $itemIcon : 'uil uil-plus'; ?>
+							<span class="icon"><i class="<?php echo esc_attr($displayIcon); ?>"></i></span>
 						<?php endif; ?>
 						<?php echo esc_html($itemTitle); ?>
 					</button>

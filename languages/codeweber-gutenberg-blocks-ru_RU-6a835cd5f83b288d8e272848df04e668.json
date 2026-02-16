@@ -1804,7 +1804,7 @@
         "Основное"
       ],
       "Map": [
-        "Gap"
+        "Карта"
       ],
       "Map Behavior": [
         "Отступы и поведение"
@@ -1819,7 +1819,7 @@
         "Высота карты"
       ],
       "Map Settings": [
-        "Настройки Gap"
+        "Настройки карты"
       ],
       "Map Type": [
         "Тип промежутка"
@@ -3102,6 +3102,9 @@
       "Type 3": [
         "Тип 3"
       ],
+      "Type keyword": [
+        "Поиск по сайту"
+      ],
       "Type link": [
         "Тип ссылки"
       ],
@@ -3356,6 +3359,93 @@
       ],
       "— Select —": [
         "— Выбрать —"
+      ],
+      "Header Widgets": [
+        "Виджеты шапки"
+      ],
+      "Enable/disable and reorder elements.": [
+        "Включение, отключение и изменение порядка элементов."
+      ],
+      "Order items in side menu": [
+        "Порядок пунктов в боковом меню"
+      ],
+      "Enable/disable and reorder. Only enabled items are shown in the offcanvas panel.": [
+        "Включение, отключение и порядок. В панели оффканваса отображаются только включённые пункты."
+      ],
+      "Drag to reorder": [
+        "Перетащите для изменения порядка"
+      ],
+      "Offcanvas Info": [
+        "Инфо в оффканвасе"
+      ],
+      "Custom Offcanvas": [
+        "Свой оффканвас"
+      ],
+      "Social icons (offcanvas)": [
+        "Соц. иконки (оффканвас)"
+      ],
+      "Theme default": [
+        "По умолчанию темы"
+      ],
+      "Toggle info": [
+        "Инфо (переключатель)"
+      ],
+      "Social icon type": [
+        "Тип иконок соцсетей"
+      ],
+      "Social button size": [
+        "Размер кнопок соцсетей"
+      ],
+      "Social button style": [
+        "Стиль кнопок соцсетей"
+      ],
+      "Phones": [
+        "Телефоны"
+      ],
+      "Socials": [
+        "Соцсети"
+      ],
+      "Widget 1": [
+        "Виджет 1"
+      ],
+      "Widget 2": [
+        "Виджет 2"
+      ],
+      "Widget 3": [
+        "Виджет 3"
+      ],
+      "More": [
+        "Ещё"
+      ],
+      "Less": [
+        "Свернуть"
+      ],
+      "Search display": [
+        "Отображение поиска"
+      ],
+      "Menu": [
+        "Меню"
+      ],
+      "Factual address": [
+        "Фактический адрес"
+      ],
+      "Actual address": [
+        "Актуальный адрес"
+      ],
+      "Legal address": [
+        "Юридический адрес"
+      ],
+      "Requisites": [
+        "Реквизиты"
+      ],
+      "HTML after nav": [
+        "HTML после навигации"
+      ],
+      "Output after closing </nav>. Multiple items output in order.": [
+        "Вывод после закрытия </nav>. Несколько элементов выводятся по порядку."
+      ],
+      "Search": [
+        "Поиск"
       ]
     }
   }

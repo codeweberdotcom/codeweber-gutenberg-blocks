@@ -68,6 +68,7 @@ export const NavbarSidebar = ({ attributes, setAttributes }) => {
 		blockClass,
 		blockId,
 		homeLink,
+		showOffcanvasInPreview,
 	} = attributes;
 
 	const tabs = [
@@ -182,6 +183,12 @@ export const NavbarSidebar = ({ attributes, setAttributes }) => {
 
 					{tab.name === 'settings' && (
 						<PanelBody title={__('Settings', 'codeweber-gutenberg-blocks')} initialOpen={true}>
+							<ToggleControl
+								label={__('Show offcanvas in preview', 'codeweber-gutenberg-blocks')}
+								checked={!!showOffcanvasInPreview}
+								onChange={(value) => setAttributes({ showOffcanvasInPreview: value })}
+								help={__('Display offcanvas panel (info/search) in the editor preview.', 'codeweber-gutenberg-blocks')}
+							/>
 							<TextControl
 								label={__('Block Class', 'codeweber-gutenberg-blocks')}
 								value={blockClass || ''}

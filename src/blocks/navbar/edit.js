@@ -36,6 +36,7 @@ const NavbarEdit = ({ attributes, setAttributes }) => {
 			blockClass: attributes.blockClass || '',
 			blockId: attributes.blockId || '',
 			homeLink: attributes.homeLink || '',
+			showOffcanvasInPreview: attributes.showOffcanvasInPreview ? '1' : '0',
 			_t: String(Date.now()),
 		});
 		apiFetch({
@@ -66,22 +67,25 @@ const NavbarEdit = ({ attributes, setAttributes }) => {
 		attributes.blockClass,
 		attributes.blockId,
 		attributes.homeLink,
+		attributes.showOffcanvasInPreview,
 	]);
 
+	const isCenterLogoNoInner = ['navbar-3', 'navbar-6'].includes(attributes.navbarType || 'navbar-1');
+
 	useLayoutEffect(() => {
-		if (html && previewRef.current) {
+		if (html && previewRef.current && !isCenterLogoNoInner) {
 			const target = previewRef.current.querySelector('#navbar-other-innerblocks');
 			setPortalTarget(target);
 		} else {
 			setPortalTarget(null);
 		}
-	}, [html]);
+	}, [html, isCenterLogoNoInner]);
 
 	const NAVBAR_OTHER_TEMPLATE = [
 		['codeweber-blocks/social-icons'],
 	];
 
-	const innerBlocksContent = portalTarget
+	const innerBlocksContent = !isCenterLogoNoInner && portalTarget
 		? createPortal(
 				<InnerBlocks
 					template={NAVBAR_OTHER_TEMPLATE}
@@ -111,7 +115,7 @@ const NavbarEdit = ({ attributes, setAttributes }) => {
 							dangerouslySetInnerHTML={{ __html: html }}
 						/>
 						{innerBlocksContent}
-						{!portalTarget && (
+						{!isCenterLogoNoInner && !portalTarget && (
 							<div className="navbar-other-innerblocks-fallback" style={{ marginTop: 12, padding: 12, border: '1px dashed #ccc', background: '#f9f9f9', borderRadius: 4 }}>
 								<p style={{ margin: '0 0 8px 0', fontSize: 12, color: '#666' }}>
 									{__('Blocks for navbar right area', 'codeweber-gutenberg-blocks')}

@@ -1,0 +1,88 @@
+{
+  "apiVersion": 3,
+  "name": "codeweber-blocks/search",
+  "version": "0.1.0",
+  "title": "Search",
+  "category": "codeweber-gutenberg-elements",
+  "icon": "search",
+  "description": "AJAX search form. Display as inline form or dropdown (no trigger button). Markup only, no shortcode.",
+  "keywords": [
+    "search",
+    "dropdown",
+    "form",
+    "ajax"
+  ],
+  "supports": {
+    "html": false,
+    "customClassName": true,
+    "anchor": true
+  },
+  "attributes": {
+    "blockClass": {
+      "type": "string",
+      "default": ""
+    },
+    "blockId": {
+      "type": "string",
+      "default": ""
+    },
+    "displayType": {
+      "type": "string",
+      "default": "form",
+      "enum": [
+        "form",
+        "inline",
+        "dropdown"
+      ]
+    },
+    "dropdownMinWidth": {
+      "type": "string",
+      "default": "320"
+    },
+    "placeholder": {
+      "type": "string",
+      "default": ""
+    },
+    "postsPerPage": {
+      "type": "string",
+      "default": "8"
+    },
+    "postTypes": {
+      "type": "string",
+      "default": "post"
+    },
+    "searchContent": {
+      "type": "string",
+      "default": "false"
+    },
+    "showExcerpt": {
+      "type": "string",
+      "default": "false"
+    },
+    "taxonomy": {
+      "type": "string",
+      "default": ""
+    },
+    "term": {
+      "type": "string",
+      "default": ""
+    },
+    "includeTaxonomies": {
+      "type": "string",
+      "default": "false"
+    },
+    "formId": {
+      "type": "string",
+      "default": ""
+    },
+    "formClass": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "textdomain": "codeweber-blocks",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}

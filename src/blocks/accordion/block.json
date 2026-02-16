@@ -91,6 +91,10 @@
     "theme": {
       "type": "string",
       "default": "light"
+    },
+    "buttonBackgroundColor": {
+      "type": "string",
+      "default": ""
     }
   },
   "textdomain": "codeweber-gutenberg-blocks",

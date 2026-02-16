@@ -20,3 +20,19 @@
 		margin-bottom: 0 !important;
 	}
 }
+
+/* Inline search preview in editor */
+.header-widgets-editor .cwgb-search-block.inline {
+	.search-form.form-control,
+	.search-form .form-control {
+		display: block;
+		width: 100%;
+		min-width: 160px;
+		padding: 0.35rem 0.75rem;
+		font-size: 0.875rem;
+		line-height: 1.5;
+		border: 1px solid #8c8f94;
+		border-radius: 4px;
+		background: #fff;
+	}
+}

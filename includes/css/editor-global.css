@@ -82,3 +82,11 @@
 	border-color: #dc322f;
 }
 
+/* Кнопка выбора иконки в элементе аккордеона (стиль Иконка, источник Вручную) */
+.wp-block-codeweber-blocks-accordion .accordion-item-controls button.accordion-item-control-icon {
+	font-size: 0;
+}
+.wp-block-codeweber-blocks-accordion .accordion-item-controls button.accordion-item-control-icon i {
+	font-size: 14px;
+	font-style: normal;
+}

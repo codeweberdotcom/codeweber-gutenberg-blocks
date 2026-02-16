@@ -247,6 +247,7 @@ class Plugin {
 		'contacts',
 		'cta',
 		'navbar',
+		'search',
 		'social-icons',
 		'social-wrapper',
 		'top-header',
@@ -467,6 +468,24 @@ class Plugin {
 					if (isset($wp_scripts->registered[$script_handle])) {
 						$wp_scripts->registered[$script_handle]->deps[] = 'tabulator-editor';
 					}
+				}
+
+				// Search block: pass public post types (theme + active theme CPT) for Post types dropdown
+				if ($block_name === 'search') {
+					$search_excluded = [
+						'attachment', 'wp_block', 'wp_template', 'wp_template_part', 'wp_navigation',
+						'nav_menu_item', 'wp_global_styles', 'wp_font_family', 'wp_font_face',
+						'html_blocks', 'modal', 'header', 'footer', 'page-header', 'codeweber_form', 'cw_image_hotspot',
+					];
+					$pt_objects = get_post_types(['public' => true], 'objects');
+					$search_post_types = [];
+					foreach ($pt_objects as $pt => $obj) {
+						if (in_array($pt, $search_excluded, true)) {
+							continue;
+						}
+						$search_post_types[] = ['value' => $pt, 'label' => ! empty($obj->labels->name) ? $obj->labels->name : $pt];
+					}
+					wp_localize_script($script_handle, 'cwgbSearchPostTypes', ['postTypes' => $search_post_types]);
 				}
 
 				// Проверяем что скрипт действительно зарегистрирован
@@ -1892,6 +1911,7 @@ class Plugin {
 				'blockClass' => ['required' => false, 'type' => 'string', 'default' => ''],
 				'blockId' => ['required' => false, 'type' => 'string', 'default' => ''],
 				'homeLink' => ['required' => false, 'type' => 'string', 'default' => ''],
+				'showOffcanvasInPreview' => ['required' => false, 'type' => 'string', 'default' => '0'],
 			],
 		]);
 	}
@@ -1931,6 +1951,24 @@ class Plugin {
 		extract(compact('attributes', 'content', 'block_instance', 'parsed_block', 'for_editor_preview'), EXTR_SKIP);
 		require $render_path;
 		$html = ob_get_clean();
+
+		if ($request->get_param('showOffcanvasInPreview') === '1') {
+			// Add " show" to any existing offcanvas-end panel so it is visible in preview
+			$html = preg_replace('/(<div[^>]*\bclass="[^"]*offcanvas[^"]*offcanvas-end)([^"]*)"/', '$1$2 show"', $html);
+			// If no offcanvas-info panel in output (empty innerBlocks), append a sample one
+			if (strpos($html, 'id="offcanvas-info"') === false && strpos($html, "id='offcanvas-info'") === false) {
+				ob_start();
+				$offcanvas_target_id = 'offcanvas-info';
+				$offcanvas_element_ids = ['description', 'phones', 'map', 'socials'];
+				$offcanvas_theme = 'light';
+				$offcanvas_social_overrides = [];
+				require self::getBasePath() . '/build/blocks/navbar/templates/offcanvas-info-panel.php';
+				$panel_html = ob_get_clean();
+				$panel_html = preg_replace('/(<div[^>]*\bclass="[^"]*offcanvas[^"]*offcanvas-end[^"]*)"/', '$1 show"', $panel_html, 1);
+				$html .= $panel_html;
+			}
+			$html .= '<div class="offcanvas-backdrop show" style="position:fixed;inset:0;z-index:1040;background:#000;opacity:.5;"></div>';
+		}
 
 		$response = new \WP_REST_Response(['html' => $html], 200);
 		$response->header('Cache-Control', 'no-cache, no-store, must-revalidate');

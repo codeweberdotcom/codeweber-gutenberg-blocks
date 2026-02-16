@@ -14,6 +14,7 @@ import {
 } from '@wordpress/components';
 import { PostTypeTaxonomyControl } from '../../components/post-type-taxonomy/PostTypeTaxonomyControl';
 import { PostSortControl } from '../../components/post-sort/PostSortControl';
+import { colors } from '../../utilities/colors';
 
 export const AccordionSidebar = ({ attributes, setAttributes }) => {
 	const {
@@ -28,7 +29,16 @@ export const AccordionSidebar = ({ attributes, setAttributes }) => {
 		orderBy,
 		order,
 		theme,
+		buttonBackgroundColor,
 	} = attributes;
+
+	const bgColorOptions = [
+		{ label: __('Default', 'codeweber-gutenberg-blocks'), value: '' },
+		...colors.map((c) => ({
+			label: __(c.label, 'codeweber-gutenberg-blocks'),
+			value: c.value,
+		})),
+	];
 
 	const handleStyleChange = (style) => {
 		setAttributes({ accordionStyle: style });
@@ -240,6 +250,16 @@ export const AccordionSidebar = ({ attributes, setAttributes }) => {
 					'When enabled, the first item is forced open (others closed).',
 					'codeweber-gutenberg-blocks'
 				)}
+			/>
+
+			{/* Card Background Color */}
+			<div className="component-sidebar-title" style={{ marginTop: '16px' }}>
+				<label>{__('Card Background', 'codeweber-gutenberg-blocks')}</label>
+			</div>
+			<SelectControl
+				value={buttonBackgroundColor || ''}
+				options={bgColorOptions}
+				onChange={(v) => setAttributes({ buttonBackgroundColor: v || '' })}
 			/>
 
 			{/* Theme Selection */}

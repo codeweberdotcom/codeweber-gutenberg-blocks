@@ -32,6 +32,7 @@ const loadBlocks = async () => {
 		import('./blocks/cta/index'),
 		import('./blocks/navbar/index'),
 		import('./blocks/header-widgets/index'),
+		import('./blocks/search/index'),
 		import('./blocks/social-icons/index'),
 		import('./blocks/tables/index'),
 		import('./blocks/tabulator/index'),

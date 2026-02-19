@@ -1165,6 +1165,19 @@ class Plugin {
 	}
 
 	/**
+	 * Enqueue only FilePond assets (CSS + JS) for use in admin (e.g. project gallery metabox).
+	 * Caller must enqueue its own init script and set server/upload URL via localized data.
+	 */
+	public static function enqueue_filepond_assets_admin(): void {
+		if (wp_script_is('filepond', 'enqueued')) {
+			return;
+		}
+		$base = self::getBaseUrl();
+		wp_enqueue_style('filepond', $base . '/assets/filepond/filepond.min.css', [], '4.30.0');
+		wp_enqueue_script('filepond', $base . '/assets/filepond/filepond.min.js', [], '4.30.0', true);
+	}
+
+	/**
 	 * Enqueue FilePond library and initialization script
 	 */
 	public static function enqueue_filepond() {

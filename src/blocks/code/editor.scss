@@ -1,0 +1,20 @@
+/**
+ * Code Block - Editor Styles
+ *
+ * @package CodeWeber Gutenberg Blocks
+ */
+
+/* Sidebar: code textarea */
+.codeweber-code-block-textarea textarea {
+	font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+	font-size: 12px;
+	line-height: 1.5;
+}
+
+/* Block area: preview */
+.wp-block-codeweber-blocks-code {
+	.code-wrapper {
+		pointer-events: none;
+		opacity: 0.95;
+	}
+}

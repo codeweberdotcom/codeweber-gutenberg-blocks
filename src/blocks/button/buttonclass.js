@@ -172,6 +172,8 @@ export const getClassNames = (attributes) => {
 		// Добавляем классы LinkColor и LinkTextColor
 		if (LinkColor === 'body') {
 			classes.push('link-body');
+		} else if (LinkColor === 'more-left') {
+			classes.push('more-left');
 		} else if (LinkColor === 'more') {
 			classes.push('more');
 		}

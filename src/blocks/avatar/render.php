@@ -10,10 +10,13 @@
  * @var WP_Block $block      Block instance.
  */
 
-$avatar_type = isset( $attributes['avatarType'] ) ? $attributes['avatarType'] : 'custom';
-$size        = isset( $attributes['size'] ) ? $attributes['size'] : '15';
-$show_name   = isset( $attributes['showName'] ) ? $attributes['showName'] : false;
-$user_id     = isset( $attributes['userId'] ) ? intval( $attributes['userId'] ) : 0;
+$avatar_type   = isset( $attributes['avatarType'] ) ? $attributes['avatarType'] : 'custom';
+$size          = isset( $attributes['size'] ) ? $attributes['size'] : '15';
+$show_name     = isset( $attributes['showName'] ) ? $attributes['showName'] : false;
+$user_id       = isset( $attributes['userId'] ) ? intval( $attributes['userId'] ) : 0;
+$staff_id        = isset( $attributes['staffId'] ) ? intval( $attributes['staffId'] ) : 0;
+$staff_show_dept = isset( $attributes['staffShowDepartment'] ) && $attributes['staffShowDepartment'];
+$staff_show_phone = isset( $attributes['staffShowPhone'] ) && $attributes['staffShowPhone'];
 
 // Block classes
 $block_classes = array( 'cwgb-avatar-block' );
@@ -85,60 +88,30 @@ ob_start();
 
 			$user_link = get_author_posts_url( $user_id );
 			$job_title = get_user_meta( $user_id, 'user_position', true );
+			$user_placeholder_url = get_template_directory_uri() . '/dist/assets/img/avatar-placeholder.jpg';
+			$user_avatar_src = '';
+			if ( ! empty( $avatar_id ) ) {
+				$avatar_src = wp_get_attachment_image_src( $avatar_id, 'thumbnail' );
+				if ( $avatar_src ) {
+					$user_avatar_src = $avatar_src[0];
+				}
+			}
+			if ( $user_avatar_src === '' ) {
+				$avatar_html = get_avatar( $user->user_email, 96 );
+				if ( $avatar_html && preg_match( '/src=["\']([^"\']+)["\']/', $avatar_html, $matches ) && ! empty( $matches[1] ) ) {
+					$user_avatar_src = $matches[1];
+				}
+			}
+			if ( $user_avatar_src === '' ) {
+				$user_avatar_src = $user_placeholder_url;
+			}
 			?>
 			<div class="author-info d-md-flex align-items-center">
 				<div class="d-flex align-items-center">
 					<figure class="user-avatar">
-						<?php
-						if ( ! empty( $avatar_id ) ) {
-							$avatar_src = wp_get_attachment_image_src( $avatar_id, 'thumbnail' );
-							if ( $avatar_src ) {
-								?>
-								<img class="rounded-circle" 
-									src="<?php echo esc_url( $avatar_src[0] ); ?>" 
-									alt="<?php echo esc_attr( $user->display_name ); ?>">
-								<?php
-							} else {
-								// Fallback to letters
-								$initials = $get_initials( $user->display_name );
-								?>
-								<span class="<?php echo esc_attr( implode( ' ', $avatar_classes ) ); ?>">
-									<span><?php echo esc_html( $initials ); ?></span>
-								</span>
-								<?php
-							}
-						} else {
-							// Use WordPress default avatar or letters
-							$avatar_html = get_avatar( $user->user_email, 96 );
-							if ( $avatar_html ) {
-								// Extract src from avatar HTML
-								preg_match( '/src=["\']([^"\']+)["\']/', $avatar_html, $matches );
-								if ( ! empty( $matches[1] ) ) {
-									?>
-									<img class="rounded-circle" 
-										src="<?php echo esc_url( $matches[1] ); ?>" 
-										alt="<?php echo esc_attr( $user->display_name ); ?>">
-									<?php
-								} else {
-									// Fallback to letters
-									$initials = $get_initials( $user->display_name );
-									?>
-									<span class="<?php echo esc_attr( implode( ' ', $avatar_classes ) ); ?>">
-										<span><?php echo esc_html( $initials ); ?></span>
-									</span>
-									<?php
-								}
-							} else {
-								// Final fallback
-								$initials = $get_initials( $user->display_name );
-								?>
-								<span class="<?php echo esc_attr( implode( ' ', $avatar_classes ) ); ?>">
-									<span><?php echo esc_html( $initials ); ?></span>
-								</span>
-								<?php
-							}
-						}
-						?>
+						<img class="rounded-circle" 
+							src="<?php echo esc_url( $user_avatar_src ); ?>" 
+							alt="<?php echo esc_attr( $user->display_name ); ?>">
 					</figure>
 					<div>
 						<h6>
@@ -150,6 +123,83 @@ ob_start();
 							<span class="post-meta fs-15">
 								<?php echo esc_html( $job_title ); ?>
 							</span>
+						<?php endif; ?>
+					</div>
+				</div>
+			</div>
+			<?php
+		}
+		?>
+	<?php elseif ( $avatar_type === 'staff' && $staff_id ) : ?>
+		<?php
+		$staff_post = get_post( $staff_id );
+		if ( $staff_post && $staff_post->post_type === 'staff' && $staff_post->post_status === 'publish' ) {
+			$staff_name = trim( (string) get_post_meta( $staff_id, '_staff_name', true ) . ' ' . (string) get_post_meta( $staff_id, '_staff_surname', true ) );
+			if ( $staff_name === '' ) {
+				$staff_name = get_the_title( $staff_id );
+			}
+			if ( $staff_show_dept && taxonomy_exists( 'departments' ) ) {
+				$terms = get_the_terms( $staff_id, 'departments' );
+				$job_label = '';
+				if ( $terms && ! is_wp_error( $terms ) ) {
+					$first = reset( $terms );
+					$job_label = $first->name;
+				}
+				if ( $job_label === '' ) {
+					$job_label = get_post_meta( $staff_id, '_staff_position', true );
+				}
+			} else {
+				$job_label = get_post_meta( $staff_id, '_staff_position', true );
+			}
+			$staff_phone = get_post_meta( $staff_id, '_staff_phone', true );
+			if ( (string) $staff_phone === '' ) {
+				$staff_phone = get_post_meta( $staff_id, '_staff_job_phone', true );
+			}
+			$staff_link = get_permalink( $staff_id );
+			$thumb_id   = get_post_thumbnail_id( $staff_id );
+			$placeholder_url = get_template_directory_uri() . '/dist/assets/img/avatar-placeholder.jpg';
+			$clean_number_fn = function_exists( 'cleanNumber' ) ? 'cleanNumber' : function( $s ) { return preg_replace( '/[^0-9+]/', '', $s ); };
+			$inner_class = 'd-flex align-items-center' . ( $staff_show_phone ? ' mb-4' : '' );
+			?>
+			<div class="author-info d-md-flex align-items-center">
+				<div class="<?php echo esc_attr( $inner_class ); ?>">
+					<figure class="user-avatar">
+						<?php
+						if ( $thumb_id ) {
+							$avatar_src = wp_get_attachment_image_src( $thumb_id, 'thumbnail' );
+							if ( $avatar_src ) {
+								?>
+								<img class="rounded-circle" src="<?php echo esc_url( $avatar_src[0] ); ?>" alt="<?php echo esc_attr( $staff_name ); ?>">
+								<?php
+							} else {
+								?>
+								<img class="rounded-circle" src="<?php echo esc_url( $placeholder_url ); ?>" alt="<?php echo esc_attr( $staff_name ); ?>">
+								<?php
+							}
+						} else {
+							?>
+							<img class="rounded-circle" src="<?php echo esc_url( $placeholder_url ); ?>" alt="<?php echo esc_attr( $staff_name ); ?>">
+							<?php
+						}
+						?>
+					</figure>
+					<div>
+						<div class="h6 mb-1 lh-1">
+							<a href="<?php echo esc_url( $staff_link ); ?>" class="link-dark">
+								<?php echo esc_html( $staff_name ); ?>
+							</a>
+						</div>
+						<?php if ( (string) $job_label !== '' ) : ?>
+							<div class="post-meta fs-15 lh-1 mb-1">
+								<?php echo esc_html( $job_label ); ?>
+							</div>
+						<?php endif; ?>
+						<?php if ( $staff_show_phone && (string) $staff_phone !== '' ) : ?>
+							<div class="post-meta fs-15 lh-1">
+								<a href="tel:<?php echo esc_attr( call_user_func( $clean_number_fn, $staff_phone ) ); ?>">
+									<?php echo esc_html( $staff_phone ); ?>
+								</a>
+							</div>
 						<?php endif; ?>
 					</div>
 				</div>

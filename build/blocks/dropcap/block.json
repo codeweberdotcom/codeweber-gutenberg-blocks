@@ -1,0 +1,46 @@
+{
+  "apiVersion": 3,
+  "name": "codeweber-blocks/dropcap",
+  "version": "0.1.0",
+  "title": "Dropcap",
+  "category": "codeweber-gutenberg-elements",
+  "icon": "editor-textcolor",
+  "description": "Drop cap letter with color and style options (simple, colored, circle).",
+  "keywords": [
+    "dropcap",
+    "drop cap",
+    "letter",
+    "initial"
+  ],
+  "supports": {
+    "html": false,
+    "customClassName": true,
+    "anchor": true
+  },
+  "attributes": {
+    "content": {
+      "type": "string",
+      "default": ""
+    },
+    "style": {
+      "type": "string",
+      "default": "simple"
+    },
+    "color": {
+      "type": "string",
+      "default": "dark"
+    },
+    "colorType": {
+      "type": "string",
+      "default": "solid"
+    },
+    "circleBgType": {
+      "type": "string",
+      "default": "pale"
+    }
+  },
+  "textdomain": "codeweber-gutenberg-blocks",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

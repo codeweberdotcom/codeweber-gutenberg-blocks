@@ -5,8 +5,10 @@
  *
  * @package CodeWeber Gutenberg Blocks
  * @var string $home_link     Home URL.
- * @var string $logo_variant  Logo variant for get_custom_logo_type: light/dark/both.
- * @var string $logo_mobile   Mobile logo variant.
+ * @var string $logo_variant     Logo variant for get_custom_logo_type: light/dark/both.
+ * @var string $logo_mobile      Mobile logo variant.
+ * @var string $logo_brand_class Logo wrapper class (navbar-brand + optional w-*).
+ * @var string $logo_custom_html  Custom HTML after logo link (when enabled and not empty).
  * @var string $menu_loc        Menu theme_location.
  * @var bool   $center_nav      Nav center (true) or right (false).
  * @var int    $menu_depth      Menu depth.
@@ -25,12 +27,12 @@ $walker = class_exists('WP_Bootstrap_Navwalker') ? new WP_Bootstrap_Navwalker() 
 $logo_fn = function_exists('get_custom_logo_type') ? 'get_custom_logo_type' : null;
 $logo_fb = has_custom_logo() ? get_custom_logo() : '<span class="site-title">' . esc_html(get_bloginfo('name')) . '</span>';
 ?>
-<header class="<?php echo esc_attr($wrapper_class); ?>">
+<header class="<?php echo esc_attr($wrapper_class); ?>"<?php if (!empty($block_id_attr)) { echo ' id="' . esc_attr($block_id_attr) . '"'; } ?>>
 	<nav class="navbar navbar-expand-lg classic <?php echo esc_attr($nav_class); ?>">
 		<div class="container flex-lg-row flex-nowrap align-items-center">
-			<div class="navbar-brand w-100">
-				<a href="<?php echo esc_url($home_link); ?>"><?php echo $logo_fn ? $logo_fn($logo_variant) : $logo_fb; ?></a>
-				<?php if (is_active_sidebar('navbar-brand-1')) { dynamic_sidebar('navbar-brand-1'); } ?>
+			<div class="<?php echo esc_attr($logo_brand_class); ?>">
+				<a href="<?php echo esc_url($home_link); ?>"><?php echo $logo_fn ? $logo_fn($logo_variant) : $logo_fb; ?></a><?php if (!empty($logo_custom_html)) { echo wp_kses_post($logo_custom_html); } ?>
+				<?php if (is_active_sidebar('header-widget-1')) { dynamic_sidebar('header-widget-1'); } ?>
 			</div>
 			<div class="navbar-collapse offcanvas offcanvas-nav offcanvas-start <?php echo esc_attr($offcanvas_class); ?>">
 				<div class="offcanvas-header d-lg-none">
@@ -39,9 +41,6 @@ $logo_fb = has_custom_logo() ? get_custom_logo() : '<span class="site-title">' .
 				</div>
 				<div class="offcanvas-body ms-lg-auto d-flex flex-column h-100">
 					<?php
-					if (is_active_sidebar('navbar-offcanvas-before-1')) {
-						dynamic_sidebar('navbar-offcanvas-before-1');
-					}
 					wp_nav_menu([
 						'theme_location' => $menu_loc,
 						'depth'          => $menu_depth,
@@ -50,14 +49,16 @@ $logo_fb = has_custom_logo() ? get_custom_logo() : '<span class="site-title">' .
 						'fallback_cb'    => $walker ? 'WP_Bootstrap_Navwalker::fallback' : 'wp_page_menu',
 						'walker'         => $walker,
 					]);
-					if (is_active_sidebar('navbar-offcanvas-after-1')) {
-						dynamic_sidebar('navbar-offcanvas-after-1');
-					}
 					?>
+					<?php if (!empty($offcanvas_info_in_nav_html)) { ?>
+					<div class="offcanvas-footer d-lg-none">
+						<div><?php echo $offcanvas_info_in_nav_html; ?></div>
+					</div>
+					<?php } ?>
 				</div>
 			</div>
 			<div class="<?php echo esc_attr($navbar_other_class); ?>">
-				<?php if (is_active_sidebar('navbar-other-1')) { dynamic_sidebar('navbar-other-1'); } ?>
+				<?php if (is_active_sidebar('header-widget-2')) { dynamic_sidebar('header-widget-2'); } ?>
 				<ul class="navbar-nav flex-row align-items-center ms-auto">
 					<?php if (!empty($for_editor_preview)) { ?>
 						<li class="nav-item">

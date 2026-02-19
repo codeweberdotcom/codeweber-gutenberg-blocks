@@ -1,0 +1,47 @@
+{
+  "apiVersion": 3,
+  "name": "codeweber-blocks/blog-category-widget",
+  "version": "0.1.0",
+  "title": "Blog Category Widget",
+  "category": "codeweber-gutenberg-widgets",
+  "icon": "category",
+  "description": "Widget list of blog categories with optional post count.",
+  "keywords": [
+    "blog",
+    "categories",
+    "widget",
+    "sidebar",
+    "list"
+  ],
+  "supports": {
+    "html": false,
+    "customClassName": true,
+    "anchor": true
+  },
+  "attributes": {
+    "showCount": {
+      "type": "boolean",
+      "default": true
+    },
+    "orderby": {
+      "type": "string",
+      "default": "name"
+    },
+    "order": {
+      "type": "string",
+      "default": "ASC"
+    },
+    "number": {
+      "type": "number",
+      "default": 0
+    },
+    "listClass": {
+      "type": "string",
+      "default": "unordered-list bullet-primary text-reset"
+    }
+  },
+  "textdomain": "codeweber-gutenberg-blocks",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

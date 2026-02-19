@@ -156,6 +156,34 @@ class Plugin {
 			true
 		);
 
+		// Prism.js for syntax highlighting in Code and Card (footer code) blocks in editor
+		$prism_js_path = get_theme_file_path('src/assets/js/vendor/prism.js');
+		$prism_css_path = get_theme_file_path('src/assets/css/vendor/prism.css');
+		if ($prism_js_path && file_exists($prism_js_path)) {
+			wp_enqueue_script(
+				'prism',
+				get_theme_file_uri('src/assets/js/vendor/prism.js'),
+				[],
+				'1.24.1',
+				true
+			);
+			if ($prism_css_path && file_exists($prism_css_path)) {
+				wp_enqueue_style(
+					'prism',
+					get_theme_file_uri('src/assets/css/vendor/prism.css'),
+					[],
+					'1.24.1'
+				);
+			}
+			global $wp_scripts;
+			foreach (['card', 'code'] as $block_name) {
+				$script_handle = 'codeweber-blocks-' . $block_name . '-editor-script';
+				if (isset($wp_scripts->registered[$script_handle])) {
+					$wp_scripts->registered[$script_handle]->deps[] = 'prism';
+				}
+			}
+		}
+
 		// Pass plugin URL to JavaScript for placeholder image via inline script
 		wp_add_inline_script(
 			'codeweber-blocks-scrollcue-init',
@@ -215,6 +243,10 @@ class Plugin {
 		'avatar',
 		'header-widgets',
 		'banners',
+		'blog-category-widget',
+		'blog-post-widget',
+		'blog-tag-widget',
+		'blog-year-widget',
 		'button',
 		'section',
 		'column',
@@ -226,6 +258,9 @@ class Plugin {
 		'menu',
 		'media',
 		'paragraph',
+		'blockquote',
+		'code',
+		'dropcap',
 		'card',
 		'feature',
 		'features',
@@ -384,7 +419,7 @@ class Plugin {
 
 	/**
 	 * Pre-render avatar block conditionally based on avatarType
-	 * Uses PHP render when avatarType is 'user' to get fresh user data
+	 * Uses PHP render when avatarType is 'user' or 'staff' to get fresh data
 	 */
 	public static function pre_render_avatar_block($pre_render, $parsed_block) {
 		// Проверяем, что это блок avatar
@@ -395,8 +430,8 @@ class Plugin {
 		$attributes = $parsed_block['attrs'] ?? [];
 		$avatar_type = $attributes['avatarType'] ?? 'letters';
 
-		// Используем PHP render только для режима 'user'
-		if ($avatar_type === 'user') {
+		// Используем PHP render для режимов 'user' и 'staff'
+		if ($avatar_type === 'user' || $avatar_type === 'staff') {
 			$render_path = self::getBasePath() . '/build/blocks/avatar/render.php';
 			if (file_exists($render_path)) {
 				$content = $parsed_block['innerHTML'] ?? '';
@@ -456,7 +491,23 @@ class Plugin {
 		);
 
 		foreach (self::getBlocksName() as $block_name) {
-			$block_type = register_block_type($blocks_path . $block_name);
+			$block_args = [];
+			if (in_array($block_name, ['blog-post-widget', 'blog-category-widget', 'blog-tag-widget', 'blog-year-widget'], true)) {
+				$render_path = self::getBasePath() . '/build/blocks/' . $block_name . '/render.php';
+				if (file_exists($render_path)) {
+					$block_args['render_callback'] = function ($attributes, $content, $block) use ($render_path) {
+						ob_start();
+						extract([
+							'attributes' => $attributes,
+							'content'    => $content,
+							'block'      => $block,
+						], EXTR_SKIP);
+						require $render_path;
+						return ob_get_clean();
+					};
+				}
+			}
+			$block_type = register_block_type($blocks_path . $block_name, $block_args);
 
 			// Устанавливаем переводы СРАЗУ после успешной регистрации
 			if ($block_type) {
@@ -468,6 +519,13 @@ class Plugin {
 					if (isset($wp_scripts->registered[$script_handle])) {
 						$wp_scripts->registered[$script_handle]->deps[] = 'tabulator-editor';
 					}
+				}
+
+				// Avatar block: pass placeholder image URL for editor when user/staff has no photo
+				if ($block_name === 'avatar') {
+					wp_localize_script($script_handle, 'cwgbAvatarPlaceholderUrl', [
+						'url' => get_template_directory_uri() . '/dist/assets/img/avatar-placeholder.jpg',
+					]);
 				}
 
 				// Search block: pass public post types (theme + active theme CPT) for Post types dropdown
@@ -548,6 +606,8 @@ class Plugin {
 			'heading-subtitle',
 			'icon',
 			'paragraph',
+			'blockquote',
+			'dropcap',
 			'section',
 			'post-grid',
 			'yandex-map',
@@ -587,6 +647,10 @@ class Plugin {
 			[
 				'slug'  => 'codeweber-gutenberg-elements',
 				'title' => __('Codeweber Gutenberg Elements', Plugin::L10N),
+			],
+			[
+				'slug'  => 'codeweber-gutenberg-widgets',
+				'title' => __('Widgets Codeweber Gutenberg', Plugin::L10N),
 			],
 			...$categories,
 		];
@@ -1383,6 +1447,100 @@ class Plugin {
 	}
 
 	/**
+	 * Render social icons HTML from theme Redux (get_option('socials_urls')).
+	 * Same output as Social Icons block in theme mode. Used by navbar block.
+	 *
+	 * @param string $style_type   type1-type9
+	 * @param string $size         xs|sm|md|lg|elg
+	 * @param string $button_color primary etc
+	 * @param string $button_style solid|outline
+	 * @param string $button_form  circle|block
+	 * @param string $nav_class    extra nav classes
+	 * @param array  $enabled_slugs only show these slugs; empty = all
+	 * @return string HTML or empty
+	 */
+	public static function render_social_from_theme($style_type = 'type1', $size = 'sm', $button_color = 'primary', $button_style = 'solid', $button_form = 'circle', $nav_class = '', $enabled_slugs = []) {
+		$socials_raw = get_option('socials_urls');
+		if (!is_array($socials_raw)) {
+			return '';
+		}
+		$socials_filtered = $socials_raw;
+		if (!empty($enabled_slugs)) {
+			$socials_filtered = array_intersect_key($socials_raw, array_flip($enabled_slugs));
+		}
+		$socials_filtered = array_filter($socials_filtered, function ($u) {
+			return $u !== '' && $u !== null;
+		});
+		if (empty($socials_filtered)) {
+			return function_exists('social_links') ? social_links($nav_class, $style_type, $size, $button_color, $button_style, $button_form) : '';
+		}
+		$size_classes = [
+			'xs'  => ['fs-30', 'btn-xs'],
+			'sm'  => ['', 'btn-sm'],
+			'md'  => ['fs-45', 'btn-md'],
+			'lg'  => ['fs-60', 'btn-lg'],
+			'elg' => ['fs-60', 'btn-elg'],
+		];
+		$btn_size_class = isset($size_classes[ $size ][1]) ? $size_classes[ $size ][1] : 'btn-md';
+		$btn_form_class = ($button_form === 'block') ? 'btn-block' : 'btn-circle';
+		$nav_class_base = 'nav social gap-2';
+		if ($style_type === 'type2') {
+			$nav_class_base .= ' social-muted';
+		} elseif ($style_type === 'type4') {
+			$nav_class_base .= ' social-white';
+		} elseif ($style_type === 'type7') {
+			$nav_class_base = 'nav gap-2 social-white';
+		}
+		if ($nav_class !== '') {
+			$nav_class_base .= ' ' . $nav_class;
+		}
+		if ($style_type === 'type8' || $style_type === 'type9') {
+			$nav_class_base = 'nav gap-2' . ($nav_class !== '' ? ' ' . $nav_class : '');
+		}
+		$out = '<nav class="' . esc_attr(trim($nav_class_base)) . '">';
+		foreach ($socials_filtered as $social => $url) {
+			$original_social = $social;
+			switch ($social) {
+				case 'telegram': $social = 'telegram-alt'; break;
+				case 'rutube': $social = 'rutube-1'; break;
+				case 'github': $social = 'github-alt'; break;
+				case 'ok': $social = 'ok-1'; break;
+				case 'vkmusic': $social = 'vk-music'; break;
+				case 'tik-tok': $social = 'tiktok'; break;
+				case 'googledrive': $social = 'google-drive'; break;
+				case 'googleplay': $social = 'google-play'; break;
+				case 'odnoklassniki': $social = 'square-odnoklassniki'; break;
+			}
+			$icon_class = 'uil uil-' . esc_attr($social);
+			$label = $original_social;
+			$btnlabel = (stripos($label, 'vk') === 0) ? strtoupper(substr($label, 0, 2)) . substr($label, 2) : ucfirst($label);
+			if ($style_type === 'type1') {
+				$out .= '<a href="' . esc_url($url) . '" class="btn ' . esc_attr($btn_form_class) . ' has-ripple ' . esc_attr($btn_size_class) . ' btn-' . esc_attr($social) . '" target="_blank" rel="noopener"><i class="' . $icon_class . '"></i></a>';
+			} elseif ($style_type === 'type5') {
+				$out .= '<a href="' . esc_url($url) . '" class="btn ' . esc_attr($btn_form_class) . ' has-ripple ' . esc_attr($btn_size_class) . ' btn-dark" target="_blank" rel="noopener"><i class="' . $icon_class . '"></i></a>';
+			} elseif ($style_type === 'type2' || $style_type === 'type3' || $style_type === 'type4') {
+				$out .= '<a href="' . esc_url($url) . '" class="has-ripple" target="_blank" rel="noopener" title="' . esc_attr($label) . '"><i class="' . $icon_class . '"></i></a>';
+			} elseif ($style_type === 'type6') {
+				$out .= '<a role="button" href="' . esc_url($url) . '" target="_blank" rel="noopener" title="' . esc_attr($label) . '" class="btn btn-icon ' . esc_attr($btn_size_class) . ' border btn-icon-start btn-white justify-content-between w-100 fs-16 has-ripple"><i class="fs-20 lh-1 ' . $icon_class . '"></i>' . esc_html($btnlabel) . '</a>';
+			} elseif ($style_type === 'type7') {
+				$out .= '<a role="button" href="' . esc_url($url) . '" target="_blank" rel="noopener" title="' . esc_attr($label) . '" class="btn btn-icon ' . esc_attr($btn_size_class) . ' btn-icon-start btn-' . esc_attr($original_social) . ' justify-content-between w-100 has-ripple"><i class="fs-20 lh-1 ' . $icon_class . '"></i>' . esc_html($btnlabel) . '</a>';
+			} elseif ($style_type === 'type8') {
+				$btn_color = $button_color !== '' ? esc_attr($button_color) : 'primary';
+				$bs = ($button_style === 'outline') ? 'outline' : 'solid';
+				$btn_class = ($bs === 'outline') ? 'btn ' . esc_attr($btn_form_class) . ' has-ripple btn-outline-' . $btn_color . ' ' . esc_attr($btn_size_class) : 'btn ' . esc_attr($btn_form_class) . ' has-ripple btn-' . $btn_color . ' ' . esc_attr($btn_size_class);
+				$out .= '<a href="' . esc_url($url) . '" class="' . $btn_class . '" target="_blank" rel="noopener" title="' . esc_attr($label) . '"><i class="' . $icon_class . '"></i></a>';
+			} elseif ($style_type === 'type9') {
+				$btn_class = 'btn ' . esc_attr($btn_form_class) . ' has-ripple btn-outline-primary ' . esc_attr($btn_size_class);
+				$out .= '<a href="' . esc_url($url) . '" class="' . $btn_class . '" target="_blank" rel="noopener" title="' . esc_attr($label) . '"><i class="' . $icon_class . '"></i></a>';
+			} else {
+				$out .= '<a href="' . esc_url($url) . '" class="has-ripple" target="_blank" rel="noopener" title="' . esc_attr($label) . '"><i class="' . $icon_class . '"></i></a>';
+			}
+		}
+		$out .= '</nav>';
+		return $out;
+	}
+
+	/**
 	 * REST API callback: render social-icons block HTML (same as frontend)
 	 */
 	public static function social_icons_preview_callback($request) {
@@ -1911,15 +2069,52 @@ class Plugin {
 				'blockClass' => ['required' => false, 'type' => 'string', 'default' => ''],
 				'blockId' => ['required' => false, 'type' => 'string', 'default' => ''],
 				'homeLink' => ['required' => false, 'type' => 'string', 'default' => ''],
-				'showOffcanvasInPreview' => ['required' => false, 'type' => 'string', 'default' => '0'],
+				'logoWidth' => ['required' => false, 'type' => 'string', 'default' => ''],
+				'logoHtmlEnabled' => ['required' => false, 'type' => 'string', 'default' => '0'],
+				'logoHtml' => ['required' => false, 'type' => 'string', 'default' => ''],
+				'headerBackground' => ['required' => false, 'type' => 'string', 'default' => ''],
+				'headerBackgroundStyle' => ['required' => false, 'type' => 'string', 'default' => 'solid'],
+				'socialFromTheme' => ['required' => false, 'type' => 'string', 'default' => '0'],
+				'socialStyleType' => ['required' => false, 'type' => 'string', 'default' => 'type1'],
+				'socialSize' => ['required' => false, 'type' => 'string', 'default' => 'sm'],
+				'socialButtonColor' => ['required' => false, 'type' => 'string', 'default' => 'primary'],
+				'socialButtonStyle' => ['required' => false, 'type' => 'string', 'default' => 'solid'],
+				'socialButtonForm' => ['required' => false, 'type' => 'string', 'default' => 'circle'],
+				'socialNavClass' => ['required' => false, 'type' => 'string', 'default' => ''],
+				'socialThemeEnabledSlugs' => ['required' => false, 'type' => 'string', 'default' => ''],
+				'mobileMenuElements' => ['required' => false, 'type' => 'string', 'default' => '[]'],
+				'mobileMenuOffcanvasTheme' => ['required' => false, 'type' => 'string', 'default' => 'light'],
+				'mobileMenuSocialType' => ['required' => false, 'type' => 'string', 'default' => ''],
+				'mobileMenuSocialSize' => ['required' => false, 'type' => 'string', 'default' => ''],
+				'mobileMenuSocialStyle' => ['required' => false, 'type' => 'string', 'default' => ''],
 			],
 		]);
+	}
+
+	/**
+	 * Decode mobileMenuElements JSON for navbar preview.
+	 *
+	 * @param string $raw JSON string or empty.
+	 * @return array<int, array{id: string, label?: string, enabled?: bool}>
+	 */
+	public static function navbar_preview_decode_mobile_elements($raw) {
+		if (!is_string($raw) || $raw === '') {
+			return [];
+		}
+		$decoded = json_decode($raw, true);
+		return is_array($decoded) ? $decoded : [];
 	}
 
 	/**
 	 * REST: Render navbar block HTML for editor preview
 	 */
 	public static function navbar_preview_callback(\WP_REST_Request $request) {
+		$social_slugs_raw = $request->get_param('socialThemeEnabledSlugs');
+		$social_slugs = [];
+		if (is_string($social_slugs_raw) && $social_slugs_raw !== '') {
+			$decoded = json_decode($social_slugs_raw, true);
+			$social_slugs = is_array($decoded) ? $decoded : [];
+		}
 		$attributes = [
 			'navbarType' => $request->get_param('navbarType') ?: 'navbar-1',
 			'menuLocation' => $request->get_param('menuLocation') ?: '',
@@ -1936,6 +2131,24 @@ class Plugin {
 			'blockClass' => $request->get_param('blockClass') ?: '',
 			'blockId' => $request->get_param('blockId') ?: '',
 			'homeLink' => $request->get_param('homeLink') ?: '',
+			'logoWidth' => $request->get_param('logoWidth') ?: '',
+			'logoHtmlEnabled' => $request->get_param('logoHtmlEnabled') === '1',
+			'logoHtml' => $request->get_param('logoHtml') ?: '',
+			'headerBackground' => $request->get_param('headerBackground') ?: '',
+			'headerBackgroundStyle' => $request->get_param('headerBackgroundStyle') ?: 'solid',
+			'socialFromTheme' => $request->get_param('socialFromTheme') === '1',
+			'socialStyleType' => $request->get_param('socialStyleType') ?: 'type1',
+			'socialSize' => $request->get_param('socialSize') ?: 'sm',
+			'socialButtonColor' => $request->get_param('socialButtonColor') ?: 'primary',
+			'socialButtonStyle' => $request->get_param('socialButtonStyle') ?: 'solid',
+			'socialButtonForm' => $request->get_param('socialButtonForm') ?: 'circle',
+			'socialNavClass' => $request->get_param('socialNavClass') ?: '',
+			'socialThemeEnabledSlugs' => $social_slugs,
+			'mobileMenuElements' => self::navbar_preview_decode_mobile_elements($request->get_param('mobileMenuElements')),
+			'mobileMenuOffcanvasTheme' => $request->get_param('mobileMenuOffcanvasTheme') ?: 'light',
+			'mobileMenuSocialType' => $request->get_param('mobileMenuSocialType') ?: '',
+			'mobileMenuSocialSize' => $request->get_param('mobileMenuSocialSize') ?: '',
+			'mobileMenuSocialStyle' => $request->get_param('mobileMenuSocialStyle') ?: '',
 		];
 
 		$render_path = self::getBasePath() . '/build/blocks/navbar/render.php';
@@ -1951,24 +2164,6 @@ class Plugin {
 		extract(compact('attributes', 'content', 'block_instance', 'parsed_block', 'for_editor_preview'), EXTR_SKIP);
 		require $render_path;
 		$html = ob_get_clean();
-
-		if ($request->get_param('showOffcanvasInPreview') === '1') {
-			// Add " show" to any existing offcanvas-end panel so it is visible in preview
-			$html = preg_replace('/(<div[^>]*\bclass="[^"]*offcanvas[^"]*offcanvas-end)([^"]*)"/', '$1$2 show"', $html);
-			// If no offcanvas-info panel in output (empty innerBlocks), append a sample one
-			if (strpos($html, 'id="offcanvas-info"') === false && strpos($html, "id='offcanvas-info'") === false) {
-				ob_start();
-				$offcanvas_target_id = 'offcanvas-info';
-				$offcanvas_element_ids = ['description', 'phones', 'map', 'socials'];
-				$offcanvas_theme = 'light';
-				$offcanvas_social_overrides = [];
-				require self::getBasePath() . '/build/blocks/navbar/templates/offcanvas-info-panel.php';
-				$panel_html = ob_get_clean();
-				$panel_html = preg_replace('/(<div[^>]*\bclass="[^"]*offcanvas[^"]*offcanvas-end[^"]*)"/', '$1 show"', $panel_html, 1);
-				$html .= $panel_html;
-			}
-			$html .= '<div class="offcanvas-backdrop show" style="position:fixed;inset:0;z-index:1040;background:#000;opacity:.5;"></div>';
-		}
 
 		$response = new \WP_REST_Response(['html' => $html], 200);
 		$response->header('Cache-Control', 'no-cache, no-store, must-revalidate');

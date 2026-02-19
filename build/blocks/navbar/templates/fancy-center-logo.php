@@ -5,8 +5,10 @@
  *
  * @package CodeWeber Gutenberg Blocks
  * @var string $home_link     Home URL.
- * @var string $logo_variant  Logo variant for get_custom_logo_type (desktop).
- * @var string $logo_mobile   Mobile logo variant.
+ * @var string $logo_variant     Logo variant for get_custom_logo_type (desktop).
+ * @var string $logo_mobile      Mobile logo variant.
+ * @var string $logo_brand_class Logo wrapper class (navbar-brand + optional w-*).
+ * @var string $logo_custom_html  Custom HTML after logo link (when enabled and not empty).
  * @var string $menu_loc      Menu theme_location (left).
  * @var string $menu_loc1     Menu theme_location (right).
  * @var int    $menu_depth    Menu depth.
@@ -23,13 +25,14 @@ $logo_fn = function_exists('get_custom_logo_type') ? 'get_custom_logo_type' : nu
 $logo_fb = has_custom_logo() ? get_custom_logo() : '<span class="site-title">' . esc_html(get_bloginfo('name')) . '</span>';
 $btn_close_class = (isset($offcanvas_class) && strpos($offcanvas_class, 'dark') !== false) ? 'btn-close btn-close-white' : 'btn-close';
 ?>
-<header class="<?php echo esc_attr($wrapper_class); ?>">
+<header class="<?php echo esc_attr($wrapper_class); ?>"<?php if (!empty($block_id_attr)) { echo ' id="' . esc_attr($block_id_attr) . '"'; } ?>>
 	<nav class="navbar navbar-expand-lg fancy center-logo <?php echo esc_attr($nav_class); ?>">
 		<div class="container">
 			<div class="navbar-collapse-wrapper d-lg-flex flex-row flex-nowrap w-100 justify-content-between align-items-center <?php echo esc_attr($navbar_collapse_wrapper_class ?: 'bg-light navbar-light'); ?>">
 				<div class="d-flex flex-row w-100 justify-content-between align-items-center d-lg-none">
-					<div class="navbar-brand">
-						<a href="<?php echo esc_url($home_link); ?>"><?php echo $logo_fn ? $logo_fn($logo_variant) : $logo_fb; ?></a>
+					<div class="<?php echo esc_attr($logo_brand_class); ?>">
+						<a href="<?php echo esc_url($home_link); ?>"><?php echo $logo_fn ? $logo_fn($logo_variant) : $logo_fb; ?></a><?php if (!empty($logo_custom_html)) { echo wp_kses_post($logo_custom_html); } ?>
+						<?php if (is_active_sidebar('header-widget-1')) { dynamic_sidebar('header-widget-1'); } ?>
 					</div>
 					<div class="navbar-other ms-auto">
 						<ul class="navbar-nav flex-row align-items-center">
@@ -44,6 +47,7 @@ $btn_close_class = (isset($offcanvas_class) && strpos($offcanvas_class, 'dark') 
 						<div class="offcanvas-header mx-lg-auto order-0 order-lg-1 d-lg-flex px-lg-15">
 							<a href="<?php echo esc_url($home_link); ?>" class="transition-none d-none d-lg-flex"><?php echo $logo_fn ? $logo_fn($logo_variant) : $logo_fb; ?></a>
 							<a href="<?php echo esc_url($home_link); ?>" class="d-lg-none transition-none"><?php echo $logo_fn ? $logo_fn($logo_mobile) : $logo_fb; ?></a>
+							<?php if (is_active_sidebar('header-widget-1')) { dynamic_sidebar('header-widget-1'); } ?>
 							<button type="button" class="<?php echo esc_attr($btn_close_class); ?> d-lg-none" data-bs-dismiss="offcanvas" aria-label="<?php esc_attr_e('Close', 'codeweber-gutenberg-blocks'); ?>"></button>
 						</div>
 						<div class="w-100 order-1 order-lg-0 d-lg-flex">
@@ -70,7 +74,13 @@ $btn_close_class = (isset($offcanvas_class) && strpos($offcanvas_class, 'dark') 
 							]);
 							?>
 						</div>
-						<div class="offcanvas-body order-4 mt-auto"></div>
+						<div class="offcanvas-body order-4 mt-auto d-lg-none">
+							<?php if (!empty($offcanvas_info_in_nav_html)) { ?>
+							<div class="offcanvas-footer">
+								<div><?php echo $offcanvas_info_in_nav_html; ?></div>
+							</div>
+							<?php } ?>
+						</div>
 					</div>
 				</div>
 			</div>

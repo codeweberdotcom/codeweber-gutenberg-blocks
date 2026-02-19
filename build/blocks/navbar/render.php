@@ -60,6 +60,7 @@ $wrapper_class_attr = isset($attributes['wrapperClass']) ? trim($attributes['wra
 $nav_class_attr    = isset($attributes['navClass']) ? trim($attributes['navClass']) : '';
 $block_class_attr  = isset($attributes['blockClass']) ? trim($attributes['blockClass']) : '';
 $block_id_attr     = isset($attributes['blockId']) ? trim($attributes['blockId']) : '';
+$logo_width_attr   = isset($attributes['logoWidth']) ? trim($attributes['logoWidth']) : '';
 
 $home_link = $home_link_attr !== '' ? esc_url($home_link_attr) : home_url('/');
 $menu_loc  = $menu_loc_attr !== '' ? $menu_loc_attr : apply_filters('codeweber_navbar_menu_location', 'header_1');
@@ -69,21 +70,40 @@ $center_nav = in_array($header_model, ['1', '5'], true);
 
 // Build wrapper classes (header)
 $wrapper_classes = ['wrapper'];
+$header_bg_attr = isset($attributes['headerBackground']) ? trim($attributes['headerBackground']) : '';
+$header_bg_style = isset($attributes['headerBackgroundStyle']) && $attributes['headerBackgroundStyle'] === 'soft' ? 'soft' : 'solid';
+$allowed_bg = ['primary', 'dark', 'light', 'yellow', 'orange', 'red', 'pink', 'fuchsia', 'violet', 'purple', 'blue', 'aqua', 'sky', 'green', 'leaf', 'ash', 'navy', 'grape', 'muted', 'white', 'pinterest', 'dewalt', 'facebook', 'telegram', 'frost'];
+if ($header_bg_attr !== '' && in_array($header_bg_attr, $allowed_bg, true)) {
+	$wrapper_classes[] = $header_bg_style === 'soft' ? 'bg-soft-' . $header_bg_attr : 'bg-' . $header_bg_attr;
+}
 if ($wrapper_class_attr) {
 	$wrapper_classes[] = $wrapper_class_attr;
 }
 if ($sticky_navbar) {
 	$wrapper_classes[] = 'navbar-sticky';
 }
-if ($transparent_on_top) {
-	$wrapper_classes[] = 'navbar-transparent-on-top';
+if ($block_class_attr) {
+	$wrapper_classes[] = $block_class_attr;
 }
 $wrapper_class = implode(' ', $wrapper_classes);
 
-// Nav color classes: navbar-light/dark, navbar-bg-light/dark
-$nav_color_class = $navbar_color === 'dark' ? 'navbar-dark navbar-bg-dark' : 'navbar-light navbar-bg-light';
+// Header background class for nav (extended template): bg-* or bg-soft-*
+$header_bg_class = '';
+if ($header_bg_attr !== '' && in_array($header_bg_attr, $allowed_bg, true)) {
+	$header_bg_class = $header_bg_style === 'soft' ? 'bg-soft-' . $header_bg_attr : 'bg-' . $header_bg_attr;
+}
+
+// Nav color classes: navbar-light/dark; when transparent on top — no navbar-bg-* (theme uses transparent overlay)
 $offcanvas_class = $offcanvas_theme === 'dark' ? 'offcanvas-dark' : 'offcanvas-light';
+if ($transparent_on_top) {
+	$nav_color_class = $navbar_color === 'dark' ? 'navbar-dark' : 'navbar-light';
+} else {
+	$nav_color_class = $navbar_color === 'dark' ? 'navbar-dark navbar-bg-dark' : 'navbar-light navbar-bg-light';
+}
 $nav_class = trim($nav_color_class . ' ' . $nav_class_attr);
+if ($transparent_on_top) {
+	$nav_class = trim($nav_class . ' transparent position-absolute');
+}
 
 // Logo variants for get_custom_logo_type() as in Codeweber theme:
 // 'light' = dark logo (for light navbar bg), 'dark' = light logo (for dark navbar bg), 'both' = both logos
@@ -113,6 +133,24 @@ if ($is_fancy) {
 			$logo_variant = 'light'; // dark logo on light bar
 		}
 	}
+}
+
+// Logo wrapper class: default = no class (or w-100 for classic/fancy), or w-1..w-15
+$logo_brand_class = 'navbar-brand';
+if ($logo_width_attr === '') {
+	if (in_array($template_slug, ['classic', 'fancy'], true)) {
+		$logo_brand_class .= ' w-100';
+	}
+} elseif (preg_match('/^w-(1[0-5]|[1-9])$/', $logo_width_attr)) {
+	$logo_brand_class .= ' ' . $logo_width_attr;
+}
+
+// Custom HTML after logo link: only when enabled and content not empty; then add d-flex to wrapper
+$logo_html_enabled = !empty($attributes['logoHtmlEnabled']);
+$logo_html_raw     = isset($attributes['logoHtml']) ? trim($attributes['logoHtml']) : '';
+$logo_custom_html  = ($logo_html_enabled && $logo_html_raw !== '') ? $logo_html_raw : '';
+if ($logo_custom_html !== '') {
+	$logo_brand_class .= ' d-flex align-items-center';
 }
 
 $plugin_dir   = plugin_dir_path(__FILE__);
@@ -147,12 +185,29 @@ $render_navbar_inner = function ($blocks) use (&$render_navbar_inner) {
 };
 $navbar_other_inner_blocks = $render_navbar_inner($parsed_block['innerBlocks'] ?? []);
 
-// Collect afterNavHtml, search template, and offcanvas-info panel from header-widgets blocks
+// Collect afterNavHtml, search template, and Header Widgets offcanvas panels (each has its own logic)
 $after_nav_html_parts = [];
 $has_search_enabled = false;
-$offcanvas_info_target = '';
-$offcanvas_info_element_ids = [];
-$offcanvas_info_theme = 'light';
+/** Configs for Header Widgets Offcanvas Info panels: each item = own target, own element list, own theme (no shared offcanvas with Navbar) */
+$header_widgets_offcanvas_panels = [];
+
+// Navbar block: own Mobile Menu list — used only for the navbar mobile offcanvas footer (its own logic)
+$mobile_elements_raw = $attributes['mobileMenuElements'] ?? null;
+$mobile_elements = [];
+if (is_array($mobile_elements_raw)) {
+	$mobile_elements = array_values($mobile_elements_raw);
+} elseif (is_object($mobile_elements_raw)) {
+	$mobile_elements = array_values((array) $mobile_elements_raw);
+}
+$mobile_ids = [];
+foreach ($mobile_elements as $el) {
+	$enabled = isset($el['enabled']) ? (bool) $el['enabled'] : false;
+	if ($enabled && !empty($el['id'])) {
+		$mobile_ids[] = (string) $el['id'];
+	}
+}
+$navbar_mobile_configured = !empty($mobile_elements);
+
 foreach ($parsed_block['innerBlocks'] ?? [] as $inner_block) {
 	if (($inner_block['blockName'] ?? '') !== 'codeweber-blocks/header-widgets') {
 		continue;
@@ -162,47 +217,65 @@ foreach ($parsed_block['innerBlocks'] ?? [] as $inner_block) {
 		continue;
 	}
 	$valid_types = ['search', 'offcanvas-info', 'custom-offcanvas', 'offcanvas-toggle'];
+	// Collect Header Widgets Offcanvas Info panels (each with its own target and element list)
 	foreach ($items as $it) {
 		if (!empty($it['enabled']) && ($it['type'] ?? '') === 'search') {
 			$has_search_enabled = true;
 		}
-		// First enabled offcanvas-info: use its config for the panel
-		if (empty($offcanvas_info_element_ids) && !empty($it['enabled']) && ($it['type'] ?? '') === 'offcanvas-info') {
+		if (!empty($it['enabled']) && ($it['type'] ?? '') === 'offcanvas-info') {
 			$target = isset($it['offcanvasTarget']) && (string) $it['offcanvasTarget'] !== '' ? trim($it['offcanvasTarget']) : '#offcanvas-info';
 			if (strpos($target, '#') === 0) {
 				$target = substr($target, 1);
 			}
-			$offcanvas_info_target = $target;
-			$offcanvas_info_theme = isset($it['offcanvasInfoTheme']) && $it['offcanvasInfoTheme'] === 'dark' ? 'dark' : 'light';
-			$offcanvas_social_overrides = [];
+			$panel_theme = isset($it['offcanvasInfoTheme']) && $it['offcanvasInfoTheme'] === 'dark' ? 'dark' : 'light';
+			$panel_social = [];
 			if (!empty($it['socialType'])) {
-				$offcanvas_social_overrides['social-type'] = $it['socialType'];
+				$panel_social['social-type'] = $it['socialType'];
 			}
 			if (!empty($it['socialButtonSize'])) {
-				$offcanvas_social_overrides['social-button-size-offcanvas'] = $it['socialButtonSize'];
+				$panel_social['social-button-size-offcanvas'] = $it['socialButtonSize'];
 			}
 			if (!empty($it['socialButtonStyle'])) {
-				$offcanvas_social_overrides['social-button-style-offcanvas'] = $it['socialButtonStyle'];
+				$panel_social['social-button-style-offcanvas'] = $it['socialButtonStyle'];
 			}
-			$elements = isset($it['offcanvasElements']) && is_array($it['offcanvasElements']) ? $it['offcanvasElements'] : [];
+			$elements_raw = $it['offcanvasElements'] ?? null;
+			$elements = is_array($elements_raw) ? array_values($elements_raw) : [];
+			$panel_ids = [];
 			foreach ($elements as $el) {
-				if (!empty($el['enabled']) && !empty($el['id'])) {
-					$offcanvas_info_element_ids[] = $el['id'];
+				$enabled_el = isset($el['enabled']) ? (bool) $el['enabled'] : false;
+				if ($enabled_el && !empty($el['id'])) {
+					$panel_ids[] = (string) $el['id'];
 				}
 			}
-			// Default order if none saved (same as Redux: description, phones, map, socials)
-			if (empty($offcanvas_info_element_ids)) {
-				$offcanvas_info_element_ids = ['description', 'phones', 'map', 'socials'];
+			if (empty($panel_ids)) {
+				$panel_ids = ['description', 'phones', 'email', 'map', 'socials'];
 			}
+			$employee_staff_ids = isset($it['offcanvasEmployeeStaffIds']) && is_array($it['offcanvasEmployeeStaffIds'])
+				? array_map('intval', array_filter($it['offcanvasEmployeeStaffIds']))
+				: [];
+			$employee_show_department = !empty($it['offcanvasEmployeeShowDepartment']);
+			$header_widgets_offcanvas_panels[] = [
+				'target_id' => $target,
+				'theme'     => $panel_theme,
+				'element_ids' => $panel_ids,
+				'social_overrides' => $panel_social,
+				'employee_staff_ids' => $employee_staff_ids,
+				'employee_show_department' => $employee_show_department,
+			];
 		}
 	}
 	$enabled = array_filter($items, function ($it) use ($valid_types) {
-		if (empty($it['enabled']) || ($it['type'] ?? '') === 'search' || !in_array($it['type'] ?? '', $valid_types, true)) {
+		$it_enabled = isset($it['enabled']) ? (bool) $it['enabled'] : false;
+		if (!$it_enabled || ($it['type'] ?? '') === 'search' || !in_array($it['type'] ?? '', $valid_types, true)) {
 			return false;
 		}
 		$type = $it['type'] ?? '';
 		if ($type === 'custom-offcanvas' || $type === 'offcanvas-toggle') {
 			return !empty(trim($it['offcanvasHeaderHtml'] ?? '')) || !empty(trim($it['offcanvasBodyHtml'] ?? ''));
+		}
+		// offcanvas-info: include if enabled (toggle can be generated; panel content from $offcanvas_info_*)
+		if ($type === 'offcanvas-info') {
+			return true;
 		}
 		return !empty(trim($it['afterNavHtml'] ?? ''));
 	});
@@ -233,10 +306,11 @@ foreach ($parsed_block['innerBlocks'] ?? [] as $inner_block) {
 			}
 			$after_nav_html_parts[] = '<div class="' . esc_attr($custom_offcanvas_classes) . '" id="' . esc_attr($custom_id) . '" data-bs-scroll="true">' . $inner . '</div>';
 		} else {
-			$after_nav_html_parts[] = wp_kses_post($it['afterNavHtml']);
+			$after_nav_html_parts[] = wp_kses_post($it['afterNavHtml'] ?? '');
 		}
 	}
 }
+
 // When Search is enabled: prepend offcanvas-search template (theme template, overridable in child)
 if ($has_search_enabled) {
 	ob_start();
@@ -246,15 +320,63 @@ if ($has_search_enabled) {
 } else {
 	$after_nav_html = implode('', $after_nav_html_parts);
 }
-// Offcanvas Info panel (block-driven, same layout as Redux theme)
-if ($offcanvas_info_target !== '' && !empty($offcanvas_info_element_ids)) {
+
+// 1) Navbar: own offcanvas footer content — only from Navbar Mobile Menu list (its own logic)
+$offcanvas_info_in_nav_html = '';
+if ($navbar_mobile_configured && !empty($mobile_ids)) {
 	ob_start();
-	$offcanvas_target_id = $offcanvas_info_target;
-	$offcanvas_element_ids = $offcanvas_info_element_ids;
-	$offcanvas_theme = $offcanvas_info_theme;
-	$offcanvas_social_overrides = isset($offcanvas_social_overrides) ? $offcanvas_social_overrides : [];
+	$offcanvas_target_id = 'offcanvas-info';
+	$offcanvas_element_ids = $mobile_ids;
+	$offcanvas_theme = isset($attributes['mobileMenuOffcanvasTheme']) && $attributes['mobileMenuOffcanvasTheme'] === 'dark' ? 'dark' : 'light';
+	$offcanvas_social_overrides = [];
+	if (!empty($attributes['mobileMenuSocialType'])) {
+		$offcanvas_social_overrides['social-type'] = $attributes['mobileMenuSocialType'];
+	}
+	if (!empty($attributes['mobileMenuSocialSize'])) {
+		$offcanvas_social_overrides['social-button-size-offcanvas'] = $attributes['mobileMenuSocialSize'];
+	}
+	if (!empty($attributes['mobileMenuSocialStyle'])) {
+		$offcanvas_social_overrides['social-button-style-offcanvas'] = $attributes['mobileMenuSocialStyle'];
+	}
+	require $plugin_dir . 'templates/offcanvas-info-simple.php';
+	$offcanvas_info_in_nav_html = ob_get_clean();
+}
+
+// 2) Header Widgets: own offcanvas panel(s) — each Offcanvas Info item has its own target and element list (its own logic)
+foreach ($header_widgets_offcanvas_panels as $panel) {
+	ob_start();
+	$offcanvas_target_id = $panel['target_id'];
+	$offcanvas_element_ids = $panel['element_ids'];
+	$offcanvas_theme = $panel['theme'];
+	$offcanvas_social_overrides = isset($panel['social_overrides']) ? $panel['social_overrides'] : [];
+	$offcanvas_employee_staff_ids = isset($panel['employee_staff_ids']) && is_array($panel['employee_staff_ids']) ? $panel['employee_staff_ids'] : [];
+	$offcanvas_employee_show_department = !empty($panel['employee_show_department']);
 	require $plugin_dir . 'templates/offcanvas-info-panel.php';
 	$after_nav_html .= ob_get_clean();
+}
+
+// Extended (7,8): second row bar class (theme uses bg-white / bg-dark)
+$extended_bar_class = '';
+if (in_array($template_slug, ['extended', 'extended-center-logo'], true)) {
+	$extended_bar_class = ($navbar_color === 'dark') ? 'bg-dark' : 'bg-white';
+}
+
+// Social icons from Redux (theme settings): same as Social Icons block (default true when attr missing, e.g. old saved blocks)
+$navbar_social_html = '';
+$social_from_theme = isset($attributes['socialFromTheme']) ? (bool) $attributes['socialFromTheme'] : true;
+if ($social_from_theme && class_exists('Codeweber\Blocks\Plugin')) {
+	$social_style   = isset($attributes['socialStyleType']) && is_string($attributes['socialStyleType']) ? $attributes['socialStyleType'] : 'type2';
+	$social_size    = isset($attributes['socialSize']) && is_string($attributes['socialSize']) ? $attributes['socialSize'] : 'sm';
+	$social_color   = isset($attributes['socialButtonColor']) && is_string($attributes['socialButtonColor']) ? $attributes['socialButtonColor'] : 'primary';
+	$social_bs      = isset($attributes['socialButtonStyle']) && $attributes['socialButtonStyle'] === 'outline' ? 'outline' : 'solid';
+	$social_form    = isset($attributes['socialButtonForm']) && $attributes['socialButtonForm'] === 'block' ? 'block' : 'circle';
+	$social_nav_cl  = isset($attributes['socialNavClass']) && trim((string) $attributes['socialNavClass']) !== '' ? trim((string) $attributes['socialNavClass']) : 'justify-content-end text-end';
+	// Extended center logo (navbar-8): no justify/text-end on social nav, match theme sample
+	if ($template_slug === 'extended-center-logo') {
+		$social_nav_cl = '';
+	}
+	$social_slugs   = isset($attributes['socialThemeEnabledSlugs']) && is_array($attributes['socialThemeEnabledSlugs']) ? $attributes['socialThemeEnabledSlugs'] : [];
+	$navbar_social_html = \Codeweber\Blocks\Plugin::render_social_from_theme($social_style, $social_size, $social_color, $social_bs, $social_form, $social_nav_cl, $social_slugs);
 }
 
 // Variables passed to template
@@ -262,35 +384,29 @@ $template_vars = [
 	'home_link'                    => $home_link,
 	'logo_variant'                 => $logo_variant,
 	'logo_mobile'                  => $logo_mobile,
+	'logo_brand_class'              => $logo_brand_class,
+	'logo_custom_html'              => $logo_custom_html,
 	'menu_loc'                     => $menu_loc,
 	'menu_loc1'                    => $menu_loc1,
 	'menu_depth'                   => $menu_depth,
 	'center_nav'                   => $center_nav,
 	'wrapper_class'                => $wrapper_class,
+	'header_bg_class'              => $header_bg_class,
 	'nav_class'                    => $nav_class,
 	'offcanvas_class'              => $offcanvas_class,
 	'navbar_collapse_wrapper_class' => $navbar_collapse_wrapper_class,
+	'extended_bar_class'           => $extended_bar_class,
 	'navbar_other_inner_blocks'    => $navbar_other_inner_blocks,
+	'navbar_social_html'           => $navbar_social_html,
 	'after_nav_html'               => $after_nav_html,
+	'offcanvas_info_in_nav_html'    => $offcanvas_info_in_nav_html,
 	'for_editor_preview'           => isset($for_editor_preview) ? $for_editor_preview : false,
+	'block_id_attr'                => $block_id_attr,
 ];
 
 if (file_exists($template_path)) {
-	$block_wrapper_attrs = ['class' => 'wp-block-codeweber-blocks-navbar'];
-	if ($block_class_attr) {
-		$block_wrapper_attrs['class'] .= ' ' . esc_attr($block_class_attr);
-	}
-	if ($block_id_attr) {
-		$block_wrapper_attrs['id'] = esc_attr($block_id_attr);
-	}
-	$attrs_str = '';
-	foreach ($block_wrapper_attrs as $k => $v) {
-		$attrs_str .= ' ' . esc_attr($k) . '="' . esc_attr($v) . '"';
-	}
-	echo '<div' . $attrs_str . '>';
 	extract($template_vars, EXTR_SKIP);
 	require $template_path;
-	echo '</div>';
 } else {
 	echo '<!-- Navbar block: template not found (' . esc_attr($template_slug) . ') -->';
 }

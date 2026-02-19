@@ -82,3 +82,18 @@
 		pointer-events: auto;
 	}
 }
+
+// Sidebar: stretch column buttons (1 col / 2 col / 3 col) to full width
+.button-group-sidebar_33 {
+	display: flex;
+	width: 100%;
+
+	.components-button-group {
+		display: flex;
+		width: 100%;
+	}
+
+	button {
+		flex: 1;
+	}
+}

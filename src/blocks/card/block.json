@@ -169,6 +169,30 @@
 		"animationInterval": {
 			"type": "number",
 			"default": 0
+		},
+		"enableCardFooter": {
+			"type": "boolean",
+			"default": false
+		},
+		"cardFooterLinkText": {
+			"type": "string",
+			"default": "View example's code"
+		},
+		"cardFooterCode": {
+			"type": "string",
+			"default": ""
+		},
+		"cardFooterCollapseId": {
+			"type": "string",
+			"default": ""
+		},
+		"cardFooterCodeLanguage": {
+			"type": "string",
+			"default": "html"
+		},
+		"cardFooterCodeBackground": {
+			"type": "string",
+			"default": "dark"
 		}
 	},
 	"textdomain": "codeweber-blocks",

@@ -75,6 +75,18 @@
       "type": "number",
       "default": 0
     },
+    "staffId": {
+      "type": "number",
+      "default": 0
+    },
+    "staffShowDepartment": {
+      "type": "boolean",
+      "default": false
+    },
+    "staffShowPhone": {
+      "type": "boolean",
+      "default": false
+    },
     "blockAlign": {
       "type": "string",
       "default": ""

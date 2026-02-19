@@ -1,0 +1,71 @@
+{
+  "apiVersion": 3,
+  "name": "codeweber-blocks/blog-post-widget",
+  "version": "0.1.0",
+  "title": "Blog Post Widget",
+  "category": "codeweber-gutenberg-widgets",
+  "icon": "list-view",
+  "description": "Widget list of recent blog posts with image, title, date and comments.",
+  "keywords": [
+    "blog",
+    "posts",
+    "widget",
+    "sidebar",
+    "list"
+  ],
+  "supports": {
+    "html": false,
+    "customClassName": true,
+    "anchor": true
+  },
+  "attributes": {
+    "postsPerPage": {
+      "type": "number",
+      "default": 3
+    },
+    "imageSize": {
+      "type": "string",
+      "default": "codeweber_post_100-100"
+    },
+    "showDate": {
+      "type": "boolean",
+      "default": true
+    },
+    "showComments": {
+      "type": "boolean",
+      "default": true
+    },
+    "titleLength": {
+      "type": "number",
+      "default": 50
+    },
+    "source": {
+      "type": "string",
+      "default": "latest"
+    },
+    "orderby": {
+      "type": "string",
+      "default": "date"
+    },
+    "order": {
+      "type": "string",
+      "default": "DESC"
+    },
+    "categoryId": {
+      "type": "number",
+      "default": 0
+    },
+    "tagId": {
+      "type": "number",
+      "default": 0
+    },
+    "year": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "textdomain": "codeweber-gutenberg-blocks",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

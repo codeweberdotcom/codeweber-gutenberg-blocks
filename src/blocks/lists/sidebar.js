@@ -8,6 +8,7 @@ import { __ } from '@wordpress/i18n';
 import {
 	PanelBody,
 	Button,
+	ButtonGroup,
 	ToggleControl,
 	SelectControl,
 	RangeControl,
@@ -24,15 +25,18 @@ export const ListsSidebar = ({ attributes, setAttributes }) => {
 		mode,
 		listType,
 		bulletColor,
+		bulletColorType,
 		bulletBg,
 		iconClass,
 		textColor,
+		textColorType,
 		postType,
 		selectedTaxonomies,
 		enableLinks,
 		postsPerPage,
 		orderBy,
 		order,
+		columns,
 	} = attributes;
 
 	const [iconPickerOpen, setIconPickerOpen] = useState(false);
@@ -78,6 +82,28 @@ export const ListsSidebar = ({ attributes, setAttributes }) => {
 							{modeOption.label}
 						</Button>
 					))}
+				</div>
+
+				{/* Columns */}
+				<div className="component-sidebar-title" style={{ marginTop: '16px' }}>
+					<label>{__('Columns', 'codeweber-gutenberg-blocks')}</label>
+				</div>
+				<div className="button-group-sidebar_33">
+					<ButtonGroup>
+						{[
+							{ label: __('1 col', 'codeweber-gutenberg-blocks'), value: '1' },
+							{ label: __('2 col', 'codeweber-gutenberg-blocks'), value: '2' },
+							{ label: __('3 col', 'codeweber-gutenberg-blocks'), value: '3' },
+						].map((opt) => (
+							<Button
+								key={opt.value}
+								isPrimary={(columns || '1') === opt.value}
+								onClick={() => setAttributes({ columns: opt.value })}
+							>
+								{opt.label}
+							</Button>
+						))}
+					</ButtonGroup>
 				</div>
 
 				{/* Post Type Selection - показываем только в режиме Post */}
@@ -190,37 +216,73 @@ export const ListsSidebar = ({ attributes, setAttributes }) => {
 					))}
 				</div>
 
-				{/* Bullet Color */}
+				{/* Colors — Icon & Text */}
 				<div
 					className="component-sidebar-title"
 					style={{ marginTop: '16px' }}
 				>
 					<label>
-						{__('Bullet Color', 'codeweber-gutenberg-blocks')}
+						{__('Colors', 'codeweber-gutenberg-blocks')}
 					</label>
 				</div>
-				<SelectControl
-					value={bulletColor || 'primary'}
-					options={[
-						{
-							label: __('Primary', 'codeweber-gutenberg-blocks'),
-							value: 'primary',
-						},
-						{
-							label: __('None', 'codeweber-gutenberg-blocks'),
-							value: 'none',
-						},
-						{
-							label: __('Light', 'codeweber-gutenberg-blocks'),
-							value: 'light',
-						},
-						{
-							label: __('White', 'codeweber-gutenberg-blocks'),
-							value: 'white',
-						},
-					]}
-					onChange={(value) => setAttributes({ bulletColor: value })}
-				/>
+
+				{/* Icon color */}
+				<div style={{ marginTop: '12px' }}>
+					<label
+						className="component-sidebar-title"
+						style={{ display: 'block', marginBottom: '8px' }}
+					>
+						{__('Icon color', 'codeweber-gutenberg-blocks')}
+					</label>
+					<SelectControl
+						value={bulletColor || 'primary'}
+						options={[
+							{
+								label: __('Primary', 'codeweber-gutenberg-blocks'),
+								value: 'primary',
+							},
+							{
+								label: __('None', 'codeweber-gutenberg-blocks'),
+								value: 'none',
+							},
+							{
+								label: __('Light', 'codeweber-gutenberg-blocks'),
+								value: 'light',
+							},
+							{
+								label: __('White', 'codeweber-gutenberg-blocks'),
+								value: 'white',
+							},
+							...colors
+								.filter((c) =>
+									['aqua', 'green', 'leaf', 'navy', 'orange', 'pink', 'purple', 'red', 'violet', 'yellow', 'fuchsia', 'sky', 'grape', 'blue', 'dark', 'muted'].includes(c.value)
+								)
+								.map((c) => ({ label: c.label, value: c.value })),
+						]}
+						onChange={(value) => setAttributes({ bulletColor: value })}
+					/>
+					{(bulletColor && bulletColor !== 'none') && (
+						<div
+							className="button-group-sidebar_50"
+							style={{ marginTop: '8px' }}
+						>
+							{[
+								{ label: __('Solid', 'codeweber-gutenberg-blocks'), value: 'solid' },
+								{ label: __('Soft', 'codeweber-gutenberg-blocks'), value: 'soft' },
+							].map((opt) => (
+								<Button
+									key={opt.value}
+									isPrimary={(bulletColorType || 'solid') === opt.value}
+									onClick={() =>
+										setAttributes({ bulletColorType: opt.value })
+									}
+								>
+									{opt.label}
+								</Button>
+							))}
+						</div>
+					)}
+				</div>
 
 				{/* Bullet Background - только для icon-list */}
 				{listType === 'icon' && (
@@ -241,6 +303,51 @@ export const ListsSidebar = ({ attributes, setAttributes }) => {
 						/>
 					</div>
 				)}
+
+				{/* Text color */}
+				<div style={{ marginTop: '16px' }}>
+					<label
+						className="component-sidebar-title"
+						style={{ display: 'block', marginBottom: '8px' }}
+					>
+						{__('Text color', 'codeweber-gutenberg-blocks')}
+					</label>
+					<SelectControl
+						value={textColor || ''}
+						options={[
+							{
+								label: __('Default', 'codeweber-gutenberg-blocks'),
+								value: '',
+							},
+							...colors.map((c) => ({
+								label: c.label,
+								value: c.value,
+							})),
+						]}
+						onChange={(value) => setAttributes({ textColor: value })}
+					/>
+					{textColor && (
+						<div
+							className="button-group-sidebar_50"
+							style={{ marginTop: '8px' }}
+						>
+							{[
+								{ label: __('Solid', 'codeweber-gutenberg-blocks'), value: 'solid' },
+								{ label: __('Soft', 'codeweber-gutenberg-blocks'), value: 'soft' },
+							].map((opt) => (
+								<Button
+									key={opt.value}
+									isPrimary={(textColorType || 'solid') === opt.value}
+									onClick={() =>
+										setAttributes({ textColorType: opt.value })
+									}
+								>
+									{opt.label}
+								</Button>
+							))}
+						</div>
+					)}
+				</div>
 
 				{/* Icon Class - только для icon-list */}
 				{listType === 'icon' && (
@@ -295,29 +402,6 @@ export const ListsSidebar = ({ attributes, setAttributes }) => {
 					</div>
 				)}
 
-				{/* Text Color */}
-				<div
-					className="component-sidebar-title"
-					style={{ marginTop: '16px' }}
-				>
-					<label>
-						{__('Text Color', 'codeweber-gutenberg-blocks')}
-					</label>
-				</div>
-				<SelectControl
-					value={textColor || ''}
-					options={[
-						{
-							label: __('Default', 'codeweber-gutenberg-blocks'),
-							value: '',
-						},
-						...colors.map((color) => ({
-							label: color.label,
-							value: color.value,
-						})),
-					]}
-					onChange={(value) => setAttributes({ textColor: value })}
-				/>
 			</PanelBody>
 
 			{/* Block Meta Fields */}

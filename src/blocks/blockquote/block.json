@@ -1,0 +1,33 @@
+{
+	"apiVersion": 3,
+	"name": "codeweber-blocks/blockquote",
+	"version": "0.1.0",
+	"title": "Blockquote",
+	"category": "codeweber-gutenberg-elements",
+	"icon": "format-quote",
+	"description": "Blockquote with optional caption. Simple figure or card layout.",
+	"keywords": ["quote", "blockquote", "citation"],
+	"supports": {
+		"html": false,
+		"customClassName": true,
+		"anchor": true
+	},
+	"attributes": {
+		"quote": {
+			"type": "string",
+			"default": ""
+		},
+		"caption": {
+			"type": "string",
+			"default": ""
+		},
+		"style": {
+			"type": "string",
+			"default": "simple"
+		}
+	},
+	"textdomain": "codeweber-gutenberg-blocks",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
+}

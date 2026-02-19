@@ -862,10 +862,10 @@
         "Кастомный SVG"
       ],
       "custom-id": [
-        "custom-id"
+        "свой-id"
       ],
       "custom-wrapper classes": [
-        "классы custom-wrapper"
+        "классы обёртки"
       ],
       "Dark": [
         "Тёмный"
@@ -1785,8 +1785,11 @@
       "Loading...": [
         "Загрузка..."
       ],
+      "Loading navbar...": [
+        "Загрузка навбара..."
+      ],
       "Logo": [
-        "Логотип"
+        "Logo"
       ],
       "Logo in card with shadow for Grid with cards": [
         "Логотип в карточке с тенью для сетки с карточками"
@@ -3429,9 +3432,6 @@
       "Factual address": [
         "Фактический адрес"
       ],
-      "Actual address": [
-        "Актуальный адрес"
-      ],
       "Legal address": [
         "Юридический адрес"
       ],
@@ -3446,6 +3446,180 @@
       ],
       "Search": [
         "Поиск"
+      ],
+      "Navbar": [
+        "Навбар"
+      ],
+      "Navbar block with multiple predefined header templates (Classic, Fancy, Extended, etc.)": [
+        "Блок навбара с готовыми шаблонами шапки (Классический, Fancy, Расширенный и др.)"
+      ],
+      "navbar": [
+        "навбар"
+      ],
+      "header": [
+        "шапка"
+      ],
+      "menu": [
+        "меню"
+      ],
+      "Navbar 1 - Classic (Center Nav)": [
+        "Навбар 1 — Классический (меню по центру)"
+      ],
+      "Navbar 2 - Classic (Right Nav)": [
+        "Навбар 2 — Классический (меню справа)"
+      ],
+      "Navbar 3 - Center Logo": [
+        "Навбар 3 — Логотип по центру"
+      ],
+      "Navbar 4 - Fancy": [
+        "Навбар 4 — Fancy"
+      ],
+      "Navbar 5 - Fancy (Center Nav)": [
+        "Навбар 5 — Fancy (меню по центру)"
+      ],
+      "Navbar 6 - Fancy Center Logo": [
+        "Навбар 6 — Fancy, логотип по центру"
+      ],
+      "Navbar 7 - Extended": [
+        "Навбар 7 — Расширенный"
+      ],
+      "Navbar 8 - Extended Center Logo": [
+        "Навбар 8 — Расширенный, логотип по центру"
+      ],
+      "Theme default (header_1)": [
+        "По умолчанию темы (header_1)"
+      ],
+      "Theme default (header)": [
+        "По умолчанию темы (header)"
+      ],
+      "Header Menu 1": [
+        "Меню шапки 1"
+      ],
+      "Header Menu": [
+        "Меню шапки"
+      ],
+      "Offcanvas Menu": [
+        "Оффканвас меню"
+      ],
+      "Footer Menu": [
+        "Меню подвала"
+      ],
+      "Both": [
+        "Оба"
+      ],
+      "Style": [
+        "Стиль"
+      ],
+      "Navbar Template": [
+        "Шаблон навбара"
+      ],
+      "Logo Color": [
+        "Цвет логотипа"
+      ],
+      "Auto: dark navbar → light logo, light navbar → dark logo. Or override manually.": [
+        "Авто: тёмный навбар — светлый логотип, светлый навбар — тёмный. Или задать вручную."
+      ],
+      "Logo Width": [
+        "Ширина логотипа"
+      ],
+      "Width class for logo wrapper. Default: no extra class.": [
+        "Класс ширины для обёртки логотипа. По умолчанию — без доп. класса."
+      ],
+      "Enable HTML": [
+        "Включить HTML"
+      ],
+      "Add custom HTML after the logo link inside the brand block.": [
+        "Добавить свой HTML после ссылки логотипа внутри блока бренда."
+      ],
+      "HTML": [
+        "HTML"
+      ],
+      "Custom HTML after logo link…": [
+        "Свой HTML после ссылки логотипа…"
+      ],
+      "Inserted after the logo link. Wrapper gets d-flex when this has content.": [
+        "Вставляется после ссылки логотипа. Обёртка получает d-flex при наличии содержимого."
+      ],
+      "Home Link Override": [
+        "Ссылка главной страницы"
+      ],
+      "Leave empty for site URL": [
+        "Оставьте пустым для URL сайта"
+      ],
+      "Custom URL for logo/home link": [
+        "Свой URL для ссылки логотипа/главной"
+      ],
+      "Menu Location (Primary)": [
+        "Расположение меню (основное)"
+      ],
+      "Theme location for main menu": [
+        "Расположение темы для главного меню"
+      ],
+      "Menu Location (Right)": [
+        "Расположение меню (справа)"
+      ],
+      "For center-logo templates: second menu on the right": [
+        "Для шаблонов с логотипом по центру: второе меню справа"
+      ],
+      "Menu Depth (levels)": [
+        "Глубина меню (уровней)"
+      ],
+      "Submenu depth: 1 = top only, 4 = 4 levels": [
+        "Глубина подменю: 1 — только верхний уровень, 4 — 4 уровня"
+      ],
+      "Background style": [
+        "Стиль фона"
+      ],
+      "Header Background": [
+        "Фон шапки"
+      ],
+      "Add bg-* class to header wrapper. Default: no class.": [
+        "Добавить класс bg-* к обёртке шапки. По умолчанию — без класса."
+      ],
+      "Navbar Color": [
+        "Цвет навбара"
+      ],
+      "Center Bar Theme": [
+        "Тема центральной панели"
+      ],
+      "Mobile Offcanvas Theme": [
+        "Тема мобильного оффканваса"
+      ],
+      "Sticky Navbar": [
+        "Липкий навбар"
+      ],
+      "Fix navbar on scroll": [
+        "Закрепить навбар при прокрутке"
+      ],
+      "Transparent on Top": [
+        "Прозрачный вверху"
+      ],
+      "Transparent navbar at page top": [
+        "Прозрачный навбар в верхней части страницы"
+      ],
+      "Wrapper Class": [
+        "Класс обёртки"
+      ],
+      "Extra classes for header wrapper": [
+        "Дополнительные классы для обёртки шапки"
+      ],
+      "Nav Class": [
+        "Класс навбара"
+      ],
+      "Extra classes for nav element": [
+        "Дополнительные классы для элемента nav"
+      ],
+      "Extra CSS classes for block wrapper": [
+        "Дополнительные CSS-классы для обёртки блока"
+      ],
+      "ID for block wrapper (without #)": [
+        "ID обёртки блока (без #)"
+      ],
+      "Blocks for navbar right area": [
+        "Блоки для правой области навбара"
+      ],
+      "Navbar preview": [
+        "Предпросмотр навбара"
       ]
     }
   }

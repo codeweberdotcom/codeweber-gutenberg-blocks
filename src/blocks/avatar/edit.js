@@ -31,6 +31,9 @@ const Edit = ({ attributes, setAttributes }) => {
 		position,
 		nameLink,
 		userId,
+		staffId,
+		staffShowDepartment,
+		staffShowPhone,
 		blockAlign,
 		blockClass,
 		blockData,
@@ -40,6 +43,9 @@ const Edit = ({ attributes, setAttributes }) => {
 	// User data state
 	const [userData, setUserData] = useState(null);
 	const [loadingUser, setLoadingUser] = useState(false);
+	// Staff data state
+	const [staffData, setStaffData] = useState(null);
+	const [loadingStaff, setLoadingStaff] = useState(false);
 
 	// Fetch user data when userId changes and avatarType is 'user'
 	useEffect(() => {
@@ -58,6 +64,26 @@ const Edit = ({ attributes, setAttributes }) => {
 			setUserData(null);
 		}
 	}, [avatarType, userId]);
+
+	// Fetch staff data when staffId changes and avatarType is 'staff'
+	useEffect(() => {
+		if (avatarType === 'staff' && staffId) {
+			setLoadingStaff(true);
+			apiFetch({
+				path: `/wp/v2/staff/${staffId}?context=edit&_embed`,
+			})
+				.then((post) => {
+					setStaffData(post);
+					setLoadingStaff(false);
+				})
+				.catch(() => {
+					setStaffData(null);
+					setLoadingStaff(false);
+				});
+		} else {
+			setStaffData(null);
+		}
+	}, [avatarType, staffId]);
 
 	// Block classes
 	const blockClasses = [
@@ -161,11 +187,18 @@ const Edit = ({ attributes, setAttributes }) => {
 								</figure>
 							) : userData ? (
 								<figure className="user-avatar">
-									{userData.avatar_urls &&
-									userData.avatar_urls[96] ? (
+									{(userData.avatar_urls &&
+										userData.avatar_urls[96]) ||
+									(typeof cwgbAvatarPlaceholderUrl !==
+										'undefined' &&
+										cwgbAvatarPlaceholderUrl?.url) ? (
 										<img
 											className="rounded-circle"
-											src={userData.avatar_urls[96]}
+											src={
+												userData.avatar_urls?.[96] ||
+												cwgbAvatarPlaceholderUrl?.url ||
+												''
+											}
 											alt={userData.name || ''}
 										/>
 									) : (
@@ -205,6 +238,137 @@ const Edit = ({ attributes, setAttributes }) => {
 											{userData.meta.user_position}
 										</span>
 									)}
+								</div>
+							)}
+						</div>
+					</div>
+				) : avatarType === 'staff' ? (
+					<div className="author-info d-md-flex align-items-center">
+						<div
+							className={
+								'd-flex align-items-center' +
+								(staffShowPhone ? ' mb-4' : '')
+							}
+						>
+							{loadingStaff ? (
+								<figure className="user-avatar">
+									<div className="cwgb-avatar-placeholder">
+										{__(
+											'Loading...',
+											'codeweber-gutenberg-blocks'
+										)}
+									</div>
+								</figure>
+							) : staffData ? (
+								<figure className="user-avatar">
+									{(staffData._embedded?.['wp:featuredmedia']?.[0]
+										?.source_url ||
+										(typeof cwgbAvatarPlaceholderUrl !==
+											'undefined' &&
+											cwgbAvatarPlaceholderUrl?.url)) ? (
+										<img
+											className="rounded-circle"
+											src={
+												staffData._embedded?.[
+													'wp:featuredmedia'
+												]?.[0]?.source_url ||
+												cwgbAvatarPlaceholderUrl?.url ||
+												''
+											}
+											alt={
+												(staffData._staff_name ||
+													staffData._staff_surname ||
+													staffData.meta?._staff_name ||
+													staffData.meta?._staff_surname)
+													? `${staffData._staff_name || staffData.meta?._staff_name || ''} ${staffData._staff_surname || staffData.meta?._staff_surname || ''}`.trim()
+													: staffData.title?.rendered || ''
+											}
+										/>
+									) : (
+										<span className={getAvatarClasses()}>
+											<span>
+												{getInitials(
+													(staffData._staff_name ||
+														staffData._staff_surname ||
+														staffData.meta?._staff_name ||
+														staffData.meta?._staff_surname)
+														? `${staffData._staff_name || staffData.meta?._staff_name || ''} ${staffData._staff_surname || staffData.meta?._staff_surname || ''}`.trim()
+														: staffData.title?.rendered || ''
+												)}
+											</span>
+										</span>
+									)}
+								</figure>
+							) : (
+								<figure className="user-avatar">
+									<div className="cwgb-avatar-placeholder">
+										{__(
+											'Select staff',
+											'codeweber-gutenberg-blocks'
+										)}
+									</div>
+								</figure>
+							)}
+							{staffData && (
+								<div>
+									<div className="h6 mb-1 lh-1">
+										<a
+											href={staffData.link || '#'}
+											className="link-dark"
+										>
+											{(staffData._staff_name ||
+												staffData._staff_surname ||
+												staffData.meta?._staff_name ||
+												staffData.meta?._staff_surname)
+												? `${staffData._staff_name || staffData.meta?._staff_name || ''} ${staffData._staff_surname || staffData.meta?._staff_surname || ''}`.trim()
+												: staffData.title?.rendered ||
+													__(
+														'Name',
+														'codeweber-gutenberg-blocks'
+													)}
+										</a>
+									</div>
+									{(staffShowDepartment &&
+										staffData._embedded?.['wp:term']?.[0]?.[0]
+											?.name) ||
+									(staffData._staff_position ||
+										staffData.meta?._staff_position) ? (
+										<div className="post-meta fs-15 lh-1 mb-1">
+											{staffShowDepartment &&
+											staffData._embedded?.['wp:term']?.[0]?.[0]
+												?.name
+												? staffData._embedded['wp:term'][0][0].name
+												: staffData._staff_position ||
+													staffData.meta?._staff_position}
+										</div>
+									) : null}
+									{staffShowPhone &&
+										(staffData._staff_phone ||
+											staffData._staff_job_phone ||
+											staffData.meta?._staff_phone ||
+											staffData.meta?._staff_job_phone) && (
+											<div className="post-meta fs-15 lh-1">
+												<a
+													href={
+														'tel:' +
+														(
+															staffData._staff_phone ||
+															staffData._staff_job_phone ||
+															staffData.meta?._staff_phone ||
+															staffData.meta?._staff_job_phone
+														).replace(
+															/[^0-9+]/g,
+															''
+														)
+													}
+												>
+													{staffData._staff_phone ||
+														staffData._staff_job_phone ||
+														staffData.meta?._staff_phone ||
+														staffData.meta?._staff_job_phone}
+												</a>
+											</div>
+										)}
 								</div>
 							)}
 						</div>

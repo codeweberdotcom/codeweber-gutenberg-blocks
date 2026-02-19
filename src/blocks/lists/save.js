@@ -11,13 +11,16 @@ const ListsSave = ({ attributes }) => {
 		mode,
 		listType,
 		bulletColor,
+		bulletColorType,
 		bulletBg,
 		iconClass,
 		textColor,
+		textColorType,
 		items,
 		listClass,
 		listId,
 		listData,
+		columns,
 	} = attributes;
 
 	// Если режим "Post", возвращаем null - будет использоваться PHP render
@@ -35,23 +38,28 @@ const ListsSave = ({ attributes }) => {
 			classes.push('icon-list');
 		}
 
-		// Bullet color
+		// Bullet/icon color (soft or solid)
 		if (bulletColor && bulletColor !== 'none') {
-			classes.push(`bullet-${bulletColor}`);
+			const bulletPrefix = bulletColorType === 'soft' ? 'bullet-soft-' : 'bullet-';
+			classes.push(`${bulletPrefix}${bulletColor}`);
 		}
 
 		// Bullet background (only for icon-list)
 		if (listType === 'icon' && bulletBg) {
 			classes.push('bullet-bg');
-			// Add soft color class if bulletColor is set
-			if (bulletColor && bulletColor !== 'none') {
-				classes.push(`bullet-soft-${bulletColor}`);
-			}
 		}
 
-		// Text color
+		// Columns (1 = no class, 2 = cc-2, 3 = cc-3)
+		if (columns === '2') {
+			classes.push('cc-2');
+		} else if (columns === '3') {
+			classes.push('cc-3');
+		}
+
+		// Text color (soft or solid)
 		if (textColor) {
-			classes.push(`text-${textColor}`);
+			const textPrefix = textColorType === 'soft' ? 'text-soft-' : 'text-';
+			classes.push(`${textPrefix}${textColor}`);
 		}
 
 		// Custom class

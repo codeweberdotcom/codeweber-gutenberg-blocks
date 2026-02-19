@@ -18,6 +18,8 @@ import {
 	Button,
 	ComboboxControl,
 	TextControl,
+	TextareaControl,
+	SelectControl,
 } from '@wordpress/components';
 import {
 	Icon,
@@ -29,7 +31,7 @@ import {
 	arrowRight,
 } from '@wordpress/icons';
 import { border } from '@wordpress/icons';
-import { useEffect } from '@wordpress/element';
+import { useEffect, useRef, useState } from '@wordpress/element';
 
 import { BorderSettingsPanel } from '../../components/borders';
 import { SpacingControl } from '../../components/spacing/SpacingControl';
@@ -103,7 +105,32 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 		animationDuration,
 		animationDelay,
 		animationInterval,
+		enableCardFooter,
+		cardFooterLinkText,
+		cardFooterCode,
+		cardFooterCollapseId,
+		cardFooterCodeLanguage,
+		cardFooterCodeBackground,
 	} = attributes;
+
+	const CARD_FOOTER_LANGUAGES = [
+		{ label: 'HTML', value: 'html' },
+		{ label: 'CSS', value: 'css' },
+		{ label: 'JavaScript', value: 'javascript' },
+		{ label: 'JSX', value: 'jsx' },
+		{ label: 'PHP', value: 'php' },
+		{ label: 'JSON', value: 'json' },
+		{ label: 'Bash', value: 'bash' },
+		{ label: 'Plain text', value: 'plaintext' },
+	];
+
+	const CARD_FOOTER_BACKGROUND_OPTIONS = [
+		{ label: __('Dark', 'codeweber-gutenberg-blocks'), value: 'dark' },
+		{ label: __('Light', 'codeweber-gutenberg-blocks'), value: 'light' },
+	];
+
+	/** Prism language id (HTML is 'markup' in Prism) */
+	const getPrismLanguage = (lang) => (lang === 'html' ? 'markup' : lang);
 
 	const tabs = [
 		{
@@ -424,6 +451,24 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 		clientId,
 	]);
 
+	// Set unique collapse ID for Card Footer when enabled (for save output).
+	useEffect(() => {
+		if (enableCardFooter && !cardFooterCollapseId && clientId) {
+			const shortId = clientId.replace(/\D/g, '').slice(-8) || '1';
+			setAttributes({ cardFooterCollapseId: 'collapse-' + shortId });
+		}
+	}, [enableCardFooter, clientId]);
+
+	const cardFooterCodeRef = useRef(null);
+	const [cardFooterCodeExpanded, setCardFooterCodeExpanded] = useState(false);
+
+	// Prism syntax highlighting in editor for Card Footer code block.
+	useEffect(() => {
+		if (!enableCardFooter || !cardFooterCodeRef.current) return;
+		if (typeof window.Prism === 'undefined') return;
+		window.Prism.highlightElement(cardFooterCodeRef.current);
+	}, [enableCardFooter, cardFooterCode, cardFooterCodeLanguage]);
+
 	return (
 		<>
 			{/* Inspector Controls */}
@@ -533,6 +578,88 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 													})
 												}
 											/>
+
+											<ToggleControl
+												label={__(
+													'Card Footer',
+													'codeweber-gutenberg-blocks'
+												)}
+												checked={enableCardFooter}
+												onChange={(value) =>
+													setAttributes({
+														enableCardFooter: value,
+													})
+												}
+											/>
+
+											{enableCardFooter && (
+												<>
+													<SelectControl
+														label={__(
+															'Code language',
+															'codeweber-gutenberg-blocks'
+														)}
+														value={cardFooterCodeLanguage || 'html'}
+														options={CARD_FOOTER_LANGUAGES}
+														onChange={(value) =>
+															setAttributes({
+																cardFooterCodeLanguage: value || 'html',
+															})
+														}
+													/>
+													<TextControl
+														label={__(
+															'Footer link text',
+															'codeweber-gutenberg-blocks'
+														)}
+														value={
+															cardFooterLinkText || ''
+														}
+														placeholder="View example's code"
+														onChange={(value) =>
+															setAttributes({
+																cardFooterLinkText: value,
+															})
+														}
+													/>
+													<SelectControl
+														label={__(
+															'Background',
+															'codeweber-gutenberg-blocks'
+														)}
+														value={cardFooterCodeBackground || 'dark'}
+														options={CARD_FOOTER_BACKGROUND_OPTIONS}
+														onChange={(value) =>
+															setAttributes({
+																cardFooterCodeBackground: value || 'dark',
+															})
+														}
+													/>
+													<TextareaControl
+														label={__(
+															'Code',
+															'codeweber-gutenberg-blocks'
+														)}
+														value={
+															cardFooterCode || ''
+														}
+														placeholder={__(
+															'Paste or type code to show in collapse…',
+															'codeweber-gutenberg-blocks'
+														)}
+														onChange={(value) =>
+															setAttributes({
+																cardFooterCode: value,
+															})
+														}
+														rows={10}
+														style={{
+															fontFamily: 'monospace',
+															fontSize: '13px',
+														}}
+													/>
+												</>
+											)}
 										</>
 									)}
 								</PanelBody>
@@ -714,6 +841,68 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 				) : (
 					<InnerBlocks />
 				)}
+				{cardType === 'card' &&
+					enableCard &&
+					enableCardFooter &&
+					(cardFooterCollapseId || clientId) && (
+						<>
+							<div className="card-footer position-relative">
+								<a
+									className={
+										'collapse-link stretched-link ' + (cardFooterCodeExpanded ? '' : 'collapsed')
+									}
+									href="#"
+									aria-expanded={cardFooterCodeExpanded}
+									onClick={(e) => {
+										e.preventDefault();
+										setCardFooterCodeExpanded((prev) => !prev);
+									}}
+								>
+									{cardFooterLinkText || "View example's code"}
+								</a>
+							</div>
+							<div
+								id={
+									cardFooterCollapseId ||
+									'collapse-' + clientId.replace(/\D/g, '').slice(-8)
+								}
+								className={
+									'card-footer p-0 accordion-collapse collapse ' +
+									(cardFooterCodeExpanded ? 'show ' : '') +
+									(cardFooterCodeBackground === 'light' ? 'bg-light' : 'bg-dark')
+								}
+								style={cardFooterCodeExpanded ? { display: 'block' } : { display: 'none' }}
+							>
+								{(() => {
+									const prismLang = getPrismLanguage(cardFooterCodeLanguage || 'html');
+									const isDark = cardFooterCodeBackground !== 'light';
+									const innerBgClass = isDark ? 'bg-dark' : 'bg-light';
+									const buttonVariantClass = isDark ? 'btn-white' : 'btn-dark';
+									return (
+										<div className="code-wrapper">
+											<button
+												type="button"
+												className={`btn btn-sm ${buttonVariantClass} rounded-pill btn-clipboard`}
+												disabled
+											>
+												Copy
+											</button>
+											<div className={`code-wrapper-inner ${innerBgClass}`}>
+												<pre className={`language-${prismLang}`} tabIndex={0}>
+													<code
+														ref={cardFooterCodeRef}
+														className={`language-${prismLang}`}
+													>
+														{cardFooterCode || ' '}
+													</code>
+												</pre>
+											</div>
+										</div>
+									);
+								})()}
+							</div>
+						</>
+					)}
 			</div>
 		</>
 	);

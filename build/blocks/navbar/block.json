@@ -79,9 +79,77 @@
       "type": "string",
       "default": ""
     },
-    "showOffcanvasInPreview": {
+    "logoWidth": {
+      "type": "string",
+      "default": ""
+    },
+    "logoHtmlEnabled": {
       "type": "boolean",
       "default": false
+    },
+    "logoHtml": {
+      "type": "string",
+      "default": "<p class=\"d-none d-lg-block ps-3 ms-3 h-100 border-start border-muted text-dark  mb-0\">Ваш надежный партнер<br>\nНа пути к результату</p>"
+    },
+    "headerBackground": {
+      "type": "string",
+      "default": ""
+    },
+    "headerBackgroundStyle": {
+      "type": "string",
+      "default": "solid"
+    },
+    "socialFromTheme": {
+      "type": "boolean",
+      "default": true
+    },
+    "socialStyleType": {
+      "type": "string",
+      "default": "type2"
+    },
+    "socialSize": {
+      "type": "string",
+      "default": "sm"
+    },
+    "socialButtonColor": {
+      "type": "string",
+      "default": "primary"
+    },
+    "socialButtonStyle": {
+      "type": "string",
+      "default": "solid"
+    },
+    "socialButtonForm": {
+      "type": "string",
+      "default": "circle"
+    },
+    "socialNavClass": {
+      "type": "string",
+      "default": ""
+    },
+    "socialThemeEnabledSlugs": {
+      "type": "array",
+      "default": []
+    },
+    "mobileMenuElements": {
+      "type": "array",
+      "default": []
+    },
+    "mobileMenuOffcanvasTheme": {
+      "type": "string",
+      "default": "light"
+    },
+    "mobileMenuSocialType": {
+      "type": "string",
+      "default": ""
+    },
+    "mobileMenuSocialSize": {
+      "type": "string",
+      "default": ""
+    },
+    "mobileMenuSocialStyle": {
+      "type": "string",
+      "default": ""
     }
   },
   "textdomain": "codeweber-gutenberg-blocks",

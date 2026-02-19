@@ -65,29 +65,6 @@ export const MenuSidebar = ({ attributes, setAttributes, wpMenus = [] }) => {
 		titleClass,
 	} = attributes;
 
-	// #region agent log
-	fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5', {
-		method: 'POST',
-		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify({
-			location: 'menu/sidebar.js:33',
-			message: 'MenuSidebar render - menuClass value',
-			data: {
-				menuClass,
-				menuClassType: typeof menuClass,
-				menuClassIsUndefined: menuClass === undefined,
-				menuClassIsNull: menuClass === null,
-				menuClassIsEmpty: menuClass === '',
-				attributesMenuClass: attributes.menuClass,
-			},
-			timestamp: Date.now(),
-			sessionId: 'debug-session',
-			runId: 'initial',
-			hypothesisId: 'A,B,C',
-		}),
-	}).catch(() => {});
-	// #endregion
-
 	const [iconPickerOpen, setIconPickerOpen] = useState(false);
 
 	// Extract icon name from class (e.g., "uil uil-arrow-right" -> "arrow-right")
@@ -145,22 +122,6 @@ export const MenuSidebar = ({ attributes, setAttributes, wpMenus = [] }) => {
 			),
 		},
 	];
-
-	// #region agent log
-	fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5', {
-		method: 'POST',
-		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify({
-			location: 'menu/sidebar.js:79',
-			message: 'MenuSidebar tabs defined',
-			data: { tabsCount: tabs.length, enableWidget, enableTitle, mode },
-			timestamp: Date.now(),
-			sessionId: 'debug-session',
-			runId: 'tabs-check',
-			hypothesisId: 'E',
-		}),
-	}).catch(() => {});
-	// #endregion
 
 	return (
 		<TabPanel tabs={tabs}>
@@ -663,59 +624,7 @@ export const MenuSidebar = ({ attributes, setAttributes, wpMenus = [] }) => {
 											: 'list-unstyled text-reset mb-0'
 									}
 									onChange={(value) => {
-										// #region agent log
-										fetch(
-											'http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',
-											{
-												method: 'POST',
-												headers: {
-													'Content-Type':
-														'application/json',
-												},
-												body: JSON.stringify({
-													location:
-														'menu/sidebar.js:213',
-													message:
-														'Menu Classes onChange called',
-													data: {
-														newValue: value,
-														oldValue: menuClass,
-														valueType: typeof value,
-														valueLength:
-															value?.length,
-													},
-													timestamp: Date.now(),
-													sessionId: 'debug-session',
-													runId: 'initial',
-													hypothesisId: 'B',
-												}),
-											}
-										).catch(() => {});
-										// #endregion
 										setAttributes({ menuClass: value });
-										// #region agent log
-										fetch(
-											'http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',
-											{
-												method: 'POST',
-												headers: {
-													'Content-Type':
-														'application/json',
-												},
-												body: JSON.stringify({
-													location:
-														'menu/sidebar.js:216',
-													message:
-														'setAttributes called for menuClass',
-													data: { value },
-													timestamp: Date.now(),
-													sessionId: 'debug-session',
-													runId: 'initial',
-													hypothesisId: 'B',
-												}),
-											}
-										).catch(() => {});
-										// #endregion
 									}}
 									help={__(
 										'Additional CSS classes for the menu list',
@@ -981,34 +890,6 @@ export const MenuSidebar = ({ attributes, setAttributes, wpMenus = [] }) => {
 							)}
 							initialOpen={true}
 						>
-							{/* #region agent log */}
-							{(() => {
-								fetch(
-									'http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',
-									{
-										method: 'POST',
-										headers: {
-											'Content-Type': 'application/json',
-										},
-										body: JSON.stringify({
-											location: 'menu/sidebar.js:291',
-											message:
-												'BlockMetaFields render check',
-											data: {
-												fieldKeysClassKey: undefined,
-												attributesMenuClass:
-													attributes.menuClass,
-											},
-											timestamp: Date.now(),
-											sessionId: 'debug-session',
-											runId: 'initial',
-											hypothesisId: 'D',
-										}),
-									}
-								).catch(() => {});
-								return null;
-							})()}
-							{/* #endregion */}
 							<BlockMetaFields
 								attributes={attributes}
 								setAttributes={setAttributes}

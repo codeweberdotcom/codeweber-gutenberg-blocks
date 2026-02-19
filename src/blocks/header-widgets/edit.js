@@ -34,9 +34,11 @@ const ELEMENT_LABELS = {
 const DEFAULT_OFFCANVAS_ELEMENTS = [
 	{ id: 'description', label: __('Description', 'codeweber-gutenberg-blocks'), enabled: true },
 	{ id: 'phones', label: __('Phones', 'codeweber-gutenberg-blocks'), enabled: true },
+	{ id: 'email', label: __('Email', 'codeweber-gutenberg-blocks'), enabled: true },
 	{ id: 'map', label: __('Map', 'codeweber-gutenberg-blocks'), enabled: true },
 	{ id: 'socials', label: __('Socials', 'codeweber-gutenberg-blocks'), enabled: true },
 	{ id: 'menu', label: __('Menu', 'codeweber-gutenberg-blocks'), enabled: false },
+	{ id: 'employee', label: __('Сотрудник', 'codeweber-gutenberg-blocks'), enabled: false },
 	{ id: 'actual_address', label: __('Address', 'codeweber-gutenberg-blocks'), enabled: false },
 	{ id: 'legal_address', label: __('Legal address', 'codeweber-gutenberg-blocks'), enabled: false },
 	{ id: 'requisites', label: __('Requisites', 'codeweber-gutenberg-blocks'), enabled: false },
@@ -59,18 +61,10 @@ const isMapOffcanvasElement = (el) => {
 /** Normalize offcanvas list for display: show "Map" for legacy map element in sidebar */
 const normalizeOffcanvasForDisplay = (list) => {
 	if (!Array.isArray(list)) return list;
-	// #region agent log
-	const firstId = list[0] ? String(list[0].id ?? '') : '';
-	const firstLabel = list[0] ? String(list[0].label ?? '') : '';
-	fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'edit.js:normalizeOffcanvasForDisplay',message:'normalize input',data:{firstId,firstLabel,listLen:list.length},timestamp:Date.now(),hypothesisId:'H3'})}).catch(()=>{});
-	// #endregion
 	return list.map((el) => {
 		const id = String(el.id ?? '').trim().toLowerCase();
 		const lbl = String(el.label ?? '').trim().toLowerCase();
 		if (id === LEGACY_MAP_ID || lbl === LEGACY_MAP_ID || id.includes(LEGACY_MAP_ID) || (lbl && lbl.includes(LEGACY_MAP_ID))) {
-			// #region agent log
-			fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'edit.js:normalizeOut',message:'replacing legacy with Map',data:{originalId:el.id,originalLabel:el.label},timestamp:Date.now(),hypothesisId:'H1'})}).catch(()=>{});
-			// #endregion
 			return { ...el, id: 'map', label: __('Map', 'codeweber-gutenberg-blocks') };
 		}
 		return { ...el };
@@ -123,6 +117,25 @@ const HeaderWidgetsEdit = ({ attributes, setAttributes, clientId }) => {
 	const [expandedItem, setExpandedItem] = useState(null);
 	const [searchPostTypeOptions, setSearchPostTypeOptions] = useState([]);
 	const [draggedOffcanvasElem, setDraggedOffcanvasElem] = useState(null);
+	const [staffForEmployee, setStaffForEmployee] = useState([]);
+
+	useEffect(() => {
+		apiFetch({ path: '/wp/v2/staff?per_page=100&status=publish' })
+			.then((posts) => {
+				if (!Array.isArray(posts)) {
+					setStaffForEmployee([]);
+					return;
+				}
+				setStaffForEmployee(
+					posts.map((p) => {
+						const name = [p._staff_name, p._staff_surname].filter(Boolean).join(' ').trim();
+						const label = name || (p.title && (p.title.rendered || p.title.raw)) || String(p.id);
+						return { id: p.id, name: label };
+					})
+				);
+			})
+			.catch(() => setStaffForEmployee([]));
+	}, []);
 
 	useEffect(() => {
 		if (typeof window.cwgbSearchPostTypes !== 'undefined' && window.cwgbSearchPostTypes.postTypes?.length) {
@@ -167,9 +180,6 @@ const HeaderWidgetsEdit = ({ attributes, setAttributes, clientId }) => {
 	// Migrate legacy offcanvas element to "map" once per mount to avoid update loops
 	const hasMigratedLegacyRef = useRef(false);
 	useEffect(() => {
-		// #region agent log
-		fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'edit.js:useEffect:migrate',message:'migrate effect run',data:{itemsLen:items?.length ?? 0,hasMigratedRef:hasMigratedLegacyRef.current,firstOffcanvasIds:items?.[0]?.offcanvasElements?.map(e=>e.id) ?? []},timestamp:Date.now(),hypothesisId:'H2'})}).catch(()=>{});
-		// #endregion
 		if (!items?.length || hasMigratedLegacyRef.current) return;
 		const updated = items.map((item) => {
 			if (!Array.isArray(item.offcanvasElements) || !item.offcanvasElements.length) return item;
@@ -190,9 +200,6 @@ const HeaderWidgetsEdit = ({ attributes, setAttributes, clientId }) => {
 		});
 		const hasChanges = updated.some((it, i) => it !== items[i]);
 		if (hasChanges) {
-			// #region agent log
-			fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'edit.js:useEffect:migrate',message:'setAttributes migrated',data:{hasChanges:true},timestamp:Date.now(),hypothesisId:'H2'})}).catch(()=>{});
-			// #endregion
 			hasMigratedLegacyRef.current = true;
 			setAttributes({ items: updated });
 		}
@@ -236,9 +243,6 @@ const HeaderWidgetsEdit = ({ attributes, setAttributes, clientId }) => {
 		const newIdx = elemIndex + direction;
 		if (newIdx < 0 || newIdx >= list.length) return;
 		[list[elemIndex], list[newIdx]] = [list[newIdx], list[elemIndex]];
-		// #region agent log
-		if (list.length && list[0]) fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'edit.js:moveOffcanvasElement',message:'saving offcanvas list',data:{firstId:list[0].id,firstLabel:list[0].label},timestamp:Date.now(),hypothesisId:'H1'})}).catch(()=>{});
-		// #endregion
 		updateItem(itemId, { offcanvasElements: list });
 	};
 	const toggleOffcanvasElement = (itemId, elemId, enabled) => {
@@ -247,9 +251,6 @@ const HeaderWidgetsEdit = ({ attributes, setAttributes, clientId }) => {
 		const list = getOffcanvasElements(item).map((el) =>
 			el.id === elemId ? { ...el, enabled } : el
 		);
-		// #region agent log
-		if (list.length && list[0]) fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'edit.js:toggleOffcanvasElement',message:'saving offcanvas list',data:{firstId:list[0].id,firstLabel:list[0].label,elemId},timestamp:Date.now(),hypothesisId:'H1'})}).catch(()=>{});
-		// #endregion
 		updateItem(itemId, { offcanvasElements: list });
 	};
 	const reorderOffcanvasElements = (itemId, fromIndex, toIndex) => {
@@ -259,9 +260,6 @@ const HeaderWidgetsEdit = ({ attributes, setAttributes, clientId }) => {
 		const list = [...getOffcanvasElements(item)];
 		const [removed] = list.splice(fromIndex, 1);
 		list.splice(toIndex, 0, removed);
-		// #region agent log
-		if (list.length && list[0]) fetch('http://127.0.0.1:7242/ingest/49b89e88-4674-4191-9133-bf7fd16c00a5',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'edit.js:reorderOffcanvasElements',message:'saving offcanvas list',data:{firstId:list[0].id,firstLabel:list[0].label},timestamp:Date.now(),hypothesisId:'H1'})}).catch(()=>{});
-		// #endregion
 		updateItem(itemId, { offcanvasElements: list });
 	};
 
@@ -471,6 +469,74 @@ const HeaderWidgetsEdit = ({ attributes, setAttributes, clientId }) => {
 													</div>
 												);
 											})}
+											{offcanvasElements(item).some((el) => String(el.id).toLowerCase() === 'employee') && (
+												<>
+													<SelectControl
+														label={__('Показывать для сотрудника', 'codeweber-gutenberg-blocks')}
+														value={item.offcanvasEmployeeShowDepartment ? 'department' : 'position'}
+														options={[
+															{ value: 'position', label: __('Должность', 'codeweber-gutenberg-blocks') },
+															{ value: 'department', label: __('Отдел', 'codeweber-gutenberg-blocks') },
+														]}
+														onChange={(v) => updateItem(item.id, { offcanvasEmployeeShowDepartment: v === 'department' })}
+													/>
+													<p style={{ marginTop: 12, marginBottom: 6, fontSize: 12, fontWeight: 600 }}>
+														{__('Сотрудники для вывода', 'codeweber-gutenberg-blocks')}
+													</p>
+													<p style={{ marginBottom: 8, fontSize: 11, color: '#666' }}>
+														{__('Выберите записи Staff (CPT), которые будут показаны в блоке «Сотрудник».', 'codeweber-gutenberg-blocks')}
+													</p>
+													<SelectControl
+														label={__('Добавить сотрудника (Staff)', 'codeweber-gutenberg-blocks')}
+														value=""
+														options={[
+															{ value: '', label: __('— Выберите —', 'codeweber-gutenberg-blocks') },
+															...staffForEmployee
+																.filter((s) => !(item.offcanvasEmployeeStaffIds || []).includes(s.id))
+																.map((s) => ({ value: String(s.id), label: s.name })),
+														]}
+														onChange={(v) => {
+															if (v) {
+																const ids = [...(item.offcanvasEmployeeStaffIds || []), parseInt(v, 10)];
+																updateItem(item.id, { offcanvasEmployeeStaffIds: ids });
+															}
+														}}
+													/>
+													{(item.offcanvasEmployeeStaffIds || []).length > 0 && (
+														<ul style={{ listStyle: 'none', margin: '8px 0 0', padding: 0 }}>
+															{(item.offcanvasEmployeeStaffIds || []).map((sid) => {
+																const s = staffForEmployee.find((x) => x.id === sid);
+																return (
+																	<li
+																		key={sid}
+																		style={{
+																			display: 'flex',
+																			alignItems: 'center',
+																			justifyContent: 'space-between',
+																			padding: '4px 8px',
+																			background: '#f5f5f5',
+																			borderRadius: 4,
+																			marginBottom: 4,
+																		}}
+																	>
+																		<span style={{ fontSize: 13 }}>{s ? s.name : `ID ${sid}`}</span>
+																		<Button
+																			isSmall
+																			isDestructive
+																			onClick={() => {
+																				const ids = (item.offcanvasEmployeeStaffIds || []).filter((id) => id !== sid);
+																				updateItem(item.id, { offcanvasEmployeeStaffIds: ids });
+																			}}
+																		>
+																			{__('Удалить', 'codeweber-gutenberg-blocks')}
+																		</Button>
+																	</li>
+																);
+															})}
+														</ul>
+													)}
+												</>
+											)}
 											<Button
 												isPrimary
 												isSmall

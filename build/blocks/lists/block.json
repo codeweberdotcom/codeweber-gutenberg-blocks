@@ -30,6 +30,10 @@
       "type": "string",
       "default": "primary"
     },
+    "bulletColorType": {
+      "type": "string",
+      "default": "solid"
+    },
     "bulletBg": {
       "type": "boolean",
       "default": false
@@ -41,6 +45,10 @@
     "textColor": {
       "type": "string",
       "default": ""
+    },
+    "textColorType": {
+      "type": "string",
+      "default": "solid"
     },
     "items": {
       "type": "array",
@@ -94,6 +102,10 @@
     "listData": {
       "type": "string",
       "default": ""
+    },
+    "columns": {
+      "type": "string",
+      "default": "1"
     },
     "gridRowCols": {
       "type": "string",

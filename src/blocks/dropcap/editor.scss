@@ -1,0 +1,96 @@
+/**
+ * Dropcap Block - Editor Styles
+ * Mirrors frontend .dropcap so ::first-letter matches the saved output.
+ * Uses theme CSS vars (--bsprimary, --bsdark, --bspale-primary, etc.)
+ */
+
+.wp-block-codeweber-blocks-dropcap.has-dropcap {
+	&::first-letter {
+		display: block;
+		float: left;
+		font-size: 2.5rem;
+		line-height: 1;
+		font-weight: 500;
+		margin: 0.2rem 0.6rem 0 0;
+		padding: 0;
+	}
+
+	// Text color (solid) – theme uses --bs{color}; fallbacks for when theme CSS isn’t loaded in editor
+	&[data-dropcap-color="primary"]::first-letter {
+		color: var(--bsprimary, #0d6efd) !important;
+	}
+	&[data-dropcap-color="dark"]::first-letter {
+		color: var(--bsdark, #212529) !important;
+	}
+	&[data-dropcap-color="light"]::first-letter {
+		color: var(--bslight) !important;
+	}
+	&[data-dropcap-color="white"]::first-letter {
+		color: var(--bswhite) !important;
+	}
+	&[data-dropcap-color="muted"]::first-letter {
+		color: var(--bssecondary) !important;
+	}
+	&[data-dropcap-color="blue"]::first-letter { color: var(--bsblue) !important; }
+	&[data-dropcap-color="indigo"]::first-letter { color: var(--bsindigo) !important; }
+	&[data-dropcap-color="purple"]::first-letter { color: var(--bspurple) !important; }
+	&[data-dropcap-color="pink"]::first-letter { color: var(--bspink) !important; }
+	&[data-dropcap-color="red"]::first-letter { color: var(--bsred) !important; }
+	&[data-dropcap-color="orange"]::first-letter { color: var(--bsorange) !important; }
+	&[data-dropcap-color="yellow"]::first-letter { color: var(--bsyellow) !important; }
+	&[data-dropcap-color="green"]::first-letter { color: var(--bsgreen) !important; }
+	&[data-dropcap-color="teal"]::first-letter { color: var(--bsteal) !important; }
+	&[data-dropcap-color="cyan"]::first-letter { color: var(--bscyan) !important; }
+	&[data-dropcap-color="aqua"]::first-letter { color: var(--bsaqua) !important; }
+	&[data-dropcap-color="sky"]::first-letter { color: var(--bssky) !important; }
+	&[data-dropcap-color="leaf"]::first-letter { color: var(--bsleaf) !important; }
+	&[data-dropcap-color="navy"]::first-letter { color: var(--bsnavy) !important; }
+	&[data-dropcap-color="grape"]::first-letter { color: var(--bsgrape) !important; }
+	&[data-dropcap-color="fuchsia"]::first-letter { color: var(--bsfuchsia) !important; }
+	&[data-dropcap-color="violet"]::first-letter { color: var(--bsviolet) !important; }
+	&[data-dropcap-color="ash"]::first-letter { color: var(--bsash) !important; }
+
+	// Color type soft (lighter text)
+	&[data-dropcap-color-type="soft"][data-dropcap-color="primary"]::first-letter {
+		color: var(--bssoft-primary) !important;
+	}
+	&[data-dropcap-color-type="soft"][data-dropcap-color="dark"]::first-letter {
+		color: var(--bssoft-dark) !important;
+	}
+
+	// Color type pale
+	&[data-dropcap-color-type="pale"][data-dropcap-color="primary"]::first-letter {
+		color: var(--bspale-primary) !important;
+	}
+
+	// Circle style
+	&[data-dropcap-style="circle"]::first-letter {
+		font-size: 1.4rem;
+		height: 2.3rem;
+		min-width: 2.3rem;
+		width: 2.3rem;
+		margin: 0.25rem 0.5rem 0 0;
+		padding: 0;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 50%;
+	}
+
+	&[data-dropcap-style="circle"][data-dropcap-circle-bg="pale"]::first-letter {
+		background-color: var(--bspale-primary, rgba(13, 110, 253, 0.15)) !important;
+		color: var(--bsprimary, #0d6efd) !important;
+	}
+	&[data-dropcap-style="circle"][data-dropcap-circle-bg="pale"][data-dropcap-color="dark"]::first-letter {
+		background-color: var(--bspale-dark) !important;
+		color: var(--bsdark) !important;
+	}
+	&[data-dropcap-style="circle"][data-dropcap-circle-bg="soft"]::first-letter {
+		background-color: var(--bssoft-primary) !important;
+		color: var(--bsprimary) !important;
+	}
+	&[data-dropcap-style="circle"][data-dropcap-circle-bg="solid"]::first-letter {
+		background-color: var(--bsprimary) !important;
+		color: var(--bswhite) !important;
+	}
+}

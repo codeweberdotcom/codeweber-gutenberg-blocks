@@ -21,9 +21,11 @@ load_plugin_textdomain('codeweber-gutenberg-blocks', false, basename($plugin_pat
 $mode = isset($attributes['mode']) ? $attributes['mode'] : 'custom';
 $listType = isset($attributes['listType']) ? $attributes['listType'] : 'unordered';
 $bulletColor = isset($attributes['bulletColor']) ? $attributes['bulletColor'] : 'primary';
+$bulletColorType = isset($attributes['bulletColorType']) ? $attributes['bulletColorType'] : 'solid';
 $bulletBg = isset($attributes['bulletBg']) ? (bool) $attributes['bulletBg'] : false;
 $iconClass = isset($attributes['iconClass']) ? $attributes['iconClass'] : 'uil uil-arrow-right';
 $textColor = isset($attributes['textColor']) ? $attributes['textColor'] : '';
+$textColorType = isset($attributes['textColorType']) ? $attributes['textColorType'] : 'solid';
 $postType = isset($attributes['postType']) ? $attributes['postType'] : '';
 $selectedTaxonomies = isset($attributes['selectedTaxonomies']) ? $attributes['selectedTaxonomies'] : [];
 $enableLinks = isset($attributes['enableLinks']) ? (bool) $attributes['enableLinks'] : false;
@@ -33,6 +35,7 @@ $order = isset($attributes['order']) ? $attributes['order'] : 'desc';
 $listClass = isset($attributes['listClass']) ? $attributes['listClass'] : '';
 $listId = isset($attributes['listId']) ? $attributes['listId'] : '';
 $listData = isset($attributes['listData']) ? $attributes['listData'] : '';
+$columns = isset($attributes['columns']) ? $attributes['columns'] : '1';
 $items = isset($attributes['items']) ? $attributes['items'] : [];
 
 // Grid attributes
@@ -118,27 +121,33 @@ if ($listType === 'unordered') {
 	$listClasses[] = 'icon-list';
 }
 
-// Bullet color
+// Bullet/icon color (soft or solid)
 if ($bulletColor && $bulletColor !== 'none') {
-	$listClasses[] = 'bullet-' . esc_attr($bulletColor);
+	$bulletPrefix = ($bulletColorType === 'soft') ? 'bullet-soft-' : 'bullet-';
+	$listClasses[] = $bulletPrefix . esc_attr($bulletColor);
 }
 
 // Bullet background (only for icon-list)
 if ($listType === 'icon' && $bulletBg) {
 	$listClasses[] = 'bullet-bg';
-	if ($bulletColor && $bulletColor !== 'none') {
-		$listClasses[] = 'bullet-soft-' . esc_attr($bulletColor);
-	}
 }
 
-// Text color
+// Text color (soft or solid)
 if ($textColor) {
-	$listClasses[] = 'text-' . esc_attr($textColor);
+	$textPrefix = ($textColorType === 'soft') ? 'text-soft-' : 'text-';
+	$listClasses[] = $textPrefix . esc_attr($textColor);
 }
 
 // Custom class
 if ($listClass) {
 	$listClasses[] = esc_attr($listClass);
+}
+
+// Columns (1 = no class, 2 = cc-2, 3 = cc-3)
+if ($columns === '2') {
+	$listClasses[] = 'cc-2';
+} elseif ($columns === '3') {
+	$listClasses[] = 'cc-3';
 }
 
 // Parse data attributes

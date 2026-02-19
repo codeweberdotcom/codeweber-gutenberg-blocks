@@ -40,6 +40,9 @@ export const AvatarSidebar = ({ attributes, setAttributes }) => {
 		position,
 		nameLink,
 		userId,
+		staffId,
+		staffShowDepartment,
+		staffShowPhone,
 		blockId,
 		blockClass,
 		blockData,
@@ -55,6 +58,9 @@ export const AvatarSidebar = ({ attributes, setAttributes }) => {
 	// Users list state
 	const [users, setUsers] = useState([]);
 	const [loadingUsers, setLoadingUsers] = useState(false);
+	// Staff list state
+	const [staffList, setStaffList] = useState([]);
+	const [loadingStaff, setLoadingStaff] = useState(false);
 
 	// Fetch users when avatarType is 'user'
 	useEffect(() => {
@@ -68,6 +74,34 @@ export const AvatarSidebar = ({ attributes, setAttributes }) => {
 				.catch(() => {
 					setUsers([]);
 					setLoadingUsers(false);
+				});
+		}
+	}, [avatarType]);
+
+	// Fetch staff when avatarType is 'staff'
+	useEffect(() => {
+		if (avatarType === 'staff') {
+			setLoadingStaff(true);
+			apiFetch({
+				path: '/wp/v2/staff?per_page=100&status=publish&_fields=id,title,meta',
+			})
+				.then((posts) => {
+					const list = (posts || []).map((p) => {
+						const name =
+							(p._staff_name || p._staff_surname)
+								? [p._staff_name, p._staff_surname]
+										.filter(Boolean)
+										.join(' ')
+										.trim()
+								: (p.title && p.title.rendered) || '#' + p.id;
+						return { id: p.id, name };
+					});
+					setStaffList(list);
+					setLoadingStaff(false);
+				})
+				.catch(() => {
+					setStaffList([]);
+					setLoadingStaff(false);
 				});
 		}
 	}, [avatarType]);
@@ -167,10 +201,17 @@ export const AvatarSidebar = ({ attributes, setAttributes }) => {
 										},
 										{
 											label: __(
-												'User',
+												'WP User',
 												'codeweber-gutenberg-blocks'
 											),
 											value: 'user',
+										},
+										{
+											label: __(
+												'Staff',
+												'codeweber-gutenberg-blocks'
+											),
+											value: 'staff',
 										},
 									].map((typeOption) => (
 										<Button
@@ -480,6 +521,136 @@ export const AvatarSidebar = ({ attributes, setAttributes }) => {
 													});
 												}}
 											/>
+										)}
+									</div>
+								</PanelBody>
+							)}
+
+							{/* Staff Settings */}
+							{avatarType === 'staff' && (
+								<PanelBody
+									title={__(
+										'Staff Avatar Settings',
+										'codeweber-gutenberg-blocks'
+									)}
+									className="custom-panel-body"
+									initialOpen={true}
+								>
+									<div style={{ marginTop: '16px' }}>
+										{loadingStaff ? (
+											<div>
+												<Spinner />
+												<span
+													style={{
+														marginLeft: '8px',
+													}}
+												>
+													{__(
+														'Loading staff...',
+														'codeweber-gutenberg-blocks'
+													)}
+												</span>
+											</div>
+										) : (
+											<>
+												<SelectControl
+													label={__(
+														'Select Staff',
+														'codeweber-gutenberg-blocks'
+													)}
+													value={staffId || 0}
+													options={[
+														{
+															label: __(
+																'— Select Staff —',
+																'codeweber-gutenberg-blocks'
+															),
+															value: 0,
+														},
+														...staffList.map(
+															(s) => ({
+																label: s.name,
+																value: s.id,
+															})
+														),
+													]}
+													onChange={(value) => {
+														setAttributes({
+															staffId:
+																parseInt(value, 10) || 0,
+														});
+													}}
+												/>
+												<div
+													style={{
+														marginTop: '16px',
+													}}
+												>
+													<div
+														className="component-sidebar-title"
+														style={{
+															marginBottom: '8px',
+														}}
+													>
+														<label>
+															{__(
+																'Show for staff',
+																'codeweber-gutenberg-blocks'
+															)}
+														</label>
+													</div>
+													<ButtonGroup>
+														<Button
+															isPrimary={
+																!staffShowDepartment
+															}
+															onClick={() =>
+																setAttributes({
+																	staffShowDepartment: false,
+																})
+															}
+														>
+															{__(
+																'Position',
+																'codeweber-gutenberg-blocks'
+															)}
+														</Button>
+														<Button
+															isPrimary={
+																staffShowDepartment
+															}
+															onClick={() =>
+																setAttributes({
+																	staffShowDepartment: true,
+																})
+															}
+														>
+															{__(
+																'Department',
+																'codeweber-gutenberg-blocks'
+															)}
+														</Button>
+													</ButtonGroup>
+												</div>
+												<div style={{ marginTop: '16px' }}>
+													<ToggleControl
+														label={__(
+															'Phone',
+															'codeweber-gutenberg-blocks'
+														)}
+														checked={staffShowPhone}
+														onChange={(value) =>
+															setAttributes({
+																staffShowPhone: value,
+															})
+														}
+														help={__(
+															'Show staff phone number',
+															'codeweber-gutenberg-blocks'
+														)}
+													/>
+												</div>
+											</>
 										)}
 									</div>
 								</PanelBody>

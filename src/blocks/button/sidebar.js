@@ -476,6 +476,7 @@ export const ButtonSidebar = ({
 						{ label: 'Body', value: 'body' },
 						{ label: 'Default', value: 'default' },
 						{ label: 'More', value: 'more' },
+						{ label: 'More Left', value: 'more-left' },
 					].map((variant) => (
 						<Button
 							key={variant.value}

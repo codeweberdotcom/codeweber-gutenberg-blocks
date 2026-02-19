@@ -10,6 +10,21 @@
 	}
 }
 
+/* Контейнер карты в модалке «Добавить маркер» — фиксированная высота и видимость */
+.cwgb-marker-map-container {
+	position: relative;
+	width: 100%;
+	height: 250px;
+	min-height: 250px;
+	overflow: hidden;
+	contain: layout style;
+
+	.ymaps-2-1-79-map {
+		width: 100% !important;
+		height: 100% !important;
+	}
+}
+
 
 
 

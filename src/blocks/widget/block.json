@@ -3,7 +3,7 @@
 	"name": "codeweber-blocks/widget",
 	"version": "0.1.0",
 	"title": "Widget",
-	"category": "codeweber-gutenberg-elements",
+	"category": "codeweber-gutenberg-widgets",
 	"icon": "admin-page",
 	"description": "Widget container with title and InnerBlocks support.",
 	"keywords": ["widget", "container", "sidebar"],

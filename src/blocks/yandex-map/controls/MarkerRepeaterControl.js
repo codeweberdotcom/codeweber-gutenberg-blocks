@@ -5,10 +5,9 @@
  */
 
 import { __ } from '@wordpress/i18n';
-import { useState } from '@wordpress/element';
+import { useState, useRef, useEffect } from '@wordpress/element';
 import {
 	Button,
-	PanelBody,
 	TextControl,
 	Modal,
 	BaseControl,
@@ -30,6 +29,108 @@ const MarkerEditor = ({ marker, onSave, onCancel }) => {
 		description: marker?.description || '',
 	});
 
+	const mapContainerRef = useRef(null);
+	const mapInstanceRef = useRef(null);
+	const placemarkRef = useRef(null);
+	const initDoneRef = useRef(false);
+
+	useEffect(() => {
+		const el = mapContainerRef.current;
+		if (!el || typeof window === 'undefined' || typeof window.ymaps === 'undefined') {
+			return;
+		}
+		// Очищаем контейнер (защита от двойной инициализации в React Strict Mode)
+		el.innerHTML = '';
+		initDoneRef.current = false;
+		window.ymaps.ready(() => {
+			if (!el.isConnected || initDoneRef.current) return;
+			initDoneRef.current = true;
+			const lat = parseFloat(editedMarker.coords?.lat) || 55.76;
+			const lng = parseFloat(editedMarker.coords?.lng) || 37.64;
+			const coords = [lat, lng];
+			// Передаём DOM-элемент, чтобы карта использовала наш контейнер и не дублировалась
+			const map = new window.ymaps.Map(el, {
+				center: coords,
+				zoom: 14,
+				controls: ['zoomControl', 'searchControl'],
+			});
+			mapInstanceRef.current = map;
+			const placemark = new window.ymaps.Placemark(coords, {}, { draggable: true });
+			placemarkRef.current = placemark;
+			map.geoObjects.add(placemark);
+
+			function updateFromCoords(newCoords, addressText = null) {
+				setEditedMarker((prev) => ({
+					...prev,
+					coords: { lat: newCoords[0], lng: newCoords[1] },
+					...(addressText != null ? { address: addressText } : {}),
+				}));
+			}
+
+			placemark.events.add('dragend', function () {
+				const newCoords = placemark.geometry.getCoordinates();
+				updateFromCoords(newCoords);
+				window.ymaps.geocode(newCoords).then(function (res) {
+					const first = res.geoObjects.get(0);
+					if (first) {
+						setEditedMarker((prev) => ({ ...prev, address: first.getAddressLine() }));
+					}
+				});
+			});
+
+			map.events.add('click', function (e) {
+				const newCoords = e.get('coords');
+				placemark.geometry.setCoordinates(newCoords);
+				updateFromCoords(newCoords);
+				window.ymaps.geocode(newCoords).then(function (res) {
+					const first = res.geoObjects.get(0);
+					if (first) {
+						setEditedMarker((prev) => ({ ...prev, address: first.getAddressLine() }));
+					}
+				});
+			});
+
+			const searchControl = map.controls.get('searchControl');
+			if (searchControl && searchControl.events) {
+				searchControl.events.add('resultselect', function (e) {
+					const results = searchControl.getResultsArray();
+					const idx = e.get('index');
+					const item = results && results[idx];
+					if (item) {
+						const newCoords = item.geometry.getCoordinates();
+						placemark.geometry.setCoordinates(newCoords);
+						map.setCenter(newCoords, 16);
+						const name = item.properties.get('name');
+						updateFromCoords(newCoords, name || '');
+					}
+				});
+			}
+		});
+		return () => {
+			initDoneRef.current = false;
+			if (mapInstanceRef.current && typeof mapInstanceRef.current.destroy === 'function') {
+				mapInstanceRef.current.destroy();
+			}
+			mapInstanceRef.current = null;
+			placemarkRef.current = null;
+			if (el && el.parentNode) {
+				el.innerHTML = '';
+			}
+		};
+	}, []);
+
+	// Sync placemark when coords change from CoordinateControl
+	useEffect(() => {
+		const lat = parseFloat(editedMarker.coords?.lat);
+		const lng = parseFloat(editedMarker.coords?.lng);
+		if (placemarkRef.current && !isNaN(lat) && !isNaN(lng)) {
+			placemarkRef.current.geometry.setCoordinates([lat, lng]);
+			if (mapInstanceRef.current) {
+				mapInstanceRef.current.setCenter([lat, lng]);
+			}
+		}
+	}, [editedMarker.coords?.lat, editedMarker.coords?.lng]);
+
 	return (
 		<Modal
 			title={
@@ -41,6 +142,26 @@ const MarkerEditor = ({ marker, onSave, onCancel }) => {
 			style={{ maxWidth: '600px' }}
 		>
 			<div style={{ padding: '16px' }}>
+				<BaseControl label={__('Select point on the map', 'codeweber-gutenberg-blocks')} __nextHasNoMarginBottom>
+					<div
+						ref={mapContainerRef}
+						className="cwgb-marker-map-container"
+						style={{
+							width: '100%',
+							minHeight: '250px',
+							height: '250px',
+							backgroundColor: '#e5e5e5',
+							borderRadius: '4px',
+							marginBottom: '12px',
+						}}
+					/>
+					{typeof window !== 'undefined' && typeof window.ymaps === 'undefined' && (
+						<p style={{ fontSize: '12px', color: '#666', marginTop: '4px' }}>
+							{__('Yandex Maps will appear here when the theme loads the API in the editor.', 'codeweber-gutenberg-blocks')}
+						</p>
+					)}
+				</BaseControl>
+
 				<CoordinateControl
 					label={__('Coordinates', 'codeweber-gutenberg-blocks')}
 					value={editedMarker.coords}

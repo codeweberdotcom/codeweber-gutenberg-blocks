@@ -4054,6 +4054,18 @@ msgstr ""
 msgid "3 columns"
 msgstr ""
 
+#: src/src/blocks/lists/sidebar.js
+msgid "1 col"
+msgstr ""
+
+#: src/src/blocks/lists/sidebar.js
+msgid "2 col"
+msgstr ""
+
+#: src/src/blocks/lists/sidebar.js
+msgid "3 col"
+msgstr ""
+
 #: src/src/components/responsive-control/helpers.js src/src/components/responsive-control/helpers.js
 msgid "4 columns"
 msgstr ""

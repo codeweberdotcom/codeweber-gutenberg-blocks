@@ -1,0 +1,15 @@
+/**
+ * Blockquote Block - Editor Styles
+ *
+ * @package CodeWeber Gutenberg Blocks
+ */
+
+.wp-block-codeweber-blocks-blockquote {
+	blockquote {
+		margin: 0 0 0.5em;
+	}
+	figcaption {
+		font-size: 0.875em;
+		opacity: 0.85;
+	}
+}

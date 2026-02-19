@@ -5,6 +5,7 @@
  */
 
 import { InnerBlocks } from '@wordpress/block-editor';
+import { CodeRender } from '../../components/code';
 import {
 	generateBackgroundClasses,
 	generateAlignmentClasses,
@@ -44,6 +45,12 @@ const Save = ({ attributes }) => {
 		animationType,
 		animationDuration,
 		animationDelay,
+		enableCardFooter,
+		cardFooterLinkText,
+		cardFooterCode,
+		cardFooterCollapseId,
+		cardFooterCodeLanguage,
+		cardFooterCodeBackground,
 	} = attributes;
 
 	// Generate classes for card wrapper
@@ -184,6 +191,41 @@ const Save = ({ attributes }) => {
 			) : (
 				<InnerBlocks.Content />
 			)}
+			{cardType === 'card' &&
+				enableCard &&
+				enableCardFooter &&
+				(cardFooterCollapseId || blockId) && (() => {
+					const collapseId =
+						cardFooterCollapseId || (blockId ? 'collapse-' + blockId : 'collapse-1');
+					return (
+						<>
+							<div className="card-footer position-relative">
+								<a
+									className="collapse-link stretched-link collapsed"
+									href={'#' + collapseId}
+									data-bs-toggle="collapse"
+									aria-expanded="false"
+								>
+									{cardFooterLinkText || "View example's code"}
+								</a>
+							</div>
+							<div
+								id={collapseId}
+								className={
+									'card-footer p-0 accordion-collapse collapse ' +
+									(cardFooterCodeBackground === 'light' ? 'bg-light' : 'bg-dark')
+								}
+							>
+								<CodeRender
+									content={cardFooterCode || ''}
+									language={cardFooterCodeLanguage || 'html'}
+									copyLabel="Copy"
+									backgroundColor={cardFooterCodeBackground || 'dark'}
+								/>
+							</div>
+						</>
+					);
+				})()}
 		</div>
 	);
 };

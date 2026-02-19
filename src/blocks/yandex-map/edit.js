@@ -6,15 +6,14 @@
 
 import { __ } from '@wordpress/i18n';
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
-import { Placeholder } from '@wordpress/components';
-import { mapMarker } from '@wordpress/icons';
+import ServerSideRender from '@wordpress/server-side-render';
 import { YandexMapSidebar } from './sidebar';
 
 /**
  * Edit Component
  */
 const Edit = ({ attributes, setAttributes }) => {
-	const { dataSource, height, blockClass, blockId, blockData } = attributes;
+	const { height, blockClass, blockId, blockData } = attributes;
 
 	const blockProps = useBlockProps({
 		className: 'cwgb-yandex-map-block-edit',
@@ -33,7 +32,6 @@ const Edit = ({ attributes, setAttributes }) => {
 
 	return (
 		<>
-			{/* Inspector Controls */}
 			<InspectorControls>
 				<YandexMapSidebar
 					attributes={attributes}
@@ -41,58 +39,31 @@ const Edit = ({ attributes, setAttributes }) => {
 				/>
 			</InspectorControls>
 
-			{/* Preview */}
-			<div {...blockProps} {...dataAttributes} id={blockId || undefined}>
-				<Placeholder
-					icon={mapMarker}
-					label={__('Yandex Map', 'codeweber-gutenberg-blocks')}
-					instructions={__(
-						dataSource === 'offices'
-							? 'Map will display offices from CPT. Configure settings in the sidebar.'
-							: 'Map will display custom markers. Add markers in the sidebar.',
-						'codeweber-gutenberg-blocks'
-					)}
-				>
-					<div
-						style={{
-							width: '100%',
-							height: `${height || 500}px`,
-							backgroundColor: '#f0f0f0',
-							border: '2px dashed #ccc',
-							borderRadius: '8px',
-							display: 'flex',
-							alignItems: 'center',
-							justifyContent: 'center',
-							flexDirection: 'column',
-							gap: '10px',
-						}}
-					>
-						<span style={{ fontSize: '48px' }}>🗺️</span>
-						<p style={{ margin: 0, color: '#666' }}>
-							{dataSource === 'offices'
-								? __(
-										'Offices Map Preview',
-										'codeweber-gutenberg-blocks'
-									)
-								: __(
-										'Custom Markers Map Preview',
-										'codeweber-gutenberg-blocks'
-									)}
-						</p>
-						<p
+			<div
+				{...blockProps}
+				{...dataAttributes}
+				id={blockId || undefined}
+				style={{ minHeight: `${height || 500}px` }}
+			>
+				<ServerSideRender
+					block="codeweber-blocks/yandex-map"
+					attributes={attributes}
+					LoadingPlaceholder={() => (
+						<div
 							style={{
-								margin: 0,
-								fontSize: '12px',
-								color: '#999',
+								height: `${height || 500}px`,
+								display: 'flex',
+								alignItems: 'center',
+								justifyContent: 'center',
+								background: '#f0f0f0',
+								borderRadius: '8px',
+								color: '#666',
 							}}
 						>
-							{__(
-								'Map will be rendered on the frontend',
-								'codeweber-gutenberg-blocks'
-							)}
-						</p>
-					</div>
-				</Placeholder>
+							{__('Loading map…', 'codeweber-gutenberg-blocks')}
+						</div>
+					)}
+				/>
 			</div>
 		</>
 	);

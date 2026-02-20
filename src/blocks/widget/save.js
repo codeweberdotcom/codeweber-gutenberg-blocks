@@ -18,6 +18,7 @@ const WidgetSave = ({ attributes }) => {
 		titleClass,
 		titleColor,
 		titleColorType,
+		titleLineType = 'default',
 	} = attributes;
 
 	// Parse data attributes
@@ -39,6 +40,15 @@ const WidgetSave = ({ attributes }) => {
 	// Generate title classes
 	const getTitleClasses = () => {
 		const classes = ['widget-title'];
+
+		// Line type: default — без классов, line — text-line, primary — text-line-primary, full — text-line-full
+		if (titleLineType === 'line') {
+			classes.push('text-line');
+		} else if (titleLineType === 'primary') {
+			classes.push('text-line-primary');
+		} else if (titleLineType === 'full') {
+			classes.push('text-line-full');
+		}
 
 		// Color classes
 		let hasColorClass = false;
@@ -89,7 +99,7 @@ const WidgetSave = ({ attributes }) => {
 		>
 			{enableTitle && title && (
 				<RichText.Content
-					tagName={titleTag || 'h4'}
+					tagName={titleTag || 'div'}
 					value={title}
 					className={getTitleClasses()}
 				/>

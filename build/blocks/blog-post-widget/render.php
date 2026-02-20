@@ -24,6 +24,13 @@ $order          = isset($attributes['order']) ? strtoupper($attributes['order'])
 $category_id    = isset($attributes['categoryId']) ? (int) $attributes['categoryId'] : 0;
 $tag_id         = isset($attributes['tagId']) ? (int) $attributes['tagId'] : 0;
 $year           = isset($attributes['year']) ? trim((string) $attributes['year']) : '';
+$border_radius  = isset($attributes['borderRadius']) ? $attributes['borderRadius'] : '';
+if ($border_radius === '' && function_exists('getThemeCardImageRadius')) {
+	$border_radius = getThemeCardImageRadius('rounded');
+}
+if ($border_radius === '') {
+	$border_radius = 'rounded';
+}
 
 $query_args = [
 	'post_type'      => 'post',
@@ -95,13 +102,13 @@ if (!$query->have_posts()) {
 		}
 		?>
 		<li>
-			<figure class="rounded">
+			<figure class="<?php echo esc_attr($border_radius); ?>">
 				<a href="<?php echo esc_url($permalink); ?>">
 					<img src="<?php echo esc_url($thumb); ?>" alt="<?php echo esc_attr($title); ?>">
 				</a>
 			</figure>
 			<div class="post-content">
-				<div class="h6 mb-0">
+				<div class="h6 lh-md mb-0">
 					<a class="link-dark" href="<?php echo esc_url($permalink); ?>"><?php echo esc_html($title); ?></a>
 				</div>
 				<?php if ($show_date || $show_comments) : ?>

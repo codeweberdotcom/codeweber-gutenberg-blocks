@@ -90,3 +90,17 @@
 	font-size: 14px;
 	font-style: normal;
 }
+
+/* Сайдбар: перенос кнопок в группах (Тип цвета фона, Background Type и т.д.) */
+.interface-interface-skeleton__sidebar .components-button-group,
+.edit-post-sidebar .components-button-group,
+.interface-interface-skeleton__sidebar .button-group-sidebar_33,
+.interface-interface-skeleton__sidebar .button-group-sidebar_50,
+.interface-interface-skeleton__sidebar .button-group-sidebar_100,
+.edit-post-sidebar .button-group-sidebar_33,
+.edit-post-sidebar .button-group-sidebar_50,
+.edit-post-sidebar .button-group-sidebar_100 {
+	display: flex !important;
+	flex-wrap: wrap !important;
+	gap: 4px;
+}

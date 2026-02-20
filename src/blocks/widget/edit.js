@@ -25,6 +25,7 @@ const WidgetEdit = ({ attributes, setAttributes }) => {
 		titleClass,
 		titleColor,
 		titleColorType,
+		titleLineType = 'default',
 	} = attributes;
 
 	const blockProps = useBlockProps();
@@ -48,6 +49,15 @@ const WidgetEdit = ({ attributes, setAttributes }) => {
 	// Generate title classes
 	const getTitleClasses = () => {
 		const classes = ['widget-title'];
+
+		// Line type: default — без классов, line — text-line, primary — text-line-primary, full — text-line-full
+		if (titleLineType === 'line') {
+			classes.push('text-line');
+		} else if (titleLineType === 'primary') {
+			classes.push('text-line-primary');
+		} else if (titleLineType === 'full') {
+			classes.push('text-line-full');
+		}
 
 		// Color classes
 		let hasColorClass = false;
@@ -102,7 +112,7 @@ const WidgetEdit = ({ attributes, setAttributes }) => {
 				>
 					{enableTitle && (
 						<RichText
-							tagName={titleTag || 'h4'}
+							tagName={titleTag || 'div'}
 							value={title}
 							onChange={(value) =>
 								setAttributes({ title: value })

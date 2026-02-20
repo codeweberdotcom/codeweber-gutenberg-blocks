@@ -107,7 +107,7 @@ export const BackgroundSettingsPanel = ({
 					{__('Background Overlay', 'codeweber-gutenberg-blocks')}
 				</label>
 			</div>
-			<div className="button-group-sidebar_33 mb-3">
+			<div className="button-group-sidebar_33 mb-3" style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
 				{OVERLAY_OPTIONS.map((option) => (
 					<Button
 						key={option.value}
@@ -124,7 +124,7 @@ export const BackgroundSettingsPanel = ({
 	) : null;
 
 	const sizeButtons = (
-		<div className="button-group-sidebar_33">
+		<div className="button-group-sidebar_33" style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
 			{BACKGROUND_SIZE_BUTTONS.map((option) => (
 				<Button
 					key={option.value}
@@ -533,7 +533,7 @@ export const BackgroundSettingsPanel = ({
 					{__('Background Type', 'codeweber-gutenberg-blocks')}
 				</label>
 			</div>
-			<ButtonGroup>
+			<ButtonGroup style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
 				{typeOptions.map((option) => (
 					<Button
 						key={option.value}

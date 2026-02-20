@@ -1,5 +1,10 @@
 import { __ } from '@wordpress/i18n';
-import { ToggleControl, BaseControl } from '@wordpress/components';
+import {
+	ToggleControl,
+	BaseControl,
+	ButtonGroup,
+	Button,
+} from '@wordpress/components';
 import { RichText } from '@wordpress/block-editor';
 import {
 	createHeadingTagOptions,
@@ -23,7 +28,7 @@ export const HeadingContentControl = ({
 		order,
 		titleTag,
 		subtitleTag,
-		subtitleLine,
+		subtitleLineType = 'default',
 	} = attributes;
 
 	return (
@@ -60,7 +65,7 @@ export const HeadingContentControl = ({
 				<>
 					<ToggleControl
 						label={__(
-							'Subtitle First',
+							'Reverse',
 							'codeweber-gutenberg-blocks'
 						)}
 						checked={order === 'subtitle-first'}
@@ -70,16 +75,58 @@ export const HeadingContentControl = ({
 							})
 						}
 					/>
-					<ToggleControl
-						label={__(
-							'Subtitle Line',
-							'codeweber-gutenberg-blocks'
-						)}
-						checked={subtitleLine}
-						onChange={(value) =>
-							setAttributes({ subtitleLine: value })
-						}
-					/>
+					{enableSubtitle && (
+						<BaseControl
+							label={__(
+								'Line type',
+								'codeweber-gutenberg-blocks'
+							)}
+							className="mb-3"
+						>
+							<ButtonGroup>
+								<Button
+									isPressed={subtitleLineType === 'default'}
+									onClick={() =>
+										setAttributes({
+											subtitleLineType: 'default',
+										})
+									}
+								>
+									{__('Default', 'codeweber-gutenberg-blocks')}
+								</Button>
+								<Button
+									isPressed={subtitleLineType === 'line'}
+									onClick={() =>
+										setAttributes({
+											subtitleLineType: 'line',
+										})
+									}
+								>
+									{__('Type 1', 'codeweber-gutenberg-blocks')}
+								</Button>
+								<Button
+									isPressed={subtitleLineType === 'primary'}
+									onClick={() =>
+										setAttributes({
+											subtitleLineType: 'primary',
+										})
+									}
+								>
+									{__('Type 2', 'codeweber-gutenberg-blocks')}
+								</Button>
+								<Button
+									isPressed={subtitleLineType === 'full'}
+									onClick={() =>
+										setAttributes({
+											subtitleLineType: 'full',
+										})
+									}
+								>
+									{__('Type 3', 'codeweber-gutenberg-blocks')}
+								</Button>
+							</ButtonGroup>
+						</BaseControl>
+					)}
 				</>
 			)}
 			{enableTitle && (

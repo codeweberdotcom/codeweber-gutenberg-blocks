@@ -20,13 +20,15 @@ $tag_style     = isset($attributes['tagStyle']) ? $attributes['tagStyle'] : 'btn
 $tag_color     = isset($attributes['tagColor']) ? $attributes['tagColor'] : 'ash';
 $tag_color_type = isset($attributes['tagColorType']) ? $attributes['tagColorType'] : 'soft';
 
-// Build link class: Type 1 = btn btn-soft-ash btn-sm rounded-pill | Type 2 = badge badge-lg rounded-pill bg-ash
+$button_style = function_exists('getThemeButton') ? getThemeButton() : ' rounded-pill';
+
+// Build link class: Type 1 = btn btn-soft-ash btn-sm + getThemeButton | Type 2 = badge badge-lg + getThemeButton bg-ash
 if ($tag_style === 'badge') {
 	$prefix = ($tag_color_type === 'soft') ? 'bg-soft-' : (($tag_color_type === 'pale') ? 'bg-pale-' : 'bg-');
-	$link_class = 'badge badge-lg rounded-pill ' . $prefix . $tag_color;
+	$link_class = 'badge badge-lg' . $button_style . ' ' . $prefix . $tag_color;
 } else {
 	$prefix = ($tag_color_type === 'soft') ? 'btn-soft-' : (($tag_color_type === 'pale') ? 'btn-pale-' : 'btn-');
-	$link_class = 'btn ' . $prefix . $tag_color . ' btn-sm rounded-pill';
+	$link_class = 'btn ' . $prefix . $tag_color . ' btn-sm' . $button_style;
 }
 
 $term_args = [

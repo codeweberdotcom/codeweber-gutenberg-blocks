@@ -28,7 +28,7 @@
     },
     "titleTag": {
       "type": "string",
-      "default": "h4"
+      "default": "div"
     },
     "titleColor": {
       "type": "string",
@@ -40,7 +40,7 @@
     },
     "titleSize": {
       "type": "string",
-      "default": ""
+      "default": "h4"
     },
     "titleWeight": {
       "type": "string",
@@ -53,6 +53,10 @@
     "titleClass": {
       "type": "string",
       "default": "mb-3"
+    },
+    "titleLineType": {
+      "type": "string",
+      "default": "default"
     },
     "widgetClass": {
       "type": "string",

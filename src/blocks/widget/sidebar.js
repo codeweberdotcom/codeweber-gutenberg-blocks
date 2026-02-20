@@ -5,7 +5,13 @@
  */
 
 import { __ } from '@wordpress/i18n';
-import { PanelBody, TabPanel } from '@wordpress/components';
+import {
+	PanelBody,
+	TabPanel,
+	BaseControl,
+	ButtonGroup,
+	Button,
+} from '@wordpress/components';
 import { Icon, typography, cog } from '@wordpress/icons';
 import { BlockMetaFields } from '../../components/block-meta/BlockMetaFields';
 import { HeadingContentControl } from '../../components/heading/HeadingContentControl';
@@ -72,6 +78,97 @@ export const WidgetSidebar = ({ attributes, setAttributes }) => {
 								hideText={true}
 								hideTitle={false}
 							/>
+							{attributes.enableTitle && (
+								<BaseControl
+									label={__(
+										'Line type',
+										'codeweber-gutenberg-blocks'
+									)}
+									className="mb-3"
+								>
+									<ButtonGroup>
+										<Button
+											isPressed={
+												attributes.titleLineType ===
+												'default'
+											}
+											onClick={() =>
+												setAttributes({
+													titleLineType: 'default',
+													titleSize: 'h4',
+													titleTransform: '',
+													titleColor: '',
+												})
+											}
+										>
+											{__(
+												'Default',
+												'codeweber-gutenberg-blocks'
+											)}
+										</Button>
+										<Button
+											isPressed={
+												attributes.titleLineType ===
+												'line'
+											}
+											onClick={() =>
+												setAttributes({
+													titleLineType: 'line',
+													titleSize: 'fs-15',
+													titleTransform:
+														'text-uppercase',
+													titleColor: 'ash',
+												})
+											}
+										>
+											{__(
+												'Type 1',
+												'codeweber-gutenberg-blocks'
+											)}
+										</Button>
+										<Button
+											isPressed={
+												attributes.titleLineType ===
+												'primary'
+											}
+											onClick={() =>
+												setAttributes({
+													titleLineType: 'primary',
+													titleSize: 'fs-15',
+													titleTransform:
+														'text-uppercase',
+													titleColor: 'ash',
+												})
+											}
+										>
+											{__(
+												'Type 2',
+												'codeweber-gutenberg-blocks'
+											)}
+										</Button>
+										<Button
+											isPressed={
+												attributes.titleLineType ===
+												'full'
+											}
+											onClick={() =>
+												setAttributes({
+													titleLineType: 'full',
+													titleSize: 'fs-15',
+													titleTransform:
+														'text-uppercase',
+													titleColor: 'ash',
+												})
+											}
+										>
+											{__(
+												'Type 3',
+												'codeweber-gutenberg-blocks'
+											)}
+										</Button>
+									</ButtonGroup>
+								</BaseControl>
+							)}
 							<div style={{ marginTop: '16px' }}>
 								<HeadingTypographyControl
 									attributes={attributes}

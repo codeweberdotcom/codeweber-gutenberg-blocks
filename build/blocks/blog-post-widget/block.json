@@ -62,6 +62,10 @@
     "year": {
       "type": "string",
       "default": ""
+    },
+    "borderRadius": {
+      "type": "string",
+      "default": ""
     }
   },
   "textdomain": "codeweber-gutenberg-blocks",

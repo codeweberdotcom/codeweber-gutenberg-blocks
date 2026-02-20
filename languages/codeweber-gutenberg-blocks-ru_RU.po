@@ -5133,8 +5133,8 @@ msgstr "Data атрибуты подзаголовка"
 
 #: src/src/components/heading/HeadingContentControl.js
 #: src/src/components/heading/HeadingContentControl.js
-msgid "Subtitle First"
-msgstr "Подзаголовок первым"
+msgid "Reverse"
+msgstr "Reverse"
 
 #: src/src/blocks/heading-subtitle/edit.js
 #: src/src/blocks/heading-subtitle/edit.js
@@ -5145,6 +5145,10 @@ msgstr "ID подзаголовка"
 #: src/src/components/heading/HeadingContentControl.js
 msgid "Subtitle Line"
 msgstr "Линия подзаголовка"
+
+#: src/src/components/heading/HeadingContentControl.js
+msgid "Line type"
+msgstr "Тип линии"
 
 #: src/src/components/heading/HeadingTypographyControl.js
 #: src/src/components/heading/HeadingTypographyControl.js

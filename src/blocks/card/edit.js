@@ -492,7 +492,7 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 												'codeweber-gutenberg-blocks'
 											)}
 										</label>
-										<ButtonGroup>
+										<ButtonGroup style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
 											<Button
 												isPressed={cardType === 'card'}
 												onClick={() =>

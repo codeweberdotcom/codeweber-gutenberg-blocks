@@ -33,7 +33,6 @@ export const generateTypographyClasses = (attrs, prefix) => {
 	const size = attrs[`${prefix}Size`];
 	const weight = attrs[`${prefix}Weight`];
 	const transform = attrs[`${prefix}Transform`];
-	const line = attrs[`${prefix}Line`];
 	const tag = attrs[`${prefix}Tag`];
 
 	if (tag && tag.startsWith('display-')) {
@@ -52,9 +51,7 @@ export const generateTypographyClasses = (attrs, prefix) => {
 		classes.push(transform);
 	}
 
-	if (line) {
-		classes.push('text-line');
-	}
+	// Линия подзаголовка (text-line и варианты) задаётся в getSubtitleClasses по subtitleLineType
 
 	return classes;
 };

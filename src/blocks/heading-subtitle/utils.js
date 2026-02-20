@@ -61,7 +61,7 @@ export const getSubtitleClasses = (attrs) => {
 		justifyContent,
 		position,
 		lead,
-		subtitleLine,
+		subtitleLineType = 'default',
 		subtitleClass,
 	} = attrs;
 
@@ -70,9 +70,13 @@ export const getSubtitleClasses = (attrs) => {
 		classes.push(lead);
 	}
 
-	// Subtitle line class
-	if (subtitleLine) {
+	// Subtitle line: только по subtitleLineType. Default — без классов, Тип 1 — text-line, Тип 2 — text-line-primary, Тип 3 — text-line-full
+	if (subtitleLineType === 'line') {
 		classes.push('text-line');
+	} else if (subtitleLineType === 'primary') {
+		classes.push('text-line-primary');
+	} else if (subtitleLineType === 'full') {
+		classes.push('text-line-full');
 	}
 
 	// Color classes

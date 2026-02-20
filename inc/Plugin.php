@@ -1495,7 +1495,13 @@ class Plugin {
 			'elg' => ['fs-60', 'btn-elg'],
 		];
 		$btn_size_class = isset($size_classes[ $size ][1]) ? $size_classes[ $size ][1] : 'btn-md';
-		$btn_form_class = ($button_form === 'block') ? 'btn-block' : 'btn-circle';
+		// Стиль скругления из темы применяем только для btn-block; для circle не меняем
+		if ($button_form === 'block') {
+			$theme_btn_form = function_exists('getThemeButton') ? getThemeButton() : '';
+			$btn_form_class = 'btn-block' . esc_attr($theme_btn_form);
+		} else {
+			$btn_form_class = 'btn-circle';
+		}
 		$nav_class_base = 'nav social gap-2';
 		if ($style_type === 'type2') {
 			$nav_class_base .= ' social-muted';

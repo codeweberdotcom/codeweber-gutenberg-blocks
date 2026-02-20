@@ -133,6 +133,10 @@
       "type": "boolean",
       "default": true
     },
+    "subtitleLineType": {
+      "type": "string",
+      "default": "default"
+    },
     "lead": {
       "type": "string",
       "default": ""

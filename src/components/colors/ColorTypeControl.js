@@ -25,7 +25,7 @@ export const ColorTypeControl = ({
 				<label>{label}</label>
 			</div>
 		)}
-		<div className={wrapperClassName}>
+		<div className={wrapperClassName} style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
 			{options.map((option) => (
 				<Button
 					key={option.value}

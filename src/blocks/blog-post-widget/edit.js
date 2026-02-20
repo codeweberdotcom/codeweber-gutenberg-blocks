@@ -27,6 +27,13 @@ const ORDER_OPTIONS = [
 	{ value: 'DESC', label: __('DESC', 'codeweber-gutenberg-blocks') },
 ];
 
+const BORDER_RADIUS_OPTIONS = [
+	{ value: '', label: __('Theme default', 'codeweber-gutenberg-blocks') },
+	{ value: 'rounded', label: __('Rounded', 'codeweber-gutenberg-blocks') },
+	{ value: 'rounded-xl', label: __('Rounder', 'codeweber-gutenberg-blocks') },
+	{ value: 'rounded-0', label: __('Square', 'codeweber-gutenberg-blocks') },
+];
+
 function getYearOptions() {
 	const currentYear = new Date().getFullYear();
 	const years = [{ value: '', label: __('All years', 'codeweber-gutenberg-blocks') }];
@@ -37,7 +44,7 @@ function getYearOptions() {
 }
 
 const BlogPostWidgetEdit = ({ attributes, setAttributes }) => {
-	const { postsPerPage, showDate, showComments, titleLength, source, orderby, order, categoryId, tagId, year } = attributes;
+	const { postsPerPage, showDate, showComments, titleLength, source, orderby, order, categoryId, tagId, year, borderRadius } = attributes;
 	const blockProps = useBlockProps({ className: 'wp-block-codeweber-blocks-blog-post-widget' });
 
 	const { categories, tags } = useSelect((select) => {
@@ -126,6 +133,13 @@ const BlogPostWidgetEdit = ({ attributes, setAttributes }) => {
 						onChange={(value) => setAttributes({ titleLength: value ?? 50 })}
 						min={0}
 						max={200}
+					/>
+					<SelectControl
+						label={__('Image rounded corners', 'codeweber-gutenberg-blocks')}
+						help={__('Theme default uses the setting from Theme Options (Card and Image rounded corners).', 'codeweber-gutenberg-blocks')}
+						value={borderRadius ?? ''}
+						options={BORDER_RADIUS_OPTIONS}
+						onChange={(value) => setAttributes({ borderRadius: value ?? '' })}
 					/>
 				</PanelBody>
 			</InspectorControls>

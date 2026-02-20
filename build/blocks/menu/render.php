@@ -22,7 +22,7 @@ $mode = isset($attributes['mode']) ? $attributes['mode'] : 'custom';
 $wpMenuId = isset($attributes['wpMenuId']) ? intval($attributes['wpMenuId']) : 0;
 $depth = isset($attributes['depth']) ? intval($attributes['depth']) : 0;
 $orientation = isset($attributes['orientation']) ? $attributes['orientation'] : 'horizontal';
-$theme = isset($attributes['theme']) ? $attributes['theme'] : 'light';
+$theme = isset($attributes['theme']) ? $attributes['theme'] : 'default';
 $listType = isset($attributes['listType']) ? $attributes['listType'] : 'none';
 $bulletColor = isset($attributes['bulletColor']) ? $attributes['bulletColor'] : 'primary';
 $bulletBg = isset($attributes['bulletBg']) ? (bool) $attributes['bulletBg'] : false;
@@ -69,9 +69,14 @@ if ($mode === 'wp-menu' && $wpMenuId > 0) {
 				'url' => $menu_item->url,
 			);
 		}
+		// Текущий URL для подсветки активного пункта (Mega Menu и fallback)
+		$current_request_url = set_url_scheme( ( is_ssl() ? 'https://' : 'http://' ) . ( isset( $_SERVER['HTTP_HOST'] ) ? $_SERVER['HTTP_HOST'] : '' ) . ( isset( $_SERVER['REQUEST_URI'] ) ? $_SERVER['REQUEST_URI'] : '' ) );
+		$current_request_url = trailingslashit( strtok( $current_request_url, '?' ) );
 		// Строим дерево для fallback
 		$by_parent = [];
 		foreach ($menu_items as $menu_item) {
+			$item_url = $menu_item->url ? trailingslashit( strtok( $menu_item->url, '?' ) ) : '';
+			$is_current = ( $item_url !== '' && $current_request_url !== '' && $item_url === $current_request_url );
 			$parent_id = (int) $menu_item->menu_item_parent;
 			if (!isset($by_parent[$parent_id])) {
 				$by_parent[$parent_id] = [];
@@ -81,6 +86,7 @@ if ($mode === 'wp-menu' && $wpMenuId > 0) {
 				'text' => $menu_item->title,
 				'url' => $menu_item->url,
 				'wp_id' => $menu_item->ID,
+				'current' => $is_current,
 			);
 		}
 		$wpMenuItemsTree = $by_parent;
@@ -177,11 +183,14 @@ foreach ($wrapperAttrs as $key => $value) {
 	}
 }
 
-// Theme class for text color
-$textThemeClass = ($theme === 'dark') ? 'text-white' : 'text-dark';
+// Theme: default/inverse — не добавляем цвет к элементам; inverse ещё задаёт класс text-inverse для футера
+if ($theme === 'inverse') {
+	$GLOBALS['codeweber_footer_use_text_inverse'] = true;
+}
+$textThemeClass = ($theme === 'dark') ? 'text-white' : (($theme === 'light') ? 'text-dark' : '');
 
 /**
- * Mega Menu: простой рендер <li><a class="dropdown-item">...</a></li>
+ * Mega Menu: рендер с классами как у wp_nav_menu (menu-item, current-menu-item) для подсветки активного пункта.
  */
 $render_mega_menu_level = function ($by_parent, $parent_id, $depth_limit, $current_lvl, $listClasses, $itemThemeClass, $itemClass) use (&$render_mega_menu_level) {
 	$children = isset($by_parent[$parent_id]) ? $by_parent[$parent_id] : [];
@@ -191,10 +200,19 @@ $render_mega_menu_level = function ($by_parent, $parent_id, $depth_limit, $curre
 	$show_children = ($depth_limit === 0 || $current_lvl < $depth_limit);
 	$html = '';
 	foreach ($children as $item) {
-		$liClassAttr = $itemClass ? ' class="' . esc_attr($itemClass) . '"' : '';
-		$html .= '<li' . $liClassAttr . '>';
-		$aClasses = array_filter(array_merge(['dropdown-item', $itemThemeClass], []));
-		$html .= '<a class="' . esc_attr(implode(' ', $aClasses)) . '" href="' . esc_url($item['url']) . '">' . esc_html($item['text']) . '</a>';
+		$li_classes = array_filter( array( 'menu-item', 'menu-item-' . ( isset( $item['wp_id'] ) ? (int) $item['wp_id'] : 0 ), $itemClass ) );
+		if ( ! empty( $item['current'] ) ) {
+			$li_classes[] = 'current-menu-item';
+		}
+		$liClassAttr = ' class="' . esc_attr( implode( ' ', $li_classes ) ) . '"';
+		$li_id = isset( $item['id'] ) ? ' id="' . esc_attr( $item['id'] ) . '"' : '';
+		$html .= '<li' . $li_id . $liClassAttr . '>';
+		$aClasses = array_filter( array_merge( array( 'dropdown-item', $itemThemeClass ), array() ) );
+		$a_attr = ' class="' . esc_attr( implode( ' ', $aClasses ) ) . '" href="' . esc_url( $item['url'] ) . '"';
+		if ( ! empty( $item['current'] ) ) {
+			$a_attr .= ' aria-current="page"';
+		}
+		$html .= '<a' . $a_attr . '>' . esc_html( $item['text'] ) . '</a>';
 		if ($show_children && isset($item['wp_id']) && isset($by_parent[$item['wp_id']]) && !empty($by_parent[$item['wp_id']])) {
 			$listClassStr = is_array($listClasses) ? implode(' ', $listClasses) : $listClasses;
 			$html .= '<ul class="' . esc_attr($listClassStr) . '">';
@@ -259,9 +277,25 @@ if ($enableMegaMenu) {
 	} else {
 		$menuContent = '<p>' . esc_html__('No menu items found.', 'codeweber-gutenberg-blocks') . '</p>';
 	}
+} elseif ($mode === 'wp-menu' && $wpMenuId > 0 && $orientation === 'vertical' && !$enableMegaMenu) {
+	// Вертикальное меню: wp_nav_menu без Walker, list-unstyled — подсветка .list-unstyled li.current-menu-item > a из темы (как у шорткода [vertical_menu])
+	$vertical_menu_class = $menuClass ? $menuClass : 'list-unstyled mb-0';
+	$nav_args = array(
+		'menu'            => $wpMenuId,
+		'depth'           => $depth,
+		'container'       => 'nav',
+		'container_class' => 'vertical-menu-wrapper',
+		'menu_class'      => $vertical_menu_class,
+		'menu_id'         => $menuId ?: 'menu-block-' . $wpMenuId,
+		'fallback_cb'     => false,
+		'echo'            => false,
+	);
+	$menuContent = wp_nav_menu($nav_args);
+	if (empty(trim(strip_tags($menuContent)))) {
+		$menuContent = '<p>' . esc_html__('No menu items found.', 'codeweber-gutenberg-blocks') . '</p>';
+	}
 } elseif ($mode === 'wp-menu' && $wpMenuId > 0 && class_exists('WP_Bootstrap_Navwalker') && $orientation !== 'vertical') {
 	// wp_nav_menu + Walker только для горизонтального меню (navbar-nav)
-	// Вертикальное меню — через fallback (list-unstyled, d-flex, flex-column)
 	$bootstrap_menu_class = 'navbar-nav';
 	$nav_args = array(
 		'menu'            => $wpMenuId,
@@ -275,6 +309,9 @@ if ($enableMegaMenu) {
 		'item_spacing'    => 'discard',
 	);
 	$add_theme_to_nav_link = function ($atts, $item, $args, $depth) use ($theme) {
+		if ($theme === 'default' || $theme === 'inverse') {
+			return $atts;
+		}
 		$themeClass = ($theme === 'dark') ? 'text-white' : 'text-dark';
 		$atts['class'] = isset($atts['class']) ? $atts['class'] . ' ' . $themeClass : $themeClass;
 		return $atts;
@@ -338,11 +375,11 @@ if ($titleColor) {
 	}
 }
 
-// Add theme color class only if no custom color is set
+// Add theme color class only if no custom color is set (default/inverse — не добавляем)
 if (!$hasColorClass) {
 	if ($theme === 'dark') {
 		$titleClasses[] = 'text-white';
-	} else {
+	} elseif ($theme === 'light') {
 		$titleClasses[] = 'text-dark';
 	}
 }

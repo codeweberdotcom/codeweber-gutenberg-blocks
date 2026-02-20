@@ -130,11 +130,11 @@ const MenuSave = ({ attributes }) => {
 			}
 		}
 
-		// Add theme color class only if no custom color is set
+		// Add theme color class only if no custom color is set (default/inverse — не добавляем)
 		if (!hasColorClass) {
 			if (theme === 'dark') {
 				classes.push('text-white');
-			} else {
+			} else if (theme === 'light') {
 				classes.push('text-dark');
 			}
 		}
@@ -157,7 +157,7 @@ const MenuSave = ({ attributes }) => {
 		return classes.filter(Boolean).join(' ');
 	};
 
-	const liThemeClass = theme === 'dark' ? 'text-white' : 'text-dark';
+	const liThemeClass = theme === 'dark' ? 'text-white' : theme === 'light' ? 'text-dark' : '';
 	const liClasses = [liThemeClass, itemClass || ''].filter(Boolean).join(' ');
 
 	const content = (
@@ -180,14 +180,14 @@ const MenuSave = ({ attributes }) => {
 						)}
 						<span
 							className={
-								theme === 'dark' ? 'text-white' : 'text-dark'
+								theme === 'dark' ? 'text-white' : theme === 'light' ? 'text-dark' : ''
 							}
 						>
 							<a
 								href={item.url || '#'}
 								className={
 									[
-										theme === 'dark' ? 'text-white' : 'text-dark',
+										theme === 'dark' ? 'text-white' : theme === 'light' ? 'text-dark' : '',
 										linkClass || '',
 									]
 										.filter(Boolean)

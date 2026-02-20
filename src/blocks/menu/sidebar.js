@@ -322,7 +322,7 @@ export const MenuSidebar = ({ attributes, setAttributes, wpMenus = [] }) => {
 								))}
 							</div>
 
-							{/* Theme Toggle - Dark/Light */}
+							{/* Theme - Default / Light / Dark / Inverse */}
 							<div
 								className="component-sidebar-title"
 								style={{ marginTop: '16px' }}
@@ -333,6 +333,13 @@ export const MenuSidebar = ({ attributes, setAttributes, wpMenus = [] }) => {
 							</div>
 							<div className="button-group-sidebar_50">
 								{[
+									{
+										label: __(
+											'Default',
+											'codeweber-gutenberg-blocks'
+										),
+										value: 'default',
+									},
 									{
 										label: __(
 											'Light',
@@ -347,11 +354,18 @@ export const MenuSidebar = ({ attributes, setAttributes, wpMenus = [] }) => {
 										),
 										value: 'dark',
 									},
+									{
+										label: __(
+											'Inverse',
+											'codeweber-gutenberg-blocks'
+										),
+										value: 'inverse',
+									},
 								].map((themeOption) => (
 									<Button
 										key={themeOption.value}
 										isPrimary={
-											(theme || 'light') ===
+											(theme || 'default') ===
 											themeOption.value
 										}
 										onClick={() =>
@@ -364,6 +378,11 @@ export const MenuSidebar = ({ attributes, setAttributes, wpMenus = [] }) => {
 									</Button>
 								))}
 							</div>
+							{theme === 'inverse' && (
+								<p style={{ marginTop: '8px', fontSize: '12px', color: '#757575' }}>
+									{__('Inverse: no colors on menu elements; adds class text-inverse to footer.', 'codeweber-gutenberg-blocks')}
+								</p>
+							)}
 						</PanelBody>
 					)}
 

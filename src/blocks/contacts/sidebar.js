@@ -35,7 +35,7 @@ const TabIcon = ({ icon, label }) => (
 );
 
 export const ContactsSidebar = ({ attributes, setAttributes }) => {
-	const { items = [], format = 'simple', itemClass = '' } = attributes;
+	const { items = [], format = 'simple', itemClass = '', theme = 'default' } = attributes;
 
 	const updateItem = (index, updates) => {
 		const newItems = [...items];
@@ -139,6 +139,59 @@ export const ContactsSidebar = ({ attributes, setAttributes }) => {
 							)}
 							initialOpen={true}
 						>
+							{/* Theme: default = no classes, dark = text-dark, light = text-light */}
+							<div
+								className="component-sidebar-title"
+								style={{ marginTop: 0, marginBottom: '12px' }}
+							>
+								<label>
+									{__('Theme', 'codeweber-gutenberg-blocks')}
+								</label>
+							</div>
+							<div className="button-group-sidebar_50">
+								{[
+									{
+										label: __(
+											'Default',
+											'codeweber-gutenberg-blocks'
+										),
+										value: 'default',
+									},
+									{
+										label: __(
+											'Dark',
+											'codeweber-gutenberg-blocks'
+										),
+										value: 'dark',
+									},
+									{
+										label: __(
+											'Light',
+											'codeweber-gutenberg-blocks'
+										),
+										value: 'light',
+									},
+								].map((themeOption) => (
+									<Button
+										key={themeOption.value}
+										variant={
+											(theme || 'default') ===
+											themeOption.value
+												? 'primary'
+												: 'secondary'
+										}
+										isSmall
+										className="button-group-sidebar_50-item"
+										onClick={() =>
+											setAttributes({
+												theme: themeOption.value,
+											})
+										}
+									>
+										{themeOption.label}
+									</Button>
+								))}
+							</div>
 							<SelectControl
 								label={__(
 									'Format',
@@ -172,6 +225,21 @@ export const ContactsSidebar = ({ attributes, setAttributes }) => {
 									setAttributes({ format: value })
 								}
 							/>
+							{(format === 'icon' || format === 'icon-simple') && (
+								<p
+									style={{
+										marginTop: '8px',
+										marginBottom: '0',
+										fontSize: '12px',
+										color: '#757575',
+									}}
+								>
+									{__(
+										'Use the Icon and Text tabs to customize icon and paragraph.',
+										'codeweber-gutenberg-blocks'
+									)}
+								</p>
+							)}
 
 							{items.length === 0 && (
 								<p
@@ -421,7 +489,7 @@ export const ContactsSidebar = ({ attributes, setAttributes }) => {
 							attributes={attributes}
 							setAttributes={setAttributes}
 							prefix=""
-							showWrapper={false}
+							showWrapper={format === 'icon'}
 						/>
 					)}
 

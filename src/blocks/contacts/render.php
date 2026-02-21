@@ -58,6 +58,9 @@ $block_class = isset($attributes['blockClass']) ? $attributes['blockClass'] : ''
 $block_id = isset($attributes['blockId']) ? $attributes['blockId'] : '';
 $block_data = isset($attributes['blockData']) ? $attributes['blockData'] : '';
 $item_class = isset($attributes['itemClass']) ? $attributes['itemClass'] : '';
+// Theme: default = no classes, dark = text-dark, light = text-light
+$theme = isset($attributes['theme']) && $attributes['theme'] !== '' ? $attributes['theme'] : 'default';
+$theme = in_array($theme, ['light', 'dark', 'default'], true) ? $theme : 'default';
 
 if (empty($items)) {
     return;
@@ -264,7 +267,7 @@ if (!function_exists('get_contacts_svg_icon_classes')) {
 
 // Функция для рендеринга простой иконки (без обёртки, только иконка с классом me-2)
 if (!function_exists('render_contacts_simple_icon')) {
-    function render_contacts_simple_icon($iconNameForContact, $iconType, $iconName, $svgIcon, $svgStyle, $iconSize, $iconColor, $iconColor2, $iconClass, $customSvgUrl) {
+    function render_contacts_simple_icon($iconNameForContact, $iconType, $iconName, $svgIcon, $svgStyle, $iconSize, $iconFontSize, $iconColor, $iconColor2, $iconClass, $customSvgUrl) {
         // Если тип иконки none - не показываем
         if ($iconType === 'none') {
             return '';
@@ -278,6 +281,9 @@ if (!function_exists('render_contacts_simple_icon')) {
             }
             
             $iconClasses = ['uil', 'uil-' . $iconNameToUse, 'me-2'];
+            if ($iconFontSize) {
+                $iconClasses[] = $iconFontSize;
+            }
             if ($iconColor) {
                 $iconClasses[] = 'text-' . $iconColor;
             }
@@ -422,6 +428,22 @@ $textAttrs = [
     'textClass' => $textClass,
     'textTag' => $textTag,
 ];
+// default = no text-light/text-dark; dark = text-dark; light = text-light
+if ($theme === 'dark') {
+    $titleAttrs['titleColor'] = 'dark';
+    $titleAttrs['titleColorType'] = 'solid';
+    $textAttrs['textColor'] = 'dark';
+    $textAttrs['textColorType'] = 'solid';
+} elseif ($theme === 'light') {
+    $titleAttrs['titleColor'] = 'light';
+    $titleAttrs['titleColorType'] = 'solid';
+    $textAttrs['textColor'] = 'light';
+    $textAttrs['textColorType'] = 'solid';
+} else {
+    // theme default: не добавляем text-light и text-dark
+    $titleAttrs['titleColor'] = '';
+    $textAttrs['textColor'] = '';
+}
 $titleClasses = get_contacts_title_classes($titleAttrs);
 $textClasses = get_contacts_text_classes($textAttrs);
 // Добавляем mb-0 для address
@@ -514,8 +536,32 @@ if (empty($enabled_items)) {
     echo '<!-- No enabled items. Total items: ' . count($items) . ' -->';
     return; // Просто прекращаем выполнение, буфер обработается в Plugin.php
 }
+
+// Theme: default = no theme class, dark = text-dark, light = text-light
+$wrapper_classes = ['codeweber-contacts-block'];
+if ($block_class) {
+    $wrapper_classes[] = $block_class;
+}
+if ($theme === 'dark') {
+    $wrapper_classes[] = 'text-dark';
+} elseif ($theme === 'light') {
+    $wrapper_classes[] = 'text-light';
+}
+$wrapper_class_attr = ' class="' . esc_attr(implode(' ', $wrapper_classes)) . '"';
+$wrapper_id_attr = $block_id ? ' id="' . esc_attr($block_id) . '"' : '';
+$wrapper_data_attr = '';
+if ($block_data) {
+    $pairs = array_map('trim', explode(',', $block_data));
+    foreach ($pairs as $pair) {
+        if (strpos($pair, '=') !== false) {
+            list($k, $v) = explode('=', $pair, 2);
+            $wrapper_data_attr .= ' data-' . esc_attr(trim($k)) . '="' . esc_attr(trim($v)) . '"';
+        }
+    }
+}
 ?>
 
+<div<?php echo $wrapper_class_attr . $wrapper_id_attr . $wrapper_data_attr; ?>>
 <?php foreach ($enabled_items as $item): ?>
         <?php
         $type = isset($item['type']) ? $item['type'] : '';
@@ -541,7 +587,7 @@ if (empty($enabled_items)) {
             <?php elseif ($format === 'icon-simple'): ?>
                 <div>
                     <<?php echo esc_attr($textTag); ?> class="<?php echo esc_attr($textClasses); ?>">
-                        <?php echo render_contacts_simple_icon('location-pin-alt', $iconType, $iconName, $svgIcon, $svgStyle, $iconSize, $iconColor, $iconColor2, $iconClass, $customSvgUrl); ?>
+                        <?php echo render_contacts_simple_icon('location-pin-alt', $iconType, $iconName, $svgIcon, $svgStyle, $iconSize, $iconFontSize, $iconColor, $iconColor2, $iconClass, $customSvgUrl); ?>
                         <span><?php echo esc_html($address); ?></span>
                     </<?php echo esc_attr($textTag); ?>>
                 </div>
@@ -573,7 +619,7 @@ if (empty($enabled_items)) {
             <?php elseif ($format === 'icon-simple'): ?>
                 <div>
                     <a href="mailto:<?php echo esc_attr(antispambot($email)); ?>" class="d-flex align-items-center <?php echo esc_attr($textClasses); ?>">
-                        <?php echo render_contacts_simple_icon('envelope', $iconType, $iconName, $svgIcon, $svgStyle, $iconSize, $iconColor, $iconColor2, $iconClass, $customSvgUrl); ?>
+                        <?php echo render_contacts_simple_icon('envelope', $iconType, $iconName, $svgIcon, $svgStyle, $iconSize, $iconFontSize, $iconColor, $iconColor2, $iconClass, $customSvgUrl); ?>
                         <span><?php echo esc_html(antispambot($email)); ?></span>
                     </a>
                 </div>
@@ -619,7 +665,7 @@ if (empty($enabled_items)) {
                 <div>
                     <?php foreach ($phone_values as $index => $phone_data): ?>
                         <a href="tel:<?php echo esc_attr($phone_data['clean']); ?>" class="d-flex align-items-center <?php echo esc_attr($textClasses); ?>">
-                            <?php echo render_contacts_simple_icon('phone-volume', $iconType, $iconName, $svgIcon, $svgStyle, $iconSize, $iconColor, $iconColor2, $iconClass, $customSvgUrl); ?>
+                            <?php echo render_contacts_simple_icon('phone-volume', $iconType, $iconName, $svgIcon, $svgStyle, $iconSize, $iconFontSize, $iconColor, $iconColor2, $iconClass, $customSvgUrl); ?>
                             <span><?php echo esc_html($phone_data['display']); ?></span>
                         </a>
                     <?php endforeach; ?>

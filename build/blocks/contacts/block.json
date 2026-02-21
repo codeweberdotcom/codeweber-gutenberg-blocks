@@ -171,6 +171,10 @@
       "type": "string",
       "default": ""
     },
+    "theme": {
+      "type": "string",
+      "default": "default"
+    },
     "blockClass": {
       "type": "string",
       "default": ""

@@ -54,6 +54,7 @@ const ContactsPreview = ({
 		iconGradientColor = 'gradient-1',
 		customSvgUrl = '',
 		itemClass = '',
+		theme = 'default',
 	} = attributes;
 	if (!items || items.length === 0) {
 		return (
@@ -83,10 +84,24 @@ const ContactsPreview = ({
 		);
 	}
 
-	// Генерируем классы для заголовка
+	// default = без text-light/text-dark; dark = text-dark; light = text-light
+	const themeColorClass =
+		theme === 'dark' ? 'text-dark' : theme === 'light' ? 'text-light' : null;
+
+	// Генерируем классы для заголовка (при default не добавляем text-light/text-dark)
 	const getTitleClasses = () => {
 		const classes = ['mb-1'];
-		classes.push(generateColorClass(titleColor, titleColorType, 'text'));
+		if (themeColorClass) {
+			classes.push(themeColorClass);
+		} else if (theme === 'default') {
+			// Тема по умолчанию — цвет из вкладки Текст, но без text-light/text-dark
+			const colorClass = generateColorClass(titleColor, titleColorType, 'text');
+			if (colorClass && colorClass !== 'text-light' && colorClass !== 'text-dark') {
+				classes.push(colorClass);
+			}
+		} else {
+			classes.push(generateColorClass(titleColor, titleColorType, 'text'));
+		}
 		classes.push(...generateTypographyClasses(attributes, 'title'));
 		if (titleClass) {
 			classes.push(titleClass);
@@ -94,10 +109,19 @@ const ContactsPreview = ({
 		return classes.filter(Boolean).join(' ');
 	};
 
-	// Генерируем классы для текста
+	// Генерируем классы для текста (при default не добавляем text-light/text-dark)
 	const getTextClasses = () => {
 		const classes = [];
-		classes.push(generateColorClass(textColor, textColorType, 'text'));
+		if (themeColorClass) {
+			classes.push(themeColorClass);
+		} else if (theme === 'default') {
+			const colorClass = generateColorClass(textColor, textColorType, 'text');
+			if (colorClass && colorClass !== 'text-light' && colorClass !== 'text-dark') {
+				classes.push(colorClass);
+			}
+		} else {
+			classes.push(generateColorClass(textColor, textColorType, 'text'));
+		}
 		classes.push(...generateTypographyClasses(attributes, 'text'));
 		if (textClass) {
 			classes.push(textClass);
@@ -206,8 +230,11 @@ const ContactsPreview = ({
 		// Для font иконок: если пользователь не выбрал, используем предустановленную
 		if (iconType === 'font') {
 			if (!iconNameToUse) return null;
-			// Простая font иконка без обёртки
+			// Простая font иконка без обёртки (Font Size применяется)
 			const iconClasses = ['uil', `uil-${iconNameToUse}`, 'me-2'];
+			if (iconFontSize) {
+				iconClasses.push(iconFontSize);
+			}
 			if (iconColor) {
 				iconClasses.push(`text-${iconColor}`);
 			}
@@ -227,7 +254,7 @@ const ContactsPreview = ({
 					svgIcon={svgIconToUse}
 					svgStyle={svgStyle}
 					iconSize={iconSize}
-					iconFontSize=""
+					iconFontSize={iconFontSize}
 					iconColor={iconColor}
 					iconColor2={iconColor2}
 					iconClass={`${iconClass} me-2`}
@@ -252,7 +279,7 @@ const ContactsPreview = ({
 					svgIcon=""
 					svgStyle="lineal"
 					iconSize={iconSize}
-					iconFontSize=""
+					iconFontSize={iconFontSize}
 					iconColor={iconColor}
 					iconColor2=""
 					iconClass={`${iconClass} me-2`}
@@ -712,6 +739,7 @@ const ContactsEdit = ({ attributes, setAttributes }) => {
 		blockClass = '',
 		blockId = '',
 		blockData = '',
+		theme = 'default',
 	} = attributes;
 	const [contactsData, setContactsData] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
@@ -727,8 +755,16 @@ const ContactsEdit = ({ attributes, setAttributes }) => {
 		return dataAttrs;
 	};
 
+	const themeClass =
+		theme === 'dark' ? 'text-dark' : theme === 'light' ? 'text-light' : '';
 	const blockProps = useBlockProps({
-		className: ['codeweber-contacts-block', blockClass].filter(Boolean).join(' '),
+		className: [
+			'codeweber-contacts-block',
+			blockClass,
+			themeClass,
+		]
+			.filter(Boolean)
+			.join(' '),
 		id: blockId || undefined,
 		...getDataAttributes(),
 	});

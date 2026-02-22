@@ -301,9 +301,9 @@ $render_menu_collapse = function ($by_parent, $parent_id, $depth_limit, $listCla
 			$aria_current = $is_current ? ' aria-current="page"' : '';
 			$html .= '<div class="d-flex align-items-center justify-content-between">';
 			$html .= '<a href="' . esc_url($item['url']) . '" class="' . esc_attr(implode(' ', $a_classes)) . '"' . $aria_current . '>' . esc_html($item['text']) . '</a>';
-			$btn_classes = array_filter(array_merge(['btn', 'btn-link', 'text-decoration-none', 'd-flex', 'align-items-center', 'px-1', 'border-0', 'flex-shrink-0'], $textThemeClass ? [$textThemeClass] : []));
+			$btn_classes = array_filter(array_merge(['btn', 'btn-link', 'btn-collapse', 'text-decoration-none', 'd-flex', 'align-items-center', 'px-1', 'border-0', 'flex-shrink-0'], $textThemeClass ? [$textThemeClass] : []));
 			$html .= '<button type="button" class="' . esc_attr(implode(' ', $btn_classes)) . '" data-bs-toggle="collapse" data-bs-target="#' . esc_attr($collapse_id) . '" aria-expanded="' . ($expand ? 'true' : 'false') . '" aria-controls="' . esc_attr($collapse_id) . '" aria-label="' . esc_attr__( 'Expand submenu', 'codeweber-gutenberg-blocks' ) . '">';
-			$html .= '<i class="uil uil-angle-down sidebar-catalog-icon"></i>';
+			$html .= '<span class="toggle_block" aria-hidden="true"><i class="uil uil-angle-down sidebar-catalog-icon"></i></span>';
 			$html .= '</button>';
 			$html .= '</div>';
 			$html .= '<div class="collapse' . ($expand ? ' show' : '') . '" id="' . esc_attr($collapse_id) . '" data-bs-parent="#' . esc_attr($wrapper_id) . '">';

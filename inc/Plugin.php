@@ -59,6 +59,9 @@ class Plugin {
 		// Фильтр для рендеринга html-blocks блока
 		add_filter('pre_render_block', __CLASS__ . '::pre_render_html_blocks_block', 10, 2);
 
+		// Фильтр для рендеринга shortcode-render блока (фронт)
+		add_filter('pre_render_block', __CLASS__ . '::pre_render_shortcode_render_block', 10, 2);
+
 		// Фильтр для рендеринга contacts блока
 		add_filter('pre_render_block', __CLASS__ . '::pre_render_contacts_block', 10, 2);
 
@@ -113,6 +116,9 @@ class Plugin {
 
 		// Register REST API endpoint for navbar block preview (editor)
 		add_action('rest_api_init', __CLASS__ . '::register_navbar_preview_endpoint');
+
+		// Register REST API endpoint for Shortcode Render block preview (editor)
+		add_action('rest_api_init', __CLASS__ . '::register_shortcode_render_endpoint');
 
 		// Register REST API endpoint for sidebars list
 		add_action('rest_api_init', __CLASS__ . '::register_sidebars_endpoint');
@@ -1382,6 +1388,36 @@ class Plugin {
 	}
 
 	/**
+	 * Pre-render shortcode-render block (frontend).
+	 * Always uses PHP render so shortcode output is shown on the front.
+	 */
+	public static function pre_render_shortcode_render_block($pre_render, $parsed_block) {
+		if (!isset($parsed_block['blockName']) || $parsed_block['blockName'] !== 'codeweber-blocks/shortcode-render') {
+			return $pre_render;
+		}
+
+		$render_path = self::getBasePath() . '/build/blocks/shortcode-render/render.php';
+		if (!file_exists($render_path)) {
+			return $pre_render;
+		}
+
+		$attributes = $parsed_block['attrs'] ?? [];
+		$content = $parsed_block['innerHTML'] ?? '';
+		$block_instance = new \WP_Block($parsed_block);
+
+		extract([
+			'attributes' => $attributes,
+			'content' => $content,
+			'block' => $block_instance,
+			'parsed_block' => $parsed_block,
+		], EXTR_SKIP);
+
+		ob_start();
+		require $render_path;
+		return ob_get_clean();
+	}
+
+	/**
 	 * Register REST API endpoint for contacts
 	 */
 	public static function register_contacts_endpoint() {
@@ -1427,6 +1463,39 @@ class Plugin {
 			}
 		}
 		return new \WP_REST_Response(['sidebars' => $list], 200);
+	}
+
+	/**
+	 * Register REST API endpoint for Shortcode Render block preview (editor).
+	 * Used because core block-renderer can 404 for this block.
+	 */
+	public static function register_shortcode_render_endpoint() {
+		register_rest_route('codeweber-gutenberg-blocks/v1', '/render-shortcode', [
+			'methods' => 'GET',
+			'callback' => __CLASS__ . '::shortcode_render_callback',
+			'permission_callback' => function () {
+				return current_user_can('edit_posts');
+			},
+			'args' => [
+				'shortcode' => [
+					'required' => true,
+					'type' => 'string',
+					'sanitize_callback' => 'sanitize_text_field',
+				],
+			],
+		]);
+	}
+
+	/**
+	 * REST: render shortcode and return HTML for editor preview.
+	 */
+	public static function shortcode_render_callback($request) {
+		$shortcode = trim((string) $request->get_param('shortcode'));
+		if ($shortcode === '') {
+			return new \WP_REST_Response(['rendered' => ''], 200);
+		}
+		$rendered = do_shortcode($shortcode);
+		return new \WP_REST_Response(['rendered' => $rendered], 200);
 	}
 
 	/**

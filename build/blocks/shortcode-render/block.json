@@ -1,0 +1,28 @@
+{
+  "apiVersion": 3,
+  "name": "codeweber-blocks/shortcode-render",
+  "version": "0.1.0",
+  "title": "Shortcode Render",
+  "category": "codeweber-gutenberg-widgets",
+  "icon": "shortcode",
+  "description": "Render any WordPress shortcode. Enter the shortcode in the sidebar.",
+  "keywords": [
+    "shortcode",
+    "widget"
+  ],
+  "supports": {
+    "html": false,
+    "customClassName": true,
+    "anchor": true
+  },
+  "attributes": {
+    "shortcode": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "textdomain": "codeweber-gutenberg-blocks",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

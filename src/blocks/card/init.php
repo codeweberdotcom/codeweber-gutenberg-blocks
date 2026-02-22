@@ -11,7 +11,24 @@ if (!defined('ABSPATH')) {
 	exit;
 }
 
-add_filter('render_block', 'codeweber_card_apply_default_border_radius', 10, 2);
+add_filter('render_block', 'codeweber_card_apply_default_footer_link', 10, 2);
+add_filter('render_block', 'codeweber_card_apply_default_border_radius', 11, 2);
+
+/**
+ * Replace placeholder with translatable "View example's code" when footer link text is empty.
+ */
+function codeweber_card_apply_default_footer_link($block_content, $block) {
+	if (!isset($block['blockName']) || $block['blockName'] !== 'codeweber-blocks/card') {
+		return $block_content;
+	}
+	$attrs = $block['attrs'] ?? [];
+	$link_text = $attrs['cardFooterLinkText'] ?? '';
+	if ($link_text !== '') {
+		return $block_content;
+	}
+	$translated = esc_html(__("View example's code", 'codeweber-gutenberg-blocks'));
+	return str_replace('{{CODEWEBER_DEFAULT_FOOTER_LINK}}', $translated, $block_content);
+}
 
 function codeweber_card_apply_default_border_radius($block_content, $block) {
 	if (!isset($block['blockName']) || $block['blockName'] !== 'codeweber-blocks/card') {

@@ -283,6 +283,7 @@ class Plugin {
 		'cta',
 		'navbar',
 		'search',
+		'shortcode-render',
 		'social-icons',
 		'social-wrapper',
 		'top-header',
@@ -494,6 +495,21 @@ class Plugin {
 			$block_args = [];
 			if (in_array($block_name, ['blog-post-widget', 'blog-category-widget', 'blog-tag-widget', 'blog-year-widget'], true)) {
 				$render_path = self::getBasePath() . '/build/blocks/' . $block_name . '/render.php';
+				if (file_exists($render_path)) {
+					$block_args['render_callback'] = function ($attributes, $content, $block) use ($render_path) {
+						ob_start();
+						extract([
+							'attributes' => $attributes,
+							'content'    => $content,
+							'block'      => $block,
+						], EXTR_SKIP);
+						require $render_path;
+						return ob_get_clean();
+					};
+				}
+			}
+			if ($block_name === 'shortcode-render') {
+				$render_path = self::getBasePath() . '/build/blocks/shortcode-render/render.php';
 				if (file_exists($render_path)) {
 					$block_args['render_callback'] = function ($attributes, $content, $block) use ($render_path) {
 						ob_start();

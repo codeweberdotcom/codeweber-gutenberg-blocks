@@ -36,7 +36,7 @@
     },
     "h100": {
       "type": "boolean",
-      "default": true
+      "default": false
     },
     "borderRadius": {
       "type": "string",
@@ -180,7 +180,7 @@
     },
     "cardFooterLinkText": {
       "type": "string",
-      "default": "View example's code"
+      "default": ""
     },
     "cardFooterCode": {
       "type": "string",
@@ -197,6 +197,10 @@
     "cardFooterCodeBackground": {
       "type": "string",
       "default": "dark"
+    },
+    "cardFooterLinkColor": {
+      "type": "string",
+      "default": ""
     }
   },
   "textdomain": "codeweber-blocks",

@@ -29,7 +29,7 @@ $bulletBg = isset($attributes['bulletBg']) ? (bool) $attributes['bulletBg'] : fa
 $iconClass = isset($attributes['iconClass']) ? $attributes['iconClass'] : 'uil uil-arrow-right';
 $textColor = isset($attributes['textColor']) ? $attributes['textColor'] : '';
 $items = isset($attributes['items']) ? $attributes['items'] : [];
-$menuClass = isset($attributes['menuClass']) ? $attributes['menuClass'] : 'list-unstyled text-reset mb-0';
+$menuClass = isset($attributes['menuClass']) ? $attributes['menuClass'] : 'list-unstyled mb-0';
 $menuId = isset($attributes['menuId']) ? $attributes['menuId'] : '';
 $menuData = isset($attributes['menuData']) ? $attributes['menuData'] : '';
 $itemClass = isset($attributes['itemClass']) ? $attributes['itemClass'] : '';
@@ -260,7 +260,6 @@ $render_menu_level = function ($by_parent, $parent_id, $current_lvl, $depth_limi
 
 /**
  * Проверяет, есть ли в поддереве пункта (включая вложенные уровни) текущая страница (current).
- * Используется для авто-раскрытия collapse, если активный пункт внутри.
  */
 $has_current_in_subtree = function ($by_parent, $parent_id) use (&$has_current_in_subtree) {
 	$children = isset($by_parent[$parent_id]) ? $by_parent[$parent_id] : [];
@@ -277,9 +276,13 @@ $has_current_in_subtree = function ($by_parent, $parent_id) use (&$has_current_i
 
 /**
  * Рендер меню в виде Bootstrap Collapse (подменю раскрываются по клику, один открыт — остальные закрыты).
- * Разметка ul/li как в хедере. Если текущая страница внутри подменю — collapse раскрыт по умолчанию (show).
+ * Разметка ul/li как в хедере. Рекурсивно для всех уровней: пункты с детьми (Typography и т.д.) тоже получают collapse.
+ * Раскрываем весь путь до текущей страницы: если current в поддереве — collapse получает show на любом уровне вложенности.
+ *
+ * @param int    $current_lvl     Текущий уровень вложенности (1 = верхний).
+ * @param string $instance_suffix Уникальный суффикс экземпляра (чтобы несколько меню на странице не конфликтовали).
  */
-$render_menu_collapse = function ($by_parent, $parent_id, $depth_limit, $listClasses, $itemClass, $linkClass, $iconClass, $listType, $textThemeClass, $wrapper_id) use (&$render_menu_collapse, &$render_menu_level, &$has_current_in_subtree) {
+$render_menu_collapse = function ($by_parent, $parent_id, $depth_limit, $listClasses, $itemClass, $linkClass, $iconClass, $listType, $textThemeClass, $wrapper_id, $current_lvl = 1, $instance_suffix = '') use (&$render_menu_collapse, &$render_menu_level, &$has_current_in_subtree) {
 	$children = isset($by_parent[$parent_id]) ? $by_parent[$parent_id] : [];
 	if (empty($children)) {
 		return '';
@@ -287,32 +290,34 @@ $render_menu_collapse = function ($by_parent, $parent_id, $depth_limit, $listCla
 	$listClassStr = is_array($listClasses) ? implode(' ', $listClasses) : $listClasses;
 	$html = '';
 	foreach ($children as $item) {
-		$has_children = ($depth_limit === 0 || 1 < $depth_limit) && isset($item['wp_id']) && !empty($by_parent[$item['wp_id']]);
+		$has_children = ($depth_limit === 0 || $current_lvl < $depth_limit) && isset($item['wp_id']) && !empty($by_parent[$item['wp_id']]);
 		$item_id = isset($item['wp_id']) ? (int) $item['wp_id'] : 0;
-		$collapse_id = 'menu-collapse-item-' . $item_id;
+		$collapse_id = 'menu-collapse-item-' . $item_id . ( $instance_suffix !== '' ? '-' . $instance_suffix : '' );
 		$is_current = !empty($item['current']);
+		// Раскрывать collapse, если текущая страница где-то в поддереве (весь путь до current)
 		$expand = $has_children && $has_current_in_subtree($by_parent, $item['wp_id']);
-		$li_classes = array_filter(array_merge(['parent-collapse-item'], $itemClass ? explode(' ', trim($itemClass)) : [], $is_current ? ['current-menu-item'] : [], $has_children ? ['collapse-has-children'] : []));
+		$li_classes = array_filter(array_merge(['parent-collapse-item'], $current_lvl === 1 ? ['parent-item'] : [], $itemClass ? explode(' ', trim($itemClass)) : [], $is_current ? ['current-menu-item'] : [], $has_children ? ['collapse-has-children'] : []));
 
 		$html .= '<li class="' . esc_attr(implode(' ', $li_classes)) . '">';
 		if ($has_children) {
 			// Как в хедере: сначала ссылка на страницу пункта, затем кнопка раскрытия collapse
-			$a_classes = array_filter(array_merge(['nav-link', 'text-reset', 'd-block', 'flex-grow-1'], $textThemeClass ? [$textThemeClass] : [], $linkClass ? explode(' ', trim($linkClass)) : [], $is_current ? ['current-menu-item'] : []));
+			$a_classes = array_filter(array_merge(['nav-link', 'd-block', 'flex-grow-1'], $textThemeClass ? [$textThemeClass] : [], $linkClass ? explode(' ', trim($linkClass)) : [], $is_current ? ['current-menu-item'] : []));
 			$aria_current = $is_current ? ' aria-current="page"' : '';
-			$html .= '<div class="d-flex align-items-center justify-content-between">';
+			$html .= '<div class="menu-collapse-row d-flex align-items-center justify-content-between">';
 			$html .= '<a href="' . esc_url($item['url']) . '" class="' . esc_attr(implode(' ', $a_classes)) . '"' . $aria_current . '>' . esc_html($item['text']) . '</a>';
-			$btn_classes = array_filter(array_merge(['btn', 'btn-link', 'btn-collapse', 'text-decoration-none', 'd-flex', 'align-items-center', 'px-1', 'border-0', 'flex-shrink-0'], $textThemeClass ? [$textThemeClass] : []));
+			$btn_classes = array_filter(array_merge(['btn-collapse', 'w-5', 'h-5'], $textThemeClass ? [$textThemeClass] : []));
 			$html .= '<button type="button" class="' . esc_attr(implode(' ', $btn_classes)) . '" data-bs-toggle="collapse" data-bs-target="#' . esc_attr($collapse_id) . '" aria-expanded="' . ($expand ? 'true' : 'false') . '" aria-controls="' . esc_attr($collapse_id) . '" aria-label="' . esc_attr__( 'Expand submenu', 'codeweber-gutenberg-blocks' ) . '">';
 			$html .= '<span class="toggle_block" aria-hidden="true"><i class="uil uil-angle-down sidebar-catalog-icon"></i></span>';
 			$html .= '</button>';
 			$html .= '</div>';
 			$html .= '<div class="collapse' . ($expand ? ' show' : '') . '" id="' . esc_attr($collapse_id) . '" data-bs-parent="#' . esc_attr($wrapper_id) . '">';
-			$html .= '<ul class="' . esc_attr($listClassStr) . ' ps-3 mb-2">';
-			$html .= $render_menu_level($by_parent, $item['wp_id'], 2, $depth_limit, $listClassStr, $itemClass, $linkClass, $iconClass, $listType, $textThemeClass);
+			$html .= '<ul class="' . esc_attr($listClassStr) . ' ps-3">';
+			// Вложенный уровень: рекурсивно collapse (Typography и др. родители тоже с кнопкой раскрытия)
+			$html .= $render_menu_collapse($by_parent, $item['wp_id'], $depth_limit, $listClasses, $itemClass, $linkClass, $iconClass, $listType, $textThemeClass, $collapse_id, $current_lvl + 1, $instance_suffix);
 			$html .= '</ul>';
 			$html .= '</div>';
 		} else {
-			$a_classes = array_filter(array_merge(['nav-link', 'text-reset', 'd-block'], $textThemeClass ? [$textThemeClass] : [], $linkClass ? explode(' ', trim($linkClass)) : [], $is_current ? ['current-menu-item'] : []));
+			$a_classes = array_filter(array_merge(['nav-link', 'd-block'], $textThemeClass ? [$textThemeClass] : [], $linkClass ? explode(' ', trim($linkClass)) : [], $is_current ? ['current-menu-item'] : []));
 			$aria_current = $is_current ? ' aria-current="page"' : '';
 			$html .= '<a href="' . esc_url($item['url']) . '" class="' . esc_attr(implode(' ', $a_classes)) . '"' . $aria_current . '>' . esc_html($item['text']) . '</a>';
 		}
@@ -344,11 +349,18 @@ if ($enableMegaMenu) {
 	}
 } elseif ($mode === 'wp-menu' && $wpMenuId > 0 && $orientation === 'vertical' && !$enableMegaMenu && $useCollapse && $depth > 1 && $hasTopLevelItems) {
 	// Вертикальное меню с Bootstrap Collapse (подменю по клику), разметка ul/li как в хедере (без text-reset у списка)
-	$collapse_wrapper_id = 'menu-collapse-' . $wpMenuId . '-' . ( $menuId ? preg_replace('/[^a-z0-9_-]/i', '-', $menuId) : 'block' );
+	// Уникальный суффикс на странице, чтобы несколько одинаковых меню не дублировали id
+	global $codeweber_menu_collapse_instance;
+	if (!isset($codeweber_menu_collapse_instance)) {
+		$codeweber_menu_collapse_instance = 0;
+	}
+	$codeweber_menu_collapse_instance++;
+	$collapse_instance_suffix = (string) $codeweber_menu_collapse_instance;
+	$collapse_wrapper_id = 'menu-collapse-' . $wpMenuId . '-' . ( $menuId ? preg_replace('/[^a-z0-9_-]/i', '-', $menuId) : 'block' ) . '-' . $collapse_instance_suffix;
 	$collapse_list_classes = array_values(array_filter(is_array($listClasses) ? $listClasses : explode(' ', trim($listClassStr)), function ($c) { $c = trim($c); return $c !== '' && $c !== 'text-reset'; }));
 	$collapse_list_str = implode(' ', $collapse_list_classes);
 	$menuContent = '<nav id="' . esc_attr($collapse_wrapper_id) . '" class="menu-collapse-nav"><ul class="' . esc_attr($collapse_list_str) . '">';
-	$menuContent .= $render_menu_collapse($wpMenuItemsTree, 0, $depth, $collapse_list_classes, $itemClass, $linkClass, $iconClass, $listType, $textThemeClass, $collapse_wrapper_id);
+	$menuContent .= $render_menu_collapse($wpMenuItemsTree, 0, $depth, $collapse_list_classes, $itemClass, $linkClass, $iconClass, $listType, $textThemeClass, $collapse_wrapper_id, 1, $collapse_instance_suffix);
 	$menuContent .= '</ul></nav>';
 } elseif ($mode === 'wp-menu' && $wpMenuId > 0 && $orientation === 'vertical' && !$enableMegaMenu) {
 	// Вертикальное меню: wp_nav_menu без Walker, list-unstyled — подсветка .list-unstyled li.current-menu-item > a из темы (как у шорткода [vertical_menu])
@@ -400,11 +412,17 @@ if ($enableMegaMenu) {
 } elseif ($mode === 'wp-menu' && $wpMenuId > 0 && $hasTopLevelItems) {
 	// Fallback: кастомный рендер (если Walker недоступен)
 	if ($useCollapse && $depth > 1) {
-		$collapse_wrapper_id = 'menu-collapse-' . $wpMenuId . '-' . ( $menuId ? preg_replace('/[^a-z0-9_-]/i', '-', $menuId) : 'block' );
+		global $codeweber_menu_collapse_instance;
+		if (!isset($codeweber_menu_collapse_instance)) {
+			$codeweber_menu_collapse_instance = 0;
+		}
+		$codeweber_menu_collapse_instance++;
+		$collapse_instance_suffix_fb = (string) $codeweber_menu_collapse_instance;
+		$collapse_wrapper_id = 'menu-collapse-' . $wpMenuId . '-' . ( $menuId ? preg_replace('/[^a-z0-9_-]/i', '-', $menuId) : 'block' ) . '-' . $collapse_instance_suffix_fb;
 		$collapse_list_classes = array_values(array_filter(is_array($listClasses) ? $listClasses : explode(' ', trim($listClassStr)), function ($c) { $c = trim($c); return $c !== '' && $c !== 'text-reset'; }));
 		$collapse_list_str = implode(' ', $collapse_list_classes);
 		$menuContent = '<nav id="' . esc_attr($collapse_wrapper_id) . '" class="menu-collapse-nav"><ul class="' . esc_attr($collapse_list_str) . '">';
-		$menuContent .= $render_menu_collapse($wpMenuItemsTree, 0, $depth, $collapse_list_classes, $itemClass, $linkClass, $iconClass, $listType, $textThemeClass, $collapse_wrapper_id);
+		$menuContent .= $render_menu_collapse($wpMenuItemsTree, 0, $depth, $collapse_list_classes, $itemClass, $linkClass, $iconClass, $listType, $textThemeClass, $collapse_wrapper_id, 1, $collapse_instance_suffix_fb);
 		$menuContent .= '</ul></nav>';
 	} else {
 		$menuContent = '<ul class="' . esc_attr($listClassStr) . '">';

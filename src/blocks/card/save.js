@@ -51,6 +51,7 @@ const Save = ({ attributes }) => {
 		cardFooterCollapseId,
 		cardFooterCodeLanguage,
 		cardFooterCodeBackground,
+		cardFooterLinkColor,
 	} = attributes;
 
 	// Generate classes for card wrapper
@@ -201,12 +202,15 @@ const Save = ({ attributes }) => {
 						<>
 							<div className="card-footer position-relative">
 								<a
-									className="collapse-link stretched-link collapsed"
+									className={
+										'collapse-link stretched-link collapsed' +
+										(cardFooterLinkColor === 'light' ? ' text-light' : '')
+									}
 									href={'#' + collapseId}
 									data-bs-toggle="collapse"
 									aria-expanded="false"
 								>
-									{cardFooterLinkText || "View example's code"}
+									{cardFooterLinkText || '{{CODEWEBER_DEFAULT_FOOTER_LINK}}'}
 								</a>
 							</div>
 							<div

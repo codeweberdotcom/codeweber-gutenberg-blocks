@@ -39,7 +39,6 @@ import { PositioningControl } from '../../components/layout/PositioningControl';
 import { BackgroundSettingsPanel } from '../../components/background/BackgroundSettingsPanel';
 import { BlockMetaFields } from '../../components/block-meta/BlockMetaFields';
 import { AnimationControl } from '../../components/animation/Animation';
-import { colors } from '../../utilities/colors';
 import {
 	generateBackgroundClasses,
 	generateAlignmentClasses,
@@ -111,6 +110,7 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 		cardFooterCollapseId,
 		cardFooterCodeLanguage,
 		cardFooterCodeBackground,
+		cardFooterLinkColor,
 	} = attributes;
 
 	const CARD_FOOTER_LANGUAGES = [
@@ -125,8 +125,14 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 	];
 
 	const CARD_FOOTER_BACKGROUND_OPTIONS = [
-		{ label: __('Dark', 'codeweber-gutenberg-blocks'), value: 'dark' },
 		{ label: __('Light', 'codeweber-gutenberg-blocks'), value: 'light' },
+		{ label: __('Dark', 'codeweber-gutenberg-blocks'), value: 'dark' },
+	];
+
+	const CARD_FOOTER_LINK_COLOR_OPTIONS = [
+		{ label: __('Default', 'codeweber-gutenberg-blocks'), value: '' },
+		{ label: __('Light', 'codeweber-gutenberg-blocks'), value: 'light' },
+		{ label: __('Dark', 'codeweber-gutenberg-blocks'), value: 'dark' },
 	];
 
 	/** Prism language id (HTML is 'markup' in Prism) */
@@ -615,7 +621,10 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 														value={
 															cardFooterLinkText || ''
 														}
-														placeholder="View example's code"
+														placeholder={__(
+															"View example's code",
+															'codeweber-gutenberg-blocks'
+														)}
 														onChange={(value) =>
 															setAttributes({
 																cardFooterLinkText: value,
@@ -624,7 +633,20 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 													/>
 													<SelectControl
 														label={__(
-															'Background',
+															'Footer link color',
+															'codeweber-gutenberg-blocks'
+														)}
+														value={cardFooterLinkColor || ''}
+														options={CARD_FOOTER_LINK_COLOR_OPTIONS}
+														onChange={(value) =>
+															setAttributes({
+																cardFooterLinkColor: value || '',
+															})
+														}
+													/>
+													<SelectControl
+														label={__(
+															"View example's code — Light / Dark",
 															'codeweber-gutenberg-blocks'
 														)}
 														value={cardFooterCodeBackground || 'dark'}
@@ -849,7 +871,9 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 							<div className="card-footer position-relative">
 								<a
 									className={
-										'collapse-link stretched-link ' + (cardFooterCodeExpanded ? '' : 'collapsed')
+										'collapse-link stretched-link ' +
+										(cardFooterCodeExpanded ? '' : 'collapsed') +
+										(cardFooterLinkColor === 'light' ? ' text-light' : '')
 									}
 									href="#"
 									aria-expanded={cardFooterCodeExpanded}
@@ -858,7 +882,8 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 										setCardFooterCodeExpanded((prev) => !prev);
 									}}
 								>
-									{cardFooterLinkText || "View example's code"}
+									{cardFooterLinkText ||
+										__("View example's code", 'codeweber-gutenberg-blocks')}
 								</a>
 							</div>
 							<div

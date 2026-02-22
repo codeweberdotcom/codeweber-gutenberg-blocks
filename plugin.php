@@ -61,7 +61,8 @@ require_once plugin_dir_path(__FILE__) . 'src/blocks/card/init.php';
 	$blocks = [
 		'accordion', 'banners', 'button', 'card', 'column', 'columns', 'feature',
 		'heading-subtitle', 'icon', 'image-simple', 'paragraph', 'section',
-		'label-plus', 'yandex-map', 'swiper', 'cta', 'navbar', 'top-header', 'header-widgets'
+		'label-plus', 'yandex-map', 'swiper', 'cta', 'navbar', 'top-header', 'header-widgets',
+		'shortcode-render',
 	];
 
 	foreach ($blocks as $block) {

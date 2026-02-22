@@ -63,6 +63,7 @@ export const MenuSidebar = ({ attributes, setAttributes, wpMenus = [] }) => {
 		titleWeight,
 		titleTransform,
 		titleClass,
+		useCollapse,
 	} = attributes;
 
 	const [iconPickerOpen, setIconPickerOpen] = useState(false);
@@ -382,6 +383,34 @@ export const MenuSidebar = ({ attributes, setAttributes, wpMenus = [] }) => {
 								<p style={{ marginTop: '8px', fontSize: '12px', color: '#757575' }}>
 									{__('Inverse: no colors on menu elements; adds class text-inverse to footer.', 'codeweber-gutenberg-blocks')}
 								</p>
+							)}
+
+							{/* Collapse — показываем только если Menu depth (levels) > 1 */}
+							{mode === 'wp-menu' && (depth ?? 0) > 1 && (
+								<>
+									<div
+										className="component-sidebar-title"
+										style={{ marginTop: '16px' }}
+									>
+										<label>
+											{__('Collapse', 'codeweber-gutenberg-blocks')}
+										</label>
+									</div>
+									<ToggleControl
+										label={__(
+											'Use Collapse for submenus',
+											'codeweber-gutenberg-blocks'
+										)}
+										checked={useCollapse || false}
+										onChange={(value) =>
+											setAttributes({ useCollapse: value })
+										}
+										help={__(
+											'Render submenu levels as Bootstrap collapse (expand/collapse on click).',
+											'codeweber-gutenberg-blocks'
+										)}
+									/>
+								</>
 							)}
 						</PanelBody>
 					)}

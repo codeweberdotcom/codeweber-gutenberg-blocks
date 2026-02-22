@@ -65,3 +65,25 @@
 		color: inherit;
 	}
 }
+
+// Collapse submenus (Use Collapse for submenus): кнопка + иконка одного размера, поворот при открытии
+.wp-block-codeweber-blocks-menu nav[id^="menu-collapse-"] {
+	[data-bs-toggle="collapse"] {
+		&.btn-link {
+			color: inherit;
+			&:hover {
+				color: inherit;
+			}
+		}
+		.sidebar-catalog-icon {
+			font-size: 1rem;
+			width: 1em;
+			display: inline-block;
+			transition: transform 0.25s ease;
+			flex-shrink: 0;
+		}
+	}
+	[data-bs-toggle="collapse"][aria-expanded="true"] .sidebar-catalog-icon {
+		transform: rotate(180deg);
+	}
+}

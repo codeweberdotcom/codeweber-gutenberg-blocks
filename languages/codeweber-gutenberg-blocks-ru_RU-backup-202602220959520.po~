@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Codeweber Gutenberg Blocks\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-02 20:06+0000\n"
-"PO-Revision-Date: 2026-02-12 09:55+0000\n"
+"PO-Revision-Date: 2026-02-22 09:59+0000\n"
 "Last-Translator: Codeweber\n"
 "Language-Team: Русский\n"
 "Language: ru_RU\n"
@@ -107,6 +107,18 @@ msgstr "2px"
 #: src/src/components/responsive-control/helpers.js
 msgid "3 columns"
 msgstr "3 колонки"
+
+#: src/src/blocks/lists/sidebar.js
+msgid "1 col"
+msgstr "1 кол."
+
+#: src/src/blocks/lists/sidebar.js
+msgid "2 col"
+msgstr "2 кол."
+
+#: src/src/blocks/lists/sidebar.js
+msgid "3 col"
+msgstr "3 кол."
 
 #: src/src/components/borders/BorderSettingsPanel.js
 #: src/src/components/borders/BorderSettingsPanel.js
@@ -755,7 +767,7 @@ msgstr "Блок с цитатой и иконкой"
 #: src/src/components/post-grid-template/PostGridTemplateControl.js
 #: src/src/components/post-grid-template/PostGridTemplateControl.js
 msgid "Blockquote"
-msgstr "Цитата"
+msgstr "Blockquote"
 
 #: src/src/blocks/yandex-map/sidebar.js src/src/blocks/yandex-map/sidebar.js
 msgid "Blue Cluster"
@@ -1379,7 +1391,7 @@ msgstr "Элементы контактов"
 
 #: src/src/blocks/contacts/index.js
 msgid "Contacts"
-msgstr "Контакты"
+msgstr "Contacts"
 
 #: src/src/blocks/contacts/index.js
 msgid "contacts"
@@ -3151,9 +3163,13 @@ msgstr "Загрузка пользователей..."
 msgid "Loading..."
 msgstr "Загрузка..."
 
+#: src/blocks/navbar/edit.js
+msgid "Loading navbar..."
+msgstr "Загрузка навбара..."
+
 #: src/src/blocks/yandex-map/sidebar.js src/src/blocks/yandex-map/sidebar.js
 msgid "Logo"
-msgstr "Логотип"
+msgstr "Logo"
 
 #: src/src/components/post-grid-template/PostGridTemplateControl.js
 #: src/src/components/post-grid-template/PostGridTemplateControl.js
@@ -5117,8 +5133,8 @@ msgstr "Data атрибуты подзаголовка"
 
 #: src/src/components/heading/HeadingContentControl.js
 #: src/src/components/heading/HeadingContentControl.js
-msgid "Subtitle First"
-msgstr "Подзаголовок первым"
+msgid "Reverse"
+msgstr "Reverse"
 
 #: src/src/blocks/heading-subtitle/edit.js
 #: src/src/blocks/heading-subtitle/edit.js
@@ -5129,6 +5145,10 @@ msgstr "ID подзаголовка"
 #: src/src/components/heading/HeadingContentControl.js
 msgid "Subtitle Line"
 msgstr "Линия подзаголовка"
+
+#: src/src/components/heading/HeadingContentControl.js
+msgid "Line type"
+msgstr "Тип линии"
 
 #: src/src/components/heading/HeadingTypographyControl.js
 #: src/src/components/heading/HeadingTypographyControl.js
@@ -5937,8 +5957,12 @@ msgid "Order items in side menu"
 msgstr "Порядок пунктов в боковом меню"
 
 #: src/blocks/header-widgets/edit.js
-msgid "Enable/disable and reorder. Only enabled items are shown in the offcanvas panel."
-msgstr "Включение, отключение и порядок. В панели оффканваса отображаются только включённые пункты."
+msgid ""
+"Enable/disable and reorder. Only enabled items are shown in the offcanvas "
+"panel."
+msgstr ""
+"Включение, отключение и порядок. В панели оффканваса отображаются только "
+"включённые пункты."
 
 #: src/blocks/header-widgets/edit.js
 msgid "Drag to reorder"
@@ -6009,21 +6033,12 @@ msgid "Search display"
 msgstr "Отображение поиска"
 
 #: src/blocks/header-widgets/edit.js
-msgid "Map"
-msgstr "Карта"
-
-#: src/blocks/header-widgets/edit.js
 msgid "Menu"
-msgstr "Меню"
+msgstr "Menu"
 
 #: src/blocks/header-widgets/edit.js
 msgid "Factual address"
 msgstr "Фактический адрес"
-
-#: src/blocks/header-widgets/edit.js
-#: src/blocks/navbar/templates/offcanvas-info-panel.php
-msgid "Actual address"
-msgstr "Актуальный адрес"
 
 #: src/blocks/header-widgets/edit.js
 #: src/blocks/navbar/templates/offcanvas-info-panel.php
@@ -6046,3 +6061,246 @@ msgstr "Вывод после закрытия </nav>. Несколько эле
 #: src/blocks/header-widgets/edit.js
 msgid "Search"
 msgstr "Поиск"
+
+#: Navbar block src/blocks/navbar/index.js
+msgid "Navbar"
+msgstr "Навбар"
+
+#: src/blocks/navbar/index.js
+msgid ""
+"Navbar block with multiple predefined header templates (Classic, Fancy, "
+"Extended, etc.)"
+msgstr ""
+"Блок навбара с готовыми шаблонами шапки (Классический, Fancy, Расширенный и "
+"др.)"
+
+#: src/blocks/navbar/index.js
+msgid "navbar"
+msgstr "навбар"
+
+#: src/blocks/navbar/index.js
+msgid "header"
+msgstr "шапка"
+
+#: src/blocks/navbar/index.js
+msgid "menu"
+msgstr "меню"
+
+#: src/blocks/navbar/sidebar.js
+msgid "Navbar 1 - Classic (Center Nav)"
+msgstr "Навбар 1 — Классический (меню по центру)"
+
+#: src/blocks/navbar/sidebar.js
+msgid "Navbar 2 - Classic (Right Nav)"
+msgstr "Навбар 2 — Классический (меню справа)"
+
+#: src/blocks/navbar/sidebar.js
+msgid "Navbar 3 - Center Logo"
+msgstr "Навбар 3 — Логотип по центру"
+
+#: src/blocks/navbar/sidebar.js
+msgid "Navbar 4 - Fancy"
+msgstr "Навбар 4 — Fancy"
+
+#: src/blocks/navbar/sidebar.js
+msgid "Navbar 5 - Fancy (Center Nav)"
+msgstr "Навбар 5 — Fancy (меню по центру)"
+
+#: src/blocks/navbar/sidebar.js
+msgid "Navbar 6 - Fancy Center Logo"
+msgstr "Навбар 6 — Fancy, логотип по центру"
+
+#: src/blocks/navbar/sidebar.js
+msgid "Navbar 7 - Extended"
+msgstr "Навбар 7 — Расширенный"
+
+#: src/blocks/navbar/sidebar.js
+msgid "Navbar 8 - Extended Center Logo"
+msgstr "Навбар 8 — Расширенный, логотип по центру"
+
+#: src/blocks/navbar/sidebar.js
+msgid "Theme default (header_1)"
+msgstr "По умолчанию темы (header_1)"
+
+#: src/blocks/navbar/sidebar.js
+msgid "Theme default (header)"
+msgstr "По умолчанию темы (header)"
+
+#: src/blocks/navbar/sidebar.js
+msgid "Header Menu 1"
+msgstr "Меню шапки 1"
+
+#: src/blocks/navbar/sidebar.js
+msgid "Header Menu"
+msgstr "Меню шапки"
+
+#: src/blocks/navbar/sidebar.js
+msgid "Offcanvas Menu"
+msgstr "Оффканвас меню"
+
+#: src/blocks/navbar/sidebar.js
+msgid "Footer Menu"
+msgstr "Меню подвала"
+
+#: src/blocks/navbar/sidebar.js
+msgid "Both"
+msgstr "Оба"
+
+#: src/blocks/navbar/sidebar.js
+msgid "Style"
+msgstr "Стиль"
+
+#: src/blocks/navbar/sidebar.js
+msgid "Navbar Template"
+msgstr "Шаблон навбара"
+
+#: src/blocks/navbar/sidebar.js
+msgid "Logo Color"
+msgstr "Цвет логотипа"
+
+#: src/blocks/navbar/sidebar.js
+msgid ""
+"Auto: dark navbar → light logo, light navbar → dark logo. Or override "
+"manually."
+msgstr ""
+"Авто: тёмный навбар — светлый логотип, светлый навбар — тёмный. Или задать "
+"вручную."
+
+#: src/blocks/navbar/sidebar.js
+msgid "Logo Width"
+msgstr "Ширина логотипа"
+
+#: src/blocks/navbar/sidebar.js
+msgid "Width class for logo wrapper. Default: no extra class."
+msgstr "Класс ширины для обёртки логотипа. По умолчанию — без доп. класса."
+
+#: src/blocks/navbar/sidebar.js
+msgid "Enable HTML"
+msgstr "Включить HTML"
+
+#: src/blocks/navbar/sidebar.js
+msgid "Add custom HTML after the logo link inside the brand block."
+msgstr "Добавить свой HTML после ссылки логотипа внутри блока бренда."
+
+#: src/blocks/navbar/sidebar.js
+msgid "HTML"
+msgstr "HTML"
+
+#: src/blocks/navbar/sidebar.js
+msgid "Custom HTML after logo link…"
+msgstr "Свой HTML после ссылки логотипа…"
+
+#: src/blocks/navbar/sidebar.js
+msgid ""
+"Inserted after the logo link. Wrapper gets d-flex when this has content."
+msgstr ""
+"Вставляется после ссылки логотипа. Обёртка получает d-flex при наличии "
+"содержимого."
+
+#: src/blocks/navbar/sidebar.js
+msgid "Home Link Override"
+msgstr "Ссылка главной страницы"
+
+#: src/blocks/navbar/sidebar.js
+msgid "Leave empty for site URL"
+msgstr "Оставьте пустым для URL сайта"
+
+#: src/blocks/navbar/sidebar.js
+msgid "Custom URL for logo/home link"
+msgstr "Свой URL для ссылки логотипа/главной"
+
+#: src/blocks/navbar/sidebar.js
+msgid "Menu Location (Primary)"
+msgstr "Расположение меню (основное)"
+
+#: src/blocks/navbar/sidebar.js
+msgid "Theme location for main menu"
+msgstr "Расположение темы для главного меню"
+
+#: src/blocks/navbar/sidebar.js
+msgid "Menu Location (Right)"
+msgstr "Расположение меню (справа)"
+
+#: src/blocks/navbar/sidebar.js
+msgid "For center-logo templates: second menu on the right"
+msgstr "Для шаблонов с логотипом по центру: второе меню справа"
+
+#: src/blocks/navbar/sidebar.js
+msgid "Menu Depth (levels)"
+msgstr "Глубина меню (уровней)"
+
+#: src/blocks/navbar/sidebar.js
+msgid "Submenu depth: 1 = top only, 4 = 4 levels"
+msgstr "Глубина подменю: 1 — только верхний уровень, 4 — 4 уровня"
+
+#: src/blocks/navbar/sidebar.js
+msgid "Background style"
+msgstr "Стиль фона"
+
+#: src/blocks/navbar/sidebar.js
+msgid "Header Background"
+msgstr "Фон шапки"
+
+#: src/blocks/navbar/sidebar.js
+msgid "Add bg-* class to header wrapper. Default: no class."
+msgstr "Добавить класс bg-* к обёртке шапки. По умолчанию — без класса."
+
+#: src/blocks/navbar/sidebar.js
+msgid "Navbar Color"
+msgstr "Цвет навбара"
+
+#: src/blocks/navbar/sidebar.js
+msgid "Center Bar Theme"
+msgstr "Тема центральной панели"
+
+#: src/blocks/navbar/sidebar.js
+msgid "Mobile Offcanvas Theme"
+msgstr "Тема мобильного оффканваса"
+
+#: src/blocks/navbar/sidebar.js
+msgid "Sticky Navbar"
+msgstr "Липкий навбар"
+
+#: src/blocks/navbar/sidebar.js
+msgid "Fix navbar on scroll"
+msgstr "Закрепить навбар при прокрутке"
+
+#: src/blocks/navbar/sidebar.js
+msgid "Transparent on Top"
+msgstr "Прозрачный вверху"
+
+#: src/blocks/navbar/sidebar.js
+msgid "Transparent navbar at page top"
+msgstr "Прозрачный навбар в верхней части страницы"
+
+#: src/blocks/navbar/sidebar.js
+msgid "Wrapper Class"
+msgstr "Класс обёртки"
+
+#: src/blocks/navbar/sidebar.js
+msgid "Extra classes for header wrapper"
+msgstr "Дополнительные классы для обёртки шапки"
+
+#: src/blocks/navbar/sidebar.js
+msgid "Nav Class"
+msgstr "Класс навбара"
+
+#: src/blocks/navbar/sidebar.js
+msgid "Extra classes for nav element"
+msgstr "Дополнительные классы для элемента nav"
+
+#: src/blocks/navbar/sidebar.js
+msgid "Extra CSS classes for block wrapper"
+msgstr "Дополнительные CSS-классы для обёртки блока"
+
+#: src/blocks/navbar/sidebar.js
+msgid "ID for block wrapper (without #)"
+msgstr "ID обёртки блока (без #)"
+
+#: src/blocks/navbar/edit.js
+msgid "Blocks for navbar right area"
+msgstr "Блоки для правой области навбара"
+
+#: src/blocks/navbar/edit.js
+msgid "Navbar preview"
+msgstr "Предпросмотр навбара"

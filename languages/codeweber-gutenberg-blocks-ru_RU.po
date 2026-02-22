@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Codeweber Gutenberg Blocks\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-02 20:06+0000\n"
-"PO-Revision-Date: 2026-02-15 21:25+0000\n"
+"PO-Revision-Date: 2026-02-22 10:12+0000\n"
 "Last-Translator: Codeweber\n"
 "Language-Team: Русский\n"
 "Language: ru_RU\n"
@@ -767,7 +767,7 @@ msgstr "Блок с цитатой и иконкой"
 #: src/src/components/post-grid-template/PostGridTemplateControl.js
 #: src/src/components/post-grid-template/PostGridTemplateControl.js
 msgid "Blockquote"
-msgstr "Цитата"
+msgstr "Blockquote"
 
 #: src/src/blocks/yandex-map/sidebar.js src/src/blocks/yandex-map/sidebar.js
 msgid "Blue Cluster"
@@ -1391,7 +1391,7 @@ msgstr "Элементы контактов"
 
 #: src/src/blocks/contacts/index.js
 msgid "Contacts"
-msgstr "Контакты"
+msgstr "Contacts"
 
 #: src/src/blocks/contacts/index.js
 msgid "contacts"
@@ -3104,9 +3104,8 @@ msgid "Load More"
 msgstr "Загрузить еще"
 
 #: src/src/utilities/link_type.js src/src/utilities/link_type.js
-#, fuzzy
 msgid "Loading archives..."
-msgstr "Загрузка телефонов..."
+msgstr "Загрузка архивов..."
 
 #: src/src/blocks/html-blocks/edit.js src/src/blocks/html-blocks/edit.js
 msgid "Loading blocks..."
@@ -3121,14 +3120,12 @@ msgid "Loading content..."
 msgstr "Загрузка контента..."
 
 #: src/src/blocks/form-field/edit.js src/src/blocks/form-field/edit.js
-#, fuzzy
 msgid "Loading default label..."
-msgstr "Загрузка пользователей..."
+msgstr "Загрузка метки по умолчанию..."
 
 #: src/src/utilities/link_type.js src/src/utilities/link_type.js
-#, fuzzy
 msgid "Loading forms..."
-msgstr "Загрузка записей..."
+msgstr "Загрузка форм..."
 
 #: src/src/utilities/link_type.js src/src/utilities/link_type.js
 msgid "Loading phones..."
@@ -3150,9 +3147,8 @@ msgstr "Загрузка записей..."
 
 #: src/src/components/image-size/ImageSizeControl.js
 #: src/src/components/image-size/ImageSizeControl.js
-#, fuzzy
 msgid "Loading sizes..."
-msgstr "Загрузка пользователей..."
+msgstr "Загрузка размеров..."
 
 #: src/src/blocks/avatar/sidebar.js src/src/blocks/avatar/sidebar.js
 msgid "Loading users..."
@@ -3217,7 +3213,7 @@ msgstr "Сверху по центру"
 
 #: src/src/blocks/yandex-map/sidebar.js src/src/blocks/yandex-map/sidebar.js
 msgid "Map Controls"
-msgstr "Элементы управления картой"
+msgstr "Управление картой"
 
 #: src/src/blocks/yandex-map/sidebar.js src/src/blocks/yandex-map/sidebar.js
 msgid "Map Height"
@@ -4169,9 +4165,8 @@ msgid "Post"
 msgstr "Запись"
 
 #: inc/ImageHotspotCPT.php:351
-#, fuzzy
 msgid "Post Card Template"
-msgstr "Шаблон"
+msgstr "Шаблон Карточки записи"
 
 #: inc/ImageHotspotCPT.php:347
 msgid "Post content will be loaded via AJAX when popover opens."
@@ -4632,9 +4627,8 @@ msgid "Select the size for featured images."
 msgstr "Выберите размер для изображений записей."
 
 #: inc/ImageHotspotCPT.php:352
-#, fuzzy
 msgid "Select the template to display the post card."
-msgstr "Выберите тип записи для отображения"
+msgstr "Выберите шаблон для Карточки записи."
 
 #: src/src/blocks/form/edit.js src/src/blocks/form/edit.js
 msgid "Select the type of form. This determines how the form is processed."
@@ -4735,7 +4729,7 @@ msgstr "Тень"
 
 #: inc/ImageHotspotCPT.php:367
 msgid "Shortcode"
-msgstr "Шорткод"
+msgstr "Shortcode"
 
 #: src/src/blocks/avatar/sidebar.js src/src/blocks/avatar/sidebar.js
 msgid "Show Additional Data"
@@ -5862,7 +5856,7 @@ msgstr "Напишите нам — мы с удовольствием отве�
 
 #: src/src/blocks/yandex-map/edit.js src/src/blocks/yandex-map/edit.js
 msgid "Yandex Map"
-msgstr "Яндекс.Карта"
+msgstr "Yandex Map"
 
 #: build/blocks/yandex-map/render.php:27 src/blocks/yandex-map/render.php:27
 msgid "Yandex Maps API key is not configured."
@@ -6034,16 +6028,11 @@ msgstr "Отображение поиска"
 
 #: src/blocks/header-widgets/edit.js
 msgid "Menu"
-msgstr "Меню"
+msgstr "Menu"
 
 #: src/blocks/header-widgets/edit.js
 msgid "Factual address"
 msgstr "Фактический адрес"
-
-#: src/blocks/header-widgets/edit.js
-#: src/blocks/navbar/templates/offcanvas-info-panel.php
-msgid "Address"
-msgstr "Адрес"
 
 #: src/blocks/header-widgets/edit.js
 #: src/blocks/navbar/templates/offcanvas-info-panel.php
@@ -6067,14 +6056,17 @@ msgstr "Вывод после закрытия </nav>. Несколько эле
 msgid "Search"
 msgstr "Поиск"
 
-#: Navbar block
-#: src/blocks/navbar/index.js
+#: Navbar block src/blocks/navbar/index.js
 msgid "Navbar"
-msgstr "Навбар"
+msgstr "Navbar"
 
 #: src/blocks/navbar/index.js
-msgid "Navbar block with multiple predefined header templates (Classic, Fancy, Extended, etc.)"
-msgstr "Блок навбара с готовыми шаблонами шапки (Классический, Fancy, Расширенный и др.)"
+msgid ""
+"Navbar block with multiple predefined header templates (Classic, Fancy, "
+"Extended, etc.)"
+msgstr ""
+"Блок навбара с готовыми шаблонами шапки (Классический, Fancy, Расширенный и "
+"др.)"
 
 #: src/blocks/navbar/index.js
 msgid "navbar"
@@ -6082,11 +6074,7 @@ msgstr "навбар"
 
 #: src/blocks/navbar/index.js
 msgid "header"
-msgstr "шапка"
-
-#: src/blocks/navbar/index.js
-msgid "navigation"
-msgstr "навигация"
+msgstr "хедер"
 
 #: src/blocks/navbar/index.js
 msgid "menu"
@@ -6153,10 +6141,6 @@ msgid "Both"
 msgstr "Оба"
 
 #: src/blocks/navbar/sidebar.js
-msgid "Layout"
-msgstr "Макет"
-
-#: src/blocks/navbar/sidebar.js
 msgid "Style"
 msgstr "Стиль"
 
@@ -6169,8 +6153,12 @@ msgid "Logo Color"
 msgstr "Цвет логотипа"
 
 #: src/blocks/navbar/sidebar.js
-msgid "Auto: dark navbar → light logo, light navbar → dark logo. Or override manually."
-msgstr "Авто: тёмный навбар — светлый логотип, светлый навбар — тёмный. Или задать вручную."
+msgid ""
+"Auto: dark navbar → light logo, light navbar → dark logo. Or override "
+"manually."
+msgstr ""
+"Авто: тёмный навбар — светлый логотип, светлый навбар — тёмный. Или задать "
+"вручную."
 
 #: src/blocks/navbar/sidebar.js
 msgid "Logo Width"
@@ -6197,8 +6185,11 @@ msgid "Custom HTML after logo link…"
 msgstr "Свой HTML после ссылки логотипа…"
 
 #: src/blocks/navbar/sidebar.js
-msgid "Inserted after the logo link. Wrapper gets d-flex when this has content."
-msgstr "Вставляется после ссылки логотипа. Обёртка получает d-flex при наличии содержимого."
+msgid ""
+"Inserted after the logo link. Wrapper gets d-flex when this has content."
+msgstr ""
+"Вставляется после ссылки логотипа. Обёртка получает d-flex при наличии "
+"содержимого."
 
 #: src/blocks/navbar/sidebar.js
 msgid "Home Link Override"
@@ -6293,16 +6284,8 @@ msgid "Extra classes for nav element"
 msgstr "Дополнительные классы для элемента nav"
 
 #: src/blocks/navbar/sidebar.js
-msgid "custom-wrapper classes"
-msgstr "классы обёртки"
-
-#: src/blocks/navbar/sidebar.js
 msgid "Extra CSS classes for block wrapper"
 msgstr "Дополнительные CSS-классы для обёртки блока"
-
-#: src/blocks/navbar/sidebar.js
-msgid "custom-id"
-msgstr "свой-id"
 
 #: src/blocks/navbar/sidebar.js
 msgid "ID for block wrapper (without #)"

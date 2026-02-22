@@ -106,12 +106,20 @@ foreach ($offcanvas_element_ids as $key) {
 									$zoom_val = 10;
 								}
 								$map_id = 'cwgb-offcanvas-map-' . str_replace(array('.', ' '), '', uniqid('', true));
+								$card_radius_class = function_exists('getThemeCardImageRadius') ? getThemeCardImageRadius() : 'rounded';
+								$border_radius_px = 8;
+								if (strpos($card_radius_class, 'rounded-0') !== false) {
+									$border_radius_px = 0;
+								} elseif (strpos($card_radius_class, 'rounded-xl') !== false) {
+									$border_radius_px = 12;
+								}
 								$args = array(
 									'map_id'   => $map_id,
 									'center'   => $center,
 									'zoom'     => $zoom_val,
 									'height'   => 200,
 									'width'    => '100%',
+									'border_radius' => $border_radius_px,
 									'show_sidebar' => false,
 									'show_route'   => false,
 									'auto_fit_bounds' => false,

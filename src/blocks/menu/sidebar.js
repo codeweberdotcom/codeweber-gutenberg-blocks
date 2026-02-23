@@ -51,6 +51,10 @@ export const MenuSidebar = ({ attributes, setAttributes, wpMenus = [] }) => {
 		menuClass,
 		itemClass,
 		linkClass,
+		containerClass,
+		topLevelClass,
+		topLevelClassStart,
+		topLevelClassEnd,
 		enableWidget,
 		enableMegaMenu,
 		columns,
@@ -680,42 +684,6 @@ export const MenuSidebar = ({ attributes, setAttributes, wpMenus = [] }) => {
 									)}
 								/>
 							</div>
-
-							{/* Item Class */}
-							<div style={{ marginTop: '16px' }}>
-								<TextControl
-									label={__(
-										'Item Classes',
-										'codeweber-gutenberg-blocks'
-									)}
-									value={itemClass || ''}
-									onChange={(value) =>
-										setAttributes({ itemClass: value })
-									}
-									help={__(
-										'Additional CSS classes for menu items (li elements)',
-										'codeweber-gutenberg-blocks'
-									)}
-								/>
-							</div>
-
-							{/* Link Class */}
-							<div style={{ marginTop: '16px' }}>
-								<TextControl
-									label={__(
-										'Link Classes',
-										'codeweber-gutenberg-blocks'
-									)}
-									value={linkClass || ''}
-									onChange={(value) =>
-										setAttributes({ linkClass: value })
-									}
-									help={__(
-										'CSS classes for link elements (<a>)',
-										'codeweber-gutenberg-blocks'
-									)}
-								/>
-							</div>
 						</PanelBody>
 					)}
 
@@ -931,22 +899,122 @@ export const MenuSidebar = ({ attributes, setAttributes, wpMenus = [] }) => {
 
 					{/* SETTINGS TAB */}
 					{tab.name === 'settings' && (
-						<PanelBody
-							title={__(
-								'Block Settings',
-								'codeweber-gutenberg-blocks'
-							)}
-							initialOpen={true}
-						>
-							<BlockMetaFields
-								attributes={attributes}
-								setAttributes={setAttributes}
-								fieldKeys={{
-									dataKey: 'menuData',
-									idKey: 'menuId',
-								}}
-							/>
-						</PanelBody>
+						<>
+							<PanelBody
+								title={__(
+									'Element Classes',
+									'codeweber-gutenberg-blocks'
+								)}
+								initialOpen={true}
+							>
+								<p style={{ marginBottom: '12px', fontSize: '12px', color: '#757575' }}>
+									{__(
+										'Same as shortcode [menu_collapse]: container_class, top_level_class, item_class, link_class.',
+										'codeweber-gutenberg-blocks'
+									)}
+								</p>
+								<TextControl
+									label={__(
+										'container_class',
+										'codeweber-gutenberg-blocks'
+									)}
+									value={containerClass || ''}
+									onChange={(value) =>
+										setAttributes({ containerClass: value || '' })
+									}
+									help={__(
+										'Extra classes for <nav>',
+										'codeweber-gutenberg-blocks'
+									)}
+								/>
+								<TextControl
+									label={__(
+										'top_level_class',
+										'codeweber-gutenberg-blocks'
+									)}
+									value={topLevelClass || ''}
+									onChange={(value) =>
+										setAttributes({ topLevelClass: value || '' })
+									}
+									help={__(
+										'Classes for top-level <li>. Not applied to first/last if top_level_class_start/end is set.',
+										'codeweber-gutenberg-blocks'
+									)}
+								/>
+								<TextControl
+									label={__(
+										'top_level_class_start',
+										'codeweber-gutenberg-blocks'
+									)}
+									value={topLevelClassStart || ''}
+									onChange={(value) =>
+										setAttributes({ topLevelClassStart: value || '' })
+									}
+									help={__(
+										'Classes for the first top-level <li> only. If set, top_level_class is not applied to it.',
+										'codeweber-gutenberg-blocks'
+									)}
+								/>
+								<TextControl
+									label={__(
+										'top_level_class_end',
+										'codeweber-gutenberg-blocks'
+									)}
+									value={topLevelClassEnd || ''}
+									onChange={(value) =>
+										setAttributes({ topLevelClassEnd: value || '' })
+									}
+									help={__(
+										'Classes for the last top-level <li> only. If set, top_level_class is not applied to it.',
+										'codeweber-gutenberg-blocks'
+									)}
+								/>
+								<TextControl
+									label={__(
+										'item_class',
+										'codeweber-gutenberg-blocks'
+									)}
+									value={itemClass || ''}
+									onChange={(value) =>
+										setAttributes({ itemClass: value || '' })
+									}
+									help={__(
+										'Classes for all <li> items',
+										'codeweber-gutenberg-blocks'
+									)}
+								/>
+								<TextControl
+									label={__(
+										'link_class',
+										'codeweber-gutenberg-blocks'
+									)}
+									value={linkClass || ''}
+									onChange={(value) =>
+										setAttributes({ linkClass: value || '' })
+									}
+									help={__(
+										'Classes for <a> links',
+										'codeweber-gutenberg-blocks'
+									)}
+								/>
+							</PanelBody>
+							<PanelBody
+								title={__(
+									'Block Settings',
+									'codeweber-gutenberg-blocks'
+								)}
+								initialOpen={true}
+							>
+								<BlockMetaFields
+									attributes={attributes}
+									setAttributes={setAttributes}
+									fieldKeys={{
+										dataKey: 'menuData',
+										idKey: 'menuId',
+									}}
+								/>
+							</PanelBody>
+						</>
 					)}
 				</>
 			)}

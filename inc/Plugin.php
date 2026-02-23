@@ -514,21 +514,7 @@ class Plugin {
 					};
 				}
 			}
-			if ($block_name === 'shortcode-render') {
-				$render_path = self::getBasePath() . '/build/blocks/shortcode-render/render.php';
-				if (file_exists($render_path)) {
-					$block_args['render_callback'] = function ($attributes, $content, $block) use ($render_path) {
-						ob_start();
-						extract([
-							'attributes' => $attributes,
-							'content'    => $content,
-							'block'      => $block,
-						], EXTR_SKIP);
-						require $render_path;
-						return ob_get_clean();
-					};
-				}
-			}
+			// shortcode-render: фронт только через pre_render_shortcode_render_block, не дублируем render_callback
 			$block_type = register_block_type($blocks_path . $block_name, $block_args);
 
 			// Устанавливаем переводы СРАЗУ после успешной регистрации

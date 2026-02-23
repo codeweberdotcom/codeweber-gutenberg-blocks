@@ -46,6 +46,10 @@ $titleSize = isset($attributes['titleSize']) ? $attributes['titleSize'] : '';
 $titleWeight = isset($attributes['titleWeight']) ? $attributes['titleWeight'] : '';
 $titleTransform = isset($attributes['titleTransform']) ? $attributes['titleTransform'] : '';
 $useCollapse = isset($attributes['useCollapse']) ? (bool) $attributes['useCollapse'] : false;
+$containerClass = isset($attributes['containerClass']) ? trim((string) $attributes['containerClass']) : '';
+$topLevelClass = isset($attributes['topLevelClass']) ? trim((string) $attributes['topLevelClass']) : '';
+$topLevelClassStart = isset($attributes['topLevelClassStart']) ? trim((string) $attributes['topLevelClassStart']) : '';
+$topLevelClassEnd = isset($attributes['topLevelClassEnd']) ? trim((string) $attributes['topLevelClassEnd']) : '';
 
 // Подготавливаем данные для рендеринга
 $itemsToRender = [];
@@ -282,21 +286,33 @@ $has_current_in_subtree = function ($by_parent, $parent_id) use (&$has_current_i
  * @param int    $current_lvl     Текущий уровень вложенности (1 = верхний).
  * @param string $instance_suffix Уникальный суффикс экземпляра (чтобы несколько меню на странице не конфликтовали).
  */
-$render_menu_collapse = function ($by_parent, $parent_id, $depth_limit, $listClasses, $itemClass, $linkClass, $iconClass, $listType, $textThemeClass, $wrapper_id, $current_lvl = 1, $instance_suffix = '') use (&$render_menu_collapse, &$render_menu_level, &$has_current_in_subtree) {
+$render_menu_collapse = function ($by_parent, $parent_id, $depth_limit, $listClasses, $itemClass, $linkClass, $iconClass, $listType, $textThemeClass, $wrapper_id, $current_lvl = 1, $instance_suffix = '', $topLevelClass = '', $topLevelClassStart = '', $topLevelClassEnd = '') use (&$render_menu_collapse, &$render_menu_level, &$has_current_in_subtree) {
 	$children = isset($by_parent[$parent_id]) ? $by_parent[$parent_id] : [];
 	if (empty($children)) {
 		return '';
 	}
 	$listClassStr = is_array($listClasses) ? implode(' ', $listClasses) : $listClasses;
 	$html = '';
-	foreach ($children as $item) {
+	$last_idx = count($children) - 1;
+	foreach ($children as $idx => $item) {
 		$has_children = ($depth_limit === 0 || $current_lvl < $depth_limit) && isset($item['wp_id']) && !empty($by_parent[$item['wp_id']]);
 		$item_id = isset($item['wp_id']) ? (int) $item['wp_id'] : 0;
 		$collapse_id = 'menu-collapse-item-' . $item_id . ( $instance_suffix !== '' ? '-' . $instance_suffix : '' );
 		$is_current = !empty($item['current']);
 		// Раскрывать collapse, если текущая страница где-то в поддереве (весь путь до current)
 		$expand = $has_children && $has_current_in_subtree($by_parent, $item['wp_id']);
-		$li_classes = array_filter(array_merge(['parent-collapse-item'], $current_lvl === 1 ? ['parent-item'] : [], $itemClass ? explode(' ', trim($itemClass)) : [], $is_current ? ['current-menu-item'] : [], $has_children ? ['collapse-has-children'] : []));
+		// Верхний уровень: первый — top_level_class_start, последний — top_level_class_end (если заданы), иначе top_level_class
+		$top_class = [];
+		if ($current_lvl === 1) {
+			if ($idx === 0 && $topLevelClassStart !== '') {
+				$top_class = explode(' ', trim($topLevelClassStart));
+			} elseif ($idx === $last_idx && $topLevelClassEnd !== '') {
+				$top_class = explode(' ', trim($topLevelClassEnd));
+			} elseif ($topLevelClass !== '') {
+				$top_class = explode(' ', trim($topLevelClass));
+			}
+		}
+		$li_classes = array_filter(array_merge(['parent-collapse-item'], $current_lvl === 1 ? ['parent-item'] : [], $top_class, $itemClass ? explode(' ', trim($itemClass)) : [], $is_current ? ['current-menu-item'] : [], $has_children ? ['collapse-has-children'] : []));
 
 		$html .= '<li class="' . esc_attr(implode(' ', $li_classes)) . '">';
 		if ($has_children) {
@@ -313,7 +329,7 @@ $render_menu_collapse = function ($by_parent, $parent_id, $depth_limit, $listCla
 			$html .= '<div class="collapse' . ($expand ? ' show' : '') . '" id="' . esc_attr($collapse_id) . '" data-bs-parent="#' . esc_attr($wrapper_id) . '">';
 			$html .= '<ul class="' . esc_attr($listClassStr) . ' ps-3">';
 			// Вложенный уровень: рекурсивно collapse (Typography и др. родители тоже с кнопкой раскрытия)
-			$html .= $render_menu_collapse($by_parent, $item['wp_id'], $depth_limit, $listClasses, $itemClass, $linkClass, $iconClass, $listType, $textThemeClass, $collapse_id, $current_lvl + 1, $instance_suffix);
+			$html .= $render_menu_collapse($by_parent, $item['wp_id'], $depth_limit, $listClasses, $itemClass, $linkClass, $iconClass, $listType, $textThemeClass, $collapse_id, $current_lvl + 1, $instance_suffix, $topLevelClass, $topLevelClassStart, $topLevelClassEnd);
 			$html .= '</ul>';
 			$html .= '</div>';
 		} else {
@@ -359,8 +375,9 @@ if ($enableMegaMenu) {
 	$collapse_wrapper_id = 'menu-collapse-' . $wpMenuId . '-' . ( $menuId ? preg_replace('/[^a-z0-9_-]/i', '-', $menuId) : 'block' ) . '-' . $collapse_instance_suffix;
 	$collapse_list_classes = array_values(array_filter(is_array($listClasses) ? $listClasses : explode(' ', trim($listClassStr)), function ($c) { $c = trim($c); return $c !== '' && $c !== 'text-reset'; }));
 	$collapse_list_str = implode(' ', $collapse_list_classes);
-	$menuContent = '<nav id="' . esc_attr($collapse_wrapper_id) . '" class="menu-collapse-nav"><ul class="' . esc_attr($collapse_list_str) . '">';
-	$menuContent .= $render_menu_collapse($wpMenuItemsTree, 0, $depth, $collapse_list_classes, $itemClass, $linkClass, $iconClass, $listType, $textThemeClass, $collapse_wrapper_id, 1, $collapse_instance_suffix);
+	$nav_class = 'menu-collapse-nav' . ($containerClass !== '' ? ' ' . esc_attr($containerClass) : '');
+	$menuContent = '<nav id="' . esc_attr($collapse_wrapper_id) . '" class="' . $nav_class . '"><ul class="' . esc_attr($collapse_list_str) . '">';
+	$menuContent .= $render_menu_collapse($wpMenuItemsTree, 0, $depth, $collapse_list_classes, $itemClass, $linkClass, $iconClass, $listType, $textThemeClass, $collapse_wrapper_id, 1, $collapse_instance_suffix, $topLevelClass, $topLevelClassStart, $topLevelClassEnd);
 	$menuContent .= '</ul></nav>';
 } elseif ($mode === 'wp-menu' && $wpMenuId > 0 && $orientation === 'vertical' && !$enableMegaMenu) {
 	// Вертикальное меню: wp_nav_menu без Walker, list-unstyled — подсветка .list-unstyled li.current-menu-item > a из темы (как у шорткода [vertical_menu])
@@ -421,8 +438,9 @@ if ($enableMegaMenu) {
 		$collapse_wrapper_id = 'menu-collapse-' . $wpMenuId . '-' . ( $menuId ? preg_replace('/[^a-z0-9_-]/i', '-', $menuId) : 'block' ) . '-' . $collapse_instance_suffix_fb;
 		$collapse_list_classes = array_values(array_filter(is_array($listClasses) ? $listClasses : explode(' ', trim($listClassStr)), function ($c) { $c = trim($c); return $c !== '' && $c !== 'text-reset'; }));
 		$collapse_list_str = implode(' ', $collapse_list_classes);
-		$menuContent = '<nav id="' . esc_attr($collapse_wrapper_id) . '" class="menu-collapse-nav"><ul class="' . esc_attr($collapse_list_str) . '">';
-		$menuContent .= $render_menu_collapse($wpMenuItemsTree, 0, $depth, $collapse_list_classes, $itemClass, $linkClass, $iconClass, $listType, $textThemeClass, $collapse_wrapper_id, 1, $collapse_instance_suffix_fb);
+		$nav_class_fb = 'menu-collapse-nav' . ($containerClass !== '' ? ' ' . esc_attr($containerClass) : '');
+		$menuContent = '<nav id="' . esc_attr($collapse_wrapper_id) . '" class="' . $nav_class_fb . '"><ul class="' . esc_attr($collapse_list_str) . '">';
+		$menuContent .= $render_menu_collapse($wpMenuItemsTree, 0, $depth, $collapse_list_classes, $itemClass, $linkClass, $iconClass, $listType, $textThemeClass, $collapse_wrapper_id, 1, $collapse_instance_suffix_fb, $topLevelClass, $topLevelClassStart, $topLevelClassEnd);
 		$menuContent .= '</ul></nav>';
 	} else {
 		$menuContent = '<ul class="' . esc_attr($listClassStr) . '">';

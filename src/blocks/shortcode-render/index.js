@@ -5,10 +5,11 @@ import './editor.scss';
 
 import metadata from './block.json';
 import Edit from './edit';
+import Save from './save';
 
 registerBlockType(metadata, {
 	edit: Edit,
-	save: () => null,
+	save: Save,
 	title: __('Shortcode Render', 'codeweber-gutenberg-blocks'),
 	description: __(
 		'Render any WordPress shortcode. Enter the shortcode in the block settings.',

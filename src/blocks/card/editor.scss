@@ -5,8 +5,10 @@
  */
 
 .wp-block-codeweber-blocks-card {
-	/* Минимальная высота для пустого card */
+	/* Сброс глобальных стилей редактора для .card (padding и др.) */
 	&.card {
+		margin-top: 0;
+		padding: 0;
 		min-height: 100px;
 		
 		.card-body {

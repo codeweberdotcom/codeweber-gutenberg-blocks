@@ -1,39 +1,12 @@
 /**
- * Menu Block - Editor Styles
+ * Menu Block - Editor
  *
- * @package CodeWeber Gutenberg Blocks
- * 
- * NOTE: These styles are ONLY for the Gutenberg editor visualization.
- * Frontend styles are handled by theme's typography styles
+ * Стили темы подключены в админке. Здесь только кнопки редактирования пунктов (↑ ↓ ×).
  */
 
 .wp-block-codeweber-blocks-menu {
 	position: relative;
 
-	// List styles for editor
-	ul {
-		margin: 0;
-		padding: 0;
-		list-style: none;
-
-		li {
-			span {
-				display: inline-flex;
-				align-items: center;
-			}
-
-			i {
-				font-size: 1rem;
-			}
-
-			a {
-				text-decoration: none;
-				color: inherit;
-			}
-		}
-	}
-
-	// Item Controls - Absolute positioned, visible on hover
 	.menu-item-controls {
 		position: absolute;
 		right: 10px;
@@ -62,7 +35,6 @@
 			border: 1px solid #ddd;
 			background: #fff;
 			border-radius: 2px;
-			transition: background-color 0.2s ease;
 
 			&:hover:not(:disabled) {
 				background-color: rgba(0, 0, 0, 0.05);
@@ -80,31 +52,9 @@
 		}
 	}
 
-	// Make controls visible when list item is hovered
 	li:hover .menu-item-controls {
 		opacity: 1;
 		visibility: visible;
 		pointer-events: auto;
-	}
-
-	// Dark/Light theme support in editor
-	&.menu-dark {
-		a {
-			color: #fff !important;
-			
-			&:hover {
-				color: rgba(255, 255, 255, 0.8) !important;
-			}
-		}
-		
-		.text-white {
-			color: #fff !important;
-		}
-	}
-
-	&.menu-light {
-		a {
-			color: inherit;
-		}
 	}
 }

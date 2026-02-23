@@ -37,6 +37,10 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 		menuData,
 		itemClass,
 		linkClass,
+		containerClass,
+		topLevelClass,
+		topLevelClassStart,
+		topLevelClassEnd,
 		enableWidget,
 		enableMegaMenu,
 		columns,
@@ -49,6 +53,7 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 		titleSize,
 		titleWeight,
 		titleTransform,
+		useCollapse,
 	} = attributes;
 
 	const previousModeRef = useRef(mode);
@@ -255,6 +260,145 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 		return classes.join(' ');
 	};
 
+	// Collapse mode: same list classes as frontend (without text-reset)
+	const getCollapseListClasses = () => {
+		return getListClasses()
+			.split(' ')
+			.filter((c) => c && c !== 'text-reset')
+			.join(' ');
+	};
+
+	// Tree by parent for collapse markup (same structure as render.php)
+	const buildByParent = (itemsList) => {
+		const by = {};
+		(itemsList || []).forEach((item) => {
+			const p = parseInt(item.parent, 10) || 0;
+			if (!by[p]) by[p] = [];
+			by[p].push({ ...item, wp_id: item.wpId });
+		});
+		return by;
+	};
+
+	// Recursive collapse level (mirrors render.php $render_menu_collapse)
+	const renderCollapseLevel = (
+		byParent,
+		parentId,
+		depthLimit,
+		currentLevel,
+		listClassStr,
+		itemClass,
+		linkClass,
+		textThemeClass,
+		wrapperId,
+		instanceSuffix,
+		topLevelClass,
+		topLevelClassStart,
+		topLevelClassEnd
+	) => {
+		const children = byParent[parentId] || [];
+		return children.map((item, index) => {
+			const hasChildren =
+				(depthLimit === 0 || currentLevel < depthLimit) &&
+				(byParent[item.wp_id]?.length > 0);
+			const collapseId = `menu-collapse-item-${item.wp_id}${instanceSuffix ? '-' + instanceSuffix : ''}`;
+			const linkClasses = [
+				'nav-link',
+				'd-block',
+				hasChildren && 'flex-grow-1',
+				textThemeClass,
+				linkClass,
+			]
+				.filter(Boolean)
+				.join(' ');
+			// Верхний уровень: первый — top_level_class_start, последний — top_level_class_end, иначе top_level_class
+			const isFirstTop = currentLevel === 1 && index === 0;
+			const isLastTop = currentLevel === 1 && index === children.length - 1;
+			const topClass =
+				currentLevel === 1
+					? isFirstTop && topLevelClassStart
+						? topLevelClassStart
+						: isLastTop && topLevelClassEnd
+							? topLevelClassEnd
+							: topLevelClass
+					: '';
+			const liClasses = [
+				'parent-collapse-item',
+				currentLevel === 1 && 'parent-item',
+				topClass,
+				itemClass,
+				hasChildren && 'collapse-has-children',
+			]
+				.filter(Boolean)
+				.join(' ');
+
+			if (hasChildren) {
+				return (
+					<li key={item.id} className={liClasses}>
+						<div className="menu-collapse-row d-flex align-items-center justify-content-between">
+							<a
+								href={item.url || '#'}
+								className={linkClasses}
+								style={{ pointerEvents: 'none' }}
+							>
+								{safeItemText(item)}
+							</a>
+							<button
+								type="button"
+								className={`btn-collapse w-5 h-5 ${textThemeClass || ''}`}
+								data-bs-toggle="collapse"
+								data-bs-target={`#${collapseId}`}
+								aria-expanded="false"
+								aria-controls={collapseId}
+								aria-label={__(
+									'Expand submenu',
+									'codeweber-gutenberg-blocks'
+								)}
+							>
+								<span className="toggle_block" aria-hidden="true">
+									<i className="uil uil-angle-down sidebar-catalog-icon" />
+								</span>
+							</button>
+						</div>
+						<div
+							className="collapse"
+							id={collapseId}
+							data-bs-parent={`#${wrapperId}`}
+						>
+							<ul className={listClassStr + ' ps-3'}>
+								{renderCollapseLevel(
+									byParent,
+									item.wp_id,
+									depthLimit,
+									currentLevel + 1,
+									listClassStr,
+									itemClass,
+									linkClass,
+									textThemeClass,
+									wrapperId,
+									instanceSuffix,
+									topLevelClass,
+									topLevelClassStart,
+									topLevelClassEnd
+								)}
+							</ul>
+						</div>
+					</li>
+				);
+			}
+			return (
+				<li key={item.id} className={liClasses}>
+					<a
+						href={item.url || '#'}
+						className={linkClasses}
+						style={{ pointerEvents: 'none' }}
+					>
+						{safeItemText(item)}
+					</a>
+				</li>
+			);
+		});
+	};
+
 	// Filter items by depth for wp-menu mode (depth 0 = all levels)
 	const getItemsForDisplay = () => {
 		if (mode !== 'wp-menu' || !items?.length) return items || [];
@@ -276,8 +420,11 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 
 	const displayItems = getItemsForDisplay();
 
+	const themeClass =
+		theme === 'dark' ? 'menu-dark' : theme === 'light' ? 'menu-light' : '';
 	const blockProps = useBlockProps({
 		id: menuId || undefined,
+		className: themeClass,
 	});
 
 	// Parse data attributes
@@ -341,6 +488,20 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 		return classes.filter(Boolean).join(' ');
 	};
 
+	const showCollapsePreview =
+		mode === 'wp-menu' &&
+		useCollapse &&
+		wpMenuId &&
+		!isLoadingMenu &&
+		items.length > 0;
+
+	const collapseWrapperId =
+		showCollapsePreview
+			? `menu-collapse-${wpMenuId}-block-${clientId.replace(/-/g, '').slice(0, 12)}`
+			: '';
+	const textThemeClass =
+		theme === 'dark' ? 'text-white' : theme === 'light' ? 'text-dark' : '';
+
 	const menuContent = (
 		<>
 			{isLoadingMenu && (
@@ -356,7 +517,31 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 					)}
 				</div>
 			)}
-			{(mode === 'wp-menu'
+			{showCollapsePreview && (
+				<nav
+					id={collapseWrapperId}
+					className={['menu-collapse-nav', containerClass || ''].filter(Boolean).join(' ')}
+				>
+					<ul className={getCollapseListClasses()}>
+						{renderCollapseLevel(
+							buildByParent(items),
+							0,
+							typeof depth === 'number' ? depth : 0,
+							1,
+							getCollapseListClasses(),
+							itemClass || '',
+							linkClass || '',
+							textThemeClass,
+							collapseWrapperId,
+							'editor',
+							topLevelClass || '',
+							topLevelClassStart || '',
+							topLevelClassEnd || ''
+						)}
+					</ul>
+				</nav>
+			)}
+			{!showCollapsePreview && (mode === 'wp-menu'
 				? displayItems.length > 0 && !isLoadingMenu
 				: true) && (
 				<ul className={getListClasses()}>

@@ -93,6 +93,22 @@
 			"type": "string",
 			"default": ""
 		},
+		"containerClass": {
+			"type": "string",
+			"default": ""
+		},
+		"topLevelClass": {
+			"type": "string",
+			"default": ""
+		},
+		"topLevelClassStart": {
+			"type": "string",
+			"default": ""
+		},
+		"topLevelClassEnd": {
+			"type": "string",
+			"default": ""
+		},
 		"enableWidget": {
 			"type": "boolean",
 			"default": false

@@ -46,6 +46,10 @@ $titleSize = isset($attributes['titleSize']) ? $attributes['titleSize'] : '';
 $titleWeight = isset($attributes['titleWeight']) ? $attributes['titleWeight'] : '';
 $titleTransform = isset($attributes['titleTransform']) ? $attributes['titleTransform'] : '';
 $useCollapse = isset($attributes['useCollapse']) ? (bool) $attributes['useCollapse'] : false;
+$collapseListType = isset($attributes['collapseListType']) ? preg_replace('/[^1-3]/', '', (string) $attributes['collapseListType']) : '1';
+if ( $collapseListType === '' ) {
+	$collapseListType = '1';
+}
 $containerClass = isset($attributes['containerClass']) ? trim((string) $attributes['containerClass']) : '';
 $topLevelClass = isset($attributes['topLevelClass']) ? trim((string) $attributes['topLevelClass']) : '';
 $topLevelClassStart = isset($attributes['topLevelClassStart']) ? trim((string) $attributes['topLevelClassStart']) : '';
@@ -312,7 +316,7 @@ $render_menu_collapse = function ($by_parent, $parent_id, $depth_limit, $listCla
 				$top_class = explode(' ', trim($topLevelClass));
 			}
 		}
-		$li_classes = array_filter(array_merge(['parent-collapse-item'], $current_lvl === 1 ? ['parent-item'] : [], $top_class, $itemClass ? explode(' ', trim($itemClass)) : [], $is_current ? ['current-menu-item'] : [], $has_children ? ['collapse-has-children'] : []));
+		$li_classes = array_filter(array_merge(['nav-item', 'parent-collapse-item'], $current_lvl === 1 ? ['parent-item'] : [], $top_class, $itemClass ? explode(' ', trim($itemClass)) : [], $is_current ? ['current-menu-item'] : [], $has_children ? ['collapse-has-children'] : []));
 
 		$html .= '<li class="' . esc_attr(implode(' ', $li_classes)) . '">';
 		if ($has_children) {
@@ -327,7 +331,7 @@ $render_menu_collapse = function ($by_parent, $parent_id, $depth_limit, $listCla
 			$html .= '</button>';
 			$html .= '</div>';
 			$html .= '<div class="collapse' . ($expand ? ' show' : '') . '" id="' . esc_attr($collapse_id) . '" data-bs-parent="#' . esc_attr($wrapper_id) . '">';
-			$html .= '<ul class="' . esc_attr($listClassStr) . ' ps-3">';
+			$html .= '<ul class="' . esc_attr($listClassStr) . '">';
 			// Вложенный уровень: рекурсивно collapse (Typography и др. родители тоже с кнопкой раскрытия)
 			$html .= $render_menu_collapse($by_parent, $item['wp_id'], $depth_limit, $listClasses, $itemClass, $linkClass, $iconClass, $listType, $textThemeClass, $collapse_id, $current_lvl + 1, $instance_suffix, $topLevelClass, $topLevelClassStart, $topLevelClassEnd);
 			$html .= '</ul>';
@@ -364,8 +368,7 @@ if ($enableMegaMenu) {
 		$menuContent = '<p>' . esc_html__('No menu items found.', 'codeweber-gutenberg-blocks') . '</p>';
 	}
 } elseif ($mode === 'wp-menu' && $wpMenuId > 0 && $orientation === 'vertical' && !$enableMegaMenu && $useCollapse && $depth > 1 && $hasTopLevelItems) {
-	// Вертикальное меню с Bootstrap Collapse (подменю по клику), разметка ul/li как в хедере (без text-reset у списка)
-	// Уникальный суффикс на странице, чтобы несколько одинаковых меню не дублировали id
+	// Вертикальное меню с Bootstrap Collapse — разметка как в shortcode [menu_collapse]: navbar-vertical, navbar-nav, menu-collapse-1|2|3
 	global $codeweber_menu_collapse_instance;
 	if (!isset($codeweber_menu_collapse_instance)) {
 		$codeweber_menu_collapse_instance = 0;
@@ -373,10 +376,18 @@ if ($enableMegaMenu) {
 	$codeweber_menu_collapse_instance++;
 	$collapse_instance_suffix = (string) $codeweber_menu_collapse_instance;
 	$collapse_wrapper_id = 'menu-collapse-' . $wpMenuId . '-' . ( $menuId ? preg_replace('/[^a-z0-9_-]/i', '-', $menuId) : 'block' ) . '-' . $collapse_instance_suffix;
-	$collapse_list_classes = array_values(array_filter(is_array($listClasses) ? $listClasses : explode(' ', trim($listClassStr)), function ($c) { $c = trim($c); return $c !== '' && $c !== 'text-reset'; }));
+	$collapse_list_classes = array( 'navbar-nav', 'list-unstyled', 'menu-collapse-' . $collapseListType );
 	$collapse_list_str = implode(' ', $collapse_list_classes);
-	$nav_class = 'menu-collapse-nav' . ($containerClass !== '' ? ' ' . esc_attr($containerClass) : '');
-	$menuContent = '<nav id="' . esc_attr($collapse_wrapper_id) . '" class="' . $nav_class . '"><ul class="' . esc_attr($collapse_list_str) . '">';
+	$nav_class = 'navbar-vertical menu-collapse-nav';
+	if ( $theme === 'dark' ) {
+		$nav_class .= ' navbar-vertical-dark';
+	} elseif ( $theme === 'light' ) {
+		$nav_class .= ' navbar-vertical-light';
+	}
+	if ( $containerClass !== '' ) {
+		$nav_class .= ' ' . esc_attr( $containerClass );
+	}
+	$menuContent = '<nav id="' . esc_attr($collapse_wrapper_id) . '" class="' . esc_attr( $nav_class ) . '"><ul class="' . esc_attr($collapse_list_str) . '">';
 	$menuContent .= $render_menu_collapse($wpMenuItemsTree, 0, $depth, $collapse_list_classes, $itemClass, $linkClass, $iconClass, $listType, $textThemeClass, $collapse_wrapper_id, 1, $collapse_instance_suffix, $topLevelClass, $topLevelClassStart, $topLevelClassEnd);
 	$menuContent .= '</ul></nav>';
 } elseif ($mode === 'wp-menu' && $wpMenuId > 0 && $orientation === 'vertical' && !$enableMegaMenu) {
@@ -436,11 +447,19 @@ if ($enableMegaMenu) {
 		$codeweber_menu_collapse_instance++;
 		$collapse_instance_suffix_fb = (string) $codeweber_menu_collapse_instance;
 		$collapse_wrapper_id = 'menu-collapse-' . $wpMenuId . '-' . ( $menuId ? preg_replace('/[^a-z0-9_-]/i', '-', $menuId) : 'block' ) . '-' . $collapse_instance_suffix_fb;
-		$collapse_list_classes = array_values(array_filter(is_array($listClasses) ? $listClasses : explode(' ', trim($listClassStr)), function ($c) { $c = trim($c); return $c !== '' && $c !== 'text-reset'; }));
-		$collapse_list_str = implode(' ', $collapse_list_classes);
-		$nav_class_fb = 'menu-collapse-nav' . ($containerClass !== '' ? ' ' . esc_attr($containerClass) : '');
-		$menuContent = '<nav id="' . esc_attr($collapse_wrapper_id) . '" class="' . $nav_class_fb . '"><ul class="' . esc_attr($collapse_list_str) . '">';
-		$menuContent .= $render_menu_collapse($wpMenuItemsTree, 0, $depth, $collapse_list_classes, $itemClass, $linkClass, $iconClass, $listType, $textThemeClass, $collapse_wrapper_id, 1, $collapse_instance_suffix_fb, $topLevelClass, $topLevelClassStart, $topLevelClassEnd);
+		$collapse_list_classes_fb = array( 'navbar-nav', 'list-unstyled', 'menu-collapse-' . $collapseListType );
+		$collapse_list_str_fb = implode(' ', $collapse_list_classes_fb);
+		$nav_class_fb = 'navbar-vertical menu-collapse-nav';
+		if ( $theme === 'dark' ) {
+			$nav_class_fb .= ' navbar-vertical-dark';
+		} elseif ( $theme === 'light' ) {
+			$nav_class_fb .= ' navbar-vertical-light';
+		}
+		if ( $containerClass !== '' ) {
+			$nav_class_fb .= ' ' . esc_attr( $containerClass );
+		}
+		$menuContent = '<nav id="' . esc_attr($collapse_wrapper_id) . '" class="' . esc_attr( $nav_class_fb ) . '"><ul class="' . esc_attr($collapse_list_str_fb) . '">';
+		$menuContent .= $render_menu_collapse($wpMenuItemsTree, 0, $depth, $collapse_list_classes_fb, $itemClass, $linkClass, $iconClass, $listType, $textThemeClass, $collapse_wrapper_id, 1, $collapse_instance_suffix_fb, $topLevelClass, $topLevelClassStart, $topLevelClassEnd);
 		$menuContent .= '</ul></nav>';
 	} else {
 		$menuContent = '<ul class="' . esc_attr($listClassStr) . '">';

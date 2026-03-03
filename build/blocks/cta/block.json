@@ -16,6 +16,14 @@
       "type": "string",
       "default": "cta-1"
     },
+    "ctaTheme": {
+      "type": "string",
+      "default": "dark"
+    },
+    "ctaAlign": {
+      "type": "string",
+      "default": "center"
+    },
     "backgroundType": {
       "type": "string",
       "default": "none"
@@ -69,6 +77,10 @@
       "default": ""
     },
     "cardBodyClass": {
+      "type": "string",
+      "default": ""
+    },
+    "align": {
       "type": "string",
       "default": ""
     },

@@ -68,6 +68,7 @@ export const MenuSidebar = ({ attributes, setAttributes, wpMenus = [] }) => {
 		titleTransform,
 		titleClass,
 		useCollapse,
+		collapseListType,
 	} = attributes;
 
 	const [iconPickerOpen, setIconPickerOpen] = useState(false);
@@ -414,6 +415,33 @@ export const MenuSidebar = ({ attributes, setAttributes, wpMenus = [] }) => {
 											'codeweber-gutenberg-blocks'
 										)}
 									/>
+									{useCollapse && (
+										<div style={{ marginTop: '12px' }}>
+											<div className="component-sidebar-title">
+												<label>
+													{__('Collapse list style', 'codeweber-gutenberg-blocks')}
+												</label>
+											</div>
+											<div className="button-group-sidebar_33">
+												{[
+													{ label: __('1', 'codeweber-gutenberg-blocks'), value: '1' },
+													{ label: __('2', 'codeweber-gutenberg-blocks'), value: '2' },
+													{ label: __('3', 'codeweber-gutenberg-blocks'), value: '3' },
+												].map((opt) => (
+													<Button
+														key={opt.value}
+														isPrimary={(collapseListType || '1') === opt.value}
+														onClick={() => setAttributes({ collapseListType: opt.value })}
+													>
+														{opt.label}
+													</Button>
+												))}
+											</div>
+											<p style={{ marginTop: '6px', fontSize: '12px', color: '#757575' }}>
+												{__('1: compact, 2: with borders, 3: bordered container.', 'codeweber-gutenberg-blocks')}
+											</p>
+										</div>
+									)}
 								</>
 							)}
 						</PanelBody>

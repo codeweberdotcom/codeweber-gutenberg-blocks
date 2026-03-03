@@ -54,6 +54,7 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 		titleWeight,
 		titleTransform,
 		useCollapse,
+		collapseListType,
 	} = attributes;
 
 	const previousModeRef = useRef(mode);
@@ -260,12 +261,10 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 		return classes.join(' ');
 	};
 
-	// Collapse mode: same list classes as frontend (without text-reset)
+	// Collapse mode: navbar-nav + list-unstyled + menu-collapse-1|2|3 (matches render.php and theme _nav.scss)
 	const getCollapseListClasses = () => {
-		return getListClasses()
-			.split(' ')
-			.filter((c) => c && c !== 'text-reset')
-			.join(' ');
+		const type = collapseListType === '2' || collapseListType === '3' ? collapseListType : '1';
+		return `navbar-nav list-unstyled menu-collapse-${type}`;
 	};
 
 	// Tree by parent for collapse markup (same structure as render.php)
@@ -322,6 +321,7 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 							: topLevelClass
 					: '';
 			const liClasses = [
+				'nav-item',
 				'parent-collapse-item',
 				currentLevel === 1 && 'parent-item',
 				topClass,
@@ -364,7 +364,7 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 							id={collapseId}
 							data-bs-parent={`#${wrapperId}`}
 						>
-							<ul className={listClassStr + ' ps-3'}>
+							<ul className={listClassStr}>
 								{renderCollapseLevel(
 									byParent,
 									item.wp_id,
@@ -520,7 +520,15 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 			{showCollapsePreview && (
 				<nav
 					id={collapseWrapperId}
-					className={['menu-collapse-nav', containerClass || ''].filter(Boolean).join(' ')}
+					className={[
+						'navbar-vertical',
+						'menu-collapse-nav',
+						theme === 'dark' && 'navbar-vertical-dark',
+						theme === 'light' && 'navbar-vertical-light',
+						containerClass || '',
+					]
+						.filter(Boolean)
+						.join(' ')}
 				>
 					<ul className={getCollapseListClasses()}>
 						{renderCollapseLevel(

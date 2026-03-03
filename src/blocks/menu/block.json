@@ -160,6 +160,10 @@
 		"useCollapse": {
 			"type": "boolean",
 			"default": false
+		},
+		"collapseListType": {
+			"type": "string",
+			"default": "1"
 		}
 	},
 	"textdomain": "codeweber-gutenberg-blocks",

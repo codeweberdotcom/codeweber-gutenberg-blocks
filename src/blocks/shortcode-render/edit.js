@@ -7,7 +7,7 @@
 
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
-import { PanelBody, TextControl, Spinner } from '@wordpress/components';
+import { PanelBody, TextareaControl, Spinner } from '@wordpress/components';
 import { useState, useEffect } from '@wordpress/element';
 import apiFetch from '@wordpress/api-fetch';
 
@@ -45,7 +45,7 @@ const ShortcodeRenderEdit = ({ attributes, setAttributes }) => {
 		<>
 			<InspectorControls>
 				<PanelBody title={__('Shortcode', 'codeweber-gutenberg-blocks')} initialOpen={true}>
-					<TextControl
+					<TextareaControl
 						label={__('Shortcode', 'codeweber-gutenberg-blocks')}
 						value={shortcode || ''}
 						onChange={(value) => setAttributes({ shortcode: value || '' })}
@@ -54,6 +54,7 @@ const ShortcodeRenderEdit = ({ attributes, setAttributes }) => {
 							'Enter the shortcode (with brackets) to display here.',
 							'codeweber-gutenberg-blocks'
 						)}
+						rows={4}
 					/>
 				</PanelBody>
 			</InspectorControls>

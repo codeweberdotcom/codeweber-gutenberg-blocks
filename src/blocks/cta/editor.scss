@@ -1,7 +1,23 @@
 // CTA Block Editor Styles
 
 .wp-block-codeweber-blocks-cta {
-	// Editor styles for CTA block
+	// Layout внутри CTA — на всю ширину, без боковых отступов редактора
+	.block-editor-inner-blocks > .block-editor-block-list__layout {
+		width: 100%;
+		padding-left: 0 !important;
+		padding-right: 0 !important;
+	}
+}
+
+// CTA 1 и CTA 3 — контент card-body в колонку (иконка, заголовок, кнопка друг под другом)
+.cta-block.cta-cta-1,
+.cta-block.cta-cta-3 {
+	.card-body .block-editor-inner-blocks .block-editor-block-list__layout {
+		display: flex;
+		flex-direction: column;
+		align-items: inherit;
+		width: 100%;
+	}
 }
 
 // Исправление отображения CTA2 в редакторе
@@ -21,11 +37,19 @@
 				display: flex;
 				flex-direction: row;
 				align-items: center;
-				justify-content: space-between;
+				justify-content: end;
 				gap: 0;
+				width: 100%;
 			}
 		}
 		
+		// Блок Columns (единственный ребёнок в CTA 2) — на всю ширину
+		.block-editor-block-list__layout > .wp-block-codeweber-blocks-columns {
+			flex: 1 1 100%;
+			min-width: 0;
+			max-width: 100%;
+		}
+
 		// Убираем нижний margin у блоков
 		.block-editor-block-list__layout .wp-block {
 			margin-bottom: 0 !important;

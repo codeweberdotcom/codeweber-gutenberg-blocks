@@ -1,47 +1,30 @@
-import {
-	CTA1,
-	CTA2,
-	CTA3,
-	CTA4,
-	CTA5,
-	CTA6,
-} from './ctas';
+import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
 
 const CTASave = ({ attributes }) => {
-	const { ctaType } = attributes;
+	const { blockClass, blockId, blockData } = attributes;
+	const blockProps = useBlockProps.save({
+		className: ['cta-block', blockClass].filter(Boolean).join(' '),
+		...(blockId ? { id: blockId } : {}),
+		...(blockData && typeof blockData === 'string'
+			? Object.fromEntries(
+					blockData.split(',').reduce((acc, pair) => {
+						const eq = pair.indexOf('=');
+						if (eq > 0) {
+							const key = pair.slice(0, eq).trim();
+							const value = pair.slice(eq + 1).trim();
+							if (key) acc.push([`data-${key}`, value]);
+						}
+						return acc;
+					}, [])
+			  )
+			: {}),
+	});
 
-	const renderCTA = () => {
-		switch (ctaType) {
-			case 'cta-1':
-				return <CTA1 attributes={attributes} isEditor={false} />;
-			case 'cta-2':
-				return <CTA2 attributes={attributes} isEditor={false} />;
-			case 'cta-3':
-				return <CTA3 attributes={attributes} isEditor={false} />;
-			case 'cta-4':
-				return <CTA4 attributes={attributes} isEditor={false} />;
-			case 'cta-5':
-				return <CTA5 attributes={attributes} isEditor={false} />;
-			case 'cta-6':
-				return <CTA6 attributes={attributes} isEditor={false} />;
-			default:
-				return <CTA1 attributes={attributes} isEditor={false} />;
-		}
-	};
-
-	return renderCTA();
+	return (
+		<div {...blockProps}>
+			<InnerBlocks.Content />
+		</div>
+	);
 };
 
 export default CTASave;
-
-
-
-
-
-
-
-
-
-
-
-

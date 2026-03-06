@@ -1,13 +1,15 @@
 <?php
 /**
  * Plugin Name:       Codeweber Gutenberg Elements
- * Plugin URI:        https://github.com/codeweberdotcom/codeweber-gutenberg-blocks
+ * Plugin URI:        https://codeweber.com
+ * GitHub Plugin URI: https://github.com/codeweberdotcom/codeweber-gutenberg-blocks
+ * Primary Branch:    main
  * Description:       An addon for Codeweber theme.
  * Requires at least: 6.1
  * Requires PHP:      7.4
  * Version:           0.1.0
  * Author:            Codeweber
- * Author URI:        https://naviddev.com
+ * Author URI:        https://codeweber.com
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       codeweber-gutenberg-blocks

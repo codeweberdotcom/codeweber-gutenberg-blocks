@@ -7,7 +7,7 @@
  * Description:       An addon for Codeweber theme.
  * Requires at least: 6.1
  * Requires PHP:      7.4
- * Version:           0.2.0
+ * Version:           0.3.0
  * Author:            Codeweber
  * Author URI:        https://codeweber.com
  * License:           GPL-2.0-or-later

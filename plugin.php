@@ -1,6 +1,7 @@
 <?php
 /**
  * Plugin Name:       Codeweber Gutenberg Elements
+ * Plugin URI:        https://github.com/codeweberdotcom/codeweber-gutenberg-blocks
  * Description:       An addon for Codeweber theme.
  * Requires at least: 6.1
  * Requires PHP:      7.4

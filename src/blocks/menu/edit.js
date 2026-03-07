@@ -488,10 +488,13 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 		return classes.filter(Boolean).join(' ');
 	};
 
+	// При depth = 0 на фронте выводится vertical-menu-wrapper (плоский список), не collapse — в редакторе то же.
+	const depthNum = typeof depth === 'number' ? depth : 0;
 	const showCollapsePreview =
 		mode === 'wp-menu' &&
 		useCollapse &&
 		wpMenuId &&
+		depthNum >= 1 &&
 		!isLoadingMenu &&
 		items.length > 0;
 

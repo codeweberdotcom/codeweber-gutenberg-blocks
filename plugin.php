@@ -58,6 +58,8 @@ require_once plugin_dir_path(__FILE__) . 'settings/options_page/restapi.php';
 
 // Card block: радиус границы по умолчанию из Redux
 require_once plugin_dir_path(__FILE__) . 'src/blocks/card/init.php';
+// Button block: форма кнопки "Theme" — класс из getThemeButton()
+require_once plugin_dir_path(__FILE__) . 'src/blocks/button/init.php';
 
 // Загрузка переводов для JavaScript
 	add_action('init', function() {

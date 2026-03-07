@@ -86,6 +86,23 @@ a.wp-block.wp-block-codeweber-blocks-button.btn-icon {
 	width: auto !important;
 }
 
+/* Форма кнопки в редакторе (Bootstrap может не подгружаться) — превью Theme = rounded-pill */
+.block-editor-block-list__layout .wp-block.wp-block-codeweber-blocks-button.btn.rounded-0,
+.editor-styles-wrapper .block-editor-block-list__layout .wp-block.wp-block-codeweber-blocks-button.btn.rounded-0,
+a.wp-block.wp-block-codeweber-blocks-button.btn.rounded-0 {
+	border-radius: 0 !important;
+}
+.block-editor-block-list__layout .wp-block.wp-block-codeweber-blocks-button.btn.rounded-xl,
+.editor-styles-wrapper .block-editor-block-list__layout .wp-block.wp-block-codeweber-blocks-button.btn.rounded-xl,
+a.wp-block.wp-block-codeweber-blocks-button.btn.rounded-xl {
+	border-radius: 0.75rem !important;
+}
+.block-editor-block-list__layout .wp-block.wp-block-codeweber-blocks-button.btn.rounded-pill,
+.editor-styles-wrapper .block-editor-block-list__layout .wp-block.wp-block-codeweber-blocks-button.btn.rounded-pill,
+a.wp-block.wp-block-codeweber-blocks-button.btn.rounded-pill {
+	border-radius: 50rem !important;
+}
+
 /* Для типа expand: btn-expand */
 .block-editor-block-list__layout .wp-block.wp-block-codeweber-blocks-button.btn-expand,
 .editor-styles-wrapper .block-editor-block-list__layout .wp-block.wp-block-codeweber-blocks-button.btn-expand,
@@ -149,7 +166,55 @@ a.wp-block.wp-block-codeweber-blocks-button.hover-9:not(.btn) {
 .button-group-sidebar_33,
 .button-group-sidebar_50,
 .button-group-sidebar_100 {
+	display: flex;
+	flex-wrap: wrap;
 	margin-bottom: 20px;
+}
+
+.icon-position-controls.button-group-sidebar_50 {
+	display: flex;
+	flex-wrap: nowrap;
+}
+
+/* Тип ссылки: 3 кнопки в ряд */
+.link-type-controls.button-group-sidebar_33 button.components-button {
+	flex: 0 0 33.333%;
+	box-sizing: border-box;
+}
+
+/* Вариант ссылки: 2 кнопки в ряд */
+.link-variant-controls.button-group-sidebar_50 button.components-button {
+	flex: 0 0 50%;
+	box-sizing: border-box;
+}
+
+/* Форма кнопки: 2 кнопки в ряд */
+.button-shape-buttons.button-group-sidebar_50 button.components-button {
+	flex: 0 0 50%;
+	box-sizing: border-box;
+	border: 1px solid #007cba;
+	justify-content: center;
+}
+
+/* Стиль кнопки: первые 4 по 50% (2 в ряд), пятая — 100% */
+.button-group-sidebar-style {
+	display: flex;
+	flex-wrap: wrap;
+	margin-bottom: 20px;
+
+	button.components-button:not(.button-style-full-width) {
+		flex: 0 0 50%;
+		box-sizing: border-box;
+		border: 1px solid #007cba;
+		justify-content: center;
+	}
+
+	button.button-style-full-width {
+		flex: 0 0 100%;
+		box-sizing: border-box;
+		border: 1px solid #007cba;
+		justify-content: center;
+	}
 }
 
 .component-sidebar-title {

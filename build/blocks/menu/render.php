@@ -78,14 +78,25 @@ if ($mode === 'wp-menu' && $wpMenuId > 0) {
 				'url' => $menu_item->url,
 			);
 		}
-		// Текущий URL для подсветки активного пункта (Mega Menu и fallback)
-		$current_request_url = set_url_scheme( ( is_ssl() ? 'https://' : 'http://' ) . ( isset( $_SERVER['HTTP_HOST'] ) ? $_SERVER['HTTP_HOST'] : '' ) . ( isset( $_SERVER['REQUEST_URI'] ) ? $_SERVER['REQUEST_URI'] : '' ) );
-		$current_request_url = trailingslashit( strtok( $current_request_url, '?' ) );
-		// Строим дерево для fallback
+		// Текущий пункт меню: по object_id и типу объекта (как в ядре WP), а не по сравнению URL
+		// (сравнение URL после strtok(..., '?') давало совпадение всем пунктам на одном домене)
+		$queried_id = (int) get_queried_object_id();
 		$by_parent = [];
 		foreach ($menu_items as $menu_item) {
-			$item_url = $menu_item->url ? trailingslashit( strtok( $menu_item->url, '?' ) ) : '';
-			$is_current = ( $item_url !== '' && $current_request_url !== '' && $item_url === $current_request_url );
+			$is_current = false;
+			if ( ! empty( $menu_item->type ) && (int) $menu_item->object_id > 0 ) {
+				if ( $menu_item->type === 'post_type' && is_singular() ) {
+					$is_current = ( (int) $menu_item->object_id === $queried_id );
+				} elseif ( $menu_item->type === 'taxonomy' ) {
+					$obj = get_queried_object();
+					$is_current = ( $obj && isset( $obj->term_id ) && (int) $menu_item->object_id === (int) $obj->term_id );
+				}
+			}
+			if ( ! $is_current && $menu_item->type === 'custom' && ! empty( $menu_item->url ) ) {
+				$current_request_url = set_url_scheme( ( is_ssl() ? 'https://' : 'http://' ) . ( isset( $_SERVER['HTTP_HOST'] ) ? $_SERVER['HTTP_HOST'] : '' ) . ( isset( $_SERVER['REQUEST_URI'] ) ? $_SERVER['REQUEST_URI'] : '' ) );
+				$item_url = set_url_scheme( $menu_item->url );
+				$is_current = ( rtrim( $item_url, '/' ) === rtrim( $current_request_url, '/' ) );
+			}
 			$parent_id = (int) $menu_item->menu_item_parent;
 			if (!isset($by_parent[$parent_id])) {
 				$by_parent[$parent_id] = [];
@@ -298,12 +309,12 @@ $render_menu_collapse = function ($by_parent, $parent_id, $depth_limit, $listCla
 	$listClassStr = is_array($listClasses) ? implode(' ', $listClasses) : $listClasses;
 	$html = '';
 	$last_idx = count($children) - 1;
-	foreach ($children as $idx => $item) {
+		foreach ($children as $idx => $item) {
 		$has_children = ($depth_limit === 0 || $current_lvl < $depth_limit) && isset($item['wp_id']) && !empty($by_parent[$item['wp_id']]);
 		$item_id = isset($item['wp_id']) ? (int) $item['wp_id'] : 0;
 		$collapse_id = 'menu-collapse-item-' . $item_id . ( $instance_suffix !== '' ? '-' . $instance_suffix : '' );
 		$is_current = !empty($item['current']);
-		// Раскрывать collapse, если текущая страница где-то в поддереве (весь путь до current)
+		// Раскрывать collapse по пути до текущей страницы (как в Navwalker: current-menu-parent — виден контекст).
 		$expand = $has_children && $has_current_in_subtree($by_parent, $item['wp_id']);
 		// Верхний уровень: первый — top_level_class_start, последний — top_level_class_end (если заданы), иначе top_level_class
 		$top_class = [];
@@ -367,8 +378,8 @@ if ($enableMegaMenu) {
 	} else {
 		$menuContent = '<p>' . esc_html__('No menu items found.', 'codeweber-gutenberg-blocks') . '</p>';
 	}
-} elseif ($mode === 'wp-menu' && $wpMenuId > 0 && $orientation === 'vertical' && !$enableMegaMenu && $useCollapse && $depth > 1 && $hasTopLevelItems) {
-	// Вертикальное меню с Bootstrap Collapse — разметка как в shortcode [menu_collapse]: navbar-vertical, navbar-nav, menu-collapse-1|2|3
+} elseif ($mode === 'wp-menu' && $wpMenuId > 0 && $orientation === 'vertical' && !$enableMegaMenu && $useCollapse && $depth >= 1 && $hasTopLevelItems) {
+	// Вертикальное меню с разметкой collapse (navbar-vertical, menu-collapse-1|2|3). При depth = 1 — один уровень без кнопок раскрытия.
 	global $codeweber_menu_collapse_instance;
 	if (!isset($codeweber_menu_collapse_instance)) {
 		$codeweber_menu_collapse_instance = 0;
@@ -439,7 +450,7 @@ if ($enableMegaMenu) {
 	}
 } elseif ($mode === 'wp-menu' && $wpMenuId > 0 && $hasTopLevelItems) {
 	// Fallback: кастомный рендер (если Walker недоступен)
-	if ($useCollapse && $depth > 1) {
+	if ($useCollapse && $depth >= 1) {
 		global $codeweber_menu_collapse_instance;
 		if (!isset($codeweber_menu_collapse_instance)) {
 			$codeweber_menu_collapse_instance = 0;

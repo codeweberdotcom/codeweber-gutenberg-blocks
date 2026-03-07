@@ -1,7 +1,11 @@
 // Функция для динамического формирования класса кнопки
 import { __ } from '@wordpress/i18n';
 
-export const getClassNames = (attributes) => {
+/**
+ * @param {Object} attributes — атрибуты блока
+ * @param {Object} [options] — forSave: true при сериализации в save; тогда Theme всегда даёт rounded-pill (стабильный контент, без «Восстановить блок»)
+ */
+export const getClassNames = (attributes, options = {}) => {
 	const {
 		ButtonSize,
 		ButtonColor,
@@ -156,9 +160,24 @@ export const getClassNames = (attributes) => {
 		}
 	}
 
-	// Добавляем классы btn-shape
-	if ((ButtonType === 'solid' || ButtonType === 'icon') && ButtonShape)
-		classes.push(`${ButtonShape}`);
+	// Добавляем классы btn-shape (theme: в редакторе — класс из cwgbButtonThemeShape; при save — всегда rounded-pill для стабильного контента; на фронте — getThemeButton())
+	if ((ButtonType === 'solid' || ButtonType === 'icon') && ButtonShape) {
+		if (ButtonShape === 'theme') {
+			if (options.forSave) {
+				classes.push('rounded-pill');
+			} else {
+				const themeClass =
+					typeof window !== 'undefined' &&
+					window.cwgbButtonThemeShape &&
+					window.cwgbButtonThemeShape.class
+						? window.cwgbButtonThemeShape.class.trim()
+						: 'rounded-pill';
+				classes.push(themeClass || 'rounded-pill');
+			}
+		} else {
+			classes.push(ButtonShape);
+		}
+	}
 
 	// Добавляем классы для link
 	if (

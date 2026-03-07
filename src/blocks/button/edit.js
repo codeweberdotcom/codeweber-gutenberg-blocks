@@ -198,18 +198,19 @@ const ButtonEdit = ({ attributes, setAttributes, clientId }) => {
 							'data-bs-target': `#${DataBsTarget}`,
 						})}
 					>
+						{/* Иконка слева: тип icon (с обёрткой для gradient) или expand/play */}
 						{ButtonType === 'icon' &&
 						(ButtonStyle === 'gradient' ||
 							ButtonStyle === 'outline-gradient')
 							? LeftIcon && <span>{getIconComponent(LeftIcon)}</span>
-							: getIconComponent(LeftIcon)}
+							: (ButtonType === 'icon' || ButtonType === 'expand' || ButtonType === 'play') && getIconComponent(LeftIcon)}
 						{ButtonType === 'circle' &&
-						(ButtonStyle === 'gradient' ||
+						((ButtonStyle === 'gradient' ||
 							ButtonStyle === 'outline-gradient') ? (
 							<span>{getIconComponent(CircleIcon)}</span>
 						) : (
 							getIconComponent(CircleIcon)
-						)}
+						))}
 						{getIconComponent(SocialIcon)}
 
 						{!shouldHideText && (
@@ -228,10 +229,10 @@ const ButtonEdit = ({ attributes, setAttributes, clientId }) => {
 						)}
 
 						{ButtonType === 'icon' &&
-						(ButtonStyle === 'gradient' ||
+						((ButtonStyle === 'gradient' ||
 							ButtonStyle === 'outline-gradient')
 							? RightIcon && <span>{getIconComponent(RightIcon)}</span>
-							: getIconComponent(RightIcon)}
+							: getIconComponent(RightIcon))}
 					</a>
 				)}
 			</div>

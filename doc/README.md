@@ -19,6 +19,8 @@
 
 ## 📚 Структура документации
 
+### Основные документы
+
 | Документ | Назначение | Для кого |
 |----------|------------|----------|
 | **[PLUGIN_OVERVIEW.md](PLUGIN_OVERVIEW.md)** | Архитектура, карта файлов, жизненный цикл | Все разработчики |
@@ -29,6 +31,31 @@
 | **[QUICK_START.md](QUICK_START.md)** | Быстрый старт, окружение, команды | Новые разработчики |
 | **[DEV_WORKFLOW.md](DEV_WORKFLOW.md)** | Полный цикл: анализ → план → реализация → релиз | Все задачи |
 | **[REFACTORING_GUIDE.md](REFRACTORING_GUIDE.md)** | Чек-лист рефакторинга и миграций | Крупные изменения |
+
+### Планы, отчёты и доп. материалы (doc/)
+
+| Документ | Назначение |
+|----------|------------|
+| [COMPLETE_DOCUMENTATION.md](COMPLETE_DOCUMENTATION.md) | Сводка изменений (декабрь 2024) |
+| [VIDEO_INTEGRATION.md](VIDEO_INTEGRATION.md) | Интеграция видео в блоках |
+| [HOTFIX_ASPECT_RATIO.md](HOTFIX_ASPECT_RATIO.md) | Исправление aspect-ratio |
+| [ICON_COMPONENT.md](ICON_COMPONENT.md) | Компонент иконок |
+| [LOAD_MORE_ANALYSIS_REPORT.md](LOAD_MORE_ANALYSIS_REPORT.md) | Отчёт по Load More |
+| [LOAD_MORE_COMPONENT.md](LOAD_MORE_COMPONENT.md) | Компонент Load More |
+| [LOAD_MORE_FETCH_IMPLEMENTATION.md](LOAD_MORE_FETCH_IMPLEMENTATION.md) | Реализация Load More (fetch) |
+| [LOAD_MORE_FETCH_INTEGRATION_PLAN.md](LOAD_MORE_FETCH_INTEGRATION_PLAN.md) | План интеграции Load More |
+| [LOAD_MORE_FETCH_INTEGRATION_PLAN_SUMMARY.md](LOAD_MORE_FETCH_INTEGRATION_PLAN_SUMMARY.md) | Краткое резюме плана |
+| [POST_CARD_TEMPLATES_PLAN.md](POST_CARD_TEMPLATES_PLAN.md) | План шаблонов карточек записей |
+
+### Анализы и разборы (docs/)
+
+В папке **`docs/`** (рядом с плагином) лежат технические разборы и анализы:
+
+| Документ | Назначение |
+|----------|------------|
+| [../docs/menu-collapse-icon-like-accordion.md](../docs/menu-collapse-icon-like-accordion.md) | Иконка меню collapse «как в аккордеоне» |
+
+> **Примечание:** Руководство по использованию Nav Walker темы (WP_Bootstrap_Navwalker, CodeWeber_Menu_Collapse_Walker): `wp-content/themes/codeweber/doc/NAV_WALKER_USAGE.md`.
 
 ---
 
@@ -119,7 +146,8 @@ codeweber-gutenberg-blocks/
 ├── build/                  # Скомпилированные ассеты
 ├── settings/               # Страница настроек
 ├── languages/              # Переводы
-└── doc/                    # Документация
+├── doc/                    # Документация (основная + планы/отчёты)
+└── docs/                   # Анализы и разборы (меню, walker и т.д.)
 ```
 
 **Подробнее:** [PLUGIN_OVERVIEW.md](PLUGIN_OVERVIEW.md)
@@ -170,6 +198,14 @@ codeweber-gutenberg-blocks/
 1. Обновить соответствующий справочник (`BLOCKS_REFERENCE.md`, `COMPONENTS_REFERENCE.md`, `API_REFERENCE.md`).
 2. Добавить ссылку в этот файл, если создан новый документ.
 3. Обновить секцию «Для AI-агентов» при изменении ключевых файлов.
+
+**Куда класть новые документы:**
+
+| Тип | Папка | Примеры |
+|-----|--------|---------|
+| Справочники, гайды, стандарты | `doc/` | BLOCKS_REFERENCE, QUICK_START, GUTENBERG_BLOCK_STANDARDS |
+| Планы, отчёты, описания фич | `doc/` | LOAD_MORE_*, POST_CARD_TEMPLATES_PLAN, VIDEO_INTEGRATION |
+| Технические разборы, анализы кода | `docs/` | menu-collapse-icon-like-accordion (анализ nav walker — в теме `codeweber/doc/`) |
 
 ---
 

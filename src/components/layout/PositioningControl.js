@@ -1,5 +1,5 @@
 import { __ } from '@wordpress/i18n';
-import { PanelBody, ButtonGroup, Button } from '@wordpress/components';
+import { PanelBody, Button } from '@wordpress/components';
 
 const ALIGN_ITEMS_OPTIONS = [
 	{ value: '', label: __('No', 'codeweber-gutenberg-blocks') },
@@ -68,7 +68,7 @@ const renderGroup = (label, value, onChange, options) => {
 					<div style={{ wordBreak: 'break-word' }}>{classValue}</div>
 				</div>
 			)}
-			<ButtonGroup>
+			<div className="button-group-sidebar_33 positioning-control-group">
 				{options.map((option) => (
 					<Button
 						key={option.value || 'default'}
@@ -78,7 +78,7 @@ const renderGroup = (label, value, onChange, options) => {
 						{option.label}
 					</Button>
 				))}
-			</ButtonGroup>
+			</div>
 		</div>
 	);
 };

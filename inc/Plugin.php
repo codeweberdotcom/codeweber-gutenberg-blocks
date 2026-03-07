@@ -554,6 +554,14 @@ class Plugin {
 					wp_localize_script($script_handle, 'cwgbSearchPostTypes', ['postTypes' => $search_post_types]);
 				}
 
+				// Button block: форма Theme — класс из getThemeButton() для превью в редакторе
+				if ($block_name === 'button') {
+					$theme_btn = function_exists('getThemeButton') ? trim(getThemeButton()) : '';
+					wp_localize_script($script_handle, 'cwgbButtonThemeShape', [
+						'class' => $theme_btn !== '' ? $theme_btn : 'rounded-pill',
+					]);
+				}
+
 				// Проверяем что скрипт действительно зарегистрирован
 				global $wp_scripts;
 				if (isset($wp_scripts->registered[$script_handle])) {

@@ -1,1 +1,12 @@
 // Editor styles for Heading + Subtitle block
+
+/* PositioningControl: 3 кнопки в ряд в сайдбаре */
+.positioning-control-group {
+	display: flex;
+	flex-wrap: wrap;
+
+	button.components-button {
+		flex: 0 0 33.333%;
+		box-sizing: border-box;
+	}
+}

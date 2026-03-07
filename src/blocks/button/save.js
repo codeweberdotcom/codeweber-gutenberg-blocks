@@ -55,8 +55,8 @@ const ButtonSave = ({ attributes }) => {
 		blockData,
 	} = attributes;
 
-	// Генерация класса кнопки
-	const buttonClass = getClassNames(attributes);
+	// Генерация класса кнопки (forSave: Theme всегда даёт rounded-pill — контент не зависит от настроек темы, нет «Восстановить блок»)
+	const buttonClass = getClassNames(attributes, { forSave: true });
 
 	// Определение, нужно ли скрывать текст
 	const shouldHideText =
@@ -158,6 +158,7 @@ const ButtonSave = ({ attributes }) => {
 		...(buttonId && { id: buttonId }),
 		'data-value': DataValue || undefined,
 		...dataAttributes,
+		...(attributes.ButtonShape === 'theme' && { 'data-button-shape': 'theme' }),
 	};
 
 	// Add GLightbox attrs (use finalGlightbox for videos)
@@ -233,6 +234,7 @@ const ButtonSave = ({ attributes }) => {
 					className={linkProps.className || undefined}
 					{...(linkProps.id && { id: linkProps.id })}
 					data-value={linkProps['data-value'] || undefined}
+					data-button-shape={linkProps['data-button-shape'] || undefined}
 					data-glightbox={linkProps['data-glightbox'] || undefined}
 					data-gallery={linkProps['data-gallery'] || undefined}
 					data-bs-toggle={linkProps['data-bs-toggle'] || undefined}
@@ -240,18 +242,21 @@ const ButtonSave = ({ attributes }) => {
 					target={linkProps.target || undefined}
 					rel={linkProps.rel || undefined}
 				>
+					{/* Иконка слева: тип icon (с обёрткой для gradient) */}
 					{ButtonType === 'icon' &&
-					(attributes.ButtonStyle === 'gradient' ||
+					((attributes.ButtonStyle === 'gradient' ||
 						attributes.ButtonStyle === 'outline-gradient')
 						? LeftIcon && <span>{getIconComponent(LeftIcon)}</span>
-						: getIconComponent(LeftIcon)}
+						: getIconComponent(LeftIcon))}
+					{/* Иконка для expand/play */}
+					{(ButtonType === 'expand' || ButtonType === 'play') && getIconComponent(LeftIcon)}
 					{ButtonType === 'circle' &&
-					(attributes.ButtonStyle === 'gradient' ||
+					((attributes.ButtonStyle === 'gradient' ||
 						attributes.ButtonStyle === 'outline-gradient') ? (
 						<span>{getIconComponent(CircleIcon)}</span>
 					) : (
 						getIconComponent(CircleIcon)
-					)}
+					))}
 					{getIconComponent(SocialIcon)}
 
 					{!shouldHideText && ButtonType === 'expand' && (
@@ -273,10 +278,10 @@ const ButtonSave = ({ attributes }) => {
 						)}
 
 					{ButtonType === 'icon' &&
-					(attributes.ButtonStyle === 'gradient' ||
+					((attributes.ButtonStyle === 'gradient' ||
 						attributes.ButtonStyle === 'outline-gradient')
 						? RightIcon && <span>{getIconComponent(RightIcon)}</span>
-						: getIconComponent(RightIcon)}
+						: getIconComponent(RightIcon))}
 				</a>
 			)}
 		</>

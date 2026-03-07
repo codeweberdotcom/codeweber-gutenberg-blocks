@@ -4,4 +4,5 @@ export const shapes = [
 	{ label: 'Rounded', value: '' },
 	{ label: 'Rounder', value: 'rounded-xl' },
 	{ label: 'Pill', value: 'rounded-pill' },
+	{ label: 'Theme', value: 'theme' },
 ];

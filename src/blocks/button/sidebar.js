@@ -326,7 +326,7 @@ export const ButtonSidebar = ({
 							{__('Button Shape', 'codeweber-gutenberg-blocks')}
 						</label>
 					</div>
-					<div className="button-shape-buttons button-group-sidebar_33">
+					<div className="button-shape-buttons button-group-sidebar_50">
 						{shapes.map((shape) => (
 							<Button
 								key={shape.value}
@@ -354,12 +354,11 @@ export const ButtonSidebar = ({
 							{__('Button Style', 'codeweber-gutenberg-blocks')}
 						</label>
 					</div>
-					{/* Основные стили кнопок (50% ширины) */}
-					<div className="button-style-buttons button-group-sidebar_50">
+					{/* Стили кнопок: 4 в ряд + Outline Gradient на всю ширину */}
+					<div className="button-style-buttons button-group-sidebar-style">
 						{[
 							{ label: 'Solid', value: 'solid' },
 							{ label: 'Soft', value: 'soft' },
-							// Отображаем кнопки Outline и Gradient только если не выбран ограниченный тип
 							...(!isRestrictedType
 								? [
 										{ label: 'Outline', value: 'outline' },
@@ -375,16 +374,14 @@ export const ButtonSidebar = ({
 								isPrimary={ButtonStyle === style.value}
 								onClick={() =>
 									handleButtonStyleChange(style.value)
-								} // Используем функцию для изменения стиля кнопки
+								}
 							>
 								{style.label}
 							</Button>
 						))}
-					</div>
-					{/* Outline Gradient на всю ширину */}
-					{!isRestrictedType && (
-						<div className="button-style-buttons button-group-sidebar_100">
+						{!isRestrictedType && (
 							<Button
+								className="button-style-full-width"
 								isPrimary={ButtonStyle === 'outline-gradient'}
 								onClick={() =>
 									handleButtonStyleChange('outline-gradient')
@@ -392,8 +389,8 @@ export const ButtonSidebar = ({
 							>
 								Outline Gradient
 							</Button>
-						</div>
-					)}
+						)}
+					</div>
 				</div>
 			)}
 
@@ -439,54 +436,58 @@ export const ButtonSidebar = ({
 
 			{/* Link Type */}
 			{ButtonType === 'link' && (
-				<div className="link-type-controls button-group-sidebar_33">
+				<>
 					<div className="component-sidebar-title">
 						<label>
 							{__('Link Type', 'codeweber-gutenberg-blocks')}
 						</label>
 					</div>
-					{[
-						{ label: 'Нет', value: 'none' },
-						{ label: 'Hover', value: 'hover' },
-						{ label: 'Hover 2', value: 'hover-2' },
-						{ label: 'Hover 3', value: 'hover-3' },
-						{ label: 'Hover 8', value: 'hover-8' },
-						{ label: 'Hover 9', value: 'hover-9' },
-					].map((type) => (
-						<Button
-							key={type.value}
-							isPrimary={HoverType === type.value}
-							onClick={() => handleHoverTypeChange(type.value)}
-						>
-							{type.label}
-						</Button>
-					))}
-				</div>
+					<div className="link-type-controls button-group-sidebar_33">
+						{[
+							{ label: 'Нет', value: 'none' },
+							{ label: 'Hover', value: 'hover' },
+							{ label: 'Hover 2', value: 'hover-2' },
+							{ label: 'Hover 3', value: 'hover-3' },
+							{ label: 'Hover 8', value: 'hover-8' },
+							{ label: 'Hover 9', value: 'hover-9' },
+						].map((type) => (
+							<Button
+								key={type.value}
+								isPrimary={HoverType === type.value}
+								onClick={() => handleHoverTypeChange(type.value)}
+							>
+								{type.label}
+							</Button>
+						))}
+					</div>
+				</>
 			)}
 
 			{/* Link Variant */}
 			{ButtonType === 'link' && HoverType !== 'none' && (
-				<div className="link-variant-controls button-group-sidebar_33">
+				<>
 					<div className="component-sidebar-title">
 						<label>
 							{__('Link Variant', 'codeweber-gutenberg-blocks')}
 						</label>
 					</div>
-					{[
-						{ label: 'Body', value: 'body' },
-						{ label: 'Default', value: 'default' },
-						{ label: 'More', value: 'more' },
-						{ label: 'More Left', value: 'more-left' },
-					].map((variant) => (
-						<Button
-							key={variant.value}
-							isPrimary={LinkColor === variant.value}
-							onClick={() => handleLinkColorChange(variant.value)}
-						>
-							{variant.label}
-						</Button>
-					))}
-				</div>
+					<div className="link-variant-controls button-group-sidebar_50">
+						{[
+							{ label: 'Body', value: 'body' },
+							{ label: 'Default', value: 'default' },
+							{ label: 'More', value: 'more' },
+							{ label: 'More Left', value: 'more-left' },
+						].map((variant) => (
+							<Button
+								key={variant.value}
+								isPrimary={LinkColor === variant.value}
+								onClick={() => handleLinkColorChange(variant.value)}
+							>
+								{variant.label}
+							</Button>
+						))}
+					</div>
+				</>
 			)}
 
 			{/* Link Text Color */}
@@ -502,18 +503,18 @@ export const ButtonSidebar = ({
 			{/* Позиция иконки */}
 			{ButtonType === 'icon' && (
 				<>
+					<div className="component-sidebar-title">
+						<label>
+							{__(
+								'Icon Position',
+								'codeweber-gutenberg-blocks'
+							)}
+						</label>
+					</div>
 					<div className="icon-position-controls button-group-sidebar_50">
-						<div className="component-sidebar-title">
-							<label>
-								{__(
-									'Icon Position',
-									'codeweber-gutenberg-blocks'
-								)}
-							</label>
-						</div>
 						<Button
 							isPrimary={ButtonIconPosition === 'left'}
-							onClick={() => handleIconChange('position', 'left')} // Используем универсальный обработчик
+							onClick={() => handleIconChange('position', 'left')}
 						>
 							{__('Left', 'codeweber-gutenberg-blocks')}
 						</Button>
@@ -521,7 +522,7 @@ export const ButtonSidebar = ({
 							isPrimary={ButtonIconPosition === 'right'}
 							onClick={() =>
 								handleIconChange('position', 'right')
-							} // Используем универсальный обработчик
+							}
 						>
 							{__('Right', 'codeweber-gutenberg-blocks')}
 						</Button>

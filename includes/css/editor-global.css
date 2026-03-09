@@ -3,6 +3,14 @@
  * Стили редактора, применяемые ко всем блокам плагина
  */
 
+/* Переопределение ядра WP: убираем serif у .editor-styles-wrapper (theme/plugin-стили задают шрифт на body) */
+html :where(.editor-styles-wrapper) {
+	color: inherit;
+	font-family: inherit;
+	font-size: inherit;
+	line-height: inherit;
+}
+
 /* Убрать margin-bottom у блоков в редакторе */
 .block-editor-block-list__layout .wp-block,
 .block-editor-block-list__layout .block-editor-block-list__block,

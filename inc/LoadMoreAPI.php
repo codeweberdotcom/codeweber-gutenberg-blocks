@@ -63,10 +63,6 @@ class LoadMoreAPI {
 		$post_id = $request->get_param('post_id');
 		$block_attributes_json = $request->get_param('block_attributes');
 
-		// Логирование для отладки
-		error_log('LoadMoreAPI: block_id=' . $block_id . ', block_type=' . $block_type . ', offset=' . $offset . ', count=' . $count);
-		error_log('LoadMoreAPI: block_attributes_json length=' . strlen($block_attributes_json));
-
 		if (!$block_id) {
 			return new \WP_Error('missing_block_id', 'Block ID is required', ['status' => 400]);
 		}
@@ -104,37 +100,35 @@ class LoadMoreAPI {
 	}
 
 	/**
+	 * Decode a JSON string, retrying with urldecode and stripslashes on failure.
+	 */
+	private function decode_json_safely(string $json): ?array {
+		$result = json_decode($json, true);
+		if ($result !== null && json_last_error() === JSON_ERROR_NONE) {
+			return $result;
+		}
+		$result = json_decode(urldecode($json), true);
+		if ($result !== null && json_last_error() === JSON_ERROR_NONE) {
+			return $result;
+		}
+		return json_decode(stripslashes($json), true) ?: null;
+	}
+
+	/**
 	 * Load more images for Image Simple block
-	 * 
+	 *
 	 * @param string $block_attributes_json JSON string with block attributes
 	 * @param int $offset Current offset
 	 * @param int $count Number of items to load
 	 * @return array
 	 */
 	public function load_more_image_simple($block_attributes_json, $offset, $count) {
-		// block_attributes_json приходит как строка JSON из JavaScript
-		// Может быть уже закодирован в URL или нет, в зависимости от того, как передается
-		$attributes = null;
-		
-		// Пробуем декодировать как обычный JSON
-		$attributes = json_decode($block_attributes_json, true);
-		
-		// Если не удалось, пробуем с urldecode
-		if (!$attributes || json_last_error() !== JSON_ERROR_NONE) {
-			$decoded = urldecode($block_attributes_json);
-			$attributes = json_decode($decoded, true);
-		}
-		
-		// Если все еще не удалось, пробуем stripslashes (на случай экранирования)
-		if (!$attributes || json_last_error() !== JSON_ERROR_NONE) {
-			$attributes = json_decode(stripslashes($block_attributes_json), true);
-		}
-		
-		error_log('LoadMoreAPI: JSON decode error - ' . json_last_error_msg());
-		error_log('LoadMoreAPI: Decoded attributes - ' . (is_array($attributes) ? 'OK, images count: ' . (isset($attributes['images']) ? count($attributes['images']) : 0) : 'FAILED'));
+		$attributes = $this->decode_json_safely($block_attributes_json);
 		
 		if (!$attributes || !isset($attributes['images']) || !is_array($attributes['images'])) {
-			error_log('LoadMoreAPI: Invalid attributes or no images. Attributes type: ' . gettype($attributes));
+			if (defined('WP_DEBUG') && WP_DEBUG) {
+				error_log('LoadMoreAPI: Invalid attributes or no images. Attributes type: ' . gettype($attributes));
+			}
 			return [
 				'success' => false,
 				'message' => 'Invalid block attributes or no images found. JSON error: ' . json_last_error_msg(),
@@ -381,22 +375,12 @@ class LoadMoreAPI {
 	 * @return array
 	 */
 	public function load_more_post_grid($block_attributes_json, $offset, $count) {
-		// Декодируем атрибуты
-		$attributes = json_decode($block_attributes_json, true);
-		
-		// Если не удалось, пробуем с urldecode
-		if (!$attributes || json_last_error() !== JSON_ERROR_NONE) {
-			$decoded = urldecode($block_attributes_json);
-			$attributes = json_decode($decoded, true);
-		}
-		
-		// Если все еще не удалось, пробуем stripslashes
-		if (!$attributes || json_last_error() !== JSON_ERROR_NONE) {
-			$attributes = json_decode(stripslashes($block_attributes_json), true);
-		}
+		$attributes = $this->decode_json_safely($block_attributes_json);
 		
 		if (!$attributes) {
-			error_log('LoadMoreAPI Post Grid: Invalid attributes. JSON error: ' . json_last_error_msg());
+			if (defined('WP_DEBUG') && WP_DEBUG) {
+				error_log('LoadMoreAPI Post Grid: Invalid attributes. JSON error: ' . json_last_error_msg());
+			}
 			return [
 				'success' => false,
 				'message' => 'Invalid block attributes. JSON error: ' . json_last_error_msg(),
@@ -490,8 +474,6 @@ class LoadMoreAPI {
 		// Проверяем, есть ли еще посты для загрузки
 		$has_more = $new_offset < $query->found_posts;
 		
-		// Логирование для отладки
-		error_log('LoadMoreAPI Post Grid: offset=' . $offset . ', count=' . $count . ', found_posts=' . $query->found_posts . ', processed=' . $processed_count . ', loaded=' . $processed_count . ', new_offset=' . $new_offset);
 
 		return [
 			'success' => true,

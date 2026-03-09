@@ -63,7 +63,7 @@ const Edit = ({ attributes, setAttributes }) => {
 			<div {...blockProps}>
 				{displayType === 'dropdown' ? (
 					<>
-						<a className="dropdown-toggle" href="#" role="button" onClick={(e) => e.preventDefault()} aria-expanded="false" aria-label={__('Search', 'codeweber-blocks')}>
+						<a className="dropdown-toggle" href="#" role="button" onClick={(e) => e.preventDefault()} aria-expanded="false" aria-label={__('Search', 'codeweber-gutenberg-blocks')}>
 							<i className="uil uil-search"></i>
 						</a>
 						<div className="dropdown-menu dropdown-menu-end p-0" style={{ minWidth: (dropdownMinWidth && /^\d+$/.test(String(dropdownMinWidth)) ? dropdownMinWidth + 'px' : dropdownMinWidth) || '320px' }}>

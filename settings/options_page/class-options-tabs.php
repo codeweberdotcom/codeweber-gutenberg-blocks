@@ -73,7 +73,7 @@ class Options_Tabs
 				// Извлекаем заголовок вкладки из комментария в файле
 				$tab_title = self::get_tab_title_from_file($pages_dir . $tab . '.php');
 				// Оборачиваем заголовок вкладки в функцию перевода
-				$translated_tab_title = __($tab_title, 'codeweber-blocks');
+				$translated_tab_title = __($tab_title, 'codeweber-gutenberg-blocks');
 			?>
 				<li class="nav-item">
 					<a href="#tab-<?php echo $tab; ?>" data-bs-toggle="tab" class="nav-link nav-tab ms-0" id="tab-link-<?php echo $tab; ?>">

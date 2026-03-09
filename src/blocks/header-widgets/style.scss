@@ -1,13 +1,7 @@
 /**
  * Header Widgets Block - Frontend Styles
- * Container uses display: contents, children inherit navbar layout
+ *
+ * Стили на фронте задаются темой (navbar). Визуализация в редакторе — в editor.scss.
+ *
+ * @package CodeWeber Gutenberg Blocks
  */
-
-.wp-block-codeweber-blocks-header-widgets {
-	display: contents;
-}
-
-// Search dropdown (when Search display = Dropdown): hide toggle caret
-.wp-block-codeweber-blocks-header-widgets .cwgb-search-block .dropdown-toggle::after {
-	display: none !important;
-}

@@ -75,7 +75,7 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 	const fetchPhoneNumbers = async () => {
 		setIsLoadingPhones(true);
 		try {
-			const response = await fetch(`${wpApiSettings.root}wp/v2/phones`);
+			const response = await fetch(`${wpApiSettings.root}codeweber/v1/phones`);
 			if (!response.ok) {
 				throw new Error(
 					`Failed to fetch phones: ${response.status} ${response.statusText}`
@@ -330,7 +330,7 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 	useEffect(() => {
 		const fetchCF7Forms = async () => {
 			const response = await fetch(
-				`${sitelinkurl}/wp-json/wp/v2/options`
+				`${sitelinkurl}/wp-json/codeweber/v1/options`
 			);
 			const data = await response.json();
 			const forms = data.cf7_forms || {}; // Получаем объект с формами

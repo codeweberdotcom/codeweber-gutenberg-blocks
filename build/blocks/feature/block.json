@@ -309,7 +309,7 @@
       "default": 0
     }
   },
-  "textdomain": "codeweber-blocks",
+  "textdomain": "codeweber-gutenberg-blocks",
   "editorScript": "file:./index.js",
   "editorStyle": "file:./index.css",
   "style": "file:./style-index.css"

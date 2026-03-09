@@ -16,7 +16,7 @@ function generate_text_field($name)
 
 	// Получаем значение метки из JSON для данного поля
 	// Для перевода обернули метку в __()
-	$label = isset($fields_data[$name]) ? __($fields_data[$name], 'codeweber-blocks') : ucfirst(str_replace('_', ' ', $name));
+	$label = isset($fields_data[$name]) ? __($fields_data[$name], 'codeweber-gutenberg-blocks') : ucfirst(str_replace('_', ' ', $name));
 
 	// Получаем значение из базы данных по имени поля
 	$value = esc_attr(get_option($name, ''));

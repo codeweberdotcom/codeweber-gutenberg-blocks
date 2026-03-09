@@ -19,7 +19,7 @@
     "html": false,
     "customClassName": false
   },
-  "textdomain": "codeweber-blocks",
+  "textdomain": "codeweber-gutenberg-blocks",
   "editorScript": "file:./index.js",
   "editorStyle": "file:./editor.scss",
   "style": "file:./style.scss",

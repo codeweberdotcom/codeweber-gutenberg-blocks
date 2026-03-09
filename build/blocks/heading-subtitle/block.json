@@ -214,6 +214,6 @@
       "default": ""
     }
   },
-  "textdomain": "codeweber-blocks",
+  "textdomain": "codeweber-gutenberg-blocks",
   "editorScript": "file:./index.js"
 }

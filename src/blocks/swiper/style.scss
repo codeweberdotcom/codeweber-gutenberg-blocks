@@ -1,26 +1,7 @@
 /**
  * Swiper Block - Frontend Styles
  *
+ * Стили слайдера на фронте задаются темой/Swiper. Визуализация в редакторе — в editor.scss.
+ *
  * @package CodeWeber Gutenberg Blocks
  */
-
-.wp-block-codeweber-blocks-swiper {
-	.swiper-slide {
-		// Ensure slides display properly
-		display: flex;
-		flex-direction: column;
-		height: auto;
-	}
-}
-
-
-
-
-
-
-
-
-
-
-
-

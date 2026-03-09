@@ -88,105 +88,105 @@ export const SearchSidebar = ({ attributes, setAttributes }) => {
 
 	return (
 		<>
-			<PanelBody title={__('Block Settings', 'codeweber-blocks')} initialOpen={true}>
+			<PanelBody title={__('Block Settings', 'codeweber-gutenberg-blocks')} initialOpen={true}>
 				<TextControl
-					label={__('Block Class', 'codeweber-blocks')}
+					label={__('Block Class', 'codeweber-gutenberg-blocks')}
 					value={blockClass || ''}
 					onChange={(value) => setAttributes({ blockClass: value })}
 				/>
 				<TextControl
-					label={__('Block ID', 'codeweber-blocks')}
+					label={__('Block ID', 'codeweber-gutenberg-blocks')}
 					value={blockId || ''}
 					onChange={(value) => setAttributes({ blockId: (value || '').replace(/^#/, '').trim() })}
 				/>
 			</PanelBody>
-			<PanelBody title={__('Search form', 'codeweber-blocks')} initialOpen={true}>
+			<PanelBody title={__('Search form', 'codeweber-gutenberg-blocks')} initialOpen={true}>
 				<SelectControl
-					label={__('Display type', 'codeweber-blocks')}
+					label={__('Display type', 'codeweber-gutenberg-blocks')}
 					value={displayType || 'form'}
 					options={[
-						{ value: 'form', label: __('Form (inline)', 'codeweber-blocks') },
-						{ value: 'inline', label: __('Inline', 'codeweber-blocks') },
-						{ value: 'dropdown', label: __('Dropdown (no button)', 'codeweber-blocks') },
+						{ value: 'form', label: __('Form (inline)', 'codeweber-gutenberg-blocks') },
+						{ value: 'inline', label: __('Inline', 'codeweber-gutenberg-blocks') },
+						{ value: 'dropdown', label: __('Dropdown (no button)', 'codeweber-gutenberg-blocks') },
 					]}
 					onChange={(value) => setAttributes({ displayType: value })}
 				/>
 				{displayType === 'dropdown' && (
 					<TextControl
-						label={__('Dropdown min width', 'codeweber-blocks')}
+						label={__('Dropdown min width', 'codeweber-gutenberg-blocks')}
 						value={dropdownMinWidth ?? '320'}
-						help={__('e.g. 320, 320px, 20rem. Default: 320px', 'codeweber-blocks')}
+						help={__('e.g. 320, 320px, 20rem. Default: 320px', 'codeweber-gutenberg-blocks')}
 						onChange={(value) => setAttributes({ dropdownMinWidth: value || '320' })}
 					/>
 				)}
 				<TextControl
-					label={__('Placeholder', 'codeweber-blocks')}
+					label={__('Placeholder', 'codeweber-gutenberg-blocks')}
 					value={placeholder || ''}
-					help={__('Leave empty to use “Type keyword” (translatable in Loco).', 'codeweber-blocks')}
+					help={__('Leave empty to use “Type keyword” (translatable in Loco).', 'codeweber-gutenberg-blocks')}
 					onChange={(value) => setAttributes({ placeholder: value })}
 				/>
 				<TextControl
-					label={__('Posts per page', 'codeweber-blocks')}
+					label={__('Posts per page', 'codeweber-gutenberg-blocks')}
 					value={postsPerPage || '8'}
 					onChange={(value) => setAttributes({ postsPerPage: value })}
 				/>
 				<SelectControl
-					label={__('Post types', 'codeweber-blocks')}
+					label={__('Post types', 'codeweber-gutenberg-blocks')}
 					value={postTypes || 'post'}
 					options={
 						postTypesLoading
-							? [{ label: __('Loading…', 'codeweber-blocks'), value: '' }]
+							? [{ label: __('Loading…', 'codeweber-gutenberg-blocks'), value: '' }]
 							: postTypeOptions
 					}
 					onChange={(value) => setAttributes({ postTypes: value || 'post' })}
-					help={__('Post type to search in (theme and active theme CPT).', 'codeweber-blocks')}
+					help={__('Post type to search in (theme and active theme CPT).', 'codeweber-gutenberg-blocks')}
 				/>
 				<SelectControl
-					label={__('Search content', 'codeweber-blocks')}
+					label={__('Search content', 'codeweber-gutenberg-blocks')}
 					value={searchContent || 'false'}
 					options={[
-						{ value: 'false', label: __('No', 'codeweber-blocks') },
-						{ value: 'true', label: __('Yes', 'codeweber-blocks') },
+						{ value: 'false', label: __('No', 'codeweber-gutenberg-blocks') },
+						{ value: 'true', label: __('Yes', 'codeweber-gutenberg-blocks') },
 					]}
 					onChange={(value) => setAttributes({ searchContent: value })}
 				/>
 				<SelectControl
-					label={__('Show excerpt', 'codeweber-blocks')}
+					label={__('Show excerpt', 'codeweber-gutenberg-blocks')}
 					value={showExcerpt || 'false'}
 					options={[
-						{ value: 'false', label: __('No', 'codeweber-blocks') },
-						{ value: 'true', label: __('Yes', 'codeweber-blocks') },
+						{ value: 'false', label: __('No', 'codeweber-gutenberg-blocks') },
+						{ value: 'true', label: __('Yes', 'codeweber-gutenberg-blocks') },
 					]}
 					onChange={(value) => setAttributes({ showExcerpt: value })}
 				/>
 				<TextControl
-					label={__('Taxonomy', 'codeweber-blocks')}
+					label={__('Taxonomy', 'codeweber-gutenberg-blocks')}
 					value={taxonomy || ''}
-					help={__('e.g. category, post_tag', 'codeweber-blocks')}
+					help={__('e.g. category, post_tag', 'codeweber-gutenberg-blocks')}
 					onChange={(value) => setAttributes({ taxonomy: value })}
 				/>
 				<TextControl
-					label={__('Term slug', 'codeweber-blocks')}
+					label={__('Term slug', 'codeweber-gutenberg-blocks')}
 					value={term || ''}
 					onChange={(value) => setAttributes({ term: value })}
 				/>
 				<SelectControl
-					label={__('Include taxonomies', 'codeweber-blocks')}
+					label={__('Include taxonomies', 'codeweber-gutenberg-blocks')}
 					value={includeTaxonomies || 'false'}
 					options={[
-						{ value: 'false', label: __('No', 'codeweber-blocks') },
-						{ value: 'true', label: __('Yes', 'codeweber-blocks') },
+						{ value: 'false', label: __('No', 'codeweber-gutenberg-blocks') },
+						{ value: 'true', label: __('Yes', 'codeweber-gutenberg-blocks') },
 					]}
 					onChange={(value) => setAttributes({ includeTaxonomies: value })}
 				/>
 				<TextControl
-					label={__('Form ID', 'codeweber-blocks')}
+					label={__('Form ID', 'codeweber-gutenberg-blocks')}
 					value={formId || ''}
-					help={__('Leave empty for auto', 'codeweber-blocks')}
+					help={__('Leave empty for auto', 'codeweber-gutenberg-blocks')}
 					onChange={(value) => setAttributes({ formId: value })}
 				/>
 				<TextControl
-					label={__('Form wrapper class', 'codeweber-blocks')}
+					label={__('Form wrapper class', 'codeweber-gutenberg-blocks')}
 					value={formClass || ''}
 					onChange={(value) => setAttributes({ formClass: value })}
 				/>

@@ -1,19 +1,8 @@
 /**
  * Divider Block - Frontend Styles
  *
+ * Стили для .cwgb-divider-block (wave divider) перенесены в тему: theme/_divider.scss.
+ * hr, hr.double, .divider-icon, .divider-text — в _reboot.scss.
+ *
  * @package CodeWeber Gutenberg Blocks
- * 
- * Note: Styles for hr, hr.double, .divider-icon, and .divider-text 
- * are defined in theme Codeweber (_reboot.scss)
  */
-
-.cwgb-divider-block {
-	// Wave divider (specific to block)
-	.divider {
-		svg {
-			display: block;
-			width: 100%;
-			height: auto;
-		}
-	}
-}

@@ -5,7 +5,7 @@
   "title": "Menu",
   "category": "codeweber-gutenberg-elements",
   "icon": "menu",
-  "description": "Menu block with Custom and WordPress Menu modes. Supports dark/light theme and list styling options.",
+  "description": "Menu block with Custom, WordPress Menu and Taxonomy modes. Supports dark/light theme and list styling options.",
   "keywords": [
     "menu",
     "navigation",
@@ -26,9 +26,21 @@
       "type": "number",
       "default": 0
     },
+    "taxonomySlug": {
+      "type": "string",
+      "default": ""
+    },
+    "taxonomyRestBase": {
+      "type": "string",
+      "default": ""
+    },
+    "taxonomyHideEmpty": {
+      "type": "boolean",
+      "default": false
+    },
     "depth": {
       "type": "number",
-      "default": 0
+      "default": 1
     },
     "orientation": {
       "type": "string",
@@ -36,7 +48,7 @@
     },
     "theme": {
       "type": "string",
-      "default": "default"
+      "default": "light"
     },
     "listType": {
       "type": "string",
@@ -164,7 +176,7 @@
     },
     "useCollapse": {
       "type": "boolean",
-      "default": false
+      "default": true
     },
     "collapseListType": {
       "type": "string",
@@ -173,6 +185,5 @@
   },
   "textdomain": "codeweber-gutenberg-blocks",
   "editorScript": "file:./index.js",
-  "editorStyle": "file:./index.css",
-  "style": "file:./style-index.css"
+  "editorStyle": "file:./index.css"
 }

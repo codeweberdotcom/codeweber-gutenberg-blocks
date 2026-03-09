@@ -57,4 +57,15 @@
 		visibility: visible;
 		pointer-events: auto;
 	}
+
+	// Тип 4: отступ вложенных уровней в превью (перебивает общий сброс ul)
+	.menu-type-4-sub {
+		padding-left: 1rem;
+		margin-top: 0.25rem;
+	}
+
+	// В админке общий сброс ul (из style.scss) перебивает padding у .dropdown-menu (Type 5). Восстанавливаем.
+	ul.dropdown-menu {
+		padding: var(--bs-dropdown-padding-y, 1rem) var(--bs-dropdown-padding-x, 0);
+	}
 }

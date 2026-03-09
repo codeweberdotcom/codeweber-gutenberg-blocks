@@ -23,6 +23,9 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 	const {
 		mode,
 		wpMenuId,
+		taxonomySlug,
+		taxonomyRestBase,
+		taxonomyHideEmpty,
 		depth,
 		orientation,
 		theme,
@@ -61,6 +64,7 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 	const previousWpMenuIdRef = useRef(wpMenuId);
 	const [isLoadingMenu, setIsLoadingMenu] = useState(false);
 	const [wpMenus, setWpMenus] = useState([]);
+	const [wpTaxonomies, setWpTaxonomies] = useState([]);
 
 	// Ensure item.text is always a string (API may return { rendered: "..." } for HTML menu items)
 	const safeItemText = (item) => {
@@ -84,6 +88,28 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 			}
 		};
 		fetchMenus();
+	}, []);
+
+	// Fetch public taxonomies on mount (for Taxonomy data source)
+	useEffect(() => {
+		const fetchTaxonomies = async () => {
+			try {
+				const taxonomies = await apiFetch({
+					path: '/wp/v2/taxonomies?context=edit',
+				});
+				const list = Object.entries(taxonomies || {}).map(([slug, tax]) => ({
+					slug,
+					name: tax.name || slug,
+					rest_base: tax.rest_base || slug,
+					types: Array.isArray(tax.types) ? tax.types : [],
+				}));
+				setWpTaxonomies(list);
+			} catch (error) {
+				console.error('Error fetching taxonomies:', error);
+				setWpTaxonomies([]);
+			}
+		};
+		fetchTaxonomies();
 	}, []);
 
 	// Ensure all item IDs are unique and contain clientId
@@ -178,6 +204,44 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 		}
 	}, [mode, wpMenuId, clientId, setAttributes]);
 
+	// Fetch taxonomy terms when mode is 'taxonomy' for editor preview (учитываем Hide empty terms)
+	const lastFetchedTaxonomyKeyRef = useRef(null);
+	useEffect(() => {
+		if (mode !== 'taxonomy' || !taxonomySlug) {
+			if (mode !== 'taxonomy') lastFetchedTaxonomyKeyRef.current = null;
+			return;
+		}
+		const hideEmpty = taxonomyHideEmpty === true;
+		const fetchKey = `${taxonomySlug}-${hideEmpty}`;
+		if (lastFetchedTaxonomyKeyRef.current === fetchKey) return;
+		lastFetchedTaxonomyKeyRef.current = fetchKey;
+		const fetchTerms = async () => {
+			try {
+				const restBase =
+					taxonomyRestBase ||
+					(taxonomySlug === 'category' ? 'categories' : taxonomySlug === 'post_tag' ? 'tags' : taxonomySlug);
+				// hide_empty=1 скрывает пустые термины, 0 — показывать все (как get_terms на фронте)
+				const terms = await apiFetch({
+					path: `/wp/v2/${restBase}?per_page=100&_fields=id,name,slug,parent,link&hide_empty=${hideEmpty ? 1 : 0}`,
+				});
+				const list = Array.isArray(terms) ? terms : [];
+				const clientIdPrefix = clientId.replace(/[^a-z0-9]/gi, '');
+				const transformedItems = list.map((term, index) => ({
+					id: `term-${clientIdPrefix}-${term.id}-${index}`,
+					text: term.name || term.slug || '',
+					url: term.link || '#',
+					parent: parseInt(term.parent ?? 0, 10),
+					wpId: term.id,
+				}));
+				setAttributes({ items: transformedItems });
+			} catch (error) {
+				console.error('Error fetching taxonomy terms:', error);
+				setAttributes({ items: [] });
+			}
+		};
+		fetchTerms();
+	}, [mode, taxonomySlug, taxonomyRestBase, taxonomyHideEmpty, clientId, setAttributes]);
+
 	const updateItem = (index, field, value) => {
 		const newItems = [...items];
 		newItems[index] = {
@@ -261,21 +325,55 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 		return classes.join(' ');
 	};
 
-	// Collapse mode: navbar-nav + list-unstyled + menu-collapse-1|2|3 (matches render.php and theme _nav.scss)
+	// Collapse mode: 1|2|3 = navbar-nav + list-unstyled + menu-collapse-N; 4 = simple list (list-unstyled menu-list-type-4)
 	const getCollapseListClasses = () => {
+		if (collapseListType === '4') {
+			return 'list-unstyled menu-list-type-4';
+		}
 		const type = collapseListType === '2' || collapseListType === '3' ? collapseListType : '1';
 		return `navbar-nav list-unstyled menu-collapse-${type}`;
 	};
 
-	// Tree by parent for collapse markup (same structure as render.php)
+	const getCollapseSubListClasses = () => {
+		if (collapseListType === '4') {
+			return 'list-unstyled menu-type-4-sub';
+		}
+		return getCollapseListClasses();
+	};
+
+	// Tree by parent for collapse markup (same structure as render.php). Custom items без parent — один уровень.
 	const buildByParent = (itemsList) => {
 		const by = {};
-		(itemsList || []).forEach((item) => {
+		(itemsList || []).forEach((item, idx) => {
 			const p = parseInt(item.parent, 10) || 0;
 			if (!by[p]) by[p] = [];
-			by[p].push({ ...item, wp_id: item.wpId });
+			by[p].push({ ...item, wp_id: item.wpId ?? item.id ?? idx + 1 });
 		});
 		return by;
+	};
+
+	// Type 4: simple list (no collapse), mirrors render.php $render_menu_level for collapseListType 4
+	const renderSimpleLevel = (byParent, parentId, depthLimit, currentLevel, listClassStr, subListClassStr, linkClass, textThemeClass) => {
+		const children = byParent[parentId] || [];
+		const nestedUlClass = subListClassStr || listClassStr;
+		return children.map((item) => {
+			const hasChildren =
+				(depthLimit === 0 || currentLevel < depthLimit) &&
+				(byParent[item.wp_id]?.length > 0);
+			const linkClasses = [textThemeClass, linkClass].filter(Boolean).join(' ');
+			return (
+				<li key={item.id}>
+					<a href={item.url || '#'} className={linkClasses || undefined} style={{ pointerEvents: 'none' }}>
+						{safeItemText(item)}
+					</a>
+					{hasChildren && (
+						<ul className={nestedUlClass}>
+							{renderSimpleLevel(byParent, item.wp_id, depthLimit, currentLevel + 1, listClassStr, subListClassStr, linkClass, textThemeClass)}
+						</ul>
+					)}
+				</li>
+			);
+		});
 	};
 
 	// Recursive collapse level (mirrors render.php $render_menu_collapse)
@@ -399,11 +497,102 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 		});
 	};
 
-	// Filter items by depth for wp-menu mode (depth 0 = all levels)
+	// Type 5: vertical dropdown (dropend) — как на фронте: nav-link/dropdown-item, dropdown-toggle, dropdown-menu
+	const renderDropdownLevel = (byParent, parentId, depthLimit, currentLevel, textThemeClass, linkClass) => {
+		const children = byParent[parentId] || [];
+		return children.map((item) => {
+			const hasChildren =
+				(depthLimit === 0 || currentLevel < depthLimit) &&
+				(byParent[item.wp_id]?.length > 0);
+			const isTopLevel = currentLevel === 1;
+			const linkLabel = isTopLevel ? 'nav-link' : 'dropdown-item';
+			const linkClasses = [
+				linkLabel,
+				hasChildren && 'dropdown-toggle',
+				textThemeClass,
+				linkClass,
+			]
+				.filter(Boolean)
+				.join(' ');
+			const liClasses = [
+				'nav-item',
+				isTopLevel && 'parent-item',
+				hasChildren && 'dropdown dropend',
+				!isTopLevel && hasChildren && 'dropdown-submenu',
+			]
+				.filter(Boolean)
+				.join(' ');
+
+			if (hasChildren) {
+				return (
+					<li key={item.id} className={liClasses}>
+						<a
+							href={item.url || '#'}
+							className={linkClasses}
+							data-bs-toggle="dropdown"
+							aria-expanded="false"
+							style={{ pointerEvents: 'none' }}
+						>
+							{safeItemText(item)}
+						</a>
+						<ul className="dropdown-menu rounded-0">
+							{renderDropdownLevel(
+								byParent,
+								item.wp_id,
+								depthLimit,
+								currentLevel + 1,
+								textThemeClass,
+								linkClass
+							)}
+						</ul>
+					</li>
+				);
+			}
+			return (
+				<li key={item.id} className={liClasses}>
+					<a
+						href={item.url || '#'}
+						className={linkClasses}
+						style={{ pointerEvents: 'none' }}
+					>
+						{safeItemText(item)}
+					</a>
+				</li>
+			);
+		});
+	};
+
+	// Tree order (depth-first) for items with parent — для таксономий и WP Menu
+	const getItemsInTreeOrder = (itemsList) => {
+		if (!itemsList?.length) return [];
+		const byParent = {};
+		itemsList.forEach((item) => {
+			const p = parseInt(item.parent, 10) || 0;
+			if (!byParent[p]) byParent[p] = [];
+			byParent[p].push(item);
+		});
+		// sort each level by name
+		Object.keys(byParent).forEach((k) => {
+			byParent[k].sort((a, b) =>
+				(a.text || '').localeCompare(b.text || '', undefined, { sensitivity: 'base' })
+			);
+		});
+		const out = [];
+		const visit = (parentId) => {
+			(byParent[parentId] || []).forEach((item) => {
+				out.push(item);
+				visit(parseInt(item.wpId, 10));
+			});
+		};
+		visit(0);
+		return out;
+	};
+
+	// Filter items by depth for wp-menu / taxonomy (depth 0 = all levels), return in tree order
 	const getItemsForDisplay = () => {
-		if (mode !== 'wp-menu' || !items?.length) return items || [];
+		if (!items?.length) return items || [];
+		const isTreeSource = mode === 'wp-menu' || mode === 'taxonomy';
 		const depthLimit = typeof depth === 'number' ? depth : 0;
-		if (depthLimit === 0) return items;
 
 		const getItemDepth = (item, visited = new Set()) => {
 			const parentId = parseInt(item.parent, 10);
@@ -415,13 +604,15 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 			return 1 + getItemDepth(parentItem, visited);
 		};
 
-		return items.filter((item) => getItemDepth(item) <= depthLimit);
+		const ordered = isTreeSource ? getItemsInTreeOrder(items) : items;
+		if (depthLimit === 0) return ordered;
+		return ordered.filter((item) => getItemDepth(item) <= depthLimit);
 	};
 
 	const displayItems = getItemsForDisplay();
 
 	const themeClass =
-		theme === 'dark' ? 'menu-dark' : theme === 'light' ? 'menu-light' : '';
+		(theme || 'light') === 'dark' ? 'menu-dark' : 'menu-light';
 	const blockProps = useBlockProps({
 		id: menuId || undefined,
 		className: themeClass,
@@ -463,9 +654,9 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 
 		// Add theme color class only if no custom color is set (default/inverse — не добавляем)
 		if (!hasColorClass) {
-			if (theme === 'dark') {
+			if ((theme || 'light') === 'dark') {
 				classes.push('text-white');
-			} else if (theme === 'light') {
+			} else {
 				classes.push('text-dark');
 			}
 		}
@@ -488,22 +679,33 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 		return classes.filter(Boolean).join(' ');
 	};
 
-	// При depth = 0 на фронте выводится vertical-menu-wrapper (плоский список), не collapse — в редакторе то же.
-	const depthNum = typeof depth === 'number' ? depth : 0;
+	// Превью collapse: WP Menu (depth >= 1) или Taxonomy с иерархией. При depth 0 в редакторе collapse не показываем.
+	const depthNum = typeof depth === 'number' ? depth : 1;
+	// В редакторе collapse-вёрстка: WP Menu (с настройками), Taxonomy и Custom при наличии пунктов
 	const showCollapsePreview =
-		mode === 'wp-menu' &&
-		useCollapse &&
-		wpMenuId &&
-		depthNum >= 1 &&
-		!isLoadingMenu &&
-		items.length > 0;
+		(mode === 'wp-menu' &&
+			useCollapse &&
+			wpMenuId &&
+			depthNum >= 1 &&
+			!isLoadingMenu &&
+			items.length > 0) ||
+		(mode === 'taxonomy' && taxonomySlug && items.length > 0) ||
+		(mode === 'custom' && items.length > 0);
 
+	const treeSourceId =
+		mode === 'wp-menu' && wpMenuId
+			? String(wpMenuId)
+			: mode === 'taxonomy' && taxonomySlug
+				? `tax-${taxonomySlug}`
+				: mode === 'custom'
+					? 'custom'
+					: 'block';
 	const collapseWrapperId =
 		showCollapsePreview
-			? `menu-collapse-${wpMenuId}-block-${clientId.replace(/-/g, '').slice(0, 12)}`
+			? `menu-collapse-${treeSourceId}-${clientId.replace(/-/g, '').slice(0, 12)}`
 			: '';
-	const textThemeClass =
-		theme === 'dark' ? 'text-white' : theme === 'light' ? 'text-dark' : '';
+	// Цвет задаётся темой .navbar-light/.navbar-dark .nav-link, классы text-dark/text-white не добавляем
+	const textThemeClass = '';
 
 	const menuContent = (
 		<>
@@ -520,45 +722,100 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 					)}
 				</div>
 			)}
+			{!isLoadingMenu && items.length === 0 && mode === 'taxonomy' && taxonomySlug && (
+				<div style={{ padding: '20px', textAlign: 'center' }}>
+					{__(
+						'No terms found. Select another taxonomy or add terms.',
+						'codeweber-gutenberg-blocks'
+					)}
+				</div>
+			)}
 			{showCollapsePreview && (
 				<nav
 					id={collapseWrapperId}
-					className={[
-						'navbar-vertical',
-						'menu-collapse-nav',
-						theme === 'dark' && 'navbar-vertical-dark',
-						theme === 'light' && 'navbar-vertical-light',
-						containerClass || '',
-					]
-						.filter(Boolean)
-						.join(' ')}
+					className={
+						collapseListType === '5'
+							? [
+									'navbar-vertical',
+									'navbar-vertical-dropdown',
+									(theme || 'light') === 'dark' && 'navbar-dark',
+									(theme || 'light') === 'light' && 'navbar-light',
+									containerClass || '',
+							  ]
+									.filter(Boolean)
+									.join(' ')
+							: collapseListType === '4'
+							? [
+									'navbar-vertical',
+									(theme || 'light') === 'dark' && 'navbar-dark',
+									(theme || 'light') === 'light' && 'navbar-light',
+									containerClass || '',
+							  ]
+									.filter(Boolean)
+									.join(' ')
+							: [
+									'navbar-vertical',
+									'menu-collapse-nav',
+									(theme || 'light') === 'dark' && 'navbar-dark',
+									(theme || 'light') === 'light' && 'navbar-light',
+									containerClass || '',
+							  ]
+									.filter(Boolean)
+									.join(' ')
+					}
 				>
-					<ul className={getCollapseListClasses()}>
-						{renderCollapseLevel(
-							buildByParent(items),
-							0,
-							typeof depth === 'number' ? depth : 0,
-							1,
-							getCollapseListClasses(),
-							itemClass || '',
-							linkClass || '',
-							textThemeClass,
-							collapseWrapperId,
-							'editor',
-							topLevelClass || '',
-							topLevelClassStart || '',
-							topLevelClassEnd || ''
-						)}
+					<ul
+						className={
+							collapseListType === '5'
+								? 'navbar-nav flex-column'
+								: getCollapseListClasses()
+						}
+					>
+						{collapseListType === '5'
+							? renderDropdownLevel(
+									buildByParent(items),
+									0,
+									typeof depth === 'number' ? depth : 0,
+									1,
+									textThemeClass,
+									linkClass || ''
+							  )
+							: collapseListType === '4'
+							? renderSimpleLevel(
+									buildByParent(items),
+									0,
+									typeof depth === 'number' ? depth : 0,
+									1,
+									getCollapseListClasses(),
+									getCollapseSubListClasses(),
+									linkClass || '',
+									textThemeClass
+							  )
+							: renderCollapseLevel(
+									buildByParent(items),
+									0,
+									typeof depth === 'number' ? depth : 0,
+									1,
+									getCollapseListClasses(),
+									itemClass || '',
+									linkClass || '',
+									textThemeClass,
+									collapseWrapperId,
+									'editor',
+									topLevelClass || '',
+									topLevelClassStart || '',
+									topLevelClassEnd || ''
+							  )}
 					</ul>
 				</nav>
 			)}
 			{!showCollapsePreview && (mode === 'wp-menu'
-				? displayItems.length > 0 && !isLoadingMenu
+				? displayItems.length > 0 && !isLoadingMenu && depthNum >= 1
 				: true) && (
 				<ul className={getListClasses()}>
 					{displayItems.map((item, displayIndex) => {
 						const actualIndex = items.findIndex((i) => i.id === item.id);
-						const liThemeClass = theme === 'dark' ? 'text-white' : theme === 'light' ? 'text-dark' : '';
+						const liThemeClass = '';
 						const liClasses = [liThemeClass, itemClass || ''].filter(Boolean).join(' ');
 						if (enableMegaMenu) {
 							return (
@@ -655,27 +912,12 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 									></i>
 								</span>
 							)}
-							<span
-								className={
-									theme === 'dark'
-										? 'text-white'
-										: theme === 'light'
-										? 'text-dark'
-										: ''
-								}
-							>
+							<span className="">
 								{mode === 'custom' ? (
 									<>
 										<a
 											href={item.url || '#'}
-											className={[
-												theme === 'dark'
-													? 'text-white'
-													: theme === 'light'
-													? 'text-dark'
-													: '',
-												linkClass || '',
-											]
+											className={[ linkClass || '' ]
 												.filter(Boolean)
 												.join(' ')}
 											style={{ pointerEvents: 'none' }}
@@ -754,14 +996,7 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 								) : (
 									<a
 										href={item.url || '#'}
-										className={[
-											theme === 'dark'
-												? 'text-white'
-												: theme === 'light'
-												? 'text-dark'
-												: '',
-											linkClass || '',
-										]
+										className={[ linkClass || '' ]
 											.filter(Boolean)
 											.join(' ')}
 										style={{ pointerEvents: 'none' }}
@@ -794,6 +1029,7 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 					attributes={attributes}
 					setAttributes={setAttributes}
 					wpMenus={wpMenus}
+					wpTaxonomies={wpTaxonomies}
 				/>
 			</InspectorControls>
 

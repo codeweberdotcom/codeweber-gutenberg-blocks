@@ -5,6 +5,13 @@
  */
 
 .wp-block-codeweber-blocks-swiper {
+	/* Стили из style.scss (визуализация в редакторе) */
+	.swiper-slide {
+		display: flex;
+		flex-direction: column;
+		height: auto;
+	}
+
 	.swiper-wrapper {
 		// Style for editor
 		display: flex;

@@ -28,9 +28,9 @@ foreach ($fields as $field_key => $field_label) {
 }
 ?>
 
-<h2><?php echo __('Contacts', 'codeweber-blocks'); ?></h2>
+<h2><?php echo __('Contacts', 'codeweber-gutenberg-blocks'); ?></h2>
 
-<a target="_blank" href="<?php echo esc_url(get_site_url() . '/wp-json/wp/v2/options'); ?>"><?php echo __('Link to RestApi data', 'codeweber-blocks'); ?></a>
+<a target="_blank" href="<?php echo esc_url(get_site_url() . '/wp-json/codeweber/v1/options'); ?>"><?php echo __('Link to RestApi data', 'codeweber-gutenberg-blocks'); ?></a>
 
 <form method="post" action="options.php">
 	<?php
@@ -46,7 +46,7 @@ foreach ($fields as $field_key => $field_label) {
 
 			<div class="col-9">
 				<div class="card card-body border">
-					<h3><?php echo __('Company', 'codeweber-blocks'); ?></h3>
+					<h3><?php echo __('Company', 'codeweber-gutenberg-blocks'); ?></h3>
 					<div class="mb-4">
 						<?php echo generate_text_field('company_name'); ?>
 					</div>
@@ -58,7 +58,7 @@ foreach ($fields as $field_key => $field_label) {
 
 			<div class="col-3">
 				<div class="card card-body border">
-					<h3><?php echo __('Phones', 'codeweber-blocks'); ?></h3>
+					<h3><?php echo __('Phones', 'codeweber-gutenberg-blocks'); ?></h3>
 					<div class="mb-4">
 						<?php echo generate_text_field('phone_number'); ?>
 					</div>

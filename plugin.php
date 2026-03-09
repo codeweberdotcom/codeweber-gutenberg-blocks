@@ -23,7 +23,7 @@
    exit;
  }
 
- define('GUTENBERG_BLOCKS_VERSION', '0.1.0');
+ define('GUTENBERG_BLOCKS_VERSION', '0.3.0');
  define('GUTENBERG_BLOCKS_URL', plugin_dir_url( __FILE__ ));
  define('GUTENBERG_BLOCKS_INC_URL', GUTENBERG_BLOCKS_URL . 'includes/');
 

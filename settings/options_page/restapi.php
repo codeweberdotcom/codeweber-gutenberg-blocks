@@ -6,14 +6,14 @@ if (!defined('ABSPATH')) {
 // Регистрируем REST API маршруты
 add_action('rest_api_init', function () {
 	// Общий endpoint для опций
-	register_rest_route('wp/v2', '/options', [
+	register_rest_route('codeweber/v1', '/options', [
 		'methods' => 'GET',
 		'callback' => 'get_custom_option',
 		'permission_callback' => '__return_true'
 	]);
-	
+
 	// Отдельный endpoint для получения телефонов из Redux
-	register_rest_route('wp/v2', '/phones', [
+	register_rest_route('codeweber/v1', '/phones', [
 		'methods' => 'GET',
 		'callback' => 'get_redux_phones_api',
 		'permission_callback' => '__return_true'
@@ -51,9 +51,6 @@ function get_custom_option()
 
 	// Получаем CF7 формы
 	$cf7_forms = get_cf7_forms();
-
-	// Логируем данные о CF7 формах
-	error_log(print_r($cf7_forms, true));
 
 	// Добавляем формы CF7 в итоговый результат
 	$result['cf7_forms'] = $cf7_forms;
@@ -159,10 +156,13 @@ function get_redux_phones()
 	
 	// Список полей телефонов в Redux
 	$phone_fields = ['phone_01', 'phone_02', 'phone_03', 'phone_04', 'phone_05'];
-	
+
+	// Получаем все опции за один вызов
+	$all_options = get_option($opt_name, []);
+
 	// Получаем каждый телефон из Redux
 	foreach ($phone_fields as $phone_field) {
-		$phone_value = Redux::get_option($opt_name, $phone_field);
+		$phone_value = $all_options[$phone_field] ?? '';
 		
 		// Добавляем только если телефон заполнен
 		if (!empty($phone_value) && trim($phone_value) !== '') {

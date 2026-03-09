@@ -120,3 +120,11 @@
 		}
 	}
 }
+
+/* Стили из style.scss (визуализация в редакторе) */
+.wp-block-codeweber-blocks-tables {
+	.table-responsive {
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+	}
+}

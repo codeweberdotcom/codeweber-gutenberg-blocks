@@ -32,7 +32,7 @@
 		"formId": { "type": "string", "default": "" },
 		"formClass": { "type": "string", "default": "" }
 	},
-	"textdomain": "codeweber-blocks",
+	"textdomain": "codeweber-gutenberg-blocks",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
 	"style": "file:./style-index.css",

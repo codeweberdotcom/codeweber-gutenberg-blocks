@@ -65,6 +65,36 @@
 	}
 }
 
+/* Стили из style.scss (визуализация в редакторе) */
+.wp-block-codeweber-blocks-card {
+	&.bg-image {
+		background-size: cover;
+		background-position: center;
+		background-repeat: no-repeat;
+	}
+
+	&.bg-overlay {
+		position: relative;
+
+		&:before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background: rgba(0, 0, 0, var(--overlay-opacity, 0.5));
+			border-radius: inherit;
+			pointer-events: none;
+		}
+
+		> .card-body {
+			position: relative;
+			z-index: 1;
+		}
+	}
+}
+
 
 
 

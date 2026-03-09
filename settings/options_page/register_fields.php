@@ -25,7 +25,7 @@ function register_page_settings()
 				}
 
 				// Переводим метку с помощью __() функции
-				$translated_label = __($field_label, 'codeweber-blocks');
+				$translated_label = __($field_label, 'codeweber-gutenberg-blocks');
 
 				// Регистрируем поле с переведенной меткой
 				register_setting('page_settings_group', $field_key, [

@@ -36,10 +36,12 @@ const TabIcon = ({ icon, label }) => (
 	</span>
 );
 
-export const MenuSidebar = ({ attributes, setAttributes, wpMenus = [] }) => {
+export const MenuSidebar = ({ attributes, setAttributes, wpMenus = [], wpTaxonomies = [] }) => {
 	const {
 		mode,
 		wpMenuId,
+		taxonomySlug,
+		taxonomyHideEmpty,
 		depth,
 		orientation,
 		theme,
@@ -67,7 +69,6 @@ export const MenuSidebar = ({ attributes, setAttributes, wpMenus = [] }) => {
 		titleWeight,
 		titleTransform,
 		titleClass,
-		useCollapse,
 		collapseListType,
 	} = attributes;
 
@@ -207,7 +208,7 @@ export const MenuSidebar = ({ attributes, setAttributes, wpMenus = [] }) => {
 									)}
 								</label>
 							</div>
-							<div className="button-group-sidebar_50">
+							<div className="button-group-sidebar_33">
 								{[
 									{
 										label: __(
@@ -222,6 +223,13 @@ export const MenuSidebar = ({ attributes, setAttributes, wpMenus = [] }) => {
 											'codeweber-gutenberg-blocks'
 										),
 										value: 'wp-menu',
+									},
+									{
+										label: __(
+											'Taxonomy',
+											'codeweber-gutenberg-blocks'
+										),
+										value: 'taxonomy',
 									},
 								].map((modeOption) => (
 									<Button
@@ -283,14 +291,89 @@ export const MenuSidebar = ({ attributes, setAttributes, wpMenus = [] }) => {
 												'Menu depth (levels)',
 												'codeweber-gutenberg-blocks'
 											)}
-											value={depth ?? 0}
+											value={depth ?? 1}
 											onChange={(value) =>
-												setAttributes({ depth: value ?? 0 })
+												setAttributes({ depth: Math.max(1, value ?? 1) })
 											}
-											min={0}
+											min={1}
 											max={5}
 											help={__(
-												'0 = all levels, 1 = top level only, 2 = top + 1 sublevel, etc.',
+												'1 = top level only, 2 = top + 1 sublevel, etc.',
+												'codeweber-gutenberg-blocks'
+											)}
+										/>
+									</div>
+								</>
+							)}
+
+							{/* Taxonomy Selection - показываем только в режиме Taxonomy */}
+							{mode === 'taxonomy' && (
+								<>
+									<div style={{ marginTop: '16px' }}>
+										<SelectControl
+											label={__(
+												'Taxonomy',
+												'codeweber-gutenberg-blocks'
+											)}
+											value={taxonomySlug || ''}
+											options={[
+												{
+													label: __(
+														'Select taxonomy...',
+														'codeweber-gutenberg-blocks'
+													),
+													value: '',
+												},
+												...wpTaxonomies.map((tax) => {
+												const name = tax.name || tax.slug;
+												const typesLabel = tax.types?.length
+													? ` (${tax.types.join(', ')})`
+													: '';
+												return {
+													label: name + typesLabel,
+													value: tax.slug,
+												};
+											}),
+											]}
+											onChange={(value) => {
+												const tax = wpTaxonomies.find((t) => t.slug === value);
+												setAttributes({
+													taxonomySlug: value || '',
+													taxonomyRestBase: tax?.rest_base || value || '',
+												});
+											}}
+											help={__(
+												'Build menu from taxonomy terms (e.g. Categories)',
+												'codeweber-gutenberg-blocks'
+											)}
+										/>
+									</div>
+									<div style={{ marginTop: '16px' }}>
+										<ToggleControl
+											label={__(
+												'Hide empty terms',
+												'codeweber-gutenberg-blocks'
+											)}
+											checked={taxonomyHideEmpty === true}
+											onChange={(value) =>
+												setAttributes({ taxonomyHideEmpty: !!value })
+											}
+										/>
+									</div>
+									<div style={{ marginTop: '16px' }}>
+										<RangeControl
+											label={__(
+												'Menu depth (levels)',
+												'codeweber-gutenberg-blocks'
+											)}
+											value={depth ?? 1}
+											onChange={(value) =>
+												setAttributes({ depth: Math.max(1, value ?? 1) })
+											}
+											min={1}
+											max={5}
+											help={__(
+												'1 = top level only. For hierarchical taxonomies (e.g. Categories) sublevels are shown.',
 												'codeweber-gutenberg-blocks'
 											)}
 										/>
@@ -328,7 +411,7 @@ export const MenuSidebar = ({ attributes, setAttributes, wpMenus = [] }) => {
 								))}
 							</div>
 
-							{/* Theme - Default / Light / Dark / Inverse */}
+							{/* Theme — только navbar-light (по умолчанию) и navbar-dark */}
 							<div
 								className="component-sidebar-title"
 								style={{ marginTop: '16px' }}
@@ -339,13 +422,6 @@ export const MenuSidebar = ({ attributes, setAttributes, wpMenus = [] }) => {
 							</div>
 							<div className="button-group-sidebar_50">
 								{[
-									{
-										label: __(
-											'Default',
-											'codeweber-gutenberg-blocks'
-										),
-										value: 'default',
-									},
 									{
 										label: __(
 											'Light',
@@ -360,18 +436,11 @@ export const MenuSidebar = ({ attributes, setAttributes, wpMenus = [] }) => {
 										),
 										value: 'dark',
 									},
-									{
-										label: __(
-											'Inverse',
-											'codeweber-gutenberg-blocks'
-										),
-										value: 'inverse',
-									},
 								].map((themeOption) => (
 									<Button
 										key={themeOption.value}
 										isPrimary={
-											(theme || 'default') ===
+											(theme || 'light') ===
 											themeOption.value
 										}
 										onClick={() =>
@@ -384,64 +453,43 @@ export const MenuSidebar = ({ attributes, setAttributes, wpMenus = [] }) => {
 									</Button>
 								))}
 							</div>
-							{theme === 'inverse' && (
-								<p style={{ marginTop: '8px', fontSize: '12px', color: '#757575' }}>
-									{__('Inverse: no colors on menu elements; adds class text-inverse to footer.', 'codeweber-gutenberg-blocks')}
-								</p>
-							)}
 
-							{/* Collapse — показываем только если Menu depth (levels) > 1 */}
-							{mode === 'wp-menu' && (depth ?? 0) > 1 && (
+							{/* Стиль меню (collapse) — всегда для Custom, Taxonomy и WP Menu, при любом depth */}
+							{(mode === 'custom' || mode === 'taxonomy' || mode === 'wp-menu') && (
 								<>
 									<div
 										className="component-sidebar-title"
 										style={{ marginTop: '16px' }}
 									>
 										<label>
-											{__('Collapse', 'codeweber-gutenberg-blocks')}
+											{__('Menu style', 'codeweber-gutenberg-blocks')}
 										</label>
 									</div>
-									<ToggleControl
-										label={__(
-											'Use Collapse for submenus',
-											'codeweber-gutenberg-blocks'
-										)}
-										checked={useCollapse || false}
-										onChange={(value) =>
-											setAttributes({ useCollapse: value })
-										}
-										help={__(
-											'Render submenu levels as Bootstrap collapse (expand/collapse on click).',
-											'codeweber-gutenberg-blocks'
-										)}
-									/>
-									{useCollapse && (
-										<div style={{ marginTop: '12px' }}>
-											<div className="component-sidebar-title">
-												<label>
-													{__('Collapse list style', 'codeweber-gutenberg-blocks')}
-												</label>
-											</div>
-											<div className="button-group-sidebar_33">
-												{[
-													{ label: __('1', 'codeweber-gutenberg-blocks'), value: '1' },
-													{ label: __('2', 'codeweber-gutenberg-blocks'), value: '2' },
-													{ label: __('3', 'codeweber-gutenberg-blocks'), value: '3' },
-												].map((opt) => (
-													<Button
-														key={opt.value}
-														isPrimary={(collapseListType || '1') === opt.value}
-														onClick={() => setAttributes({ collapseListType: opt.value })}
-													>
-														{opt.label}
-													</Button>
-												))}
-											</div>
-											<p style={{ marginTop: '6px', fontSize: '12px', color: '#757575' }}>
-												{__('1: compact, 2: with borders, 3: bordered container.', 'codeweber-gutenberg-blocks')}
-											</p>
-										</div>
-									)}
+									<div className="component-sidebar-title">
+										<label>
+											{__('Menu Style', 'codeweber-gutenberg-blocks')}
+										</label>
+									</div>
+									<div className="button-group-sidebar_33">
+										{[
+											{ label: __('1', 'codeweber-gutenberg-blocks'), value: '1' },
+											{ label: __('2', 'codeweber-gutenberg-blocks'), value: '2' },
+											{ label: __('3', 'codeweber-gutenberg-blocks'), value: '3' },
+											{ label: __('4', 'codeweber-gutenberg-blocks'), value: '4' },
+											{ label: __('5', 'codeweber-gutenberg-blocks'), value: '5' },
+										].map((opt) => (
+											<Button
+												key={opt.value}
+												isPrimary={(collapseListType || '1') === opt.value}
+												onClick={() => setAttributes({ collapseListType: opt.value })}
+											>
+												{opt.label}
+											</Button>
+										))}
+									</div>
+									<p style={{ marginTop: '6px', fontSize: '12px', color: '#757575' }}>
+										{__('1: compact, 2: with borders, 3: bordered container, 4: simple list, 5: vertical dropdown (right).', 'codeweber-gutenberg-blocks')}
+									</p>
 								</>
 							)}
 						</PanelBody>

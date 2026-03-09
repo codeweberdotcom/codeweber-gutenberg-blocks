@@ -130,11 +130,11 @@ const MenuSave = ({ attributes }) => {
 			}
 		}
 
-		// Add theme color class only if no custom color is set (default/inverse — не добавляем)
+		// Цвет заголовка при light/dark (опционально; для пунктов меню цвет задаётся темой)
 		if (!hasColorClass) {
-			if (theme === 'dark') {
+			if ((theme || 'light') === 'dark') {
 				classes.push('text-white');
-			} else if (theme === 'light') {
+			} else {
 				classes.push('text-dark');
 			}
 		}
@@ -157,8 +157,8 @@ const MenuSave = ({ attributes }) => {
 		return classes.filter(Boolean).join(' ');
 	};
 
-	const liThemeClass = theme === 'dark' ? 'text-white' : theme === 'light' ? 'text-dark' : '';
-	const liClasses = [liThemeClass, itemClass || ''].filter(Boolean).join(' ');
+	const liThemeClass = '';
+	const liClasses = [itemClass || ''].filter(Boolean).join(' ');
 
 	const content = (
 		<ul className={getListClasses()}>
@@ -179,17 +179,12 @@ const MenuSave = ({ attributes }) => {
 							</span>
 						)}
 						<span
-							className={
-								theme === 'dark' ? 'text-white' : theme === 'light' ? 'text-dark' : ''
-							}
+							className=""
 						>
 							<a
 								href={item.url || '#'}
 								className={
-									[
-										theme === 'dark' ? 'text-white' : theme === 'light' ? 'text-dark' : '',
-										linkClass || '',
-									]
+								[ linkClass || '' ]
 										.filter(Boolean)
 										.join(' ')
 								}

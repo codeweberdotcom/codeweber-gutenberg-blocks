@@ -51,3 +51,4 @@ Task-oriented documentation in `doc_claude/`.
 | REST API endpoints | `doc_claude/api/REST_API_REFERENCE.md` |
 | Plugin hooks | `doc_claude/api/HOOKS_REFERENCE.md` |
 | Theme integration | `doc_claude/integrations/THEME_INTEGRATION.md` |
+| Security: escaping, sanitization, REST permissions | `doc_claude/security/SECURITY_CHECKLIST.md` |

@@ -34,3 +34,6 @@ npm run start   # development mode
 
 ### Integrations
 - [THEME_INTEGRATION.md](integrations/THEME_INTEGRATION.md) — theme connection
+
+### Security
+- [SECURITY_CHECKLIST.md](security/SECURITY_CHECKLIST.md) — escaping, sanitization, REST permissions ★

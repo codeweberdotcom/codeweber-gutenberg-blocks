@@ -531,7 +531,10 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 							className={linkClasses}
 							data-bs-toggle="dropdown"
 							aria-expanded="false"
-							style={{ pointerEvents: 'none' }}
+							style={{
+								pointerEvents: 'none',
+								justifyContent: 'space-between',
+							}}
 						>
 							{safeItemText(item)}
 						</a>

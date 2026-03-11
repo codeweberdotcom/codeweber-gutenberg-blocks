@@ -377,7 +377,8 @@ $render_menu_collapse = function ($by_parent, $parent_id, $depth_limit, $listCla
 		foreach ($children as $idx => $item) {
 		$has_children = ($depth_limit === 0 || $current_lvl < $depth_limit) && isset($item['wp_id']) && !empty($by_parent[$item['wp_id']]);
 		$item_id = isset($item['wp_id']) ? (int) $item['wp_id'] : 0;
-		$collapse_id = 'menu-collapse-item-' . $item_id . ( $instance_suffix !== '' ? '-' . $instance_suffix : '' );
+		// Уникальный ID для collapse: основан на уникальном wrapper_id конкретного экземпляра меню
+		$collapse_id = $wrapper_id . '-item-' . $item_id;
 		$is_current = !empty($item['current']);
 		// Раскрывать collapse по пути до текущей страницы (как в Navwalker: current-menu-parent — виден контекст).
 		$expand = $has_children && $has_current_in_subtree($by_parent, $item['wp_id']);

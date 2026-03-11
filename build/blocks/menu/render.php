@@ -93,7 +93,7 @@ if ($mode === 'wp-menu' && $wpMenuId > 0) {
 				}
 			}
 			if ( ! $is_current && $menu_item->type === 'custom' && ! empty( $menu_item->url ) ) {
-				$current_request_url = set_url_scheme( ( is_ssl() ? 'https://' : 'http://' ) . ( isset( $_SERVER['HTTP_HOST'] ) ? $_SERVER['HTTP_HOST'] : '' ) . ( isset( $_SERVER['REQUEST_URI'] ) ? $_SERVER['REQUEST_URI'] : '' ) );
+				$current_request_url = set_url_scheme( ( is_ssl() ? 'https://' : 'http://' ) . ( isset( $_SERVER['HTTP_HOST'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) ) : '' ) . ( isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '' ) );
 				$item_url = set_url_scheme( $menu_item->url );
 				$is_current = ( rtrim( $item_url, '/' ) === rtrim( $current_request_url, '/' ) );
 			}

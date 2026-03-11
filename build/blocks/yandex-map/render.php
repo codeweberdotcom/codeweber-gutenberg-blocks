@@ -91,8 +91,12 @@ if ($data_source === 'offices') {
 	$posts_per_page = isset($offices_query['postsPerPage']) ? (int) $offices_query['postsPerPage'] : -1;
 	$order_by = isset($offices_query['orderBy']) ? $offices_query['orderBy'] : 'title';
 	$order = isset($offices_query['order']) ? $offices_query['order'] : 'asc';
-	$selected_cities = isset($offices_query['selectedCities']) && is_array($offices_query['selectedCities']) ? $offices_query['selectedCities'] : [];
-	$selected_categories = isset($offices_query['selectedCategories']) && is_array($offices_query['selectedCategories']) ? $offices_query['selectedCategories'] : [];
+	$selected_cities = isset($offices_query['selectedCities']) && is_array($offices_query['selectedCities'])
+		? array_filter( array_map( 'sanitize_text_field', $offices_query['selectedCities'] ) )
+		: [];
+	$selected_categories = isset($offices_query['selectedCategories']) && is_array($offices_query['selectedCategories'])
+		? array_filter( array_map( 'absint', $offices_query['selectedCategories'] ) )
+		: [];
 	
 	$args = array(
 		'post_type' => 'offices',

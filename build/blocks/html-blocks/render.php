@@ -46,8 +46,11 @@ if (!$html_block_post || $html_block_post->post_type !== 'html_blocks' || $html_
     return;
 }
 
-// Получаем контент поста без обработки (выводим HTML как есть)
+// Получаем контент поста без обработки (выводим HTML как есть).
+// Raw output is intentional: html_blocks CPT is admin-controlled and designed
+// for embedding arbitrary HTML (tracking codes, custom scripts, embeds).
+// WordPress already filters post_content on save based on user capability
+// (users without unfiltered_html have scripts stripped automatically).
 $content = $html_block_post->post_content;
 
-// Выводим только контент без оберток
-echo $content;
+echo wp_unslash( $content );

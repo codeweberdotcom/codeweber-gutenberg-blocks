@@ -44,6 +44,8 @@ Task-oriented documentation in `doc_claude/`.
 | npm commands, build, lint | `doc_claude/development/DEV_WORKFLOW.md` |
 | Coding conventions | `doc_claude/development/CODING_STANDARDS.md` |
 | Add a new block | `doc_claude/development/NEW_BLOCK_GUIDE.md` |
+| Shared Inspector components (35) | `doc_claude/development/INSPECTOR_COMPONENTS.md` |
+| Utility functions (class-generators, colors, icons...) | `doc_claude/development/UTILITIES_REFERENCE.md` |
 | Catalog of all 47 blocks | `doc_claude/blocks/BLOCKS_CATALOG.md` |
 | Dynamic blocks (render.php) | `doc_claude/blocks/DYNAMIC_BLOCKS.md` |
 | REST API endpoints | `doc_claude/api/REST_API_REFERENCE.md` |

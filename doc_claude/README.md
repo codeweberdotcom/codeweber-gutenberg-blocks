@@ -21,6 +21,8 @@ npm run start   # development mode
 - [DEV_WORKFLOW.md](development/DEV_WORKFLOW.md) — commands, build, lint, i18n
 - [CODING_STANDARDS.md](development/CODING_STANDARDS.md) — coding conventions
 - [NEW_BLOCK_GUIDE.md](development/NEW_BLOCK_GUIDE.md) — add a new block ★★
+- [INSPECTOR_COMPONENTS.md](development/INSPECTOR_COMPONENTS.md) — all 35 shared Inspector components ★
+- [UTILITIES_REFERENCE.md](development/UTILITIES_REFERENCE.md) — all src/utilities/ functions
 
 ### Blocks
 - [BLOCKS_CATALOG.md](blocks/BLOCKS_CATALOG.md) — catalog of all 47 blocks

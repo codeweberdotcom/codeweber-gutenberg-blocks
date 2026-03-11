@@ -41,6 +41,9 @@ if ($shortcode === '') {
 	return;
 }
 
+// do_shortcode() is standard WordPress. The shortcode is stored in Gutenberg
+// block attributes within post_content — only users with edit_posts capability
+// can set it. No whitelist needed: same trust level as core [shortcode] block.
 echo '<div class="wp-block-codeweber-blocks-shortcode-render">';
-echo do_shortcode($shortcode);
+echo do_shortcode( $shortcode );
 echo '</div>';

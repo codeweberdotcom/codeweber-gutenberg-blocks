@@ -84,9 +84,9 @@ class VideoThumbnailAPI {
 
 		return [
 			'success' => true,
-			'thumbnail_url' => $data['thumbnail_url'],
-			'title' => $data['title'] ?? '',
-			'description' => $data['description'] ?? ''
+			'thumbnail_url' => esc_url_raw( $data['thumbnail_url'] ),
+			'title' => sanitize_text_field( $data['title'] ?? '' ),
+			'description' => sanitize_text_field( $data['description'] ?? '' ),
 		];
 	}
 
@@ -171,14 +171,14 @@ class VideoThumbnailAPI {
 				return new \WP_Error('no_thumbnail', 'Thumbnail not found', ['status' => 404]);
 		}
 		
-		// Decode HTML entities in thumbnail URL
-		$thumbnail_url = html_entity_decode($thumbnail_url, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+		// Decode HTML entities in thumbnail URL, then validate as URL
+		$thumbnail_url = html_entity_decode( $thumbnail_url, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
 
 		return [
 			'success' => true,
-			'thumbnail_url' => $thumbnail_url,
-			'title' => $title,
-			'description' => $description
+			'thumbnail_url' => esc_url_raw( $thumbnail_url ),
+			'title' => sanitize_text_field( $title ),
+			'description' => sanitize_text_field( $description ),
 		];
 	}
 }

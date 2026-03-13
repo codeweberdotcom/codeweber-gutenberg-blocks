@@ -423,11 +423,12 @@ $render_menu_collapse = function ($by_parent, $parent_id, $depth_limit, $listCla
 	return $html;
 };
 
-// Счётчик экземпляров для уникальных ID collapse-меню на странице
-$next_collapse_instance = static function() {
-	static $count = 0;
-	return ++$count;
-};
+// Счётчик экземпляров для уникальных ID collapse-меню на странице.
+// Глобальная переменная сохраняется между рендерами нескольких блоков на одной странице,
+// в отличие от static-переменной внутри замыкания, которая обнуляется при каждом вызове render.php.
+global $cwgb_menu_instance_counter;
+$cwgb_menu_instance_counter = ( isset( $cwgb_menu_instance_counter ) ? (int) $cwgb_menu_instance_counter : 0 ) + 1;
+$collapse_instance_suffix = (string) $cwgb_menu_instance_counter;
 
 $menuContent = '';
 $hasTopLevelItems = !empty($wpMenuItemsTree) && isset($wpMenuItemsTree[0]) && !empty($wpMenuItemsTree[0]);
@@ -454,7 +455,7 @@ if ($enableMegaMenu) {
 	}
 } elseif ($useTreeSource && $orientation === 'vertical' && !$enableMegaMenu && ($useCollapse || $mode === 'custom') && $hasTopLevelItems) {
 	// Вертикальное меню: тип 4 — простой список (list-unstyled menu-list-type-4); типы 1–3 — collapse.
-	$collapse_instance_suffix = (string) $next_collapse_instance();
+	// $collapse_instance_suffix уже задан выше через глобальный счётчик
 	$collapse_wrapper_id = 'menu-collapse-' . $treeSourceId . '-' . ( $menuId ? preg_replace('/[^a-z0-9_-]/i', '-', $menuId) : 'block' ) . '-' . $collapse_instance_suffix;
 
 	if ( $collapseListType === '4' ) {
@@ -544,8 +545,8 @@ if ($enableMegaMenu) {
 } elseif ($useTreeSource && $hasTopLevelItems) {
 	// Fallback: кастомный рендер (для таксономии, Custom или если Walker недоступен)
 	if ($useCollapse || $mode === 'custom') {
-		$collapse_instance_suffix_fb = (string) $next_collapse_instance();
-		$collapse_wrapper_id = 'menu-collapse-' . $treeSourceId . '-' . ( $menuId ? preg_replace('/[^a-z0-9_-]/i', '-', $menuId) : 'block' ) . '-' . $collapse_instance_suffix_fb;
+		// $collapse_instance_suffix уже задан выше через глобальный счётчик
+		$collapse_wrapper_id = 'menu-collapse-' . $treeSourceId . '-' . ( $menuId ? preg_replace('/[^a-z0-9_-]/i', '-', $menuId) : 'block' ) . '-' . $collapse_instance_suffix;
 
 		if ( $collapseListType === '4' ) {
 			$type4_list_class_fb = 'list-unstyled menu-list-type-4';
@@ -565,7 +566,7 @@ if ($enableMegaMenu) {
 				$nav_class_fb .= ' ' . esc_attr( $containerClass );
 			}
 			$menuContent = '<nav id="' . esc_attr($collapse_wrapper_id) . '" class="' . esc_attr( $nav_class_fb ) . '"><ul class="' . esc_attr($collapse_list_str_fb) . '">';
-			$menuContent .= $render_menu_collapse($wpMenuItemsTree, 0, $depth, $collapse_list_classes_fb, $itemClass, $linkClass, $iconClass, $listType, $textThemeClass, $collapse_wrapper_id, 1, $collapse_instance_suffix_fb, $topLevelClass, $topLevelClassStart, $topLevelClassEnd);
+			$menuContent .= $render_menu_collapse($wpMenuItemsTree, 0, $depth, $collapse_list_classes_fb, $itemClass, $linkClass, $iconClass, $listType, $textThemeClass, $collapse_wrapper_id, 1, $collapse_instance_suffix, $topLevelClass, $topLevelClassStart, $topLevelClassEnd);
 			$menuContent .= '</ul></nav>';
 		}
 	} else {

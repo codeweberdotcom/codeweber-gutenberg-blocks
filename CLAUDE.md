@@ -25,6 +25,16 @@ npm run i18n:update  # Regenerate POT + compile translations
 
 **`build/` is versioned in git.** Always run `npm run build` before committing.
 
+## Git Rules
+
+**MANDATORY before any code changes:**
+
+1. Check `git status`
+2. If there are uncommitted changes — **ask the user to commit** and wait for confirmation
+3. Only after the commit (or explicit user refusal) proceed with changes
+
+This rule applies always: bug fixes, new features, refactoring, block modifications — any file changes.
+
 ## Key Rules
 
 - **Frontend — Bootstrap classes only.** Do not write custom styles for anything covered by Bootstrap 5 / the theme.

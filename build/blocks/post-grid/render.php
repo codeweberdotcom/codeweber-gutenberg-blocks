@@ -1047,7 +1047,7 @@ if (!function_exists('render_post_grid_item')) {
 				$loading_text = __('Loading...', 'codeweber-gutenberg-blocks');
 				
 				// Получаем класс скругления кнопки из темы
-				$button_radius_class = function_exists('getThemeButton') ? getThemeButton() : '';
+				$button_radius_class = class_exists('Codeweber_Options') ? Codeweber_Options::style('button') : '';
 				
 				// Строим класс кнопки
 				$button_classes = ['btn', 'cwgb-load-more-btn'];

@@ -44,7 +44,7 @@ function codeweber_card_apply_default_border_radius($block_content, $block) {
 		return $block_content;
 	}
 
-	$radius_class = function_exists('getThemeCardImageRadius') ? getThemeCardImageRadius() : '';
+	$radius_class = class_exists('Codeweber_Options') ? Codeweber_Options::style('card-radius') : '';
 	if (empty($radius_class)) {
 		return $block_content;
 	}

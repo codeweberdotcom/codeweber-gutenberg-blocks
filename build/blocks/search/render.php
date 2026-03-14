@@ -52,7 +52,7 @@ if ($block_id) {
 }
 
 // Form markup (same structure as theme shortcode, no shortcode call)
-$form_radius = function_exists('getThemeFormRadius') ? getThemeFormRadius() : ' rounded';
+$form_radius = class_exists('Codeweber_Options') ? Codeweber_Options::style('form-radius') : ' rounded';
 $form_html = '<div class="' . esc_attr($form_wrap_class) . '">'
 	. '<form class="search-form" id="' . esc_attr($form_id_attr) . '">'
 	. '<input type="text" id="' . esc_attr($input_id) . '" class="search-form form-control' . esc_attr($form_radius) . '" placeholder="' . esc_attr($placeholder) . '" autocomplete="off"'

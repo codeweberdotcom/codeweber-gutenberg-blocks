@@ -54,8 +54,8 @@ if (empty($accordionId)) {
 
 // Получаем скругление для аккордеона из Redux (только rounded-0, если выбрано)
 $accordionCardRadius = '';
-if (function_exists('getThemeAccordionCardRadius')) {
-	$accordionCardRadius = getThemeAccordionCardRadius();
+if (class_exists('Codeweber_Options')) {
+	$accordionCardRadius = Codeweber_Options::style('accordion-radius');
 }
 
 // Формируем классы для аккордеона

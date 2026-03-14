@@ -45,8 +45,8 @@ if ($inline_button_enabled) {
 
     // Get button radius class from theme (используем для обоих элементов)
     $button_radius_class = '';
-    if (function_exists('getThemeButton')) {
-        $button_radius_class = getThemeButton();
+    if (class_exists('Codeweber_Options')) {
+        $button_radius_class = Codeweber_Options::style('button');
     }
 
     $field_id_inline = 'field-' . ($field_name ?: $field_type);

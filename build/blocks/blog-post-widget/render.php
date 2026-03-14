@@ -25,8 +25,8 @@ $category_id    = isset($attributes['categoryId']) ? (int) $attributes['category
 $tag_id         = isset($attributes['tagId']) ? (int) $attributes['tagId'] : 0;
 $year           = isset($attributes['year']) ? trim((string) $attributes['year']) : '';
 $border_radius  = isset($attributes['borderRadius']) ? $attributes['borderRadius'] : '';
-if ($border_radius === '' && function_exists('getThemeCardImageRadius')) {
-	$border_radius = getThemeCardImageRadius('rounded');
+if ($border_radius === '' && class_exists('Codeweber_Options')) {
+	$border_radius = Codeweber_Options::style('card-radius', 'rounded');
 }
 if ($border_radius === '') {
 	$border_radius = 'rounded';

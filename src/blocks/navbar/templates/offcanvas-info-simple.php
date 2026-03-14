@@ -91,7 +91,7 @@ foreach ($offcanvas_element_ids as $key) {
 							$zoom_val = 10;
 						}
 						$map_id = 'cwgb-offcanvas-map-simple-' . str_replace(array('.', ' '), '', uniqid('', true));
-						$card_radius_class = function_exists('getThemeCardImageRadius') ? getThemeCardImageRadius() : 'rounded';
+						$card_radius_class = class_exists('Codeweber_Options') ? Codeweber_Options::style('card-radius') : 'rounded';
 						$border_radius_px = 8;
 						if (strpos($card_radius_class, 'rounded-0') !== false) {
 							$border_radius_px = 0;

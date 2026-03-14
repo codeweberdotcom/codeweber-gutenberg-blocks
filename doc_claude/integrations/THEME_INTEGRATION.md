@@ -87,7 +87,7 @@ Prism.js is loaded from the **theme's** `src/` directory for `code` and `card` b
 |----------|---------|---------|
 | `getThemeButton()` | Plugin.php | Get theme button shape CSS class for Button block |
 | `codeweber_get_allowed_image_sizes()` | Plugin.php | Filter image sizes by post type |
-| `brk_get_dist_file_url()` | (indirectly) | Asset URL resolution pattern |
+| `codeweber_get_dist_file_url()` | (indirectly) | Asset URL resolution pattern |
 
 These functions are defined in the theme. The plugin checks `function_exists()` before calling.
 

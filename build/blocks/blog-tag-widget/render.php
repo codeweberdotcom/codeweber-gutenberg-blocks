@@ -20,7 +20,7 @@ $tag_style     = isset($attributes['tagStyle']) ? $attributes['tagStyle'] : 'btn
 $tag_color     = isset($attributes['tagColor']) ? $attributes['tagColor'] : 'ash';
 $tag_color_type = isset($attributes['tagColorType']) ? $attributes['tagColorType'] : 'soft';
 
-$button_style = function_exists('getThemeButton') ? getThemeButton() : ' rounded-pill';
+$button_style = class_exists('Codeweber_Options') ? Codeweber_Options::style('button') : ' rounded-pill';
 
 // Build link class: Type 1 = btn btn-soft-ash btn-sm + getThemeButton | Type 2 = badge badge-lg + getThemeButton bg-ash
 if ($tag_style === 'badge') {

@@ -552,11 +552,11 @@ class Plugin {
 					wp_localize_script($script_handle, 'cwgbSearchPostTypes', ['postTypes' => $search_post_types]);
 				}
 
-				// Button block: форма Theme — класс из getThemeButton() для превью в редакторе
+				// Button block: форма Theme — класс из Codeweber_Options::style('button') для превью в редакторе
 				if ($block_name === 'button') {
-					$theme_btn = function_exists('getThemeButton') ? trim(getThemeButton()) : '';
+					$theme_btn = class_exists('\Codeweber_Options') ? trim(\Codeweber_Options::style('button')) : '';
 					wp_localize_script($script_handle, 'cwgbButtonThemeShape', [
-						'class' => $theme_btn !== '' ? $theme_btn : 'rounded-pill',
+						'class' => $theme_btn,
 					]);
 				}
 
@@ -1568,7 +1568,7 @@ class Plugin {
 		$btn_size_class = isset($size_classes[ $size ][1]) ? $size_classes[ $size ][1] : 'btn-md';
 		// Стиль скругления из темы применяем только для btn-block; для circle не меняем
 		if ($button_form === 'block') {
-			$theme_btn_form = function_exists('getThemeButton') ? getThemeButton() : '';
+			$theme_btn_form = class_exists('\Codeweber_Options') ? \Codeweber_Options::style('button') : '';
 			$btn_form_class = 'btn-block' . esc_attr($theme_btn_form);
 		} else {
 			$btn_form_class = 'btn-circle';

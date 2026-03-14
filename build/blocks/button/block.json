@@ -42,7 +42,7 @@
     },
     "ButtonShape": {
       "type": "string",
-      "default": "rounded-0"
+      "default": "theme"
     },
     "ButtonIconPosition": {
       "type": "string",

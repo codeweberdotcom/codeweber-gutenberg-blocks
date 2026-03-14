@@ -167,12 +167,12 @@ export const getClassNames = (attributes, options = {}) => {
 				classes.push('rounded-pill');
 			} else {
 				const themeClass =
-					typeof window !== 'undefined' &&
-					window.cwgbButtonThemeShape &&
-					window.cwgbButtonThemeShape.class
-						? window.cwgbButtonThemeShape.class.trim()
-						: 'rounded-pill';
-				classes.push(themeClass || 'rounded-pill');
+					typeof window !== 'undefined' && window.cwgbButtonThemeShape
+						? (window.cwgbButtonThemeShape.class || '').trim()
+						: '';
+				if (themeClass) {
+					classes.push(themeClass);
+				}
 			}
 		} else {
 			classes.push(ButtonShape);

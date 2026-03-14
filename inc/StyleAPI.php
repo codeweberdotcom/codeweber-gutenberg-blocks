@@ -25,9 +25,9 @@ class StyleAPI {
 	 * GET /codeweber/v1/styles
 	 */
 	public static function get_styles() {
-		$card_radius   = function_exists('getThemeCardImageRadius') ? getThemeCardImageRadius() : '';
-		$button_radius = function_exists('getThemeButton') ? getThemeButton() : '';
-		$form_radius   = function_exists('getThemeFormRadius') ? getThemeFormRadius() : '';
+		$card_radius   = class_exists('\Codeweber_Options') ? \Codeweber_Options::style('card-radius') : '';
+		$button_radius = class_exists('\Codeweber_Options') ? \Codeweber_Options::style('button') : '';
+		$form_radius   = class_exists('\Codeweber_Options') ? \Codeweber_Options::style('form-radius') : '';
 
 		return [
 			'card_radius_class'   => $card_radius,

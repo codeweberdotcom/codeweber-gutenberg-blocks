@@ -32,7 +32,7 @@ $block_id     = isset($attributes['blockId']) ? $attributes['blockId'] : '';
 $block_data   = isset($attributes['blockData']) ? $attributes['blockData'] : '';
 
 // Стиль скругления из темы применяем только для btn-block; для circle не меняем
-$theme_btn_form = function_exists('getThemeButton') ? getThemeButton() : '';
+$theme_btn_form = class_exists('Codeweber_Options') ? Codeweber_Options::style('button') : '';
 
 $wrapper_attrs = [];
 if ($block_class) {

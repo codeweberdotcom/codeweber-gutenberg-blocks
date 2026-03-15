@@ -86,6 +86,10 @@
 			"type": "string",
 			"default": "desc"
 		},
+		"itemClass": {
+			"type": "string",
+			"default": ""
+		},
 		"listClass": {
 			"type": "string",
 			"default": ""

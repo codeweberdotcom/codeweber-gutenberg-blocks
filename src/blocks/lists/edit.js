@@ -32,6 +32,7 @@ const ListsEdit = ({ attributes, setAttributes, clientId }) => {
 		postsPerPage,
 		orderBy,
 		order,
+		itemClass,
 		listClass,
 		listId,
 		listData,
@@ -223,10 +224,14 @@ const ListsEdit = ({ attributes, setAttributes, clientId }) => {
 			classes.push('unordered-list');
 		} else if (listType === 'icon') {
 			classes.push('icon-list');
+		} else if (listType === 'line') {
+			classes.push('list-unstyled');
+		} else if (listType === 'plain') {
+			classes.push('list-unstyled');
 		}
 
 		// Bullet/icon color (soft or solid)
-		if (bulletColor && bulletColor !== 'none') {
+		if (listType !== 'line' && listType !== 'ordered' && listType !== 'plain' && bulletColor && bulletColor !== 'none') {
 			const bulletPrefix = bulletColorType === 'soft' ? 'bullet-soft-' : 'bullet-';
 			classes.push(`${bulletPrefix}${bulletColor}`);
 		}
@@ -256,6 +261,8 @@ const ListsEdit = ({ attributes, setAttributes, clientId }) => {
 
 		return classes.join(' ');
 	};
+
+	const ListTag = listType === 'ordered' ? 'ol' : 'ul';
 
 	const blockProps = useBlockProps({
 		className: '',
@@ -302,9 +309,9 @@ const ListsEdit = ({ attributes, setAttributes, clientId }) => {
 				{(mode === 'post'
 					? items.length > 0 && !isLoadingPosts
 					: true) && (
-					<ul className={getListClasses()}>
+					<ListTag className={getListClasses()}>
 						{items.map((item, index) => (
-							<li key={item.id} style={{ position: 'relative' }}>
+							<li key={item.id} style={{ position: 'relative' }} className={listType === 'line' ? 'text-line' : (listType === 'plain' && itemClass ? itemClass : undefined)}>
 								{listType === 'icon' && (
 									<span>
 										<i
@@ -397,7 +404,7 @@ const ListsEdit = ({ attributes, setAttributes, clientId }) => {
 								</span>
 							</li>
 						))}
-					</ul>
+					</ListTag>
 				)}
 				{mode === 'custom' && (
 					<Button

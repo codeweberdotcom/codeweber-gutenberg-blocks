@@ -4559,4 +4559,1339 @@ msgstr ""
 msgid "Type keyword"
 msgstr ""#: src/blocks/search/sidebar.js
 msgid "Leave empty to use \"Type keyword\" (translatable in Loco)."
+msgstr ""#: src/src/blocks/accordion/sidebar.js src/src/blocks/accordion/sidebar.js
+msgid "Card Background"
 msgstr ""
+
+#: src/src/blocks/blockquote/edit.js src/src/blocks/blockquote/edit.js
+msgid "Blockquote Settings"
+msgstr ""
+
+#: src/src/blocks/blockquote/index.js src/src/blocks/blockquote/index.js
+msgid "quote"
+msgstr ""
+
+#: src/src/blocks/blockquote/index.js src/src/blocks/blockquote/index.js
+msgid "blockquote"
+msgstr ""
+
+#: src/src/blocks/blockquote/index.js src/src/blocks/blockquote/index.js
+msgid "citation"
+msgstr ""
+
+#: src/src/blocks/blog-category-widget/edit.js src/src/blocks/blog-category-widget/edit.js src/src/blocks/blog-tag-widget/edit.js src/src/blocks/blog-tag-widget/edit.js
+msgid "Count"
+msgstr ""
+
+#: src/src/blocks/blog-category-widget/edit.js src/src/blocks/blog-category-widget/edit.js src/src/blocks/blog-tag-widget/edit.js src/src/blocks/blog-tag-widget/edit.js
+msgid "Slug"
+msgstr ""
+
+#: src/src/blocks/blog-category-widget/edit.js src/src/blocks/blog-category-widget/edit.js src/src/blocks/blog-post-widget/edit.js src/src/blocks/blog-post-widget/edit.js src/src/blocks/blog-tag-widget/edit.js src/src/blocks/blog-tag-widget/edit.js
+msgid "ASC"
+msgstr ""
+
+#: src/src/blocks/blog-category-widget/edit.js src/src/blocks/blog-category-widget/edit.js src/src/blocks/blog-post-widget/edit.js src/src/blocks/blog-post-widget/edit.js src/src/blocks/blog-tag-widget/edit.js src/src/blocks/blog-tag-widget/edit.js
+msgid "DESC"
+msgstr ""
+
+#: src/src/blocks/blog-category-widget/edit.js src/src/blocks/blog-category-widget/edit.js src/src/blocks/blog-category-widget/index.js src/src/blocks/blog-category-widget/index.js
+msgid "Blog Category Widget"
+msgstr ""
+
+#: src/src/blocks/blog-category-widget/edit.js src/src/blocks/blog-category-widget/edit.js
+msgid "Show post count"
+msgstr ""
+
+#: src/src/blocks/blog-category-widget/edit.js src/src/blocks/blog-category-widget/edit.js src/src/blocks/blog-post-widget/edit.js src/src/blocks/blog-post-widget/edit.js src/src/blocks/blog-tag-widget/edit.js src/src/blocks/blog-tag-widget/edit.js
+msgid "Order by"
+msgstr ""
+
+#: src/src/blocks/blog-category-widget/edit.js src/src/blocks/blog-category-widget/edit.js
+msgid "Number of categories"
+msgstr ""
+
+#: src/src/blocks/blog-category-widget/edit.js src/src/blocks/blog-category-widget/edit.js src/src/blocks/blog-tag-widget/edit.js src/src/blocks/blog-tag-widget/edit.js
+msgid "0 = show all."
+msgstr ""
+
+#: src/src/blocks/blog-category-widget/index.js src/src/blocks/blog-category-widget/index.js src/src/blocks/blog-post-widget/index.js src/src/blocks/blog-post-widget/index.js src/src/blocks/blog-tag-widget/index.js src/src/blocks/blog-tag-widget/index.js src/src/blocks/blog-year-widget/index.js src/src/blocks/blog-year-widget/index.js
+msgid "blog"
+msgstr ""
+
+#: src/src/blocks/blog-category-widget/index.js src/src/blocks/blog-category-widget/index.js
+msgid "categories"
+msgstr ""
+
+#: src/src/blocks/blog-category-widget/index.js src/src/blocks/blog-category-widget/index.js src/src/blocks/blog-post-widget/index.js src/src/blocks/blog-post-widget/index.js src/src/blocks/blog-tag-widget/index.js src/src/blocks/blog-tag-widget/index.js src/src/blocks/blog-year-widget/index.js src/src/blocks/blog-year-widget/index.js src/src/blocks/shortcode-render/index.js src/src/blocks/shortcode-render/index.js src/src/blocks/widget/index.js src/src/blocks/widget/index.js
+msgid "widget"
+msgstr ""
+
+#: src/src/blocks/blog-category-widget/index.js src/src/blocks/blog-category-widget/index.js src/src/blocks/blog-post-widget/index.js src/src/blocks/blog-post-widget/index.js src/src/blocks/blog-tag-widget/index.js src/src/blocks/blog-tag-widget/index.js src/src/blocks/widget/index.js src/src/blocks/widget/index.js
+msgid "sidebar"
+msgstr ""
+
+#: src/src/blocks/blog-post-widget/edit.js src/src/blocks/blog-post-widget/edit.js
+msgid "Latest posts"
+msgstr ""
+
+#: src/src/blocks/blog-post-widget/edit.js src/src/blocks/blog-post-widget/edit.js
+msgid "Comment count"
+msgstr ""
+
+#: src/src/blocks/blog-post-widget/edit.js src/src/blocks/blog-post-widget/edit.js src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Theme default"
+msgstr ""
+
+#: src/src/blocks/blog-post-widget/edit.js src/src/blocks/blog-post-widget/edit.js
+msgid "Rounder"
+msgstr ""
+
+#: src/src/blocks/blog-post-widget/edit.js src/src/blocks/blog-post-widget/edit.js
+msgid "Square"
+msgstr ""
+
+#: src/src/blocks/blog-post-widget/edit.js src/src/blocks/blog-post-widget/edit.js
+msgid "All years"
+msgstr ""
+
+#: src/src/blocks/blog-post-widget/edit.js src/src/blocks/blog-post-widget/edit.js
+msgid "All categories"
+msgstr ""
+
+#: src/src/blocks/blog-post-widget/edit.js src/src/blocks/blog-post-widget/edit.js
+msgid "All tags"
+msgstr ""
+
+#: src/src/blocks/blog-post-widget/edit.js src/src/blocks/blog-post-widget/edit.js src/src/blocks/blog-post-widget/index.js src/src/blocks/blog-post-widget/index.js
+msgid "Blog Post Widget"
+msgstr ""
+
+#: src/src/blocks/blog-post-widget/edit.js src/src/blocks/blog-post-widget/edit.js
+msgid "Number of posts"
+msgstr ""
+
+#: src/src/blocks/blog-post-widget/edit.js src/src/blocks/blog-post-widget/edit.js
+msgid "Source"
+msgstr ""
+
+#: src/src/blocks/blog-post-widget/edit.js src/src/blocks/blog-post-widget/edit.js
+msgid "Year"
+msgstr ""
+
+#: src/src/blocks/blog-post-widget/edit.js src/src/blocks/blog-post-widget/edit.js
+msgid "Show date"
+msgstr ""
+
+#: src/src/blocks/blog-post-widget/edit.js src/src/blocks/blog-post-widget/edit.js
+msgid "Show comments"
+msgstr ""
+
+#: src/src/blocks/blog-post-widget/edit.js src/src/blocks/blog-post-widget/edit.js
+msgid "Title length"
+msgstr ""
+
+#: src/src/blocks/blog-post-widget/edit.js src/src/blocks/blog-post-widget/edit.js
+msgid "0 = no limit. Max characters for the post title."
+msgstr ""
+
+#: src/src/blocks/blog-post-widget/edit.js src/src/blocks/blog-post-widget/edit.js
+msgid "Image rounded corners"
+msgstr ""
+
+#: src/src/blocks/blog-post-widget/edit.js src/src/blocks/blog-post-widget/edit.js
+msgid "Theme default uses the setting from Theme Options (Card and Image rounded corners)."
+msgstr ""
+
+#: src/src/blocks/blog-post-widget/index.js src/src/blocks/blog-post-widget/index.js
+msgid "posts"
+msgstr ""
+
+#: src/src/blocks/blog-tag-widget/edit.js src/src/blocks/blog-tag-widget/edit.js src/src/blocks/blog-tag-widget/index.js src/src/blocks/blog-tag-widget/index.js
+msgid "Blog Tag Widget"
+msgstr ""
+
+#: src/src/blocks/blog-tag-widget/edit.js src/src/blocks/blog-tag-widget/edit.js src/src/blocks/dropcap/sidebar.js src/src/blocks/dropcap/sidebar.js src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js src/src/blocks/social-icons/sidebar.js src/src/blocks/social-icons/sidebar.js
+msgid "Style"
+msgstr ""
+
+#: src/src/blocks/blog-tag-widget/edit.js src/src/blocks/blog-tag-widget/edit.js
+msgid "Type 1 (btn)"
+msgstr ""
+
+#: src/src/blocks/blog-tag-widget/edit.js src/src/blocks/blog-tag-widget/edit.js
+msgid "Type 2 (badge)"
+msgstr ""
+
+#: src/src/blocks/blog-tag-widget/edit.js src/src/blocks/blog-tag-widget/edit.js src/src/blocks/dropcap/sidebar.js src/src/blocks/dropcap/sidebar.js src/src/blocks/lists/sidebar.js src/src/blocks/lists/sidebar.js
+msgid "Colors"
+msgstr ""
+
+#: src/src/blocks/blog-tag-widget/edit.js src/src/blocks/blog-tag-widget/edit.js
+msgid "Number of tags"
+msgstr ""
+
+#: src/src/blocks/blog-tag-widget/index.js src/src/blocks/blog-tag-widget/index.js
+msgid "tags"
+msgstr ""
+
+#: src/src/blocks/blog-year-widget/edit.js src/src/blocks/blog-year-widget/edit.js
+msgid "Newest first"
+msgstr ""
+
+#: src/src/blocks/blog-year-widget/edit.js src/src/blocks/blog-year-widget/edit.js
+msgid "Oldest first"
+msgstr ""
+
+#: src/src/blocks/blog-year-widget/edit.js src/src/blocks/blog-year-widget/edit.js src/src/blocks/blog-year-widget/index.js src/src/blocks/blog-year-widget/index.js
+msgid "Blog Year Widget"
+msgstr ""
+
+#: src/src/blocks/blog-year-widget/edit.js src/src/blocks/blog-year-widget/edit.js
+msgid "Number of months"
+msgstr ""
+
+#: src/src/blocks/blog-year-widget/index.js src/src/blocks/blog-year-widget/index.js
+msgid "archive"
+msgstr ""
+
+#: src/src/blocks/blog-year-widget/index.js src/src/blocks/blog-year-widget/index.js
+msgid "year"
+msgstr ""
+
+#: src/src/blocks/blog-year-widget/index.js src/src/blocks/blog-year-widget/index.js
+msgid "month"
+msgstr ""
+
+#: src/src/blocks/button/sidebar.js src/src/blocks/button/sidebar.js
+msgid "Type: Social (set by Social Wrapper)"
+msgstr ""
+
+#: src/src/blocks/code/edit.js src/src/blocks/code/edit.js src/src/blocks/code/edit.js src/src/blocks/code/edit.js src/src/blocks/code/index.js src/src/blocks/code/index.js
+msgid "Code"
+msgstr ""
+
+#: src/src/blocks/code/edit.js src/src/blocks/code/edit.js
+msgid "Paste or type code here…"
+msgstr ""
+
+#: src/src/blocks/code/edit.js src/src/blocks/code/edit.js
+msgid "Enter the code snippet to display."
+msgstr ""
+
+#: src/src/blocks/code/edit.js src/src/blocks/code/edit.js
+msgid "Language"
+msgstr ""
+
+#: src/src/blocks/code/index.js src/src/blocks/code/index.js
+msgid "code"
+msgstr ""
+
+#: src/src/blocks/code/index.js src/src/blocks/code/index.js
+msgid "snippet"
+msgstr ""
+
+#: src/src/blocks/code/index.js src/src/blocks/code/index.js
+msgid "pre"
+msgstr ""
+
+#: src/src/blocks/code/index.js src/src/blocks/code/index.js
+msgid "syntax"
+msgstr ""
+
+#: src/src/blocks/code/index.js src/src/blocks/code/index.js
+msgid "clipboard"
+msgstr ""
+
+#: src/src/blocks/cta/sidebar.js src/src/blocks/cta/sidebar.js
+msgid "CTA 1"
+msgstr ""
+
+#: src/src/blocks/cta/sidebar.js src/src/blocks/cta/sidebar.js
+msgid "CTA 2"
+msgstr ""
+
+#: src/src/blocks/cta/sidebar.js src/src/blocks/cta/sidebar.js
+msgid "CTA 3"
+msgstr ""
+
+#: src/src/blocks/cta/sidebar.js src/src/blocks/cta/sidebar.js
+msgid "CTA Template"
+msgstr ""
+
+#: src/src/blocks/cta/sidebar.js src/src/blocks/cta/sidebar.js
+msgid "Тема"
+msgstr ""
+
+#: src/src/blocks/cta/sidebar.js src/src/blocks/cta/sidebar.js
+msgid "Выравнивание текста"
+msgstr ""
+
+#: src/src/blocks/dropcap/index.js src/src/blocks/dropcap/index.js
+msgid "Dropcap"
+msgstr ""
+
+#: src/src/blocks/dropcap/index.js src/src/blocks/dropcap/index.js
+msgid "dropcap"
+msgstr ""
+
+#: src/src/blocks/dropcap/index.js src/src/blocks/dropcap/index.js
+msgid "drop cap"
+msgstr ""
+
+#: src/src/blocks/dropcap/index.js src/src/blocks/dropcap/index.js
+msgid "letter"
+msgstr ""
+
+#: src/src/blocks/dropcap/index.js src/src/blocks/dropcap/index.js
+msgid "initial"
+msgstr ""
+
+#: src/src/blocks/dropcap/sidebar.js src/src/blocks/dropcap/sidebar.js
+msgid "Dropcap Settings"
+msgstr ""
+
+#: src/src/blocks/dropcap/sidebar.js src/src/blocks/dropcap/sidebar.js
+msgid "Colored"
+msgstr ""
+
+#: src/src/blocks/dropcap/sidebar.js src/src/blocks/dropcap/sidebar.js src/src/blocks/lists/sidebar.js src/src/blocks/lists/sidebar.js
+msgid "Text color"
+msgstr ""
+
+#: src/src/blocks/dropcap/sidebar.js src/src/blocks/dropcap/sidebar.js
+msgid "Circle background"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js src/src/blocks/search/edit.js src/src/blocks/search/edit.js
+msgid "Search"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js
+msgid "Offcanvas Info"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js
+msgid "Custom Offcanvas"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js src/src/blocks/top-header/sidebar.js src/src/blocks/top-header/sidebar.js
+msgid "Phones"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Socials"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js src/src/blocks/menu/index.js src/src/blocks/menu/index.js src/src/blocks/menu/sidebar.js src/src/blocks/menu/sidebar.js src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Menu"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js
+msgid "Сотрудник"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Legal address"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Requisites"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Widget 1"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Widget 2"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Widget 3"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js
+msgid "Header Widgets"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js
+msgid "Enable/disable and reorder elements."
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js
+msgid "Less"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js
+msgid "More"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js
+msgid "Search display"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js
+msgid "Offcanvas"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js
+msgid "Dropdown"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js src/src/blocks/search/sidebar.js src/src/blocks/search/sidebar.js
+msgid "Inline"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js
+msgid "Leave empty for “Type keyword”."
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js src/src/blocks/search/sidebar.js src/src/blocks/search/sidebar.js
+msgid "Dropdown min width"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js src/src/blocks/search/sidebar.js src/src/blocks/search/sidebar.js
+msgid "Posts per page"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js src/src/blocks/search/sidebar.js src/src/blocks/search/sidebar.js
+msgid "Post types"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js src/src/blocks/search/sidebar.js src/src/blocks/search/sidebar.js src/src/blocks/social-icons/edit.js src/src/blocks/social-icons/edit.js src/src/blocks/social-icons/sidebar.js src/src/blocks/social-icons/sidebar.js src/src/blocks/tables/sidebar.js src/src/blocks/tables/sidebar.js src/src/blocks/tabulator/edit.js src/src/blocks/tabulator/edit.js src/src/blocks/tabulator/sidebar.js src/src/blocks/tabulator/sidebar.js
+msgid "Loading…"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js src/src/blocks/search/sidebar.js src/src/blocks/search/sidebar.js
+msgid "Search content"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js src/src/blocks/search/sidebar.js src/src/blocks/search/sidebar.js src/src/blocks/search/sidebar.js src/src/blocks/search/sidebar.js src/src/blocks/search/sidebar.js src/src/blocks/search/sidebar.js
+msgid "Yes"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js src/src/blocks/search/sidebar.js src/src/blocks/search/sidebar.js
+msgid "Show excerpt"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js src/src/blocks/search/sidebar.js src/src/blocks/search/sidebar.js
+msgid "Taxonomy"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js src/src/blocks/search/sidebar.js src/src/blocks/search/sidebar.js
+msgid "Term slug"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js src/src/blocks/search/sidebar.js src/src/blocks/search/sidebar.js
+msgid "Include taxonomies"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js
+msgid "Leave empty for auto."
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js src/src/blocks/search/sidebar.js src/src/blocks/search/sidebar.js
+msgid "Form wrapper class"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Social icons (offcanvas)"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Social icon type"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Type 4"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Type 5"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Type 6"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Type 7"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Type 8"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Type 9"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Social button size"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Social button style"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js src/src/blocks/social-icons/sidebar.js src/src/blocks/social-icons/sidebar.js src/src/blocks/social-icons/sidebar.js src/src/blocks/social-icons/sidebar.js
+msgid "Block"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Order items in side menu"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Enable/disable and reorder. Only enabled items are shown in the offcanvas panel."
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js
+msgid "Drag to reorder"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js
+msgid "Показывать для сотрудника"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js
+msgid "Должность"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js
+msgid "Отдел"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js
+msgid "Сотрудники для вывода"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js
+msgid "Выберите записи Staff (CPT), которые будут показаны в блоке «Сотрудник»."
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js
+msgid "Добавить сотрудника (Staff)"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js
+msgid "— Выберите —"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js
+msgid "Удалить"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js
+msgid "Offcanvas header"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js
+msgid "Content inside .offcanvas-header"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js
+msgid "Offcanvas body"
+msgstr ""
+
+#: src/src/blocks/header-widgets/edit.js src/src/blocks/header-widgets/edit.js
+msgid "Content inside .offcanvas-body"
+msgstr ""
+
+#: src/src/blocks/lists/sidebar.js src/src/blocks/lists/sidebar.js
+msgid "Line"
+msgstr ""
+
+#: src/src/blocks/lists/sidebar.js src/src/blocks/lists/sidebar.js
+msgid "Icon color"
+msgstr ""
+
+#: src/src/blocks/logo/edit.js src/src/blocks/logo/edit.js
+msgid "Logo Dark"
+msgstr ""
+
+#: src/src/blocks/logo/edit.js src/src/blocks/logo/edit.js
+msgid "Logo Light"
+msgstr ""
+
+#: src/src/blocks/menu/edit.js src/src/blocks/menu/edit.js
+msgid "New menu item"
+msgstr ""
+
+#: src/src/blocks/menu/edit.js src/src/blocks/menu/edit.js
+msgid "Loading menu..."
+msgstr ""
+
+#: src/src/blocks/menu/edit.js src/src/blocks/menu/edit.js
+msgid "+ Add Menu Item"
+msgstr ""
+
+#: src/src/blocks/menu/index.js src/src/blocks/menu/index.js src/src/blocks/navbar/index.js src/src/blocks/navbar/index.js
+msgid "menu"
+msgstr ""
+
+#: src/src/blocks/menu/sidebar.js src/src/blocks/menu/sidebar.js
+msgid "List"
+msgstr ""
+
+#: src/src/blocks/menu/sidebar.js src/src/blocks/menu/sidebar.js
+msgid "Items"
+msgstr ""
+
+#: src/src/blocks/menu/sidebar.js src/src/blocks/menu/sidebar.js
+msgid "Orientation"
+msgstr ""
+
+#: src/src/blocks/menu/sidebar.js src/src/blocks/menu/sidebar.js
+msgid "Menu style"
+msgstr ""
+
+#: src/src/blocks/menu/sidebar.js src/src/blocks/menu/sidebar.js
+msgid "Menu Style"
+msgstr ""
+
+#: src/src/blocks/menu/sidebar.js src/src/blocks/menu/sidebar.js
+msgid "1"
+msgstr ""
+
+#: src/src/blocks/menu/sidebar.js src/src/blocks/menu/sidebar.js
+msgid "2"
+msgstr ""
+
+#: src/src/blocks/menu/sidebar.js src/src/blocks/menu/sidebar.js
+msgid "3"
+msgstr ""
+
+#: src/src/blocks/menu/sidebar.js src/src/blocks/menu/sidebar.js
+msgid "4"
+msgstr ""
+
+#: src/src/blocks/menu/sidebar.js src/src/blocks/menu/sidebar.js
+msgid "5"
+msgstr ""
+
+#: src/src/blocks/menu/sidebar.js src/src/blocks/menu/sidebar.js
+msgid "1: compact, 2: with borders, 3: bordered container, 4: simple list, 5: vertical dropdown (right)."
+msgstr ""
+
+#: src/src/blocks/navbar/edit.js src/src/blocks/navbar/edit.js
+msgid "Loading navbar..."
+msgstr ""
+
+#: src/src/blocks/navbar/edit.js src/src/blocks/navbar/edit.js
+msgid "Blocks for navbar right area"
+msgstr ""
+
+#: src/src/blocks/navbar/edit.js src/src/blocks/navbar/edit.js
+msgid "Navbar preview"
+msgstr ""
+
+#: src/src/blocks/navbar/index.js src/src/blocks/navbar/index.js
+msgid "Navbar"
+msgstr ""
+
+#: src/src/blocks/navbar/index.js src/src/blocks/navbar/index.js
+msgid "navbar"
+msgstr ""
+
+#: src/src/blocks/navbar/index.js src/src/blocks/navbar/index.js src/src/blocks/top-header/index.js src/src/blocks/top-header/index.js
+msgid "header"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Navbar 1 - Classic (Center Nav)"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Navbar 2 - Classic (Right Nav)"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Navbar 3 - Center Logo"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Navbar 4 - Fancy"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Navbar 5 - Fancy (Center Nav)"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Navbar 6 - Fancy Center Logo"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Navbar 7 - Extended"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Navbar 8 - Extended Center Logo"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Theme default (header_1)"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Header Menu 1"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Header Menu"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Offcanvas Menu"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Footer Menu"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Theme default (header)"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Both"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js src/src/blocks/social-icons/sidebar.js src/src/blocks/social-icons/sidebar.js
+msgid "Colored circles"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js src/src/blocks/social-icons/sidebar.js src/src/blocks/social-icons/sidebar.js
+msgid "Muted icons"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js src/src/blocks/social-icons/sidebar.js src/src/blocks/social-icons/sidebar.js
+msgid "Colored icons"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js src/src/blocks/social-icons/sidebar.js src/src/blocks/social-icons/sidebar.js
+msgid "White icons"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js src/src/blocks/social-icons/sidebar.js src/src/blocks/social-icons/sidebar.js
+msgid "Dark circles"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js src/src/blocks/social-icons/sidebar.js src/src/blocks/social-icons/sidebar.js
+msgid "Wide with labels"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js src/src/blocks/social-icons/sidebar.js src/src/blocks/social-icons/sidebar.js
+msgid "Colored wide"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js src/src/blocks/social-icons/sidebar.js src/src/blocks/social-icons/sidebar.js
+msgid "Custom color/style"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js src/src/blocks/social-icons/sidebar.js src/src/blocks/social-icons/sidebar.js
+msgid "Outline primary"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Mobile"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Navbar Template"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Extra CSS classes for block wrapper"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "ID for block wrapper (without #)"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Logo Color"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Auto: dark navbar → light logo, light navbar → dark logo. Or override manually."
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Logo Width"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Width class for logo wrapper. Default: no extra class."
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Enable HTML"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Add custom HTML after the logo link inside the brand block."
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "HTML"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Custom HTML after logo link…"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Inserted after the logo link. Wrapper gets d-flex when this has content."
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Home Link Override"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Leave empty for site URL"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Custom URL for logo/home link"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Menu Location (Primary)"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Theme location for main menu"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Menu Location (Right)"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "For center-logo templates: second menu on the right"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Menu Depth (levels)"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Submenu depth: 1 = top only, 4 = 4 levels"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Offcanvas theme"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Background style"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Header Background"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Add bg-* class to header wrapper. Default: no class."
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Navbar Color"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Center Bar Theme"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Mobile Offcanvas Theme"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Sticky Navbar"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Fix navbar on scroll"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Transparent on Top"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Transparent navbar at page top"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Wrapper Class"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Extra classes for header wrapper"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Nav Class"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Extra classes for nav element"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Social icons from theme"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Show social links from Redux/theme settings in navbar (e.g. second row for Extended)."
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Social style"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Social size"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js src/src/blocks/social-icons/sidebar.js src/src/blocks/social-icons/sidebar.js
+msgid "Button form"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js src/src/blocks/social-icons/sidebar.js src/src/blocks/social-icons/sidebar.js
+msgid "Button color"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js src/src/blocks/social-icons/sidebar.js src/src/blocks/social-icons/sidebar.js
+msgid "Button style"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Social nav class"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js src/src/blocks/social-icons/sidebar.js src/src/blocks/social-icons/sidebar.js
+msgid "Show social networks"
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js src/src/blocks/social-icons/edit.js src/src/blocks/social-icons/edit.js src/src/blocks/social-icons/sidebar.js src/src/blocks/social-icons/sidebar.js
+msgid "No social links in theme settings or theme not active."
+msgstr ""
+
+#: src/src/blocks/navbar/sidebar.js src/src/blocks/navbar/sidebar.js
+msgid "Uncheck to hide a network. Empty selection = show all."
+msgstr ""
+
+#: src/src/blocks/post-grid/controls/MainControl.js src/src/blocks/post-grid/controls/MainControl.js
+msgid "Title Classes"
+msgstr ""
+
+#: src/src/blocks/search/sidebar.js src/src/blocks/search/sidebar.js
+msgid "Search form"
+msgstr ""
+
+#: src/src/blocks/search/sidebar.js src/src/blocks/search/sidebar.js
+msgid "Display type"
+msgstr ""
+
+#: src/src/blocks/search/sidebar.js src/src/blocks/search/sidebar.js
+msgid "Form (inline)"
+msgstr ""
+
+#: src/src/blocks/search/sidebar.js src/src/blocks/search/sidebar.js
+msgid "Dropdown (no button)"
+msgstr ""
+
+#: src/src/blocks/search/sidebar.js src/src/blocks/search/sidebar.js
+msgid "e.g. 320, 320px, 20rem. Default: 320px"
+msgstr ""
+
+#: src/src/blocks/search/sidebar.js src/src/blocks/search/sidebar.js
+msgid "Leave empty to use “Type keyword” (translatable in Loco)."
+msgstr ""
+
+#: src/src/blocks/search/sidebar.js src/src/blocks/search/sidebar.js
+msgid "Post type to search in (theme and active theme CPT)."
+msgstr ""
+
+#: src/src/blocks/search/sidebar.js src/src/blocks/search/sidebar.js
+msgid "e.g. category, post_tag"
+msgstr ""
+
+#: src/src/blocks/search/sidebar.js src/src/blocks/search/sidebar.js
+msgid "Leave empty for auto"
+msgstr ""
+
+#: src/src/blocks/shortcode-render/edit.js src/src/blocks/shortcode-render/edit.js
+msgid "e.g. [my_shortcode]"
+msgstr ""
+
+#: src/src/blocks/shortcode-render/index.js src/src/blocks/shortcode-render/index.js
+msgid "Shortcode Render"
+msgstr ""
+
+#: src/src/blocks/shortcode-render/index.js src/src/blocks/shortcode-render/index.js
+msgid "shortcode"
+msgstr ""
+
+#: src/src/blocks/social-icons/edit.js src/src/blocks/social-icons/edit.js
+msgid "Add links in the block settings."
+msgstr ""
+
+#: src/src/blocks/social-icons/index.js src/src/blocks/social-icons/index.js src/src/blocks/social-icons/sidebar.js src/src/blocks/social-icons/sidebar.js
+msgid "Social Icons"
+msgstr ""
+
+#: src/src/blocks/social-icons/index.js src/src/blocks/social-icons/index.js
+msgid "social"
+msgstr ""
+
+#: src/src/blocks/social-icons/index.js src/src/blocks/social-icons/index.js
+msgid "icons"
+msgstr ""
+
+#: src/src/blocks/social-icons/index.js src/src/blocks/social-icons/index.js
+msgid "links"
+msgstr ""
+
+#: src/src/blocks/social-icons/index.js src/src/blocks/social-icons/index.js
+msgid "share"
+msgstr ""
+
+#: src/src/blocks/social-icons/sidebar.js src/src/blocks/social-icons/sidebar.js
+msgid "From theme settings"
+msgstr ""
+
+#: src/src/blocks/social-icons/sidebar.js src/src/blocks/social-icons/sidebar.js
+msgid "Custom links"
+msgstr ""
+
+#: src/src/blocks/social-icons/sidebar.js src/src/blocks/social-icons/sidebar.js
+msgid "Data source"
+msgstr ""
+
+#: src/src/blocks/social-icons/sidebar.js src/src/blocks/social-icons/sidebar.js
+msgid "Nav class"
+msgstr ""
+
+#: src/src/blocks/social-icons/sidebar.js src/src/blocks/social-icons/sidebar.js
+msgid "Uncheck to hide a network in this block. Empty selection = show all."
+msgstr ""
+
+#: src/src/blocks/social-icons/sidebar.js src/src/blocks/social-icons/sidebar.js
+msgid "Links"
+msgstr ""
+
+#: src/src/blocks/social-icons/sidebar.js src/src/blocks/social-icons/sidebar.js
+msgid "Add link"
+msgstr ""
+
+#: src/src/blocks/social-wrapper/edit.js src/src/blocks/social-wrapper/edit.js
+msgid "Social buttons"
+msgstr ""
+
+#: src/src/blocks/social-wrapper/edit.js src/src/blocks/social-wrapper/edit.js
+msgid "Social Icon Style"
+msgstr ""
+
+#: src/src/blocks/social-wrapper/edit.js src/src/blocks/social-wrapper/edit.js
+msgid "Wrapper class"
+msgstr ""
+
+#: src/src/blocks/tables/edit.js src/src/blocks/tables/edit.js
+msgid "New"
+msgstr ""
+
+#: src/src/blocks/tables/edit.js src/src/blocks/tables/edit.js
+msgid "Remove column"
+msgstr ""
+
+#: src/src/blocks/tables/edit.js src/src/blocks/tables/edit.js
+msgid "Split cell"
+msgstr ""
+
+#: src/src/blocks/tables/edit.js src/src/blocks/tables/edit.js
+msgid "Header…"
+msgstr ""
+
+#: src/src/blocks/tables/edit.js src/src/blocks/tables/edit.js
+msgid "…"
+msgstr ""
+
+#: src/src/blocks/tables/edit.js src/src/blocks/tables/edit.js
+msgid "Loading CSV…"
+msgstr ""
+
+#: src/src/blocks/tables/edit.js src/src/blocks/tables/edit.js
+msgid "Select a CSV document in the sidebar. Table updates when the document changes."
+msgstr ""
+
+#: src/src/blocks/tables/edit.js src/src/blocks/tables/edit.js
+msgid "+ Add Column"
+msgstr ""
+
+#: src/src/blocks/tables/edit.js src/src/blocks/tables/edit.js
+msgid "+ Add Row"
+msgstr ""
+
+#: src/src/blocks/tables/index.js src/src/blocks/tables/index.js
+msgid "Tables"
+msgstr ""
+
+#: src/src/blocks/tables/index.js src/src/blocks/tables/index.js src/src/blocks/tabulator/index.js src/src/blocks/tabulator/index.js
+msgid "table"
+msgstr ""
+
+#: src/src/blocks/tables/index.js src/src/blocks/tables/index.js
+msgid "tables"
+msgstr ""
+
+#: src/src/blocks/tables/index.js src/src/blocks/tables/index.js
+msgid "bootstrap"
+msgstr ""
+
+#: src/src/blocks/tables/index.js src/src/blocks/tables/index.js src/src/blocks/tabulator/index.js src/src/blocks/tabulator/index.js
+msgid "data"
+msgstr ""
+
+#: src/src/blocks/tables/sidebar.js src/src/blocks/tables/sidebar.js
+msgid "Display mode"
+msgstr ""
+
+#: src/src/blocks/tables/sidebar.js src/src/blocks/tables/sidebar.js
+msgid "Manual table"
+msgstr ""
+
+#: src/src/blocks/tables/sidebar.js src/src/blocks/tables/sidebar.js
+msgid "CSV/XLS/XLSX from Documents"
+msgstr ""
+
+#: src/src/blocks/tables/sidebar.js src/src/blocks/tables/sidebar.js src/src/blocks/tabulator/sidebar.js src/src/blocks/tabulator/sidebar.js
+msgid "Document (CSV/XLS/XLSX)"
+msgstr ""
+
+#: src/src/blocks/tables/sidebar.js src/src/blocks/tables/sidebar.js src/src/blocks/tabulator/sidebar.js src/src/blocks/tabulator/sidebar.js
+msgid "— Select document —"
+msgstr ""
+
+#: src/src/blocks/tables/sidebar.js src/src/blocks/tables/sidebar.js
+msgid "Table Settings"
+msgstr ""
+
+#: src/src/blocks/tables/sidebar.js src/src/blocks/tables/sidebar.js
+msgid "Table classes"
+msgstr ""
+
+#: src/src/blocks/tables/sidebar.js src/src/blocks/tables/sidebar.js
+msgid "table-dark"
+msgstr ""
+
+#: src/src/blocks/tables/sidebar.js src/src/blocks/tables/sidebar.js
+msgid "table-striped"
+msgstr ""
+
+#: src/src/blocks/tables/sidebar.js src/src/blocks/tables/sidebar.js
+msgid "table-bordered"
+msgstr ""
+
+#: src/src/blocks/tables/sidebar.js src/src/blocks/tables/sidebar.js
+msgid "table-borderless"
+msgstr ""
+
+#: src/src/blocks/tables/sidebar.js src/src/blocks/tables/sidebar.js
+msgid "table-hover"
+msgstr ""
+
+#: src/src/blocks/tabulator/edit.js src/src/blocks/tabulator/edit.js
+msgid "Error loading data"
+msgstr ""
+
+#: src/src/blocks/tabulator/edit.js src/src/blocks/tabulator/edit.js
+msgid "Search…"
+msgstr ""
+
+#: src/src/blocks/tabulator/edit.js src/src/blocks/tabulator/edit.js
+msgid "Select a document (CSV/XLS/XLSX) in the sidebar."
+msgstr ""
+
+#: src/src/blocks/tabulator/edit.js src/src/blocks/tabulator/edit.js
+msgid "No data in document."
+msgstr ""
+
+#: src/src/blocks/tabulator/index.js src/src/blocks/tabulator/index.js
+msgid "Tabulator"
+msgstr ""
+
+#: src/src/blocks/tabulator/index.js src/src/blocks/tabulator/index.js
+msgid "tabulator"
+msgstr ""
+
+#: src/src/blocks/tabulator/index.js src/src/blocks/tabulator/index.js
+msgid "spreadsheet"
+msgstr ""
+
+#: src/src/blocks/tabulator/sidebar.js src/src/blocks/tabulator/sidebar.js
+msgid "Display"
+msgstr ""
+
+#: src/src/blocks/tabulator/sidebar.js src/src/blocks/tabulator/sidebar.js
+msgid "Height"
+msgstr ""
+
+#: src/src/blocks/tabulator/sidebar.js src/src/blocks/tabulator/sidebar.js
+msgid "e.g. 400px, 50vh"
+msgstr ""
+
+#: src/src/blocks/tabulator/sidebar.js src/src/blocks/tabulator/sidebar.js
+msgid "Fit Columns"
+msgstr ""
+
+#: src/src/blocks/tabulator/sidebar.js src/src/blocks/tabulator/sidebar.js
+msgid "Fit Data"
+msgstr ""
+
+#: src/src/blocks/tabulator/sidebar.js src/src/blocks/tabulator/sidebar.js
+msgid "Fit Data Fill"
+msgstr ""
+
+#: src/src/blocks/tabulator/sidebar.js src/src/blocks/tabulator/sidebar.js
+msgid "Midnight (dark)"
+msgstr ""
+
+#: src/src/blocks/tabulator/sidebar.js src/src/blocks/tabulator/sidebar.js
+msgid "Modern"
+msgstr ""
+
+#: src/src/blocks/tabulator/sidebar.js src/src/blocks/tabulator/sidebar.js
+msgid "Default (light)"
+msgstr ""
+
+#: src/src/blocks/tabulator/sidebar.js src/src/blocks/tabulator/sidebar.js
+msgid "Export"
+msgstr ""
+
+#: src/src/blocks/tabulator/sidebar.js src/src/blocks/tabulator/sidebar.js
+msgid "Export buttons"
+msgstr ""
+
+#: src/src/blocks/tabulator/sidebar.js src/src/blocks/tabulator/sidebar.js
+msgid "Show CSV/JSON export buttons above the table"
+msgstr ""
+
+#: src/src/blocks/tabulator/sidebar.js src/src/blocks/tabulator/sidebar.js
+msgid "Sortable"
+msgstr ""
+
+#: src/src/blocks/tabulator/sidebar.js src/src/blocks/tabulator/sidebar.js
+msgid "Allow sorting by clicking column header"
+msgstr ""
+
+#: src/src/blocks/tabulator/sidebar.js src/src/blocks/tabulator/sidebar.js
+msgid "Resizable columns"
+msgstr ""
+
+#: src/src/blocks/tabulator/sidebar.js src/src/blocks/tabulator/sidebar.js
+msgid "Movable columns"
+msgstr ""
+
+#: src/src/blocks/tabulator/sidebar.js src/src/blocks/tabulator/sidebar.js
+msgid "Allow drag to reorder columns"
+msgstr ""
+
+#: src/src/blocks/tabulator/sidebar.js src/src/blocks/tabulator/sidebar.js
+msgid "Header filter"
+msgstr ""
+
+#: src/src/blocks/tabulator/sidebar.js src/src/blocks/tabulator/sidebar.js
+msgid "Search/filter input in column headers"
+msgstr ""
+
+#: src/src/blocks/tabulator/sidebar.js src/src/blocks/tabulator/sidebar.js
+msgid "Min column width (px)"
+msgstr ""
+
+#: src/src/blocks/tabulator/sidebar.js src/src/blocks/tabulator/sidebar.js
+msgid "Max column width (px)"
+msgstr ""
+
+#: src/src/blocks/top-header/edit.js src/src/blocks/top-header/edit.js
+msgid "Top Header: configure contacts in Redux or enable items in the sidebar."
+msgstr ""
+
+#: src/src/blocks/top-header/index.js src/src/blocks/top-header/index.js
+msgid "Top Header"
+msgstr ""
+
+#: src/src/blocks/top-header/index.js src/src/blocks/top-header/index.js
+msgid "top header"
+msgstr ""
+
+#: src/src/blocks/top-header/index.js src/src/blocks/top-header/index.js
+msgid "topbar"
+msgstr ""
+
+#: src/src/blocks/top-header/sidebar.js src/src/blocks/top-header/sidebar.js
+msgid "Top Header Items"
+msgstr ""
+
+#: src/src/blocks/top-header/sidebar.js src/src/blocks/top-header/sidebar.js
+msgid "Show Email"
+msgstr ""
+
+#: src/src/blocks/top-header/sidebar.js src/src/blocks/top-header/sidebar.js
+msgid "Styling"
+msgstr ""
+
+#: src/src/blocks/widget/index.js src/src/blocks/widget/index.js
+msgid "Widget"
+msgstr ""
+
+#: src/src/blocks/widget/index.js src/src/blocks/widget/index.js
+msgid "container"
+msgstr ""
+
+#: src/src/blocks/yandex-map/controls/MarkerRepeaterControl.js src/src/blocks/yandex-map/controls/MarkerRepeaterControl.js
+msgid "Select point on the map"
+msgstr ""
+
+#: src/src/blocks/yandex-map/controls/MarkerRepeaterControl.js src/src/blocks/yandex-map/controls/MarkerRepeaterControl.js
+msgid "Yandex Maps will appear here when the theme loads the API in the editor."
+msgstr ""
+
+#: src/src/blocks/yandex-map/edit.js src/src/blocks/yandex-map/edit.js
+msgid "Loading map…"
+msgstr ""
+
+#: src/src/components/animation/Animation.js src/src/components/animation/Animation.js
+msgid "Interval (ms)"
+msgstr ""
+
+#: src/src/components/animation/Animation.js src/src/components/animation/Animation.js
+msgid "Time interval between elements. Can be negative."
+msgstr ""
+
+#: src/src/components/icon/IconControl.js src/src/components/icon/IconControl.js
+msgid "Font Size"
+msgstr ""
+
+#: src/src/components/post-type-taxonomy/PostTypeTaxonomyControl.js src/src/components/post-type-taxonomy/PostTypeTaxonomyControl.js
+msgid "Filter by taxonomies"
+msgstr ""
+
+#: src/src/components/section/SectionSettingsPanel.js src/src/components/section/SectionSettingsPanel.js
+msgid "Wrapper Tag"
+msgstr ""
+
+#: src/src/blocks/lists/sidebar.js src/src/blocks/lists/sidebar.js
+msgid "Item Class"
+msgstr ""
+
+#: src/src/blocks/lists/sidebar.js src/src/blocks/lists/sidebar.js
+msgid "CSS class applied to each <li> element"
+msgstr ""
+

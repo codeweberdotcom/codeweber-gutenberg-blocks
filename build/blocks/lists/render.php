@@ -32,6 +32,7 @@ $enableLinks = isset($attributes['enableLinks']) ? (bool) $attributes['enableLin
 $postsPerPage = isset($attributes['postsPerPage']) ? intval($attributes['postsPerPage']) : 10;
 $orderBy = isset($attributes['orderBy']) ? $attributes['orderBy'] : 'date';
 $order = isset($attributes['order']) ? $attributes['order'] : 'desc';
+$itemClass = isset($attributes['itemClass']) ? $attributes['itemClass'] : '';
 $listClass = isset($attributes['listClass']) ? $attributes['listClass'] : '';
 $listId = isset($attributes['listId']) ? $attributes['listId'] : '';
 $listData = isset($attributes['listData']) ? $attributes['listData'] : '';
@@ -119,10 +120,14 @@ if ($listType === 'unordered') {
 	$listClasses[] = 'unordered-list';
 } elseif ($listType === 'icon') {
 	$listClasses[] = 'icon-list';
+} elseif ($listType === 'line') {
+	$listClasses[] = 'list-unstyled';
+} elseif ($listType === 'plain') {
+	$listClasses[] = 'list-unstyled';
 }
 
 // Bullet/icon color (soft or solid)
-if ($bulletColor && $bulletColor !== 'none') {
+if ($listType !== 'line' && $listType !== 'ordered' && $listType !== 'plain' && $bulletColor && $bulletColor !== 'none') {
 	$bulletPrefix = ($bulletColorType === 'soft') ? 'bullet-soft-' : 'bullet-';
 	$listClasses[] = $bulletPrefix . esc_attr($bulletColor);
 }
@@ -149,6 +154,9 @@ if ($columns === '2') {
 } elseif ($columns === '3') {
 	$listClasses[] = 'cc-3';
 }
+
+// Tag (ul or ol)
+$tag = ($listType === 'ordered') ? 'ol' : 'ul';
 
 // Parse data attributes
 $dataAttrs = [];
@@ -189,9 +197,13 @@ foreach ($wrapperAttrs as $key => $value) {
 	<?php if (empty($itemsToRender)) : ?>
 		<p><?php esc_html_e('No items found.', 'codeweber-gutenberg-blocks'); ?></p>
 	<?php else : ?>
-		<ul class="<?php echo esc_attr(implode(' ', $listClasses)); ?>">
+		<<?php echo $tag; ?> class="<?php echo esc_attr(implode(' ', $listClasses)); ?>">
 			<?php foreach ($itemsToRender as $item) : ?>
-				<li>
+				<?php
+					$liClass = '';
+					if ($listType === 'line') $liClass = 'text-line';
+					elseif ($listType === 'plain' && $itemClass) $liClass = esc_attr($itemClass);
+				?><li<?php echo $liClass ? ' class="' . $liClass . '"' : ''; ?>>
 					<?php if ($listType === 'icon') : ?>
 						<span><i class="<?php echo esc_attr($iconClass); ?>"></i></span>
 					<?php endif; ?>
@@ -204,6 +216,6 @@ foreach ($wrapperAttrs as $key => $value) {
 					</span>
 				</li>
 			<?php endforeach; ?>
-		</ul>
+		</<?php echo $tag; ?>>
 	<?php endif; ?>
 </div>

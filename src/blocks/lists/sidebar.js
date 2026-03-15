@@ -12,6 +12,7 @@ import {
 	ToggleControl,
 	SelectControl,
 	RangeControl,
+	TextControl,
 } from '@wordpress/components';
 import { useState } from '@wordpress/element';
 import { PostTypeTaxonomyControl } from '../../components/post-type-taxonomy/PostTypeTaxonomyControl';
@@ -24,6 +25,7 @@ export const ListsSidebar = ({ attributes, setAttributes }) => {
 	const {
 		mode,
 		listType,
+		itemClass,
 		bulletColor,
 		bulletColorType,
 		bulletBg,
@@ -190,7 +192,7 @@ export const ListsSidebar = ({ attributes, setAttributes }) => {
 						{__('List Type', 'codeweber-gutenberg-blocks')}
 					</label>
 				</div>
-				<div className="button-group-sidebar_50">
+				<div className="button-group-sidebar_25">
 					{[
 						{
 							label: __(
@@ -202,6 +204,24 @@ export const ListsSidebar = ({ attributes, setAttributes }) => {
 						{
 							label: __('Icon', 'codeweber-gutenberg-blocks'),
 							value: 'icon',
+						},
+						{
+							label: __('Line', 'codeweber-gutenberg-blocks'),
+							value: 'line',
+						},
+						{
+							label: __(
+								'Ordered',
+								'codeweber-gutenberg-blocks'
+							),
+							value: 'ordered',
+						},
+						{
+							label: __(
+								'Plain',
+								'codeweber-gutenberg-blocks'
+							),
+							value: 'plain',
 						},
 					].map((type) => (
 						<Button
@@ -216,6 +236,18 @@ export const ListsSidebar = ({ attributes, setAttributes }) => {
 					))}
 				</div>
 
+				{/* Item Class - только для plain */}
+				{listType === 'plain' && (
+					<div style={{ marginTop: '16px' }}>
+						<TextControl
+							label={__('Item Class', 'codeweber-gutenberg-blocks')}
+							value={itemClass || ''}
+							onChange={(value) => setAttributes({ itemClass: value })}
+							help={__('CSS class applied to each <li> element', 'codeweber-gutenberg-blocks')}
+						/>
+					</div>
+				)}
+
 				{/* Colors — Icon & Text */}
 				<div
 					className="component-sidebar-title"
@@ -226,7 +258,7 @@ export const ListsSidebar = ({ attributes, setAttributes }) => {
 					</label>
 				</div>
 
-				{/* Icon color */}
+				{(listType === 'unordered' || listType === 'icon') && (
 				<div style={{ marginTop: '12px' }}>
 					<label
 						className="component-sidebar-title"
@@ -283,6 +315,7 @@ export const ListsSidebar = ({ attributes, setAttributes }) => {
 						</div>
 					)}
 				</div>
+				)}
 
 				{/* Bullet Background - только для icon-list */}
 				{listType === 'icon' && (

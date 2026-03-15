@@ -17,6 +17,7 @@ const ListsSave = ({ attributes }) => {
 		textColor,
 		textColorType,
 		items,
+		itemClass,
 		listClass,
 		listId,
 		listData,
@@ -36,10 +37,14 @@ const ListsSave = ({ attributes }) => {
 			classes.push('unordered-list');
 		} else if (listType === 'icon') {
 			classes.push('icon-list');
+		} else if (listType === 'line') {
+			classes.push('list-unstyled');
+		} else if (listType === 'plain') {
+			classes.push('list-unstyled');
 		}
 
 		// Bullet/icon color (soft or solid)
-		if (bulletColor && bulletColor !== 'none') {
+		if (listType !== 'line' && listType !== 'ordered' && listType !== 'plain' && bulletColor && bulletColor !== 'none') {
 			const bulletPrefix = bulletColorType === 'soft' ? 'bullet-soft-' : 'bullet-';
 			classes.push(`${bulletPrefix}${bulletColor}`);
 		}
@@ -70,6 +75,8 @@ const ListsSave = ({ attributes }) => {
 		return classes.join(' ');
 	};
 
+	const ListTag = listType === 'ordered' ? 'ol' : 'ul';
+
 	const blockProps = useBlockProps.save({
 		className: '',
 		id: listId || undefined,
@@ -91,9 +98,9 @@ const ListsSave = ({ attributes }) => {
 
 	return (
 		<div {...blockProps} {...getDataAttributes()}>
-			<ul className={getListClasses()}>
+			<ListTag className={getListClasses()}>
 				{items.map((item) => (
-					<li key={item.id}>
+					<li key={item.id} className={listType === 'line' ? 'text-line' : (listType === 'plain' && itemClass ? itemClass : undefined)}>
 						{listType === 'icon' && (
 							<span>
 								<i
@@ -111,7 +118,7 @@ const ListsSave = ({ attributes }) => {
 						</span>
 					</li>
 				))}
-			</ul>
+			</ListTag>
 		</div>
 	);
 };

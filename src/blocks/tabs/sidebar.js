@@ -96,6 +96,13 @@ export const TabsSidebar = ({ attributes, setAttributes }) => {
 							{[
 								{
 									label: __(
+										'Theme',
+										'codeweber-gutenberg-blocks'
+									),
+									value: 'theme',
+								},
+								{
+									label: __(
 										'None',
 										'codeweber-gutenberg-blocks'
 									),

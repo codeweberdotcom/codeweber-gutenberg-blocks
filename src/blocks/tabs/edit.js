@@ -339,8 +339,20 @@ const TabsEdit = ({ attributes, setAttributes, clientId }) => {
 			classes.push('width-auto');
 
 			if (tabRounded) {
-				classes.push(`tab-${tabRounded}`);
-				classes.push(tabRounded);
+				if (tabRounded === 'theme') {
+					const themeClass =
+						typeof window !== 'undefined' &&
+						window.cwgbTabsThemeRounded
+							? (window.cwgbTabsThemeRounded.class || '').trim()
+							: '';
+					if (themeClass) {
+						classes.push(`tab-${themeClass}`);
+						classes.push(themeClass);
+					}
+				} else {
+					classes.push(`tab-${tabRounded}`);
+					classes.push(tabRounded);
+				}
 			}
 
 			if (tabAlignment === 'center') {

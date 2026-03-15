@@ -560,6 +560,14 @@ class Plugin {
 					]);
 				}
 
+				// Tabs block: скругление Theme — класс из Codeweber_Options::style('button') для превью в редакторе
+				if ($block_name === 'tabs') {
+					$theme_tab_rounded = class_exists('\Codeweber_Options') ? trim(\Codeweber_Options::style('button')) : '';
+					wp_localize_script($script_handle, 'cwgbTabsThemeRounded', [
+						'class' => $theme_tab_rounded,
+					]);
+				}
+
 				// Проверяем что скрипт действительно зарегистрирован
 				global $wp_scripts;
 				if (isset($wp_scripts->registered[$script_handle])) {

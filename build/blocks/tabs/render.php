@@ -39,8 +39,16 @@ if ( 'basic' === $tab_style ) {
 	$nav_classes[] = 'width-auto';
 
 	if ( $tab_rounded ) {
-		$nav_classes[] = 'tab-' . $tab_rounded;
-		$nav_classes[] = $tab_rounded;
+		if ( 'theme' === $tab_rounded ) {
+			$theme_class = class_exists( '\Codeweber_Options' ) ? trim( \Codeweber_Options::style( 'button' ) ) : '';
+			if ( $theme_class ) {
+				$nav_classes[] = 'tab-' . $theme_class;
+				$nav_classes[] = $theme_class;
+			}
+		} else {
+			$nav_classes[] = 'tab-' . $tab_rounded;
+			$nav_classes[] = $tab_rounded;
+		}
 	}
 	if ( 'center' === $tab_alignment ) {
 		$nav_classes[] = 'mx-auto';

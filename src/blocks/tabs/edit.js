@@ -14,6 +14,7 @@ import { __ } from '@wordpress/i18n';
 import { Button } from '@wordpress/components';
 import { useEffect, useRef, useState } from '@wordpress/element';
 import { useSelect, useDispatch } from '@wordpress/data';
+import { serialize, parse } from '@wordpress/blocks';
 import { TabsSidebar } from './sidebar';
 import { IconPicker } from '../../components/icon/IconPicker';
 
@@ -60,6 +61,26 @@ const ALLOWED_BLOCKS = [
 	'codeweber-blocks/tabs',
 ];
 
+/**
+ * Convert innerBlocksByTab value to an array of block objects.
+ * Handles both new format (HTML string) and old format (array of block objects).
+ */
+const getBlocksFromTabContent = (tabContent) => {
+	if (!tabContent) return [];
+	if (typeof tabContent === 'string') {
+		try {
+			return parse(tabContent);
+		} catch (e) {
+			return [];
+		}
+	}
+	if (Array.isArray(tabContent)) {
+		// Old format: array of block objects stored directly
+		return tabContent;
+	}
+	return [];
+};
+
 const TabsEdit = ({ attributes, setAttributes, clientId }) => {
 	const {
 		tabStyle,
@@ -72,25 +93,45 @@ const TabsEdit = ({ attributes, setAttributes, clientId }) => {
 		tabsClass,
 		tabsData,
 	} = attributes;
-	const previousClientIdRef = useRef(clientId);
-	const [iconPickerOpen, setIconPickerOpen] = useState(null); // itemId -> isOpen
 
-	// Get inner blocks for current tab and subscribe to changes
+	const [iconPickerOpen, setIconPickerOpen] = useState(null);
+
 	const { getBlocks } = useSelect((select) => ({
 		getBlocks: select('core/block-editor').getBlocks,
 	}));
 
-	// Get current blocks to trigger re-render when they change
 	const currentBlocks = useSelect(
-		(select) => {
-			return select('core/block-editor').getBlocks(clientId);
-		},
+		(select) => select('core/block-editor').getBlocks(clientId),
 		[clientId]
 	);
 
 	const { replaceInnerBlocks } = useDispatch('core/block-editor');
 
-	// Initialize innerBlocks storage for each tab
+	// Generate stable tabsId once on first render (not based on clientId)
+	useEffect(() => {
+		if (!tabsId) {
+			const randomId = Math.random().toString(36).substr(2, 9);
+			setAttributes({ tabsId: `tabs-${randomId}` });
+		}
+	}, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+	// Ensure items have stable IDs (not based on clientId)
+	useEffect(() => {
+		if (!items || items.length === 0) return;
+		const needsIds = items.some((item) => !item.id);
+		if (!needsIds) return;
+
+		const updatedItems = items.map((item, index) => {
+			if (!item.id) {
+				const randomId = Math.random().toString(36).substr(2, 9);
+				return { ...item, id: `tab-${randomId}-${index}` };
+			}
+			return item;
+		});
+		setAttributes({ items: updatedItems });
+	}, [items, setAttributes]);
+
+	// Initialize innerBlocksByTab entries for any new tabs
 	useEffect(() => {
 		if (!items || items.length === 0) return;
 
@@ -98,10 +139,9 @@ const TabsEdit = ({ attributes, setAttributes, clientId }) => {
 		let needsUpdate = false;
 		const updatedInnerBlocks = { ...innerBlocksByTab };
 
-		// Ensure each tab has an entry
 		items.forEach((item) => {
-			if (!updatedInnerBlocks[item.id]) {
-				updatedInnerBlocks[item.id] = [];
+			if (!(item.id in updatedInnerBlocks)) {
+				updatedInnerBlocks[item.id] = '';
 				needsUpdate = true;
 			}
 		});
@@ -117,18 +157,20 @@ const TabsEdit = ({ attributes, setAttributes, clientId }) => {
 		if (needsUpdate) {
 			setAttributes({ innerBlocksByTab: updatedInnerBlocks });
 		}
-	}, [items]);
+	}, [items]); // eslint-disable-line react-hooks/exhaustive-deps
 
 	// Load innerBlocks for active tab on mount and when activeTab changes
 	const previousActiveTabRef = useRef(activeTab);
+	const previousInnerBlocksRef = useRef([]);
+	const saveTimeoutRef = useRef(null);
+	const isInitialLoadRef = useRef(true);
+
 	useEffect(() => {
 		if (!items || items.length === 0 || activeTab >= items.length) return;
 
-		// Only load blocks when activeTab actually changes (not on every render)
 		if (previousActiveTabRef.current !== activeTab) {
 			const activeTabId = items[activeTab].id;
 			const innerBlocksByTab = attributes.innerBlocksByTab || {};
-			const tabInnerBlocks = innerBlocksByTab[activeTabId] || [];
 
 			// Save current tab's blocks before switching
 			if (
@@ -136,33 +178,28 @@ const TabsEdit = ({ attributes, setAttributes, clientId }) => {
 				previousActiveTabRef.current < items.length
 			) {
 				const previousTabId = items[previousActiveTabRef.current].id;
-				const currentBlocks = getBlocks(clientId);
-				const innerBlocksByTab = attributes.innerBlocksByTab || {};
+				const currentBlocksList = getBlocks(clientId);
 				const updatedInnerBlocks = {
 					...innerBlocksByTab,
-					[previousTabId]: currentBlocks,
+					[previousTabId]: serialize(currentBlocksList),
 				};
 				setAttributes({ innerBlocksByTab: updatedInnerBlocks });
 			}
 
 			// Load new tab's blocks
-			replaceInnerBlocks(clientId, tabInnerBlocks, false);
-			previousInnerBlocksRef.current = tabInnerBlocks;
+			const newTabContent = innerBlocksByTab[activeTabId];
+			const newTabBlocks = getBlocksFromTabContent(newTabContent);
+			replaceInnerBlocks(clientId, newTabBlocks, false);
+			previousInnerBlocksRef.current = newTabBlocks;
 			previousActiveTabRef.current = activeTab;
-			isInitialLoadRef.current = true; // Mark as initial load after tab switch
+			isInitialLoadRef.current = true;
 		}
-	}, [activeTab, items, clientId, replaceInnerBlocks]);
+	}, [activeTab, items, clientId, replaceInnerBlocks]); // eslint-disable-line react-hooks/exhaustive-deps
 
-	// Save current innerBlocks when they change - debounced to avoid conflicts
-	const previousInnerBlocksRef = useRef([]);
-	const saveTimeoutRef = useRef(null);
-	const isInitialLoadRef = useRef(true);
-
-	// Subscribe to block changes and save automatically
+	// Auto-save current innerBlocks when they change (debounced)
 	useEffect(() => {
 		if (!items || items.length === 0 || activeTab >= items.length) return;
 
-		// Skip initial load (blocks are loaded from innerBlocksByTab)
 		if (isInitialLoadRef.current) {
 			isInitialLoadRef.current = false;
 			previousInnerBlocksRef.current = currentBlocks || [];
@@ -174,23 +211,20 @@ const TabsEdit = ({ attributes, setAttributes, clientId }) => {
 			JSON.stringify(previousInnerBlocksRef.current);
 
 		if (blocksChanged && currentBlocks) {
-			// Clear previous timeout
 			if (saveTimeoutRef.current) {
 				clearTimeout(saveTimeoutRef.current);
 			}
-
-			// Debounce saving to avoid conflicts during editing
 			saveTimeoutRef.current = setTimeout(() => {
 				const activeTabId = items[activeTab].id;
 				const innerBlocksByTab = attributes.innerBlocksByTab || {};
 				const blocksToSave = getBlocks(clientId);
 				const updatedInnerBlocks = {
 					...innerBlocksByTab,
-					[activeTabId]: blocksToSave,
+					[activeTabId]: serialize(blocksToSave),
 				};
 				setAttributes({ innerBlocksByTab: updatedInnerBlocks });
 				previousInnerBlocksRef.current = blocksToSave;
-			}, 500); // 500ms debounce
+			}, 500);
 		}
 
 		return () => {
@@ -198,113 +232,56 @@ const TabsEdit = ({ attributes, setAttributes, clientId }) => {
 				clearTimeout(saveTimeoutRef.current);
 			}
 		};
-	}, [
-		currentBlocks,
-		getBlocks,
-		clientId,
-		activeTab,
-		items,
-		attributes.innerBlocksByTab,
-		setAttributes,
-	]);
+	}, [currentBlocks]); // eslint-disable-line react-hooks/exhaustive-deps
 
-	// Save current innerBlocks when switching tabs
+	// Save current innerBlocks immediately when switching tabs
 	const handleTabSwitch = (newActiveTab) => {
 		if (newActiveTab === activeTab || newActiveTab >= items.length) return;
 
-		// Clear any pending save timeout
 		if (saveTimeoutRef.current) {
 			clearTimeout(saveTimeoutRef.current);
 			saveTimeoutRef.current = null;
 		}
 
-		// Save current innerBlocks to previous tab immediately
-		const currentBlocks = getBlocks(clientId);
+		const currentBlocksList = getBlocks(clientId);
 		const activeTabId = items[activeTab].id;
 		const innerBlocksByTab = attributes.innerBlocksByTab || {};
 		const updatedInnerBlocks = {
 			...innerBlocksByTab,
-			[activeTabId]: currentBlocks,
+			[activeTabId]: serialize(currentBlocksList),
 		};
 
-		// Load innerBlocks for new tab
 		const newTabId = items[newActiveTab].id;
-		const newTabInnerBlocks = updatedInnerBlocks[newTabId] || [];
+		const newTabContent = updatedInnerBlocks[newTabId];
+		const newTabBlocks = getBlocksFromTabContent(newTabContent);
 
-		// Update state and blocks
 		setAttributes({
 			innerBlocksByTab: updatedInnerBlocks,
 			activeTab: newActiveTab,
 		});
 
-		replaceInnerBlocks(clientId, newTabInnerBlocks, false);
-		previousInnerBlocksRef.current = newTabInnerBlocks;
+		replaceInnerBlocks(clientId, newTabBlocks, false);
+		previousInnerBlocksRef.current = newTabBlocks;
 		previousActiveTabRef.current = newActiveTab;
 	};
-
-	// Generate unique tabs ID based on clientId
-	useEffect(() => {
-		const clientIdPrefix = clientId.replace(/[^a-z0-9]/gi, '');
-		const expectedTabsId = `tabs-${clientIdPrefix}`;
-
-		if (tabsId !== expectedTabsId) {
-			setAttributes({ tabsId: expectedTabsId });
-		}
-	}, [clientId, tabsId, setAttributes]);
-
-	// Ensure all item IDs are unique and contain clientId
-	useEffect(() => {
-		if (!items || items.length === 0) {
-			previousClientIdRef.current = clientId;
-			return;
-		}
-
-		const clientIdPrefix = clientId.replace(/[^a-z0-9]/gi, '');
-		const clientIdChanged = previousClientIdRef.current !== clientId;
-		const hasInvalidIds = items.some(
-			(item) => !item.id || !item.id.includes(clientIdPrefix)
-		);
-
-		if (!clientIdChanged && !hasInvalidIds) {
-			return;
-		}
-
-		const baseTime = Date.now();
-		const updatedItems = items.map((item, index) => {
-			if (!item.id || !item.id.includes(clientIdPrefix)) {
-				const randomSuffix = Math.floor(Math.random() * 1000);
-				return {
-					...item,
-					id: `tab-${clientIdPrefix}-${baseTime}-${index}-${randomSuffix}`,
-				};
-			}
-			return item;
-		});
-
-		setAttributes({ items: updatedItems });
-		previousClientIdRef.current = clientId;
-	}, [clientId, items, setAttributes]);
 
 	// Ensure first tab is active by default
 	useEffect(() => {
 		if (activeTab !== 0 && items.length > 0) {
 			setAttributes({ activeTab: 0 });
 		}
-	}, []);
+	}, []); // eslint-disable-line react-hooks/exhaustive-deps
 
 	const updateItem = (index, field, value) => {
 		const newItems = [...items];
-		newItems[index] = {
-			...newItems[index],
-			[field]: value,
-		};
+		newItems[index] = { ...newItems[index], [field]: value };
 		setAttributes({ items: newItems });
 	};
 
 	const addItem = () => {
-		const clientIdPrefix = clientId.replace(/[^a-z0-9]/gi, '');
+		const randomId = Math.random().toString(36).substr(2, 9);
 		const newItem = {
-			id: `tab-${clientIdPrefix}-${Date.now()}`,
+			id: `tab-${randomId}-${Date.now()}`,
 			title: __('New Tab', 'codeweber-gutenberg-blocks'),
 			icon: '',
 		};
@@ -312,10 +289,9 @@ const TabsEdit = ({ attributes, setAttributes, clientId }) => {
 	};
 
 	const removeItem = (index) => {
-		if (items.length === 1) return; // Don't allow removing the last tab
+		if (items.length === 1) return;
 		const newItems = items.filter((_, i) => i !== index);
 		setAttributes({ items: newItems });
-		// If removed tab was active, switch to first tab
 		if (activeTab === index) {
 			setAttributes({ activeTab: 0 });
 		} else if (activeTab > index) {
@@ -339,7 +315,6 @@ const TabsEdit = ({ attributes, setAttributes, clientId }) => {
 		];
 		setAttributes({ items: newItems });
 
-		// Update activeTab if needed
 		if (activeTab === index) {
 			setAttributes({ activeTab: targetIndex });
 		} else if (activeTab === targetIndex) {
@@ -361,25 +336,19 @@ const TabsEdit = ({ attributes, setAttributes, clientId }) => {
 			classes.push('nav-pills');
 		} else if (tabStyle === 'fanny') {
 			classes.push('nav-tabs-fanny');
-			// Always force width-auto for fanny style
 			classes.push('width-auto');
 
-			// Tab rounded classes
 			if (tabRounded) {
-				// custom class for targeting + bootstrap rounded utility
 				classes.push(`tab-${tabRounded}`);
-				classes.push(tabRounded); // e.g. rounded, rounded-0, rounded-pill
+				classes.push(tabRounded);
 			}
 
-			// Tab alignment classes
 			if (tabAlignment === 'center') {
 				classes.push('mx-auto');
 			} else if (tabAlignment === 'right') {
 				classes.push('ms-auto');
 			}
-			// Left is default, no class needed
 
-			// Tab background classes
 			if (tabBackground === true) {
 				classes.push('bg-white', 'p-1', 'shadow-xl');
 			}
@@ -391,7 +360,6 @@ const TabsEdit = ({ attributes, setAttributes, clientId }) => {
 		return classes.join(' ');
 	};
 
-	// Get tab content classes
 	const getTabContentClasses = (index) => {
 		const classes = ['tab-pane', 'fade'];
 		if (index === activeTab) {
@@ -405,7 +373,6 @@ const TabsEdit = ({ attributes, setAttributes, clientId }) => {
 		id: tabsId,
 	});
 
-	// Get icon name from class
 	const getIconName = (iconClass) => {
 		if (!iconClass) return '';
 		const match = iconClass.match(/uil-([^\s]+)/);
@@ -433,7 +400,7 @@ const TabsEdit = ({ attributes, setAttributes, clientId }) => {
 							className="nav-item"
 							style={{ position: 'relative' }}
 						>
-							{/* Item Controls - Inside each tab */}
+							{/* Item Controls */}
 							<div
 								className="tabs-item-controls"
 								style={{
@@ -498,7 +465,6 @@ const TabsEdit = ({ attributes, setAttributes, clientId }) => {
 								aria-selected={index === activeTab}
 								aria-controls={item.id}
 								onClick={(e) => {
-									// Only switch tab if not clicking on RichText, icon, or controls
 									const target = e.target;
 									const isRichText =
 										target.closest(
@@ -517,7 +483,6 @@ const TabsEdit = ({ attributes, setAttributes, clientId }) => {
 									}
 								}}
 								onMouseDown={(e) => {
-									// Prevent default only if not clicking on RichText, icon, or controls
 									const target = e.target;
 									const isRichText =
 										target.closest(
@@ -548,7 +513,9 @@ const TabsEdit = ({ attributes, setAttributes, clientId }) => {
 											e.stopPropagation();
 											setIconPickerOpen(item.id);
 										}}
-										onMouseDown={(e) => e.stopPropagation()}
+										onMouseDown={(e) =>
+											e.stopPropagation()
+										}
 										style={{
 											cursor: 'pointer',
 											marginRight: item.title
@@ -569,7 +536,9 @@ const TabsEdit = ({ attributes, setAttributes, clientId }) => {
 											e.stopPropagation();
 											setIconPickerOpen(item.id);
 										}}
-										onMouseDown={(e) => e.stopPropagation()}
+										onMouseDown={(e) =>
+											e.stopPropagation()
+										}
 										style={{
 											cursor: 'pointer',
 											marginRight: item.title
@@ -599,12 +568,8 @@ const TabsEdit = ({ attributes, setAttributes, clientId }) => {
 										'codeweber-gutenberg-blocks'
 									)}
 									withoutInteractiveFormatting
-									onClick={(e) => {
-										e.stopPropagation();
-									}}
-									onMouseDown={(e) => {
-										e.stopPropagation();
-									}}
+									onClick={(e) => e.stopPropagation()}
+									onMouseDown={(e) => e.stopPropagation()}
 								/>
 							</button>
 						</li>
@@ -648,7 +613,7 @@ const TabsEdit = ({ attributes, setAttributes, clientId }) => {
 					</Button>
 				</div>
 
-				{/* Icon Pickers for each tab */}
+				{/* Icon Pickers */}
 				{items.map((item, index) => (
 					<IconPicker
 						key={`icon-picker-${item.id}`}

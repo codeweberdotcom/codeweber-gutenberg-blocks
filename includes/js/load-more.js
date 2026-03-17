@@ -15,390 +15,228 @@
 	 * Apply button radius class from theme to Load More buttons
 	 */
 	function applyButtonRadiusClass() {
-		// Получаем класс скругления кнопки из темы через REST API
 		fetch('/wp-json/codeweber/v1/styles')
 			.then((response) => response.json())
 			.catch(() => ({}))
 			.then((styles) => {
 				const buttonRadiusClass = styles?.button_radius_class || '';
-
-				if (!buttonRadiusClass) {
-					return;
-				}
-
-				// Применяем класс ко всем кнопкам Load More на странице
-				const loadMoreButtons = document.querySelectorAll(
-					'.cwgb-load-more-btn'
-				);
-				loadMoreButtons.forEach((button) => {
+				if (!buttonRadiusClass) return;
+				document.querySelectorAll('.cwgb-load-more-btn').forEach((button) => {
 					if (button.tagName === 'BUTTON') {
-						// Добавляем класс скругления к кнопке
 						const trimmedClass = buttonRadiusClass.trim();
-						if (
-							trimmedClass &&
-							!button.classList.contains(trimmedClass)
-						) {
+						if (trimmedClass && !button.classList.contains(trimmedClass)) {
 							button.classList.add(trimmedClass);
 						}
 					}
 				});
 			})
-			.catch(() => {
-				// Если API недоступен, продолжаем без класса
-			});
+			.catch(() => {});
 	}
 
 	/**
-	 * Initialize Load More functionality
+	 * Initialize Load More functionality.
+	 * Uses delegated event on document — works after PJAX DOM replacement.
 	 */
 	function initLoadMore() {
-		const loadMoreButtons = document.querySelectorAll(
-			'.cwgb-load-more-btn'
-		);
+		applyButtonRadiusClass();
+	}
 
-		if (loadMoreButtons.length === 0) {
+	/**
+	 * Delegated click handler — attaches once, works for any button in DOM.
+	 */
+	document.addEventListener('click', function (e) {
+		const button = e.target.closest('.cwgb-load-more-btn');
+		if (!button) return;
+		if (button.disabled) return;
+
+		e.preventDefault();
+		e.stopPropagation();
+
+		const container = button.closest('.cwgb-load-more-container');
+		if (!container) {
+			console.error('Load More: Container not found');
 			return;
 		}
 
-		// Применяем класс скругления к существующим кнопкам
-		applyButtonRadiusClass();
+		const blockId = container.dataset.blockId;
+		const blockType = container.dataset.blockType || '';
+		const blockAttributes = container.dataset.blockAttributes || '';
+		const currentOffset = parseInt(container.dataset.currentOffset) || 0;
+		const loadCount = parseInt(container.dataset.loadCount) || 6;
+		const postId = container.dataset.postId || '';
 
-		loadMoreButtons.forEach((button) => {
-			// Skip if already initialized
-			if (button.dataset.initialized === 'true') {
-				return;
-			}
+		if (!blockId) {
+			console.error('Load More: Block ID not found');
+			return;
+		}
 
-			button.dataset.initialized = 'true';
+		// Show loading state
+		const originalText = button.textContent || button.innerText;
+		let isLoadingText =
+			button.getAttribute('data-loading-text') ||
+			button.dataset.loadingText;
+		if (!isLoadingText && typeof cwgbLoadMore !== 'undefined' && cwgbLoadMore.loadingText) {
+			isLoadingText = cwgbLoadMore.loadingText;
+		}
+		if (!isLoadingText) {
+			isLoadingText = 'Loading...';
+		}
 
-			button.addEventListener('click', function (e) {
-				e.preventDefault();
-				e.stopPropagation();
+		if (button.tagName === 'BUTTON') {
+			button.disabled = true;
+			button.textContent = isLoadingText;
+		} else {
+			button.style.pointerEvents = 'none';
+			button.style.opacity = '0.6';
+			button.textContent = isLoadingText;
+		}
 
-				const container = button.closest('.cwgb-load-more-container');
-				if (!container) {
-					console.error('Load More: Container not found');
-					return;
-				}
+		const useFetch = typeof fetch_vars !== 'undefined' && fetch_vars.ajaxurl;
+		const apiUrl = useFetch
+			? fetch_vars.ajaxurl
+			: cwgbLoadMore?.restUrl || '/wp-json/codeweber-gutenberg-blocks/v1/load-more';
 
-				const blockId = container.dataset.blockId;
-				const blockType = container.dataset.blockType || '';
-				const blockAttributes = container.dataset.blockAttributes || '';
-				const currentOffset =
-					parseInt(container.dataset.currentOffset) || 0;
-				const loadCount = parseInt(container.dataset.loadCount) || 6;
-				const postId = container.dataset.postId || '';
+		console.log('Load More: Sending request', {
+			method: useFetch ? 'Fetch (admin-ajax)' : 'REST API',
+			block_id: blockId,
+			block_type: blockType,
+			offset: currentOffset,
+			count: loadCount,
+		});
 
-				if (!blockId) {
-					console.error('Load More: Block ID not found');
-					return;
-				}
-
-				// Show loading state
-				const originalText = button.textContent || button.innerText;
-				// Получаем переведенный текст из data-атрибута или из локализованного объекта
-				// Используем getAttribute для надежного чтения data-атрибута
-				let isLoadingText =
-					button.getAttribute('data-loading-text') ||
-					button.dataset.loadingText;
-				if (
-					!isLoadingText &&
-					typeof cwgbLoadMore !== 'undefined' &&
-					cwgbLoadMore.loadingText
-				) {
-					isLoadingText = cwgbLoadMore.loadingText;
-				}
-				// Если все еще нет текста, используем переведенный из локализации или fallback
-				if (!isLoadingText) {
-					// Пытаемся получить из локализованного объекта
-					if (
-						typeof cwgbLoadMore !== 'undefined' &&
-						cwgbLoadMore.loadingText
-					) {
-						isLoadingText = cwgbLoadMore.loadingText;
-					} else {
-						isLoadingText = 'Loading...'; // Fallback
-					}
-				}
-
-				// Для кнопок используем disabled, для ссылок - pointer-events
-				if (button.tagName === 'BUTTON') {
-					button.disabled = true;
-					button.textContent = isLoadingText;
-				} else {
-					button.style.pointerEvents = 'none';
-					button.style.opacity = '0.6';
-					button.textContent = isLoadingText;
-				}
-
-				// Use Fetch system (admin-ajax.php) instead of REST API
-				// Check if Fetch system is available, fallback to REST API if not
-				const useFetch =
-					typeof fetch_vars !== 'undefined' && fetch_vars.ajaxurl;
-				const apiUrl = useFetch
-					? fetch_vars.ajaxurl
-					: cwgbLoadMore?.restUrl ||
-						'/wp-json/codeweber-gutenberg-blocks/v1/load-more';
-
-				// Логирование для отладки
-				console.log('Load More: Sending request', {
-					method: useFetch ? 'Fetch (admin-ajax)' : 'REST API',
+		let fetchOptions;
+		if (useFetch) {
+			const formData = new FormData();
+			formData.append('action', 'fetch_action');
+			formData.append('actionType', 'loadMoreItems');
+			formData.append('nonce', fetch_vars.nonce);
+			formData.append(
+				'params',
+				JSON.stringify({
 					block_id: blockId,
 					block_type: blockType,
+					block_attributes: blockAttributes,
 					offset: currentOffset,
 					count: loadCount,
-					has_attributes: !!blockAttributes,
-					attributes_length: blockAttributes
-						? blockAttributes.length
-						: 0,
-					container_offset: container.dataset.currentOffset,
-					container_count: container.dataset.loadCount,
-				});
+					post_id: postId,
+				})
+			);
+			fetchOptions = { method: 'POST', body: formData };
+		} else {
+			fetchOptions = {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-WP-Nonce': cwgbLoadMore?.nonce || '',
+				},
+				body: JSON.stringify({
+					block_id: blockId,
+					block_type: blockType,
+					block_attributes: blockAttributes,
+					offset: currentOffset,
+					count: loadCount,
+					post_id: postId,
+				}),
+			};
+		}
 
-				// Prepare request based on method
-				let fetchOptions;
+		fetch(apiUrl, fetchOptions)
+			.then((response) => {
+				if (!useFetch && !response.ok) {
+					return response.text().then((text) => {
+						try {
+							const err = JSON.parse(text);
+							throw new Error(err.message || err.code || 'HTTP ' + response.status);
+						} catch (e) {
+							throw new Error('HTTP ' + response.status);
+						}
+					});
+				}
+				return response.json();
+			})
+			.then((data) => {
+				console.log('Load More: Response', data);
 
+				let responseData;
+				let success;
 				if (useFetch) {
-					// Use Fetch system (FormData)
-					const formData = new FormData();
-					formData.append('action', 'fetch_action');
-					formData.append('actionType', 'loadMoreItems');
-					formData.append('nonce', fetch_vars.nonce);
-					formData.append(
-						'params',
-						JSON.stringify({
-							block_id: blockId,
-							block_type: blockType,
-							block_attributes: blockAttributes,
-							offset: currentOffset,
-							count: loadCount,
-							post_id: postId,
-						})
-					);
-
-					fetchOptions = {
-						method: 'POST',
-						body: formData,
-					};
+					responseData = data.data || {};
+					success = data.status === 'success';
 				} else {
-					// Fallback to REST API (JSON)
-					const requestBody = {
-						block_id: blockId,
-						block_type: blockType,
-						block_attributes: blockAttributes,
-						offset: currentOffset,
-						count: loadCount,
-						post_id: postId,
-					};
-
-					fetchOptions = {
-						method: 'POST',
-						headers: {
-							'Content-Type': 'application/json',
-							'X-WP-Nonce': cwgbLoadMore?.nonce || '',
-						},
-						body: JSON.stringify(requestBody),
-					};
+					responseData = data.data || data;
+					success =
+						data.success !== undefined
+							? data.success
+							: responseData &&
+							  (responseData.html !== undefined || responseData.has_more !== undefined);
 				}
 
-				fetch(apiUrl, fetchOptions)
-					.then((response) => {
-						console.log(
-							'Load More: Response status',
-							response.status,
-							response.statusText
-						);
+				console.log('Load More: Parsed', { success, html_length: responseData?.html?.length, has_more: responseData?.has_more });
 
-						// For Fetch system (admin-ajax.php), response is always 200, errors are in JSON
-						// For REST API, check response.ok
-						if (!useFetch && !response.ok) {
-							return response.text().then((text) => {
-								console.error(
-									'Load More: Error response',
-									text
-								);
-								try {
-									const err = JSON.parse(text);
-									throw new Error(
-										err.message ||
-											err.code ||
-											'Network response was not ok: ' +
-												response.status
-									);
-								} catch (e) {
-									throw new Error(
-										'Network response was not ok: ' +
-											response.status +
-											' - ' +
-											text.substring(0, 100)
-									);
-								}
-							});
-						}
-						return response.json();
-					})
-					.then((data) => {
-						console.log('Load More: Response data', data);
+				if (success && responseData) {
+					const itemsContainer = container.querySelector('.cwgb-load-more-items');
+					if (itemsContainer && responseData.html) {
+						const tempDiv = document.createElement('div');
+						tempDiv.innerHTML = responseData.html;
 
-						// Handle both Fetch system format (status/data) and REST API format (success/data)
-						let responseData;
-						let success;
+						const existingChildrenCount = itemsContainer.children.length;
 
-						if (useFetch) {
-							// Fetch system format: { status: 'success', data: {...} }
-							responseData = data.data || {};
-							success = data.status === 'success';
-						} else {
-							// REST API format: { success: true, data: {...} }
-							responseData = data.data || data;
-							success =
-								data.success !== undefined
-									? data.success
-									: responseData &&
-										(responseData.html !== undefined ||
-											responseData.has_more !==
-												undefined);
+						// Собираем ссылки на новые элементы ДО добавления в DOM
+						const newItems = Array.from(tempDiv.children);
+
+						// Добавляем элементы в DOM
+						while (tempDiv.firstChild) {
+							itemsContainer.appendChild(tempDiv.firstChild);
 						}
 
-						console.log('Load More: Parsed response', {
-							success,
-							responseData,
-							method: useFetch ? 'Fetch' : 'REST API',
-						});
-
-						if (success && responseData) {
-							// Insert new content
-							const itemsContainer = container.querySelector(
-								'.cwgb-load-more-items'
-							);
-							if (itemsContainer && responseData.html) {
-								// Create a temporary container to parse HTML
-								const tempDiv = document.createElement('div');
-								tempDiv.innerHTML = responseData.html;
-
-								// Сохраняем количество существующих элементов для определения первого нового
-								const existingChildrenCount =
-									itemsContainer.children.length;
-
-								// Append each item
-								while (tempDiv.firstChild) {
-									itemsContainer.appendChild(
-										tempDiv.firstChild
-									);
-								}
-
-								// Небольшая задержка перед инициализацией, чтобы DOM обновился
-								setTimeout(() => {
-									// Reinitialize theme components для контейнера с новыми элементами
-									// Передаем контейнер для более точной инициализации
-									reinitializeTheme(container);
-
-									// Применяем класс скругления к кнопке (на случай, если она была обновлена)
-									applyButtonRadiusClass();
-
-									// Прокрутка к первому новому элементу (как в теме Codeweber)
-									// Получаем первый новый элемент после добавления в DOM
-									if (
-										itemsContainer.children.length >
-										existingChildrenCount
-									) {
-										const firstNewElement =
-											itemsContainer.children[
-												existingChildrenCount
-											];
-										if (firstNewElement) {
-											// Используем тот же подход, что и в теме: window.scroll() с behavior: "smooth"
-											// Вычисляем позицию элемента относительно документа
-											const elementTop =
-												firstNewElement.getBoundingClientRect()
-													.top + window.pageYOffset;
-											// Добавляем небольшой отступ сверху для лучшей видимости
-											const scrollOffset =
-												elementTop - 100; // 100px отступ сверху
-											window.scroll({
-												top: Math.max(0, scrollOffset), // Не позволяем уйти в отрицательные значения
-												behavior: 'smooth',
-											});
-											console.log(
-												'✅ Load More: Scrolled to new content'
-											);
-										}
-									}
-								}, 100);
-							}
-
-							// Update offset
-							const newOffset =
-								responseData.offset ||
-								currentOffset + loadCount;
-							container.dataset.currentOffset = newOffset;
-							// Подсчитываем количество загруженных элементов
-							let loadedItemsCount = 0;
-							if (responseData.html) {
-								// Для Post Grid ищем <article> теги
-								const articleMatches =
-									responseData.html.match(/<article/g);
-								if (articleMatches) {
-									loadedItemsCount = articleMatches.length;
+						setTimeout(() => {
+							// Isotope: используем window.Isotope (не jQuery плагин)
+							// Получаем существующий инстанс через Isotope.data()
+							if (window.Isotope && newItems.length > 0) {
+								var isoInstance = window.Isotope.data(itemsContainer);
+								if (isoInstance) {
+									isoInstance.appended(newItems);
+									console.log('✅ Load More: Isotope.appended()', newItems.length, 'items');
 								} else {
-									// Для Image Simple ищем <figure> теги или <div> с изображениями
-									const figureMatches =
-										responseData.html.match(/<figure/g);
-									if (figureMatches) {
-										loadedItemsCount = figureMatches.length;
-									} else {
-										// Подсчитываем количество div с классом col-* (для grid)
-										const divMatches =
-											responseData.html.match(
-												/<div[^>]*class="[^"]*col-/g
-											);
-										if (divMatches) {
-											loadedItemsCount =
-												divMatches.length;
-										}
-									}
+									new window.Isotope(itemsContainer, {
+										itemSelector: '.item',
+										layoutMode: 'masonry',
+									});
+									console.log('✅ Load More: Isotope created');
 								}
 							}
 
-							console.log('Load More: Offset updated', {
-								old_offset: currentOffset,
-								new_offset: newOffset,
-								response_offset: responseData.offset,
-								calculated_offset: currentOffset + loadCount,
-								loaded_items: loadedItemsCount,
-								expected_count: loadCount,
-								has_more: responseData.has_more,
-							});
+							reinitializeTheme(container);
+							applyButtonRadiusClass();
 
-							// Hide button if no more items
-							if (!responseData.has_more) {
-								button.style.display = 'none';
-							} else {
-								// Восстанавливаем состояние для кнопок и ссылок
-								if (button.tagName === 'BUTTON') {
-									button.disabled = false;
-								} else {
-									button.style.pointerEvents = '';
-									button.style.opacity = '';
+							// Прокрутка к первому новому элементу
+							if (itemsContainer.children.length > existingChildrenCount) {
+								const firstNewElement = itemsContainer.children[existingChildrenCount];
+								if (firstNewElement) {
+									const elementTop =
+										firstNewElement.getBoundingClientRect().top + window.pageYOffset;
+									window.scroll({
+										top: Math.max(0, elementTop - 100),
+										behavior: 'smooth',
+									});
 								}
-								button.textContent = originalText;
 							}
-						} else {
-							console.error(
-								'Load More: Invalid response structure',
-								data
-							);
-							const errorMessage = useFetch
-								? data.message || 'Failed to load more items'
-								: data.message ||
-									responseData?.message ||
-									'Failed to load more items';
-							throw new Error(errorMessage);
-						}
-					})
-					.catch((error) => {
-						console.error('Load More Error:', error);
-						// Восстанавливаем состояние для кнопок и ссылок
+						}, 100);
+					}
+
+					// Обновляем offset
+					const newOffset = responseData.offset || currentOffset + loadCount;
+					container.dataset.currentOffset = newOffset;
+
+					console.log('Load More: Offset updated', {
+						old: currentOffset,
+						new: newOffset,
+						has_more: responseData.has_more,
+					});
+
+					if (!responseData.has_more) {
+						button.style.display = 'none';
+					} else {
 						if (button.tagName === 'BUTTON') {
 							button.disabled = false;
 						} else {
@@ -406,16 +244,28 @@
 							button.style.opacity = '';
 						}
 						button.textContent = originalText;
-						alert('Load error. Please try again.');
-					});
+					}
+				} else {
+					throw new Error(
+						data.message || responseData?.message || 'Failed to load more items'
+					);
+				}
+			})
+			.catch((error) => {
+				console.error('Load More Error:', error);
+				if (button.tagName === 'BUTTON') {
+					button.disabled = false;
+				} else {
+					button.style.pointerEvents = '';
+					button.style.opacity = '';
+				}
+				button.textContent = originalText;
+				alert('Load error. Please try again.');
 			});
-		});
-	}
+	});
 
 	/**
 	 * Reinitialize theme components after content is loaded
-	 * Specifically for Image Simple block components
-	 * Can be called with a container (for Load More) or without (for initial page load)
 	 */
 	function reinitializeTheme(container) {
 		if (typeof window.theme === 'undefined') {
@@ -423,141 +273,64 @@
 			return;
 		}
 
-		// Определяем, это Load More или первая загрузка
 		const isLoadMore =
-			container &&
-			container.classList.contains('cwgb-load-more-container');
-		const isInitialLoad =
-			container &&
-			container.classList.contains('cwgb-image-simple-block');
+			container && container.classList.contains('cwgb-load-more-container');
 		const logPrefix = isLoadMore ? 'Load More' : 'Image Simple';
 
-		// Небольшая задержка для того, чтобы DOM обновился
 		setTimeout(
 			() => {
 				try {
-					// Определяем область поиска элементов
-					const searchScope = container || document;
-
-					// 1. GLightbox - инициализация для элементов
-					// Проверяем наличие lightbox в theme (GLightbox instance)
-					if (
-						window.theme?.lightbox &&
-						typeof window.theme.lightbox.reload === 'function'
-					) {
-						// GLightbox уже инициализирован, просто перезагружаем для новых элементов
+					// 1. GLightbox
+					if (window.theme?.lightbox && typeof window.theme.lightbox.reload === 'function') {
 						window.theme.lightbox.reload();
 						console.log(`✅ ${logPrefix}: GLightbox reloaded`);
-					} else if (
-						typeof window.theme?.initLightbox === 'function'
-					) {
-						// Если есть функция initLightbox, используем её
+					} else if (typeof window.theme?.initLightbox === 'function') {
 						window.theme.initLightbox();
-						console.log(
-							`✅ ${logPrefix}: GLightbox initialized via initLightbox`
-						);
-					} else if (typeof window.GLightbox === 'function') {
-						// Fallback: проверяем наличие элементов
-						const glightboxElements =
-							searchScope.querySelectorAll('[data-glightbox]');
-						if (glightboxElements.length > 0) {
-							console.log(
-								`✅ ${logPrefix}: GLightbox elements found`,
-								glightboxElements.length
-							);
-							// GLightbox должен автоматически обработать новые элементы при следующем клике
-						}
 					}
 
-					// 2. Image Hover Overlay - для overlay эффектов
-					// theme.imageHoverOverlay() автоматически добавляет span.bg к элементам .overlay > a, .overlay > span
-					// Но нужно вызывать только для новых элементов, у которых еще нет span.bg
-					if (
-						isLoadMore &&
-						typeof window.theme?.imageHoverOverlay === 'function'
-					) {
-						// Находим все overlay элементы в контейнере (включая те, что имеют класс overlay-*)
-						// и добавляем span.bg только к тем, у кого его еще нет
+					// 2. Image Hover Overlay
+					if (isLoadMore && typeof window.theme?.imageHoverOverlay === 'function') {
 						const allOverlays = container.querySelectorAll(
 							'[class*="overlay-"] > a, [class*="overlay-"] > span, .overlay > a, .overlay > span'
 						);
-						let addedCount = 0;
 						allOverlays.forEach((overlay) => {
-							// Проверяем, есть ли уже span.bg
 							if (!overlay.querySelector('span.bg')) {
-								const overlayBg =
-									document.createElement('span');
-								overlayBg.className = 'bg';
-								overlay.appendChild(overlayBg);
-								addedCount++;
+								const bg = document.createElement('span');
+								bg.className = 'bg';
+								overlay.appendChild(bg);
 							}
 						});
-						console.log(
-							`✅ ${logPrefix}: Image Hover Overlay initialized for ${addedCount} new elements`
-						);
-					} else if (
-						typeof window.theme?.imageHoverOverlay === 'function'
-					) {
-						// Для первой загрузки вызываем стандартную функцию
+					} else if (typeof window.theme?.imageHoverOverlay === 'function') {
 						window.theme.imageHoverOverlay();
-						console.log(
-							`✅ ${logPrefix}: Image Hover Overlay initialized`
-						);
 					}
 
-					// 3. iTooltip - для tooltip эффектов
+					// 3. iTooltip
 					if (typeof window.theme?.iTooltip === 'function') {
 						window.theme.iTooltip();
-						console.log(`✅ ${logPrefix}: iTooltip initialized`);
 					}
 
-					// 4. Isotope - для grid layouts (если используется)
-					if (typeof window.theme?.isotope === 'function') {
-						window.theme.isotope();
-						console.log(`✅ ${logPrefix}: Isotope initialized`);
-					}
+					// 4. Bootstrap Tooltips / Popovers
+					if (typeof window.theme?.bsTooltips === 'function') window.theme.bsTooltips();
+					if (typeof window.theme?.bsPopovers === 'function') window.theme.bsPopovers();
 
-					// 5. Bootstrap Tooltips и Popovers
-					if (typeof window.theme?.bsTooltips === 'function') {
-						window.theme.bsTooltips();
-					}
-					if (typeof window.theme?.bsPopovers === 'function') {
-						window.theme.bsPopovers();
-					}
+					// Isotope обрабатывается явно через Isotope.data().appended()
+					// theme.init() не вызываем — он пересоздал бы Isotope с нуля
 
-					// 6. Общая инициализация theme.init (если доступна)
-					// Для Load More вызываем init для переинициализации всех компонентов
-					// Для первой загрузки не вызываем, чтобы не конфликтовать с основной инициализацией темы
-					if (
-						isLoadMore &&
-						typeof window.theme?.init === 'function'
-					) {
-						window.theme.init();
-						console.log(
-							`✅ ${logPrefix}: theme.init() reinitialized`
-						);
-					} else if (isInitialLoad) {
-						console.log(`✅ ${logPrefix}: Components initialized`);
-					}
 				} catch (error) {
-					console.error(
-						'Load More: Error reinitializing theme components',
-						error
-					);
+					console.error('Load More: Error reinitializing theme', error);
 				}
 			},
 			isLoadMore ? 100 : 200
-		); // Для Load More меньше задержка, для первой загрузки больше
+		);
 	}
 
-	// Initialize Load More functionality on DOM ready
+	// Initialize on DOM ready
 	if (document.readyState === 'loading') {
 		document.addEventListener('DOMContentLoaded', initLoadMore);
 	} else {
 		initLoadMore();
 	}
 
-	// Reinitialize after AJAX content is loaded (for compatibility with other AJAX handlers)
 	document.addEventListener('cwgbLoadMoreComplete', function () {
 		reinitializeTheme();
 	});

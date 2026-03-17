@@ -1,5 +1,71 @@
 // WC Filter Panel — editor-only styles
 
+// ── Repeater items ──────────────────────────────────────────────────────────
+
+.cwgb-repeater-item {
+	border: 1px solid #e0e0e0;
+	border-radius: 4px;
+	margin-bottom: 8px;
+	overflow: hidden;
+
+	&__header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		background: #f0f0f0;
+		padding: 6px 8px;
+
+		&.is-expanded {
+			background: #e8f0fe;
+		}
+	}
+
+	&__toggle {
+		background: none;
+		border: none;
+		cursor: pointer;
+		font-size: 12px;
+		font-weight: 500;
+		color: #1e1e1e;
+		padding: 0;
+		text-align: left;
+		flex: 1;
+
+		&:hover {
+			color: #007cba;
+		}
+	}
+
+	&__actions {
+		display: flex;
+		gap: 2px;
+		flex-shrink: 0;
+	}
+
+	&__body {
+		padding: 12px;
+		background: #fff;
+		border-top: 1px solid #e0e0e0;
+
+		.components-base-control {
+			margin-bottom: 12px;
+
+			&:last-child {
+				margin-bottom: 0;
+			}
+		}
+	}
+}
+
+.cwgb-repeater-add {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	margin-top: 12px;
+}
+
+
+
 .cwgb-wc-filter-panel-placeholder {
 	display: flex;
 	flex-direction: column;

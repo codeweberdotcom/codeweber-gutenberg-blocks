@@ -123,6 +123,9 @@ class Plugin {
 		// Register REST API endpoint for sidebars list
 		add_action('rest_api_init', __CLASS__ . '::register_sidebars_endpoint');
 
+		// Register REST API endpoint for WooCommerce attributes (filter panel)
+		add_action('rest_api_init', __CLASS__ . '::register_wc_attributes_endpoint');
+
 		// Load JavaScript translations after scripts are enqueued
 		add_action('enqueue_block_editor_assets', __CLASS__ . '::loadJSTranslations', 100);
 	}
@@ -1458,6 +1461,38 @@ class Plugin {
 			}
 		}
 		return new \WP_REST_Response(['sidebars' => $list], 200);
+	}
+
+	/**
+	 * Register REST API endpoint for WooCommerce attribute taxonomies.
+	 * Used by wc-filter-panel block editor to populate attribute selector.
+	 */
+	public static function register_wc_attributes_endpoint() {
+		register_rest_route('codeweber-gutenberg-blocks/v1', '/wc-attributes', [
+			'methods'             => 'GET',
+			'callback'            => __CLASS__ . '::get_wc_attributes_callback',
+			'permission_callback' => '__return_true',
+		]);
+	}
+
+	/**
+	 * REST callback: return [{slug, name}] for all WC attribute taxonomies.
+	 *
+	 * @return \WP_REST_Response
+	 */
+	public static function get_wc_attributes_callback() {
+		if ( ! function_exists( 'wc_get_attribute_taxonomies' ) ) {
+			return rest_ensure_response( [] );
+		}
+		$taxonomies = wc_get_attribute_taxonomies();
+		$result     = [];
+		foreach ( $taxonomies as $tax ) {
+			$result[] = [
+				'slug' => 'pa_' . $tax->attribute_name,
+				'name' => $tax->attribute_label,
+			];
+		}
+		return rest_ensure_response( $result );
 	}
 
 	/**

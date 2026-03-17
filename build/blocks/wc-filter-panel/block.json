@@ -1,7 +1,7 @@
 {
   "apiVersion": 3,
   "name": "codeweber-blocks/wc-filter-panel",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "title": "WC Filter Panel",
   "category": "codeweber-gutenberg-elements",
   "icon": "filter",
@@ -19,37 +19,20 @@
     "anchor": true
   },
   "attributes": {
-    "showPrice": {
-      "type": "boolean",
-      "default": true
-    },
-    "showCategories": {
-      "type": "boolean",
-      "default": true
-    },
-    "attributes": {
+    "items": {
       "type": "array",
-      "default": []
-    },
-    "showRating": {
-      "type": "boolean",
-      "default": false
-    },
-    "showStock": {
-      "type": "boolean",
-      "default": false
-    },
-    "displayMode": {
-      "type": "string",
-      "default": "checkbox"
-    },
-    "showCount": {
-      "type": "boolean",
-      "default": true
-    },
-    "title": {
-      "type": "string",
-      "default": ""
+      "default": [
+        {
+          "id": "item-price",
+          "type": "filter",
+          "filterType": "price",
+          "label": "Цена",
+          "displayMode": "list",
+          "queryType": "or",
+          "taxonomy": "",
+          "showCount": true
+        }
+      ]
     }
   },
   "textdomain": "codeweber-gutenberg-blocks",

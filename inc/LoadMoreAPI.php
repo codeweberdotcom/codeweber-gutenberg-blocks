@@ -130,16 +130,31 @@ class LoadMoreAPI {
 		$queried_object_id   = (int) ( $attributes['queried_object_id']   ?? 0 );
 		$queried_object_type = sanitize_key( $attributes['queried_object_type'] ?? '' );
 
-		// Маппинг WC orderby → WP_Query args
-		$order_map = [
-			'menu_order' => [ 'orderby' => 'menu_order title', 'order' => 'ASC' ],
-			'popularity' => [ 'orderby' => 'meta_value_num', 'meta_key' => 'total_sales', 'order' => 'DESC' ],
-			'rating'     => [ 'orderby' => 'meta_value_num', 'meta_key' => '_wc_average_rating', 'order' => 'DESC' ],
-			'date'       => [ 'orderby' => 'date', 'order' => 'DESC' ],
-			'price'      => [ 'orderby' => 'meta_value_num', 'meta_key' => '_price', 'order' => 'ASC' ],
-			'price-desc' => [ 'orderby' => 'meta_value_num', 'meta_key' => '_price', 'order' => 'DESC' ],
-		];
-		$order_args = $order_map[ $orderby ] ?? $order_map['menu_order'];
+		// Используем WooCommerce для получения правильных аргументов сортировки.
+		// WC()->query->get_catalog_ordering_args() применяет те же фильтры, что и
+		// основной запрос магазина — включая JOIN по мета, без исключения товаров
+		// у которых meta_key отсутствует.
+		$order_args = [];
+		if ( function_exists( 'WC' ) && WC()->query ) {
+			$wc_ordering = WC()->query->get_catalog_ordering_args( $orderby );
+			if ( ! empty( $wc_ordering['orderby'] ) ) {
+				$order_args['orderby'] = $wc_ordering['orderby'];
+				$order_args['order']   = $wc_ordering['order'] ?? 'ASC';
+				if ( ! empty( $wc_ordering['meta_key'] ) ) {
+					$order_args['meta_key'] = $wc_ordering['meta_key']; // phpcs:ignore WordPress.DB.SlowDBQuery
+				}
+			}
+		}
+		// Fallback если WC недоступен
+		if ( empty( $order_args ) ) {
+			$fallback_map = [
+				'menu_order' => [ 'orderby' => 'menu_order title', 'order' => 'ASC' ],
+				'date'       => [ 'orderby' => 'date', 'order' => 'DESC' ],
+				'price'      => [ 'orderby' => 'meta_value_num', 'meta_key' => '_price', 'order' => 'ASC' ], // phpcs:ignore WordPress.DB.SlowDBQuery
+				'price-desc' => [ 'orderby' => 'meta_value_num', 'meta_key' => '_price', 'order' => 'DESC' ], // phpcs:ignore WordPress.DB.SlowDBQuery
+			];
+			$order_args = $fallback_map[ $orderby ] ?? $fallback_map['menu_order'];
+		}
 
 		$args = array_merge( [
 			'post_type'      => 'product',

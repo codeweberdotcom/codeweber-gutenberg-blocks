@@ -87,6 +87,15 @@ class LoadMoreAPI {
 			], 200);
 		}
 		
+		// WooCommerce shop loop
+		if ($block_type === 'wc-shop' && $block_attributes_json) {
+			$result = $this->load_more_wc_shop($block_attributes_json, $offset, $count);
+			return new \WP_REST_Response([
+				'success' => $result['success'] ?? true,
+				'data'    => $result['data'] ?? $result,
+			], 200);
+		}
+
 		// Для других типов блоков - заглушка
 		$response = [
 			'success' => true,
@@ -97,6 +106,89 @@ class LoadMoreAPI {
 			]
 		];
 		return new \WP_REST_Response($response, 200);
+	}
+
+	/**
+	 * Load more products for WooCommerce shop loop.
+	 *
+	 * @param string $block_attributes_json JSON: { orderby, queried_object_id, queried_object_type }
+	 * @param int    $offset
+	 * @param int    $count
+	 * @return array
+	 */
+	public function load_more_wc_shop( string $block_attributes_json, int $offset, int $count ): array {
+		if ( ! function_exists( 'wc_get_template_part' ) ) {
+			return [ 'success' => false, 'data' => [ 'html' => '', 'has_more' => false, 'offset' => $offset ] ];
+		}
+
+		$attributes = $this->decode_json_safely( $block_attributes_json );
+		if ( ! $attributes ) {
+			return [ 'success' => false, 'data' => [ 'html' => '', 'has_more' => false, 'offset' => $offset ] ];
+		}
+
+		$orderby             = $attributes['orderby']             ?? 'menu_order';
+		$queried_object_id   = (int) ( $attributes['queried_object_id']   ?? 0 );
+		$queried_object_type = sanitize_key( $attributes['queried_object_type'] ?? '' );
+
+		// Маппинг WC orderby → WP_Query args
+		$order_map = [
+			'menu_order' => [ 'orderby' => 'menu_order title', 'order' => 'ASC' ],
+			'popularity' => [ 'orderby' => 'meta_value_num', 'meta_key' => 'total_sales', 'order' => 'DESC' ],
+			'rating'     => [ 'orderby' => 'meta_value_num', 'meta_key' => '_wc_average_rating', 'order' => 'DESC' ],
+			'date'       => [ 'orderby' => 'date', 'order' => 'DESC' ],
+			'price'      => [ 'orderby' => 'meta_value_num', 'meta_key' => '_price', 'order' => 'ASC' ],
+			'price-desc' => [ 'orderby' => 'meta_value_num', 'meta_key' => '_price', 'order' => 'DESC' ],
+		];
+		$order_args = $order_map[ $orderby ] ?? $order_map['menu_order'];
+
+		$args = array_merge( [
+			'post_type'      => 'product',
+			'post_status'    => 'publish',
+			'posts_per_page' => $count,
+			'offset'         => $offset,
+			'tax_query'      => [ [
+				'taxonomy' => 'product_visibility',
+				'field'    => 'name',
+				'terms'    => 'exclude-from-catalog',
+				'operator' => 'NOT IN',
+			] ],
+		], $order_args );
+
+		// Фильтр по категории / тегу
+		if ( $queried_object_id && $queried_object_type ) {
+			$args['tax_query'][] = [
+				'taxonomy' => $queried_object_type,
+				'field'    => 'term_id',
+				'terms'    => $queried_object_id,
+			];
+		}
+
+		$query = new \WP_Query( $args );
+
+		if ( ! $query->have_posts() ) {
+			return [ 'success' => true, 'data' => [ 'html' => '', 'has_more' => false, 'offset' => $offset ] ];
+		}
+
+		ob_start();
+		while ( $query->have_posts() ) {
+			$query->the_post();
+			wc_setup_product_data( get_post() );
+			wc_get_template_part( 'content', 'product' );
+		}
+		wp_reset_postdata();
+		$html = ob_get_clean();
+
+		$new_offset = $offset + $query->post_count;
+		$has_more   = $new_offset < $query->found_posts;
+
+		return [
+			'success' => true,
+			'data'    => [
+				'html'     => $html,
+				'has_more' => $has_more,
+				'offset'   => $new_offset,
+			],
+		];
 	}
 
 	/**

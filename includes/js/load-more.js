@@ -163,6 +163,7 @@
 					const formData = new FormData();
 					formData.append('action', 'fetch_action');
 					formData.append('actionType', 'loadMoreItems');
+					formData.append('nonce', fetch_vars.nonce);
 					formData.append(
 						'params',
 						JSON.stringify({

@@ -1912,9 +1912,14 @@ class Plugin {
 				'parsed_block' => $parsed_block,
 			], EXTR_SKIP);
 
+			$base_level = ob_get_level();
 			ob_start();
 			require $render_path;
-			return ob_get_clean();
+			$parts = [];
+			while (ob_get_level() > $base_level) {
+				array_unshift($parts, ob_get_clean());
+			}
+			return implode('', $parts);
 		}
 
 		return $pre_render;
@@ -2102,6 +2107,7 @@ class Plugin {
 			return new \WP_REST_Response(['html' => '<!-- Navbar render.php not found -->'], 200);
 		}
 
+		$base_level = ob_get_level();
 		ob_start();
 		$content = '';
 		$block_instance = null;
@@ -2109,7 +2115,11 @@ class Plugin {
 		$for_editor_preview = true;
 		extract(compact('attributes', 'content', 'block_instance', 'parsed_block', 'for_editor_preview'), EXTR_SKIP);
 		require $render_path;
-		$html = ob_get_clean();
+		$parts = [];
+		while (ob_get_level() > $base_level) {
+			array_unshift($parts, ob_get_clean());
+		}
+		$html = implode('', $parts);
 
 		$response = new \WP_REST_Response(['html' => $html], 200);
 		$response->header('Cache-Control', 'no-cache, no-store, must-revalidate');

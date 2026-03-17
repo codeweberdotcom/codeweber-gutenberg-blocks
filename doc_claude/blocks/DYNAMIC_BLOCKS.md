@@ -23,10 +23,16 @@ Used for: `blog-post-widget`, `blog-category-widget`, `blog-tag-widget`, `blog-y
 Registered in `Plugin::gutenbergBlocksInit()`:
 ```php
 $block_args['render_callback'] = function ($attributes, $content, $block) use ($render_path) {
-    ob_start();
     extract(['attributes' => $attributes, 'content' => $content, 'block' => $block], EXTR_SKIP);
+    // Drain-pattern: handles nested ob_start() inside render.php without leaking buffers
+    $base_level = ob_get_level();
+    ob_start();
     require $render_path;
-    return ob_get_clean();
+    $parts = [];
+    while (ob_get_level() > $base_level) {
+        array_unshift($parts, ob_get_clean());
+    }
+    return implode('', $parts);
 };
 register_block_type($blocks_path . $block_name, $block_args);
 ```
@@ -44,8 +50,16 @@ add_filter('pre_render_block', __CLASS__ . '::pre_render_accordion_block', 10, 2
 Each `pre_render_*` method:
 1. Checks if `$parsed_block['blockName']` matches
 2. Loads `build/blocks/<name>/render.php`
-3. Calls `ob_start()`, `require $render_path`, `ob_get_clean()`
+3. Calls `ob_start()`, `require $render_path`, drains all ob-levels, returns HTML
 4. Returns rendered HTML
+
+> **⚠️ Nested ob_start() warning** — some render.php files (especially `navbar`) call
+> WordPress functions (`wp_nav_menu`, `dynamic_sidebar`, etc.) that trigger hooks which
+> internally call `ob_start()` without a matching `ob_get_clean()`. A plain `ob_get_clean()`
+> only captures the innermost buffer — the outer level leaks raw HTML into stdout, corrupting
+> the REST API response (editor shows blank preview; saving posts fails with "not valid JSON").
+>
+> **Always use the drain-pattern** (see below) instead of a bare `ob_get_clean()`.
 
 ## List of Dynamic Blocks
 
@@ -102,9 +116,17 @@ Each `pre_render_*` method:
            $content = $parsed_block['innerHTML'] ?? '';
            $block_instance = new \WP_Block($parsed_block);
            extract(['attributes' => $attributes, 'content' => $content, 'block' => $block_instance], EXTR_SKIP);
+           // Use drain-pattern to handle nested ob_start() calls inside render.php
+           // (e.g. wp_nav_menu hooks). A plain ob_get_clean() leaks the outer buffer
+           // into stdout, corrupting REST API responses.
+           $base_level = ob_get_level();
            ob_start();
            require $render_path;
-           return ob_get_clean();
+           $parts = [];
+           while (ob_get_level() > $base_level) {
+               array_unshift($parts, ob_get_clean());
+           }
+           return implode('', $parts);
        }
        return $pre_render;
    }

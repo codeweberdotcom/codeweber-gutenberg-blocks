@@ -1,0 +1,60 @@
+{
+  "apiVersion": 3,
+  "name": "codeweber-blocks/wc-filter-panel",
+  "version": "0.1.0",
+  "title": "WC Filter Panel",
+  "category": "codeweber-gutenberg-elements",
+  "icon": "filter",
+  "description": "WooCommerce shop filter panel: price, attributes, categories, rating, stock. Integrates with shop PJAX navigation.",
+  "keywords": [
+    "filter",
+    "shop",
+    "woocommerce",
+    "price",
+    "attributes"
+  ],
+  "supports": {
+    "html": false,
+    "customClassName": true,
+    "anchor": true
+  },
+  "attributes": {
+    "showPrice": {
+      "type": "boolean",
+      "default": true
+    },
+    "showCategories": {
+      "type": "boolean",
+      "default": true
+    },
+    "attributes": {
+      "type": "array",
+      "default": []
+    },
+    "showRating": {
+      "type": "boolean",
+      "default": false
+    },
+    "showStock": {
+      "type": "boolean",
+      "default": false
+    },
+    "displayMode": {
+      "type": "string",
+      "default": "checkbox"
+    },
+    "showCount": {
+      "type": "boolean",
+      "default": true
+    },
+    "title": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "textdomain": "codeweber-gutenberg-blocks",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}

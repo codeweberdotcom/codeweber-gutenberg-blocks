@@ -291,6 +291,7 @@ class Plugin {
 		'social-icons',
 		'social-wrapper',
 		'top-header',
+		'wc-filter-panel',
 	];
 	}
 

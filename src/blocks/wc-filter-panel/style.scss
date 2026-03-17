@@ -1,0 +1,8 @@
+// WC Filter Panel block — frontend styles
+// Основные стили живут в теме (_woo-filters.scss).
+// Здесь только стили специфичные для блока как Gutenberg-контейнера.
+
+.cwgb-wc-filter-panel {
+  // Обеспечиваем нормальный flow внутри блочного редактора
+  width: 100%;
+}

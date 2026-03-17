@@ -1,0 +1,46 @@
+// WC Filter Panel — editor-only styles
+
+.cwgb-wc-filter-panel-placeholder {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 8px;
+	padding: 16px;
+	background: #f8f9fa;
+	border: 1px dashed #ccd0d4;
+	border-radius: 4px;
+	min-height: 100px;
+
+	&__icon {
+		font-size: 24px;
+		color: #007cba;
+		margin-bottom: 4px;
+	}
+
+	strong {
+		font-size: 14px;
+		color: #1e1e1e;
+	}
+
+	.description {
+		font-size: 12px;
+		color: #757575;
+		margin: 0;
+	}
+
+	&__filters {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px;
+		margin-top: 4px;
+	}
+
+	&__chip {
+		display: inline-block;
+		padding: 2px 10px;
+		background: #e8f0fe;
+		color: #1a73e8;
+		border-radius: 20px;
+		font-size: 12px;
+	}
+}

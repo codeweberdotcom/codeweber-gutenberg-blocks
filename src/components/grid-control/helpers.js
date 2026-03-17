@@ -112,6 +112,11 @@ const getGapClassesForType = (
  * Генерирует классы gap с учетом всех типов (general, x, y) одновременно
  */
 export const getGapClasses = (attrs = {}, prefix = 'grid') => {
+	// Theme gap — outputs a single marker class; CSS is injected by the theme via wp_head.
+	if (attrs[`${prefix}GapType`] === 'theme') {
+		return ['cwgb-grid-gap-theme'];
+	}
+
 	const classes = [];
 
 	// Собираем классы для всех трех типов одновременно

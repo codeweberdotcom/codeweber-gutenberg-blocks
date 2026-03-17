@@ -186,10 +186,55 @@ export const GridControl = ({
 							>
 								{__('Gap-Y', 'codeweber-gutenberg-blocks')}
 							</Button>
+							<Button
+								variant={
+									gapType === 'theme'
+										? 'primary'
+										: 'secondary'
+								}
+								onClick={() =>
+									setAttributes({
+										[`${attributePrefix}GapType`]:
+											'theme',
+									})
+								}
+								style={{ flex: '1 1 auto' }}
+							>
+								{__(
+									'Theme',
+									'codeweber-gutenberg-blocks'
+								)}
+							</Button>
 						</ButtonGroup>
 					</div>
 
+					{/* Theme gap — info message */}
+					{gapType === 'theme' && (
+						<div
+							style={{
+								marginBottom: '16px',
+								padding: '8px 12px',
+								backgroundColor: '#e8f0fe',
+								borderRadius: '4px',
+								fontSize: '12px',
+								color: '#1e1e1e',
+							}}
+						>
+							<strong style={{ display: 'block', marginBottom: '4px' }}>
+								{__(
+									'Theme Gap',
+									'codeweber-gutenberg-blocks'
+								)}
+							</strong>
+							{__(
+								'Gap is set globally in Redux → Styling → Grid Gutters. Class: cwgb-grid-gap-theme.',
+								'codeweber-gutenberg-blocks'
+								)}
+						</div>
+					)}
+
 					{/* Отображение классов gap - все типы одновременно */}
+					{gapType !== 'theme' && (
 					<div
 						style={{
 							marginBottom: '16px',
@@ -216,6 +261,7 @@ export const GridControl = ({
 							{gapClassesString}
 						</div>
 					</div>
+					)}
 
 					{/* ResponsiveControl для Gap (General) */}
 					{gapType === 'general' && (

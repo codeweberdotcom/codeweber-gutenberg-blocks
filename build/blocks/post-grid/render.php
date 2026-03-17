@@ -101,7 +101,9 @@ if (!function_exists('get_post_grid_container_classes')) {
 		
 		// Gap classes
 		$gap_classes = [];
-		if ($gridGapType === 'general' || $gridGapType === 'x' || $gridGapType === 'y') {
+		if ($gridGapType === 'theme') {
+			$gap_classes[] = 'cwgb-grid-gap-theme';
+		} elseif ($gridGapType === 'general' || $gridGapType === 'x' || $gridGapType === 'y') {
 			$gap = $attributes['gridGap'] ?? '';
 			if ($gap) $gap_classes[] = "g-{$gap}";
 			$gapMd = $attributes['gridGapMd'] ?? '';

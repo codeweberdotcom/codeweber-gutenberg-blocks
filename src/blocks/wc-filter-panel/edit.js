@@ -3,6 +3,7 @@
  */
 
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
+import ServerSideRender from '@wordpress/server-side-render';
 import { __ } from '@wordpress/i18n';
 import {
 	PanelBody,
@@ -207,16 +208,6 @@ export default function Edit( { attributes, setAttributes } ) {
 		const typeLabel = FILTER_TYPE_LABELS[ item.filterType ] || item.filterType;
 		return item.label ? `${ typeLabel } — ${ item.label }` : typeLabel;
 	}
-
-	const previewChips = items.map( ( item ) => {
-		if ( item.type === 'filter' )
-			return item.label || FILTER_TYPE_LABELS[ item.filterType ] || item.filterType;
-		if ( item.type === 'reset_button' )
-			return __( '[Сбросить]', 'codeweber-gutenberg-blocks' );
-		if ( item.type === 'active_chips' )
-			return __( '[Активные]', 'codeweber-gutenberg-blocks' );
-		return '';
-	} );
 
 	return (
 		<>
@@ -493,26 +484,12 @@ export default function Edit( { attributes, setAttributes } ) {
 				</TabPanel>
 			</InspectorControls>
 
-			{ /* ── Editor preview ── */ }
+			{ /* ── Editor preview (server-side render) ── */ }
 			<div { ...blockProps }>
-				<div className="cwgb-wc-filter-panel-placeholder">
-					<span className="cwgb-wc-filter-panel-placeholder__icon dashicons dashicons-filter" />
-					<strong>{ __( 'WC Filter Panel', 'codeweber-gutenberg-blocks' ) }</strong>
-					{ previewChips.length > 0 ? (
-						<div className="cwgb-wc-filter-panel-placeholder__filters">
-							{ previewChips.map( ( f, i ) => (
-								<span key={ i } className="cwgb-wc-filter-panel-placeholder__chip">{ f }</span>
-							) ) }
-						</div>
-					) : (
-						<p className="description">
-							{ __( 'Добавьте элементы в настройках блока →', 'codeweber-gutenberg-blocks' ) }
-						</p>
-					) }
-					<p className="description">
-						{ __( 'Отображается на странице каталога WooCommerce.', 'codeweber-gutenberg-blocks' ) }
-					</p>
-				</div>
+				<ServerSideRender
+					block="codeweber-blocks/wc-filter-panel"
+					attributes={ attributes }
+				/>
 			</div>
 		</>
 	);

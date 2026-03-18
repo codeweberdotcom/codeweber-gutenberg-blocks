@@ -6,6 +6,7 @@ import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
 import {
 	PanelBody,
+	TabPanel,
 	Button,
 	SelectControl,
 	ToggleControl,
@@ -171,222 +172,227 @@ export default function Edit( { attributes, setAttributes } ) {
 	return (
 		<>
 			<InspectorControls>
-
-				{ /* ── Элементы повторителя ─────────────────────────────────── */ }
-				<PanelBody
-					title={ __( 'Элементы панели фильтров', 'codeweber-gutenberg-blocks' ) }
-					initialOpen={ true }
+				<TabPanel
+					tabs={ [
+						{ name: 'filters', title: __( 'Фильтры', 'codeweber-gutenberg-blocks' ) },
+						{ name: 'style',   title: __( 'Оформление', 'codeweber-gutenberg-blocks' ) },
+					] }
 				>
-					{ items.length === 0 && (
-						<p className="description">
-							{ __( 'Добавьте хотя бы один элемент.', 'codeweber-gutenberg-blocks' ) }
-						</p>
-					) }
+					{ ( tab ) => (
+						<>
+							{ tab.name === 'filters' && (
+								<PanelBody initialOpen={ true }>
+									{ items.length === 0 && (
+										<p className="description">
+											{ __( 'Добавьте хотя бы один элемент.', 'codeweber-gutenberg-blocks' ) }
+										</p>
+									) }
 
-					{ items.map( ( item, index ) => {
-						const isExpanded = expandedIndex === index;
-						const showDisplayMode = [ 'categories', 'tags', 'attributes' ].includes(
-							item.filterType
-						);
+									{ items.map( ( item, index ) => {
+										const isExpanded = expandedIndex === index;
+										const showDisplayMode = [ 'categories', 'tags', 'attributes' ].includes(
+											item.filterType
+										);
 
-						return (
-							<div key={ item.id } className="cwgb-repeater-item">
-								<div className={ `cwgb-repeater-item__header${ isExpanded ? ' is-expanded' : '' }` }>
-									<button
-										type="button"
-										className="cwgb-repeater-item__toggle"
-										onClick={ () => setExpandedIndex( isExpanded ? null : index ) }
-									>
-										{ getItemSummary( item ) }
-									</button>
-									<div className="cwgb-repeater-item__actions">
-										<Button
-											icon="arrow-up-alt2"
-											size="small"
-											disabled={ index === 0 }
-											onClick={ () => moveItem( index, -1 ) }
-											label={ __( 'Вверх', 'codeweber-gutenberg-blocks' ) }
-										/>
-										<Button
-											icon="arrow-down-alt2"
-											size="small"
-											disabled={ index === items.length - 1 }
-											onClick={ () => moveItem( index, 1 ) }
-											label={ __( 'Вниз', 'codeweber-gutenberg-blocks' ) }
-										/>
-										<Button
-											icon="trash"
-											size="small"
-											isDestructive
-											onClick={ () => deleteItem( index ) }
-											label={ __( 'Удалить', 'codeweber-gutenberg-blocks' ) }
-										/>
-									</div>
-								</div>
+										return (
+											<div key={ item.id } className="cwgb-repeater-item">
+												<div className={ `cwgb-repeater-item__header${ isExpanded ? ' is-expanded' : '' }` }>
+													<button
+														type="button"
+														className="cwgb-repeater-item__toggle"
+														onClick={ () => setExpandedIndex( isExpanded ? null : index ) }
+													>
+														{ getItemSummary( item ) }
+													</button>
+													<div className="cwgb-repeater-item__actions">
+														<Button
+															icon="arrow-up-alt2"
+															size="small"
+															disabled={ index === 0 }
+															onClick={ () => moveItem( index, -1 ) }
+															label={ __( 'Вверх', 'codeweber-gutenberg-blocks' ) }
+														/>
+														<Button
+															icon="arrow-down-alt2"
+															size="small"
+															disabled={ index === items.length - 1 }
+															onClick={ () => moveItem( index, 1 ) }
+															label={ __( 'Вниз', 'codeweber-gutenberg-blocks' ) }
+														/>
+														<Button
+															icon="trash"
+															size="small"
+															isDestructive
+															onClick={ () => deleteItem( index ) }
+															label={ __( 'Удалить', 'codeweber-gutenberg-blocks' ) }
+														/>
+													</div>
+												</div>
 
-								{ isExpanded && (
-									<div className="cwgb-repeater-item__body">
-										<SelectControl
-											label={ __( 'Тип элемента', 'codeweber-gutenberg-blocks' ) }
-											value={ item.type }
-											options={ ITEM_TYPE_OPTIONS }
-											onChange={ ( val ) => updateItem( index, { type: val } ) }
-										/>
-										{ item.type === 'filter' && (
-											<>
-												<SelectControl
-													label={ __( 'Что фильтруем', 'codeweber-gutenberg-blocks' ) }
-													value={ item.filterType }
-													options={ FILTER_TYPE_OPTIONS }
-													onChange={ ( val ) => updateItem( index, { filterType: val } ) }
-												/>
-												{ item.filterType === 'attributes' && (
-													<SelectControl
-														label={ __( 'Атрибут WC', 'codeweber-gutenberg-blocks' ) }
-														value={ item.taxonomy }
-														options={ taxonomyOptions }
-														onChange={ ( val ) => updateItem( index, { taxonomy: val } ) }
-													/>
-												) }
-												<TextControl
-													label={ __( 'Заголовок секции', 'codeweber-gutenberg-blocks' ) }
-													help={ __( 'Пусто — заголовок по умолчанию', 'codeweber-gutenberg-blocks' ) }
-													value={ item.label }
-													onChange={ ( val ) => updateItem( index, { label: val } ) }
-												/>
-												{ showDisplayMode && (
-													<>
+												{ isExpanded && (
+													<div className="cwgb-repeater-item__body">
 														<SelectControl
-															label={ __( 'Режим отображения', 'codeweber-gutenberg-blocks' ) }
-															value={ item.displayMode }
-															options={ DISPLAY_MODE_OPTIONS }
-															onChange={ ( val ) => updateItem( index, { displayMode: val } ) }
+															label={ __( 'Тип элемента', 'codeweber-gutenberg-blocks' ) }
+															value={ item.type }
+															options={ ITEM_TYPE_OPTIONS }
+															onChange={ ( val ) => updateItem( index, { type: val } ) }
 														/>
-														<SelectControl
-															label={ __( 'Логика фильтра', 'codeweber-gutenberg-blocks' ) }
-															value={ item.queryType }
-															options={ QUERY_TYPE_OPTIONS }
-															onChange={ ( val ) => updateItem( index, { queryType: val } ) }
-														/>
-													</>
-												) }
-												{ item.filterType !== 'price' && (
-													<>
-														<ToggleControl
-															label={ __( 'Показывать кол-во товаров', 'codeweber-gutenberg-blocks' ) }
-															checked={ item.showCount }
-															onChange={ ( val ) => updateItem( index, { showCount: val } ) }
-														/>
-														{ ( ! showDisplayMode || item.displayMode === 'checkbox' ) && (
-															<SelectControl
-																label={ __( 'Колонки', 'codeweber-gutenberg-blocks' ) }
-																value={ item.checkboxColumns ?? 1 }
-																options={ CHECKBOX_COLUMNS_OPTIONS }
-																onChange={ ( val ) => updateItem( index, { checkboxColumns: Number( val ) } ) }
-															/>
+														{ item.type === 'filter' && (
+															<>
+																<SelectControl
+																	label={ __( 'Что фильтруем', 'codeweber-gutenberg-blocks' ) }
+																	value={ item.filterType }
+																	options={ FILTER_TYPE_OPTIONS }
+																	onChange={ ( val ) => updateItem( index, { filterType: val } ) }
+																/>
+																{ item.filterType === 'attributes' && (
+																	<SelectControl
+																		label={ __( 'Атрибут WC', 'codeweber-gutenberg-blocks' ) }
+																		value={ item.taxonomy }
+																		options={ taxonomyOptions }
+																		onChange={ ( val ) => updateItem( index, { taxonomy: val } ) }
+																	/>
+																) }
+																<TextControl
+																	label={ __( 'Заголовок секции', 'codeweber-gutenberg-blocks' ) }
+																	help={ __( 'Пусто — заголовок по умолчанию', 'codeweber-gutenberg-blocks' ) }
+																	value={ item.label }
+																	onChange={ ( val ) => updateItem( index, { label: val } ) }
+																/>
+																{ showDisplayMode && (
+																	<>
+																		<SelectControl
+																			label={ __( 'Режим отображения', 'codeweber-gutenberg-blocks' ) }
+																			value={ item.displayMode }
+																			options={ DISPLAY_MODE_OPTIONS }
+																			onChange={ ( val ) => updateItem( index, { displayMode: val } ) }
+																		/>
+																		<SelectControl
+																			label={ __( 'Логика фильтра', 'codeweber-gutenberg-blocks' ) }
+																			value={ item.queryType }
+																			options={ QUERY_TYPE_OPTIONS }
+																			onChange={ ( val ) => updateItem( index, { queryType: val } ) }
+																		/>
+																	</>
+																) }
+																{ item.filterType !== 'price' && (
+																	<>
+																		<ToggleControl
+																			label={ __( 'Показывать кол-во товаров', 'codeweber-gutenberg-blocks' ) }
+																			checked={ item.showCount }
+																			onChange={ ( val ) => updateItem( index, { showCount: val } ) }
+																		/>
+																		{ ( ! showDisplayMode || item.displayMode === 'checkbox' ) && (
+																			<SelectControl
+																				label={ __( 'Колонки', 'codeweber-gutenberg-blocks' ) }
+																				value={ item.checkboxColumns ?? 1 }
+																				options={ CHECKBOX_COLUMNS_OPTIONS }
+																				onChange={ ( val ) => updateItem( index, { checkboxColumns: Number( val ) } ) }
+																			/>
+																		) }
+																	</>
+																) }
+															</>
 														) }
-													</>
+													</div>
 												) }
-											</>
-										) }
+											</div>
+										);
+									} ) }
+
+									<div className="cwgb-repeater-add">
+										<Button variant="secondary" onClick={ () => addItem( 'filter' ) } icon="plus-alt">
+											{ __( 'Добавить фильтр', 'codeweber-gutenberg-blocks' ) }
+										</Button>
+										<Button variant="secondary" onClick={ () => addItem( 'reset_button' ) } icon="update">
+											{ __( 'Кнопка сброса', 'codeweber-gutenberg-blocks' ) }
+										</Button>
+										<Button variant="secondary" onClick={ () => addItem( 'active_chips' ) } icon="tag">
+											{ __( 'Активные фильтры', 'codeweber-gutenberg-blocks' ) }
+										</Button>
 									</div>
-								) }
-							</div>
-						);
-					} ) }
+								</PanelBody>
+							) }
 
-					<div className="cwgb-repeater-add">
-						<Button variant="secondary" onClick={ () => addItem( 'filter' ) } icon="plus-alt">
-							{ __( 'Добавить фильтр', 'codeweber-gutenberg-blocks' ) }
-						</Button>
-						<Button variant="secondary" onClick={ () => addItem( 'reset_button' ) } icon="update">
-							{ __( 'Кнопка сброса', 'codeweber-gutenberg-blocks' ) }
-						</Button>
-						<Button variant="secondary" onClick={ () => addItem( 'active_chips' ) } icon="tag">
-							{ __( 'Активные фильтры', 'codeweber-gutenberg-blocks' ) }
-						</Button>
-					</div>
-				</PanelBody>
+							{ tab.name === 'style' && (
+								<>
+									<PanelBody title={ __( 'Секции', 'codeweber-gutenberg-blocks' ) } initialOpen={ true }>
+										<SelectControl
+											label={ __( 'Стиль секций', 'codeweber-gutenberg-blocks' ) }
+											value={ sectionStyle }
+											options={ SECTION_STYLE_OPTIONS }
+											onChange={ ( val ) => setAttributes( { sectionStyle: val } ) }
+										/>
+										{ sectionStyle === 'accordion' && (
+											<ToggleControl
+												label={ __( 'Секции раскрыты по умолчанию', 'codeweber-gutenberg-blocks' ) }
+												checked={ sectionsOpen }
+												onChange={ ( val ) => setAttributes( { sectionsOpen: val } ) }
+											/>
+										) }
+										<TextControl
+											label={ __( 'Класс обёртки секции', 'codeweber-gutenberg-blocks' ) }
+											help={ __( 'Пример: widget', 'codeweber-gutenberg-blocks' ) }
+											value={ wrapperClass }
+											onChange={ ( val ) => setAttributes( { wrapperClass: val } ) }
+										/>
+										<SelectControl
+											label={ __( 'Тег заголовка', 'codeweber-gutenberg-blocks' ) }
+											value={ headingTag }
+											options={ HEADING_TAG_OPTIONS }
+											onChange={ ( val ) => setAttributes( { headingTag: val } ) }
+										/>
+										<TextControl
+											label={ __( 'Класс заголовка', 'codeweber-gutenberg-blocks' ) }
+											help={ __( 'Пример: widget-title mb-3', 'codeweber-gutenberg-blocks' ) }
+											value={ headingClass }
+											onChange={ ( val ) => setAttributes( { headingClass: val } ) }
+										/>
+									</PanelBody>
 
-				{ /* ── Оформление ───────────────────────────────────────────── */ }
-				<PanelBody
-					title={ __( 'Оформление', 'codeweber-gutenberg-blocks' ) }
-					initialOpen={ false }
-				>
-					{ /* Секции */ }
-					<SelectControl
-						label={ __( 'Стиль секций', 'codeweber-gutenberg-blocks' ) }
-						value={ sectionStyle }
-						options={ SECTION_STYLE_OPTIONS }
-						onChange={ ( val ) => setAttributes( { sectionStyle: val } ) }
-					/>
-					{ sectionStyle === 'accordion' && (
-						<ToggleControl
-							label={ __( 'Секции раскрыты по умолчанию', 'codeweber-gutenberg-blocks' ) }
-							checked={ sectionsOpen }
-							onChange={ ( val ) => setAttributes( { sectionsOpen: val } ) }
-						/>
+									<PanelBody title={ __( 'Чекбоксы', 'codeweber-gutenberg-blocks' ) } initialOpen={ false }>
+										<SelectControl
+											label={ __( 'Размер', 'codeweber-gutenberg-blocks' ) }
+											value={ checkboxSize }
+											options={ CHECKBOX_SIZE_OPTIONS }
+											onChange={ ( val ) => setAttributes( { checkboxSize: val } ) }
+										/>
+										<TextControl
+											label={ __( 'Доп. класс элемента', 'codeweber-gutenberg-blocks' ) }
+											help={ __( 'Добавляется к каждому div.form-check', 'codeweber-gutenberg-blocks' ) }
+											value={ checkboxItemClass }
+											onChange={ ( val ) => setAttributes( { checkboxItemClass: val } ) }
+										/>
+									</PanelBody>
+
+									<PanelBody title={ __( 'Кнопки', 'codeweber-gutenberg-blocks' ) } initialOpen={ false }>
+										<TextControl
+											label={ __( 'Класс кнопки (неактивная)', 'codeweber-gutenberg-blocks' ) }
+											help={ __( 'Пример: btn-outline-secondary', 'codeweber-gutenberg-blocks' ) }
+											value={ buttonClass }
+											onChange={ ( val ) => setAttributes( { buttonClass: val } ) }
+										/>
+										<TextControl
+											label={ __( 'Класс кнопки (активная)', 'codeweber-gutenberg-blocks' ) }
+											help={ __( 'Пример: btn-secondary', 'codeweber-gutenberg-blocks' ) }
+											value={ buttonActiveClass }
+											onChange={ ( val ) => setAttributes( { buttonActiveClass: val } ) }
+										/>
+									</PanelBody>
+
+									<PanelBody title={ __( 'Сброс', 'codeweber-gutenberg-blocks' ) } initialOpen={ false }>
+										<TextControl
+											label={ __( 'Текст кнопки «Сбросить»', 'codeweber-gutenberg-blocks' ) }
+											help={ __( 'Пусто — текст по умолчанию', 'codeweber-gutenberg-blocks' ) }
+											value={ resetLabel }
+											onChange={ ( val ) => setAttributes( { resetLabel: val } ) }
+										/>
+									</PanelBody>
+								</>
+							) }
+						</>
 					) }
-
-					{ /* Обёртка */ }
-					<TextControl
-						label={ __( 'Класс обёртки секции', 'codeweber-gutenberg-blocks' ) }
-						help={ __( 'Пример: widget', 'codeweber-gutenberg-blocks' ) }
-						value={ wrapperClass }
-						onChange={ ( val ) => setAttributes( { wrapperClass: val } ) }
-					/>
-
-					{ /* Заголовок */ }
-					<SelectControl
-						label={ __( 'Тег заголовка', 'codeweber-gutenberg-blocks' ) }
-						value={ headingTag }
-						options={ HEADING_TAG_OPTIONS }
-						onChange={ ( val ) => setAttributes( { headingTag: val } ) }
-					/>
-					<TextControl
-						label={ __( 'Класс заголовка', 'codeweber-gutenberg-blocks' ) }
-						help={ __( 'Пример: widget-title mb-3', 'codeweber-gutenberg-blocks' ) }
-						value={ headingClass }
-						onChange={ ( val ) => setAttributes( { headingClass: val } ) }
-					/>
-
-					{ /* Чекбоксы */ }
-					<SelectControl
-						label={ __( 'Размер чекбоксов', 'codeweber-gutenberg-blocks' ) }
-						value={ checkboxSize }
-						options={ CHECKBOX_SIZE_OPTIONS }
-						onChange={ ( val ) => setAttributes( { checkboxSize: val } ) }
-					/>
-					<TextControl
-						label={ __( 'Доп. класс элемента чекбокса', 'codeweber-gutenberg-blocks' ) }
-						help={ __( 'Добавляется к каждому div.form-check', 'codeweber-gutenberg-blocks' ) }
-						value={ checkboxItemClass }
-						onChange={ ( val ) => setAttributes( { checkboxItemClass: val } ) }
-					/>
-
-					{ /* Кнопки */ }
-					<TextControl
-						label={ __( 'Класс кнопки (неактивная)', 'codeweber-gutenberg-blocks' ) }
-						help={ __( 'Пример: btn-outline-secondary', 'codeweber-gutenberg-blocks' ) }
-						value={ buttonClass }
-						onChange={ ( val ) => setAttributes( { buttonClass: val } ) }
-					/>
-					<TextControl
-						label={ __( 'Класс кнопки (активная)', 'codeweber-gutenberg-blocks' ) }
-						help={ __( 'Пример: btn-secondary', 'codeweber-gutenberg-blocks' ) }
-						value={ buttonActiveClass }
-						onChange={ ( val ) => setAttributes( { buttonActiveClass: val } ) }
-					/>
-
-					{ /* Кнопка сброса */ }
-					<TextControl
-						label={ __( 'Текст кнопки «Сбросить»', 'codeweber-gutenberg-blocks' ) }
-						help={ __( 'Пусто — текст по умолчанию', 'codeweber-gutenberg-blocks' ) }
-						value={ resetLabel }
-						onChange={ ( val ) => setAttributes( { resetLabel: val } ) }
-					/>
-				</PanelBody>
-
+				</TabPanel>
 			</InspectorControls>
 
 			{ /* ── Editor preview ── */ }

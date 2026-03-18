@@ -94,6 +94,8 @@ const ROW_STYLE = {
 	borderRadius: '4px',
 };
 
+const ICON_BTN_STYLE = { minWidth: '20px', padding: '6px' };
+
 const TOGGLE_WRAP_STYLE = {
 	flex: '1',
 	minWidth: 0,
@@ -215,14 +217,14 @@ export default function Edit( { attributes, setAttributes } ) {
 												<div style={ ROW_STYLE }>
 													<Button
 														icon="arrow-up-alt2"
-														size="small"
+														style={ ICON_BTN_STYLE }
 														disabled={ index === 0 }
 														onClick={ () => moveItem( index, -1 ) }
 														label={ __( 'Переместить вверх', 'codeweber-gutenberg-blocks' ) }
 													/>
 													<Button
 														icon="arrow-down-alt2"
-														size="small"
+														style={ ICON_BTN_STYLE }
 														disabled={ index === items.length - 1 }
 														onClick={ () => moveItem( index, 1 ) }
 														label={ __( 'Переместить вниз', 'codeweber-gutenberg-blocks' ) }

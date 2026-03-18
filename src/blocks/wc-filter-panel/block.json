@@ -28,6 +28,10 @@
           "checkboxColumns": 1,
           "emptyBehavior": "disable",
           "itemClass": "",
+          "limitType": "none",
+          "limitValue": 5,
+          "showMoreText": "",
+          "showLessText": "",
           "enabled": true
         }
       ]

@@ -13,6 +13,7 @@ import {
 	ComboboxControl,
 	ToggleControl,
 	TextControl,
+	__experimentalNumberControl as NumberControl,
 } from '@wordpress/components';
 import { settings, trash as trashIcon } from '@wordpress/icons';
 import { colors } from '../../utilities/colors';
@@ -51,6 +52,12 @@ const EMPTY_BEHAVIOR_OPTIONS = [
 	{ label: __( 'Делать неактивными', 'codeweber-gutenberg-blocks' ), value: 'disable' },
 	{ label: __( 'Неактивные, но кликабельные', 'codeweber-gutenberg-blocks' ), value: 'disable_clickable' },
 	{ label: __( 'Скрыть блок (если все пусты)', 'codeweber-gutenberg-blocks' ), value: 'hide_block' },
+];
+
+const LIMIT_TYPE_OPTIONS = [
+	{ label: __( 'Без ограничения', 'codeweber-gutenberg-blocks' ), value: 'none' },
+	{ label: __( 'По количеству элементов', 'codeweber-gutenberg-blocks' ), value: 'count' },
+	{ label: __( 'По высоте блока (px)', 'codeweber-gutenberg-blocks' ), value: 'height' },
 ];
 
 const ITEM_TYPE_OPTIONS = [
@@ -199,6 +206,10 @@ export default function Edit( { attributes, setAttributes } ) {
 			checkboxColumns: 1,
 			emptyBehavior: 'disable',
 			itemClass: '',
+			limitType: 'none',
+			limitValue: 5,
+			showMoreText: '',
+			showLessText: '',
 			enabled: true,
 		};
 		setAttributes( { items: [ ...items, newItem ] } );
@@ -355,6 +366,36 @@ export default function Edit( { attributes, setAttributes } ) {
 															value={ item.itemClass ?? '' }
 															onChange={ ( val ) => updateItem( index, { itemClass: val } ) }
 														/>
+														<SelectControl
+															label={ __( 'Ограничение списка', 'codeweber-gutenberg-blocks' ) }
+															value={ item.limitType ?? 'none' }
+															options={ LIMIT_TYPE_OPTIONS }
+															onChange={ ( val ) => updateItem( index, { limitType: val } ) }
+														/>
+														{ ( item.limitType === 'count' || item.limitType === 'height' ) && (
+															<>
+																<NumberControl
+																	label={ item.limitType === 'count'
+																		? __( 'Макс. видимых элементов', 'codeweber-gutenberg-blocks' )
+																		: __( 'Макс. высота (px)', 'codeweber-gutenberg-blocks' ) }
+																	value={ item.limitValue ?? 5 }
+																	min={ 1 }
+																	onChange={ ( val ) => updateItem( index, { limitValue: Number( val ) } ) }
+																/>
+																<TextControl
+																	label={ __( 'Текст кнопки «Показать ещё»', 'codeweber-gutenberg-blocks' ) }
+																	help={ __( 'Пусто — значение по умолчанию', 'codeweber-gutenberg-blocks' ) }
+																	value={ item.showMoreText ?? '' }
+																	onChange={ ( val ) => updateItem( index, { showMoreText: val } ) }
+																/>
+																<TextControl
+																	label={ __( 'Текст кнопки «Свернуть»', 'codeweber-gutenberg-blocks' ) }
+																	help={ __( 'Пусто — значение по умолчанию', 'codeweber-gutenberg-blocks' ) }
+																	value={ item.showLessText ?? '' }
+																	onChange={ ( val ) => updateItem( index, { showLessText: val } ) }
+																/>
+															</>
+														) }
 													</div>
 												) }
 											</div>

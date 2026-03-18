@@ -44,6 +44,13 @@ const QUERY_TYPE_OPTIONS = [
 	{ label: __( 'AND — все из выбранных', 'codeweber-gutenberg-blocks' ), value: 'and' },
 ];
 
+const EMPTY_BEHAVIOR_OPTIONS = [
+	{ label: __( 'По умолчанию (показывать всё)', 'codeweber-gutenberg-blocks' ), value: 'default' },
+	{ label: __( 'Скрывать отсутствующие', 'codeweber-gutenberg-blocks' ), value: 'hide' },
+	{ label: __( 'Делать неактивными', 'codeweber-gutenberg-blocks' ), value: 'disable' },
+	{ label: __( 'Неактивные, но кликабельные', 'codeweber-gutenberg-blocks' ), value: 'disable_clickable' },
+];
+
 const ITEM_TYPE_OPTIONS = [
 	{ label: __( 'Фильтр', 'codeweber-gutenberg-blocks' ), value: 'filter' },
 	{ label: __( 'Кнопка сброса', 'codeweber-gutenberg-blocks' ), value: 'reset_button' },
@@ -188,6 +195,7 @@ export default function Edit( { attributes, setAttributes } ) {
 			taxonomy: '',
 			showCount: true,
 			checkboxColumns: 1,
+			emptyBehavior: 'disable',
 			enabled: true,
 		};
 		setAttributes( { items: [ ...items, newItem ] } );
@@ -337,6 +345,13 @@ export default function Edit( { attributes, setAttributes } ) {
 																				onChange={ ( val ) => updateItem( index, { checkboxColumns: Number( val ) } ) }
 																			/>
 																		) }
+																		<SelectControl
+																			label={ __( 'Отсутствующие элементы', 'codeweber-gutenberg-blocks' ) }
+																			help={ __( 'Что делать с позициями, для которых нет подходящих товаров', 'codeweber-gutenberg-blocks' ) }
+																			value={ item.emptyBehavior ?? 'disable' }
+																			options={ EMPTY_BEHAVIOR_OPTIONS }
+																			onChange={ ( val ) => updateItem( index, { emptyBehavior: val } ) }
+																		/>
 																	</>
 																) }
 															</>

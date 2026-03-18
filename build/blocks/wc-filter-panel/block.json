@@ -32,6 +32,7 @@
           "taxonomy": "",
           "showCount": true,
           "checkboxColumns": 1,
+          "emptyBehavior": "disable",
           "enabled": true
         }
       ]

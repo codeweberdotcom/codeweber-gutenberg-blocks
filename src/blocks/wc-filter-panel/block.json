@@ -25,7 +25,8 @@
           "queryType": "or",
           "taxonomy": "",
           "showCount": true,
-          "checkboxColumns": 1
+          "checkboxColumns": 1,
+          "enabled": true
         }
       ]
     },

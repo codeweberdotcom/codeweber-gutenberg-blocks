@@ -84,6 +84,22 @@ const CHECKBOX_COLUMNS_OPTIONS = [
 	{ label: __( '2 колонки', 'codeweber-gutenberg-blocks' ), value: 2 },
 ];
 
+const ROW_STYLE = {
+	display: 'flex',
+	alignItems: 'center',
+	gap: '4px',
+	marginBottom: '4px',
+	padding: '4px 8px',
+	background: '#f9f9f9',
+	borderRadius: '4px',
+};
+
+const TOGGLE_WRAP_STYLE = {
+	flex: '1',
+	minWidth: 0,
+	marginBottom: 0,
+};
+
 export default function Edit( { attributes, setAttributes } ) {
 	const {
 		items,
@@ -148,12 +164,13 @@ export default function Edit( { attributes, setAttributes } ) {
 			taxonomy: '',
 			showCount: true,
 			checkboxColumns: 1,
+			enabled: true,
 		};
 		setAttributes( { items: [ ...items, newItem ] } );
 		setExpandedIndex( items.length );
 	}
 
-	function getItemSummary( item ) {
+	function getItemLabel( item ) {
 		if ( item.type !== 'filter' ) return ITEM_TYPE_LABELS[ item.type ] || item.type;
 		const typeLabel = FILTER_TYPE_LABELS[ item.filterType ] || item.filterType;
 		return item.label ? `${ typeLabel } — ${ item.label }` : typeLabel;
@@ -190,47 +207,53 @@ export default function Edit( { attributes, setAttributes } ) {
 
 									{ items.map( ( item, index ) => {
 										const isExpanded = expandedIndex === index;
-										const showDisplayMode = [ 'categories', 'tags', 'attributes' ].includes(
-											item.filterType
-										);
+										const showDisplayMode = [ 'categories', 'tags', 'attributes' ].includes( item.filterType );
+										const isEnabled = item.enabled !== false;
 
 										return (
-											<div key={ item.id } className="cwgb-repeater-item">
-												<div className={ `cwgb-repeater-item__header${ isExpanded ? ' is-expanded' : '' }` }>
-													<button
-														type="button"
-														className="cwgb-repeater-item__toggle"
-														onClick={ () => setExpandedIndex( isExpanded ? null : index ) }
-													>
-														{ getItemSummary( item ) }
-													</button>
-													<div className="cwgb-repeater-item__actions">
-														<Button
-															icon="arrow-up-alt2"
-															size="small"
-															disabled={ index === 0 }
-															onClick={ () => moveItem( index, -1 ) }
-															label={ __( 'Вверх', 'codeweber-gutenberg-blocks' ) }
-														/>
-														<Button
-															icon="arrow-down-alt2"
-															size="small"
-															disabled={ index === items.length - 1 }
-															onClick={ () => moveItem( index, 1 ) }
-															label={ __( 'Вниз', 'codeweber-gutenberg-blocks' ) }
-														/>
-														<Button
-															icon="trash"
-															size="small"
-															isDestructive
-															onClick={ () => deleteItem( index ) }
-															label={ __( 'Удалить', 'codeweber-gutenberg-blocks' ) }
+											<div key={ item.id }>
+												{ /* ── Item row ── */ }
+												<div style={ ROW_STYLE }>
+													<Button
+														icon="arrow-up-alt2"
+														size="small"
+														disabled={ index === 0 }
+														onClick={ () => moveItem( index, -1 ) }
+														label={ __( 'Переместить вверх', 'codeweber-gutenberg-blocks' ) }
+													/>
+													<Button
+														icon="arrow-down-alt2"
+														size="small"
+														disabled={ index === items.length - 1 }
+														onClick={ () => moveItem( index, 1 ) }
+														label={ __( 'Переместить вниз', 'codeweber-gutenberg-blocks' ) }
+													/>
+													<div style={ TOGGLE_WRAP_STYLE }>
+														<ToggleControl
+															label={ getItemLabel( item ) }
+															checked={ isEnabled }
+															onChange={ ( val ) => updateItem( index, { enabled: val } ) }
 														/>
 													</div>
+													<Button
+														icon="admin-settings"
+														size="small"
+														isPressed={ isExpanded }
+														onClick={ () => setExpandedIndex( isExpanded ? null : index ) }
+														label={ __( 'Настройки', 'codeweber-gutenberg-blocks' ) }
+													/>
+													<Button
+														icon="trash"
+														size="small"
+														isDestructive
+														onClick={ () => deleteItem( index ) }
+														label={ __( 'Удалить', 'codeweber-gutenberg-blocks' ) }
+													/>
 												</div>
 
+												{ /* ── Expanded settings ── */ }
 												{ isExpanded && (
-													<div className="cwgb-repeater-item__body">
+													<div style={ { padding: '8px 8px 12px', borderLeft: '2px solid #e0e0e0', marginBottom: '8px' } }>
 														<SelectControl
 															label={ __( 'Тип элемента', 'codeweber-gutenberg-blocks' ) }
 															value={ item.type }

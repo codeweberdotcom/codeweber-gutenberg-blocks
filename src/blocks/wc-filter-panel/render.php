@@ -2,8 +2,6 @@
 /**
  * WC Filter Panel Block — Server-side render.
  *
- * Delegates to cw_render_filter_items() defined in the CodeWeber theme.
- *
  * @package CodeWeber Gutenberg Blocks
  *
  * @var array    $attributes Block attributes.
@@ -22,10 +20,31 @@ if ( ! function_exists( 'cw_render_filter_items' ) ) {
 
 $items = isset( $attributes['items'] ) && is_array( $attributes['items'] ) ? $attributes['items'] : [];
 
+$panel_atts = [
+	'section_style'      => in_array( $attributes['sectionStyle'] ?? 'plain', [ 'plain', 'accordion' ], true )
+		? $attributes['sectionStyle'] : 'plain',
+	'sections_open'      => isset( $attributes['sectionsOpen'] ) ? (bool) $attributes['sectionsOpen'] : true,
+	'wrapper_class'      => isset( $attributes['wrapperClass'] ) ? sanitize_html_class_list( $attributes['wrapperClass'] ) : 'widget',
+	'heading_tag'        => in_array( $attributes['headingTag'] ?? 'h4', [ 'h2', 'h3', 'h4', 'h5', 'h6', 'p' ], true )
+		? $attributes['headingTag'] : 'h4',
+	'heading_class'      => isset( $attributes['headingClass'] ) ? esc_attr( $attributes['headingClass'] ) : 'widget-title mb-3',
+	'checkbox_size'      => in_array( $attributes['checkboxSize'] ?? '', [ '', 'sm' ], true )
+		? $attributes['checkboxSize'] : '',
+	'checkbox_item_class' => isset( $attributes['checkboxItemClass'] ) ? esc_attr( $attributes['checkboxItemClass'] ) : '',
+	'button_class'       => isset( $attributes['buttonClass'] ) ? esc_attr( $attributes['buttonClass'] ) : 'btn-outline-secondary',
+	'button_active_class' => isset( $attributes['buttonActiveClass'] ) ? esc_attr( $attributes['buttonActiveClass'] ) : 'btn-secondary',
+	'reset_label'        => isset( $attributes['resetLabel'] ) ? sanitize_text_field( $attributes['resetLabel'] ) : '',
+];
+
 $wrapper_attributes = get_block_wrapper_attributes( [ 'class' => 'cwgb-wc-filter-panel' ] );
 
 echo '<div ' . $wrapper_attributes . '>'; // phpcs:ignore WordPress.Security.EscapeOutput
-echo '<div class="cw-filter-panel">';
-cw_render_filter_items( $items );
+cw_render_filter_items( $items, $panel_atts );
 echo '</div>';
-echo '</div>';
+
+/**
+ * Sanitize a space-separated list of CSS class names.
+ */
+function sanitize_html_class_list( $classes ) {
+	return implode( ' ', array_map( 'sanitize_html_class', explode( ' ', $classes ) ) );
+}

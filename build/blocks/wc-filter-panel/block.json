@@ -1,7 +1,7 @@
 {
   "apiVersion": 3,
   "name": "codeweber-blocks/wc-filter-panel",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "title": "WC Filter Panel",
   "category": "codeweber-gutenberg-elements",
   "icon": "filter",
@@ -33,6 +33,46 @@
           "showCount": true
         }
       ]
+    },
+    "sectionStyle": {
+      "type": "string",
+      "default": "plain"
+    },
+    "sectionsOpen": {
+      "type": "boolean",
+      "default": true
+    },
+    "wrapperClass": {
+      "type": "string",
+      "default": "widget"
+    },
+    "headingTag": {
+      "type": "string",
+      "default": "h4"
+    },
+    "headingClass": {
+      "type": "string",
+      "default": "widget-title mb-3"
+    },
+    "checkboxSize": {
+      "type": "string",
+      "default": ""
+    },
+    "checkboxItemClass": {
+      "type": "string",
+      "default": ""
+    },
+    "buttonClass": {
+      "type": "string",
+      "default": "btn-outline-secondary"
+    },
+    "buttonActiveClass": {
+      "type": "string",
+      "default": "btn-secondary"
+    },
+    "resetLabel": {
+      "type": "string",
+      "default": ""
     }
   },
   "textdomain": "codeweber-gutenberg-blocks",

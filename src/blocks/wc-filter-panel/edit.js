@@ -9,10 +9,12 @@ import {
 	TabPanel,
 	Button,
 	SelectControl,
+	ComboboxControl,
 	ToggleControl,
 	TextControl,
 } from '@wordpress/components';
 import { settings, trash as trashIcon } from '@wordpress/icons';
+import { colors } from '../../utilities/colors';
 import apiFetch from '@wordpress/api-fetch';
 import { useState, useEffect } from '@wordpress/element';
 
@@ -129,8 +131,9 @@ export default function Edit( { attributes, setAttributes } ) {
 		checkboxItemClass,
 		radioSize,
 		radioItemClass,
-		buttonClass,
-		buttonActiveClass,
+		buttonSize,
+		buttonStyle,
+		buttonColor,
 		resetLabel,
 	} = attributes;
 
@@ -416,17 +419,32 @@ export default function Edit( { attributes, setAttributes } ) {
 									</PanelBody>
 
 									<PanelBody title={ __( 'Кнопки', 'codeweber-gutenberg-blocks' ) } initialOpen={ false }>
-										<TextControl
-											label={ __( 'Класс кнопки (неактивная)', 'codeweber-gutenberg-blocks' ) }
-											help={ __( 'Пример: btn-outline-secondary', 'codeweber-gutenberg-blocks' ) }
-											value={ buttonClass }
-											onChange={ ( val ) => setAttributes( { buttonClass: val } ) }
+										<SelectControl
+											label={ __( 'Размер', 'codeweber-gutenberg-blocks' ) }
+											value={ buttonSize }
+											options={ [
+												{ label: 'ExSm', value: 'btn-xs' },
+												{ label: 'Sm', value: 'btn-sm' },
+												{ label: 'Md', value: '' },
+												{ label: 'Lg', value: 'btn-lg' },
+											] }
+											onChange={ ( val ) => setAttributes( { buttonSize: val } ) }
 										/>
-										<TextControl
-											label={ __( 'Класс кнопки (активная)', 'codeweber-gutenberg-blocks' ) }
-											help={ __( 'Пример: btn-secondary', 'codeweber-gutenberg-blocks' ) }
-											value={ buttonActiveClass }
-											onChange={ ( val ) => setAttributes( { buttonActiveClass: val } ) }
+										<SelectControl
+											label={ __( 'Стиль', 'codeweber-gutenberg-blocks' ) }
+											value={ buttonStyle }
+											options={ [
+												{ label: 'Solid', value: 'solid' },
+												{ label: 'Outline', value: 'outline' },
+												{ label: 'Soft', value: 'soft' },
+											] }
+											onChange={ ( val ) => setAttributes( { buttonStyle: val } ) }
+										/>
+										<ComboboxControl
+											label={ __( 'Цвет', 'codeweber-gutenberg-blocks' ) }
+											value={ buttonColor }
+											options={ colors }
+											onChange={ ( val ) => setAttributes( { buttonColor: val || 'secondary' } ) }
 										/>
 									</PanelBody>
 

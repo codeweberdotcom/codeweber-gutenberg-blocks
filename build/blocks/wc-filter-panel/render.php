@@ -34,8 +34,11 @@ $panel_atts = [
 	'radio_size'         => in_array( $attributes['radioSize'] ?? '', [ '', 'sm' ], true )
 		? $attributes['radioSize'] : '',
 	'radio_item_class'   => isset( $attributes['radioItemClass'] ) ? esc_attr( $attributes['radioItemClass'] ) : '',
-	'button_class'       => isset( $attributes['buttonClass'] ) ? esc_attr( $attributes['buttonClass'] ) : 'btn-outline-secondary',
-	'button_active_class' => isset( $attributes['buttonActiveClass'] ) ? esc_attr( $attributes['buttonActiveClass'] ) : 'btn-secondary',
+	'button_size'        => in_array( $attributes['buttonSize'] ?? 'btn-sm', [ '', 'btn-xs', 'btn-sm', 'btn-lg' ], true )
+		? $attributes['buttonSize'] : 'btn-sm',
+	'button_style'       => in_array( $attributes['buttonStyle'] ?? 'outline', [ 'solid', 'outline', 'soft' ], true )
+		? $attributes['buttonStyle'] : 'outline',
+	'button_color'       => sanitize_html_class( $attributes['buttonColor'] ?? 'secondary' ),
 	'reset_label'        => isset( $attributes['resetLabel'] ) ? sanitize_text_field( $attributes['resetLabel'] ) : '',
 ];
 

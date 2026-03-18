@@ -66,13 +66,17 @@
       "type": "string",
       "default": ""
     },
-    "buttonClass": {
+    "buttonSize": {
       "type": "string",
-      "default": "btn-outline-secondary"
+      "default": "btn-sm"
     },
-    "buttonActiveClass": {
+    "buttonStyle": {
       "type": "string",
-      "default": "btn-secondary"
+      "default": "outline"
+    },
+    "buttonColor": {
+      "type": "string",
+      "default": "secondary"
     },
     "resetLabel": {
       "type": "string",

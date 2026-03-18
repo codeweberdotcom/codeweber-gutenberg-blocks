@@ -41,6 +41,13 @@ const DISPLAY_MODE_OPTIONS = [
 	{ label: __( 'Кнопки', 'codeweber-gutenberg-blocks' ), value: 'button' },
 ];
 
+// Only for attributes filterType — swatch display modes
+const DISPLAY_MODE_OPTIONS_ATTR = [
+	...DISPLAY_MODE_OPTIONS,
+	{ label: __( 'Цветовые свотчи', 'codeweber-gutenberg-blocks' ), value: 'color' },
+	{ label: __( 'Изображения (свотчи)', 'codeweber-gutenberg-blocks' ), value: 'image' },
+];
+
 const QUERY_TYPE_OPTIONS = [
 	{ label: __( 'OR — любой из выбранных', 'codeweber-gutenberg-blocks' ), value: 'or' },
 	{ label: __( 'AND — все из выбранных', 'codeweber-gutenberg-blocks' ), value: 'and' },
@@ -204,6 +211,8 @@ export default function Edit( { attributes, setAttributes } ) {
 			taxonomy: '',
 			showCount: true,
 			checkboxColumns: 1,
+			swatchColumns: 0,
+			swatchItemClass: '',
 			emptyBehavior: 'disable',
 			itemClass: '',
 			limitType: 'none',
@@ -323,9 +332,26 @@ export default function Edit( { attributes, setAttributes } ) {
 																		<SelectControl
 																			label={ __( 'Режим отображения', 'codeweber-gutenberg-blocks' ) }
 																			value={ item.displayMode }
-																			options={ DISPLAY_MODE_OPTIONS }
+																			options={ item.filterType === 'attributes' ? DISPLAY_MODE_OPTIONS_ATTR : DISPLAY_MODE_OPTIONS }
 																			onChange={ ( val ) => updateItem( index, { displayMode: val } ) }
 																		/>
+																		{ ( item.displayMode === 'color' || item.displayMode === 'image' ) && (
+																			<>
+																				<NumberControl
+																					label={ __( 'Элементов в ряд (0 — авто)', 'codeweber-gutenberg-blocks' ) }
+																					value={ item.swatchColumns ?? 0 }
+																					min={ 0 }
+																					max={ 20 }
+																					onChange={ ( val ) => updateItem( index, { swatchColumns: Number( val ) } ) }
+																				/>
+																				<TextControl
+																					label={ __( 'Доп. класс каждого свотча', 'codeweber-gutenberg-blocks' ) }
+																					help={ __( 'Добавляется к каждому элементу-свотчу', 'codeweber-gutenberg-blocks' ) }
+																					value={ item.swatchItemClass ?? '' }
+																					onChange={ ( val ) => updateItem( index, { swatchItemClass: val } ) }
+																				/>
+																			</>
+																		) }
 																		<SelectControl
 																			label={ __( 'Логика фильтра', 'codeweber-gutenberg-blocks' ) }
 																			value={ item.queryType }

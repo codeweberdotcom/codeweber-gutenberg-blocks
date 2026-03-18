@@ -32,6 +32,8 @@
           "taxonomy": "",
           "showCount": true,
           "checkboxColumns": 1,
+          "swatchColumns": 0,
+          "swatchItemClass": "",
           "emptyBehavior": "disable",
           "itemClass": "",
           "limitType": "none",

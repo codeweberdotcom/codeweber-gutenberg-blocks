@@ -12,6 +12,7 @@ import {
 	ToggleControl,
 	TextControl,
 } from '@wordpress/components';
+import { settings, trash as trashIcon } from '@wordpress/icons';
 import apiFetch from '@wordpress/api-fetch';
 import { useState, useEffect } from '@wordpress/element';
 
@@ -102,6 +103,18 @@ const TOGGLE_WRAP_STYLE = {
 	minWidth: 0,
 	marginBottom: 0,
 };
+
+const SVG_UP = (
+	<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="16" height="16" aria-hidden="true" focusable="false">
+		<path d="M6.5 12.4L12 8l5.5 4.4-.9 1.2L12 10l-4.5 3.6-1-1.2z" />
+	</svg>
+);
+
+const SVG_DOWN = (
+	<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="16" height="16" aria-hidden="true" focusable="false">
+		<path d="M17.5 11.6L12 16l-5.5-4.4.9-1.2L12 14l4.5-3.6 1 1.2z" />
+	</svg>
+);
 
 export default function Edit( { attributes, setAttributes } ) {
 	const {
@@ -217,14 +230,14 @@ export default function Edit( { attributes, setAttributes } ) {
 												{ /* ── Item row ── */ }
 												<div style={ ROW_STYLE }>
 													<Button
-														icon={ <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="16" height="16" aria-hidden="true" focusable="false"><path d="M6.5 12.4L12 8l5.5 4.4-.9 1.2L12 10l-4.5 3.6-1-1.2z" /></svg> }
+														icon={ SVG_UP }
 														style={ ICON_BTN_STYLE }
 														disabled={ index === 0 }
 														onClick={ () => moveItem( index, -1 ) }
 														label={ __( 'Переместить вверх', 'codeweber-gutenberg-blocks' ) }
 													/>
 													<Button
-														icon={ <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="16" height="16" aria-hidden="true" focusable="false"><path d="M17.5 11.6L12 16l-5.5-4.4.9-1.2L12 14l4.5-3.6 1 1.2z" /></svg> }
+														icon={ SVG_DOWN }
 														style={ ICON_BTN_STYLE }
 														disabled={ index === items.length - 1 }
 														onClick={ () => moveItem( index, 1 ) }
@@ -238,14 +251,14 @@ export default function Edit( { attributes, setAttributes } ) {
 														/>
 													</div>
 													<Button
-														icon={ <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="16" height="16" aria-hidden="true" focusable="false"><path d="M13.93 5.57l-.93.02-.93-.02-.13-1.55h2.12l-.13 1.55zM8.18 6.78l-.66.66-.65-.65-.94-1.26 1.5-1.5 1.26.94-.51.81zm-2.6 5.16l-.02-.94.02-.93-1.55-.13v2.12l1.55-.12zm1.67 5.74l1.5 1.5-.94 1.26-.66-.65-.65.65-1.26-.94 1.26-.94.75-2.88zm5.75 1.67l.93-.02.93.02.13 1.55h-2.12l.13-1.55zm5.74-1.67l1.26.94-1.26.94-.65-.65-.66.65-1.5-1.5 1.26-.94-.45-2.88zm2.6-5.16l.02.94-.02.93 1.55.13v-2.12l-1.55.12zm-1.67-5.74l-1.5-1.5.94-1.26.66.65.65-.65 1.26.94-1.26.94-.75 2.88zM12 8a4 4 0 100 8 4 4 0 000-8zm0 6a2 2 0 110-4 2 2 0 010 4z"/></svg> }
+														icon={ settings }
 														style={ ACTION_BTN_STYLE }
 														isPressed={ isExpanded }
 														onClick={ () => setExpandedIndex( isExpanded ? null : index ) }
 														label={ __( 'Настройки', 'codeweber-gutenberg-blocks' ) }
 													/>
 													<Button
-														icon={ <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="16" height="16" aria-hidden="true" focusable="false"><path d="M20 5h-5.7c-.1-.9-.9-1.5-1.8-1.5h-1c-.9 0-1.7.6-1.8 1.5H4v1.5h1.2l1 12c0 .8.7 1.5 1.5 1.5h8.5c.8 0 1.5-.7 1.5-1.5l1-12H20V5zm-7.5-0h-1c-.1 0-.2 0-.3.1V5h1.5v-.1c-.1 0-.1-.1-.2-.1v.1zm4.8 1.5l-1 11.5H7.7l-1-11.5h10.6z"/></svg> }
+														icon={ trashIcon }
 														style={ ACTION_BTN_STYLE }
 														isDestructive
 														onClick={ () => deleteItem( index ) }

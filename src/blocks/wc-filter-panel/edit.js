@@ -150,7 +150,6 @@ export default function Edit( { attributes, setAttributes } ) {
 		if ( target < 0 || target >= newItems.length ) return;
 		[ newItems[ index ], newItems[ target ] ] = [ newItems[ target ], newItems[ index ] ];
 		setAttributes( { items: newItems } );
-		setExpandedIndex( target );
 	}
 
 	function addItem( type ) {
@@ -326,12 +325,6 @@ export default function Edit( { attributes, setAttributes } ) {
 									<div className="cwgb-repeater-add">
 										<Button variant="secondary" onClick={ () => addItem( 'filter' ) } icon="plus-alt">
 											{ __( 'Добавить фильтр', 'codeweber-gutenberg-blocks' ) }
-										</Button>
-										<Button variant="secondary" onClick={ () => addItem( 'reset_button' ) } icon="update">
-											{ __( 'Кнопка сброса', 'codeweber-gutenberg-blocks' ) }
-										</Button>
-										<Button variant="secondary" onClick={ () => addItem( 'active_chips' ) } icon="tag">
-											{ __( 'Активные фильтры', 'codeweber-gutenberg-blocks' ) }
 										</Button>
 									</div>
 								</PanelBody>

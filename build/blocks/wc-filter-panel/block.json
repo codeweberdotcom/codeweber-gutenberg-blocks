@@ -33,6 +33,7 @@
           "showCount": true,
           "checkboxColumns": 1,
           "emptyBehavior": "disable",
+          "itemClass": "",
           "enabled": true
         }
       ]

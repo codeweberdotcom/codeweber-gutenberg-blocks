@@ -50,6 +50,7 @@ const EMPTY_BEHAVIOR_OPTIONS = [
 	{ label: __( 'Скрывать отсутствующие', 'codeweber-gutenberg-blocks' ), value: 'hide' },
 	{ label: __( 'Делать неактивными', 'codeweber-gutenberg-blocks' ), value: 'disable' },
 	{ label: __( 'Неактивные, но кликабельные', 'codeweber-gutenberg-blocks' ), value: 'disable_clickable' },
+	{ label: __( 'Скрыть блок (если все пусты)', 'codeweber-gutenberg-blocks' ), value: 'hide_block' },
 ];
 
 const ITEM_TYPE_OPTIONS = [
@@ -197,6 +198,7 @@ export default function Edit( { attributes, setAttributes } ) {
 			showCount: true,
 			checkboxColumns: 1,
 			emptyBehavior: 'disable',
+			itemClass: '',
 			enabled: true,
 		};
 		setAttributes( { items: [ ...items, newItem ] } );
@@ -347,6 +349,12 @@ export default function Edit( { attributes, setAttributes } ) {
 																) }
 															</>
 														) }
+														<TextControl
+															label={ __( 'Класс обёртки', 'codeweber-gutenberg-blocks' ) }
+															help={ __( 'CSS-класс добавляется к секции этого фильтра', 'codeweber-gutenberg-blocks' ) }
+															value={ item.itemClass ?? '' }
+															onChange={ ( val ) => updateItem( index, { itemClass: val } ) }
+														/>
 													</div>
 												) }
 											</div>

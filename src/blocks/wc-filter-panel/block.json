@@ -24,7 +24,8 @@
           "displayMode": "list",
           "queryType": "or",
           "taxonomy": "",
-          "showCount": true
+          "showCount": true,
+          "checkboxColumns": 1
         }
       ]
     },

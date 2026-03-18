@@ -78,6 +78,11 @@ const CHECKBOX_SIZE_OPTIONS = [
 	{ label: __( 'Маленький (form-check-sm)', 'codeweber-gutenberg-blocks' ), value: 'sm' },
 ];
 
+const CHECKBOX_COLUMNS_OPTIONS = [
+	{ label: __( '1 колонка', 'codeweber-gutenberg-blocks' ), value: 1 },
+	{ label: __( '2 колонки', 'codeweber-gutenberg-blocks' ), value: 2 },
+];
+
 export default function Edit( { attributes, setAttributes } ) {
 	const {
 		items,
@@ -141,6 +146,7 @@ export default function Edit( { attributes, setAttributes } ) {
 			queryType: 'or',
 			taxonomy: '',
 			showCount: true,
+			checkboxColumns: 1,
 		};
 		setAttributes( { items: [ ...items, newItem ] } );
 		setExpandedIndex( items.length );
@@ -265,11 +271,21 @@ export default function Edit( { attributes, setAttributes } ) {
 													</>
 												) }
 												{ item.filterType !== 'price' && (
-													<ToggleControl
-														label={ __( 'Показывать кол-во товаров', 'codeweber-gutenberg-blocks' ) }
-														checked={ item.showCount }
-														onChange={ ( val ) => updateItem( index, { showCount: val } ) }
-													/>
+													<>
+														<ToggleControl
+															label={ __( 'Показывать кол-во товаров', 'codeweber-gutenberg-blocks' ) }
+															checked={ item.showCount }
+															onChange={ ( val ) => updateItem( index, { showCount: val } ) }
+														/>
+														{ ( ! showDisplayMode || item.displayMode === 'checkbox' ) && (
+															<SelectControl
+																label={ __( 'Колонки', 'codeweber-gutenberg-blocks' ) }
+																value={ item.checkboxColumns ?? 1 }
+																options={ CHECKBOX_COLUMNS_OPTIONS }
+																onChange={ ( val ) => updateItem( index, { checkboxColumns: Number( val ) } ) }
+															/>
+														) }
+													</>
 												) }
 											</>
 										) }

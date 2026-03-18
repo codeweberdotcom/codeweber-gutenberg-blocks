@@ -94,7 +94,8 @@ const ROW_STYLE = {
 	borderRadius: '4px',
 };
 
-const ICON_BTN_STYLE = { minWidth: '20px', padding: '6px' };
+const ICON_BTN_STYLE = { padding: 0, width: '10px', height: '10px', fontSize: '10px', minWidth: 0 };
+const ACTION_BTN_STYLE = { fontSize: '16px' };
 
 const TOGGLE_WRAP_STYLE = {
 	flex: '1',
@@ -238,14 +239,14 @@ export default function Edit( { attributes, setAttributes } ) {
 													</div>
 													<Button
 														icon="admin-settings"
-														size="small"
+														style={ ACTION_BTN_STYLE }
 														isPressed={ isExpanded }
 														onClick={ () => setExpandedIndex( isExpanded ? null : index ) }
 														label={ __( 'Настройки', 'codeweber-gutenberg-blocks' ) }
 													/>
 													<Button
 														icon="trash"
-														size="small"
+														style={ ACTION_BTN_STYLE }
 														isDestructive
 														onClick={ () => deleteItem( index ) }
 														label={ __( 'Удалить', 'codeweber-gutenberg-blocks' ) }

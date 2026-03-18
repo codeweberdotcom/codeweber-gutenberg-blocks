@@ -28,6 +28,7 @@
           "checkboxColumns": 1,
           "swatchColumns": 0,
           "swatchItemClass": "",
+          "singleSelect": false,
           "emptyBehavior": "disable",
           "itemClass": "",
           "limitType": "none",

@@ -368,6 +368,14 @@ export default function Edit( { attributes, setAttributes } ) {
 																			checked={ item.showCount }
 																			onChange={ ( val ) => updateItem( index, { showCount: val } ) }
 																		/>
+																		{ item.filterType === 'attributes' && item.displayMode !== 'radio' && (
+																			<ToggleControl
+																				label={ __( 'Одиночный выбор', 'codeweber-gutenberg-blocks' ) }
+																				help={ __( 'Можно выбрать только одно значение (как радиокнопка)', 'codeweber-gutenberg-blocks' ) }
+																				checked={ item.singleSelect ?? false }
+																				onChange={ ( val ) => updateItem( index, { singleSelect: val } ) }
+																			/>
+																		) }
 																		{ ( ! showDisplayMode || item.displayMode === 'checkbox' ) && (
 																			<SelectControl
 																				label={ __( 'Колонки', 'codeweber-gutenberg-blocks' ) }

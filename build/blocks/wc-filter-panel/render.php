@@ -39,6 +39,7 @@ $panel_atts = [
 	'button_style'       => in_array( $attributes['buttonStyle'] ?? 'outline', [ 'solid', 'outline', 'soft' ], true )
 		? $attributes['buttonStyle'] : 'outline',
 	'button_color'       => sanitize_html_class( $attributes['buttonColor'] ?? 'secondary' ),
+	'button_extra_class' => isset( $attributes['buttonExtraClass'] ) ? esc_attr( $attributes['buttonExtraClass'] ) : '',
 	'button_shape'       => ( function() use ( $attributes ) {
 		$raw = $attributes['buttonShape'] ?? 'theme';
 		if ( 'theme' === $raw ) {

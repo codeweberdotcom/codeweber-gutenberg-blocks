@@ -136,6 +136,7 @@ export default function Edit( { attributes, setAttributes } ) {
 		buttonStyle,
 		buttonColor,
 		buttonShape,
+		buttonExtraClass,
 		resetLabel,
 	} = attributes;
 
@@ -453,6 +454,12 @@ export default function Edit( { attributes, setAttributes } ) {
 											value={ buttonColor }
 											options={ colors }
 											onChange={ ( val ) => setAttributes( { buttonColor: val || 'secondary' } ) }
+										/>
+										<TextControl
+											label={ __( 'Доп. класс', 'codeweber-gutenberg-blocks' ) }
+											help={ __( 'Добавляется каждой кнопке', 'codeweber-gutenberg-blocks' ) }
+											value={ buttonExtraClass }
+											onChange={ ( val ) => setAttributes( { buttonExtraClass: val } ) }
 										/>
 									</PanelBody>
 

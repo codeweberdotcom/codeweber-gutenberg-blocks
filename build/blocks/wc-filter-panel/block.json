@@ -80,6 +80,10 @@
       "type": "string",
       "default": "theme"
     },
+    "buttonExtraClass": {
+      "type": "string",
+      "default": ""
+    },
     "buttonStyle": {
       "type": "string",
       "default": "outline"

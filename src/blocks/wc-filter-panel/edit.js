@@ -15,6 +15,7 @@ import {
 } from '@wordpress/components';
 import { settings, trash as trashIcon } from '@wordpress/icons';
 import { colors } from '../../utilities/colors';
+import { shapes } from '../../utilities/shapes';
 import apiFetch from '@wordpress/api-fetch';
 import { useState, useEffect } from '@wordpress/element';
 
@@ -134,6 +135,7 @@ export default function Edit( { attributes, setAttributes } ) {
 		buttonSize,
 		buttonStyle,
 		buttonColor,
+		buttonShape,
 		resetLabel,
 	} = attributes;
 
@@ -439,6 +441,12 @@ export default function Edit( { attributes, setAttributes } ) {
 												{ label: 'Soft', value: 'soft' },
 											] }
 											onChange={ ( val ) => setAttributes( { buttonStyle: val } ) }
+										/>
+										<SelectControl
+											label={ __( 'Форма', 'codeweber-gutenberg-blocks' ) }
+											value={ buttonShape }
+											options={ shapes }
+											onChange={ ( val ) => setAttributes( { buttonShape: val } ) }
 										/>
 										<ComboboxControl
 											label={ __( 'Цвет', 'codeweber-gutenberg-blocks' ) }

@@ -70,6 +70,10 @@
       "type": "string",
       "default": "btn-sm"
     },
+    "buttonShape": {
+      "type": "string",
+      "default": "theme"
+    },
     "buttonStyle": {
       "type": "string",
       "default": "outline"

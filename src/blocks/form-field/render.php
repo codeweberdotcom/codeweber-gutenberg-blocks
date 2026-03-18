@@ -60,8 +60,8 @@ if ($inline_button_enabled) {
     $inline_button_class = !empty($attributes['inlineButtonClass']) ? $attributes['inlineButtonClass'] : 'btn btn-primary';
     $button_class_final = trim($inline_button_class . ' ' . $button_radius_class);
 
-    // Для inline button: применяем к input тот же класс, что и к кнопке
-    $input_radius_class = $button_radius_class;
+    // Для input: используем form-radius из Redux (opt_form_border_radius)
+    $input_radius_class = class_exists('Codeweber_Options') ? Codeweber_Options::style('form-radius') : '';
 
     // Mask props for tel field
     $mask_attrs = '';

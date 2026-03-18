@@ -48,6 +48,13 @@ const DISPLAY_MODE_OPTIONS_ATTR = [
 	{ label: __( 'Изображения (свотчи)', 'codeweber-gutenberg-blocks' ), value: 'image' },
 ];
 
+const SWATCH_SHAPE_OPTIONS = [
+	{ label: __( 'По умолчанию (круг)', 'codeweber-gutenberg-blocks' ), value: 'default' },
+	{ label: __( 'Тема (как кнопка)', 'codeweber-gutenberg-blocks' ), value: 'theme' },
+	{ label: __( 'Скруглённый', 'codeweber-gutenberg-blocks' ), value: 'rounded' },
+	{ label: __( 'Без скругления', 'codeweber-gutenberg-blocks' ), value: 'rounded-0' },
+];
+
 const QUERY_TYPE_OPTIONS = [
 	{ label: __( 'OR — любой из выбранных', 'codeweber-gutenberg-blocks' ), value: 'or' },
 	{ label: __( 'AND — все из выбранных', 'codeweber-gutenberg-blocks' ), value: 'and' },
@@ -214,6 +221,7 @@ export default function Edit( { attributes, setAttributes } ) {
 			checkboxColumns: 1,
 			swatchColumns: 0,
 			swatchItemClass: '',
+			swatchShape: 'default',
 			emptyBehavior: 'disable',
 			itemClass: '',
 			limitType: 'none',
@@ -344,6 +352,12 @@ export default function Edit( { attributes, setAttributes } ) {
 																					min={ 0 }
 																					max={ 20 }
 																					onChange={ ( val ) => updateItem( index, { swatchColumns: Number( val ) } ) }
+																				/>
+																				<SelectControl
+																					label={ __( 'Форма свотча', 'codeweber-gutenberg-blocks' ) }
+																					value={ item.swatchShape ?? 'default' }
+																					options={ SWATCH_SHAPE_OPTIONS }
+																					onChange={ ( val ) => updateItem( index, { swatchShape: val } ) }
 																				/>
 																				<TextControl
 																					label={ __( 'Доп. класс каждого свотча', 'codeweber-gutenberg-blocks' ) }

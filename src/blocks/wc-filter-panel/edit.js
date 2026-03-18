@@ -31,6 +31,7 @@ const FILTER_TYPE_OPTIONS = [
 
 const DISPLAY_MODE_OPTIONS = [
 	{ label: __( 'Чекбоксы', 'codeweber-gutenberg-blocks' ), value: 'checkbox' },
+	{ label: __( 'Радиокнопки', 'codeweber-gutenberg-blocks' ), value: 'radio' },
 	{ label: __( 'Список ссылок', 'codeweber-gutenberg-blocks' ), value: 'list' },
 	{ label: __( 'Кнопки', 'codeweber-gutenberg-blocks' ), value: 'button' },
 ];
@@ -126,6 +127,8 @@ export default function Edit( { attributes, setAttributes } ) {
 		headingClass,
 		checkboxSize,
 		checkboxItemClass,
+		radioSize,
+		radioItemClass,
 		buttonClass,
 		buttonActiveClass,
 		resetLabel,
@@ -394,6 +397,21 @@ export default function Edit( { attributes, setAttributes } ) {
 											help={ __( 'Добавляется к каждому div.form-check', 'codeweber-gutenberg-blocks' ) }
 											value={ checkboxItemClass }
 											onChange={ ( val ) => setAttributes( { checkboxItemClass: val } ) }
+										/>
+									</PanelBody>
+
+									<PanelBody title={ __( 'Радиокнопки', 'codeweber-gutenberg-blocks' ) } initialOpen={ false }>
+										<SelectControl
+											label={ __( 'Размер', 'codeweber-gutenberg-blocks' ) }
+											value={ radioSize }
+											options={ CHECKBOX_SIZE_OPTIONS }
+											onChange={ ( val ) => setAttributes( { radioSize: val } ) }
+										/>
+										<TextControl
+											label={ __( 'Доп. класс элемента', 'codeweber-gutenberg-blocks' ) }
+											help={ __( 'Добавляется к каждому div.form-check', 'codeweber-gutenberg-blocks' ) }
+											value={ radioItemClass }
+											onChange={ ( val ) => setAttributes( { radioItemClass: val } ) }
 										/>
 									</PanelBody>
 

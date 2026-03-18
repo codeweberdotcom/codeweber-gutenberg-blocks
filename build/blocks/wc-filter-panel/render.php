@@ -31,6 +31,9 @@ $panel_atts = [
 	'checkbox_size'      => in_array( $attributes['checkboxSize'] ?? '', [ '', 'sm' ], true )
 		? $attributes['checkboxSize'] : '',
 	'checkbox_item_class' => isset( $attributes['checkboxItemClass'] ) ? esc_attr( $attributes['checkboxItemClass'] ) : '',
+	'radio_size'         => in_array( $attributes['radioSize'] ?? '', [ '', 'sm' ], true )
+		? $attributes['radioSize'] : '',
+	'radio_item_class'   => isset( $attributes['radioItemClass'] ) ? esc_attr( $attributes['radioItemClass'] ) : '',
 	'button_class'       => isset( $attributes['buttonClass'] ) ? esc_attr( $attributes['buttonClass'] ) : 'btn-outline-secondary',
 	'button_active_class' => isset( $attributes['buttonActiveClass'] ) ? esc_attr( $attributes['buttonActiveClass'] ) : 'btn-secondary',
 	'reset_label'        => isset( $attributes['resetLabel'] ) ? sanitize_text_field( $attributes['resetLabel'] ) : '',

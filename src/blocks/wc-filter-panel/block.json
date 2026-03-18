@@ -58,6 +58,14 @@
       "type": "string",
       "default": ""
     },
+    "radioSize": {
+      "type": "string",
+      "default": ""
+    },
+    "radioItemClass": {
+      "type": "string",
+      "default": ""
+    },
     "buttonClass": {
       "type": "string",
       "default": "btn-outline-secondary"

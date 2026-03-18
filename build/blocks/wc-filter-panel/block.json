@@ -103,6 +103,10 @@
     "resetLabel": {
       "type": "string",
       "default": ""
+    },
+    "sliderSize": {
+      "type": "string",
+      "default": "lg"
     }
   },
   "textdomain": "codeweber-gutenberg-blocks",

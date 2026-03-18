@@ -48,6 +48,8 @@ $panel_atts = [
 		return in_array( $raw, [ '', 'rounded-0', 'rounded-xl', 'rounded-pill' ], true ) ? $raw : '';
 	} )(),
 	'reset_label'        => isset( $attributes['resetLabel'] ) ? sanitize_text_field( $attributes['resetLabel'] ) : '',
+	'slider_size'        => in_array( $attributes['sliderSize'] ?? 'lg', [ 'lg', 'md', 'sm' ], true )
+		? $attributes['sliderSize'] : 'lg',
 ];
 
 $wrapper_attributes = get_block_wrapper_attributes( [ 'class' => 'cwgb-wc-filter-panel' ] );

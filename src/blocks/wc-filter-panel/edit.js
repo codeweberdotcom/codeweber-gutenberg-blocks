@@ -161,6 +161,7 @@ export default function Edit( { attributes, setAttributes } ) {
 		buttonShape,
 		buttonExtraClass,
 		resetLabel,
+		sliderSize,
 	} = attributes;
 
 	const [ wcAttributes, setWcAttributes ] = useState( [] );
@@ -541,6 +542,19 @@ export default function Edit( { attributes, setAttributes } ) {
 											help={ __( 'Добавляется каждой кнопке', 'codeweber-gutenberg-blocks' ) }
 											value={ buttonExtraClass }
 											onChange={ ( val ) => setAttributes( { buttonExtraClass: val } ) }
+										/>
+									</PanelBody>
+
+									<PanelBody title={ __( 'Ценовой слайдер', 'codeweber-gutenberg-blocks' ) } initialOpen={ false }>
+										<SelectControl
+											label={ __( 'Размер ползунков', 'codeweber-gutenberg-blocks' ) }
+											value={ sliderSize }
+											options={ [
+												{ label: __( 'Большой (18пк)', 'codeweber-gutenberg-blocks' ), value: 'lg' },
+												{ label: __( 'Средний (14пк)', 'codeweber-gutenberg-blocks' ), value: 'md' },
+												{ label: __( 'Маленький (10пк)', 'codeweber-gutenberg-blocks' ), value: 'sm' },
+											] }
+											onChange={ ( val ) => setAttributes( { sliderSize: val } ) }
 										/>
 									</PanelBody>
 

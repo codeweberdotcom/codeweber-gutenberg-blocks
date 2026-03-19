@@ -32,6 +32,7 @@
           "singleSelect": false,
           "countUnfiltered": false,
           "collapseListType": "1",
+          "countWithChildren": false,
           "emptyBehavior": "disable",
           "itemClass": "",
           "limitType": "none",

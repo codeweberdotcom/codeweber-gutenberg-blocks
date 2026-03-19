@@ -432,6 +432,14 @@ export default function Edit( { attributes, setAttributes } ) {
 																			checked={ item.showCount }
 																			onChange={ ( val ) => updateItem( index, { showCount: val } ) }
 																		/>
+																		{ item.showCount && item.filterType === 'categories' && item.displayMode === 'collapse' && (
+																			<ToggleControl
+																				label={ __( 'Учитывать товары дочерних категорий', 'codeweber-gutenberg-blocks' ) }
+																				help={ __( 'Родительская категория показывает сумму своих товаров и всех вложенных', 'codeweber-gutenberg-blocks' ) }
+																				checked={ item.countWithChildren ?? false }
+																				onChange={ ( val ) => updateItem( index, { countWithChildren: val } ) }
+																			/>
+																		) }
 																		{ item.showCount && item.filterType === 'categories' && (
 																			<ToggleControl
 																				label={ __( '\u041e\u0431\u0449\u0435\u0435 \u043a\u043e\u043b-\u0432\u043e (\u0431\u0435\u0437 \u0443\u0447\u0451\u0442\u0430 \u0444\u0438\u043b\u044c\u0442\u0440\u043e\u0432)', 'codeweber-gutenberg-blocks' ) }

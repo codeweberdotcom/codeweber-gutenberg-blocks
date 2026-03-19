@@ -13,6 +13,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+if ( ! function_exists( 'sanitize_html_class_list' ) ) {
+	function sanitize_html_class_list( $classes ) {
+		return implode( ' ', array_map( 'sanitize_html_class', explode( ' ', $classes ) ) );
+	}
+}
+
 if ( ! function_exists( 'cw_render_filter_items' ) ) {
 	echo '<p class="cwgb-notice">' . esc_html__( 'Для отображения фильтров активируйте тему CodeWeber.', 'codeweber-gutenberg-blocks' ) . '</p>';
 	return;
@@ -68,10 +74,3 @@ $wrapper_attributes = get_block_wrapper_attributes( [ 'class' => 'cwgb-wc-filter
 echo '<div ' . $wrapper_attributes . '>'; // phpcs:ignore WordPress.Security.EscapeOutput
 cw_render_filter_items( $items, $panel_atts );
 echo '</div>';
-
-/**
- * Sanitize a space-separated list of CSS class names.
- */
-function sanitize_html_class_list( $classes ) {
-	return implode( ' ', array_map( 'sanitize_html_class', explode( ' ', $classes ) ) );
-}

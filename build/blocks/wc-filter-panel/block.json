@@ -36,6 +36,7 @@
           "swatchItemClass": "",
           "swatchShape": "default",
           "singleSelect": false,
+          "countUnfiltered": false,
           "emptyBehavior": "disable",
           "itemClass": "",
           "limitType": "none",

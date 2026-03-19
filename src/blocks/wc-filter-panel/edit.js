@@ -240,6 +240,7 @@ export default function Edit( { attributes, setAttributes } ) {
 			swatchItemClass: '',
 			swatchShape: 'default',
 			badgeItemClass: '',
+			countUnfiltered: false,
 			emptyBehavior: 'disable',
 			itemClass: '',
 			limitType: 'none',
@@ -410,6 +411,14 @@ export default function Edit( { attributes, setAttributes } ) {
 																			checked={ item.showCount }
 																			onChange={ ( val ) => updateItem( index, { showCount: val } ) }
 																		/>
+																		{ item.showCount && item.filterType === 'categories' && (
+																			<ToggleControl
+																				label={ __( '\u041e\u0431\u0449\u0435\u0435 \u043a\u043e\u043b-\u0432\u043e (\u0431\u0435\u0437 \u0443\u0447\u0451\u0442\u0430 \u0444\u0438\u043b\u044c\u0442\u0440\u043e\u0432)', 'codeweber-gutenberg-blocks' ) }
+																				help={ __( '\u041f\u043e\u043a\u0430\u0437\u044b\u0432\u0430\u0442\u044c \u0441\u0443\u043c\u043c\u0430\u0440\u043d\u043e\u0435 \u0447\u0438\u0441\u043b\u043e \u0442\u043e\u0432\u0430\u0440\u043e\u0432 \u0432 \u043a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u0438, \u0438\u0433\u043d\u043e\u0440\u0438\u0440\u0443\u044f \u0430\u043a\u0442\u0438\u0432\u043d\u044b\u0435 \u0444\u0438\u043b\u044c\u0442\u0440\u044b', 'codeweber-gutenberg-blocks' ) }
+																				checked={ item.countUnfiltered ?? false }
+																				onChange={ ( val ) => updateItem( index, { countUnfiltered: val } ) }
+																			/>
+																		) }
 																		{ item.filterType === 'attributes' && item.displayMode !== 'radio' && (
 																			<ToggleControl
 																				label={ __( 'Одиночный выбор', 'codeweber-gutenberg-blocks' ) }

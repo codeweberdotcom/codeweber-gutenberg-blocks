@@ -124,6 +124,14 @@ Legend: `S` = static (JS save) | `D` = dynamic (PHP render.php)
 
 ---
 
+## WooCommerce
+
+| Block | Type | Description |
+|-------|------|-------------|
+| `wc-filter-panel` | D | WooCommerce filter panel: price slider, categories, attributes, rating, stock. PJAX-integrated. See [WC_FILTER_PANEL.md](WC_FILTER_PANEL.md) |
+
+---
+
 ## Block Count by Type
 
 | Type | Count |

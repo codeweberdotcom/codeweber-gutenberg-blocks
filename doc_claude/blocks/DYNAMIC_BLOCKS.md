@@ -86,6 +86,7 @@ Each `pre_render_*` method:
 | `tables` | pre_render_block | `build/blocks/tables/render.php` |
 | `tabulator` | (dynamic) | `build/blocks/tabulator/render.php` |
 | `top-header` | pre_render_block | `build/blocks/top-header/render.php` |
+| `wc-filter-panel` | render_callback | `build/blocks/wc-filter-panel/render.php` |
 | `yandex-map` | (dynamic) | `build/blocks/yandex-map/render.php` |
 
 ## Adding a New Dynamic Block

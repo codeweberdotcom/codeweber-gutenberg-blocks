@@ -102,7 +102,12 @@ if (!function_exists('get_post_grid_container_classes')) {
 		// Gap classes
 		$gap_classes = [];
 		if ($gridGapType === 'theme') {
-			$gap_classes[] = 'cwgb-grid-gap-theme';
+			$theme_gap = class_exists('Codeweber_Options') ? Codeweber_Options::style('grid-gap') : '';
+			if ($theme_gap) {
+				foreach (explode(' ', $theme_gap) as $cls) {
+					if ($cls) $gap_classes[] = $cls;
+				}
+			}
 		} elseif ($gridGapType === 'general' || $gridGapType === 'x' || $gridGapType === 'y') {
 			$gap = $attributes['gridGap'] ?? '';
 			if ($gap) $gap_classes[] = "g-{$gap}";

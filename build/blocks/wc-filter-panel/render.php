@@ -30,7 +30,7 @@ $panel_atts = [
 	'section_style'      => in_array( $attributes['sectionStyle'] ?? 'plain', [ 'plain', 'accordion' ], true )
 		? $attributes['sectionStyle'] : 'plain',
 	'sections_open'      => isset( $attributes['sectionsOpen'] ) ? (bool) $attributes['sectionsOpen'] : true,
-	'wrapper_class'      => isset( $attributes['wrapperClass'] ) ? sanitize_html_class_list( $attributes['wrapperClass'] ) : 'widget',
+	'wrapper_class'      => isset( $attributes['wrapperClass'] ) ? sanitize_html_class_list( $attributes['wrapperClass'] ) : 'mb-4',
 	'heading_tag'        => in_array( $attributes['headingTag'] ?? 'h4', [ 'h2', 'h3', 'h4', 'h5', 'h6', 'p' ], true )
 		? $attributes['headingTag'] : 'h4',
 	'heading_class'      => isset( $attributes['headingClass'] ) ? esc_attr( $attributes['headingClass'] ) : 'widget-title mb-3',

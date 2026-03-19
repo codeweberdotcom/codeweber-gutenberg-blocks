@@ -58,7 +58,7 @@
     },
     "wrapperClass": {
       "type": "string",
-      "default": "widget mb-4"
+      "default": "mb-4"
     },
     "headingTag": {
       "type": "string",

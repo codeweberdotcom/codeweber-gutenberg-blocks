@@ -42,6 +42,12 @@ const DISPLAY_MODE_OPTIONS = [
 	{ label: __( 'Метка', 'codeweber-gutenberg-blocks' ), value: 'badge' },
 ];
 
+// For categories filterType — adds collapse (vertical menu) option
+const DISPLAY_MODE_OPTIONS_CAT = [
+	...DISPLAY_MODE_OPTIONS,
+	{ label: __( 'Вертикальное меню', 'codeweber-gutenberg-blocks' ), value: 'collapse' },
+];
+
 // Only for attributes filterType — swatch display modes
 const DISPLAY_MODE_OPTIONS_ATTR = [
 	...DISPLAY_MODE_OPTIONS,
@@ -241,6 +247,7 @@ export default function Edit( { attributes, setAttributes } ) {
 			swatchShape: 'default',
 			badgeItemClass: '',
 			countUnfiltered: false,
+			collapseListType: '1',
 			emptyBehavior: 'disable',
 			itemClass: '',
 			limitType: 'none',
@@ -362,10 +369,23 @@ export default function Edit( { attributes, setAttributes } ) {
 																		<SelectControl
 																			label={ __( 'Режим отображения', 'codeweber-gutenberg-blocks' ) }
 																			value={ item.displayMode }
-																			options={ item.filterType === 'attributes' ? DISPLAY_MODE_OPTIONS_ATTR : DISPLAY_MODE_OPTIONS }
+																			options={ item.filterType === 'attributes' ? DISPLAY_MODE_OPTIONS_ATTR : item.filterType === 'categories' ? DISPLAY_MODE_OPTIONS_CAT : DISPLAY_MODE_OPTIONS }
 																			onChange={ ( val ) => updateItem( index, { displayMode: val } ) }
 																		/>
-																		{ ( item.displayMode === 'color' || item.displayMode === 'image' ) && (
+																		{ item.displayMode === 'collapse' && item.filterType === 'categories' && (
+																			<SelectControl
+																				label={ __( 'Стиль меню', 'codeweber-gutenberg-blocks' ) }
+																				value={ item.collapseListType ?? '1' }
+																				options={ [
+																					{ label: __( 'Тип 1 — компактный', 'codeweber-gutenberg-blocks' ), value: '1' },
+																					{ label: __( 'Тип 2 — с разделителями', 'codeweber-gutenberg-blocks' ), value: '2' },
+																					{ label: __( 'Тип 3 — с фоном активного', 'codeweber-gutenberg-blocks' ), value: '3' },
+																					{ label: __( 'Тип 4 — простой список', 'codeweber-gutenberg-blocks' ), value: '4' },
+																				] }
+																				onChange={ ( val ) => updateItem( index, { collapseListType: val } ) }
+																			/>
+																		) }
+													{ ( item.displayMode === 'color' || item.displayMode === 'image' ) && (
 																			<>
 																				<NumberControl
 																					label={ __( 'Элементов в ряд (0 — авто)', 'codeweber-gutenberg-blocks' ) }

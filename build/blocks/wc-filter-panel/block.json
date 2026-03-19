@@ -37,6 +37,7 @@
           "swatchShape": "default",
           "singleSelect": false,
           "countUnfiltered": false,
+          "collapseListType": "1",
           "emptyBehavior": "disable",
           "itemClass": "",
           "limitType": "none",

@@ -56,9 +56,11 @@ const DISPLAY_MODE_OPTIONS_ATTR = [
 	{ label: __( 'Изображения (свотчи)', 'codeweber-gutenberg-blocks' ), value: 'image' },
 ];
 
-// For brands filterType — same as ATTR but without color swatches
+// For brands filterType — list, button, badge, image (no checkbox/radio/color)
 const DISPLAY_MODE_OPTIONS_BRAND = [
-	...DISPLAY_MODE_OPTIONS,
+	{ label: __( 'Список ссылок', 'codeweber-gutenberg-blocks' ), value: 'list' },
+	{ label: __( 'Кнопки', 'codeweber-gutenberg-blocks' ), value: 'button' },
+	{ label: __( 'Метка', 'codeweber-gutenberg-blocks' ), value: 'badge' },
 	{ label: __( 'Логотипы (свотчи)', 'codeweber-gutenberg-blocks' ), value: 'image' },
 ];
 

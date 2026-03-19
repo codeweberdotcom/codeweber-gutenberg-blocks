@@ -357,7 +357,14 @@ export default function Edit( { attributes, setAttributes } ) {
 																	label={ __( 'Что фильтруем', 'codeweber-gutenberg-blocks' ) }
 																	value={ item.filterType }
 																	options={ FILTER_TYPE_OPTIONS }
-																	onChange={ ( val ) => updateItem( index, { filterType: val } ) }
+																	onChange={ ( val ) => {
+																	const updates = { filterType: val };
+																	const brandModes = [ 'list', 'button', 'badge', 'image' ];
+																	if ( val === 'brands' && ! brandModes.includes( item.displayMode ) ) {
+																		updates.displayMode = 'image';
+																	}
+																	updateItem( index, updates );
+																} }
 																/>
 																{ item.filterType === 'attributes' && (
 																	<SelectControl

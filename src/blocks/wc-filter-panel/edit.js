@@ -381,6 +381,7 @@ export default function Edit( { attributes, setAttributes } ) {
 																					{ label: __( 'Тип 2 — с разделителями', 'codeweber-gutenberg-blocks' ), value: '2' },
 																					{ label: __( 'Тип 3 — с фоном активного', 'codeweber-gutenberg-blocks' ), value: '3' },
 																					{ label: __( 'Тип 4 — простой список', 'codeweber-gutenberg-blocks' ), value: '4' },
+																					{ label: __( 'Тип 5 — dropdown вправо', 'codeweber-gutenberg-blocks' ), value: '5' },
 																				] }
 																				onChange={ ( val ) => updateItem( index, { collapseListType: val } ) }
 																			/>

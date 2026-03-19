@@ -343,6 +343,46 @@ $render_menu_level = function ($by_parent, $parent_id, $current_lvl, $depth_limi
 };
 
 /**
+ * Рендер меню в виде Bootstrap dropend (подменю вправо, открытие по hover через CSS темы).
+ * Используется для типа 5 в taxonomy/custom режимах (wp-menu использует Walker).
+ */
+$render_menu_dropdown5 = function ( $by_parent, $parent_id, $depth_limit, $current_lvl = 1 ) use ( &$render_menu_dropdown5, $linkClass, $textThemeClass ) {
+	$children = isset( $by_parent[ $parent_id ] ) ? $by_parent[ $parent_id ] : [];
+	if ( empty( $children ) ) {
+		return '';
+	}
+	$html = '';
+	foreach ( $children as $item ) {
+		$has_sub    = ( $depth_limit === 0 || $current_lvl < $depth_limit ) && isset( $item['wp_id'] ) && ! empty( $by_parent[ $item['wp_id'] ] );
+		$is_current = ! empty( $item['current'] );
+		$link_id    = 'menu-d5-' . ( isset( $item['wp_id'] ) ? (int) $item['wp_id'] : uniqid() );
+
+		if ( 1 === $current_lvl ) {
+			$li_cls = array_filter( array_merge( [ 'nav-item', 'parent-item' ], $has_sub ? [ 'dropdown', 'parent-link', 'dropend' ] : [], $is_current ? [ 'current-menu-item' ] : [] ) );
+			$html  .= '<li class="' . esc_attr( implode( ' ', $li_cls ) ) . '">';
+			$a_cls  = array_filter( array_merge( [ 'nav-link' ], $textThemeClass ? [ $textThemeClass ] : [], $linkClass ? explode( ' ', trim( $linkClass ) ) : [], $is_current ? [ 'current-menu-item' ] : [] ) );
+			$id_attr = $has_sub ? ' id="' . esc_attr( $link_id ) . '"' : '';
+			$html  .= '<a href="' . esc_url( $item['url'] ) . '" class="' . esc_attr( implode( ' ', $a_cls ) ) . '"' . $id_attr . ( $is_current ? ' aria-current="page"' : '' ) . '>' . esc_html( $item['text'] ) . '</a>';
+		} else {
+			$li_cls = array_filter( array_merge( [ 'nav-item' ], $has_sub ? [ 'dropdown', 'dropend', 'parent-link', 'dropdown-submenu' ] : [], $is_current ? [ 'current-menu-item' ] : [] ) );
+			$html  .= '<li class="' . esc_attr( implode( ' ', $li_cls ) ) . '">';
+			$a_cls  = array_filter( array_merge( [ 'dropdown-item' ], $textThemeClass ? [ $textThemeClass ] : [], $linkClass ? explode( ' ', trim( $linkClass ) ) : [], $is_current ? [ 'current-menu-item' ] : [] ) );
+			$id_attr = $has_sub ? ' id="' . esc_attr( $link_id ) . '"' : '';
+			$html  .= '<a href="' . esc_url( $item['url'] ) . '" class="' . esc_attr( implode( ' ', $a_cls ) ) . '"' . $id_attr . ( $is_current ? ' aria-current="page"' : '' ) . '>' . esc_html( $item['text'] ) . '</a>';
+		}
+
+		if ( $has_sub ) {
+			$html .= '<span class="dropdown-toggle" aria-hidden="true"></span>';
+			$html .= '<ul class="dropdown-menu rounded-0" aria-labelledby="' . esc_attr( $link_id ) . '" role="menu">';
+			$html .= $render_menu_dropdown5( $by_parent, $item['wp_id'], $depth_limit, $current_lvl + 1 );
+			$html .= '</ul>';
+		}
+		$html .= '</li>';
+	}
+	return $html;
+};
+
+/**
  * Проверяет, есть ли в поддереве пункта (включая вложенные уровни) текущая страница (current).
  */
 $has_current_in_subtree = function ($by_parent, $parent_id) use (&$has_current_in_subtree) {
@@ -468,26 +508,34 @@ if ($enableMegaMenu) {
 		$menuContent = '<nav id="' . esc_attr( $collapse_wrapper_id ) . '" class="' . esc_attr( trim( $nav_class_4 ) ) . '"><ul class="' . esc_attr( $type4_list_class ) . '">';
 		$menuContent .= $render_menu_level( $wpMenuItemsTree, 0, 1, $depth, $type4_list_class, '', $linkClass, $iconClass, $listType, $textThemeClass, $type4_sub_class );
 		$menuContent .= '</ul></nav>';
-	} elseif ( $collapseListType === '5' && $mode === 'wp-menu' && $wpMenuId > 0 && class_exists( 'CodeWeber_Vertical_Dropdown_Walker' ) ) {
-		// Type 5: vertical menu with dropdown to the right (WP Menu only, theme Walker).
+	} elseif ( $collapseListType === '5' ) {
+		// Type 5: vertical menu with dropend submenus to the right.
+		// WP Menu mode: use theme Walker if available; fallback to custom renderer.
+		// Taxonomy/Custom modes: always use custom renderer.
 		$nav_class_5 = 'navbar-vertical navbar-vertical-dropdown ' . ( $theme_effective === 'dark' ? 'navbar-dark' : 'navbar-light' );
 		if ( $containerClass !== '' ) {
 			$nav_class_5 .= ' ' . esc_attr( $containerClass );
 		}
-		$menuContent = wp_nav_menu( array(
-			'menu'            => $wpMenuId,
-			'depth'           => $depth,
-			'container'       => 'nav',
-			'container_class' => $nav_class_5,
-			'container_id'    => $collapse_wrapper_id,
-			'menu_class'      => 'navbar-nav flex-column',
-			'fallback_cb'     => 'WP_Bootstrap_Navwalker::fallback',
-			'walker'          => new CodeWeber_Vertical_Dropdown_Walker(),
-			'echo'            => false,
-			'item_spacing'    => 'discard',
-		) );
-		if ( empty( trim( strip_tags( $menuContent ) ) ) ) {
-			$menuContent = '<p>' . esc_html__( 'No menu items found.', 'codeweber-gutenberg-blocks' ) . '</p>';
+		if ( $mode === 'wp-menu' && $wpMenuId > 0 && class_exists( 'CodeWeber_Vertical_Dropdown_Walker' ) ) {
+			$menuContent = wp_nav_menu( array(
+				'menu'            => $wpMenuId,
+				'depth'           => $depth,
+				'container'       => 'nav',
+				'container_class' => $nav_class_5,
+				'container_id'    => $collapse_wrapper_id,
+				'menu_class'      => 'navbar-nav flex-column',
+				'fallback_cb'     => 'WP_Bootstrap_Navwalker::fallback',
+				'walker'          => new CodeWeber_Vertical_Dropdown_Walker(),
+				'echo'            => false,
+				'item_spacing'    => 'discard',
+			) );
+			if ( empty( trim( strip_tags( $menuContent ) ) ) ) {
+				$menuContent = '<p>' . esc_html__( 'No menu items found.', 'codeweber-gutenberg-blocks' ) . '</p>';
+			}
+		} else {
+			$menuContent  = '<nav id="' . esc_attr( $collapse_wrapper_id ) . '" class="' . esc_attr( trim( $nav_class_5 ) ) . '"><ul class="navbar-nav flex-column">';
+			$menuContent .= $render_menu_dropdown5( $wpMenuItemsTree, 0, $depth );
+			$menuContent .= '</ul></nav>';
 		}
 	} else {
 		$collapse_list_classes = array( 'navbar-nav', 'list-unstyled', 'menu-collapse-' . $collapseListType );
@@ -557,6 +605,14 @@ if ($enableMegaMenu) {
 			}
 			$menuContent = '<nav id="' . esc_attr( $collapse_wrapper_id ) . '" class="' . esc_attr( trim( $nav_class_4_fb ) ) . '"><ul class="' . esc_attr( $type4_list_class_fb ) . '">';
 			$menuContent .= $render_menu_level( $wpMenuItemsTree, 0, 1, $depth, $type4_list_class_fb, '', $linkClass, $iconClass, $listType, $textThemeClass, $type4_sub_class_fb );
+			$menuContent .= '</ul></nav>';
+		} elseif ( $collapseListType === '5' ) {
+			$nav_class_5_fb = 'navbar-vertical navbar-vertical-dropdown ' . ( $theme_effective === 'dark' ? 'navbar-dark' : 'navbar-light' );
+			if ( $containerClass !== '' ) {
+				$nav_class_5_fb .= ' ' . esc_attr( $containerClass );
+			}
+			$menuContent  = '<nav id="' . esc_attr( $collapse_wrapper_id ) . '" class="' . esc_attr( trim( $nav_class_5_fb ) ) . '"><ul class="navbar-nav flex-column">';
+			$menuContent .= $render_menu_dropdown5( $wpMenuItemsTree, 0, $depth );
 			$menuContent .= '</ul></nav>';
 		} else {
 			$collapse_list_classes_fb = array( 'navbar-nav', 'list-unstyled', 'menu-collapse-' . $collapseListType );

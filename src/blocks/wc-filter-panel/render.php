@@ -69,8 +69,13 @@ $panel_atts = [
 	'badge_extra_class'  => isset( $attributes['badgeExtraClass'] ) ? esc_attr( $attributes['badgeExtraClass'] ) : '',
 ];
 
-$wrapper_attributes = get_block_wrapper_attributes( [ 'class' => 'cwgb-wc-filter-panel' ] );
-
-echo '<div ' . $wrapper_attributes . '>'; // phpcs:ignore WordPress.Security.EscapeOutput
+ob_start();
 cw_render_filter_items( $items, $panel_atts );
-echo '</div>';
+$panel_html = ob_get_clean();
+
+if ( '' !== trim( $panel_html ) ) {
+	$wrapper_attributes = get_block_wrapper_attributes( [ 'class' => 'cwgb-wc-filter-panel' ] );
+	echo '<div ' . $wrapper_attributes . '>'; // phpcs:ignore WordPress.Security.EscapeOutput
+	echo $panel_html; // phpcs:ignore WordPress.Security.EscapeOutput
+	echo '</div>';
+}

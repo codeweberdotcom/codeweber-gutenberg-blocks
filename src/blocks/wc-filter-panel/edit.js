@@ -31,6 +31,7 @@ const FILTER_TYPE_OPTIONS = [
 	{ label: __( 'Метки', 'codeweber-gutenberg-blocks' ), value: 'tags' },
 	{ label: __( 'Рейтинг', 'codeweber-gutenberg-blocks' ), value: 'rating' },
 	{ label: __( 'Наличие', 'codeweber-gutenberg-blocks' ), value: 'stock' },
+	{ label: __( 'Бренды', 'codeweber-gutenberg-blocks' ), value: 'brands' },
 	{ label: __( 'Атрибут WC', 'codeweber-gutenberg-blocks' ), value: 'attributes' },
 ];
 
@@ -53,6 +54,12 @@ const DISPLAY_MODE_OPTIONS_ATTR = [
 	...DISPLAY_MODE_OPTIONS,
 	{ label: __( 'Цветовые свотчи', 'codeweber-gutenberg-blocks' ), value: 'color' },
 	{ label: __( 'Изображения (свотчи)', 'codeweber-gutenberg-blocks' ), value: 'image' },
+];
+
+// For brands filterType — same as ATTR but without color swatches
+const DISPLAY_MODE_OPTIONS_BRAND = [
+	...DISPLAY_MODE_OPTIONS,
+	{ label: __( 'Логотипы (свотчи)', 'codeweber-gutenberg-blocks' ), value: 'image' },
 ];
 
 const BADGE_SIZE_OPTIONS = [
@@ -369,7 +376,7 @@ export default function Edit( { attributes, setAttributes } ) {
 																		<SelectControl
 																			label={ __( 'Режим отображения', 'codeweber-gutenberg-blocks' ) }
 																			value={ item.displayMode }
-																			options={ item.filterType === 'attributes' ? DISPLAY_MODE_OPTIONS_ATTR : item.filterType === 'categories' ? DISPLAY_MODE_OPTIONS_CAT : DISPLAY_MODE_OPTIONS }
+																			options={ item.filterType === 'attributes' ? DISPLAY_MODE_OPTIONS_ATTR : item.filterType === 'brands' ? DISPLAY_MODE_OPTIONS_BRAND : item.filterType === 'categories' ? DISPLAY_MODE_OPTIONS_CAT : DISPLAY_MODE_OPTIONS }
 																			onChange={ ( val ) => updateItem( index, { displayMode: val } ) }
 																		/>
 																		{ item.displayMode === 'collapse' && item.filterType === 'categories' && (

@@ -50,6 +50,17 @@ $panel_atts = [
 	'reset_label'        => isset( $attributes['resetLabel'] ) ? sanitize_text_field( $attributes['resetLabel'] ) : '',
 	'slider_size'        => in_array( $attributes['sliderSize'] ?? 'lg', [ 'lg', 'md', 'sm' ], true )
 		? $attributes['sliderSize'] : 'lg',
+	'badge_size'         => in_array( $attributes['badgeSize'] ?? '', [ '', 'badge-lg' ], true )
+		? ( $attributes['badgeSize'] ?? '' ) : '',
+	'badge_shape'        => ( function() use ( $attributes ) {
+		$raw = $attributes['badgeShape'] ?? 'rounded-pill';
+		if ( 'theme' === $raw ) {
+			return class_exists( '\Codeweber_Options' ) ? trim( \Codeweber_Options::style( 'button' ) ) : 'rounded-pill';
+		}
+		return in_array( $raw, [ '', 'rounded-0', 'rounded', 'rounded-pill' ], true ) ? $raw : 'rounded-pill';
+	} )(),
+	'badge_color'        => sanitize_html_class( $attributes['badgeColor'] ?? 'primary' ),
+	'badge_extra_class'  => isset( $attributes['badgeExtraClass'] ) ? esc_attr( $attributes['badgeExtraClass'] ) : '',
 ];
 
 $wrapper_attributes = get_block_wrapper_attributes( [ 'class' => 'cwgb-wc-filter-panel' ] );

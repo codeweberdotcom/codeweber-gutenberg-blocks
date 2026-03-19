@@ -39,6 +39,7 @@ const DISPLAY_MODE_OPTIONS = [
 	{ label: __( 'Радиокнопки', 'codeweber-gutenberg-blocks' ), value: 'radio' },
 	{ label: __( 'Список ссылок', 'codeweber-gutenberg-blocks' ), value: 'list' },
 	{ label: __( 'Кнопки', 'codeweber-gutenberg-blocks' ), value: 'button' },
+	{ label: __( 'Метка', 'codeweber-gutenberg-blocks' ), value: 'badge' },
 ];
 
 // Only for attributes filterType — swatch display modes
@@ -46,6 +47,18 @@ const DISPLAY_MODE_OPTIONS_ATTR = [
 	...DISPLAY_MODE_OPTIONS,
 	{ label: __( 'Цветовые свотчи', 'codeweber-gutenberg-blocks' ), value: 'color' },
 	{ label: __( 'Изображения (свотчи)', 'codeweber-gutenberg-blocks' ), value: 'image' },
+];
+
+const BADGE_SIZE_OPTIONS = [
+	{ label: __( 'Default', 'codeweber-gutenberg-blocks' ), value: '' },
+	{ label: __( 'Large', 'codeweber-gutenberg-blocks' ), value: 'badge-lg' },
+];
+
+const BADGE_SHAPE_OPTIONS = [
+	{ label: __( 'Theme', 'codeweber-gutenberg-blocks' ), value: 'theme' },
+	{ label: __( 'Square', 'codeweber-gutenberg-blocks' ), value: 'rounded-0' },
+	{ label: __( 'Rounded', 'codeweber-gutenberg-blocks' ), value: 'rounded' },
+	{ label: __( 'Pill', 'codeweber-gutenberg-blocks' ), value: 'rounded-pill' },
 ];
 
 const SWATCH_SHAPE_OPTIONS = [
@@ -169,6 +182,10 @@ export default function Edit( { attributes, setAttributes } ) {
 		buttonExtraClass,
 		resetLabel,
 		sliderSize,
+		badgeSize,
+		badgeShape,
+		badgeColor,
+		badgeExtraClass,
 	} = attributes;
 
 	const [ wcAttributes, setWcAttributes ] = useState( [] );
@@ -222,6 +239,7 @@ export default function Edit( { attributes, setAttributes } ) {
 			swatchColumns: 0,
 			swatchItemClass: '',
 			swatchShape: 'default',
+			badgeItemClass: '',
 			emptyBehavior: 'disable',
 			itemClass: '',
 			limitType: 'none',
@@ -291,6 +309,7 @@ export default function Edit( { attributes, setAttributes } ) {
 													</div>
 													<Button
 														icon={ settings }
+														iconSize={ 16 }
 														style={ ACTION_BTN_STYLE }
 														isPressed={ isExpanded }
 														onClick={ () => setExpandedIndex( isExpanded ? null : index ) }
@@ -298,6 +317,7 @@ export default function Edit( { attributes, setAttributes } ) {
 													/>
 													<Button
 														icon={ trashIcon }
+														iconSize={ 16 }
 														style={ ACTION_BTN_STYLE }
 														isDestructive
 														onClick={ () => deleteItem( index ) }
@@ -366,6 +386,14 @@ export default function Edit( { attributes, setAttributes } ) {
 																					onChange={ ( val ) => updateItem( index, { swatchItemClass: val } ) }
 																				/>
 																			</>
+																		) }
+																		{ item.displayMode === 'badge' && (
+																			<TextControl
+																				label={ __( 'Доп. класс каждой метки', 'codeweber-gutenberg-blocks' ) }
+																				help={ __( 'Добавляется к каждому элементу-метке', 'codeweber-gutenberg-blocks' ) }
+																				value={ item.badgeItemClass ?? '' }
+																				onChange={ ( val ) => updateItem( index, { badgeItemClass: val } ) }
+																			/>
 																		) }
 																		<SelectControl
 																			label={ __( 'Логика фильтра', 'codeweber-gutenberg-blocks' ) }
@@ -564,6 +592,33 @@ export default function Edit( { attributes, setAttributes } ) {
 											help={ __( 'Добавляется каждой кнопке', 'codeweber-gutenberg-blocks' ) }
 											value={ buttonExtraClass }
 											onChange={ ( val ) => setAttributes( { buttonExtraClass: val } ) }
+										/>
+									</PanelBody>
+
+									<PanelBody title={ __( 'Метка', 'codeweber-gutenberg-blocks' ) } initialOpen={ false }>
+										<SelectControl
+											label={ __( 'Размер', 'codeweber-gutenberg-blocks' ) }
+											value={ badgeSize }
+											options={ BADGE_SIZE_OPTIONS }
+											onChange={ ( val ) => setAttributes( { badgeSize: val } ) }
+										/>
+										<SelectControl
+											label={ __( 'Скругление', 'codeweber-gutenberg-blocks' ) }
+											value={ badgeShape }
+											options={ BADGE_SHAPE_OPTIONS }
+											onChange={ ( val ) => setAttributes( { badgeShape: val } ) }
+										/>
+										<ComboboxControl
+											label={ __( 'Цвет', 'codeweber-gutenberg-blocks' ) }
+											value={ badgeColor }
+											options={ colors }
+											onChange={ ( val ) => setAttributes( { badgeColor: val ?? '' } ) }
+										/>
+										<TextControl
+											label={ __( 'Доп. класс', 'codeweber-gutenberg-blocks' ) }
+											help={ __( 'Добавляется к каждой метке', 'codeweber-gutenberg-blocks' ) }
+											value={ badgeExtraClass }
+											onChange={ ( val ) => setAttributes( { badgeExtraClass: val } ) }
 										/>
 									</PanelBody>
 

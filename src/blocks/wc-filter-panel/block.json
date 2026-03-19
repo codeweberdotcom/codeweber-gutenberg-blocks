@@ -103,6 +103,22 @@
     "sliderSize": {
       "type": "string",
       "default": "lg"
+    },
+    "badgeSize": {
+      "type": "string",
+      "default": ""
+    },
+    "badgeShape": {
+      "type": "string",
+      "default": "rounded-pill"
+    },
+    "badgeColor": {
+      "type": "string",
+      "default": "primary"
+    },
+    "badgeExtraClass": {
+      "type": "string",
+      "default": ""
     }
   },
   "textdomain": "codeweber-gutenberg-blocks",

@@ -296,7 +296,7 @@ export default function Edit( { attributes, setAttributes } ) {
 
 									{ items.map( ( item, index ) => {
 										const isExpanded = expandedIndex === index;
-										const showDisplayMode = [ 'categories', 'tags', 'attributes' ].includes( item.filterType );
+										const showDisplayMode = [ 'categories', 'tags', 'attributes', 'brands' ].includes( item.filterType );
 										const isEnabled = item.enabled !== false;
 
 										return (

@@ -5,6 +5,7 @@
  */
 
 import { useBlockProps } from '@wordpress/block-editor';
+import { __ } from '@wordpress/i18n';
 
 export default function Save({ attributes }) {
 	const {
@@ -43,9 +44,9 @@ export default function Save({ attributes }) {
 		<button
 			type="submit"
 			className={buttonClass || 'btn btn-primary'}
-			data-loading-text="Sending..."
+			data-loading-text={__('Sending...', 'codeweber-gutenberg-blocks')}
 		>
-			<span>{buttonText || 'Send Message'}</span>
+			<span>{buttonText || __('Send Message', 'codeweber-gutenberg-blocks')}</span>
 		</button>
 	);
 

@@ -130,6 +130,11 @@ class LoadMoreAPI {
 		$queried_object_id   = (int) ( $attributes['queried_object_id']   ?? 0 );
 		$queried_object_type = sanitize_key( $attributes['queried_object_type'] ?? '' );
 
+		// Передаём класс колонки в шаблон карточки (shop2.php и др.)
+		if ( ! empty( $attributes['col_class'] ) ) {
+			$GLOBALS['cw_shop_col_class'] = sanitize_text_field( $attributes['col_class'] );
+		}
+
 		// Используем WooCommerce для получения правильных аргументов сортировки.
 		// WC()->query->get_catalog_ordering_args() применяет те же фильтры, что и
 		// основной запрос магазина — включая JOIN по мета, без исключения товаров

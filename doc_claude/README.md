@@ -27,6 +27,7 @@ npm run start   # development mode
 ### Blocks
 - [BLOCKS_CATALOG.md](blocks/BLOCKS_CATALOG.md) — catalog of all 47 blocks
 - [DYNAMIC_BLOCKS.md](blocks/DYNAMIC_BLOCKS.md) — blocks with render.php
+- [BUTTON_LINK_TYPES.md](blocks/BUTTON_LINK_TYPES.md) — Button block: all LinkTypes and data-attributes ★
 
 ### API
 - [REST_API_REFERENCE.md](api/REST_API_REFERENCE.md) — all endpoints

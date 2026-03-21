@@ -58,6 +58,7 @@ Task-oriented documentation in `doc_claude/`.
 | Utility functions (class-generators, colors, icons...) | `doc_claude/development/UTILITIES_REFERENCE.md` |
 | Catalog of all 47 blocks | `doc_claude/blocks/BLOCKS_CATALOG.md` |
 | Dynamic blocks (render.php) | `doc_claude/blocks/DYNAMIC_BLOCKS.md` |
+| Button block: all LinkTypes, data-attributes, modal/video/download | `doc_claude/blocks/BUTTON_LINK_TYPES.md` |
 | REST API endpoints | `doc_claude/api/REST_API_REFERENCE.md` |
 | Plugin hooks | `doc_claude/api/HOOKS_REFERENCE.md` |
 | Theme integration | `doc_claude/integrations/THEME_INTEGRATION.md` |

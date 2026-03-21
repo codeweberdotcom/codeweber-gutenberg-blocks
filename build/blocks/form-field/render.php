@@ -78,22 +78,24 @@ if ($inline_button_enabled) {
     ob_start();
     ?>
     <div class="<?php echo esc_attr($width_classes); ?>">
-        <div class="input-group form-floating">
-            <input
-                type="<?php echo esc_attr($field_type); ?>"
-                class="form-control <?php echo esc_attr(trim($input_radius_class . ' ' . $field_class)); ?>"
-                id="<?php echo esc_attr($field_id_inline); ?>"
-                name="<?php echo esc_attr($field_name); ?>"
-                placeholder="<?php echo esc_attr($field_placeholder_display); ?>"
-                value="<?php echo esc_attr($attributes['defaultValue'] ?? ''); ?>"
-                <?php echo $is_required ? 'required' : ''; ?>
-                <?php echo !empty($attributes['maxLength']) ? 'maxlength="' . intval($attributes['maxLength']) . '"' : ''; ?>
-                <?php echo !empty($attributes['minLength']) ? 'minlength="' . intval($attributes['minLength']) . '"' : ''; ?>
-                <?php echo $mask_attrs; ?>
-            >
-            <label for="<?php echo esc_attr($field_id_inline); ?>">
-                <?php echo wp_kses_post($label_content); ?>
-            </label>
+        <div class="input-group">
+            <div class="form-floating flex-grow-1">
+                <input
+                    type="<?php echo esc_attr($field_type); ?>"
+                    class="form-control <?php echo esc_attr(trim($input_radius_class . ' ' . $field_class)); ?>"
+                    id="<?php echo esc_attr($field_id_inline); ?>"
+                    name="<?php echo esc_attr($field_name); ?>"
+                    placeholder="<?php echo esc_attr($field_placeholder_display); ?>"
+                    value="<?php echo esc_attr($attributes['defaultValue'] ?? ''); ?>"
+                    <?php echo $is_required ? 'required' : ''; ?>
+                    <?php echo !empty($attributes['maxLength']) ? 'maxlength="' . intval($attributes['maxLength']) . '"' : ''; ?>
+                    <?php echo !empty($attributes['minLength']) ? 'minlength="' . intval($attributes['minLength']) . '"' : ''; ?>
+                    <?php echo $mask_attrs; ?>
+                >
+                <label for="<?php echo esc_attr($field_id_inline); ?>">
+                    <?php echo wp_kses_post($label_content); ?>
+                </label>
+            </div>
             <input
                 type="submit"
                 value="<?php echo esc_attr($inline_button_text); ?>"

@@ -750,28 +750,30 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 					const previewInlineButtonClass =
 						inlineButtonClass || 'btn btn-primary';
 					return (
-						<div className="input-group form-floating">
-							<input
-								type={fieldType}
-								className={controlClass('form-control rounded')}
-								id={fieldId}
-								placeholder={
-									placeholder ||
-									fieldLabel ||
-									__('Value', 'codeweber-gutenberg-blocks')
-								}
-								disabled
-							/>
-							<label htmlFor={fieldId}>
-								{fieldLabel ||
-									__(
-										'Field Label',
-										'codeweber-gutenberg-blocks'
+						<div className="input-group">
+							<div className="form-floating flex-grow-1">
+								<input
+									type={fieldType}
+									className={controlClass('form-control rounded')}
+									id={fieldId}
+									placeholder={
+										placeholder ||
+										fieldLabel ||
+										__('Value', 'codeweber-gutenberg-blocks')
+									}
+									disabled
+								/>
+								<label htmlFor={fieldId}>
+									{fieldLabel ||
+										__(
+											'Field Label',
+											'codeweber-gutenberg-blocks'
+										)}
+									{isRequired && (
+										<span className="text-danger"> *</span>
 									)}
-								{isRequired && (
-									<span className="text-danger"> *</span>
-								)}
-							</label>
+								</label>
+							</div>
 							<input
 								type="submit"
 								value={previewInlineButtonText}

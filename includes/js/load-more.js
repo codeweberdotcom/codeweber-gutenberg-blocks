@@ -197,12 +197,6 @@
 								if (isoInstance) {
 									isoInstance.appended(newItems);
 									console.log('✅ Load More: Isotope.appended()', newItems.length, 'items');
-								} else {
-									new window.Isotope(itemsContainer, {
-										itemSelector: '.item',
-										layoutMode: 'masonry',
-									});
-									console.log('✅ Load More: Isotope created');
 								}
 							}
 

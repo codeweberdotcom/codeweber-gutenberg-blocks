@@ -1476,7 +1476,7 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 														})
 													}
 													help={__(
-														'Use "_" as digit placeholder, e.g. +7 (___) ___-__-__',
+														'Use "_" as digit placeholder, e.g. +7 (___) ___-__-__. Leave empty to use the mask from Theme Options → Phone mask.',
 														'codeweber-gutenberg-blocks'
 													)}
 												/>

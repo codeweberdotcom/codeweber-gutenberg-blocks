@@ -25,6 +25,18 @@ npm run i18n:update  # Regenerate POT + compile translations
 
 **`build/` is versioned in git.** Always run `npm run build` before committing.
 
+## Plan Approval Rule
+
+**CRITICAL — must not be violated:**
+
+Before ANY file changes — present a step-by-step plan and wait for explicit user approval. Do not start implementation without a clear "yes".
+
+- Read-only actions (Read, Grep, Glob) without changes — allowed without approval
+- If the plan changes mid-task — seek approval again, do not act independently
+- No unsolicited "while I'm at it" fixes — only what was explicitly approved
+
+---
+
 ## Git Rules
 
 **MANDATORY before any code changes:**

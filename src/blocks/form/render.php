@@ -21,6 +21,16 @@ if (!isset($attributes)) {
     $attributes = [];
 }
 
+// CF7: рендерим шорткод Contact Form 7 и выходим
+$form_provider = isset($attributes['formProvider']) ? $attributes['formProvider'] : 'codeweber';
+if ($form_provider === 'cf7') {
+    $cf7_id = intval($attributes['cf7FormId'] ?? 0);
+    if ($cf7_id > 0) {
+        echo do_shortcode('[contact-form-7 id="' . $cf7_id . '"]');
+    }
+    return;
+}
+
 // Получаем formId
 $form_id = isset($attributes['formId']) ? $attributes['formId'] : '';
 

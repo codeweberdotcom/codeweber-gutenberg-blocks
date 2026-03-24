@@ -13,6 +13,14 @@
 		"innerBlocks": true
 	},
 	"attributes": {
+		"formProvider": {
+			"type": "string",
+			"default": "codeweber"
+		},
+		"cf7FormId": {
+			"type": "string",
+			"default": ""
+		},
 		"formId": {
 			"type": "string",
 			"default": ""

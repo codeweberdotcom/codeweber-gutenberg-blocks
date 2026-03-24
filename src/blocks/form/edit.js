@@ -14,8 +14,9 @@ import {
 	TabPanel,
 } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import { useEffect, useRef, createElement } from '@wordpress/element';
+import { useEffect, useRef, createElement, useState } from '@wordpress/element';
 import { useSelect, useDispatch } from '@wordpress/data';
+import apiFetch from '@wordpress/api-fetch';
 import {
 	Icon,
 	cog,
@@ -46,6 +47,8 @@ const TabIcon = ({ icon, label }) => (
 
 const FormEdit = ({ attributes, setAttributes, clientId }) => {
 	const {
+		formProvider,
+		cf7FormId,
 		formId,
 		formType,
 		recipientEmail,
@@ -82,6 +85,28 @@ const FormEdit = ({ attributes, setAttributes, clientId }) => {
 		formTitleClass,
 		formSubtitleClass,
 	} = attributes;
+
+	// CF7 forms list for the picker
+	const [cf7Forms, setCf7Forms] = useState([]);
+	const [cf7Loading, setCf7Loading] = useState(false);
+
+	useEffect(() => {
+		if (formProvider !== 'cf7') return;
+		setCf7Loading(true);
+		apiFetch({
+			path: '/wp/v2/wpcf7_contact_form?per_page=100&_fields=id,title',
+		})
+			.then((forms) => {
+				setCf7Forms(
+					forms.map((f) => ({
+						label: f.title.rendered || f.title,
+						value: String(f.id),
+					}))
+				);
+			})
+			.catch(() => setCf7Forms([]))
+			.finally(() => setCf7Loading(false));
+	}, [formProvider]);
 
 	// Получаем информацию о текущем посте (для синхронизации ID формы с CPT "Форма")
 	const { postId, postType } = useSelect((select) => {
@@ -417,6 +442,75 @@ const FormEdit = ({ attributes, setAttributes, clientId }) => {
 								>
 									<SelectControl
 										label={__(
+											'Form Provider',
+											'codeweber-gutenberg-blocks'
+										)}
+										value={formProvider || 'codeweber'}
+										options={[
+											{
+												label: __(
+													'CodeWeber Form',
+													'codeweber-gutenberg-blocks'
+												),
+												value: 'codeweber',
+											},
+											{
+												label: __(
+													'Contact Form 7',
+													'codeweber-gutenberg-blocks'
+												),
+												value: 'cf7',
+											},
+										]}
+										onChange={(value) =>
+											setAttributes({
+												formProvider: value,
+											})
+										}
+										__nextHasNoMarginBottom
+										__next40pxDefaultSize
+									/>
+
+									{formProvider === 'cf7' && (
+										<SelectControl
+											label={__(
+												'CF7 Form',
+												'codeweber-gutenberg-blocks'
+											)}
+											value={cf7FormId || ''}
+											options={[
+												{
+													label: cf7Loading
+														? __(
+																'Loading…',
+																'codeweber-gutenberg-blocks'
+															)
+														: __(
+																'— Select form —',
+																'codeweber-gutenberg-blocks'
+															),
+													value: '',
+												},
+												...cf7Forms,
+											]}
+											onChange={(value) =>
+												setAttributes({
+													cf7FormId: value,
+												})
+											}
+											help={__(
+												'Select the Contact Form 7 form to embed.',
+												'codeweber-gutenberg-blocks'
+											)}
+											__nextHasNoMarginBottom
+											__next40pxDefaultSize
+										/>
+									)}
+
+									{formProvider !== 'cf7' && (
+									<>
+									<SelectControl
+										label={__(
 											'Form Type',
 											'codeweber-gutenberg-blocks'
 										)}
@@ -485,6 +579,8 @@ const FormEdit = ({ attributes, setAttributes, clientId }) => {
 										__nextHasNoMarginBottom
 										__next40pxDefaultSize
 									/>
+									</>
+									)}
 								</PanelBody>
 							)}
 
@@ -803,7 +899,28 @@ const FormEdit = ({ attributes, setAttributes, clientId }) => {
 
 			<div {...blockProps}>
 				<div className="form-preview">
-					{(() => {
+					{formProvider === 'cf7' ? (
+					<div
+						style={{
+							padding: '16px',
+							border: '1px dashed #adb5bd',
+							borderRadius: '4px',
+							textAlign: 'center',
+							color: '#6c757d',
+						}}
+					>
+						{cf7FormId
+							? `Contact Form 7 #${cf7FormId}` +
+								(cf7Forms.find((f) => f.value === cf7FormId)
+									? ` — ${cf7Forms.find((f) => f.value === cf7FormId).label}`
+									: '')
+							: __(
+									'Select a CF7 form in the sidebar →',
+									'codeweber-gutenberg-blocks'
+								)}
+					</div>
+				) : (
+					(() => {
 						const gapClasses = getGapClasses(attributes, 'form');
 						const rowClasses = ['row', ...gapClasses].filter(
 							Boolean
@@ -853,7 +970,8 @@ const FormEdit = ({ attributes, setAttributes, clientId }) => {
 								/>
 							</div>
 						);
-					})()}
+					})()
+				)}
 				</div>
 			</div>
 		</>

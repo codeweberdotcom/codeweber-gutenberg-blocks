@@ -94,13 +94,12 @@ const FormEdit = ({ attributes, setAttributes, clientId }) => {
 		if (formProvider !== 'cf7') return;
 		setCf7Loading(true);
 		apiFetch({
-			path: '/contact-form-7/v1/contact-forms?per_page=100',
+			path: '/wp/v2/wpcf7_contact_form?per_page=100&_fields=id,title',
 		})
-			.then((res) => {
-								const items = res.items || res || [];
+			.then((forms) => {
 				setCf7Forms(
-					items.map((f) => ({
-						label: f.title || String(f.id),
+					forms.map((f) => ({
+						label: f.title.rendered || f.title,
 						value: String(f.id),
 					}))
 				);

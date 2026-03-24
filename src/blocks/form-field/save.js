@@ -33,6 +33,7 @@ export default function Save({ attributes }) {
 		options,
 		defaultValue,
 		helpText,
+		useThemeMask,
 		phoneMask,
 		phoneMaskCaret,
 		phoneMaskSoftCaret,
@@ -119,20 +120,24 @@ export default function Save({ attributes }) {
 		const classNames = (...parts) => parts.filter(Boolean).join(' ').trim();
 		const maskProps = {};
 
-		if (fieldType === 'tel' && phoneMask) {
-			maskProps['data-mask'] = phoneMask;
-			let caretChar = (phoneMaskCaret || '').toString();
-			caretChar = caretChar === '' ? '' : caretChar.slice(0, 1);
-			if (caretChar) {
-				maskProps['data-mask-caret'] = caretChar;
+		if (fieldType === 'tel') {
+			if (useThemeMask) {
+				maskProps['data-mask-use-theme'] = 'true';
+			} else if (phoneMask) {
+				maskProps['data-mask'] = phoneMask;
+				let caretChar = (phoneMaskCaret || '').toString();
+				caretChar = caretChar === '' ? '' : caretChar.slice(0, 1);
+				if (caretChar) {
+					maskProps['data-mask-caret'] = caretChar;
+				}
+				let softCaretChar = (phoneMaskSoftCaret || '').toString();
+				softCaretChar =
+					softCaretChar === '' ? '' : softCaretChar.slice(0, 1);
+				if (softCaretChar) {
+					maskProps['data-mask-soft-caret'] = softCaretChar;
+				}
+				// data-mask-blur не добавляем, так как по умолчанию должно быть false
 			}
-			let softCaretChar = (phoneMaskSoftCaret || '').toString();
-			softCaretChar =
-				softCaretChar === '' ? '' : softCaretChar.slice(0, 1);
-			if (softCaretChar) {
-				maskProps['data-mask-soft-caret'] = softCaretChar;
-			}
-			// data-mask-blur не добавляем, так как по умолчанию должно быть false
 		}
 
 		switch (fieldType) {

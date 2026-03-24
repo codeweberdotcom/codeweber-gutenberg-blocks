@@ -141,6 +141,10 @@
 			"type": "boolean",
 			"default": false
 		},
+		"useThemeMask": {
+			"type": "boolean",
+			"default": false
+		},
 		"phoneMask": {
 			"type": "string",
 			"default": ""

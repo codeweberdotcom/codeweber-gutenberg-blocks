@@ -4102,6 +4102,14 @@ msgstr "Телефон 05"
 msgid "Phone mask"
 msgstr "Телефоны"
 
+#: src/blocks/form-field/edit.js
+msgid "Use theme mask"
+msgstr "Использовать маску темы"
+
+#: src/blocks/form-field/edit.js
+msgid "Use the phone mask from Theme Options → Phone mask"
+msgstr "Использовать маску из Настроек темы → Маска телефона"
+
 #: src/src/blocks/form-field/edit.js src/src/blocks/form-field/edit.js
 msgid "Phone Number"
 msgstr "Номер телефона"

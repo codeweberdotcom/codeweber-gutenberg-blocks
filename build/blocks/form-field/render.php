@@ -65,13 +65,21 @@ if ($inline_button_enabled) {
 
     // Mask props for tel field
     $mask_attrs = '';
-    if ($field_type === 'tel' && !empty($attributes['phoneMask'])) {
-        $mask_attrs = ' data-mask="' . esc_attr($attributes['phoneMask']) . '"';
-        if (!empty($attributes['phoneMaskCaret'])) {
-            $mask_attrs .= ' data-mask-caret="' . esc_attr(substr($attributes['phoneMaskCaret'], 0, 1)) . '"';
-        }
-        if (!empty($attributes['phoneMaskSoftCaret'])) {
-            $mask_attrs .= ' data-mask-soft-caret="' . esc_attr(substr($attributes['phoneMaskSoftCaret'], 0, 1)) . '"';
+    if ($field_type === 'tel') {
+        $use_theme_mask = !empty($attributes['useThemeMask']);
+        if ($use_theme_mask) {
+            $theme_mask = class_exists('Codeweber_Options') ? Codeweber_Options::get('opt_phone_mask', '') : '';
+            if (!empty($theme_mask)) {
+                $mask_attrs = ' data-mask="' . esc_attr($theme_mask) . '"';
+            }
+        } elseif (!empty($attributes['phoneMask'])) {
+            $mask_attrs = ' data-mask="' . esc_attr($attributes['phoneMask']) . '"';
+            if (!empty($attributes['phoneMaskCaret'])) {
+                $mask_attrs .= ' data-mask-caret="' . esc_attr(substr($attributes['phoneMaskCaret'], 0, 1)) . '"';
+            }
+            if (!empty($attributes['phoneMaskSoftCaret'])) {
+                $mask_attrs .= ' data-mask-soft-caret="' . esc_attr(substr($attributes['phoneMaskSoftCaret'], 0, 1)) . '"';
+            }
         }
     }
 

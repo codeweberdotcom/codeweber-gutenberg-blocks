@@ -45,6 +45,7 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 		options,
 		defaultValue,
 		helpText,
+		useThemeMask,
 		phoneMask,
 		phoneMaskCaret,
 		phoneMaskSoftCaret,
@@ -1464,81 +1465,72 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 												)}
 												initialOpen={false}
 											>
-												<TextControl
+												<ToggleControl
 													label={__(
-														'Mask',
+														'Use theme mask',
 														'codeweber-gutenberg-blocks'
 													)}
-													value={phoneMask || ''}
+													help={__(
+														'Use the phone mask from Theme Options → Phone mask',
+														'codeweber-gutenberg-blocks'
+													)}
+													checked={!!useThemeMask}
 													onChange={(value) =>
-														setAttributes({
-															phoneMask: value,
-														})
+														setAttributes({ useThemeMask: value })
 													}
-													help={__(
-														'Use "_" as digit placeholder, e.g. +7 (___) ___-__-__. Leave empty to use the mask from Theme Options → Phone mask.',
-														'codeweber-gutenberg-blocks'
-													)}
 												/>
-												<TextControl
-													label={__(
-														'Mask caret',
-														'codeweber-gutenberg-blocks'
-													)}
-													value={
-														phoneMaskCaret ?? '_'
-													}
-													onChange={(value) => {
-														const caretChar = (
-															value || ''
-														).toString();
-														const normalized =
-															caretChar === ''
-																? ''
-																: caretChar.slice(
-																		0,
-																		1
-																	);
-														setAttributes({
-															phoneMaskCaret:
-																normalized,
-														});
-													}}
-													help={__(
-														'Single character used instead of "_" in the mask (default "_")',
-														'codeweber-gutenberg-blocks'
-													)}
-												/>
-												<TextControl
-													label={__(
-														'Mask soft caret',
-														'codeweber-gutenberg-blocks'
-													)}
-													value={
-														phoneMaskSoftCaret ??
-														'_'
-													}
-													onChange={(value) => {
-														const softCaretChar = (
-															value || ''
-														).toString();
-														const normalized =
-															softCaretChar === ''
-																? ''
-																: softCaretChar.slice(
-																		0,
-																		1
-																	);
-														setAttributes({
-															phoneMaskSoftCaret:
-																normalized,
-														});
-													}}
-													help={__(
-														'Placeholder symbol in mask pattern (default "_")',
-														'codeweber-gutenberg-blocks'
-													)}
-												/>
+												{!useThemeMask && (
+													<>
+														<TextControl
+															label={__(
+																'Mask',
+																'codeweber-gutenberg-blocks'
+															)}
+															value={phoneMask || ""}
+															onChange={(value) =>
+																setAttributes({
+																	phoneMask: value,
+																})
+															}
+															help={__(
+																'Use "_" as digit placeholder, e.g. +7 (___) ___-__-__',
+																'codeweber-gutenberg-blocks'
+															)}
+														/>
+														<TextControl
+															label={__(
+																'Mask caret',
+																'codeweber-gutenberg-blocks'
+															)}
+															value={phoneMaskCaret ?? '_'}
+															onChange={(value) => {
+																const caretChar = (value || "").toString();
+																const normalized = caretChar === '' ? '' : caretChar.slice(0, 1);
+																setAttributes({ phoneMaskCaret: normalized });
+															}}
+															help={__(
+																'Single character used instead of "_" in the mask (default "_")',
+																'codeweber-gutenberg-blocks'
+															)}
+														/>
+														<TextControl
+															label={__(
+																'Mask soft caret',
+																'codeweber-gutenberg-blocks'
+															)}
+															value={phoneMaskSoftCaret ?? '_'}
+															onChange={(value) => {
+																const softCaretChar = (value || "").toString();
+																const normalized = softCaretChar === '' ? '' : softCaretChar.slice(0, 1);
+																setAttributes({ phoneMaskSoftCaret: normalized });
+															}}
+															help={__(
+																'Placeholder symbol in mask pattern (default "_")',
+																'codeweber-gutenberg-blocks'
+															)}
+														/>
+													</>
+												)}
 											</PanelBody>
 										)}
 

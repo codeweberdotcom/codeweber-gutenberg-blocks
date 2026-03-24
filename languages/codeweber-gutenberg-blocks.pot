@@ -1566,6 +1566,14 @@ msgstr ""
 msgid "Phone mask"
 msgstr ""
 
+#: src/blocks/form-field/edit.js
+msgid "Use theme mask"
+msgstr ""
+
+#: src/blocks/form-field/edit.js
+msgid "Use the phone mask from Theme Options → Phone mask"
+msgstr ""
+
 #: src/src/blocks/form-field/edit.js src/src/blocks/form-field/edit.js
 msgid "Mask"
 msgstr ""

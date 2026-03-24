@@ -2316,6 +2316,12 @@
       "Phone mask": [
         "Телефоны"
       ],
+      "Use theme mask": [
+        "Использовать маску темы"
+      ],
+      "Use the phone mask from Theme Options → Phone mask": [
+        "Использовать маску из Настроек темы → Маска телефона"
+      ],
       "Phone Number": [
         "Номер телефона"
       ],

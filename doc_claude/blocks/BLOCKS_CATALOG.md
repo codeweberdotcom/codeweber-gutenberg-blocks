@@ -86,7 +86,7 @@ Legend: `S` = static (JS save) | `D` = dynamic (PHP render.php)
 | Block | Type | Description |
 |-------|------|-------------|
 | `form` | D | Form container (CodeWeber Forms integration) |
-| `form-field` | D | Form field: text, email, phone, file (FilePond), etc. |
+| `form-field` | D | Form field: text, email, phone (mask / useThemeMask), file (FilePond), select, rating, consents_block, etc. |
 | `submit-button` | S | Form submit button |
 | `button` | S | Button with many types: solid, outline, social, circle, video |
 

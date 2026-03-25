@@ -130,9 +130,14 @@ class LoadMoreAPI {
 		$queried_object_id   = (int) ( $attributes['queried_object_id']   ?? 0 );
 		$queried_object_type = sanitize_key( $attributes['queried_object_type'] ?? '' );
 
-		// Передаём класс колонки в шаблон карточки (shop2.php и др.)
+		// Передаём класс колонки и режим вида в шаблон карточки
 		if ( ! empty( $attributes['col_class'] ) ) {
 			$GLOBALS['cw_shop_col_class'] = sanitize_text_field( $attributes['col_class'] );
+		}
+		if ( ! empty( $attributes['shop_view'] ) ) {
+			$GLOBALS['cw_shop_view'] = in_array( $attributes['shop_view'], [ 'grid', 'list' ], true )
+				? $attributes['shop_view']
+				: 'grid';
 		}
 
 		// Используем WooCommerce для получения правильных аргументов сортировки.

@@ -457,6 +457,20 @@ const FormEdit = ({ attributes, setAttributes, clientId }) => {
 												),
 												value: 'callback',
 											},
+											{
+												label: __(
+													'FAQ Question',
+													'codeweber-gutenberg-blocks'
+												),
+												value: 'faq',
+											},
+											{
+												label: __(
+													'Event Registration',
+													'codeweber-gutenberg-blocks'
+												),
+												value: 'event-registration',
+											},
 										]}
 										onChange={(value) =>
 											setAttributes({ formType: value })

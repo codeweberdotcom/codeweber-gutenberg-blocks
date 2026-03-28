@@ -307,7 +307,6 @@ export const IconRender = ({
 					className={svgClasses}
 					alt="custom icon"
 					width={customSizeStr}
-					height={customSizeStr}
 				/>
 			);
 		} else {
@@ -318,10 +317,7 @@ export const IconRender = ({
 					alt=""
 					style={
 						customSvgSize > 0
-							? {
-									width: customSvgSize + 'px',
-									height: customSvgSize + 'px',
-								}
+							? { width: customSvgSize + 'px', height: 'auto' }
 							: undefined
 					}
 				/>

@@ -65,9 +65,8 @@ const processSvg = (svgText, className, preserveFillClasses = false, width = nul
 		svg.removeAttribute('height');
 	}
 
-	// Применяем кастомный размер
+	// Применяем кастомный размер (только width — height вычисляется из viewBox)
 	if (width) svg.setAttribute('width', width);
-	if (height) svg.setAttribute('height', height);
 
 	// Для solid-duo и solid-mono сохраняем классы fill-primary/fill-secondary
 	// и НЕ заменяем fill на currentColor

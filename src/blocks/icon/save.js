@@ -27,6 +27,7 @@ const Save = ({ attributes }) => {
 		iconWrapperClass,
 		customSvgUrl,
 		customSvgId,
+		customSvgSize,
 		blockAlign,
 		blockClass,
 		blockData,
@@ -56,6 +57,7 @@ const Save = ({ attributes }) => {
 			iconWrapperClass={iconWrapperClass}
 			customSvgUrl={customSvgUrl}
 			customSvgId={customSvgId}
+			customSvgSize={customSvgSize}
 			blockAlign={blockAlign}
 			blockClass={blockClass}
 			blockData={blockData}

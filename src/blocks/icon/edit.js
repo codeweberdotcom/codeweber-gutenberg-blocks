@@ -36,6 +36,7 @@ const Edit = ({ attributes, setAttributes }) => {
 		iconWrapperClass,
 		customSvgUrl,
 		customSvgId,
+		customSvgSize,
 		blockAlign,
 		blockClass,
 		blockData,
@@ -115,6 +116,7 @@ const Edit = ({ attributes, setAttributes }) => {
 						iconWrapperClass={iconWrapperClass}
 						customSvgUrl={customSvgUrl}
 						customSvgId={customSvgId}
+						customSvgSize={customSvgSize}
 						blockAlign={blockAlign}
 						blockClass={blockClass}
 						blockData={blockData}

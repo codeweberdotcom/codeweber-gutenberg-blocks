@@ -217,6 +217,7 @@ export const IconRender = ({
 	iconGradientColor = 'gradient-1',
 	customSvgUrl = '',
 	customSvgId = null,
+	customSvgSize = 0,
 	blockAlign = '',
 	blockClass = '',
 	blockData = '',
@@ -289,12 +290,14 @@ export const IconRender = ({
 	if (iconType === 'custom' && customSvgUrl) {
 		const svgClasses = getSvgIconClasses({
 			svgStyle: 'lineal', // Кастомные как lineal
-			iconSize,
+			iconSize: customSvgSize > 0 ? '' : iconSize, // Пропускаем класс размера при кастомном размере
 			iconColor: shouldApplyColorToIcon ? iconColor : '', // Цвет только если не Solid-кнопка
 			iconColor2: '',
 			iconClass: iconClass, // Всегда применяется к иконке
 			isEditor,
 		});
+
+		const customSizeStr = customSvgSize > 0 ? String(customSvgSize) : null;
 
 		// В редакторе используем InlineSvg
 		if (isEditor) {
@@ -303,11 +306,25 @@ export const IconRender = ({
 					src={customSvgUrl}
 					className={svgClasses}
 					alt="custom icon"
+					width={customSizeStr}
+					height={customSizeStr}
 				/>
 			);
 		} else {
 			iconElement = (
-				<img src={customSvgUrl} className={svgClasses} alt="" />
+				<img
+					src={customSvgUrl}
+					className={svgClasses}
+					alt=""
+					style={
+						customSvgSize > 0
+							? {
+									width: customSvgSize + 'px',
+									height: customSvgSize + 'px',
+								}
+							: undefined
+					}
+				/>
 			);
 		}
 	}

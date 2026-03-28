@@ -13,6 +13,7 @@ import {
 	ToggleControl,
 	BaseControl,
 	ComboboxControl,
+	RangeControl,
 } from '@wordpress/components';
 import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
 
@@ -101,6 +102,7 @@ export const IconControl = ({
 		getAttr(attributes, prefix, 'iconGradientColor') || 'gradient-1';
 	const customSvgUrl = getAttr(attributes, prefix, 'customSvgUrl') || '';
 	const customSvgId = getAttr(attributes, prefix, 'customSvgId') || null;
+	const customSvgSize = getAttr(attributes, prefix, 'customSvgSize') || 0;
 
 	// Фильтруем доступные типы иконок
 	const availableTypes = iconTypes.filter((type) => {
@@ -331,15 +333,16 @@ export const IconControl = ({
 
 			{/* Настройки кастомного SVG */}
 			{iconType === 'custom' && customSvgUrl && (
-				<SelectControl
-					label={__('Size', 'codeweber-gutenberg-blocks')}
-					value={iconSize}
-					options={iconSvgSizes.map((s) => ({
-						value: s.value,
-						label: s.label,
-					}))}
+				<RangeControl
+					label={__('Size (px)', 'codeweber-gutenberg-blocks')}
+					value={customSvgSize || 48}
+					min={16}
+					max={256}
+					step={2}
+					allowReset
+					resetFallbackValue={48}
 					onChange={(value) =>
-						setAttr(setAttributes, prefix, 'iconSize', value)
+						setAttr(setAttributes, prefix, 'customSvgSize', value ?? 0)
 					}
 					__nextHasNoMarginBottom
 				/>

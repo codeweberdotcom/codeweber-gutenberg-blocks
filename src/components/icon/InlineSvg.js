@@ -44,7 +44,7 @@ const fetchSvg = async (url) => {
  * @param {boolean} preserveFillClasses - Сохранять классы fill-primary/fill-secondary (для solid-duo)
  * @returns {string} - Обработанный SVG
  */
-const processSvg = (svgText, className, preserveFillClasses = false) => {
+const processSvg = (svgText, className, preserveFillClasses = false, width = null, height = null) => {
 	if (!svgText) return '';
 
 	// Создаем временный контейнер для парсинга SVG
@@ -64,6 +64,10 @@ const processSvg = (svgText, className, preserveFillClasses = false) => {
 		svg.removeAttribute('width');
 		svg.removeAttribute('height');
 	}
+
+	// Применяем кастомный размер
+	if (width) svg.setAttribute('width', width);
+	if (height) svg.setAttribute('height', height);
 
 	// Для solid-duo и solid-mono сохраняем классы fill-primary/fill-secondary
 	// и НЕ заменяем fill на currentColor
@@ -105,12 +109,16 @@ const processSvg = (svgText, className, preserveFillClasses = false) => {
  * @param {string} props.className - CSS классы
  * @param {string} props.alt - Alt текст (для fallback)
  * @param {boolean} props.preserveFillClasses - Сохранять fill-primary/fill-secondary (для solid icons)
+ * @param {string|null} props.width - Кастомная ширина SVG (px без единиц, например '64')
+ * @param {string|null} props.height - Кастомная высота SVG (px без единиц, например '64')
  */
 export const InlineSvg = ({
 	src,
 	className = '',
 	alt = '',
 	preserveFillClasses = false,
+	width = null,
+	height = null,
 }) => {
 	const [svgContent, setSvgContent] = useState(null);
 	const [isLoading, setIsLoading] = useState(true);
@@ -132,7 +140,9 @@ export const InlineSvg = ({
 					const processed = processSvg(
 						svgText,
 						className,
-						preserveFillClasses
+						preserveFillClasses,
+						width,
+						height
 					);
 					setSvgContent(processed);
 				} else {
@@ -144,7 +154,7 @@ export const InlineSvg = ({
 				setError(true);
 				setIsLoading(false);
 			});
-	}, [src, className, preserveFillClasses]);
+	}, [src, className, preserveFillClasses, width, height]);
 
 	// Загрузка
 	if (isLoading) {

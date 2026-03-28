@@ -39,6 +39,8 @@ const OVERLAY_OPTIONS = [
 	{ label: __('Light 40%', 'codeweber-gutenberg-blocks'), value: 'bg-overlay bg-overlay-light-400' },
 	{ label: __('Light 50%', 'codeweber-gutenberg-blocks'), value: 'bg-overlay bg-overlay-light-500' },
 	{ label: __('Light 60%', 'codeweber-gutenberg-blocks'), value: 'bg-overlay bg-overlay-light-600' },
+	{ label: __('Light 70%', 'codeweber-gutenberg-blocks'), value: 'bg-overlay bg-overlay-light-700' },
+	{ label: __('Light 80%', 'codeweber-gutenberg-blocks'), value: 'bg-overlay bg-overlay-light-800' },
 ];
 
 export const BackgroundSettingsPanel = ({

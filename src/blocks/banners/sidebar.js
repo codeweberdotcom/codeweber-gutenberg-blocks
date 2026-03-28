@@ -602,6 +602,7 @@ export const BannersSidebar = ({ attributes, setAttributes }) => {
 																display: 'block',
 															}}
 															muted
+															disablePictureInPicture
 															loop
 															autoPlay
 															playsInline

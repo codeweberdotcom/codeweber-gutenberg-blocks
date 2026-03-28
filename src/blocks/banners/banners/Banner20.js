@@ -44,6 +44,7 @@ export const Banner20 = ({ attributes, isEditor = false }) => {
 					loop
 					playsInline
 					muted
+					disablePictureInPicture
 					style={{
 						width: '100%',
 						height: '100%',
@@ -76,6 +77,7 @@ export const Banner20 = ({ attributes, isEditor = false }) => {
 				loop
 				playsInline
 				muted
+				disablePictureInPicture
 			/>
 			<div className="video-content">
 				<div className="container text-center">

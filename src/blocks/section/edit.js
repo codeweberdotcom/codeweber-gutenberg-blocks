@@ -226,6 +226,7 @@ const SectionEdit = ({ attributes, setAttributes }) => {
 						loop
 						playsInline
 						muted
+						disablePictureInPicture
 						style={{ width: '100%', height: 'auto' }}
 					></video>
 				) : null}

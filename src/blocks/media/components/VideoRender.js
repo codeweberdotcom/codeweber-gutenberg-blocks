@@ -299,6 +299,7 @@ export const VideoRender = ({
 		if (videoAutoplay) videoAttrs.autoPlay = true;
 		if (videoLoop) videoAttrs.loop = true;
 		if (videoMuted) videoAttrs.muted = true;
+		videoAttrs.disablePictureInPicture = true;
 
 		return (
 			<video {...videoAttrs}>

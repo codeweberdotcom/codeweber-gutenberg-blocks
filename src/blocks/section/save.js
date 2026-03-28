@@ -242,6 +242,7 @@ const SectionSave = ({ attributes }) => {
 						loop
 						playsInline
 						muted
+						disablePictureInPicture
 					></video>
 					<div className="video-content">
 						<div

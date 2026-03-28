@@ -133,6 +133,7 @@ export const Banner15 = ({ attributes, isEditor = false, clientId = '' }) => {
 							loop
 							playsInline
 							muted
+							disablePictureInPicture
 							style={{ width: '100%', height: 'auto' }}
 						></video>
 						<div className="video-content">
@@ -165,6 +166,7 @@ export const Banner15 = ({ attributes, isEditor = false, clientId = '' }) => {
 						loop
 						playsInline
 						muted
+						disablePictureInPicture
 					></video>
 					<div className="video-content">
 						{renderContent()}

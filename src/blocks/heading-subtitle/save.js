@@ -29,6 +29,10 @@ const HeadingSubtitleSave = ({ attributes }) => {
 		titleTag,
 		subtitleTag,
 		textTag,
+		animationEnabled,
+		animationType,
+		animationDuration,
+		animationDelay,
 	} = attributes;
 
 	const elements = [];
@@ -74,7 +78,18 @@ const HeadingSubtitleSave = ({ attributes }) => {
 
 	// Обёртка с Bootstrap-классами для вертикального позиционирования
 	return (
-		<div className="d-flex flex-column">
+		<div
+			className="d-flex flex-column"
+			{...(animationEnabled && animationType && {
+				'data-cue': animationType,
+				...(animationDuration && {
+					'data-duration': animationDuration,
+				}),
+				...(animationDelay && {
+					'data-delay': animationDelay,
+				}),
+			})}
+		>
 			{elements}
 		</div>
 	);

@@ -18,6 +18,7 @@ import {
 	positionCenter,
 	resizeCornerNE,
 	cog,
+	update,
 } from '@wordpress/icons';
 
 // Tab icon with native title tooltip
@@ -38,6 +39,7 @@ import { HeadingTypographyControl } from '../../components/heading/HeadingTypogr
 import { PositioningControl } from '../../components/layout/PositioningControl';
 import { SpacingControl } from '../../components/spacing/SpacingControl';
 import { BlockMetaFields } from '../../components/block-meta/BlockMetaFields';
+import { AnimationControl } from '../../components/animation/Animation';
 import { getTitleClasses, getSubtitleClasses } from './utils';
 import { ParagraphRender } from '../../components/paragraph';
 
@@ -69,6 +71,10 @@ const HeadingSubtitleEdit = ({ attributes, setAttributes }) => {
 		spacingLg,
 		spacingXl,
 		spacingXxl,
+		animationEnabled,
+		animationType,
+		animationDuration,
+		animationDelay,
 	} = attributes;
 
 	const [activeElement, setActiveElement] = useState('title');
@@ -192,6 +198,24 @@ const HeadingSubtitleEdit = ({ attributes, setAttributes }) => {
 			),
 		},
 		{
+			name: 'animation',
+			title: (
+				<TabIcon
+					icon={update}
+					label={__('Animation', 'codeweber-gutenberg-blocks')}
+				/>
+			),
+		},
+		{
+			name: 'animation',
+			title: (
+				<TabIcon
+					icon={update}
+					label={__('Animation', 'codeweber-gutenberg-blocks')}
+				/>
+			),
+		},
+		{
 			name: 'settings',
 			title: (
 				<TabIcon
@@ -269,7 +293,15 @@ const HeadingSubtitleEdit = ({ attributes, setAttributes }) => {
 									/>
 								</div>
 							)}
-							{tab.name === 'settings' && (
+							{tab.name === 'animation' && (
+							<div style={{ padding: '16px' }}>
+								<AnimationControl
+									attributes={attributes}
+									setAttributes={setAttributes}
+								/>
+							</div>
+						)}
+						{tab.name === 'settings' && (
 								<div style={{ padding: '16px' }}>
 									<ButtonGroup
 										style={{ marginBottom: '16px' }}
@@ -397,7 +429,18 @@ const HeadingSubtitleEdit = ({ attributes, setAttributes }) => {
 			</InspectorControls>
 			<div {...blockProps}>
 				{elements.length > 0 ? (
-					<div className="d-flex flex-column">
+					<div
+					className="d-flex flex-column"
+					{...(animationEnabled && animationType && {
+						'data-cue': animationType,
+						...(animationDuration && {
+							'data-duration': animationDuration,
+						}),
+						...(animationDelay && {
+							'data-delay': animationDelay,
+						}),
+					})}
+				>
 						{elements}
 					</div>
 				) : (

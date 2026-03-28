@@ -226,3 +226,17 @@
 		box-sizing: border-box;
 	}
 }
+
+/* Overlay buttons: 3 per row */
+.overlay-buttons {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px;
+	margin-bottom: 12px;
+
+	button.components-button {
+		flex: 0 0 calc(33.333% - 3px);
+		justify-content: center;
+		box-sizing: border-box;
+	}
+}

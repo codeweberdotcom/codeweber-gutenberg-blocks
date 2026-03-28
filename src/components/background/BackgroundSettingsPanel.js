@@ -112,7 +112,7 @@ export const BackgroundSettingsPanel = ({
 					{__('Background Overlay', 'codeweber-gutenberg-blocks')}
 				</label>
 			</div>
-			<div className="button-group-sidebar_33 mb-3" style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+			<div className="overlay-buttons">
 				{OVERLAY_OPTIONS.map((option) => (
 					<Button
 						key={option.value}

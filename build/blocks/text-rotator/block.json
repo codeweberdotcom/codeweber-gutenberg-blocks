@@ -58,7 +58,7 @@
     },
     "animationType": {
       "type": "string",
-      "default": "rotator-fade"
+      "default": "typer"
     },
     "animationWords": {
       "type": "array",
@@ -66,9 +66,9 @@
         "type": "string"
       },
       "default": [
-        "web design",
-        "SEO services",
-        "e-commerce"
+        "easy usage",
+        "fast transactions",
+        "secure payments"
       ]
     },
     "animationColor": {
@@ -81,7 +81,7 @@
     },
     "animationLoop": {
       "type": "boolean",
-      "default": true
+      "default": false
     },
     "align": {
       "type": "string",

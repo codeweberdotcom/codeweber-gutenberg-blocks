@@ -2,6 +2,7 @@ import { useBlockProps, InnerBlocks } from '@wordpress/block-editor';
 import {
 	normalizeMinHeightClass,
 	getContainerClassNames,
+	getSectionAlignClasses,
 	getAngledClasses,
 	getWaveConfig,
 	WAVE_SVGS,
@@ -129,8 +130,10 @@ const SectionSave = ({ attributes }) => {
 		containerPosition,
 	});
 
+	const sectionAlignClassNames = getSectionAlignClasses(attributes).join(' ');
+
 	const blockProps = useBlockProps.save({
-		className: `wrapper ${getSectionClasses(attributes)} ${sectionFrame ? 'section-frame' : ''} ${overflowHidden ? 'overflow-hidden' : ''} ${positionRelative ? 'position-relative' : ''} ${normalizedMinHeight} ${sectionClass}`,
+		className: `wrapper ${getSectionClasses(attributes)} ${sectionFrame ? 'section-frame' : ''} ${overflowHidden ? 'overflow-hidden' : ''} ${positionRelative ? 'position-relative' : ''} ${normalizedMinHeight} ${sectionAlignClassNames} ${sectionClass}`,
 		id: safeSectionId || undefined,
 		role: 'region',
 		'aria-label': safeSectionId

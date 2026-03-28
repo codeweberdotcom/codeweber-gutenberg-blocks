@@ -8,6 +8,7 @@ import { __ } from '@wordpress/i18n';
 import {
 	normalizeMinHeightClass,
 	getContainerClassNames,
+	getSectionAlignClasses,
 	getSpacingClasses,
 	getAngledClasses,
 	getWaveConfig,
@@ -126,8 +127,10 @@ const SectionEdit = ({ attributes, setAttributes }) => {
 		containerPosition,
 	});
 
+	const sectionAlignClassNames = getSectionAlignClasses(attributes).join(' ');
+
 	const blockProps = useBlockProps({
-		className: `wrapper dash-border ${getSectionClasses(attributes)} ${sectionFrame ? 'section-frame' : ''} ${overflowHidden ? 'overflow-hidden' : ''} ${positionRelative ? 'position-relative' : ''} ${normalizedMinHeight} ${sectionClass}`,
+		className: `wrapper dash-border ${getSectionClasses(attributes)} ${sectionFrame ? 'section-frame' : ''} ${overflowHidden ? 'overflow-hidden' : ''} ${positionRelative ? 'position-relative' : ''} ${normalizedMinHeight} ${sectionAlignClassNames} ${sectionClass}`,
 		id: safeSectionId || undefined,
 		role: 'region',
 		'aria-label': safeSectionId

@@ -13,6 +13,11 @@ export const normalizeMinHeightClass = (value = '') => {
 	return map[value] || value;
 };
 
+export const getSectionAlignClasses = (attrs = {}) => {
+	if (!attrs.sectionAlignItems) return [];
+	return ['d-flex', attrs.sectionAlignItems];
+};
+
 export const getContainerClassNames = (attrs = {}) => {
 	const classes = [];
 	const candidates = [

@@ -696,6 +696,7 @@ export const SectionSidebar = ({ attributes, setAttributes }) => {
 								overflowHidden={overflowHidden}
 								positionRelative={positionRelative}
 								minHeight={minHeight}
+								sectionAlignItems={attributes.sectionAlignItems}
 								onSectionTagChange={(value) =>
 									setAttributes({ sectionTag: value })
 								}

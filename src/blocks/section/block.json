@@ -200,6 +200,10 @@
 		"borderWidth": {
 			"type": "string",
 			"default": ""
+		},
+		"sectionAlignItems": {
+			"type": "string",
+			"default": ""
 		}
 	},
 	"textdomain": "codeweber-gutenberg-blocks",

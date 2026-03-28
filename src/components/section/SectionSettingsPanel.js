@@ -32,6 +32,13 @@ const SECTION_TAG_OPTIONS = [
 	{ label: 'nav', value: 'nav' },
 ];
 
+const SECTION_ALIGN_OPTIONS = [
+	{ label: __('None', 'codeweber-gutenberg-blocks'), value: '' },
+	{ label: 'Top', value: 'align-items-start' },
+	{ label: 'Center', value: 'align-items-center' },
+	{ label: 'Bottom', value: 'align-items-end' },
+];
+
 export const SectionSettingsPanel = ({
 	sectionTag,
 	textColor,
@@ -39,6 +46,7 @@ export const SectionSettingsPanel = ({
 	overflowHidden,
 	positionRelative,
 	minHeight,
+	sectionAlignItems,
 	onSectionTagChange,
 	onTextColorChange,
 	onSectionChange,
@@ -96,6 +104,21 @@ export const SectionSettingsPanel = ({
 					onClick={() => onSectionChange('minHeight', height.value)}
 				>
 					{height.label}
+				</Button>
+			))}
+		</div>
+
+		<div className="component-sidebar-title">
+			<label>{__('Vertical Align (d-flex)', 'codeweber-gutenberg-blocks')}</label>
+		</div>
+		<div className="button-group-sidebar_33">
+			{SECTION_ALIGN_OPTIONS.map((opt) => (
+				<Button
+					key={opt.value}
+					isPrimary={sectionAlignItems === opt.value}
+					onClick={() => onSectionChange('sectionAlignItems', opt.value)}
+				>
+					{opt.label}
 				</Button>
 			))}
 		</div>

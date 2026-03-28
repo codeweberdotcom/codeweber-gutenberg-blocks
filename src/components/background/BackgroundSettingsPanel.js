@@ -29,12 +29,16 @@ const BACKGROUND_SIZE_BUTTONS = [
 
 const OVERLAY_OPTIONS = [
 	{ label: __('None', 'codeweber-gutenberg-blocks'), value: '' },
-	{ label: '30%', value: 'bg-overlay bg-overlay-300' },
-	{ label: '40%', value: 'bg-overlay bg-overlay-400' },
-	{ label: '50%', value: 'bg-overlay' },
-	{ label: '60%', value: 'bg-overlay bg-overlay-600' },
-	{ label: '70%', value: 'bg-overlay bg-overlay-700' },
-	{ label: '80%', value: 'bg-overlay bg-overlay-800' },
+	{ label: __('Dark 30%', 'codeweber-gutenberg-blocks'), value: 'bg-overlay bg-overlay-300' },
+	{ label: __('Dark 40%', 'codeweber-gutenberg-blocks'), value: 'bg-overlay bg-overlay-400' },
+	{ label: __('Dark 50%', 'codeweber-gutenberg-blocks'), value: 'bg-overlay' },
+	{ label: __('Dark 60%', 'codeweber-gutenberg-blocks'), value: 'bg-overlay bg-overlay-600' },
+	{ label: __('Dark 70%', 'codeweber-gutenberg-blocks'), value: 'bg-overlay bg-overlay-700' },
+	{ label: __('Dark 80%', 'codeweber-gutenberg-blocks'), value: 'bg-overlay bg-overlay-800' },
+	{ label: __('Light 30%', 'codeweber-gutenberg-blocks'), value: 'bg-overlay bg-overlay-light-300' },
+	{ label: __('Light 40%', 'codeweber-gutenberg-blocks'), value: 'bg-overlay bg-overlay-light-400' },
+	{ label: __('Light 50%', 'codeweber-gutenberg-blocks'), value: 'bg-overlay bg-overlay-light-500' },
+	{ label: __('Light 60%', 'codeweber-gutenberg-blocks'), value: 'bg-overlay bg-overlay-light-600' },
 ];
 
 export const BackgroundSettingsPanel = ({

@@ -32,6 +32,10 @@ const Save = ({ attributes }) => {
 		blockClass,
 		blockData,
 		blockId,
+		animationEnabled,
+		animationType,
+		animationDuration,
+		animationDelay,
 	} = attributes;
 
 	// Не сохраняем если иконка не выбрана
@@ -39,7 +43,7 @@ const Save = ({ attributes }) => {
 		return null;
 	}
 
-	return (
+	const iconEl = (
 		<IconRenderSave
 			iconType={iconType}
 			iconName={iconName}
@@ -64,6 +68,20 @@ const Save = ({ attributes }) => {
 			blockId={blockId}
 		/>
 	);
+
+	if (animationEnabled && animationType) {
+		return (
+			<span
+				data-cue={animationType}
+				{...(animationDuration && { 'data-duration': animationDuration })}
+				{...(animationDelay && { 'data-delay': animationDelay })}
+			>
+				{iconEl}
+			</span>
+		);
+	}
+
+	return iconEl;
 };
 
 export default Save;

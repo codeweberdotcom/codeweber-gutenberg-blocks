@@ -7,9 +7,10 @@ import {
 	Button,
 	BaseControl,
 } from '@wordpress/components';
-import { Icon, symbol, cog, cover } from '@wordpress/icons';
+import { Icon, symbol, cog, cover, update } from '@wordpress/icons';
 import { IconControl } from '../../components/icon/IconControl';
 import { BlockMetaFields } from '../../components/block-meta/BlockMetaFields';
+import { AnimationControl } from '../../components/animation/Animation';
 import {
 	iconWrapperStyles,
 	iconBtnSizes,
@@ -59,6 +60,15 @@ export const IconSidebar = ({ attributes, setAttributes }) => {
 				<TabIcon
 					icon={cover}
 					label={__('Wrapper', 'codeweber-gutenberg-blocks')}
+				/>
+			),
+		},
+		{
+			name: 'animation',
+			title: (
+				<TabIcon
+					icon={update}
+					label={__('Animation', 'codeweber-gutenberg-blocks')}
 				/>
 			),
 		},
@@ -277,7 +287,16 @@ export const IconSidebar = ({ attributes, setAttributes }) => {
 						</div>
 					)}
 
-					{tab.name === 'settings' && (
+					{tab.name === 'animation' && (
+					<div style={{ padding: '16px' }}>
+						<AnimationControl
+							attributes={attributes}
+							setAttributes={setAttributes}
+						/>
+					</div>
+				)}
+
+				{tab.name === 'settings' && (
 						<div style={{ padding: '16px' }}>
 							<BlockMetaFields
 								attributes={attributes}

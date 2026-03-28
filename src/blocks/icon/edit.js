@@ -41,6 +41,10 @@ const Edit = ({ attributes, setAttributes }) => {
 		blockClass,
 		blockData,
 		blockId,
+		animationEnabled,
+		animationType,
+		animationDuration,
+		animationDelay,
 	} = attributes;
 
 	// Классы блока
@@ -67,6 +71,15 @@ const Edit = ({ attributes, setAttributes }) => {
 		className: blockClasses,
 		id: blockId || undefined,
 		...dataAttributes,
+		...(animationEnabled && animationType && {
+			'data-cue': animationType,
+			...(animationDuration && {
+				'data-duration': animationDuration,
+			}),
+			...(animationDelay && {
+				'data-delay': animationDelay,
+			}),
+		}),
 	});
 
 	return (

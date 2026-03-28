@@ -691,46 +691,17 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 							{tab.name === 'borders' && (
 								<PanelBody>
 									<BorderSettingsPanel
-										borderRadius={borderRadius}
-										onBorderRadiusChange={(value) =>
-											setAttributes({
-												borderRadius: value,
-											})
-										}
-										shadow={shadow}
-										onShadowChange={(value) =>
-											setAttributes({ shadow: value })
-										}
-										borderPosition={
-											cardBorder || borderPosition
-										}
-										borderColor={borderColor}
-										borderColorType={
-											borderColorType || 'solid'
-										}
-										borderWidth={borderWidth}
-										showPosition={true}
-										onBorderPositionChange={(value) => {
-											setAttributes({
-												cardBorder: value,
-												borderPosition: value,
-											});
+										attributes={{
+											...attributes,
+											borderPosition: cardBorder || borderPosition,
 										}}
-										onBorderColorChange={(value) =>
-											setAttributes({
-												borderColor: value,
-											})
-										}
-										onBorderColorTypeChange={(value) =>
-											setAttributes({
-												borderColorType: value,
-											})
-										}
-										onBorderWidthChange={(value) =>
-											setAttributes({
-												borderWidth: value,
-											})
-										}
+										onChange={(obj) => {
+											if ('borderPosition' in obj) {
+												setAttributes({ ...obj, cardBorder: obj.borderPosition });
+											} else {
+												setAttributes(obj);
+											}
+										}}
 									/>
 								</PanelBody>
 							)}

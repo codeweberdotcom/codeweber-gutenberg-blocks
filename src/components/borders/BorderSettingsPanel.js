@@ -10,6 +10,7 @@ import { BorderRadiusControl } from '../border-radius/BorderRadiusControl';
 import { ShadowControl } from '../shadow/ShadowControl';
 import { ColorTypeControl } from '../colors/ColorTypeControl';
 import { colors } from '../../utilities/colors';
+import { borderRadiusOptions } from '../../utilities/border-radius';
 
 // Border position options
 const BORDER_POSITION_OPTIONS = [
@@ -37,49 +38,43 @@ const BORDER_WIDTH_OPTIONS = [
 /**
  * BorderSettingsPanel Component
  *
- * @param {Object} props
- * @param {string} props.borderRadius - Current border radius value
- * @param {Function} props.onBorderRadiusChange - Callback when border radius changes
- * @param {string} props.shadow - Current shadow value
- * @param {Function} props.onShadowChange - Callback when shadow changes
- * @param {string} props.borderPosition - Current border position value
- * @param {Function} props.onBorderPositionChange - Callback when border position changes
- * @param {string} props.borderColor - Current border color value
- * @param {Function} props.onBorderColorChange - Callback when border color changes
- * @param {string} props.borderColorType - Current border color type (solid/soft)
- * @param {Function} props.onBorderColorTypeChange - Callback when border color type changes
- * @param {string} props.borderWidth - Current border width value
- * @param {Function} props.onBorderWidthChange - Callback when border width changes
- * @param {boolean} props.showPosition - Show border position control
- * @param {boolean} props.showBorderRadius - Show border radius control
- * @param {boolean} props.showShadow - Show shadow control
- * @param {boolean} props.showBorder - Show border controls (position, color, width)
+ * API: { attributes, onChange, showPosition, showBorderRadius, showShadow, showBorder, radiusOptions }
+ *
+ * @param {Object}   props
+ * @param {Object}   props.attributes       - Block attributes object
+ * @param {Function} props.onChange         - setAttributes or equivalent (accepts object)
+ * @param {boolean}  props.showPosition     - Show border position control
+ * @param {boolean}  props.showBorderRadius - Show border radius control
+ * @param {boolean}  props.showShadow       - Show shadow control
+ * @param {boolean}  props.showBorder       - Show border controls (position, color, width)
+ * @param {Array}    props.radiusOptions    - Custom radius options (overrides default)
  */
 export const BorderSettingsPanel = ({
-	borderRadius,
-	onBorderRadiusChange,
-	shadow,
-	onShadowChange,
-	borderPosition = '',
-	onBorderPositionChange,
-	borderColor = '',
-	onBorderColorChange,
-	borderColorType = 'solid',
-	onBorderColorTypeChange,
-	borderWidth = '',
-	onBorderWidthChange,
+	attributes = {},
+	onChange,
 	showPosition = true,
 	showBorderRadius = true,
 	showShadow = true,
 	showBorder = true,
+	radiusOptions = borderRadiusOptions,
 }) => {
+	const {
+		borderRadius = '',
+		shadow = '',
+		borderPosition = '',
+		borderColor = '',
+		borderColorType = 'solid',
+		borderWidth = '',
+	} = attributes;
+
 	return (
 		<>
 			{showBorderRadius && (
 				<div style={{ marginBottom: '16px' }}>
 					<BorderRadiusControl
-						value={borderRadius || ''}
-						onChange={onBorderRadiusChange}
+						value={borderRadius}
+						options={radiusOptions}
+						onChange={(value) => onChange({ borderRadius: value })}
 					/>
 				</div>
 			)}
@@ -87,8 +82,8 @@ export const BorderSettingsPanel = ({
 			{showShadow && (
 				<div style={{ marginBottom: '16px' }}>
 					<ShadowControl
-						value={shadow || ''}
-						onChange={onShadowChange}
+						value={shadow}
+						onChange={(value) => onChange({ shadow: value })}
 					/>
 				</div>
 			)}
@@ -102,9 +97,11 @@ export const BorderSettingsPanel = ({
 									'Border Position',
 									'codeweber-gutenberg-blocks'
 								)}
-								value={borderPosition || ''}
+								value={borderPosition}
 								options={BORDER_POSITION_OPTIONS}
-								onChange={onBorderPositionChange}
+								onChange={(value) =>
+									onChange({ borderPosition: value })
+								}
 							/>
 						</div>
 					)}
@@ -115,9 +112,9 @@ export const BorderSettingsPanel = ({
 								'Border Width',
 								'codeweber-gutenberg-blocks'
 							)}
-							value={borderWidth || ''}
+							value={borderWidth}
 							options={BORDER_WIDTH_OPTIONS}
-							onChange={onBorderWidthChange}
+							onChange={(value) => onChange({ borderWidth: value })}
 						/>
 					</div>
 
@@ -127,8 +124,10 @@ export const BorderSettingsPanel = ({
 								'Border Color Type',
 								'codeweber-gutenberg-blocks'
 							)}
-							value={borderColorType || 'solid'}
-							onChange={onBorderColorTypeChange}
+							value={borderColorType}
+							onChange={(value) =>
+								onChange({ borderColorType: value })
+							}
 							options={[
 								{
 									value: 'solid',
@@ -154,9 +153,9 @@ export const BorderSettingsPanel = ({
 								'Border Color',
 								'codeweber-gutenberg-blocks'
 							)}
-							value={borderColor || ''}
+							value={borderColor}
 							options={colors}
-							onChange={onBorderColorChange}
+							onChange={(value) => onChange({ borderColor: value })}
 						/>
 					</div>
 				</>

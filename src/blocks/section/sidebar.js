@@ -36,6 +36,23 @@ import { AngledControl } from '../../components/angled/AngledControl';
 import { WavesControl } from '../../components/waves/WavesControl';
 import { BorderSettingsPanel } from '../../components/borders';
 
+const BORDER_ACCENT_OPTIONS = [
+	{ value: '', label: __('None', 'codeweber-gutenberg-blocks') },
+	{ value: 'card-border-start', label: __('Start (left)', 'codeweber-gutenberg-blocks') },
+	{ value: 'card-border-end', label: __('End (right)', 'codeweber-gutenberg-blocks') },
+	{ value: 'card-border-top', label: __('Top', 'codeweber-gutenberg-blocks') },
+	{ value: 'card-border-bottom', label: __('Bottom', 'codeweber-gutenberg-blocks') },
+];
+
+const SECTION_RADIUS_OPTIONS = [
+	{ value: '', label: __('Default', 'codeweber-gutenberg-blocks') },
+	{ value: 'rounded-0', label: __('None', 'codeweber-gutenberg-blocks') },
+	{ value: 'rounded', label: __('Rounded', 'codeweber-gutenberg-blocks') },
+	{ value: 'rounded-xl', label: __('Rounded XL', 'codeweber-gutenberg-blocks') },
+	{ value: 'rounded-pill', label: __('Pill', 'codeweber-gutenberg-blocks') },
+	{ value: 'rounded-top', label: __('Top only', 'codeweber-gutenberg-blocks') },
+];
+
 export const SectionSidebar = ({ attributes, setAttributes }) => {
 	const [imageSize, setImageSize] = useState('');
 	const [videoSize, setVideoSize] = useState('');
@@ -89,6 +106,7 @@ export const SectionSidebar = ({ attributes, setAttributes }) => {
 		borderColor,
 		borderColorType,
 		borderWidth,
+		borderAccent,
 	} = attributes;
 
 	// Fetch current image data when component mounts or backgroundImageId changes
@@ -522,34 +540,18 @@ export const SectionSidebar = ({ attributes, setAttributes }) => {
 					{tab.name === 'borders' && (
 						<PanelBody>
 							<BorderSettingsPanel
-								borderRadius={borderRadius}
-								onBorderRadiusChange={(value) =>
-									setAttributes({ borderRadius: value })
-								}
-								shadow={shadow}
-								onShadowChange={(value) =>
-									setAttributes({ shadow: value })
-								}
-								borderPosition={borderPosition}
-								borderColor={borderColor}
-								borderColorType={borderColorType || 'solid'}
-								borderWidth={borderWidth}
-								showPosition={true}
-								showBorderRadius={true}
-								showShadow={true}
-								onBorderPositionChange={(value) =>
-									setAttributes({ borderPosition: value })
-								}
-								onBorderColorChange={(value) =>
-									setAttributes({ borderColor: value })
-								}
-								onBorderColorTypeChange={(value) =>
-									setAttributes({ borderColorType: value })
-								}
-								onBorderWidthChange={(value) =>
-									setAttributes({ borderWidth: value })
-								}
+								attributes={attributes}
+								onChange={setAttributes}
+								radiusOptions={SECTION_RADIUS_OPTIONS}
 							/>
+							<div style={{ marginTop: '16px' }}>
+								<SelectControl
+									label={__('Accent Border', 'codeweber-gutenberg-blocks')}
+									value={borderAccent || ''}
+									options={BORDER_ACCENT_OPTIONS}
+									onChange={(value) => setAttributes({ borderAccent: value })}
+								/>
+							</div>
 						</PanelBody>
 					)}
 

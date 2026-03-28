@@ -22,12 +22,13 @@ export const BorderRadiusControl = ({
 	onChange,
 	label = __('Border Radius', 'codeweber-gutenberg-blocks'),
 	help = '',
+	options = borderRadiusOptions,
 }) => {
 	return (
 		<SelectControl
 			label={label}
 			value={value}
-			options={borderRadiusOptions}
+			options={options}
 			onChange={onChange}
 			help={help}
 		/>

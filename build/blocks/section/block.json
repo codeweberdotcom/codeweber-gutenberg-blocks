@@ -201,6 +201,10 @@
       "type": "string",
       "default": ""
     },
+    "borderAccent": {
+      "type": "string",
+      "default": ""
+    },
     "sectionAlignItems": {
       "type": "string",
       "default": ""

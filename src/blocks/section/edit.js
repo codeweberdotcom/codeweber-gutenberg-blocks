@@ -71,6 +71,10 @@ const getSectionClasses = (attrs) => {
 		}
 	}
 
+	if (attrs.borderAccent) {
+		classes.push(attrs.borderAccent);
+	}
+
 	return classes.filter(Boolean).join(' ');
 };
 

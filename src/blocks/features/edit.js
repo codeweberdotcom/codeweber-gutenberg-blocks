@@ -844,18 +844,8 @@ const FeaturesEdit = ({ attributes, setAttributes, clientId }) => {
 										}
 									/>
 									<BorderSettingsPanel
-										borderRadius={borderRadius}
-										onBorderRadiusChange={(value) =>
-											applySettingsToFeatures({
-												borderRadius: value,
-											})
-										}
-										shadow={shadow}
-										onShadowChange={(value) =>
-											applySettingsToFeatures({
-												shadow: value,
-											})
-										}
+										attributes={attributes}
+										onChange={applySettingsToFeatures}
 										showBorder={false}
 									/>
 									<div style={{ marginTop: '16px' }}>
@@ -889,48 +879,8 @@ const FeaturesEdit = ({ attributes, setAttributes, clientId }) => {
 							{tab.name === 'borders' && (
 								<PanelBody>
 									<BorderSettingsPanel
-										borderRadius={borderRadius}
-										onBorderRadiusChange={(value) =>
-											applySettingsToFeatures({
-												borderRadius: value,
-											})
-										}
-										shadow={shadow}
-										onShadowChange={(value) =>
-											applySettingsToFeatures({
-												shadow: value,
-											})
-										}
-										borderPosition={borderPosition}
-										borderColor={borderColor}
-										borderColorType={
-											borderColorType || 'solid'
-										}
-										borderWidth={borderWidth}
-										showPosition={true}
-										showBorderRadius={true}
-										showShadow={true}
-										showBorder={true}
-										onBorderPositionChange={(value) =>
-											applySettingsToFeatures({
-												borderPosition: value,
-											})
-										}
-										onBorderColorChange={(value) =>
-											applySettingsToFeatures({
-												borderColor: value,
-											})
-										}
-										onBorderColorTypeChange={(value) =>
-											applySettingsToFeatures({
-												borderColorType: value,
-											})
-										}
-										onBorderWidthChange={(value) =>
-											applySettingsToFeatures({
-												borderWidth: value,
-											})
-										}
+										attributes={attributes}
+										onChange={applySettingsToFeatures}
 									/>
 								</PanelBody>
 							)}

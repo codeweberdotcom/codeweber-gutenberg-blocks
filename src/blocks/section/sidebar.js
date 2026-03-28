@@ -45,12 +45,12 @@ const BORDER_ACCENT_OPTIONS = [
 ];
 
 const SECTION_RADIUS_OPTIONS = [
-	{ value: '', label: __('Default', 'codeweber-gutenberg-blocks') },
-	{ value: 'rounded-0', label: __('None', 'codeweber-gutenberg-blocks') },
-	{ value: 'rounded', label: __('Rounded', 'codeweber-gutenberg-blocks') },
-	{ value: 'rounded-xl', label: __('Rounded XL', 'codeweber-gutenberg-blocks') },
-	{ value: 'rounded-pill', label: __('Pill', 'codeweber-gutenberg-blocks') },
-	{ value: 'rounded-top', label: __('Top only', 'codeweber-gutenberg-blocks') },
+	{ value: '', label: __('—', 'codeweber-gutenberg-blocks') },
+	{ value: 'rounded-0', label: 'rounded-0' },
+	{ value: 'rounded', label: 'rounded' },
+	{ value: 'rounded-xl', label: 'rounded-xl' },
+	{ value: 'rounded-pill', label: 'rounded-pill' },
+	{ value: 'rounded-top', label: 'rounded-top' },
 ];
 
 export const SectionSidebar = ({ attributes, setAttributes }) => {

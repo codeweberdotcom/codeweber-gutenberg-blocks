@@ -11,21 +11,12 @@ import { __ } from '@wordpress/i18n';
  * Based on Bootstrap 5 and theme custom shadows
  */
 export const shadowOptions = [
-	{
-		value: '',
-		label: __('Default (with border)', 'codeweber-gutenberg-blocks'),
-	},
-	{
-		value: 'shadow-none',
-		label: __('No Shadow', 'codeweber-gutenberg-blocks'),
-	},
-	{ value: 'shadow-sm', label: __('Small', 'codeweber-gutenberg-blocks') },
-	{ value: 'shadow', label: __('Regular', 'codeweber-gutenberg-blocks') },
-	{ value: 'shadow-lg', label: __('Large', 'codeweber-gutenberg-blocks') },
-	{
-		value: 'shadow-xl',
-		label: __('Extra Large', 'codeweber-gutenberg-blocks'),
-	},
+	{ value: '', label: __('—', 'codeweber-gutenberg-blocks') },
+	{ value: 'shadow-none', label: 'shadow-none' },
+	{ value: 'shadow-sm', label: 'shadow-sm' },
+	{ value: 'shadow', label: 'shadow' },
+	{ value: 'shadow-lg', label: 'shadow-lg' },
+	{ value: 'shadow-xl', label: 'shadow-xl' },
 ];
 
 /**

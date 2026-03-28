@@ -1,0 +1,14 @@
+/* Text Rotator — editor styles */
+.block-editor-block-list__block[data-type="codeweber-blocks/text-rotator"] {
+	.text-rotator-preview-badge {
+		display: inline-block;
+		font-size: 10px;
+		background: #007cba;
+		color: #fff;
+		border-radius: 2px;
+		padding: 1px 4px;
+		margin-left: 6px;
+		vertical-align: middle;
+		opacity: 0.7;
+	}
+}

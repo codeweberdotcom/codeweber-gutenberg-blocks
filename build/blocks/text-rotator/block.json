@@ -1,0 +1,101 @@
+{
+  "apiVersion": 3,
+  "name": "codeweber-blocks/text-rotator",
+  "version": "0.1.0",
+  "title": "Text Rotator",
+  "category": "codeweber-gutenberg-elements",
+  "icon": "editor-textcolor",
+  "description": "Animated text rotator: typer, rotator-fade, rotator-zoom. Repeater for words, full typography control.",
+  "keywords": [
+    "typer",
+    "rotator",
+    "animation",
+    "text",
+    "heading"
+  ],
+  "supports": {
+    "html": false,
+    "className": false,
+    "customClassName": false,
+    "anchor": true
+  },
+  "attributes": {
+    "titlePrefix": {
+      "type": "string",
+      "default": "We specialize in "
+    },
+    "titleTag": {
+      "type": "string",
+      "default": "h2"
+    },
+    "titleSize": {
+      "type": "string",
+      "default": ""
+    },
+    "titleWeight": {
+      "type": "string",
+      "default": ""
+    },
+    "titleTransform": {
+      "type": "string",
+      "default": ""
+    },
+    "titleColor": {
+      "type": "string",
+      "default": ""
+    },
+    "titleColorType": {
+      "type": "string",
+      "default": "solid"
+    },
+    "titleClass": {
+      "type": "string",
+      "default": ""
+    },
+    "breakBeforeRotator": {
+      "type": "boolean",
+      "default": true
+    },
+    "animationType": {
+      "type": "string",
+      "default": "rotator-fade"
+    },
+    "animationWords": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": [
+        "web design",
+        "SEO services",
+        "e-commerce"
+      ]
+    },
+    "animationColor": {
+      "type": "string",
+      "default": "primary"
+    },
+    "animationDelay": {
+      "type": "number",
+      "default": 100
+    },
+    "animationLoop": {
+      "type": "boolean",
+      "default": true
+    },
+    "align": {
+      "type": "string",
+      "default": ""
+    },
+    "blockClass": {
+      "type": "string",
+      "default": ""
+    },
+    "blockId": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "textdomain": "codeweber-gutenberg-blocks",
+  "editorScript": "file:./index.js"
+}

@@ -44,6 +44,7 @@ export const BackgroundSettingsPanel = ({
 	backgroundImageSize,
 	renderImagePicker,
 	renderPatternPicker,
+	renderVideoPicker,
 	imageSizeLabel = '',
 	patternSizeLabel = '',
 	availableImageSizes = [],
@@ -387,8 +388,8 @@ export const BackgroundSettingsPanel = ({
 	const defaultImagePicker = renderDefaultMediaPicker(imagePickerProps);
 	const defaultPatternPicker = renderDefaultMediaPicker(patternPickerProps);
 
-	// Video picker component
-	const renderVideoPicker = () => {
+	// Video picker component (default — no file size)
+	const renderDefaultVideoPicker = () => {
 		const videoPickerProps = {
 			label: __('Background Video', 'codeweber-gutenberg-blocks'),
 			url: backgroundVideoUrl,
@@ -607,7 +608,9 @@ export const BackgroundSettingsPanel = ({
 
 			{backgroundType === 'video' && (
 				<>
-					{renderVideoPicker()}
+					{renderVideoPicker
+						? renderVideoPicker()
+						: renderDefaultVideoPicker()}
 					{overlayControl}
 				</>
 			)}

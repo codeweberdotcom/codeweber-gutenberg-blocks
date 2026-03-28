@@ -20,9 +20,21 @@
     "anchor": true
   },
   "attributes": {
+    "enablePrefix": {
+      "type": "boolean",
+      "default": true
+    },
     "titlePrefix": {
       "type": "string",
       "default": "We specialize in "
+    },
+    "enableSuffix": {
+      "type": "boolean",
+      "default": false
+    },
+    "titleSuffix": {
+      "type": "string",
+      "default": ""
     },
     "titleTag": {
       "type": "string",

@@ -26,7 +26,10 @@ const getTitleClasses = ( attrs ) => {
 
 const TextRotatorSave = ( { attributes } ) => {
 	const {
+		enablePrefix,
 		titlePrefix,
+		enableSuffix,
+		titleSuffix,
 		titleTag,
 		breakBeforeRotator,
 		animationType,
@@ -71,9 +74,10 @@ const TextRotatorSave = ( { attributes } ) => {
 			className={ titleClasses || undefined }
 			id={ blockId || undefined }
 		>
-			<RichText.Content value={ titlePrefix } />
-			{ breakBeforeRotator && <br /> }
+			{ enablePrefix && <RichText.Content value={ titlePrefix } /> }
+			{ enablePrefix && breakBeforeRotator && <br /> }
 			{ animatedPart }
+			{ enableSuffix && <RichText.Content value={ titleSuffix } /> }
 		</TitleTag>
 	);
 };

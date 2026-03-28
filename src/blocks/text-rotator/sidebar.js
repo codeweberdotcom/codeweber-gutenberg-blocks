@@ -8,8 +8,15 @@ import {
 	Button,
 	ComboboxControl,
 } from '@wordpress/components';
-import { Icon, edit, typography, update, cog } from '@wordpress/icons';
-import { RichText } from '@wordpress/block-editor';
+import {
+	Icon,
+	edit,
+	typography,
+	update,
+	cog,
+	chevronUp,
+	chevronDown,
+} from '@wordpress/icons';
 import { TagControl } from '../../components/tag';
 import { ColorTypeControl } from '../../components/colors/ColorTypeControl';
 import { colors } from '../../utilities/colors';
@@ -53,7 +60,8 @@ const ALIGN_OPTIONS = [
 
 export const TextRotatorSidebar = ( { attributes, setAttributes } ) => {
 	const {
-		titlePrefix,
+		enablePrefix,
+		enableSuffix,
 		animationType,
 		animationWords,
 		animationColor,
@@ -130,57 +138,76 @@ export const TextRotatorSidebar = ( { attributes, setAttributes } ) => {
 		} );
 	};
 
+	const moveWord = ( idx, direction ) => {
+		const newIdx = idx + direction;
+		if ( newIdx < 0 || newIdx >= ( animationWords || [] ).length ) return;
+		const arr = [ ...( animationWords || [] ) ];
+		const [ removed ] = arr.splice( idx, 1 );
+		arr.splice( newIdx, 0, removed );
+		setAttributes( { animationWords: arr } );
+	};
+
 	return (
 		<TabPanel tabs={ tabs }>
 			{ ( tab ) => (
 				<>
 					{ tab.name === 'content' && (
 						<div style={ { padding: '16px' } }>
-							{ /* Prefix text */ }
-							<p style={ { fontSize: '11px', fontWeight: 600, textTransform: 'uppercase', color: '#1e1e1e', marginBottom: '8px' } }>
-								{ __( 'Prefix text', 'codeweber-gutenberg-blocks' ) }
-							</p>
-							<div className="components-base-control" style={ { marginBottom: '16px' } }>
-								<RichText
-									tagName="p"
-									value={ titlePrefix }
-									onChange={ ( value ) =>
-										setAttributes( { titlePrefix: value } )
-									}
-									placeholder={ __(
-										'Enter prefix text…',
-										'codeweber-gutenberg-blocks'
-									) }
-									allowedFormats={ [] }
-									withoutInteractiveFormatting
-									style={ {
-										border: '1px solid #949494',
-										borderRadius: '2px',
-										padding: '6px 8px',
-										minHeight: '36px',
-										fontSize: '13px',
-									} }
-								/>
-							</div>
-
-							{ /* Break before rotator */ }
+							{ /* Prefix / Suffix toggles */ }
 							<ToggleControl
 								label={ __(
-									'Line break before rotator',
+									'Enable prefix',
 									'codeweber-gutenberg-blocks'
 								) }
-								checked={ attributes.breakBeforeRotator }
+								checked={ !! enablePrefix }
 								onChange={ ( value ) =>
-									setAttributes( {
-										breakBeforeRotator: value,
-									} )
+									setAttributes( { enablePrefix: value } )
+								}
+								__nextHasNoMarginBottom
+							/>
+							<ToggleControl
+								label={ __(
+									'Enable suffix',
+									'codeweber-gutenberg-blocks'
+								) }
+								checked={ !! enableSuffix }
+								onChange={ ( value ) =>
+									setAttributes( { enableSuffix: value } )
 								}
 								__nextHasNoMarginBottom
 							/>
 
+							{ /* Break before rotator */ }
+							{ enablePrefix && (
+								<ToggleControl
+									label={ __(
+										'Line break before rotator',
+										'codeweber-gutenberg-blocks'
+									) }
+									checked={ attributes.breakBeforeRotator }
+									onChange={ ( value ) =>
+										setAttributes( {
+											breakBeforeRotator: value,
+										} )
+									}
+									__nextHasNoMarginBottom
+								/>
+							) }
+
 							{ /* Words repeater */ }
-							<p style={ { fontSize: '11px', fontWeight: 600, textTransform: 'uppercase', color: '#1e1e1e', margin: '16px 0 8px' } }>
-								{ __( 'Animated words', 'codeweber-gutenberg-blocks' ) }
+							<p
+								style={ {
+									fontSize: '11px',
+									fontWeight: 600,
+									textTransform: 'uppercase',
+									color: '#1e1e1e',
+									margin: '16px 0 8px',
+								} }
+							>
+								{ __(
+									'Animated words',
+									'codeweber-gutenberg-blocks'
+								) }
 							</p>
 							{ ( animationWords || [] ).map( ( word, index ) => (
 								<div
@@ -192,6 +219,44 @@ export const TextRotatorSidebar = ( { attributes, setAttributes } ) => {
 										marginBottom: '6px',
 									} }
 								>
+									<div
+										style={ {
+											display: 'flex',
+											flexDirection: 'column',
+											gap: '2px',
+											flexShrink: 0,
+										} }
+									>
+										<Button
+											icon={ chevronUp }
+											iconSize={ 16 }
+											disabled={ index === 0 }
+											onClick={ () =>
+												moveWord( index, -1 )
+											}
+											label={ __(
+												'Move up',
+												'codeweber-gutenberg-blocks'
+											) }
+										/>
+										<Button
+											icon={ chevronDown }
+											iconSize={ 16 }
+											disabled={
+												index ===
+												( animationWords || [] )
+													.length -
+													1
+											}
+											onClick={ () =>
+												moveWord( index, 1 )
+											}
+											label={ __(
+												'Move down',
+												'codeweber-gutenberg-blocks'
+											) }
+										/>
+									</div>
 									<TextControl
 										value={ word }
 										onChange={ ( value ) =>
@@ -201,7 +266,10 @@ export const TextRotatorSidebar = ( { attributes, setAttributes } ) => {
 											'Word',
 											'codeweber-gutenberg-blocks'
 										) } ${ index + 1 }` }
-										style={ { flex: 1, marginBottom: 0 } }
+										style={ {
+											flex: 1,
+											marginBottom: 0,
+										} }
 										__nextHasNoMarginBottom
 									/>
 									<Button
@@ -220,7 +288,11 @@ export const TextRotatorSidebar = ( { attributes, setAttributes } ) => {
 								onClick={ addWord }
 								style={ { marginTop: '4px' } }
 							>
-								+ { __( 'Add word', 'codeweber-gutenberg-blocks' ) }
+								+{ ' ' }
+								{ __(
+									'Add word',
+									'codeweber-gutenberg-blocks'
+								) }
 							</Button>
 						</div>
 					) }

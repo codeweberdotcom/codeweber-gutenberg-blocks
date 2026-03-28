@@ -32,7 +32,10 @@ const getTitleClasses = ( attrs ) => {
 
 const TextRotatorEdit = ( { attributes, setAttributes } ) => {
 	const {
+		enablePrefix,
 		titlePrefix,
+		enableSuffix,
+		titleSuffix,
 		titleTag,
 		breakBeforeRotator,
 		animationType,
@@ -64,23 +67,25 @@ const TextRotatorEdit = ( { attributes, setAttributes } ) => {
 
 			<div { ...blockProps }>
 				<TitleTag className={ titleClasses || undefined }>
-					<RichText
-						value={ titlePrefix }
-						onChange={ ( value ) =>
-							setAttributes( { titlePrefix: value } )
-						}
-						placeholder={ __(
-							'Enter prefix text…',
-							'codeweber-gutenberg-blocks'
-						) }
-						allowedFormats={ [] }
-						withoutInteractiveFormatting
-					/>
-					{ breakBeforeRotator && <br /> }
+					{ enablePrefix && (
+						<RichText
+							value={ titlePrefix }
+							onChange={ ( value ) =>
+								setAttributes( { titlePrefix: value } )
+							}
+							placeholder={ __(
+								'Enter prefix text…',
+								'codeweber-gutenberg-blocks'
+							) }
+							allowedFormats={ [] }
+							withoutInteractiveFormatting
+						/>
+					) }
+					{ enablePrefix && breakBeforeRotator && <br /> }
 					{ /* Editor preview of first word */ }
 					<span
 						className={ `${ animationType }${ colorClass }` }
-						style={ { opacity: 0.75, fontStyle: 'italic' } }
+						style={ { opacity: 0.75 } }
 					>
 						{ previewWord }
 					</span>
@@ -91,6 +96,20 @@ const TextRotatorEdit = ( { attributes, setAttributes } ) => {
 						>
 							|
 						</span>
+					) }
+					{ enableSuffix && (
+						<RichText
+							value={ titleSuffix }
+							onChange={ ( value ) =>
+								setAttributes( { titleSuffix: value } )
+							}
+							placeholder={ __(
+								'Enter suffix text…',
+								'codeweber-gutenberg-blocks'
+							) }
+							allowedFormats={ [] }
+							withoutInteractiveFormatting
+						/>
 					) }
 				</TitleTag>
 			</div>

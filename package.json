@@ -7,7 +7,7 @@
 	"main": "build/blocks/index.js",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/navidabdi/gutenberg-blocks.git"
+		"url": "git+https://github.com/codeweberdotcom/codeweber-gutenberg-blocks.git"
 	},
 	"keywords": [
 		"wordpress",
@@ -41,7 +41,7 @@
 		"@wordpress/eslint-plugin": "^14.0.0",
 		"@wordpress/prettier-config": "^2.10.0",
 		"@wordpress/scripts": "^25.4.0",
-		"@wordpress/stylelint-config": "^21.10.0start",
+		"@wordpress/stylelint-config": "^21.10.0",
 		"eslint-config-prettier": "^8.6.0"
 	},
 	"dependencies": {

@@ -105,6 +105,10 @@
     "customSvgId": {
       "type": "number",
       "default": null
+    },
+    "customSvgSize": {
+      "type": "number",
+      "default": 0
     }
   },
   "editorScript": "file:./index.js",

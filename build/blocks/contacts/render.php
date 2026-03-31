@@ -54,6 +54,7 @@ $iconBtnVariant = isset($attributes['iconBtnVariant']) ? $attributes['iconBtnVar
 $iconWrapperClass = isset($attributes['iconWrapperClass']) ? $attributes['iconWrapperClass'] : 'mb-3';
 $iconGradientColor = isset($attributes['iconGradientColor']) ? $attributes['iconGradientColor'] : 'gradient-1';
 $customSvgUrl = isset($attributes['customSvgUrl']) ? $attributes['customSvgUrl'] : '';
+$customSvgSize = isset($attributes['customSvgSize']) ? intval($attributes['customSvgSize']) : 0;
 $block_class = isset($attributes['blockClass']) ? $attributes['blockClass'] : '';
 $block_id = isset($attributes['blockId']) ? $attributes['blockId'] : '';
 $block_data = isset($attributes['blockData']) ? $attributes['blockData'] : '';
@@ -267,7 +268,7 @@ if (!function_exists('get_contacts_svg_icon_classes')) {
 
 // Функция для рендеринга простой иконки (без обёртки, только иконка с классом me-2)
 if (!function_exists('render_contacts_simple_icon')) {
-    function render_contacts_simple_icon($iconNameForContact, $iconType, $iconName, $svgIcon, $svgStyle, $iconSize, $iconFontSize, $iconColor, $iconColor2, $iconClass, $customSvgUrl) {
+    function render_contacts_simple_icon($iconNameForContact, $iconType, $iconName, $svgIcon, $svgStyle, $iconSize, $iconFontSize, $iconColor, $iconColor2, $iconClass, $customSvgUrl, $customSvgSize = 0) {
         // Если тип иконки none - не показываем
         if ($iconType === 'none') {
             return '';
@@ -310,21 +311,22 @@ if (!function_exists('render_contacts_simple_icon')) {
         if ($iconType === 'custom' && $customSvgUrl) {
             $svgClasses = get_contacts_svg_icon_classes(
                 'lineal',
-                $iconSize,
+                $customSvgSize > 0 ? '' : $iconSize,
                 $iconColor,
                 '',
                 $iconClass . ' me-2'
             );
-            return '<img src="' . esc_url($customSvgUrl) . '" class="' . esc_attr($svgClasses) . '" alt="" />';
+            $style = $customSvgSize > 0 ? ' style="width:' . intval($customSvgSize) . 'px;height:auto"' : '';
+            return '<img src="' . esc_url($customSvgUrl) . '" class="' . esc_attr($svgClasses) . '"' . $style . ' alt="" />';
         }
-        
+
         return '';
     }
 }
 
 // Функция для рендеринга иконки контакта (для формата 'icon' - обёртка работает, но без mt-n1)
 if (!function_exists('render_contacts_icon')) {
-    function render_contacts_icon($iconNameForContact, $iconType, $iconName, $svgIcon, $svgStyle, $iconSize, $iconFontSize, $iconColor, $iconColor2, $iconClass, $iconWrapper, $iconWrapperStyle, $iconBtnSize, $iconBtnVariant, $iconWrapperClass, $iconGradientColor, $customSvgUrl) {
+    function render_contacts_icon($iconNameForContact, $iconType, $iconName, $svgIcon, $svgStyle, $iconSize, $iconFontSize, $iconColor, $iconColor2, $iconClass, $iconWrapper, $iconWrapperStyle, $iconBtnSize, $iconBtnVariant, $iconWrapperClass, $iconGradientColor, $customSvgUrl, $customSvgSize = 0) {
         // Если тип иконки none - не показываем
         if ($iconType === 'none') {
             return '';
@@ -373,16 +375,17 @@ if (!function_exists('render_contacts_icon')) {
         if ($iconType === 'custom' && $customSvgUrl) {
             $isButtonWrapper = $iconWrapper && ($iconWrapperStyle === 'btn' || $iconWrapperStyle === 'btn-circle');
             $shouldApplyColorToIcon = !$isButtonWrapper || $iconBtnVariant !== 'solid';
-            
+
             $svgClasses = get_contacts_svg_icon_classes(
                 'lineal', // Кастомные как lineal
-                $iconSize,
+                $customSvgSize > 0 ? '' : $iconSize,
                 $shouldApplyColorToIcon ? $iconColor : '',
                 '',
                 $iconClass
             );
-            
-            $iconHtml = '<img src="' . esc_url($customSvgUrl) . '" class="' . esc_attr($svgClasses) . '" alt="" />';
+
+            $style = $customSvgSize > 0 ? ' style="width:' . intval($customSvgSize) . 'px;height:auto"' : '';
+            $iconHtml = '<img src="' . esc_url($customSvgUrl) . '" class="' . esc_attr($svgClasses) . '"' . $style . ' alt="" />';
         }
         
         if (!$iconHtml) {
@@ -577,7 +580,7 @@ if ($block_data) {
             <?php if ($format === 'icon'): ?>
                 <div class="d-flex flex-row <?php echo esc_attr($iconWrapperClass ? $iconWrapperClass : ''); ?>">
                     <div>
-                        <?php echo render_contacts_icon('location-pin-alt', $iconType, $iconName, $svgIcon, $svgStyle, $iconSize, $iconFontSize, $iconColor, $iconColor2, $iconClass, $iconWrapper, $iconWrapperStyle, $iconBtnSize, $iconBtnVariant, '', $iconGradientColor, $customSvgUrl); ?>
+                        <?php echo render_contacts_icon('location-pin-alt', $iconType, $iconName, $svgIcon, $svgStyle, $iconSize, $iconFontSize, $iconColor, $iconColor2, $iconClass, $iconWrapper, $iconWrapperStyle, $iconBtnSize, $iconBtnVariant, '', $iconGradientColor, $customSvgUrl, $customSvgSize); ?>
                     </div>
                     <div>
                         <<?php echo esc_attr($titleTag); ?> class="<?php echo esc_attr($titleClasses); ?>"><?php echo esc_html__('Address', 'codeweber-gutenberg-blocks'); ?></<?php echo esc_attr($titleTag); ?>>
@@ -587,7 +590,7 @@ if ($block_data) {
             <?php elseif ($format === 'icon-simple'): ?>
                 <div>
                     <<?php echo esc_attr($textTag); ?> class="<?php echo esc_attr($textClasses); ?>">
-                        <?php echo render_contacts_simple_icon('location-pin-alt', $iconType, $iconName, $svgIcon, $svgStyle, $iconSize, $iconFontSize, $iconColor, $iconColor2, $iconClass, $customSvgUrl); ?>
+                        <?php echo render_contacts_simple_icon('location-pin-alt', $iconType, $iconName, $svgIcon, $svgStyle, $iconSize, $iconFontSize, $iconColor, $iconColor2, $iconClass, $customSvgUrl, $customSvgSize); ?>
                         <span><?php echo esc_html($address); ?></span>
                     </<?php echo esc_attr($textTag); ?>>
                 </div>
@@ -605,7 +608,7 @@ if ($block_data) {
             <?php if ($format === 'icon'): ?>
                 <div class="d-flex flex-row <?php echo esc_attr($iconWrapperClass ? $iconWrapperClass : ''); ?>">
                     <div>
-                        <?php echo render_contacts_icon('envelope', $iconType, $iconName, $svgIcon, $svgStyle, $iconSize, $iconFontSize, $iconColor, $iconColor2, $iconClass, $iconWrapper, $iconWrapperStyle, $iconBtnSize, $iconBtnVariant, '', $iconGradientColor, $customSvgUrl); ?>
+                        <?php echo render_contacts_icon('envelope', $iconType, $iconName, $svgIcon, $svgStyle, $iconSize, $iconFontSize, $iconColor, $iconColor2, $iconClass, $iconWrapper, $iconWrapperStyle, $iconBtnSize, $iconBtnVariant, '', $iconGradientColor, $customSvgUrl, $customSvgSize); ?>
                     </div>
                     <div>
                         <<?php echo esc_attr($titleTag); ?> class="<?php echo esc_attr($titleClasses); ?>"><?php echo esc_html__('E-mail', 'codeweber-gutenberg-blocks'); ?></<?php echo esc_attr($titleTag); ?>>
@@ -619,7 +622,7 @@ if ($block_data) {
             <?php elseif ($format === 'icon-simple'): ?>
                 <div>
                     <a href="mailto:<?php echo esc_attr(antispambot($email)); ?>" class="d-flex align-items-center <?php echo esc_attr($textClasses); ?>">
-                        <?php echo render_contacts_simple_icon('envelope', $iconType, $iconName, $svgIcon, $svgStyle, $iconSize, $iconFontSize, $iconColor, $iconColor2, $iconClass, $customSvgUrl); ?>
+                        <?php echo render_contacts_simple_icon('envelope', $iconType, $iconName, $svgIcon, $svgStyle, $iconSize, $iconFontSize, $iconColor, $iconColor2, $iconClass, $customSvgUrl, $customSvgSize); ?>
                         <span><?php echo esc_html(antispambot($email)); ?></span>
                     </a>
                 </div>
@@ -650,7 +653,7 @@ if ($block_data) {
             <?php if ($format === 'icon'): ?>
                 <div class="d-flex flex-row <?php echo esc_attr($iconWrapperClass ? $iconWrapperClass : ''); ?>">
                     <div>
-                        <?php echo render_contacts_icon('phone-volume', $iconType, $iconName, $svgIcon, $svgStyle, $iconSize, $iconFontSize, $iconColor, $iconColor2, $iconClass, $iconWrapper, $iconWrapperStyle, $iconBtnSize, $iconBtnVariant, '', $iconGradientColor, $customSvgUrl); ?>
+                        <?php echo render_contacts_icon('phone-volume', $iconType, $iconName, $svgIcon, $svgStyle, $iconSize, $iconFontSize, $iconColor, $iconColor2, $iconClass, $iconWrapper, $iconWrapperStyle, $iconBtnSize, $iconBtnVariant, '', $iconGradientColor, $customSvgUrl, $customSvgSize); ?>
                     </div>
                     <div>
                         <<?php echo esc_attr($titleTag); ?> class="<?php echo esc_attr($titleClasses); ?>"><?php echo esc_html__('Phone', 'codeweber-gutenberg-blocks'); ?></<?php echo esc_attr($titleTag); ?>>
@@ -665,7 +668,7 @@ if ($block_data) {
                 <div>
                     <?php foreach ($phone_values as $index => $phone_data): ?>
                         <a href="tel:<?php echo esc_attr($phone_data['clean']); ?>" class="d-flex align-items-center <?php echo esc_attr($textClasses); ?>">
-                            <?php echo render_contacts_simple_icon('phone-volume', $iconType, $iconName, $svgIcon, $svgStyle, $iconSize, $iconFontSize, $iconColor, $iconColor2, $iconClass, $customSvgUrl); ?>
+                            <?php echo render_contacts_simple_icon('phone-volume', $iconType, $iconName, $svgIcon, $svgStyle, $iconSize, $iconFontSize, $iconColor, $iconColor2, $iconClass, $customSvgUrl, $customSvgSize); ?>
                             <span><?php echo esc_html($phone_data['display']); ?></span>
                         </a>
                     <?php endforeach; ?>

@@ -45,6 +45,7 @@ const Edit = ({ attributes, setAttributes }) => {
 		iconBtnVariant,
 		customSvgUrl,
 		customSvgId,
+		customSvgSize,
 		showCounterClass,
 		blockClass,
 		blockData,
@@ -308,6 +309,7 @@ const Edit = ({ attributes, setAttributes }) => {
 									iconWrapperClass="pe-none mx-auto me-3"
 									customSvgUrl={customSvgUrl}
 									customSvgId={customSvgId}
+									customSvgSize={customSvgSize}
 									isEditor={true}
 								/>
 							</div>

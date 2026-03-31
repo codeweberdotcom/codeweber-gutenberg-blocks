@@ -12,6 +12,24 @@ import { ColorTypeControl } from '../colors/ColorTypeControl';
 import { colors } from '../../utilities/colors';
 import { borderRadiusOptions } from '../../utilities/border-radius';
 
+// Border accent options
+const BORDER_ACCENT_OPTIONS = [
+	{ label: __('None', 'codeweber-gutenberg-blocks'), value: '' },
+	{
+		label: __('Start (left)', 'codeweber-gutenberg-blocks'),
+		value: 'card-border-start',
+	},
+	{
+		label: __('End (right)', 'codeweber-gutenberg-blocks'),
+		value: 'card-border-end',
+	},
+	{ label: __('Top', 'codeweber-gutenberg-blocks'), value: 'card-border-top' },
+	{
+		label: __('Bottom', 'codeweber-gutenberg-blocks'),
+		value: 'card-border-bottom',
+	},
+];
+
 // Border position options
 const BORDER_POSITION_OPTIONS = [
 	{ label: __('None', 'codeweber-gutenberg-blocks'), value: '' },
@@ -38,7 +56,7 @@ const BORDER_WIDTH_OPTIONS = [
 /**
  * BorderSettingsPanel Component
  *
- * API: { attributes, onChange, showPosition, showBorderRadius, showShadow, showBorder, radiusOptions }
+ * API: { attributes, onChange, showPosition, showBorderRadius, showShadow, showBorder, showAccentBorder, radiusOptions }
  *
  * @param {Object}   props
  * @param {Object}   props.attributes       - Block attributes object
@@ -47,6 +65,7 @@ const BORDER_WIDTH_OPTIONS = [
  * @param {boolean}  props.showBorderRadius - Show border radius control
  * @param {boolean}  props.showShadow       - Show shadow control
  * @param {boolean}  props.showBorder       - Show border controls (position, color, width)
+ * @param {boolean}  props.showAccentBorder - Show accent border control
  * @param {Array}    props.radiusOptions    - Custom radius options (overrides default)
  */
 export const BorderSettingsPanel = ({
@@ -56,6 +75,7 @@ export const BorderSettingsPanel = ({
 	showBorderRadius = true,
 	showShadow = true,
 	showBorder = true,
+	showAccentBorder = true,
 	radiusOptions = borderRadiusOptions,
 }) => {
 	const {
@@ -65,6 +85,7 @@ export const BorderSettingsPanel = ({
 		borderColor = '',
 		borderColorType = 'solid',
 		borderWidth = '',
+		borderAccent = '',
 	} = attributes;
 
 	return (
@@ -159,6 +180,22 @@ export const BorderSettingsPanel = ({
 						/>
 					</div>
 				</>
+			)}
+
+			{showAccentBorder && (
+				<div style={{ marginBottom: '16px' }}>
+					<SelectControl
+						label={__(
+							'Accent Border',
+							'codeweber-gutenberg-blocks'
+						)}
+						value={borderAccent}
+						options={BORDER_ACCENT_OPTIONS}
+						onChange={(value) =>
+							onChange({ borderAccent: value })
+						}
+					/>
+				</div>
 			)}
 		</>
 	);

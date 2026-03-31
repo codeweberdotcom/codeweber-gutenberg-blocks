@@ -23,6 +23,7 @@ const Save = ({ attributes }) => {
 		iconBtnVariant,
 		customSvgUrl,
 		customSvgId,
+		customSvgSize,
 		showCounterClass,
 		blockClass,
 		blockData,
@@ -83,6 +84,7 @@ const Save = ({ attributes }) => {
 							iconWrapperClass="pe-none mx-auto me-3"
 							customSvgUrl={customSvgUrl}
 							customSvgId={customSvgId}
+							customSvgSize={customSvgSize}
 						/>
 					</div>
 					<div>

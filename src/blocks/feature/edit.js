@@ -89,6 +89,7 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 		iconGradientColor,
 		customSvgUrl,
 		customSvgId,
+		customSvgSize,
 		// Title
 		enableTitle,
 		title,
@@ -127,6 +128,7 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 		borderPosition,
 		borderWidth,
 		borderColorType,
+		borderAccent,
 		backgroundType,
 		backgroundColor,
 		backgroundColorType,
@@ -461,6 +463,10 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 			}
 		}
 
+		if (borderAccent) {
+			classes.push(borderAccent);
+		}
+
 		// Background classes
 		classes.push(
 			...generateBackgroundClasses({
@@ -584,6 +590,7 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 				iconGradientColor={iconGradientColor}
 				customSvgUrl={customSvgUrl}
 				customSvgId={customSvgId}
+				customSvgSize={customSvgSize}
 				isEditor={true}
 			/>
 		);
@@ -973,11 +980,6 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 										onChange={(value) =>
 											setAttributes({ h100: value })
 										}
-									/>
-									<BorderSettingsPanel
-										attributes={attributes}
-										onChange={setAttributes}
-										showBorder={false}
 									/>
 									<div style={{ marginTop: '16px' }}>
 										<SpacingControl

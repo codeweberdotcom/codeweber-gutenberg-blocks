@@ -82,6 +82,10 @@
 			"type": "number",
 			"default": 0
 		},
+		"customSvgSize": {
+			"type": "number",
+			"default": 0
+		},
 		"enableTitle": {
 			"type": "boolean",
 			"default": true
@@ -203,6 +207,10 @@
 			"default": ""
 		},
 		"borderColor": {
+			"type": "string",
+			"default": ""
+		},
+		"borderAccent": {
 			"type": "string",
 			"default": ""
 		},

@@ -107,6 +107,10 @@
 			"type": "number",
 			"default": 0
 		},
+		"customSvgSize": {
+			"type": "number",
+			"default": 0
+		},
 		"titleTag": {
 			"type": "string",
 			"default": "div"

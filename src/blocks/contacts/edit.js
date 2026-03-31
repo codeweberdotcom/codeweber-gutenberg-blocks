@@ -53,6 +53,7 @@ const ContactsPreview = ({
 		iconWrapperClass = 'mb-3',
 		iconGradientColor = 'gradient-1',
 		customSvgUrl = '',
+		customSvgSize = 0,
 		itemClass = '',
 		theme = 'default',
 	} = attributes;
@@ -183,6 +184,7 @@ const ContactsPreview = ({
 					iconWrapperClass={wrapperClassForIcon}
 					iconGradientColor={iconGradientColor}
 					customSvgUrl={customSvgUrlToUse}
+					customSvgSize={customSvgSize}
 					isEditor={true}
 				/>
 			);
@@ -210,6 +212,7 @@ const ContactsPreview = ({
 						iconWrapperClass=""
 						iconGradientColor={iconGradientColor}
 						customSvgUrl={customSvgUrlToUse}
+						customSvgSize={customSvgSize}
 						isEditor={true}
 					/>
 				</div>
@@ -290,6 +293,7 @@ const ContactsPreview = ({
 					iconWrapperClass=""
 					iconGradientColor={iconGradientColor}
 					customSvgUrl={customSvgUrlToUse}
+					customSvgSize={customSvgSize}
 					isEditor={true}
 				/>
 			);

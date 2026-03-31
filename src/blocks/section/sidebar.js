@@ -4,7 +4,6 @@ import { useState, useEffect } from '@wordpress/element';
 import {
 	PanelBody,
 	Button,
-	SelectControl,
 	TextareaControl,
 	ToggleControl,
 	RangeControl,
@@ -35,14 +34,6 @@ import { SpacingControl } from '../../components/spacing/SpacingControl';
 import { AngledControl } from '../../components/angled/AngledControl';
 import { WavesControl } from '../../components/waves/WavesControl';
 import { BorderSettingsPanel } from '../../components/borders';
-
-const BORDER_ACCENT_OPTIONS = [
-	{ value: '', label: __('None', 'codeweber-gutenberg-blocks') },
-	{ value: 'card-border-start', label: __('Start (left)', 'codeweber-gutenberg-blocks') },
-	{ value: 'card-border-end', label: __('End (right)', 'codeweber-gutenberg-blocks') },
-	{ value: 'card-border-top', label: __('Top', 'codeweber-gutenberg-blocks') },
-	{ value: 'card-border-bottom', label: __('Bottom', 'codeweber-gutenberg-blocks') },
-];
 
 const SECTION_RADIUS_OPTIONS = [
 	{ value: '', label: __('—', 'codeweber-gutenberg-blocks') },
@@ -544,14 +535,6 @@ export const SectionSidebar = ({ attributes, setAttributes }) => {
 								onChange={setAttributes}
 								radiusOptions={SECTION_RADIUS_OPTIONS}
 							/>
-							<div style={{ marginTop: '16px' }}>
-								<SelectControl
-									label={__('Accent Border', 'codeweber-gutenberg-blocks')}
-									value={borderAccent || ''}
-									options={BORDER_ACCENT_OPTIONS}
-									onChange={(value) => setAttributes({ borderAccent: value })}
-								/>
-							</div>
 						</PanelBody>
 					)}
 

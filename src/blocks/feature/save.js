@@ -35,6 +35,7 @@ const Save = ({ attributes }) => {
 		iconGradientColor,
 		customSvgUrl,
 		customSvgId,
+		customSvgSize,
 		// Title
 		enableTitle,
 		title,
@@ -67,6 +68,7 @@ const Save = ({ attributes }) => {
 		borderPosition,
 		borderWidth,
 		borderColorType,
+		borderAccent,
 		backgroundType,
 		backgroundColor,
 		backgroundColorType,
@@ -135,6 +137,10 @@ const Save = ({ attributes }) => {
 			} else {
 				classes.push(`border-${borderColor}`);
 			}
+		}
+
+		if (borderAccent) {
+			classes.push(borderAccent);
 		}
 
 		// Background classes
@@ -218,6 +224,7 @@ const Save = ({ attributes }) => {
 			iconGradientColor={iconGradientColor}
 			customSvgUrl={customSvgUrl}
 			customSvgId={customSvgId}
+			customSvgSize={customSvgSize}
 		/>
 	);
 

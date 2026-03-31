@@ -1,5 +1,6 @@
 // src/utilities/colors.js
 export const colors = [
+	{ label: 'Transparent', value: 'transparent' },
 	{ label: 'Primary', value: 'primary' },
 	{ label: 'Dark', value: 'dark' },
 	{ label: 'Light', value: 'light' },
@@ -25,4 +26,6 @@ export const colors = [
 	{ label: 'Facebook', value: 'facebook' },
 	{ label: 'Telegram', value: 'telegram' },
 	{ label: 'Frost', value: 'frost' },
+	{ label: 'Soft Frost', value: 'soft-frost' },
+	{ label: 'Pale Frost', value: 'pale-frost' },
 ];

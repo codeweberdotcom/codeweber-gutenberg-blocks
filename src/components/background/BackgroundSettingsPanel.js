@@ -104,10 +104,7 @@ export const BackgroundSettingsPanel = ({
 		});
 	};
 
-	const showOverlayControl =
-		backgroundType === 'image' ||
-		(allowVideo && backgroundType === 'video');
-	const overlayControl = showOverlayControl ? (
+	const overlayControl = backgroundType !== 'none' ? (
 		<>
 			<div className="component-sidebar-title">
 				<label>
@@ -589,6 +586,7 @@ export const BackgroundSettingsPanel = ({
 							}
 						/>
 					)}
+					{overlayControl}
 				</>
 			)}
 

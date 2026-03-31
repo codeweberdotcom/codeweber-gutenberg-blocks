@@ -86,6 +86,9 @@ export const generateBackgroundClasses = (attrs) => {
 					)
 				);
 			}
+			if (backgroundOverlay && backgroundOverlay !== '') {
+				classes.push(backgroundOverlay);
+			}
 			break;
 		case 'image':
 			classes.push('image-wrapper', 'bg-image');

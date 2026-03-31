@@ -119,6 +119,7 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 		// Card
 		enableCard,
 		enableCardBody,
+		cardBodyClass,
 		overflowHidden,
 		h100,
 		borderRadius,
@@ -1059,6 +1060,20 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 											),
 										}}
 									/>
+									{enableCardBody && (
+										<TextControl
+											label={__(
+												'Card Body Class',
+												'codeweber-gutenberg-blocks'
+											)}
+											value={cardBodyClass || ''}
+											onChange={(value) =>
+												setAttributes({
+													cardBodyClass: value,
+												})
+											}
+										/>
+									)}
 								</div>
 							)}
 						</>
@@ -1069,7 +1084,7 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 			<div {...blockProps}>
 				{enableCard ? (
 					enableCardBody ? (
-						<div className={`card-body ${layoutClasses}`.trim()}>
+						<div className={`card-body ${layoutClasses} ${cardBodyClass || ''}`.trim()}>
 							{renderContent()}
 						</div>
 					) : (

@@ -59,6 +59,7 @@ const Save = ({ attributes }) => {
 		// Card
 		enableCard,
 		enableCardBody,
+		cardBodyClass,
 		overflowHidden,
 		h100,
 		borderRadius,
@@ -339,7 +340,7 @@ const Save = ({ attributes }) => {
 	return (
 		<div {...blockProps}>
 			{enableCardBody ? (
-				<div className={`card-body ${layoutClasses}`.trim()}>
+				<div className={`card-body ${layoutClasses} ${cardBodyClass || ''}`.trim()}>
 					{renderContent()}
 				</div>
 			) : (

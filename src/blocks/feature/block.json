@@ -186,6 +186,10 @@
 			"type": "boolean",
 			"default": false
 		},
+		"cardBodyClass": {
+			"type": "string",
+			"default": ""
+		},
 		"overflowHidden": {
 			"type": "boolean",
 			"default": false

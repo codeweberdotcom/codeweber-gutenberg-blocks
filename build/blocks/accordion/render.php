@@ -285,3 +285,44 @@ $wrapperAttributes = 'class="' . esc_attr(implode(' ', $accordionClasses)) . '" 
 		<?php endif; ?>
 	<?php endif; ?>
 </div>
+<?php
+// Register Schema.org data for the theme's SEO module.
+if ( ! empty( $itemsToRender ) && function_exists( 'codeweber_schema_add_block_data' ) ) {
+	if ( $mode === 'custom' || ( $mode === 'post' && $postType === 'faq' ) ) {
+		// FAQPage: Q/A pairs.
+		$schema_items = [];
+		foreach ( $itemsToRender as $item ) {
+			$schema_items[] = [
+				'title'   => $item['title'] ?? '',
+				'content' => $item['content'] ?? '',
+			];
+		}
+		codeweber_schema_add_block_data( 'faq', $schema_items );
+	} elseif ( $mode === 'post' && ! empty( $postType ) ) {
+		// ItemList for other CPTs.
+		$schema_type = function_exists( 'codeweber_schema_type_for_post_type' )
+			? codeweber_schema_type_for_post_type( $postType )
+			: null;
+
+		if ( $schema_type ) {
+			$list_items = [];
+			foreach ( $itemsToRender as $item ) {
+				$item_id = $item['id'] ?? '';
+				// Extract post ID from item ID (format: "item-{post_id}-{index}").
+				$post_id_match = 0;
+				if ( preg_match( '/^item-(\d+)-/', $item_id, $m ) ) {
+					$post_id_match = (int) $m[1];
+				}
+				$list_items[] = [
+					'title' => $item['title'] ?? '',
+					'url'   => $post_id_match ? get_permalink( $post_id_match ) : '',
+				];
+			}
+			codeweber_schema_add_block_data( 'itemlist', [
+				'schema_type' => $schema_type,
+				'items'       => $list_items,
+			] );
+		}
+	}
+}
+?>

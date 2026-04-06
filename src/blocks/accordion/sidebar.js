@@ -14,6 +14,7 @@ import {
 } from '@wordpress/components';
 import { PostTypeTaxonomyControl } from '../../components/post-type-taxonomy/PostTypeTaxonomyControl';
 import { PostSortControl } from '../../components/post-sort/PostSortControl';
+import { SchemaTypeNotice } from '../../components/schema-type';
 import { colors } from '../../utilities/colors';
 
 export const AccordionSidebar = ({ attributes, setAttributes }) => {
@@ -78,6 +79,11 @@ export const AccordionSidebar = ({ attributes, setAttributes }) => {
 						{modeOption.label}
 					</Button>
 				))}
+			</div>
+
+			{/* Schema.org type indicator */}
+			<div style={{ marginTop: '12px' }}>
+				<SchemaTypeNotice mode={mode || 'custom'} postType={postType || ''} />
 			</div>
 
 			{/* Post Type Selection - показываем только в режиме Post */}

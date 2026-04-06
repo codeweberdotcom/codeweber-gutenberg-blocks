@@ -17,6 +17,7 @@ import {
 import { useState } from '@wordpress/element';
 import { PostTypeTaxonomyControl } from '../../components/post-type-taxonomy/PostTypeTaxonomyControl';
 import { PostSortControl } from '../../components/post-sort/PostSortControl';
+import { SchemaTypeNotice } from '../../components/schema-type';
 import { IconPicker } from '../../components/icon/IconPicker';
 import { BlockMetaFields } from '../../components/block-meta/BlockMetaFields';
 import { colors } from '../../utilities/colors';
@@ -126,6 +127,10 @@ export const ListsSidebar = ({ attributes, setAttributes }) => {
 							)}
 						/>
 					</div>
+				)}
+
+				{mode === 'post' && (
+					<SchemaTypeNotice mode="post" postType={postType || ''} />
 				)}
 
 				{/* Post Settings - только в режиме Post */}

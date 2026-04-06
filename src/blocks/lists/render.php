@@ -219,3 +219,23 @@ foreach ($wrapperAttrs as $key => $value) {
 		</<?php echo $tag; ?>>
 	<?php endif; ?>
 </div>
+<?php
+// Register Schema.org data for the theme's SEO module.
+if ( ! empty( $itemsToRender ) && $mode === 'post' && ! empty( $postType ) && function_exists( 'codeweber_schema_add_block_data' ) && function_exists( 'codeweber_schema_type_for_post_type' ) ) {
+	$schema_type = codeweber_schema_type_for_post_type( $postType );
+
+	if ( $schema_type ) {
+		$list_items = [];
+		foreach ( $itemsToRender as $item ) {
+			$list_items[] = [
+				'title' => $item['text'] ?? '',
+				'url'   => $item['url'] ?? '',
+			];
+		}
+		codeweber_schema_add_block_data( 'itemlist', [
+			'schema_type' => $schema_type,
+			'items'       => $list_items,
+		] );
+	}
+}
+?>

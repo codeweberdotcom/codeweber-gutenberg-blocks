@@ -1095,3 +1095,34 @@ if (!function_exists('render_post_grid_item')) {
 		<p><?php esc_html_e('No posts found.', 'codeweber-gutenberg-blocks'); ?></p>
 	<?php endif; ?>
 </div>
+<?php
+// Register Schema.org data for the theme's SEO module.
+if ( ! empty( $posts_to_show ) && function_exists( 'codeweber_schema_add_block_data' ) && function_exists( 'codeweber_schema_type_for_post_type' ) ) {
+	$schema_type = codeweber_schema_type_for_post_type( $post_type );
+
+	if ( $schema_type && $post_type === 'faq' ) {
+		// FAQPage for FAQ posts.
+		$schema_items = [];
+		foreach ( $posts_to_show as $p ) {
+			$schema_items[] = [
+				'title'   => get_the_title( $p ),
+				'content' => $p->post_content,
+			];
+		}
+		codeweber_schema_add_block_data( 'faq', $schema_items );
+	} elseif ( $schema_type ) {
+		// ItemList for other CPTs.
+		$list_items = [];
+		foreach ( $posts_to_show as $p ) {
+			$list_items[] = [
+				'title' => get_the_title( $p ),
+				'url'   => get_permalink( $p ),
+			];
+		}
+		codeweber_schema_add_block_data( 'itemlist', [
+			'schema_type' => $schema_type,
+			'items'       => $list_items,
+		] );
+	}
+}
+?>

@@ -9,6 +9,7 @@ import { ImageSizeControl } from '../../../components/image-size';
 import { PostSortControl } from '../../../components/post-sort';
 import { PostGridTemplateControl } from '../../../components/post-grid-template';
 import { PostTypeTaxonomyControl } from '../../../components/post-type-taxonomy/PostTypeTaxonomyControl';
+import { SchemaTypeNotice } from '../../../components/schema-type';
 
 export const MainControl = ({ attributes, setAttributes }) => {
 	const {
@@ -46,6 +47,8 @@ export const MainControl = ({ attributes, setAttributes }) => {
 					setAttributes({ selectedTaxonomies: value })
 				}
 			/>
+
+			<SchemaTypeNotice mode="post" postType={postType || ''} />
 
 			<div style={{ marginTop: '16px' }}>
 				<SelectControl

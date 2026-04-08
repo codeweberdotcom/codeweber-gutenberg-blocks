@@ -122,6 +122,10 @@
     "badgeExtraClass": {
       "type": "string",
       "default": ""
+    },
+    "navbarScheme": {
+      "type": "string",
+      "default": "navbar-light"
     }
   },
   "textdomain": "codeweber-gutenberg-blocks",

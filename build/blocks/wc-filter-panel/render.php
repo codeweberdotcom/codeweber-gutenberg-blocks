@@ -67,6 +67,8 @@ $panel_atts = [
 	} )(),
 	'badge_color'        => sanitize_html_class( $attributes['badgeColor'] ?? 'primary' ),
 	'badge_extra_class'  => isset( $attributes['badgeExtraClass'] ) ? esc_attr( $attributes['badgeExtraClass'] ) : '',
+	'navbar_scheme'      => in_array( $attributes['navbarScheme'] ?? 'navbar-light', [ 'navbar-light', 'navbar-dark' ], true )
+		? $attributes['navbarScheme'] : 'navbar-light',
 ];
 
 ob_start();

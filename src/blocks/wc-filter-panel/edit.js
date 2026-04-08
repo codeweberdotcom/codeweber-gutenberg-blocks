@@ -201,6 +201,7 @@ export default function Edit( { attributes, setAttributes } ) {
 		badgeShape,
 		badgeColor,
 		badgeExtraClass,
+		navbarScheme,
 	} = attributes;
 
 	const [ wcAttributes, setWcAttributes ] = useState( [] );
@@ -574,6 +575,16 @@ export default function Edit( { attributes, setAttributes } ) {
 											help={ __( 'Пример: widget-title mb-3', 'codeweber-gutenberg-blocks' ) }
 											value={ headingClass }
 											onChange={ ( val ) => setAttributes( { headingClass: val } ) }
+										/>
+										<SelectControl
+											label={ __( 'Цветовая схема меню (collapse)', 'codeweber-gutenberg-blocks' ) }
+											help={ __( 'Применяется к displayMode «Вертикальное меню»', 'codeweber-gutenberg-blocks' ) }
+											value={ navbarScheme }
+											options={ [
+												{ label: __( 'Light (светлый фон)', 'codeweber-gutenberg-blocks' ), value: 'navbar-light' },
+												{ label: __( 'Dark (тёмный фон)', 'codeweber-gutenberg-blocks' ),  value: 'navbar-dark' },
+											] }
+											onChange={ ( val ) => setAttributes( { navbarScheme: val } ) }
 										/>
 									</PanelBody>
 

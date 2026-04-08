@@ -1,0 +1,38 @@
+{
+  "apiVersion": 3,
+  "name": "codeweber-blocks/page-header",
+  "version": "0.1.0",
+  "title": "Page Header",
+  "category": "codeweber-gutenberg-elements",
+  "icon": "align-wide",
+  "description": "Блок заголовка страницы с хлебными крошками. Поддерживает шаблоны темы, авто-заголовок и кастомный текст.",
+  "keywords": ["page header", "title", "breadcrumbs", "заголовок"],
+  "supports": {
+    "html": false,
+    "customClassName": true,
+    "anchor": true
+  },
+  "attributes": {
+    "templateModel": {
+      "type": "string",
+      "default": "auto"
+    },
+    "titleMode": {
+      "type": "string",
+      "default": "auto"
+    },
+    "customTitle": {
+      "type": "string",
+      "default": ""
+    },
+    "breadcrumbsMode": {
+      "type": "string",
+      "default": "auto"
+    }
+  },
+  "textdomain": "codeweber-gutenberg-blocks",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}

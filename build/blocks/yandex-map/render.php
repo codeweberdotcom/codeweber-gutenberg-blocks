@@ -142,31 +142,16 @@ if ($data_source === 'offices') {
 				continue;
 			}
 			
-			// Получаем адрес - используем _office_full_address, если пусто, формируем из частей
-			$full_address = get_post_meta($post_id, '_office_full_address', true);
-			if (empty($full_address)) {
-				$address_parts = array();
-				$street = get_post_meta($post_id, '_office_street', true);
-				$city_meta = get_post_meta($post_id, '_office_city', true);
-				$region = get_post_meta($post_id, '_office_region', true);
-				$country = get_post_meta($post_id, '_office_country', true);
-				$postal_code = get_post_meta($post_id, '_office_postal_code', true);
-				
-				if ($street) $address_parts[] = $street;
-				if ($city_meta) $address_parts[] = $city_meta;
-				if ($region) $address_parts[] = $region;
-				if ($country) $address_parts[] = $country;
-				if ($postal_code) $address_parts[] = $postal_code;
-				
-				$full_address = implode(', ', $address_parts);
-			}
-			
+			// Для отображения используем только улицу (город выводится отдельным полем).
+			$street = get_post_meta($post_id, '_office_street', true);
+			$display_address = $street ?: get_post_meta($post_id, '_office_full_address', true);
+
 			$markers[] = array(
 				'id' => $post_id,
 				'latitude' => floatval($latitude),
 				'longitude' => floatval($longitude),
 				'title' => get_the_title(),
-				'address' => $full_address,
+				'address' => $display_address,
 				'phone' => get_post_meta($post_id, '_office_phone', true),
 				'workingHours' => get_post_meta($post_id, '_office_working_hours', true),
 				'city' => get_post_meta($post_id, '_office_city', true),

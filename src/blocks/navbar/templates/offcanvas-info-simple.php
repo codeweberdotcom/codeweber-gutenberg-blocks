@@ -275,7 +275,7 @@ foreach ($offcanvas_element_ids as $key) {
 					$out .= '<img class="rounded-circle" alt="' . esc_attr($staff_name) . '" src="' . esc_url($placeholder_url) . '">';
 				}
 				$out .= '</figure><div>';
-				$out .= '<div class="h6 mb-1 lh-1"><a href="' . esc_url($staff_link) . '" class="link-dark">' . esc_html($staff_name) . '</a></div>';
+				$out .= '<div class="h6 mb-1 lh-1"><a href="' . esc_url($staff_link) . '" class="link-dark text-reset">' . esc_html($staff_name) . '</a></div>';
 				if ((string) $job_title !== '') {
 					$out .= '<div class="post-meta fs-15 lh-1 mb-1">' . esc_html($job_title) . '</div>';
 				}

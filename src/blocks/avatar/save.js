@@ -95,7 +95,7 @@ const Save = ({ attributes }) => {
 						</figure>
 						<div>
 							<h6>
-								<a href="#" className="link-dark">
+								<a href="#" className="link-dark text-reset">
 									User
 								</a>
 							</h6>
@@ -127,7 +127,7 @@ const Save = ({ attributes }) => {
 						<div>
 							{nameLink ? (
 								<div className="h6 mb-0">
-									<a href={nameLink} className="link-dark">
+									<a href={nameLink} className="link-dark text-reset">
 										{name || ''}
 									</a>
 								</div>

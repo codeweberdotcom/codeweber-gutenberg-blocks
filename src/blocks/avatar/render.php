@@ -115,7 +115,7 @@ ob_start();
 					</figure>
 					<div>
 						<h6>
-							<a href="<?php echo esc_url( $user_link ); ?>" class="link-dark">
+							<a href="<?php echo esc_url( $user_link ); ?>" class="link-dark text-reset">
 								<?php echo esc_html( $user->display_name ); ?>
 							</a>
 						</h6>
@@ -185,7 +185,7 @@ ob_start();
 					</figure>
 					<div>
 						<div class="h6 mb-1 lh-1">
-							<a href="<?php echo esc_url( $staff_link ); ?>" class="link-dark">
+							<a href="<?php echo esc_url( $staff_link ); ?>" class="link-dark text-reset">
 								<?php echo esc_html( $staff_name ); ?>
 							</a>
 						</div>

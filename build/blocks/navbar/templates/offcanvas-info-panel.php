@@ -227,7 +227,7 @@ foreach ($offcanvas_element_ids as $key) {
 						if (count($words) === 1) return strtoupper(substr($words[0], 0, 2));
 						return strtoupper(substr($words[0], 0, 1) . substr(end($words), 0, 1));
 					};
-					$link_class = $is_dark ? 'link-light' : 'link-dark';
+					$link_class = $is_dark ? 'link-light text-reset' : 'link-dark text-reset';
 					if (!empty($staff_ids_to_show)) {
 						echo '<div class="widget mb-8">';
 						foreach ($staff_ids_to_show as $staff_id) {

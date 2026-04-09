@@ -224,7 +224,7 @@ const Edit = ({ attributes, setAttributes }) => {
 									<h6>
 										<a
 											href={userData.link || '#'}
-											className="link-dark"
+											className="link-dark text-reset"
 										>
 											{userData.name ||
 												__(
@@ -314,7 +314,7 @@ const Edit = ({ attributes, setAttributes }) => {
 									<div className="h6 mb-1 lh-1">
 										<a
 											href={staffData.link || '#'}
-											className="link-dark"
+											className="link-dark text-reset"
 										>
 											{(staffData._staff_name ||
 												staffData._staff_surname ||
@@ -401,7 +401,7 @@ const Edit = ({ attributes, setAttributes }) => {
 									<div className="h6 mb-0">
 										<a
 											href={nameLink}
-											className="link-dark"
+											className="link-dark text-reset"
 										>
 											{name ||
 												__(

@@ -40,6 +40,7 @@ $logo_fb = has_custom_logo() ? get_custom_logo() : '<span class="site-title">' .
 					<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 				</div>
 				<div class="offcanvas-body ms-lg-auto d-flex flex-column h-100">
+					<div class="d-none d-lg-flex align-items-center">
 					<?php
 					wp_nav_menu([
 						'theme_location' => $menu_loc,
@@ -49,6 +50,22 @@ $logo_fb = has_custom_logo() ? get_custom_logo() : '<span class="site-title">' .
 						'fallback_cb'    => $walker ? 'WP_Bootstrap_Navwalker::fallback' : 'wp_page_menu',
 						'walker'         => $walker,
 					]);
+					?>
+					</div>
+					<?php
+					if (class_exists('CodeWeber_Menu_Collapse_Walker')) :
+						$_collapse_theme = (strpos($offcanvas_class, 'dark') !== false) ? 'navbar-dark' : 'navbar-light';
+						wp_nav_menu([
+							'theme_location'  => $menu_loc,
+							'depth'           => $menu_depth,
+							'container'       => 'nav',
+							'container_class' => 'navbar-vertical menu-collapse-nav d-lg-none ' . $_collapse_theme,
+							'container_id'    => 'offcanvas-collapse-nav',
+							'menu_class'      => 'navbar-nav',
+							'walker'          => new CodeWeber_Menu_Collapse_Walker(),
+							'instance_suffix' => 'offcanvas',
+						]);
+					endif;
 					?>
 					<?php if (!empty($offcanvas_info_in_nav_html)) { ?>
 					<div class="offcanvas-footer d-lg-none">

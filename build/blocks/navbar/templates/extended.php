@@ -83,6 +83,7 @@ $btn_close_class = (isset($offcanvas_class) && strpos($offcanvas_class, 'dark') 
 								'container_id'    => 'offcanvas-collapse-nav',
 								'menu_class'      => 'navbar-nav',
 								'walker'          => new CodeWeber_Menu_Collapse_Walker(),
+								'wrapper_id'      => 'offcanvas-collapse-nav',
 								'instance_suffix' => 'offcanvas',
 							]);
 						endif;

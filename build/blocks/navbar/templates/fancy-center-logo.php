@@ -74,6 +74,7 @@ $btn_close_class = (isset($offcanvas_class) && strpos($offcanvas_class, 'dark') 
 									'container_id'    => 'offcanvas-collapse-nav-left',
 									'menu_class'      => 'navbar-nav',
 									'walker'          => new CodeWeber_Menu_Collapse_Walker(),
+									'wrapper_id'      => 'offcanvas-collapse-nav-left',
 									'instance_suffix' => 'offcanvas-left',
 								]);
 							endif;
@@ -103,6 +104,7 @@ $btn_close_class = (isset($offcanvas_class) && strpos($offcanvas_class, 'dark') 
 									'container_id'    => 'offcanvas-collapse-nav-right',
 									'menu_class'      => 'navbar-nav',
 									'walker'          => new CodeWeber_Menu_Collapse_Walker(),
+									'wrapper_id'      => 'offcanvas-collapse-nav-right',
 									'instance_suffix' => 'offcanvas-right',
 								]);
 							endif;

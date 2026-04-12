@@ -63,6 +63,7 @@ $logo_fb = has_custom_logo() ? get_custom_logo() : '<span class="site-title">' .
 							'container_id'    => 'offcanvas-collapse-nav',
 							'menu_class'      => 'navbar-nav',
 							'walker'          => new CodeWeber_Menu_Collapse_Walker(),
+							'wrapper_id'      => 'offcanvas-collapse-nav',
 							'instance_suffix' => 'offcanvas',
 						]);
 					endif;

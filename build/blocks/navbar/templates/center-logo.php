@@ -70,6 +70,7 @@ $logo_fb = has_custom_logo() ? get_custom_logo() : '<span class="site-title">' .
 									'container_id'    => 'offcanvas-collapse-nav-left',
 									'menu_class'      => 'navbar-nav',
 									'walker'          => new CodeWeber_Menu_Collapse_Walker(),
+									'wrapper_id'      => 'offcanvas-collapse-nav-left',
 									'instance_suffix' => 'offcanvas-left',
 								]);
 							endif;
@@ -99,6 +100,7 @@ $logo_fb = has_custom_logo() ? get_custom_logo() : '<span class="site-title">' .
 									'container_id'    => 'offcanvas-collapse-nav-right',
 									'menu_class'      => 'navbar-nav',
 									'walker'          => new CodeWeber_Menu_Collapse_Walker(),
+									'wrapper_id'      => 'offcanvas-collapse-nav-right',
 									'instance_suffix' => 'offcanvas-right',
 								]);
 							endif;

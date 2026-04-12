@@ -296,7 +296,6 @@ class Plugin {
 		'social-wrapper',
 		'top-header',
 		'wc-filter-panel',
-		'page-header',
 	];
 	}
 

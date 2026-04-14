@@ -6,7 +6,7 @@
 
 import { useBlockProps } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
-import { PanelBody, RangeControl, SelectControl } from '@wordpress/components';
+import { PanelBody, RangeControl, SelectControl, ToggleControl } from '@wordpress/components';
 import { InspectorControls } from '@wordpress/block-editor';
 import ServerSideRender from '@wordpress/server-side-render';
 
@@ -16,7 +16,7 @@ const ORDER_OPTIONS = [
 ];
 
 const BlogYearWidgetEdit = ({ attributes, setAttributes }) => {
-	const { number, order } = attributes;
+	const { number, order, textInverse } = attributes;
 	const blockProps = useBlockProps({ className: 'wp-block-codeweber-blocks-blog-year-widget' });
 
 	return (
@@ -35,6 +35,11 @@ const BlogYearWidgetEdit = ({ attributes, setAttributes }) => {
 						value={order ?? 'DESC'}
 						options={ORDER_OPTIONS}
 						onChange={(value) => setAttributes({ order: value ?? 'DESC' })}
+					/>
+					<ToggleControl
+						label={__('Text inverse', 'codeweber-gutenberg-blocks')}
+						checked={textInverse === true}
+						onChange={(value) => setAttributes({ textInverse: value })}
 					/>
 				</PanelBody>
 			</InspectorControls>

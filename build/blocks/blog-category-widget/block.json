@@ -37,7 +37,11 @@
     },
     "listClass": {
       "type": "string",
-      "default": "unordered-list bullet-primary text-reset"
+      "default": "unordered-list bullet-primary"
+    },
+    "textInverse": {
+      "type": "boolean",
+      "default": false
     }
   },
   "textdomain": "codeweber-gutenberg-blocks",

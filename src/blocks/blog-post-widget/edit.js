@@ -44,7 +44,7 @@ function getYearOptions() {
 }
 
 const BlogPostWidgetEdit = ({ attributes, setAttributes }) => {
-	const { postsPerPage, showDate, showComments, titleLength, source, orderby, order, categoryId, tagId, year, borderRadius } = attributes;
+	const { postsPerPage, showDate, showComments, titleLength, source, orderby, order, categoryId, tagId, year, borderRadius, textInverse } = attributes;
 	const blockProps = useBlockProps({ className: 'wp-block-codeweber-blocks-blog-post-widget' });
 
 	const { categories, tags } = useSelect((select) => {
@@ -140,6 +140,11 @@ const BlogPostWidgetEdit = ({ attributes, setAttributes }) => {
 						value={borderRadius ?? ''}
 						options={BORDER_RADIUS_OPTIONS}
 						onChange={(value) => setAttributes({ borderRadius: value ?? '' })}
+					/>
+					<ToggleControl
+						label={__('Text inverse', 'codeweber-gutenberg-blocks')}
+						checked={textInverse === true}
+						onChange={(value) => setAttributes({ textInverse: value })}
 					/>
 				</PanelBody>
 			</InspectorControls>

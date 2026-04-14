@@ -66,6 +66,10 @@
     "borderRadius": {
       "type": "string",
       "default": ""
+    },
+    "textInverse": {
+      "type": "boolean",
+      "default": false
     }
   },
   "textdomain": "codeweber-gutenberg-blocks",

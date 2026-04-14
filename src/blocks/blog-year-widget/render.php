@@ -14,8 +14,10 @@ if (!defined('ABSPATH')) {
 	exit;
 }
 
-$number = isset($attributes['number']) ? (int) $attributes['number'] : 12;
-$order  = isset($attributes['order']) ? strtoupper($attributes['order']) : 'DESC';
+$number       = isset($attributes['number']) ? (int) $attributes['number'] : 12;
+$order        = isset($attributes['order']) ? strtoupper($attributes['order']) : 'DESC';
+$text_inverse = isset($attributes['textInverse']) ? (bool) $attributes['textInverse'] : false;
+$list_class   = 'unordered-list bullet-primary' . ($text_inverse ? ' text-inverse' : '');
 
 $archives = wp_get_archives([
 	'type'            => 'monthly',
@@ -32,6 +34,6 @@ if (empty($archives)) {
 }
 
 ?>
-<ul class="unordered-list bullet-primary text-reset">
+<ul class="<?php echo esc_attr($list_class); ?>">
 	<?php echo $archives; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- wp_get_archives() returns escaped HTML ?>
 </ul>

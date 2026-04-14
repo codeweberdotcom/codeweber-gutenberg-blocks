@@ -22,7 +22,7 @@ const ORDER_OPTIONS = [
 ];
 
 const BlogCategoryWidgetEdit = ({ attributes, setAttributes }) => {
-	const { showCount, orderby, order, number } = attributes;
+	const { showCount, orderby, order, number, textInverse } = attributes;
 	const blockProps = useBlockProps({ className: 'wp-block-codeweber-blocks-blog-category-widget' });
 
 	return (
@@ -53,6 +53,11 @@ const BlogCategoryWidgetEdit = ({ attributes, setAttributes }) => {
 						onChange={(value) => setAttributes({ number: value ?? 0 })}
 						min={0}
 						max={50}
+					/>
+					<ToggleControl
+						label={__('Text inverse', 'codeweber-gutenberg-blocks')}
+						checked={textInverse === true}
+						onChange={(value) => setAttributes({ textInverse: value })}
 					/>
 				</PanelBody>
 			</InspectorControls>

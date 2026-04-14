@@ -25,6 +25,7 @@ $category_id    = isset($attributes['categoryId']) ? (int) $attributes['category
 $tag_id         = isset($attributes['tagId']) ? (int) $attributes['tagId'] : 0;
 $year           = isset($attributes['year']) ? trim((string) $attributes['year']) : '';
 $border_radius  = isset($attributes['borderRadius']) ? $attributes['borderRadius'] : '';
+$text_inverse   = isset($attributes['textInverse']) ? (bool) $attributes['textInverse'] : false;
 if ($border_radius === '' && class_exists('Codeweber_Options')) {
 	$border_radius = Codeweber_Options::style('card-radius', 'rounded');
 }
@@ -81,7 +82,7 @@ if (!$query->have_posts()) {
 }
 
 ?>
-<ul class="image-list">
+<ul class="image-list<?php echo $text_inverse ? ' text-inverse' : ''; ?>">
 	<?php
 	while ($query->have_posts()) {
 		$query->the_post();

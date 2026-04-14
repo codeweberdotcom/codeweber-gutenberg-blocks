@@ -17,7 +17,11 @@ $show_count   = isset($attributes['showCount']) ? (bool) $attributes['showCount'
 $orderby      = isset($attributes['orderby']) ? $attributes['orderby'] : 'name';
 $order        = isset($attributes['order']) ? strtoupper($attributes['order']) : 'ASC';
 $number       = isset($attributes['number']) ? (int) $attributes['number'] : 0;
-$list_class   = isset($attributes['listClass']) ? $attributes['listClass'] : 'unordered-list bullet-primary text-reset';
+$list_class   = isset($attributes['listClass']) ? $attributes['listClass'] : 'unordered-list bullet-primary';
+$text_inverse = isset($attributes['textInverse']) ? (bool) $attributes['textInverse'] : false;
+if ($text_inverse) {
+	$list_class .= ' text-inverse';
+}
 
 $term_args = [
 	'taxonomy'   => 'category',

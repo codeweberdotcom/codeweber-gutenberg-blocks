@@ -14,7 +14,7 @@ if (!defined('ABSPATH')) {
 }
 
 $posts_per_page = isset($attributes['postsPerPage']) ? (int) $attributes['postsPerPage'] : 3;
-$image_size     = isset($attributes['imageSize']) ? $attributes['imageSize'] : 'codeweber_avatar';
+$image_size     = isset($attributes['imageSize']) ? $attributes['imageSize'] : 'codeweber_post_100-100';
 $show_date      = isset($attributes['showDate']) ? (bool) $attributes['showDate'] : true;
 $show_comments  = isset($attributes['showComments']) ? (bool) $attributes['showComments'] : true;
 $title_length   = isset($attributes['titleLength']) ? (int) $attributes['titleLength'] : 50;

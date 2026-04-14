@@ -25,7 +25,7 @@
     },
     "imageSize": {
       "type": "string",
-      "default": "codeweber_avatar"
+      "default": "codeweber_post_100-100"
     },
     "showDate": {
       "type": "boolean",

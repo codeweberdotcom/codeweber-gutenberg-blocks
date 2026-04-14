@@ -82,19 +82,20 @@ if ($data_source === 'theme') {
 			} else {
 				$btn_form_class = 'btn-circle';
 			}
-			$nav_class_base  = 'nav social gap-2';
-			if ($style_type === 'type2') {
-				$nav_class_base .= ' social-muted';
-			} elseif ($style_type === 'type4') {
-				$nav_class_base .= ' social-white';
+			if ($style_type === 'type8' || $style_type === 'type9') {
+				$nav_class_base = 'nav gap-2';
 			} elseif ($style_type === 'type7') {
 				$nav_class_base = 'nav gap-2 social-white';
+			} else {
+				$nav_class_base = 'nav social gap-2';
+				if ($style_type === 'type2') {
+					$nav_class_base .= ' social-muted';
+				} elseif ($style_type === 'type4') {
+					$nav_class_base .= ' social-white';
+				}
 			}
 			if ($nav_class) {
 				$nav_class_base .= ' ' . $nav_class;
-			}
-			if ($style_type === 'type8' || $style_type === 'type9') {
-				$nav_class_base = 'nav gap-2' . ($nav_class ? ' ' . $nav_class : '');
 			}
 			$output = '<nav class="' . esc_attr(trim($nav_class_base)) . '">';
 			foreach ($socials_filtered as $social => $url) {
@@ -178,20 +179,20 @@ if ($data_source === 'custom' && !empty($items)) {
 		$btn_form_class = 'btn-circle';
 	}
 
-	$nav_class_base = 'nav social gap-2';
-	if ($style_type === 'type2') {
-		$nav_class_base .= ' social-muted';
-	} elseif ($style_type === 'type4') {
-		$nav_class_base .= ' social-white';
+	if ($style_type === 'type8' || $style_type === 'type9') {
+		$nav_class_base = 'nav gap-2';
 	} elseif ($style_type === 'type7') {
 		$nav_class_base = 'nav gap-2 social-white';
+	} else {
+		$nav_class_base = 'nav social gap-2';
+		if ($style_type === 'type2') {
+			$nav_class_base .= ' social-muted';
+		} elseif ($style_type === 'type4') {
+			$nav_class_base .= ' social-white';
+		}
 	}
 	if ($nav_class) {
 		$nav_class_base .= ' ' . $nav_class;
-	}
-
-	if ($style_type === 'type8' || $style_type === 'type9') {
-		$nav_class_base = 'nav gap-2' . ($nav_class ? ' ' . $nav_class : '');
 	}
 
 	$output = '<nav class="' . esc_attr(trim($nav_class_base)) . '">';

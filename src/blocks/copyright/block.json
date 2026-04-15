@@ -24,7 +24,7 @@
 		"textColor": { "type": "string", "default": "" },
 		"linkColor": { "type": "string", "default": "" },
 		"alignment": { "type": "string", "default": "text-center" },
-		"separator": { "type": "string", "default": " \u2014 " },
+		"separator": { "type": "string", "default": " - " },
 		"layout": { "type": "string", "default": "inline" }
 	},
 	"textdomain": "codeweber-gutenberg-blocks",

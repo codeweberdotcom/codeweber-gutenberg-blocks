@@ -64,7 +64,7 @@
     },
     "separator": {
       "type": "string",
-      "default": " — "
+      "default": " - "
     },
     "layout": {
       "type": "string",

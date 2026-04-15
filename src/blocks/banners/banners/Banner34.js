@@ -233,7 +233,7 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 								href={getRelativeUrl(modalVideoUrl)}
 								className="btn btn-circle btn-primary btn-play ripple mx-auto position-absolute d-lg-none"
 								style={{
-									bottom: '-55px',
+									bottom: '-26px',
 									left: '50%',
 									transform: 'translateX(-50%)',
 									zIndex: 3,
@@ -298,7 +298,7 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 									href={getRelativeUrl(modalVideoUrl)}
 									className="btn btn-circle btn-primary btn-play ripple mx-auto position-absolute d-lg-none"
 									style={{
-										bottom: '-55px',
+										bottom: '-26px',
 										left: '50%',
 										transform: 'translateX(-50%)',
 										zIndex: 3,
@@ -426,7 +426,7 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 									href={getRelativeUrl(modalVideoUrl)}
 									className="btn btn-circle btn-primary btn-play ripple mx-auto position-absolute d-flex d-lg-none"
 									style={{
-										bottom: '-55px',
+										bottom: '-26px',
 										left: '50%',
 										transform: 'translateX(-50%)',
 										zIndex: 20,

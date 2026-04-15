@@ -573,7 +573,23 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 						</a>
 					)}
 					<div className="row gx-0">
-						<div className={contentColumnClasses}>
+						<div className={`${contentColumnClasses} position-relative`}>
+							{modalVideoUrl && (
+								<a
+									href={getRelativeUrl(modalVideoUrl)}
+									className="btn btn-circle btn-primary btn-play ripple mx-auto position-absolute d-flex d-lg-none"
+									style={{
+										top: '50%',
+										left: '50%',
+										transform: 'translate(-50%,-50%)',
+										zIndex: 20,
+									}}
+									data-glightbox
+									data-gallery="mobile-video"
+								>
+									<i className="icn-caret-right"></i>
+								</a>
+							)}
 							<div
 								className={`${contentPaddingClasses} position-relative`}
 							>
@@ -612,7 +628,23 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 					</a>
 				)}
 				<div className="row gx-0">
-					<div className={contentColumnClasses}>
+					<div className={`${contentColumnClasses} position-relative`}>
+						{modalVideoUrl && (
+							<a
+								href={getRelativeUrl(modalVideoUrl)}
+								className="btn btn-circle btn-primary btn-play ripple mx-auto position-absolute d-flex d-lg-none"
+								style={{
+									top: '50%',
+									left: '50%',
+									transform: 'translate(-50%,-50%)',
+									zIndex: 20,
+								}}
+								data-glightbox
+								data-gallery="mobile-video"
+							>
+								<i className="icn-caret-right"></i>
+							</a>
+						)}
 						<div
 							className={`${contentPaddingClasses} position-relative`}
 						>

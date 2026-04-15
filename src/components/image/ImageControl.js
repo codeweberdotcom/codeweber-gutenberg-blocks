@@ -134,6 +134,7 @@ export const ImageControl = ({ images, setAttributes, imageSize }) => {
 								'Choose image size for display',
 								'codeweber-gutenberg-blocks'
 							)}
+							postType="default"
 						/>
 					</div>
 

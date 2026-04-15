@@ -162,7 +162,7 @@ const MenuSave = ({ attributes }) => {
 
 	const content = (
 		<ul className={getListClasses()}>
-			{items.map((item) =>
+			{(items || []).map((item) =>
 				enableMegaMenu ? (
 					<li key={item.id} className={liClasses}>
 						<a href={item.url || '#'} className="dropdown-item">

@@ -9,6 +9,7 @@ import {
 	generateColorClass,
 	generateTypographyClasses,
 } from '../../utilities/class-generators';
+import metadata from './block.json';
 
 /**
  * v1 — horizontal used flex-row (before flex-md-row)
@@ -149,7 +150,7 @@ const MenuSaveV1 = ({ attributes }) => {
 
 	const content = (
 		<ul className={getListClasses()}>
-			{items.map((item) =>
+			{(items || []).map((item) =>
 				enableMegaMenu ? (
 					<li key={item.id} className={liClasses}>
 						<a href={item.url || '#'} className="dropdown-item">
@@ -217,6 +218,7 @@ const MenuSaveV1 = ({ attributes }) => {
 
 export default [
 	{
+		attributes: metadata.attributes,
 		save: MenuSaveV1,
 	},
 ];

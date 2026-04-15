@@ -454,8 +454,8 @@ export const MenuSidebar = ({ attributes, setAttributes, wpMenus = [], wpTaxonom
 								))}
 							</div>
 
-							{/* Стиль меню (collapse) — всегда для Custom, Taxonomy и WP Menu, при любом depth */}
-							{(mode === 'custom' || mode === 'taxonomy' || mode === 'wp-menu') && (
+							{/* Стиль меню (collapse) — только для вертикального режима */}
+							{(mode === 'custom' || mode === 'taxonomy' || mode === 'wp-menu') && (orientation || 'horizontal') === 'vertical' && (
 								<>
 									<div
 										className="component-sidebar-title"

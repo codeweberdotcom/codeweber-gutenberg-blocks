@@ -565,6 +565,69 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 		});
 	};
 
+	// Horizontal dropdown level: top-level dropdown вниз, вложенные — dropend вправо
+	const renderHorizontalLevel = (byParent, parentId, depthLimit, currentLevel, textThemeClass, linkClass) => {
+		const children = byParent[parentId] || [];
+		return children.map((item) => {
+			const hasChildren =
+				(depthLimit === 0 || currentLevel < depthLimit) &&
+				(byParent[item.wp_id]?.length > 0);
+			const isTopLevel = currentLevel === 1;
+			const linkLabel = isTopLevel ? 'nav-link' : 'dropdown-item';
+			const linkClasses = [
+				linkLabel,
+				hasChildren && 'dropdown-toggle',
+				textThemeClass,
+				linkClass,
+			]
+				.filter(Boolean)
+				.join(' ');
+			const liClasses = [
+				'nav-item',
+				hasChildren && (isTopLevel ? 'dropdown' : 'dropdown dropdown-submenu dropend'),
+			]
+				.filter(Boolean)
+				.join(' ');
+
+			if (hasChildren) {
+				return (
+					<li key={item.id} className={liClasses}>
+						<a
+							href={item.url || '#'}
+							className={linkClasses}
+							data-bs-toggle="dropdown"
+							aria-expanded="false"
+							style={{ pointerEvents: 'none' }}
+						>
+							{safeItemText(item)}
+						</a>
+						<ul className="dropdown-menu">
+							{renderHorizontalLevel(
+								byParent,
+								item.wp_id,
+								depthLimit,
+								currentLevel + 1,
+								textThemeClass,
+								linkClass
+							)}
+						</ul>
+					</li>
+				);
+			}
+			return (
+				<li key={item.id} className={liClasses}>
+					<a
+						href={item.url || '#'}
+						className={linkClasses}
+						style={{ pointerEvents: 'none' }}
+					>
+						{safeItemText(item)}
+					</a>
+				</li>
+			);
+		});
+	};
+
 	// Tree order (depth-first) for items with parent — для таксономий и WP Menu
 	const getItemsInTreeOrder = (itemsList) => {
 		if (!itemsList?.length) return [];
@@ -684,16 +747,25 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 
 	// Превью collapse: WP Menu (depth >= 1) или Taxonomy с иерархией. При depth 0 в редакторе collapse не показываем.
 	const depthNum = typeof depth === 'number' ? depth : 1;
-	// В редакторе collapse-вёрстка: WP Menu (с настройками), Taxonomy и Custom при наличии пунктов
+	const isHorizontal = (orientation || 'horizontal') === 'horizontal' && !enableMegaMenu;
+	// Горизонтальный превью: navbar-nav с dropdown-подменю
+	const showHorizontalPreview = isHorizontal && items.length > 0 && (
+		(mode === 'wp-menu' && wpMenuId && depthNum >= 1 && !isLoadingMenu) ||
+		(mode === 'taxonomy' && taxonomySlug) ||
+		(mode === 'custom')
+	);
+	// В редакторе collapse-вёрстка: только для вертикального режима
 	const showCollapsePreview =
-		(mode === 'wp-menu' &&
-			useCollapse &&
-			wpMenuId &&
-			depthNum >= 1 &&
-			!isLoadingMenu &&
-			items.length > 0) ||
-		(mode === 'taxonomy' && taxonomySlug && items.length > 0) ||
-		(mode === 'custom' && items.length > 0);
+		!isHorizontal && (
+			(mode === 'wp-menu' &&
+				useCollapse &&
+				wpMenuId &&
+				depthNum >= 1 &&
+				!isLoadingMenu &&
+				items.length > 0) ||
+			(mode === 'taxonomy' && taxonomySlug && items.length > 0) ||
+			(mode === 'custom' && items.length > 0)
+		);
 
 	const treeSourceId =
 		mode === 'wp-menu' && wpMenuId
@@ -732,6 +804,18 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 						'codeweber-gutenberg-blocks'
 					)}
 				</div>
+			)}
+			{showHorizontalPreview && (
+				<ul className="navbar-nav">
+					{renderHorizontalLevel(
+						buildByParent(items),
+						0,
+						typeof depth === 'number' ? depth : 0,
+						1,
+						textThemeClass,
+						linkClass || ''
+					)}
+				</ul>
 			)}
 			{showCollapsePreview && (
 				<nav
@@ -812,7 +896,7 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 					</ul>
 				</nav>
 			)}
-			{!showCollapsePreview && (mode === 'wp-menu'
+			{!showCollapsePreview && !showHorizontalPreview && (mode === 'wp-menu'
 				? displayItems.length > 0 && !isLoadingMenu && depthNum >= 1
 				: true) && (
 				<ul className={getListClasses()}>

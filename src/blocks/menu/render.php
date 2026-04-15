@@ -399,6 +399,66 @@ $has_current_in_subtree = function ($by_parent, $parent_id) use (&$has_current_i
 };
 
 /**
+ * Рендер горизонтального меню с Bootstrap dropdowns.
+ * Первый уровень: nav-item + nav-link, dropdown вниз.
+ * Вложенные уровни: dropdown-item + dropdown-menu, dropend вправо.
+ */
+$render_menu_horizontal = function ( $by_parent, $parent_id, $depth_limit, $current_lvl = 1 ) use ( &$render_menu_horizontal, $linkClass, $itemClass, &$has_current_in_subtree ) {
+	$children = isset( $by_parent[ $parent_id ] ) ? $by_parent[ $parent_id ] : [];
+	if ( empty( $children ) ) {
+		return '';
+	}
+	$html = '';
+	foreach ( $children as $item ) {
+		$has_sub = ( $depth_limit === 0 || $current_lvl < $depth_limit ) && isset( $item['wp_id'] ) && ! empty( $by_parent[ $item['wp_id'] ] );
+		$is_current = ! empty( $item['current'] );
+		$is_top = ( $current_lvl === 1 );
+		$has_current_child = $has_sub && $has_current_in_subtree( $by_parent, $item['wp_id'] );
+
+		// Li classes
+		$li_cls = array( 'nav-item' );
+		if ( $has_sub ) {
+			$li_cls[] = 'dropdown';
+			if ( ! $is_top ) {
+				$li_cls[] = 'dropdown-submenu';
+				$li_cls[] = 'dropend';
+			}
+		}
+		if ( $is_current || $has_current_child ) {
+			$li_cls[] = 'active';
+		}
+		if ( $itemClass ) {
+			$li_cls = array_merge( $li_cls, array_filter( explode( ' ', trim( $itemClass ) ) ) );
+		}
+
+		// Link classes
+		$a_cls = array( $is_top ? 'nav-link' : 'dropdown-item' );
+		if ( $has_sub ) {
+			$a_cls[] = 'dropdown-toggle';
+		}
+		if ( $is_current ) {
+			$a_cls[] = 'active';
+		}
+		if ( $linkClass ) {
+			$a_cls = array_merge( $a_cls, array_filter( explode( ' ', trim( $linkClass ) ) ) );
+		}
+
+		$html .= '<li class="' . esc_attr( implode( ' ', array_unique( $li_cls ) ) ) . '">';
+		$toggle_attrs = $has_sub ? ' data-bs-toggle="dropdown"' : '';
+		$aria_current = $is_current ? ' aria-current="page"' : '';
+		$html .= '<a href="' . esc_url( $item['url'] ) . '" class="' . esc_attr( implode( ' ', $a_cls ) ) . '"' . $toggle_attrs . $aria_current . '>' . esc_html( $item['text'] ) . '</a>';
+
+		if ( $has_sub ) {
+			$html .= '<ul class="dropdown-menu">';
+			$html .= $render_menu_horizontal( $by_parent, $item['wp_id'], $depth_limit, $current_lvl + 1 );
+			$html .= '</ul>';
+		}
+		$html .= '</li>';
+	}
+	return $html;
+};
+
+/**
  * Рендер меню в виде Bootstrap Collapse (подменю раскрываются по клику, один открыт — остальные закрыты).
  * Разметка ul/li как в хедере. Рекурсивно для всех уровней: пункты с детьми (Typography и т.д.) тоже получают collapse.
  * Раскрываем весь путь до текущей страницы: если current в поддереве — collapse получает show на любом уровне вложенности.
@@ -565,8 +625,36 @@ if ($enableMegaMenu) {
 	if (empty(trim(strip_tags($menuContent)))) {
 		$menuContent = '<p>' . esc_html__('No menu items found.', 'codeweber-gutenberg-blocks') . '</p>';
 	}
+} elseif ($orientation === 'horizontal' && !$enableMegaMenu && $useTreeSource && $hasTopLevelItems) {
+	// Горизонтальное меню: navbar-nav с Bootstrap dropdowns
+	if ($mode === 'wp-menu' && $wpMenuId > 0 && class_exists('WP_Bootstrap_Navwalker')) {
+		// WP Menu: Bootstrap Navwalker для стандартной dropdown-разметки
+		$bootstrap_menu_class = 'navbar-nav';
+		$nav_args = array(
+			'menu'            => $wpMenuId,
+			'depth'           => $depth,
+			'container'       => false,
+			'menu_class'      => $bootstrap_menu_class,
+			'menu_id'         => $menuId ?: 'menu-block-' . $wpMenuId,
+			'fallback_cb'     => 'WP_Bootstrap_Navwalker::fallback',
+			'walker'          => new WP_Bootstrap_Navwalker(),
+			'items_wrap'      => '<ul id="%1$s" class="%2$s">%3$s</ul>',
+			'item_spacing'    => 'discard',
+		);
+		ob_start();
+		wp_nav_menu($nav_args);
+		$menuContent = ob_get_clean();
+		if (empty(trim(strip_tags($menuContent)))) {
+			$menuContent = '<p>' . esc_html__('No menu items found.', 'codeweber-gutenberg-blocks') . '</p>';
+		}
+	} else {
+		// Custom/Taxonomy (или WP Menu fallback без Walker): кастомный горизонтальный рендер
+		$menuContent = '<ul class="navbar-nav">';
+		$menuContent .= $render_menu_horizontal($wpMenuItemsTree, 0, $depth);
+		$menuContent .= '</ul>';
+	}
 } elseif ($mode === 'wp-menu' && $wpMenuId > 0 && class_exists('WP_Bootstrap_Navwalker') && $orientation !== 'vertical') {
-	// wp_nav_menu + Walker только для горизонтального меню (navbar-nav)
+	// Fallback: wp_nav_menu + Walker для нестандартных значений orientation
 	$bootstrap_menu_class = 'navbar-nav';
 	$nav_args = array(
 		'menu'            => $wpMenuId,
@@ -634,21 +722,40 @@ if ($enableMegaMenu) {
 	$menuContent = '<p>' . esc_html__('No menu items found.', 'codeweber-gutenberg-blocks') . '</p>';
 } else {
 	// Custom mode или fallback — плоский список
-	$menuContent = '<ul class="' . esc_attr($listClassStr) . '">';
-	foreach ($itemsToRender as $item) {
-		$itemClassAttr = $itemClass ? ' class="' . esc_attr($itemClass) . '"' : '';
-		$menuContent .= '<li' . $itemClassAttr . '>';
-		if ($listType === 'icon') {
-			$menuContent .= '<span><i class="' . esc_attr($iconClass) . '"></i></span>';
+	if ($orientation === 'horizontal' && !$enableMegaMenu) {
+		// Горизонтальный плоский список: navbar-nav
+		$menuContent = '<ul class="navbar-nav">';
+		foreach ($itemsToRender as $item) {
+			$li_cls = array( 'nav-item' );
+			if ( $itemClass ) {
+				$li_cls = array_merge( $li_cls, array_filter( explode( ' ', trim( $itemClass ) ) ) );
+			}
+			$a_cls = array( 'nav-link' );
+			if ( $linkClass ) {
+				$a_cls = array_merge( $a_cls, array_filter( explode( ' ', trim( $linkClass ) ) ) );
+			}
+			$menuContent .= '<li class="' . esc_attr( implode( ' ', $li_cls ) ) . '">';
+			$menuContent .= '<a href="' . esc_url( $item['url'] ) . '" class="' . esc_attr( implode( ' ', $a_cls ) ) . '">' . esc_html( $item['text'] ) . '</a>';
+			$menuContent .= '</li>';
 		}
-		$menuContent .= '<span class="' . esc_attr($textThemeClass) . '">';
-		$aClasses = array_filter(array_merge([$textThemeClass], $linkClass ? explode(' ', trim($linkClass)) : []));
-		$aClassAttr = !empty($aClasses) ? ' class="' . esc_attr(implode(' ', $aClasses)) . '"' : '';
-		$menuContent .= '<a href="' . esc_url($item['url']) . '"' . $aClassAttr . '>' . esc_html($item['text']) . '</a>';
-		$menuContent .= '</span>';
-		$menuContent .= '</li>';
+		$menuContent .= '</ul>';
+	} else {
+		$menuContent = '<ul class="' . esc_attr($listClassStr) . '">';
+		foreach ($itemsToRender as $item) {
+			$itemClassAttr = $itemClass ? ' class="' . esc_attr($itemClass) . '"' : '';
+			$menuContent .= '<li' . $itemClassAttr . '>';
+			if ($listType === 'icon') {
+				$menuContent .= '<span><i class="' . esc_attr($iconClass) . '"></i></span>';
+			}
+			$menuContent .= '<span class="' . esc_attr($textThemeClass) . '">';
+			$aClasses = array_filter(array_merge([$textThemeClass], $linkClass ? explode(' ', trim($linkClass)) : []));
+			$aClassAttr = !empty($aClasses) ? ' class="' . esc_attr(implode(' ', $aClasses)) . '"' : '';
+			$menuContent .= '<a href="' . esc_url($item['url']) . '"' . $aClassAttr . '>' . esc_html($item['text']) . '</a>';
+			$menuContent .= '</span>';
+			$menuContent .= '</li>';
+		}
+		$menuContent .= '</ul>';
 	}
-	$menuContent .= '</ul>';
 }
 
 // Generate title classes

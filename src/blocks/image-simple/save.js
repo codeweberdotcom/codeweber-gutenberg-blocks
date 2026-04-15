@@ -55,6 +55,7 @@ export default function Save({ attributes }) {
 		borderRadius,
 		enableLightbox,
 		lightboxGallery,
+		lightboxShowDesc,
 		// Image Hover атрибуты
 		simpleEffect,
 		effectType,
@@ -216,6 +217,7 @@ export default function Save({ attributes }) {
 					borderRadius={borderRadius}
 					enableLightbox={enableLightbox}
 					lightboxGallery={lightboxGallery}
+								lightboxShowDesc={lightboxShowDesc}
 					simpleEffect={simpleEffect}
 					effectType={effectType}
 					tooltipStyle={tooltipStyle}
@@ -435,6 +437,7 @@ export default function Save({ attributes }) {
 										borderRadius={borderRadius}
 										enableLightbox={enableLightbox}
 										lightboxGallery={lightboxGallery}
+								lightboxShowDesc={lightboxShowDesc}
 										simpleEffect={simpleEffect}
 										effectType={effectType}
 										tooltipStyle={tooltipStyle}
@@ -473,6 +476,7 @@ export default function Save({ attributes }) {
 								borderRadius={borderRadius}
 								enableLightbox={enableLightbox}
 								lightboxGallery={lightboxGallery}
+								lightboxShowDesc={lightboxShowDesc}
 								simpleEffect={simpleEffect}
 								effectType={effectType}
 								tooltipStyle={tooltipStyle}

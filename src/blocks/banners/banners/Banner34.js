@@ -233,9 +233,9 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 								href={getRelativeUrl(modalVideoUrl)}
 								className="btn btn-circle btn-primary btn-play ripple mx-auto position-absolute d-lg-none"
 								style={{
-									top: '50%',
+									bottom: '-55px',
 									left: '50%',
-									transform: 'translate(-50%,-50%)',
+									transform: 'translateX(-50%)',
 									zIndex: 3,
 								}}
 								data-glightbox
@@ -298,9 +298,9 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 									href={getRelativeUrl(modalVideoUrl)}
 									className="btn btn-circle btn-primary btn-play ripple mx-auto position-absolute d-lg-none"
 									style={{
-										top: '50%',
+										bottom: '-55px',
 										left: '50%',
-										transform: 'translate(-50%,-50%)',
+										transform: 'translateX(-50%)',
 										zIndex: 3,
 									}}
 									data-glightbox
@@ -426,9 +426,9 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 									href={getRelativeUrl(modalVideoUrl)}
 									className="btn btn-circle btn-primary btn-play ripple mx-auto position-absolute d-flex d-lg-none"
 									style={{
-										top: '50%',
+										bottom: '-55px',
 										left: '50%',
-										transform: 'translate(-50%,-50%)',
+										transform: 'translateX(-50%)',
 										zIndex: 20,
 									}}
 									data-glightbox

@@ -593,7 +593,7 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 							{modalVideoUrl && (
 								<a
 									href={getRelativeUrl(modalVideoUrl)}
-									className="btn btn-circle btn-primary btn-play ripple mx-auto position-absolute d-flex d-lg-none"
+									className="btn btn-circle btn-primary btn-play ripple mx-auto position-absolute d-none d-lg-block"
 									style={{
 										top: '50%',
 										left: '50%',
@@ -601,7 +601,7 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 										zIndex: 20,
 									}}
 									data-glightbox
-									data-gallery="mobile-video"
+									data-gallery="desktop-video"
 								>
 									<i className="icn-caret-right"></i>
 								</a>

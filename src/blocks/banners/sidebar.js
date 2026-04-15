@@ -124,6 +124,7 @@ export const BannersSidebar = ({ attributes, setAttributes }) => {
 		videoId,
 		modalVideoId,
 		modalVideoUrl,
+		playButtonColor,
 		images,
 		imageSize,
 		borderRadius,
@@ -647,6 +648,38 @@ export const BannersSidebar = ({ attributes, setAttributes }) => {
 									/>
 								</MediaUploadCheck>
 							</div>
+							<SelectControl
+								label={__(
+									'Play Button Color',
+									'codeweber-gutenberg-blocks'
+								)}
+								value={playButtonColor || 'primary'}
+								options={[
+									{
+										label: __('Primary', 'codeweber-gutenberg-blocks'),
+										value: 'primary',
+									},
+									{
+										label: __('Secondary', 'codeweber-gutenberg-blocks'),
+										value: 'secondary',
+									},
+									{
+										label: __('White', 'codeweber-gutenberg-blocks'),
+										value: 'white',
+									},
+									{
+										label: __('Light', 'codeweber-gutenberg-blocks'),
+										value: 'light',
+									},
+									{
+										label: __('Dark', 'codeweber-gutenberg-blocks'),
+										value: 'dark',
+									},
+								]}
+								onChange={(value) =>
+									setAttributes({ playButtonColor: value })
+								}
+							/>
 						</PanelBody>
 					)}
 

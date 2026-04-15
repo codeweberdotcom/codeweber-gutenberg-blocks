@@ -69,6 +69,7 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 		imageRenderType = 'img',
 		imageColumnClass,
 		contentColumnRightWrapperClass,
+		playButtonColor = 'primary',
 	} = attributes;
 
 	// Функция для получения классов секции
@@ -231,7 +232,7 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 						{modalVideoUrl && (
 							<a
 								href={getRelativeUrl(modalVideoUrl)}
-								className="btn btn-circle btn-primary btn-play ripple mx-auto position-absolute d-lg-none"
+								className={`btn btn-circle btn-${playButtonColor || 'primary'} btn-play ripple mx-auto position-absolute d-lg-none`}
 								style={{
 									bottom: '-26px',
 									left: '50%',
@@ -296,7 +297,7 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 							{modalVideoUrl && (
 								<a
 									href={getRelativeUrl(modalVideoUrl)}
-									className="btn btn-circle btn-primary btn-play ripple mx-auto position-absolute d-lg-none"
+									className={`btn btn-circle btn-${playButtonColor || 'primary'} btn-play ripple mx-auto position-absolute d-lg-none`}
 									style={{
 										bottom: '-26px',
 										left: '50%',
@@ -424,7 +425,7 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 							{modalVideoUrl && !isEditor && (
 								<a
 									href={getRelativeUrl(modalVideoUrl)}
-									className="btn btn-circle btn-primary btn-play ripple mx-auto position-absolute d-flex d-lg-none"
+									className={`btn btn-circle btn-${playButtonColor || 'primary'} btn-play ripple mx-auto position-absolute d-flex d-lg-none`}
 									style={{
 										bottom: '-26px',
 										left: '50%',
@@ -575,7 +576,7 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 					{modalVideoUrl && (
 						<a
 							href={getRelativeUrl(modalVideoUrl)}
-							className="btn btn-circle btn-primary btn-play ripple mx-auto position-absolute d-none d-lg-flex"
+							className={`btn btn-circle btn-${playButtonColor || 'primary'} btn-play ripple mx-auto position-absolute d-none d-lg-flex`}
 							style={{
 								top: '50%',
 								left: '50%',
@@ -614,7 +615,7 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 				{modalVideoUrl && (
 					<a
 						href={getRelativeUrl(modalVideoUrl)}
-						className="btn btn-circle btn-primary btn-play ripple mx-auto position-absolute d-none d-lg-flex"
+						className={`btn btn-circle btn-${playButtonColor || 'primary'} btn-play ripple mx-auto position-absolute d-none d-lg-flex`}
 						style={{
 							top: '50%',
 							left: '50%',

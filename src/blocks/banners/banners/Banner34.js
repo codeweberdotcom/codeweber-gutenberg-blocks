@@ -377,7 +377,7 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 					const swiperContainerClassName = 'h-100 w-100';
 
 					return (
-						<div className={`${wrapperClasses} position-relative`}>
+						<div className={wrapperClasses}>
 							<SwiperSlider
 								config={swiperConfig}
 								className={swiperContainerClassName}
@@ -421,22 +421,6 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 									);
 								})}
 							</SwiperSlider>
-							{modalVideoUrl && !isEditor && (
-								<a
-									href={getRelativeUrl(modalVideoUrl)}
-									className="btn btn-circle btn-primary btn-play ripple mx-auto position-absolute d-flex d-lg-none"
-									style={{
-										top: '50%',
-										left: '50%',
-										transform: 'translate(-50%,-50%)',
-										zIndex: 20,
-									}}
-									data-glightbox
-									data-gallery="mobile-video"
-								>
-									<i className="icn-caret-right"></i>
-								</a>
-							)}
 						</div>
 					);
 				}
@@ -593,7 +577,7 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 							{modalVideoUrl && (
 								<a
 									href={getRelativeUrl(modalVideoUrl)}
-									className="btn btn-circle btn-primary btn-play ripple mx-auto position-absolute d-none d-lg-block"
+									className="btn btn-circle btn-primary btn-play ripple mx-auto position-absolute d-flex d-lg-none"
 									style={{
 										top: '50%',
 										left: '50%',
@@ -601,7 +585,7 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 										zIndex: 20,
 									}}
 									data-glightbox
-									data-gallery="desktop-video"
+									data-gallery="mobile-video"
 								>
 									<i className="icn-caret-right"></i>
 								</a>

@@ -1,5 +1,5 @@
 /**
- * Menu Block - Save Component
+ * Menu Block - Deprecated Save Components
  *
  * @package CodeWeber Gutenberg Blocks
  */
@@ -10,7 +10,10 @@ import {
 	generateTypographyClasses,
 } from '../../utilities/class-generators';
 
-const MenuSave = ({ attributes }) => {
+/**
+ * v1 — horizontal used flex-row (before flex-md-row)
+ */
+const MenuSaveV1 = ({ attributes }) => {
 	const {
 		mode,
 		orientation,
@@ -40,12 +43,10 @@ const MenuSave = ({ attributes }) => {
 		titleTransform,
 	} = attributes;
 
-	// Если режим "WP Menu", возвращаем null - будет использоваться PHP render
 	if (mode === 'wp-menu') {
 		return null;
 	}
 
-	// Get list classes
 	const getListClasses = () => {
 		if (enableMegaMenu) {
 			const cols = columns ?? 1;
@@ -54,7 +55,6 @@ const MenuSave = ({ attributes }) => {
 		}
 		const classes = [];
 
-		// Base classes from menuClass attribute
 		if (menuClass) {
 			classes.push(...menuClass.split(' '));
 		}
@@ -64,30 +64,24 @@ const MenuSave = ({ attributes }) => {
 		} else if (listType === 'icon') {
 			classes.push('icon-list');
 		}
-		// Если listType === 'none', не добавляем никаких классов списка
 
-		// Bullet color (только если не 'none' и listType не 'none')
 		if (listType !== 'none' && bulletColor && bulletColor !== 'none') {
 			classes.push(`bullet-${bulletColor}`);
 		}
 
-		// Bullet background (only for icon-list)
 		if (listType === 'icon' && bulletBg) {
 			classes.push('bullet-bg');
-			// Add soft color class if bulletColor is set
 			if (bulletColor && bulletColor !== 'none') {
 				classes.push(`bullet-soft-${bulletColor}`);
 			}
 		}
 
-		// Text color
 		if (textColor) {
 			classes.push(`text-${textColor}`);
 		}
 
-		// Orientation
 		classes.push('d-flex');
-		classes.push((orientation || 'horizontal') === 'vertical' ? 'flex-column' : 'flex-md-row');
+		classes.push((orientation || 'horizontal') === 'vertical' ? 'flex-column' : 'flex-row');
 
 		return classes.join(' ');
 	};
@@ -96,7 +90,6 @@ const MenuSave = ({ attributes }) => {
 		id: menuId || undefined,
 	});
 
-	// Parse data attributes
 	const getDataAttributes = () => {
 		if (!menuData) return {};
 		const dataAttrs = {};
@@ -110,13 +103,11 @@ const MenuSave = ({ attributes }) => {
 		return dataAttrs;
 	};
 
-	// Generate title classes
 	const getTitleClasses = () => {
 		const classes = [];
 		if (enableWidget) classes.push('widget-title');
 		if (enableMegaMenu) classes.push('dropdown-header');
 
-		// Color classes
 		let hasColorClass = false;
 		if (titleColor) {
 			const colorClass = generateColorClass(
@@ -130,7 +121,6 @@ const MenuSave = ({ attributes }) => {
 			}
 		}
 
-		// Цвет заголовка при light/dark (опционально; для пунктов меню цвет задаётся темой)
 		if (!hasColorClass) {
 			if ((theme || 'light') === 'dark') {
 				classes.push('text-white');
@@ -139,7 +129,6 @@ const MenuSave = ({ attributes }) => {
 			}
 		}
 
-		// Typography classes (mega menu: force h6 size)
 		const typographyAttrs = enableMegaMenu
 			? { ...attributes, titleSize: 'h6' }
 			: attributes;
@@ -149,7 +138,6 @@ const MenuSave = ({ attributes }) => {
 		);
 		classes.push(...typographyClasses);
 
-		// Custom class
 		if (titleClass) {
 			classes.push(titleClass);
 		}
@@ -157,7 +145,6 @@ const MenuSave = ({ attributes }) => {
 		return classes.filter(Boolean).join(' ');
 	};
 
-	const liThemeClass = '';
 	const liClasses = [itemClass || ''].filter(Boolean).join(' ');
 
 	const content = (
@@ -178,9 +165,7 @@ const MenuSave = ({ attributes }) => {
 								></i>
 							</span>
 						)}
-						<span
-							className=""
-						>
+						<span className="">
 							<a
 								href={item.url || '#'}
 								className={
@@ -230,4 +215,8 @@ const MenuSave = ({ attributes }) => {
 	);
 };
 
-export default MenuSave;
+export default [
+	{
+		save: MenuSaveV1,
+	},
+];

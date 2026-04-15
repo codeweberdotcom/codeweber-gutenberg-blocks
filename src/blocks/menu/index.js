@@ -10,6 +10,7 @@ import metadata from './block.json';
  */
 import Edit from './edit';
 import Save from './save';
+import deprecated from './deprecated';
 
 /**
  * Block Registration
@@ -18,6 +19,7 @@ import Save from './save';
 registerBlockType(metadata, {
 	edit: Edit,
 	save: Save,
+	deprecated,
 	title: __('Menu', 'codeweber-gutenberg-blocks'),
 	description: __(
 		'Menu block with Custom and WordPress Menu modes. Supports dark/light theme and list styling options.',

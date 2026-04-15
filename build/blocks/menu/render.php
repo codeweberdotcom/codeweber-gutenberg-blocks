@@ -230,7 +230,7 @@ if ($enableMegaMenu) {
 	if ($orientation === 'vertical') {
 		$listClasses[] = 'flex-column';
 	} else {
-		$listClasses[] = 'flex-row';
+		$listClasses[] = 'flex-md-row';
 	}
 }
 
@@ -629,7 +629,7 @@ if ($enableMegaMenu) {
 	// Горизонтальное меню: navbar-nav с Bootstrap dropdowns
 	if ($mode === 'wp-menu' && $wpMenuId > 0 && class_exists('WP_Bootstrap_Navwalker')) {
 		// WP Menu: Bootstrap Navwalker для стандартной dropdown-разметки
-		$bootstrap_menu_class = 'navbar-nav flex-row';
+		$bootstrap_menu_class = 'navbar-nav flex-md-row';
 		$nav_args = array(
 			'menu'            => $wpMenuId,
 			'depth'           => $depth,
@@ -649,13 +649,13 @@ if ($enableMegaMenu) {
 		}
 	} else {
 		// Custom/Taxonomy (или WP Menu fallback без Walker): кастомный горизонтальный рендер
-		$menuContent = '<ul class="navbar-nav flex-row">';
+		$menuContent = '<ul class="navbar-nav flex-md-row">';
 		$menuContent .= $render_menu_horizontal($wpMenuItemsTree, 0, $depth);
 		$menuContent .= '</ul>';
 	}
 } elseif ($mode === 'wp-menu' && $wpMenuId > 0 && class_exists('WP_Bootstrap_Navwalker') && $orientation !== 'vertical') {
 	// Fallback: wp_nav_menu + Walker для нестандартных значений orientation
-	$bootstrap_menu_class = 'navbar-nav flex-row';
+	$bootstrap_menu_class = 'navbar-nav flex-md-row';
 	$nav_args = array(
 		'menu'            => $wpMenuId,
 		'depth'           => $depth,
@@ -724,7 +724,7 @@ if ($enableMegaMenu) {
 	// Custom mode или fallback — плоский список
 	if ($orientation === 'horizontal' && !$enableMegaMenu) {
 		// Горизонтальный плоский список: navbar-nav
-		$menuContent = '<ul class="navbar-nav flex-row">';
+		$menuContent = '<ul class="navbar-nav flex-md-row">';
 		foreach ($itemsToRender as $item) {
 			$li_cls = array( 'nav-item' );
 			if ( $itemClass ) {

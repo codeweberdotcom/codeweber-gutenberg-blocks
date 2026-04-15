@@ -320,7 +320,7 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 		}
 
 		classes.push('d-flex');
-		classes.push((orientation || 'horizontal') === 'vertical' ? 'flex-column' : 'flex-row');
+		classes.push((orientation || 'horizontal') === 'vertical' ? 'flex-column' : 'flex-md-row');
 
 		return classes.join(' ');
 	};
@@ -806,7 +806,7 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 				</div>
 			)}
 			{showHorizontalPreview && (
-				<ul className="navbar-nav flex-row">
+				<ul className="navbar-nav flex-md-row">
 					{renderHorizontalLevel(
 						buildByParent(items),
 						0,

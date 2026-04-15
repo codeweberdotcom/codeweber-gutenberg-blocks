@@ -132,10 +132,18 @@ Legend: `S` = static (JS save) | `D` = dynamic (PHP render.php)
 
 ---
 
+## Footer & Utility
+
+| Block | Type | Description |
+|-------|------|-------------|
+| `copyright` | D | Copyright and developer credit for footer. Auto year via PHP date('Y'). Two sections (copyright / developer link) with color, alignment, inline/stacked layout. |
+
+---
+
 ## Block Count by Type
 
 | Type | Count |
 |------|-------|
 | Static (S) | ~25 |
-| Dynamic (D) | ~22 |
-| **Total** | **47** |
+| Dynamic (D) | ~23 |
+| **Total** | **48** |

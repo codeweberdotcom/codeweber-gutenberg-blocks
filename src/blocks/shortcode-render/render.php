@@ -44,6 +44,17 @@ if ($shortcode === '') {
 // do_shortcode() is standard WordPress. The shortcode is stored in Gutenberg
 // block attributes within post_content — only users with edit_posts capability
 // can set it. No whitelist needed: same trust level as core [shortcode] block.
-echo '<div class="wp-block-codeweber-blocks-shortcode-render">';
-echo do_shortcode( $shortcode );
-echo '</div>';
+$class_name = isset($attributes['className']) ? trim((string) $attributes['className']) : '';
+$anchor     = isset($attributes['anchor']) ? trim((string) $attributes['anchor']) : '';
+
+if ($class_name !== '') {
+	$attrs_str = ' class="' . esc_attr($class_name) . '"';
+	if ($anchor !== '') {
+		$attrs_str .= ' id="' . esc_attr($anchor) . '"';
+	}
+	echo '<div' . $attrs_str . '>';
+	echo do_shortcode( $shortcode );
+	echo '</div>';
+} else {
+	echo do_shortcode( $shortcode );
+}

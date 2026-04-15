@@ -806,7 +806,7 @@ const MenuEdit = ({ attributes, setAttributes, clientId }) => {
 				</div>
 			)}
 			{showHorizontalPreview && (
-				<ul className="navbar-nav">
+				<ul className="navbar-nav flex-row">
 					{renderHorizontalLevel(
 						buildByParent(items),
 						0,

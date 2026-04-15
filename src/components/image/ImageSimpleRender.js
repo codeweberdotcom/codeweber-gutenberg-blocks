@@ -14,6 +14,7 @@ export const ImageSimpleRender = ({
 	borderRadius,
 	enableLightbox,
 	lightboxGallery,
+	lightboxShowDesc = false,
 	imageSize = 'full',
 	// Новые атрибуты для hover эффектов
 	simpleEffect,
@@ -40,8 +41,10 @@ export const ImageSimpleRender = ({
 	const imageUrl = getImageUrl(image, imageSize);
 
 	// Получаем атрибуты lightbox через утилиту
+	const lbTitle = lightboxShowDesc ? (image.title || '') : '';
+	const lbDesc = lightboxShowDesc ? (image.description || '') : '';
 	const lightboxAttrs = !isEditor
-		? getLightboxAttributes(enableLightbox, lightboxGallery, 'image')
+		? getLightboxAttributes(enableLightbox, lightboxGallery, 'image', lbTitle, lbDesc)
 		: {};
 
 	// Получаем классы hover эффектов

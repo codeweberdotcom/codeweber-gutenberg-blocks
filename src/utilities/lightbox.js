@@ -13,37 +13,42 @@
  * @param {boolean} enableLightbox - Enable/disable lightbox
  * @param {string} galleryName - Gallery name for grouping images
  * @param {string} type - Lightbox type: 'image', 'video', 'inline', etc.
- * @param {string} description - Optional description/title for lightbox
+ * @param {string} title - Optional title shown in lightbox caption
+ * @param {string} description - Optional description shown in lightbox caption
  * @returns {Object} Object with data attributes
  *
  * @example
- * const attrs = getLightboxAttributes(true, 'gallery-1', 'image');
- * // Returns: { 'data-glightbox': 'image', 'data-gallery': 'gallery-1' }
+ * const attrs = getLightboxAttributes(true, 'gallery-1', 'image', 'My Title', 'My Desc');
+ * // Returns: { 'data-glightbox': 'title: My Title; description: My Desc', 'data-gallery': 'gallery-1' }
  */
 export const getLightboxAttributes = (
 	enableLightbox = false,
 	galleryName = '',
 	type = 'image',
+	title = '',
 	description = ''
 ) => {
 	if (!enableLightbox) {
 		return {};
 	}
 
-	// According to Sandbox documentation: <a href="#" data-glightbox data-gallery="g1">
-	// data-glightbox should be empty or contain title/description, not type
+	// Build data-glightbox value with optional title/description
+	// Format: "title: My Title; description: My Desc"
+	const parts = [];
+	if (title && title.trim() !== '') {
+		parts.push(`title: ${title.trim()}`);
+	}
+	if (description && description.trim() !== '') {
+		parts.push(`description: ${description.trim()}`);
+	}
+
 	const attrs = {
-		'data-glightbox': '', // Empty attribute, GLightbox auto-detects type from href
+		'data-glightbox': parts.length > 0 ? parts.join('; ') : '',
 	};
 
 	// Add gallery grouping if specified
 	if (galleryName && galleryName.trim() !== '') {
 		attrs['data-gallery'] = galleryName;
-	}
-
-	// Add description/title if specified
-	if (description && description.trim() !== '') {
-		attrs['data-glightbox-title'] = description;
 	}
 
 	return attrs;

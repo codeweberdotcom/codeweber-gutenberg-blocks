@@ -10,7 +10,7 @@ import { ToggleControl, TextControl } from '@wordpress/components';
  * @package CodeWeber Gutenberg Blocks
  */
 export const LightboxControl = ({ attributes, setAttributes }) => {
-	const { enableLightbox, lightboxGallery } = attributes;
+	const { enableLightbox, lightboxGallery, lightboxShowDesc } = attributes;
 
 	return (
 		<>
@@ -21,13 +21,32 @@ export const LightboxControl = ({ attributes, setAttributes }) => {
 			/>
 
 			{enableLightbox && (
-				<TextControl
-					label={__('Gallery Name', 'codeweber-gutenberg-blocks')}
-					value={lightboxGallery}
-					onChange={(value) =>
-						setAttributes({ lightboxGallery: value })
-					}
-				/>
+				<>
+					<ToggleControl
+						label={__(
+							'Show title & description',
+							'codeweber-gutenberg-blocks'
+						)}
+						help={__(
+							'Shows image title and description in the lightbox caption if filled in.',
+							'codeweber-gutenberg-blocks'
+						)}
+						checked={lightboxShowDesc || false}
+						onChange={(value) =>
+							setAttributes({ lightboxShowDesc: value })
+						}
+					/>
+					<TextControl
+						label={__(
+							'Gallery Name',
+							'codeweber-gutenberg-blocks'
+						)}
+						value={lightboxGallery}
+						onChange={(value) =>
+							setAttributes({ lightboxGallery: value })
+						}
+					/>
+				</>
 			)}
 		</>
 	);

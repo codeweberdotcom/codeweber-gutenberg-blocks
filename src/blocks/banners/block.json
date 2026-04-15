@@ -56,6 +56,10 @@
 			"type": "string",
 			"default": "gallery-1"
 		},
+		"lightboxShowDesc": {
+			"type": "boolean",
+			"default": false
+		},
 		"simpleEffect": {
 			"type": "string",
 			"default": "none"

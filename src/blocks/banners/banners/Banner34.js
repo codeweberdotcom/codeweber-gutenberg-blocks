@@ -38,6 +38,7 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 		borderRadius,
 		enableLightbox,
 		lightboxGallery,
+		lightboxShowDesc,
 		simpleEffect,
 		effectType,
 		tooltipStyle,
@@ -255,15 +256,25 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 		) {
 			// Для режима background рендерим напрямую без ImageSimpleRender (и в редакторе, и на фронтенде)
 			if (imageType === 'background') {
-				const bgLightboxAttrs = !isEditor
-					? getLightboxAttributes(
-							enableLightbox,
-							lightboxGallery,
-							'image'
-					  )
-					: {};
-				const hasBgLightbox =
-					enableLightbox && !isEditor;
+				const hasBgLightbox = enableLightbox && !isEditor;
+
+				// Хелпер: получить lightbox-атрибуты для конкретного изображения
+				const getBgLightboxAttrs = (image) => {
+					if (!hasBgLightbox) return {};
+					const lbTitle = lightboxShowDesc
+						? image?.title || ''
+						: '';
+					const lbDesc = lightboxShowDesc
+						? image?.description || ''
+						: '';
+					return getLightboxAttributes(
+						enableLightbox,
+						lightboxGallery,
+						'image',
+						lbTitle,
+						lbDesc
+					);
+				};
 
 				// Рендерим в зависимости от displayMode
 				if (displayMode === 'single') {
@@ -306,7 +317,7 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 								<a
 									href={imageUrl}
 									className="h-100"
-									{...bgLightboxAttrs}
+									{...getBgLightboxAttrs(imagesToRender[0])}
 								>
 									{bgDiv}
 								</a>
@@ -348,7 +359,7 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 												<a
 													href={imageUrl}
 													className="h-100"
-													{...bgLightboxAttrs}
+													{...getBgLightboxAttrs(image)}
 												>
 													{bgDiv}
 												</a>
@@ -399,7 +410,7 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 												<a
 													href={imageUrl}
 													className="h-100"
-													{...bgLightboxAttrs}
+													{...getBgLightboxAttrs(image)}
 												>
 													{bgDiv}
 												</a>
@@ -428,6 +439,7 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 							borderRadius={borderRadius}
 							enableLightbox={enableLightbox}
 							lightboxGallery={lightboxGallery}
+							lightboxShowDesc={lightboxShowDesc}
 							simpleEffect={simpleEffect}
 							effectType={effectType}
 							tooltipStyle={tooltipStyle}
@@ -459,6 +471,7 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 										borderRadius={borderRadius}
 										enableLightbox={enableLightbox}
 										lightboxGallery={lightboxGallery}
+										lightboxShowDesc={lightboxShowDesc}
 										simpleEffect={simpleEffect}
 										effectType={effectType}
 										tooltipStyle={tooltipStyle}
@@ -504,6 +517,7 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 										borderRadius={borderRadius}
 										enableLightbox={enableLightbox}
 										lightboxGallery={lightboxGallery}
+										lightboxShowDesc={lightboxShowDesc}
 										simpleEffect={simpleEffect}
 										effectType={effectType}
 										tooltipStyle={tooltipStyle}

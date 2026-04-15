@@ -496,7 +496,7 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 								top: '50%',
 								left: '50%',
 								transform: 'translate(-50%,-50%)',
-								zIndex: 3,
+								zIndex: 20,
 							}}
 							data-glightbox
 							data-gallery="desktop-video"
@@ -535,7 +535,7 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 							top: '50%',
 							left: '50%',
 							transform: 'translate(-50%,-50%)',
-							zIndex: 3,
+							zIndex: 20,
 						}}
 						data-glightbox
 						data-gallery="desktop-video"

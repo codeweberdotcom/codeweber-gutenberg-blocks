@@ -16,6 +16,7 @@ export const ImageSimpleRender = ({
 	lightboxGallery,
 	lightboxShowDesc = false,
 	imageSize = 'full',
+	lightboxImageSize = 'full',
 	// Новые атрибуты для hover эффектов
 	simpleEffect,
 	effectType,
@@ -65,7 +66,8 @@ export const ImageSimpleRender = ({
 	const tooltipTitle = getTooltipTitle(image, effectType);
 
 	// Определяем href и обработчик клика в зависимости от контекста
-	const href = isEditor ? '#' : image.linkUrl || image.url;
+	const lightboxUrl = getImageUrl(image, lightboxImageSize);
+	const href = isEditor ? '#' : image.linkUrl || lightboxUrl;
 	const onClickHandler = isEditor ? (e) => e.preventDefault() : undefined;
 
 	// Рендеринг как background

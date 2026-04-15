@@ -316,7 +316,7 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 						<div className={wrapperClasses}>
 							{canWrapLightbox ? (
 								<a
-									href={imageUrl}
+									href={getImageUrl(imagesToRender[0], 'codeweber_extralarge')}
 									className="h-100"
 									{...getBgLightboxAttrs(imagesToRender[0])}
 								>
@@ -358,7 +358,7 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 										>
 											{hasBgLightbox ? (
 												<a
-													href={imageUrl}
+													href={getImageUrl(image, 'codeweber_extralarge')}
 													className="h-100"
 													{...getBgLightboxAttrs(image)}
 												>
@@ -409,7 +409,7 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 										>
 											{hasBgLightbox ? (
 												<a
-													href={imageUrl}
+													href={getImageUrl(image, 'codeweber_extralarge')}
 													className="h-100"
 													{...getBgLightboxAttrs(image)}
 												>
@@ -466,6 +466,7 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 							cursorStyle={cursorStyle}
 							imageRenderType={renderType}
 							isEditor={isEditor}
+							lightboxImageSize="codeweber_extralarge"
 						/>
 					</div>
 				);
@@ -498,6 +499,7 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 										cursorStyle={cursorStyle}
 										imageRenderType={renderType}
 										isEditor={isEditor}
+										lightboxImageSize="codeweber_extralarge"
 									/>
 								</div>
 							))}
@@ -544,6 +546,7 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 										cursorStyle={cursorStyle}
 										imageRenderType={renderType}
 										isEditor={isEditor}
+										lightboxImageSize="codeweber_extralarge"
 									/>
 								</SwiperSlide>
 							))}

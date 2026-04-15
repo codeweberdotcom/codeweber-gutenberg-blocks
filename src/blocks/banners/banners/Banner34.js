@@ -2,6 +2,7 @@ import { InnerBlocks } from '@wordpress/block-editor';
 import { generateBackgroundClasses } from '../../../utilities/class-generators';
 import { ImageSimpleRender } from '../../../components/image/ImageSimpleRender';
 import { getImageUrl } from '../../../utilities/image-url';
+import { getLightboxAttributes } from '../../../utilities/lightbox';
 import {
 	SwiperSlider,
 	SwiperSlide,
@@ -254,37 +255,64 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 		) {
 			// Для режима background рендерим напрямую без ImageSimpleRender (и в редакторе, и на фронтенде)
 			if (imageType === 'background') {
+				const bgLightboxAttrs = !isEditor
+					? getLightboxAttributes(
+							enableLightbox,
+							lightboxGallery,
+							'image'
+					  )
+					: {};
+				const hasBgLightbox =
+					enableLightbox && !isEditor;
+
 				// Рендерим в зависимости от displayMode
 				if (displayMode === 'single') {
 					const imageUrl = getImageUrl(imagesToRender[0], imageSize);
+					// Не оборачиваем в lightbox-ссылку если есть play-кнопка
+					// (вложенный <a> невалиден)
+					const canWrapLightbox =
+						hasBgLightbox && !modalVideoUrl;
+					const bgDiv = (
+						<div
+							className={`image-wrapper bg-image bg-cover h-100 w-100 ${borderRadius || ''}`.trim()}
+							data-image-src={imageUrl}
+							{...(isEditor && {
+								style: {
+									backgroundImage: `url(${imageUrl})`,
+								},
+							})}
+						>
+							{modalVideoUrl && (
+								<a
+									href={getRelativeUrl(modalVideoUrl)}
+									className="btn btn-circle btn-primary btn-play ripple mx-auto position-absolute d-lg-none"
+									style={{
+										top: '50%',
+										left: '50%',
+										transform: 'translate(-50%,-50%)',
+										zIndex: 3,
+									}}
+									data-glightbox
+									data-gallery="mobile-video"
+								>
+									<i className="icn-caret-right"></i>
+								</a>
+							)}
+						</div>
+					);
 					return (
 						<div className={wrapperClasses}>
-							<div
-								className={`image-wrapper bg-image bg-cover h-100 w-100 ${borderRadius || ''}`.trim()}
-								data-image-src={imageUrl}
-								{...(isEditor && {
-									style: {
-										backgroundImage: `url(${imageUrl})`,
-									},
-								})}
-							>
-								{modalVideoUrl && (
-									<a
-										href={getRelativeUrl(modalVideoUrl)}
-										className="btn btn-circle btn-primary btn-play ripple mx-auto position-absolute d-lg-none"
-										style={{
-											top: '50%',
-											left: '50%',
-											transform: 'translate(-50%,-50%)',
-											zIndex: 3,
-										}}
-										data-glightbox
-										data-gallery="mobile-video"
-									>
-										<i className="icn-caret-right"></i>
-									</a>
-								)}
-							</div>
+							{canWrapLightbox ? (
+								<a
+									href={imageUrl}
+									className="h-100"
+									{...bgLightboxAttrs}
+								>
+									{bgDiv}
+								</a>
+							) : (
+								bgDiv
+							)}
 						</div>
 					);
 				} else if (displayMode === 'grid') {
@@ -296,6 +324,17 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 										image,
 										imageSize
 									);
+									const bgDiv = (
+										<div
+											className={`image-wrapper bg-image bg-cover h-100 w-100 ${borderRadius || ''}`.trim()}
+											data-image-src={imageUrl}
+											{...(isEditor && {
+												style: {
+													backgroundImage: `url(${imageUrl})`,
+												},
+											})}
+										></div>
+									);
 									return (
 										<div
 											key={`banner-image-${index}-${imageSize}`}
@@ -305,15 +344,17 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 													: ''
 											}
 										>
-											<div
-												className={`image-wrapper bg-image bg-cover h-100 w-100 ${borderRadius || ''}`.trim()}
-												data-image-src={imageUrl}
-												{...(isEditor && {
-													style: {
-														backgroundImage: `url(${imageUrl})`,
-													},
-												})}
-											></div>
+											{hasBgLightbox ? (
+												<a
+													href={imageUrl}
+													className="h-100"
+													{...bgLightboxAttrs}
+												>
+													{bgDiv}
+												</a>
+											) : (
+												bgDiv
+											)}
 										</div>
 									);
 								})}
@@ -339,19 +380,32 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 										image,
 										imageSize
 									);
+									const bgDiv = (
+										<div
+											className={`image-wrapper bg-image bg-cover h-100 w-100 ${borderRadius || ''}`.trim()}
+											data-image-src={imageUrl}
+											{...(isEditor && {
+												style: {
+													backgroundImage: `url(${imageUrl})`,
+												},
+											})}
+										></div>
+									);
 									return (
 										<SwiperSlide
 											key={`banner-swiper-${index}-${imageSize}`}
 										>
-											<div
-												className={`image-wrapper bg-image bg-cover h-100 w-100 ${borderRadius || ''}`.trim()}
-												data-image-src={imageUrl}
-												{...(isEditor && {
-													style: {
-														backgroundImage: `url(${imageUrl})`,
-													},
-												})}
-											></div>
+											{hasBgLightbox ? (
+												<a
+													href={imageUrl}
+													className="h-100"
+													{...bgLightboxAttrs}
+												>
+													{bgDiv}
+												</a>
+											) : (
+												bgDiv
+											)}
 										</SwiperSlide>
 									);
 								})}

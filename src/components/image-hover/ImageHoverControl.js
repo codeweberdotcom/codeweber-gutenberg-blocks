@@ -80,6 +80,15 @@ export const ImageHoverControl = ({ attributes, setAttributes }) => {
 					>
 						{__('Hover Scale', 'codeweber-gutenberg-blocks')}
 					</Button>
+					<Button
+						isPrimary={simpleEffect === 'hover-scale-rotate'}
+						isSecondary={simpleEffect !== 'hover-scale-rotate'}
+						onClick={() => {
+							setAttributes({ simpleEffect: 'hover-scale-rotate' });
+						}}
+					>
+						{__('Scale Rotate', 'codeweber-gutenberg-blocks')}
+					</Button>
 				</div>
 			</div>
 

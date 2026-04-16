@@ -24,6 +24,7 @@ export const ImageSimpleRender = ({
 	overlayStyle,
 	overlayGradient,
 	overlayColor,
+	overlayIconColor = 'bg-frost',
 	cursorStyle,
 	imageRenderType = 'img', // 'img' или 'background'
 	isEditor = false,
@@ -124,6 +125,58 @@ export const ImageSimpleRender = ({
 
 		// Overlay вариант
 		if (effectType === 'overlay') {
+			// Overlay-6: hover-overlay with frost icon
+			if (overlayStyle === 'overlay-6') {
+				return (
+					<figure className={figureClasses}>
+						<a
+							href={href}
+							onClick={onClickHandler}
+							{...lightboxAttrs}
+						>
+							<img
+								src={imageUrl}
+								alt={image.alt || ''}
+								decoding="async"
+							/>
+							<span
+								className={`hover-icon ${overlayIconColor || 'bg-frost'} text-white`}
+							>
+								<svg
+									fill="currentColor"
+									viewBox="0 0 256 256"
+									xmlns="http://www.w3.org/2000/svg"
+								>
+									<path d="M220,128a4.0002,4.0002,0,0,1-4,4H132v84a4,4,0,0,1-8,0V132H40a4,4,0,0,1,0-8h84V40a4,4,0,0,1,8,0v84h84A4.0002,4.0002,0,0,1,220,128Z"></path>
+								</svg>
+							</span>
+						</a>
+					</figure>
+				);
+			}
+
+			// Overlay-7: item-link button
+			if (overlayStyle === 'overlay-7') {
+				return (
+					<figure className={figureClasses}>
+						<img
+							src={imageUrl}
+							alt={image.alt || ''}
+							decoding="async"
+						/>
+						{!isEditor && enableLightbox && (
+							<a
+								className="item-link"
+								href={lightboxUrl}
+								{...lightboxAttrs}
+							>
+								<i className="uil uil-plus"></i>
+							</a>
+						)}
+					</figure>
+				);
+			}
+
 			// Overlay-5: plus icon inside <a>
 			if (overlayStyle === 'overlay-5') {
 				return (
@@ -211,6 +264,11 @@ export const ImageSimpleRender = ({
 			</figure>
 		);
 	})();
+
+	// overlay-5/6/7 handle lightbox internally — skip outer wrap
+	if (effectType === 'overlay' && ['overlay-5', 'overlay-6', 'overlay-7'].includes(overlayStyle)) {
+		return figureElement;
+	}
 
 	// Если включен lightbox, оборачиваем figure в a
 	if (enableLightbox) {

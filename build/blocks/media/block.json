@@ -131,6 +131,10 @@
       "type": "string",
       "default": "primary"
     },
+    "overlayIconColor": {
+      "type": "string",
+      "default": "bg-frost"
+    },
     "cursorStyle": {
       "type": "boolean",
       "default": false

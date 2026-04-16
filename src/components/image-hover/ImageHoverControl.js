@@ -29,9 +29,10 @@ export const ImageHoverControl = ({ attributes, setAttributes }) => {
 		tooltipStyle = 'itooltip-dark', // itooltip-dark, itooltip-light, itooltip-primary
 
 		// Overlay настройки
-		overlayStyle = 'overlay-1', // overlay-1, overlay-2, overlay-3, overlay-4
+		overlayStyle = 'overlay-1', // overlay-1, overlay-2, overlay-3, overlay-4, overlay-5, overlay-6, overlay-7
 		overlayGradient = 'gradient-1', // gradient-1 to gradient-7 (для overlay-3)
 		overlayColor = false, // добавляет класс 'color' для overlay-2
+		overlayIconColor = 'bg-frost', // bg-frost, bg-soft-frost, bg-pale-frost (для overlay-6)
 
 		// Cursor настройки
 		cursorStyle = 'cursor-dark', // cursor-dark, cursor-light, cursor-primary
@@ -232,6 +233,20 @@ export const ImageHoverControl = ({ attributes, setAttributes }) => {
 								),
 								value: 'overlay-5',
 							},
+							{
+								label: __(
+									'Overlay 6 (Hover Overlay)',
+									'codeweber-gutenberg-blocks'
+								),
+								value: 'overlay-6',
+							},
+							{
+								label: __(
+									'Overlay 7 (Item Link)',
+									'codeweber-gutenberg-blocks'
+								),
+								value: 'overlay-7',
+							},
 						]}
 						onChange={(value) =>
 							setAttributes({ overlayStyle: value })
@@ -252,6 +267,43 @@ export const ImageHoverControl = ({ attributes, setAttributes }) => {
 							checked={overlayColor}
 							onChange={(value) =>
 								setAttributes({ overlayColor: value })
+							}
+						/>
+					)}
+
+					{/* Overlay-6: Icon color */}
+					{overlayStyle === 'overlay-6' && (
+						<SelectControl
+							label={__(
+								'Icon Background',
+								'codeweber-gutenberg-blocks'
+							)}
+							value={overlayIconColor || 'bg-frost'}
+							options={[
+								{
+									label: __(
+										'Frost',
+										'codeweber-gutenberg-blocks'
+									),
+									value: 'bg-frost',
+								},
+								{
+									label: __(
+										'Soft Frost',
+										'codeweber-gutenberg-blocks'
+									),
+									value: 'bg-soft-frost',
+								},
+								{
+									label: __(
+										'Pale Frost',
+										'codeweber-gutenberg-blocks'
+									),
+									value: 'bg-pale-frost',
+								},
+							]}
+							onChange={(value) =>
+								setAttributes({ overlayIconColor: value })
 							}
 						/>
 					)}
@@ -371,6 +423,7 @@ export const getImageHoverClasses = (attributes) => {
 		overlayStyle = 'overlay-1',
 		overlayGradient = 'gradient-1',
 		overlayColor = false,
+		overlayIconColor = 'bg-frost',
 		cursorStyle = 'cursor-dark',
 	} = attributes;
 
@@ -403,6 +456,25 @@ export const getImageHoverClasses = (attributes) => {
 			// Overlay-5: plus icon with hover-scale
 			if (overlayStyle === 'overlay-5') {
 				classes.push('hover-scale', 'hover-plus');
+			}
+
+			// Overlay-6: hover-overlay with icon (no overlay base class)
+			if (overlayStyle === 'overlay-6') {
+				// Remove 'overlay' and 'overlay-6' added above, replace with hover classes
+				const overlayIdx = classes.indexOf('overlay');
+				if (overlayIdx > -1) classes.splice(overlayIdx, 1);
+				const overlay6Idx = classes.indexOf('overlay-6');
+				if (overlay6Idx > -1) classes.splice(overlay6Idx, 1);
+				classes.push('hover-scale', 'hover-overlay');
+			}
+
+			// Overlay-7: item-link (position-relative only, no overlay classes)
+			if (overlayStyle === 'overlay-7') {
+				const overlayIdx = classes.indexOf('overlay');
+				if (overlayIdx > -1) classes.splice(overlayIdx, 1);
+				const overlay7Idx = classes.indexOf('overlay-7');
+				if (overlay7Idx > -1) classes.splice(overlay7Idx, 1);
+				classes.push('position-relative');
 			}
 			break;
 

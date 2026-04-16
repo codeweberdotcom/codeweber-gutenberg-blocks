@@ -20,6 +20,7 @@ export const ImageRender = ({ attributes, isEditor = false }) => {
 		overlayStyle,
 		overlayGradient,
 		overlayColor,
+		overlayIconColor = 'bg-frost',
 		cursorStyle,
 	} = attributes;
 
@@ -98,6 +99,52 @@ export const ImageRender = ({ attributes, isEditor = false }) => {
 	if (effectType === 'overlay') {
 		// Определяем текст для overlay
 		const overlayText = image.caption || image.title || '';
+
+		// Overlay 6: hover-overlay with frost icon
+		if (overlayStyle === 'overlay-6') {
+			return (
+				<figure className={figureClasses}>
+					<a
+						href={href}
+						onClick={onClickHandler}
+						{...lightboxAttrs}
+						style={linkStyle}
+					>
+						{maskedImage}
+						<span
+							className={`hover-icon ${overlayIconColor || 'bg-frost'} text-white`}
+						>
+							<svg
+								fill="currentColor"
+								viewBox="0 0 256 256"
+								xmlns="http://www.w3.org/2000/svg"
+							>
+								<path d="M220,128a4.0002,4.0002,0,0,1-4,4H132v84a4,4,0,0,1-8,0V132H40a4,4,0,0,1,8,0v84h84A4.0002,4.0002,0,0,1,220,128Z"></path>
+							</svg>
+						</span>
+					</a>
+				</figure>
+			);
+		}
+
+		// Overlay 7: item-link button
+		if (overlayStyle === 'overlay-7') {
+			return (
+				<figure className={figureClasses}>
+					{maskedImage}
+					{!isEditor && enableLightbox && (
+						<a
+							className="item-link"
+							href={lightboxUrl}
+							{...lightboxAttrs}
+							style={linkStyle}
+						>
+							<i className="uil uil-plus"></i>
+						</a>
+					)}
+				</figure>
+			);
+		}
 
 		// Overlay 5: plus icon inside <a>
 		if (overlayStyle === 'overlay-5') {

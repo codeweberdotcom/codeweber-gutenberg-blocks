@@ -31,8 +31,11 @@ export const ImageRender = ({ attributes, isEditor = false }) => {
 	// Получаем URL нужного размера
 	const imageUrl = getImageUrl(image, imageSize);
 
+	// Overlay эффекты отключены если лайтбокс выключен
+	const activeEffectType = (!enableLightbox && !isEditor && effectType === 'overlay') ? 'none' : effectType;
+
 	// Получаем классы hover эффектов
-	const hoverClasses = getImageHoverClasses(attributes);
+	const hoverClasses = getImageHoverClasses({ ...attributes, effectType: activeEffectType });
 
 	// Получаем tooltip title
 	const tooltipTitle = getTooltipTitle(effectType, tooltipStyle, image);
@@ -96,7 +99,7 @@ export const ImageRender = ({ attributes, isEditor = false }) => {
 	}
 
 	// Overlay вариант
-	if (effectType === 'overlay') {
+	if (activeEffectType === 'overlay') {
 		// Определяем текст для overlay
 		const overlayText = image.caption || image.title || '';
 

@@ -49,10 +49,13 @@ export const ImageSimpleRender = ({
 		? getLightboxAttributes(enableLightbox, lightboxGallery, 'image', lbTitle, lbDesc)
 		: {};
 
+	// Overlay эффекты отключены если лайтбокс выключен
+	const activeEffectType = (!enableLightbox && !isEditor && effectType === 'overlay') ? 'none' : effectType;
+
 	// Получаем классы hover эффектов
 	const hoverClasses = getImageHoverClasses({
 		simpleEffect,
-		effectType,
+		effectType: activeEffectType,
 		tooltipStyle,
 		overlayStyle,
 		overlayGradient,
@@ -124,7 +127,7 @@ export const ImageSimpleRender = ({
 		}
 
 		// Overlay вариант
-		if (effectType === 'overlay') {
+		if (activeEffectType === 'overlay') {
 			// Overlay-6: hover-overlay with frost icon
 			if (overlayStyle === 'overlay-6') {
 				return (

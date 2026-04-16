@@ -10,6 +10,7 @@ import './style.scss';
 
 import Edit from './edit';
 import save from './save';
+import SaveDeprecatedV1 from './save-deprecated';
 import metadata from './block.json';
 
 /**
@@ -18,4 +19,10 @@ import metadata from './block.json';
 registerBlockType(metadata.name, {
 	edit: Edit,
 	save,
+	deprecated: [
+		{
+			attributes: metadata.attributes,
+			save: SaveDeprecatedV1,
+		},
+	],
 });

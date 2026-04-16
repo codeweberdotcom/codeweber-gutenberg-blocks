@@ -574,11 +574,9 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 	const layoutClasses =
 		featureLayout === 'horizontal' ? 'd-flex flex-row' : '';
 
-	// Wrap title+paragraph+button in optional div
+	// Wrap title+paragraph+button in a div (class added when contentWrapperClass is set)
 	const wrapContent = (content) =>
-		contentWrapperClass
-			? <div className={contentWrapperClass}>{content}</div>
-			: <>{content}</>;
+		<div className={contentWrapperClass || undefined}>{content}</div>;
 
 	// Render content based on layout
 	const renderContent = () => {

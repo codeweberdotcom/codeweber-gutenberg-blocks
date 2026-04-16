@@ -1,23 +1,19 @@
 /**
- * Feature Block - Save Component
+ * Feature Block - Deprecated Save v1
  *
- * @package CodeWeber Gutenberg Blocks
+ * wrapContent used Fragment when contentWrapperClass was empty.
  */
 
 import { RichText, useBlockProps, InnerBlocks } from '@wordpress/block-editor';
 import { IconRenderSave } from '../../components/icon';
 import { ParagraphRenderSave } from '../../components/paragraph';
-import { getTitleClasses, getTextClasses } from '../heading-subtitle/utils';
+import { getTitleClasses } from '../heading-subtitle/utils';
 import { generateBackgroundClasses } from '../../utilities/class-generators';
 import { getSpacingClasses } from '../section/utils';
 
-/**
- * Save Component
- */
-const Save = ({ attributes }) => {
+const SaveDeprecatedV1 = ({ attributes }) => {
 	const {
 		featureLayout,
-		// Icon
 		iconType,
 		iconName,
 		svgIcon,
@@ -36,11 +32,9 @@ const Save = ({ attributes }) => {
 		customSvgUrl,
 		customSvgId,
 		customSvgSize,
-		// Title
 		enableTitle,
 		title,
 		titleTag,
-		// Paragraph
 		enableParagraph,
 		paragraph,
 		paragraphTag,
@@ -50,13 +44,11 @@ const Save = ({ attributes }) => {
 		paragraphWeight,
 		paragraphTransform,
 		paragraphClass,
-		// Button
 		enableButton,
 		buttonText,
 		buttonUrl,
 		buttonColor,
 		buttonClass,
-		// Card
 		enableCard,
 		enableCardBody,
 		cardBodyClass,
@@ -97,142 +89,70 @@ const Save = ({ attributes }) => {
 		contentWrapperClass,
 	} = attributes;
 
-	// Generate classes for card wrapper
 	const getCardClasses = () => {
 		const classes = [];
-
-		if (enableCard) {
-			classes.push('card');
-		}
-
-		if (overflowHidden) {
-			classes.push('overflow-hidden');
-		}
-
-		if (h100) {
-			classes.push('h-100');
-		}
-
-		if (borderRadius) {
-			classes.push(borderRadius);
-		}
-
-		if (shadow) {
-			classes.push(shadow);
-		}
-
-		if (cardBorder || borderPosition) {
-			classes.push(cardBorder || borderPosition);
-		}
-
-		// Если выбраны цвет или ширина, но нет позиции - применяем обычный border
-		if ((borderColor || borderWidth) && !cardBorder && !borderPosition) {
-			classes.push('border');
-		}
-
-		if (borderWidth) {
-			classes.push(borderWidth);
-		}
-
+		if (enableCard) classes.push('card');
+		if (overflowHidden) classes.push('overflow-hidden');
+		if (h100) classes.push('h-100');
+		if (borderRadius) classes.push(borderRadius);
+		if (shadow) classes.push(shadow);
+		if (cardBorder || borderPosition) classes.push(cardBorder || borderPosition);
+		if ((borderColor || borderWidth) && !cardBorder && !borderPosition) classes.push('border');
+		if (borderWidth) classes.push(borderWidth);
 		if (borderColor) {
 			const colorType = borderColorType || 'solid';
-			if (colorType === 'soft') {
-				classes.push(`border-soft-${borderColor}`);
-			} else {
-				classes.push(`border-${borderColor}`);
-			}
+			classes.push(colorType === 'soft' ? `border-soft-${borderColor}` : `border-${borderColor}`);
 		}
-
-		if (borderAccent) {
-			classes.push(borderAccent);
-		}
-
-		// Background classes
+		if (borderAccent) classes.push(borderAccent);
 		classes.push(
 			...generateBackgroundClasses({
-				backgroundType,
-				backgroundColor,
-				backgroundColorType,
-				backgroundGradient,
-				backgroundImageUrl,
-				backgroundSize,
-				backgroundPatternUrl,
-				backgroundOverlay,
+				backgroundType, backgroundColor, backgroundColorType,
+				backgroundGradient, backgroundImageUrl, backgroundSize,
+				backgroundPatternUrl, backgroundOverlay,
 			})
 		);
-
-		// Spacing classes
 		classes.push(
 			...getSpacingClasses({
-				spacingType,
-				spacingXs,
-				spacingSm,
-				spacingMd,
-				spacingLg,
-				spacingXl,
-				spacingXxl,
+				spacingType, spacingXs, spacingSm, spacingMd,
+				spacingLg, spacingXl, spacingXxl,
 			})
 		);
-
-		// Custom class
-		if (blockClass) {
-			classes.push(blockClass);
-		}
-
+		if (blockClass) classes.push(blockClass);
 		return classes.filter(Boolean).join(' ');
 	};
 
-	// Parse data attributes
 	const getDataAttributes = () => {
 		const dataAttrs = {};
 		if (blockData) {
 			blockData.split(',').forEach((pair) => {
 				const [key, value] = pair.split('=').map((s) => s.trim());
-				if (key && value) {
-					dataAttrs[`data-${key}`] = value;
-				}
+				if (key && value) dataAttrs[`data-${key}`] = value;
 			});
 		}
 		return dataAttrs;
 	};
 
-	// Generate button classes
 	const getButtonClasses = () => {
 		const classes = buttonClass ? buttonClass.split(' ') : [];
-		if (buttonColor) {
-			classes.push(`link-${buttonColor}`);
-		}
+		if (buttonColor) classes.push(`link-${buttonColor}`);
 		return classes.filter(Boolean).join(' ');
 	};
 
 	const cardClasses = getCardClasses();
 	const dataAttributes = getDataAttributes();
 
-	// Icon
 	const iconElement = (
 		<IconRenderSave
-			iconType={iconType}
-			iconName={iconName}
-			svgIcon={svgIcon}
-			svgStyle={svgStyle}
-			iconSize={iconSize}
-			iconFontSize={iconFontSize}
-			iconColor={iconColor}
-			iconColor2={iconColor2}
-			iconClass={iconClass}
-			iconWrapper={iconWrapper}
-			iconWrapperStyle={iconWrapperStyle}
-			iconBtnSize={iconBtnSize}
-			iconBtnVariant={iconBtnVariant}
-			iconWrapperClass={iconWrapperClass}
-			iconGradientColor={iconGradientColor}
-			customSvgUrl={customSvgUrl}
-			customSvgId={customSvgId}
-			customSvgSize={customSvgSize}
+			iconType={iconType} iconName={iconName} svgIcon={svgIcon}
+			svgStyle={svgStyle} iconSize={iconSize} iconFontSize={iconFontSize}
+			iconColor={iconColor} iconColor2={iconColor2} iconClass={iconClass}
+			iconWrapper={iconWrapper} iconWrapperStyle={iconWrapperStyle}
+			iconBtnSize={iconBtnSize} iconBtnVariant={iconBtnVariant}
+			iconWrapperClass={iconWrapperClass} iconGradientColor={iconGradientColor}
+			customSvgUrl={customSvgUrl} customSvgId={customSvgId} customSvgSize={customSvgSize}
 		/>
 	);
 
-	// Title
 	const titleElement = enableTitle ? (
 		<RichText.Content
 			tagName={titleTag || 'h4'}
@@ -241,12 +161,10 @@ const Save = ({ attributes }) => {
 		/>
 	) : null;
 
-	// Paragraph
 	const paragraphElement = enableParagraph ? (
 		<ParagraphRenderSave
 			attributes={{
 				...attributes,
-				// Map all paragraph attributes to text for ParagraphRenderSave
 				text: paragraph,
 				textColor: paragraphColor,
 				textColorType: paragraphColorType,
@@ -260,20 +178,19 @@ const Save = ({ attributes }) => {
 		/>
 	) : null;
 
-	// Button
 	const buttonElement = enableButton ? (
 		<a href={buttonUrl} className={getButtonClasses()}>
 			{buttonText}
 		</a>
 	) : null;
 
-	// Wrap title+paragraph+button in a div (class added when contentWrapperClass is set)
+	// Old wrapContent: Fragment when contentWrapperClass is empty
 	const wrapContent = (content) =>
-		<div className={contentWrapperClass || undefined}>{content}</div>;
+		contentWrapperClass
+			? <div className={contentWrapperClass}>{content}</div>
+			: <>{content}</>;
 
-	// Render content based on layout
 	const renderContent = () => {
-		// Layout 4: Image Feature
 		if (featureLayout === 'image-feature') {
 			const mobileClass = imageMobileLayout === 'horizontal' ? 'flex-row' : 'flex-column';
 			const desktopClass = imageDesktopLayout === 'horizontal' ? 'flex-md-row' : 'flex-md-column';
@@ -287,8 +204,6 @@ const Save = ({ attributes }) => {
 				</div>
 			);
 		}
-
-		// Layout 1: Vertical
 		if (featureLayout === 'vertical') {
 			return (
 				<>
@@ -297,8 +212,6 @@ const Save = ({ attributes }) => {
 				</>
 			);
 		}
-
-		// Layout 2: Horizontal
 		if (featureLayout === 'horizontal') {
 			return (
 				<>
@@ -307,8 +220,6 @@ const Save = ({ attributes }) => {
 				</>
 			);
 		}
-
-		// Layout 3: Feature 3 (Icon + Title в одной строке)
 		return (
 			<>
 				<div className="d-flex flex-row align-items-center mb-4">
@@ -320,30 +231,21 @@ const Save = ({ attributes }) => {
 		);
 	};
 
-	// Main wrapper with useBlockProps.save
 	const blockProps = useBlockProps.save({
 		className: cardClasses,
 		id: blockId,
-		...(backgroundType === 'image' &&
-			backgroundImageUrl && { 'data-image-src': backgroundImageUrl }),
-		...(backgroundType === 'pattern' &&
-			backgroundPatternUrl && { 'data-image-src': backgroundPatternUrl }),
+		...(backgroundType === 'image' && backgroundImageUrl && { 'data-image-src': backgroundImageUrl }),
+		...(backgroundType === 'pattern' && backgroundPatternUrl && { 'data-image-src': backgroundPatternUrl }),
 		...dataAttributes,
-		...(animationEnabled &&
-			animationType && {
-				'data-cue': animationType,
-				...(animationDuration && {
-					'data-duration': animationDuration,
-				}),
-				...(animationDelay && { 'data-delay': animationDelay }),
-			}),
+		...(animationEnabled && animationType && {
+			'data-cue': animationType,
+			...(animationDuration && { 'data-duration': animationDuration }),
+			...(animationDelay && { 'data-delay': animationDelay }),
+		}),
 	});
 
-	// Layout classes применяются к card-body или card, не к основному контейнеру
-	const layoutClasses =
-		featureLayout === 'horizontal' ? 'd-flex flex-row' : '';
+	const layoutClasses = featureLayout === 'horizontal' ? 'd-flex flex-row' : '';
 
-	// If card is disabled, just output content with layout
 	if (!enableCard) {
 		return (
 			<div {...blockProps}>
@@ -365,4 +267,4 @@ const Save = ({ attributes }) => {
 	);
 };
 
-export default Save;
+export default SaveDeprecatedV1;

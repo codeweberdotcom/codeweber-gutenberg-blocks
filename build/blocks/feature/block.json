@@ -327,6 +327,10 @@
     "imageDesktopLayout": {
       "type": "string",
       "default": "horizontal"
+    },
+    "contentWrapperClass": {
+      "type": "string",
+      "default": ""
     }
   },
   "textdomain": "codeweber-gutenberg-blocks",

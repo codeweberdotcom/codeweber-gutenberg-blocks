@@ -158,6 +158,7 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 		animationDelay,
 		imageMobileLayout,
 		imageDesktopLayout,
+		contentWrapperClass,
 	} = attributes;
 
 	// Динамический массив табов
@@ -573,6 +574,12 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 	const layoutClasses =
 		featureLayout === 'horizontal' ? 'd-flex flex-row' : '';
 
+	// Wrap title+paragraph+button in optional div
+	const wrapContent = (content) =>
+		contentWrapperClass
+			? <div className={contentWrapperClass}>{content}</div>
+			: <>{content}</>;
+
 	// Render content based on layout
 	const renderContent = () => {
 		// Icon
@@ -663,11 +670,7 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 							allowedBlocks={['codeweber-blocks/image-simple']}
 						/>
 					</div>
-					<div>
-						{titleElement}
-						{paragraphElement}
-						{buttonElement}
-					</div>
+					{wrapContent(<>{titleElement}{paragraphElement}{buttonElement}</>)}
 				</div>
 			);
 		}
@@ -677,9 +680,7 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 			return (
 				<>
 					{iconElement}
-					{titleElement}
-					{paragraphElement}
-					{buttonElement}
+					{wrapContent(<>{titleElement}{paragraphElement}{buttonElement}</>)}
 				</>
 			);
 		}
@@ -689,11 +690,7 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 			return (
 				<>
 					<div>{iconElement}</div>
-					<div>
-						{titleElement}
-						{paragraphElement}
-						{buttonElement}
-					</div>
+					{wrapContent(<>{titleElement}{paragraphElement}{buttonElement}</>)}
 				</>
 			);
 		}
@@ -705,8 +702,7 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 					{iconElement}
 					{titleElement}
 				</div>
-				{paragraphElement}
-				{buttonElement}
+				{wrapContent(<>{paragraphElement}{buttonElement}</>)}
 			</>
 		);
 	};
@@ -855,6 +851,23 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 											prefix=""
 										/>
 									)}
+
+									<div style={{ marginTop: '16px' }}>
+										<TextControl
+											label={__(
+												'Content Wrapper Class',
+												'codeweber-gutenberg-blocks'
+											)}
+											value={contentWrapperClass}
+											onChange={(value) =>
+												setAttributes({ contentWrapperClass: value })
+											}
+											help={__(
+												'Wraps title, paragraph and button in a div with this class.',
+												'codeweber-gutenberg-blocks'
+											)}
+										/>
+									</div>
 								</PanelBody>
 							)}
 

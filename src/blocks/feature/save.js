@@ -94,6 +94,7 @@ const Save = ({ attributes }) => {
 		animationDelay,
 		imageMobileLayout,
 		imageDesktopLayout,
+		contentWrapperClass,
 	} = attributes;
 
 	// Generate classes for card wrapper
@@ -266,6 +267,12 @@ const Save = ({ attributes }) => {
 		</a>
 	) : null;
 
+	// Wrap title+paragraph+button in optional div
+	const wrapContent = (content) =>
+		contentWrapperClass
+			? <div className={contentWrapperClass}>{content}</div>
+			: <>{content}</>;
+
 	// Render content based on layout
 	const renderContent = () => {
 		// Layout 4: Image Feature
@@ -278,11 +285,7 @@ const Save = ({ attributes }) => {
 					<div className="flex-shrink-0">
 						<InnerBlocks.Content />
 					</div>
-					<div>
-						{titleElement}
-						{paragraphElement}
-						{buttonElement}
-					</div>
+					{wrapContent(<>{titleElement}{paragraphElement}{buttonElement}</>)}
 				</div>
 			);
 		}
@@ -292,9 +295,7 @@ const Save = ({ attributes }) => {
 			return (
 				<>
 					{iconElement}
-					{titleElement}
-					{paragraphElement}
-					{buttonElement}
+					{wrapContent(<>{titleElement}{paragraphElement}{buttonElement}</>)}
 				</>
 			);
 		}
@@ -304,11 +305,7 @@ const Save = ({ attributes }) => {
 			return (
 				<>
 					<div>{iconElement}</div>
-					<div>
-						{titleElement}
-						{paragraphElement}
-						{buttonElement}
-					</div>
+					{wrapContent(<>{titleElement}{paragraphElement}{buttonElement}</>)}
 				</>
 			);
 		}
@@ -320,8 +317,7 @@ const Save = ({ attributes }) => {
 					{iconElement}
 					{titleElement}
 				</div>
-				{paragraphElement}
-				{buttonElement}
+				{wrapContent(<>{paragraphElement}{buttonElement}</>)}
 			</>
 		);
 	};

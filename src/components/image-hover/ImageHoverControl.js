@@ -202,34 +202,6 @@ export const ImageHoverControl = ({ attributes, setAttributes, showAdvanced = tr
 						options={[
 							{
 								label: __(
-									'Overlay 1 (Basic)',
-									'codeweber-gutenberg-blocks'
-								),
-								value: 'overlay-1',
-							},
-							{
-								label: __(
-									'Overlay 2 (Color)',
-									'codeweber-gutenberg-blocks'
-								),
-								value: 'overlay-2',
-							},
-							{
-								label: __(
-									'Overlay 3 (Gradient)',
-									'codeweber-gutenberg-blocks'
-								),
-								value: 'overlay-3',
-							},
-							{
-								label: __(
-									'Overlay 4 (Icon)',
-									'codeweber-gutenberg-blocks'
-								),
-								value: 'overlay-4',
-							},
-							{
-								label: __(
 									'Overlay 5 (Plus Icon)',
 									'codeweber-gutenberg-blocks'
 								),
@@ -254,24 +226,6 @@ export const ImageHoverControl = ({ attributes, setAttributes, showAdvanced = tr
 							setAttributes({ overlayStyle: value })
 						}
 					/>
-
-					{/* Overlay-2: Color option */}
-					{overlayStyle === 'overlay-2' && (
-						<ToggleControl
-							label={__(
-								'Primary Color',
-								'codeweber-gutenberg-blocks'
-							)}
-							help={__(
-								'Adds "color" class for primary color overlay',
-								'codeweber-gutenberg-blocks'
-							)}
-							checked={overlayColor}
-							onChange={(value) =>
-								setAttributes({ overlayColor: value })
-							}
-						/>
-					)}
 
 					{/* Overlay-6: Icon color */}
 					{overlayStyle === 'overlay-6' && (
@@ -310,67 +264,6 @@ export const ImageHoverControl = ({ attributes, setAttributes, showAdvanced = tr
 						/>
 					)}
 
-					{/* Overlay-3: Gradient options */}
-					{overlayStyle === 'overlay-3' && (
-						<SelectControl
-							label={__('Gradient', 'codeweber-gutenberg-blocks')}
-							value={overlayGradient}
-							options={[
-								{
-									label: __(
-										'Gradient 1',
-										'codeweber-gutenberg-blocks'
-									),
-									value: 'gradient-1',
-								},
-								{
-									label: __(
-										'Gradient 2',
-										'codeweber-gutenberg-blocks'
-									),
-									value: 'gradient-2',
-								},
-								{
-									label: __(
-										'Gradient 3',
-										'codeweber-gutenberg-blocks'
-									),
-									value: 'gradient-3',
-								},
-								{
-									label: __(
-										'Gradient 4',
-										'codeweber-gutenberg-blocks'
-									),
-									value: 'gradient-4',
-								},
-								{
-									label: __(
-										'Gradient 5',
-										'codeweber-gutenberg-blocks'
-									),
-									value: 'gradient-5',
-								},
-								{
-									label: __(
-										'Gradient 6',
-										'codeweber-gutenberg-blocks'
-									),
-									value: 'gradient-6',
-								},
-								{
-									label: __(
-										'Gradient 7',
-										'codeweber-gutenberg-blocks'
-									),
-									value: 'gradient-7',
-								},
-							]}
-							onChange={(value) =>
-								setAttributes({ overlayGradient: value })
-							}
-						/>
-					)}
 				</div>
 			)}
 

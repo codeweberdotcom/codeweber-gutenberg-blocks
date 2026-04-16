@@ -313,6 +313,14 @@
 		"animationDelay": {
 			"type": "number",
 			"default": 0
+		},
+		"imageMobileLayout": {
+			"type": "string",
+			"default": "vertical"
+		},
+		"imageDesktopLayout": {
+			"type": "string",
+			"default": "horizontal"
 		}
 	},
 	"textdomain": "codeweber-gutenberg-blocks",

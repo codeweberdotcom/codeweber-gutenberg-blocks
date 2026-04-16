@@ -92,6 +92,8 @@ const Save = ({ attributes }) => {
 		animationType,
 		animationDuration,
 		animationDelay,
+		imageMobileLayout,
+		imageDesktopLayout,
 	} = attributes;
 
 	// Generate classes for card wrapper
@@ -268,13 +270,20 @@ const Save = ({ attributes }) => {
 	const renderContent = () => {
 		// Layout 4: Image Feature
 		if (featureLayout === 'image-feature') {
+			const mobileClass = imageMobileLayout === 'horizontal' ? 'flex-row' : 'flex-column';
+			const desktopClass = imageDesktopLayout === 'horizontal' ? 'flex-md-row' : 'flex-md-column';
+			const wrapperClass = `d-flex ${mobileClass} ${desktopClass} align-items-start gap-5`;
 			return (
-				<>
-					<InnerBlocks.Content />
-					{titleElement}
-					{paragraphElement}
-					{buttonElement}
-				</>
+				<div className={wrapperClass}>
+					<div className="flex-shrink-0">
+						<InnerBlocks.Content />
+					</div>
+					<div>
+						{titleElement}
+						{paragraphElement}
+						{buttonElement}
+					</div>
+				</div>
 			);
 		}
 

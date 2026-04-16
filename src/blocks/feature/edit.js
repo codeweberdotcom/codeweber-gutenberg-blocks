@@ -18,6 +18,7 @@ import {
 	Button,
 	TextControl,
 	ToggleControl,
+	SelectControl,
 } from '@wordpress/components';
 import { useEffect } from '@wordpress/element';
 import {
@@ -155,6 +156,8 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 		animationType,
 		animationDuration,
 		animationDelay,
+		imageMobileLayout,
+		imageDesktopLayout,
 	} = attributes;
 
 	// Динамический массив табов
@@ -648,17 +651,24 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 
 		// Layout 4: Image Feature (Image Simple InnerBlock + content)
 		if (featureLayout === 'image-feature') {
+			const mobileClass = imageMobileLayout === 'horizontal' ? 'flex-row' : 'flex-column';
+			const desktopClass = imageDesktopLayout === 'horizontal' ? 'flex-md-row' : 'flex-md-column';
+			const wrapperClass = `d-flex ${mobileClass} ${desktopClass} align-items-start gap-5`;
 			return (
-				<>
-					<InnerBlocks
-						template={[['codeweber-blocks/image-simple', {}]]}
-						templateLock="all"
-						allowedBlocks={['codeweber-blocks/image-simple']}
-					/>
-					{titleElement}
-					{paragraphElement}
-					{buttonElement}
-				</>
+				<div className={wrapperClass}>
+					<div className="flex-shrink-0">
+						<InnerBlocks
+							template={[['codeweber-blocks/image-simple', {}]]}
+							templateLock="all"
+							allowedBlocks={['codeweber-blocks/image-simple']}
+						/>
+					</div>
+					<div>
+						{titleElement}
+						{paragraphElement}
+						{buttonElement}
+					</div>
+				</div>
 			);
 		}
 
@@ -804,6 +814,39 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 											)}
 										</Button>
 									</ButtonGroup>
+
+									{featureLayout === 'image-feature' && (
+										<div style={{ marginTop: '16px' }}>
+											<SelectControl
+												label={__(
+													'Mobile Layout',
+													'codeweber-gutenberg-blocks'
+												)}
+												value={imageMobileLayout}
+												options={[
+													{ label: __('Vertical', 'codeweber-gutenberg-blocks'), value: 'vertical' },
+													{ label: __('Horizontal', 'codeweber-gutenberg-blocks'), value: 'horizontal' },
+												]}
+												onChange={(value) =>
+													setAttributes({ imageMobileLayout: value })
+												}
+											/>
+											<SelectControl
+												label={__(
+													'Desktop Layout',
+													'codeweber-gutenberg-blocks'
+												)}
+												value={imageDesktopLayout}
+												options={[
+													{ label: __('Horizontal', 'codeweber-gutenberg-blocks'), value: 'horizontal' },
+													{ label: __('Vertical', 'codeweber-gutenberg-blocks'), value: 'vertical' },
+												]}
+												onChange={(value) =>
+													setAttributes({ imageDesktopLayout: value })
+												}
+											/>
+										</div>
+									)}
 
 									{featureLayout !== 'image-feature' && (
 										<IconControl

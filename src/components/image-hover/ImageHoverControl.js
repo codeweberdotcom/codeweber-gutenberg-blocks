@@ -225,6 +225,13 @@ export const ImageHoverControl = ({ attributes, setAttributes }) => {
 								),
 								value: 'overlay-4',
 							},
+							{
+								label: __(
+									'Overlay 5 (Plus Icon)',
+									'codeweber-gutenberg-blocks'
+								),
+								value: 'overlay-5',
+							},
 						]}
 						onChange={(value) =>
 							setAttributes({ overlayStyle: value })
@@ -391,6 +398,11 @@ export const getImageHoverClasses = (attributes) => {
 			// Overlay-3 with gradient
 			if (overlayStyle === 'overlay-3' && overlayGradient) {
 				classes.push(`overlay-${overlayGradient}`);
+			}
+
+			// Overlay-5: plus icon with hover-scale
+			if (overlayStyle === 'overlay-5') {
+				classes.push('hover-scale', 'hover-plus');
 			}
 			break;
 

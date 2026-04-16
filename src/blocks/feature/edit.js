@@ -9,6 +9,7 @@ import {
 	useBlockProps,
 	InspectorControls,
 	RichText,
+	InnerBlocks,
 } from '@wordpress/block-editor';
 import {
 	TabPanel,
@@ -645,6 +646,22 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 			</a>
 		) : null;
 
+		// Layout 4: Image Feature (Image Simple InnerBlock + content)
+		if (featureLayout === 'image-feature') {
+			return (
+				<>
+					<InnerBlocks
+						template={[['codeweber-blocks/image-simple', {}]]}
+						templateLock="all"
+						allowedBlocks={['codeweber-blocks/image-simple']}
+					/>
+					{titleElement}
+					{paragraphElement}
+					{buttonElement}
+				</>
+			);
+		}
+
 		// Layout 1: Vertical
 		if (featureLayout === 'vertical') {
 			return (
@@ -767,13 +784,34 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 												'codeweber-gutenberg-blocks'
 											)}
 										</Button>
+										<Button
+											variant={
+												featureLayout === 'image-feature'
+													? 'primary'
+													: 'secondary'
+											}
+											onClick={() => {
+												setAttributes({
+													featureLayout: 'image-feature',
+													titleClass: '',
+													buttonColor: '',
+												});
+											}}
+										>
+											{__(
+												'Feature 4',
+												'codeweber-gutenberg-blocks'
+											)}
+										</Button>
 									</ButtonGroup>
 
-									<IconControl
-										attributes={attributes}
-										setAttributes={setAttributes}
-										prefix=""
-									/>
+									{featureLayout !== 'image-feature' && (
+										<IconControl
+											attributes={attributes}
+											setAttributes={setAttributes}
+											prefix=""
+										/>
+									)}
 								</PanelBody>
 							)}
 

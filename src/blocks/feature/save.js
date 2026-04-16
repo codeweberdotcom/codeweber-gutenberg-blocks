@@ -4,7 +4,7 @@
  * @package CodeWeber Gutenberg Blocks
  */
 
-import { RichText, useBlockProps } from '@wordpress/block-editor';
+import { RichText, useBlockProps, InnerBlocks } from '@wordpress/block-editor';
 import { IconRenderSave } from '../../components/icon';
 import { ParagraphRenderSave } from '../../components/paragraph';
 import { getTitleClasses, getTextClasses } from '../heading-subtitle/utils';
@@ -266,6 +266,18 @@ const Save = ({ attributes }) => {
 
 	// Render content based on layout
 	const renderContent = () => {
+		// Layout 4: Image Feature
+		if (featureLayout === 'image-feature') {
+			return (
+				<>
+					<InnerBlocks.Content />
+					{titleElement}
+					{paragraphElement}
+					{buttonElement}
+				</>
+			);
+		}
+
 		// Layout 1: Vertical
 		if (featureLayout === 'vertical') {
 			return (

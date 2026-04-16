@@ -10,7 +10,6 @@ import {
 import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
 import { useState, useEffect } from '@wordpress/element';
 import { ImageSizeControl } from '../../../components/image-size';
-import { LightboxControl } from '../../../components/lightbox/LightboxControl';
 import { VideoURLControl } from '../../../components/video-url/VideoURLControl';
 import {
 	parseVKVideoURL,
@@ -385,14 +384,6 @@ export const MediaControl = ({ attributes, setAttributes }) => {
 								'full',
 							]}
 							/>
-
-							{/* Lightbox Settings - after Image Size */}
-							<div style={{ marginTop: '16px' }}>
-								<LightboxControl
-									attributes={attributes}
-									setAttributes={setAttributes}
-								/>
-							</div>
 
 							{/* Image Mask */}
 							<div style={{ marginTop: '16px' }}>

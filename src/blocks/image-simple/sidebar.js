@@ -1,7 +1,7 @@
 import { InspectorControls } from '@wordpress/block-editor';
 import { TabPanel, PanelBody, ButtonGroup } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import { Icon, image, grid, cog, search, starFilled } from '@wordpress/icons';
+import { Icon, image, grid, cog, starFilled } from '@wordpress/icons';
 import { ImageControl } from '../../components/image/ImageControl';
 import { LayoutControl } from './controls/LayoutControl';
 import { LightboxControl } from '../../components/lightbox/LightboxControl';
@@ -50,15 +50,6 @@ export const ImageSimpleSidebar = ({ attributes, setAttributes }) => {
 				<TabIcon
 					icon={starFilled}
 					label={__('Effects', 'codeweber-gutenberg-blocks')}
-				/>
-			),
-		},
-		{
-			name: 'lightbox',
-			title: (
-				<TabIcon
-					icon={search}
-					label={__('Lightbox', 'codeweber-gutenberg-blocks')}
 				/>
 			),
 		},
@@ -177,19 +168,14 @@ export const ImageSimpleSidebar = ({ attributes, setAttributes }) => {
 						{/* EFFECTS TAB */}
 						{tab.name === 'effects' && (
 							<PanelBody>
-								<ImageHoverControl
-									attributes={attributes}
-									setAttributes={setAttributes}
-								/>
-							</PanelBody>
-						)}
-
-						{/* LIGHTBOX TAB */}
-						{tab.name === 'lightbox' && (
-							<PanelBody>
 								<LightboxControl
 									attributes={attributes}
 									setAttributes={setAttributes}
+								/>
+								<ImageHoverControl
+									attributes={attributes}
+									setAttributes={setAttributes}
+									showAdvanced={attributes.enableLightbox}
 								/>
 							</PanelBody>
 						)}

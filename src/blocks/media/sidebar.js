@@ -1,10 +1,10 @@
 import { InspectorControls } from '@wordpress/block-editor';
 import { TabPanel, PanelBody, ToggleControl } from '@wordpress/components';
+import { LightboxControl } from '../../components/lightbox/LightboxControl';
 import { __ } from '@wordpress/i18n';
 import { Icon, image, starFilled, search, cog } from '@wordpress/icons';
 import { MediaControl } from './controls/MediaControl';
 import { ImageHoverControl } from '../../components/image-hover/ImageHoverControl';
-import { LightboxControl } from '../../components/lightbox/LightboxControl';
 import { BorderRadiusControl } from '../../components/border-radius';
 import { BlockMetaFields } from '../../components/block-meta/BlockMetaFields';
 
@@ -106,10 +106,17 @@ export const ImageSidebar = ({ attributes, setAttributes }) => {
 							<PanelBody>
 								{attributes.mediaType === 'image' &&
 								attributes.image.url ? (
-									<ImageHoverControl
-										attributes={attributes}
-										setAttributes={setAttributes}
-									/>
+									<>
+										<LightboxControl
+											attributes={attributes}
+											setAttributes={setAttributes}
+										/>
+										<ImageHoverControl
+											attributes={attributes}
+											setAttributes={setAttributes}
+											showAdvanced={attributes.enableLightbox}
+										/>
+									</>
 								) : (
 									<p
 										style={{

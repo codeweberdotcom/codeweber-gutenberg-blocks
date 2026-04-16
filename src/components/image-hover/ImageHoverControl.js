@@ -17,7 +17,7 @@ import { ToggleControl, Button, SelectControl } from '@wordpress/components';
  * @param {Object} props.attributes - Block attributes
  * @param {Function} props.setAttributes - Function to update attributes
  */
-export const ImageHoverControl = ({ attributes, setAttributes }) => {
+export const ImageHoverControl = ({ attributes, setAttributes, showAdvanced = true }) => {
 	const {
 		// Simple эффекты (только один)
 		simpleEffect = 'none', // none, lift, hover-scale
@@ -94,6 +94,7 @@ export const ImageHoverControl = ({ attributes, setAttributes }) => {
 			</div>
 
 			{/* ADVANCED ЭФФЕКТЫ (только один) */}
+			{showAdvanced && (
 			<div style={{ marginBottom: '16px' }}>
 				<div className="component-sidebar-title">
 					<label>
@@ -151,9 +152,10 @@ export const ImageHoverControl = ({ attributes, setAttributes }) => {
 					</Button>
 				</div>
 			</div>
+			)}
 
 			{/* TOOLTIP НАСТРОЙКИ */}
-			{effectType === 'tooltip' && (
+			{showAdvanced && effectType === 'tooltip' && (
 				<div style={{ marginBottom: '16px' }}>
 					<SelectControl
 						label={__(
@@ -189,7 +191,7 @@ export const ImageHoverControl = ({ attributes, setAttributes }) => {
 			)}
 
 			{/* OVERLAY НАСТРОЙКИ */}
-			{effectType === 'overlay' && (
+			{showAdvanced && effectType === 'overlay' && (
 				<div style={{ marginBottom: '16px' }}>
 					<SelectControl
 						label={__(
@@ -373,7 +375,7 @@ export const ImageHoverControl = ({ attributes, setAttributes }) => {
 			)}
 
 			{/* CURSOR НАСТРОЙКИ */}
-			{effectType === 'cursor' && (
+			{showAdvanced && effectType === 'cursor' && (
 				<div style={{ marginBottom: '16px' }}>
 					<SelectControl
 						label={__('Cursor Style', 'codeweber-gutenberg-blocks')}

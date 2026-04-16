@@ -143,6 +143,10 @@
       "type": "string",
       "default": "gallery-1"
     },
+    "lightboxShowDesc": {
+      "type": "boolean",
+      "default": false
+    },
     "videoLightbox": {
       "type": "boolean",
       "default": false

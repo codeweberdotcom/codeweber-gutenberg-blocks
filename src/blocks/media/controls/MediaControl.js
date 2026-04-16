@@ -376,7 +376,14 @@ export const MediaControl = ({ attributes, setAttributes }) => {
 									'Image Size',
 									'codeweber-gutenberg-blocks'
 								)}
-								availableSizes={availableImageSizes}
+								availableSizes={[
+								'thumbnail',
+								'medium',
+								'medium_large',
+								'large',
+								'codeweber_extralarge',
+								'full',
+							]}
 							/>
 
 							{/* Lightbox Settings - after Image Size */}

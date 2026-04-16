@@ -13,6 +13,7 @@ export const ImageRender = ({ attributes, isEditor = false }) => {
 		borderRadius,
 		enableLightbox,
 		lightboxGallery,
+		lightboxShowDesc,
 		simpleEffect,
 		effectType,
 		tooltipStyle,
@@ -36,13 +37,19 @@ export const ImageRender = ({ attributes, isEditor = false }) => {
 	const tooltipTitle = getTooltipTitle(effectType, tooltipStyle, image);
 
 	// Получаем атрибуты lightbox
+	const lbTitle = lightboxShowDesc ? image.title || '' : '';
+	const lbDesc = lightboxShowDesc ? image.description || '' : '';
 	const lightboxAttrs = getLightboxAttributes(
 		enableLightbox,
-		lightboxGallery
+		lightboxGallery,
+		'image',
+		lbTitle,
+		lbDesc
 	);
 
 	// Определяем href и обработчик клика
-	const href = enableLightbox && !isEditor ? image.url : '#';
+	const lightboxUrl = getImageUrl(image, 'codeweber_extralarge');
+	const href = enableLightbox && !isEditor ? lightboxUrl : '#';
 	const onClickHandler = (e) => {
 		if (isEditor) {
 			e.preventDefault();

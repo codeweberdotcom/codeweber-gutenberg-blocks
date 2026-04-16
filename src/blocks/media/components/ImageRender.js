@@ -115,7 +115,7 @@ export const ImageRender = ({ attributes, isEditor = false }) => {
 					>
 						{maskedImage}
 						<span
-							className={`hover-icon ${overlayIconColor || 'bg-frost'} text-white`}
+							className={`hover-icon h-100 w-100 ${overlayIconColor || 'bg-frost'} text-white`}
 						>
 							<svg
 								fill="currentColor"
@@ -160,7 +160,7 @@ export const ImageRender = ({ attributes, isEditor = false }) => {
 						style={linkStyle}
 					>
 						{maskedImage}
-						<span className="hover-icon text-white">
+						<span className="hover-icon h-100 w-100 text-white">
 							<svg
 								fill="currentColor"
 								viewBox="0 0 256 256"

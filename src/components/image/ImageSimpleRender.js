@@ -116,12 +116,12 @@ export const ImageSimpleRender = ({
 		let overlayIcon = null;
 		if (activeEffectType === 'overlay' && overlayStyle === 'overlay-6') {
 			overlayIcon = (
-				<span className={`hover-icon ${overlayIconColor || 'bg-frost'} text-white`}>
+				<span className={`hover-icon h-100 w-100 ${overlayIconColor || 'bg-frost'} text-white`}>
 					{plusSvg}
 				</span>
 			);
 		} else if (activeEffectType === 'overlay' && overlayStyle === 'overlay-5') {
-			overlayIcon = <span className="hover-icon text-white">{plusSvg}</span>;
+			overlayIcon = <span className="hover-icon h-100 w-100 text-white">{plusSvg}</span>;
 		}
 
 		// Если включен lightbox, оборачиваем figure в a
@@ -175,7 +175,7 @@ export const ImageSimpleRender = ({
 								decoding="async"
 							/>
 							<span
-								className={`hover-icon ${overlayIconColor || 'bg-frost'} text-white`}
+								className={`hover-icon h-100 w-100 ${overlayIconColor || 'bg-frost'} text-white`}
 							>
 								<svg
 									fill="currentColor"
@@ -226,7 +226,7 @@ export const ImageSimpleRender = ({
 								alt={image.alt || ''}
 								decoding="async"
 							/>
-							<span className="hover-icon text-white">
+							<span className="hover-icon h-100 w-100 text-white">
 								<svg
 									fill="currentColor"
 									viewBox="0 0 256 256"

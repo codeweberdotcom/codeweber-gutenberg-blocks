@@ -24,8 +24,9 @@ export const getImageUrl = (image, size = 'full') => {
 	}
 
 	// Проверяем наличие нужного размера
-	if (image.sizes[size] && image.sizes[size].source_url) {
-		return image.sizes[size].source_url;
+	// Поддерживаем оба формата: REST API (source_url) и MediaUpload (url)
+	if (image.sizes[size]) {
+		return image.sizes[size].source_url || image.sizes[size].url || image.url;
 	}
 
 	// Fallback на full size

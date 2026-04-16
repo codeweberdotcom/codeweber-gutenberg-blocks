@@ -213,6 +213,10 @@ export const ImageRender = ({ attributes, isEditor = false }) => {
 	}
 
 	// Простой вариант (cursor, none или только simple эффекты)
+	if (!enableLightbox && !isEditor) {
+		return <figure className={figureClasses}>{maskedImage}</figure>;
+	}
+
 	return (
 		<figure className={figureClasses}>
 			<a

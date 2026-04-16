@@ -92,6 +92,38 @@ export const ImageSimpleRender = ({
 			figureProps.style = { backgroundImage: `url(${imageUrl})` };
 		}
 
+		// Overlay inner content для фоновых изображений
+		const plusSvg = (
+			<svg fill="currentColor" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+				<path d="M220,128a4.0002,4.0002,0,0,1-4,4H132v84a4,4,0,0,1-8,0V132H40a4,4,0,0,1,0-8h84V40a4,4,0,0,1,8,0v84h84A4.0002,4.0002,0,0,1,220,128Z"></path>
+			</svg>
+		);
+
+		// Overlay-7: item-link внутри figure, без внешнего lightbox <a>
+		if (activeEffectType === 'overlay' && overlayStyle === 'overlay-7') {
+			return (
+				<figure {...figureProps}>
+					{!isEditor && enableLightbox && (
+						<a className="item-link" href={lightboxUrl} {...lightboxAttrs}>
+							<i className="uil uil-plus"></i>
+						</a>
+					)}
+				</figure>
+			);
+		}
+
+		// Overlay-5/6: hover-icon внутри figure, внешний <a> оборачивает при lightbox
+		let overlayIcon = null;
+		if (activeEffectType === 'overlay' && overlayStyle === 'overlay-6') {
+			overlayIcon = (
+				<span className={`hover-icon ${overlayIconColor || 'bg-frost'} text-white`}>
+					{plusSvg}
+				</span>
+			);
+		} else if (activeEffectType === 'overlay' && overlayStyle === 'overlay-5') {
+			overlayIcon = <span className="hover-icon text-white">{plusSvg}</span>;
+		}
+
 		// Если включен lightbox, оборачиваем figure в a
 		if (enableLightbox) {
 			return (
@@ -101,13 +133,13 @@ export const ImageSimpleRender = ({
 					className="h-100"
 					{...lightboxAttrs}
 				>
-					<figure {...figureProps}></figure>
+					<figure {...figureProps}>{overlayIcon}</figure>
 				</a>
 			);
 		}
 
 		// Если lightbox выключен, возвращаем просто figure
-		return <figure {...figureProps}></figure>;
+		return <figure {...figureProps}>{overlayIcon}</figure>;
 	}
 
 	// Рендеринг как img тег (обычный вариант)

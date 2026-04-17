@@ -78,16 +78,7 @@ export const MainControl = ({ attributes, setAttributes }) => {
 
 			<div style={{ marginTop: '16px' }}>
 				<PostGridTemplateControl
-					value={
-						template ||
-						(postType === 'clients'
-							? 'client-simple'
-							: postType === 'documents'
-								? 'document-card'
-								: postType === 'faq'
-									? 'default'
-									: 'default')
-					}
+					value={template}
 					onChange={(value) => setAttributes({ template: value })}
 					postType={postType || 'post'}
 				/>

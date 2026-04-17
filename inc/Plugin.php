@@ -90,6 +90,9 @@ class Plugin {
 		// Register REST API endpoint for image sizes
 		add_action('rest_api_init', __CLASS__ . '::register_image_sizes_endpoint');
 
+		// Register REST API endpoint for post card templates registry
+		add_action('rest_api_init', __CLASS__ . '::register_post_card_templates_endpoint');
+
 		// Register REST API endpoint for taxonomies and terms
 		add_action('rest_api_init', __CLASS__ . '::register_taxonomies_endpoint');
 
@@ -845,6 +848,42 @@ class Plugin {
 		});
 
 		return new \WP_REST_Response($image_sizes, 200);
+	}
+
+	/**
+	 * Register REST API endpoint for post card templates registry.
+	 * Returns templates for a given post_type from the theme's registry.
+	 */
+	public static function register_post_card_templates_endpoint() {
+		register_rest_route('codeweber-gutenberg-blocks/v1', '/post-card-templates', [
+			'methods' => 'GET',
+			'callback' => __CLASS__ . '::get_post_card_templates_callback',
+			'permission_callback' => function () {
+				return current_user_can('edit_posts');
+			},
+			'args' => [
+				'post_type' => [
+					'required' => false,
+					'sanitize_callback' => 'sanitize_key',
+				],
+			],
+		]);
+	}
+
+	/**
+	 * REST callback: returns list of templates for a post_type.
+	 * Falls back to empty array if theme registry is not available.
+	 */
+	public static function get_post_card_templates_callback($request) {
+		$post_type = $request->get_param('post_type') ?: 'post';
+
+		if (!function_exists('codeweber_get_post_card_templates_for')) {
+			return new \WP_REST_Response([], 200);
+		}
+
+		$templates = codeweber_get_post_card_templates_for($post_type);
+
+		return new \WP_REST_Response($templates, 200);
 	}
 
 	/**

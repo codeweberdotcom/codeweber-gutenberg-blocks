@@ -207,7 +207,8 @@ $col_classes = get_post_grid_col_classes($attributes, $grid_type);
 $query = new WP_Query($args);
 
 // Block wrapper attributes
-$wrapper_classes = 'cwgb-post-grid-block ' . $block_class;
+$text_inverse = !empty($attributes['textInverse']);
+$wrapper_classes = 'cwgb-post-grid-block ' . $block_class . ($text_inverse ? ' text-inverse' : '');
 $wrapper_data_attrs = [
 	'data-block-id' => $block_id,
 	'data-block-type' => 'post-grid',

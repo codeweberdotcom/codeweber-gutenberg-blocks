@@ -71,6 +71,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		overlayColor,
 		cursorStyle,
 		blockClass,
+		textInverse,
 		loadMoreEnable,
 		loadMoreInitialCount,
 		loadMoreText = 'show-more',
@@ -88,7 +89,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 	const [isLoading, setIsLoading] = useState(false);
 
 	const blockProps = useBlockProps({
-		className: `cwgb-post-grid-block ${blockClass}`,
+		className: `cwgb-post-grid-block ${blockClass || ''}${textInverse ? ' text-inverse' : ''}`.trim(),
 		'data-block': clientId,
 	});
 

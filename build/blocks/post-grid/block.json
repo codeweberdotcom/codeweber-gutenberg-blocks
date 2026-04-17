@@ -237,6 +237,10 @@
       "type": "string",
       "default": ""
     },
+    "textInverse": {
+      "type": "boolean",
+      "default": false
+    },
     "blockData": {
       "type": "string",
       "default": ""

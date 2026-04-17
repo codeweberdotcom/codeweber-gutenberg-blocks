@@ -1,5 +1,5 @@
 import { InspectorControls } from '@wordpress/block-editor';
-import { TabPanel, PanelBody } from '@wordpress/components';
+import { TabPanel, PanelBody, ToggleControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { Icon, cog, grid, starFilled } from '@wordpress/icons';
 import { MainControl } from './controls/MainControl';
@@ -137,6 +137,20 @@ export const PostGridSidebar = ({ attributes, setAttributes }) => {
 						{/* SETTINGS TAB */}
 						{tab.name === 'settings' && (
 							<PanelBody>
+								<ToggleControl
+									label={__(
+										'Text Inverse',
+										'codeweber-gutenberg-blocks'
+									)}
+									help={__(
+										'Adds "text-inverse" class to the block wrapper (for dark backgrounds).',
+										'codeweber-gutenberg-blocks'
+									)}
+									checked={!!attributes.textInverse}
+									onChange={(value) =>
+										setAttributes({ textInverse: value })
+									}
+								/>
 								<BlockMetaFields
 									attributes={attributes}
 									setAttributes={setAttributes}

@@ -433,7 +433,17 @@ if (!function_exists('render_post_grid_item')) {
 			}
 			
 			$post_type = get_post_type($post->ID);
-			
+
+			// Для WooCommerce товаров пропускаем невидимые (password-protected,
+			// hidden, draft и т.п.) — иначе шаблон shop-card возвращает пусто,
+			// и блок падает в post-fallback.
+			if ($post_type === 'product' && function_exists('wc_get_product')) {
+				$wc_product = wc_get_product($post->ID);
+				if (!$wc_product || !$wc_product->is_visible()) {
+					return '';
+				}
+			}
+
 			// Специальная обработка для clients
 			if ($post_type === 'clients') {
 				// Упрощенные настройки для clients

@@ -17,6 +17,7 @@ import {
 	getGapClasses,
 } from '../../components/grid-control';
 import apiFetch from '@wordpress/api-fetch';
+import ServerSideRender from '@wordpress/server-side-render';
 
 export default function Edit({ attributes, setAttributes, clientId }) {
 	const {
@@ -938,7 +939,12 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 			/>
 
 			<div {...blockProps}>
-				{isLoading ? (
+				{postType === 'product' ? (
+					<ServerSideRender
+						block="codeweber-blocks/post-grid"
+						attributes={attributes}
+					/>
+				) : isLoading ? (
 					<div
 						className="cwgb-post-grid-placeholder"
 						style={{ padding: '20px', textAlign: 'center' }}

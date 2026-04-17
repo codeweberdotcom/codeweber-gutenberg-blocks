@@ -721,13 +721,25 @@ if (!function_exists('render_post_grid_item')) {
 				];
 			}
 			
+			// Для product+shop-* шаблонов карточка уже содержит col-обёртку
+			// (class="project item col-..."). Передаём col-классы Post Grid внутрь
+			// через global $cw_shop_col_class и пропускаем внешний col-wrap.
+			$is_wc_shop_template = ($post_type === 'product' && strpos($template, 'shop-') === 0);
+			if ($is_wc_shop_template && !empty($col_classes)) {
+				$GLOBALS['cw_shop_col_class'] = $col_classes;
+			}
+
 			// В режиме Swiper (slider) НИКОГДА не добавляем col-* классы
 			$html = cw_render_post_card($post, $template, $display_settings, $template_args);
-			
+
+			if ($is_wc_shop_template) {
+				unset($GLOBALS['cw_shop_col_class']);
+			}
+
 			// Если функция вернула не пустую строку, используем её
 			if (!empty($html) && trim($html) !== '') {
-				// Добавляем обертку для grid режима (не swiper)
-				if (!$is_swiper) {
+				// Добавляем обертку для grid режима (не swiper, и не для WC-shop шаблонов)
+				if (!$is_swiper && !$is_wc_shop_template) {
 					// Для classic grid добавляем обертку с col-* классами
 					if ($grid_type === 'classic' && !empty($col_classes)) {
 						$html = '<div class="' . esc_attr($col_classes) . '">' . $html . '</div>';
@@ -737,7 +749,7 @@ if (!function_exists('render_post_grid_item')) {
 						$html = '<div class="col">' . $html . '</div>';
 					}
 				}
-				
+
 				return $html;
 			}
 			

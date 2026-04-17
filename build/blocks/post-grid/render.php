@@ -721,10 +721,11 @@ if (!function_exists('render_post_grid_item')) {
 				];
 			}
 			
-			// Для product+shop-* шаблонов карточка уже содержит col-обёртку
+			// Для product+shop* шаблонов карточка уже содержит col-обёртку
 			// (class="project item col-..."). Передаём col-классы Post Grid внутрь
 			// через global $cw_shop_col_class и пропускаем внешний col-wrap.
-			$is_wc_shop_template = ($post_type === 'product' && strpos($template, 'shop-') === 0);
+			// Покрывает: shop-card, shop-compact, shop-list, shop2, и любые shopN в будущем.
+			$is_wc_shop_template = ($post_type === 'product' && strpos($template, 'shop') === 0);
 			if ($is_wc_shop_template && !empty($col_classes)) {
 				$GLOBALS['cw_shop_col_class'] = $col_classes;
 			}

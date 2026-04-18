@@ -720,6 +720,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		// Шаблоны, которые используют классы overlay
 		const overlayTemplates = [
 			'overlay-5',
+			'overlay-5-primary',
 			'document-card',
 			'document-card-download',
 		];
@@ -941,6 +942,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 									'slider',
 									'default-clickable',
 									'overlay-5',
+									'overlay-5-primary',
 									'client-simple',
 									'client-grid',
 									'client-card',
@@ -1108,6 +1110,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 									'slider',
 									'default-clickable',
 									'overlay-5',
+									'overlay-5-primary',
 									'client-simple',
 									'client-grid',
 									'client-card',

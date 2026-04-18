@@ -1197,6 +1197,54 @@ export const PostGridItemRender = ({
 				</figure>
 			</article>
 		);
+	} else if (template === 'overlay-5-primary') {
+		// Overlay-5 Primary: primary color overlay on hover, title + excerpt slide from left
+		const overlay5PrimaryClasses = `overlay overlay-5 hover-scale color card-interactive ${borderRadius || 'rounded'}${liftClass}`;
+
+		const readMoreLabels = {
+			view: __('View', 'codeweber-gutenberg-blocks'),
+			more: __('Read more', 'codeweber-gutenberg-blocks'),
+			read: __('Read', 'codeweber-gutenberg-blocks'),
+		};
+		const readMoreLabel = readMoreLabels[cardReadMore] || '';
+		const primaryTitleClass = customTitleClass || 'from-left mb-1';
+
+		return (
+			<article>
+				<figure className={overlay5PrimaryClasses}>
+					<a
+						href={isEditor ? '#' : postLink}
+						onClick={
+							isEditor ? (e) => e.preventDefault() : undefined
+						}
+					>
+						<img src={imageUrl} alt={post.alt || postTitle} />
+					</a>
+					<figcaption>
+						{showTitle && (
+							<TitleTag className={primaryTitleClass}>
+								{titleLimited}
+							</TitleTag>
+						)}
+						{showExcerpt && descriptionLimited && (
+							<p className="from-left mb-0">
+								{descriptionLimited}
+							</p>
+						)}
+						{readMoreLabel && (
+							<span className="hover more from-left mt-3 d-inline-block">
+								{readMoreLabel}
+							</span>
+						)}
+					</figcaption>
+					{showCardArrow && (
+						<div className="hover_card_button_hide position-absolute top-0 end-0 p-5 zindex-10">
+							<i className="fs-25 uil uil-arrow-right lh-1"></i>
+						</div>
+					)}
+				</figure>
+			</article>
+		);
 	} else if (template === 'document-card') {
 		// Document Card template - на основе overlay-5, но с кнопкой загрузки
 		const excerptLimited =

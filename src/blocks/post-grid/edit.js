@@ -11,7 +11,6 @@ import {
 	initSwiper,
 	destroySwiper,
 } from '../../components/swiper/SwiperSlider';
-import { initLightbox } from '../../utilities/lightbox';
 import {
 	getRowColsClasses,
 	getGapClasses,
@@ -61,15 +60,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		swiperWrapperClass,
 		swiperSlideClass,
 		borderRadius,
-		enableLightbox,
-		lightboxGallery,
 		simpleEffect,
-		effectType,
-		tooltipStyle,
-		overlayStyle,
-		overlayGradient,
-		overlayColor,
-		cursorStyle,
 		blockClass,
 		textInverse,
 		loadMoreEnable,
@@ -674,31 +665,6 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 				if (displayMode === 'swiper' && initSwiper()) {
 					console.log('✅ Swiper reinitialized (post-grid)');
 				}
-
-				// Очистка старых span.bg перед реинициализацией overlay
-				const oldBgSpans = blockElement.querySelectorAll(
-					'.overlay > a > span.bg, .overlay > span > span.bg'
-				);
-				oldBgSpans.forEach((span) => span.remove());
-
-				// Overlay для effectType === 'overlay'
-				if (
-					effectType === 'overlay' &&
-					typeof window.theme?.imageHoverOverlay === 'function'
-				) {
-					window.theme.imageHoverOverlay();
-				}
-
-				if (
-					effectType === 'tooltip' &&
-					typeof window.theme?.iTooltip === 'function'
-				) {
-					window.theme.iTooltip();
-				}
-
-				if (enableLightbox) {
-					initLightbox();
-				}
 			} catch (error) {
 				// Silently handle theme initialization errors
 			}
@@ -712,15 +678,8 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		};
 	}, [
 		displayMode,
-		enableLightbox,
 		imageSize,
 		simpleEffect,
-		effectType,
-		tooltipStyle,
-		overlayStyle,
-		overlayGradient,
-		overlayColor,
-		cursorStyle,
 		swiperEffect,
 		swiperSpeed,
 		swiperItems,
@@ -865,17 +824,8 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 
 	// Генерируем уникальный ключ для hover эффектов
 	const hoverEffectsKey = useMemo(
-		() =>
-			`${simpleEffect}-${effectType}-${tooltipStyle}-${overlayStyle}-${overlayGradient}-${overlayColor}-${cursorStyle}`,
-		[
-			simpleEffect,
-			effectType,
-			tooltipStyle,
-			overlayStyle,
-			overlayGradient,
-			overlayColor,
-			cursorStyle,
-		]
+		() => `${simpleEffect}`,
+		[simpleEffect]
 	);
 
 	// Генерируем уникальный ключ для Swiper (включаем все параметры для перерендеринга при изменении)
@@ -1030,12 +980,6 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 										imageSize={imageSize}
 										borderRadius={borderRadius}
 										simpleEffect={simpleEffect}
-										effectType={effectType}
-										tooltipStyle={tooltipStyle}
-										overlayStyle={overlayStyle}
-										overlayGradient={overlayGradient}
-										overlayColor={overlayColor}
-										cursorStyle={cursorStyle}
 										isEditor={true}
 										enableLink={enableLink || false}
 										postType={postType}
@@ -1048,14 +992,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 										imageSize={imageSize}
 										borderRadius={borderRadius}
 										enableLightbox={false}
-										lightboxGallery={lightboxGallery}
 										simpleEffect={simpleEffect}
-										effectType={effectType}
-										tooltipStyle={tooltipStyle}
-										overlayStyle={overlayStyle}
-										overlayGradient={overlayGradient}
-										overlayColor={overlayColor}
-										cursorStyle={cursorStyle}
 										isEditor={true}
 									/>
 								)}
@@ -1184,12 +1121,6 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 										imageSize={imageSize}
 										borderRadius={borderRadius}
 										simpleEffect={simpleEffect}
-										effectType={effectType}
-										tooltipStyle={tooltipStyle}
-										overlayStyle={overlayStyle}
-										overlayGradient={overlayGradient}
-										overlayColor={overlayColor}
-										cursorStyle={cursorStyle}
 										isEditor={true}
 										enableLink={enableLink || false}
 										postType={postType}
@@ -1202,14 +1133,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 										imageSize={imageSize}
 										borderRadius={borderRadius}
 										enableLightbox={false}
-										lightboxGallery={lightboxGallery}
 										simpleEffect={simpleEffect}
-										effectType={effectType}
-										tooltipStyle={tooltipStyle}
-										overlayStyle={overlayStyle}
-										overlayGradient={overlayGradient}
-										overlayColor={overlayColor}
-										cursorStyle={cursorStyle}
 										isEditor={true}
 									/>
 								)}

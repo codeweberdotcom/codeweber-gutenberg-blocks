@@ -30,8 +30,6 @@ $order = isset($attributes['order']) ? $attributes['order'] : 'desc';
 $image_size = isset($attributes['imageSize']) ? $attributes['imageSize'] : 'full';
 $grid_type = isset($attributes['gridType']) ? $attributes['gridType'] : 'classic';
 $border_radius = isset($attributes['borderRadius']) ? $attributes['borderRadius'] : 'rounded';
-$enable_lightbox = isset($attributes['enableLightbox']) ? $attributes['enableLightbox'] : true;
-$lightbox_gallery = isset($attributes['lightboxGallery']) ? $attributes['lightboxGallery'] : 'gallery-1';
 $block_class = isset($attributes['blockClass']) ? $attributes['blockClass'] : '';
 $block_id = isset($attributes['blockId']) ? $attributes['blockId'] : '';
 $block_data = isset($attributes['blockData']) ? $attributes['blockData'] : '';
@@ -62,12 +60,6 @@ if (empty($block_id)) {
 
 // Hover effects
 $simple_effect = isset($attributes['simpleEffect']) ? $attributes['simpleEffect'] : 'none';
-$effect_type = isset($attributes['effectType']) ? $attributes['effectType'] : 'none';
-$tooltip_style = isset($attributes['tooltipStyle']) ? $attributes['tooltipStyle'] : 'itooltip-dark';
-$overlay_style = isset($attributes['overlayStyle']) ? $attributes['overlayStyle'] : 'overlay-1';
-$overlay_gradient = isset($attributes['overlayGradient']) ? $attributes['overlayGradient'] : 'gradient-1';
-$overlay_color = isset($attributes['overlayColor']) ? $attributes['overlayColor'] : false;
-$cursor_style = isset($attributes['cursorStyle']) ? $attributes['cursorStyle'] : 'cursor-dark';
 
 // Load More
 $load_more_enable = isset($attributes['loadMoreEnable']) ? $attributes['loadMoreEnable'] : false;
@@ -259,49 +251,6 @@ if (!function_exists('get_post_image_url')) {
 		
 		$image = wp_get_attachment_image_src($thumbnail_id, $image_size);
 		return $image ? $image[0] : GUTENBERG_BLOCKS_URL . 'placeholder.jpg';
-	}
-}
-
-// Helper function to get hover classes
-if (!function_exists('get_post_hover_classes')) {
-	function get_post_hover_classes($attributes) {
-	$classes = [];
-	
-	$simple_effect = $attributes['simpleEffect'] ?? 'none';
-	$effect_type = $attributes['effectType'] ?? 'none';
-	$tooltip_style = $attributes['tooltipStyle'] ?? 'itooltip-dark';
-	$overlay_style = $attributes['overlayStyle'] ?? 'overlay-1';
-	$overlay_gradient = $attributes['overlayGradient'] ?? 'gradient-1';
-	$overlay_color = $attributes['overlayColor'] ?? false;
-	$cursor_style = $attributes['cursorStyle'] ?? 'cursor-dark';
-	
-	if ($simple_effect !== 'none') {
-		$classes[] = $simple_effect;
-	}
-	
-	if ($effect_type === 'overlay') {
-		$classes[] = 'overlay';
-		if ($overlay_style) {
-			$classes[] = $overlay_style;
-		}
-		if ($overlay_gradient) {
-			$classes[] = $overlay_gradient;
-		}
-		if ($overlay_color) {
-			$classes[] = 'overlay-color';
-		}
-	} elseif ($effect_type === 'tooltip') {
-		$classes[] = 'itooltip';
-		if ($tooltip_style) {
-			$classes[] = $tooltip_style;
-		}
-	} elseif ($effect_type === 'cursor') {
-		if ($cursor_style) {
-			$classes[] = $cursor_style;
-		}
-	}
-	
-		return implode(' ', $classes);
 	}
 }
 
@@ -717,7 +666,6 @@ if (!function_exists('render_post_grid_item')) {
 					'hover_classes' => $hover_classes,
 					'border_radius' => isset($attributes['borderRadius']) ? $attributes['borderRadius'] : 'rounded',
 					'show_figcaption' => true,
-					'enable_hover_scale' => ($template === 'default' && isset($attributes['enableHoverScale']) && $attributes['enableHoverScale']) ? true : false,
 					'enable_lift' => ($template === 'default-clickable') ? true : false,
 				];
 			}
@@ -754,204 +702,9 @@ if (!function_exists('render_post_grid_item')) {
 
 				return $html;
 			}
-			
-			// Если функция вернула пустую строку, продолжаем с fallback ниже
 		}
-		
-		// Fallback на старую систему, если новая недоступна или вернула пустую строку
-		// Убеждаемся, что $post является объектом WP_Post
-		if (!is_object($post) || !isset($post->ID)) {
-			if (is_numeric($post)) {
-				$post = get_post($post);
-			} else {
-				$post = get_post($post);
-			}
-		}
-		if (!$post || !isset($post->ID)) {
-			return '';
-		}
-		
-		$post_link = get_permalink($post->ID);
-		$post_title = get_the_title($post->ID);
-		$post_excerpt = get_the_excerpt($post->ID);
-		$post_date = get_the_date('d M Y', $post->ID);
-		$post_categories = get_the_category($post->ID);
-		$post_comments_count = get_comments_number($post->ID);
-		
-		$hover_classes = get_post_hover_classes($attributes);
-		$border_radius = isset($attributes['borderRadius']) ? $attributes['borderRadius'] : 'rounded';
-		$effect_type = isset($attributes['effectType']) ? $attributes['effectType'] : 'none';
-		$overlay_style = isset($attributes['overlayStyle']) ? $attributes['overlayStyle'] : 'overlay-1';
-		
-		// Ограничиваем заголовок до 56 символов
-		$title_limited = $post_title ? strip_tags($post_title) : '';
-		$title_limited = str_replace('&nbsp;', ' ', $title_limited);
-		$title_limited = trim($title_limited);
-		if (mb_strlen($title_limited) > 56) {
-			$title_limited = mb_substr($title_limited, 0, 56) . '...';
-		}
-		
-		// Ограничиваем описание до 50 символов
-		$excerpt_limited = $post_excerpt ? strip_tags($post_excerpt) : '';
-		$excerpt_limited = str_replace('&nbsp;', ' ', $excerpt_limited);
-		$excerpt_limited = trim($excerpt_limited);
-		if (mb_strlen($excerpt_limited) > 50) {
-			$excerpt_limited = mb_substr($excerpt_limited, 0, 50) . '...';
-		}
-		
-		$html = '';
-		
-		if ($template === 'card') {
-			// Card template
-			// В режиме Swiper не добавляем обертку
-			if (!$is_swiper) {
-				// Для classic grid добавляем обертку с col-* классами
-				if ($grid_type === 'classic' && !empty($col_classes)) {
-					$html .= '<div class="' . esc_attr($col_classes) . '">';
-				}
-				// Для columns-grid добавляем обертку с классом col
-				elseif ($grid_type === 'columns-grid') {
-					$html .= '<div class="col">';
-				}
-			}
-			$html .= '<article>';
-			$html .= '<div class="card shadow-lg">';
-			
-			// Figure with overlay
-			$figure_classes = trim($hover_classes . ' ' . $border_radius);
-			$figure_classes .= ' card-img-top';
-			$html .= '<figure class="' . esc_attr($figure_classes) . '">';
-			$html .= '<a href="' . esc_url($post_link) . '">';
-			$html .= '<img src="' . esc_url($image_url) . '" alt="' . esc_attr($post_title) . '" />';
-			$html .= '</a>';
-			
-			// Figcaption for overlay
-			if ($effect_type === 'overlay') {
-				if ($overlay_style === 'overlay-1' || $overlay_style === 'overlay-4') {
-					$html .= '<figcaption><h5 class="from-top mb-0">Read More</h5></figcaption>';
-				}
-			}
-			
-			$html .= '</figure>';
-			
-			// Card body
-			$html .= '<div class="card-body p-6">';
-			$html .= '<div class="post-header">';
-			
-			// Category
-			if (!empty($post_categories)) {
-				$html .= '<div class="post-category">';
-				$html .= '<a href="' . esc_url(get_category_link($post_categories[0]->term_id)) . '" class="hover" rel="category">';
-				$html .= esc_html($post_categories[0]->name);
-				$html .= '</a>';
-				$html .= '</div>';
-			}
-			
-			// Title
-			$html .= '<h2 class="post-title h3 mt-1 mb-3">';
-			$html .= '<a class="link-dark" href="' . esc_url($post_link) . '">';
-			$html .= esc_html($title_limited);
-			$html .= '</a>';
-			$html .= '</h2>';
-			$html .= '</div>';
-			
-			// Post footer
-			$html .= '<div class="post-footer">';
-			$html .= '<ul class="post-meta d-flex mb-0">';
-			$html .= '<li class="post-date"><i class="uil uil-calendar-alt"></i><span>' . esc_html($post_date) . '</span></li>';
-			$html .= '<li class="post-comments"><a href="' . esc_url($post_link . '#comments') . '"><i class="uil uil-comment"></i>' . esc_html($post_comments_count) . '</a></li>';
-			$html .= '</ul>';
-			$html .= '</div>';
-			$html .= '</div>'; // card-body
-			$html .= '</div>'; // card
-			$html .= '</article>';
-			// В режиме Swiper не закрываем обертку
-			if (!$is_swiper) {
-				// Для classic grid закрываем обертку с col-* классами
-				if ($grid_type === 'classic' && !empty($col_classes)) {
-					$html .= '</div>';
-				}
-				// Для columns-grid закрываем обертку
-				elseif ($grid_type === 'columns-grid') {
-					$html .= '</div>';
-				}
-			}
-		} else {
-			// Default template
-			// В режиме Swiper не добавляем обертку
-			if (!$is_swiper) {
-				// Для classic grid добавляем обертку с col-* классами
-				if ($grid_type === 'classic' && !empty($col_classes)) {
-					$html .= '<div class="' . esc_attr($col_classes) . '">';
-				}
-				// Для columns-grid добавляем обертку с классом col
-				elseif ($grid_type === 'columns-grid') {
-					$html .= '<div class="col">';
-				}
-			}
-			$html .= '<article>';
-			
-			// Figure with overlay
-			$figure_classes = trim($hover_classes . ' ' . $border_radius);
-			if ($effect_type === 'overlay') {
-				$figure_classes .= ' hover-scale';
-			}
-			$html .= '<figure class="' . esc_attr($figure_classes) . ' mb-5">';
-			$html .= '<a href="' . esc_url($post_link) . '">';
-			$html .= '<img src="' . esc_url($image_url) . '" alt="' . esc_attr($post_title) . '" />';
-			$html .= '</a>';
-			
-			// Figcaption for overlay
-			if ($effect_type === 'overlay') {
-				if ($overlay_style === 'overlay-1' || $overlay_style === 'overlay-4') {
-					$html .= '<figcaption><h5 class="from-top mb-0">Read More</h5></figcaption>';
-				}
-			}
-			
-			$html .= '</figure>';
-			
-			// Post header
-			$html .= '<div class="post-header">';
-			
-			// Category
-			if (!empty($post_categories)) {
-				$html .= '<div class="post-category text-line">';
-				$html .= '<a href="' . esc_url(get_category_link($post_categories[0]->term_id)) . '" class="hover" rel="category">';
-				$html .= esc_html($post_categories[0]->name);
-				$html .= '</a>';
-				$html .= '</div>';
-			}
-			
-			// Title
-			$html .= '<h2 class="post-title h3 mt-1 mb-3">';
-			$html .= '<a class="link-dark" href="' . esc_url($post_link) . '">';
-			$html .= esc_html($title_limited);
-			$html .= '</a>';
-			$html .= '</h2>';
-			$html .= '</div>';
-			
-			// Post footer
-			$html .= '<div class="post-footer">';
-			$html .= '<ul class="post-meta">';
-			$html .= '<li class="post-date"><i class="uil uil-calendar-alt"></i><span>' . esc_html($post_date) . '</span></li>';
-			$html .= '<li class="post-comments"><a href="' . esc_url($post_link . '#comments') . '"><i class="uil uil-comment"></i>' . esc_html($post_comments_count) . '</a></li>';
-			$html .= '</ul>';
-			$html .= '</div>';
-			$html .= '</article>';
-			// В режиме Swiper не закрываем обертку
-			if (!$is_swiper) {
-				// Для classic grid закрываем обертку с col-* классами
-				if ($grid_type === 'classic' && !empty($col_classes)) {
-					$html .= '</div>';
-				}
-				// Для columns-grid закрываем обертку
-				elseif ($grid_type === 'columns-grid') {
-					$html .= '</div>';
-				}
-			}
-		}
-		
-		return $html;
+
+		return '';
 	}
 }
 

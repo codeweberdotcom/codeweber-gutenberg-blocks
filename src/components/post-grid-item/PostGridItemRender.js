@@ -10,12 +10,6 @@ export const PostGridItemRender = ({
 	imageSize,
 	borderRadius,
 	simpleEffect,
-	effectType,
-	tooltipStyle,
-	overlayStyle,
-	overlayGradient,
-	overlayColor,
-	cursorStyle,
 	isEditor = false,
 	enableLink = false,
 	postType = 'post',
@@ -76,39 +70,19 @@ export const PostGridItemRender = ({
 
 	// Формируем классы для figure
 	const figureClasses = [];
-	if (effectType === 'overlay') {
-		figureClasses.push('overlay');
-		if (overlayStyle) figureClasses.push(overlayStyle);
-		if (overlayGradient) figureClasses.push(overlayGradient);
-		if (overlayColor) figureClasses.push('overlay-color');
-	}
-	if (simpleEffect && simpleEffect !== 'none') {
-		figureClasses.push(simpleEffect);
+	if (simpleEffect === 'lift') {
+		figureClasses.push('lift');
 	}
 	if (borderRadius) {
 		figureClasses.push(borderRadius);
 	}
 	if (template === 'card' || template === 'card-content') {
 		figureClasses.push('card-img-top');
-	} else if (effectType === 'overlay' || template === 'slider') {
+	} else if (template === 'slider') {
 		figureClasses.push('hover-scale');
 	}
 
 	const figureClassString = figureClasses.join(' ');
-
-	// Figcaption для overlay
-	const renderFigcaption = () => {
-		if (effectType === 'overlay') {
-			if (overlayStyle === 'overlay-1' || overlayStyle === 'overlay-4') {
-				return (
-					<figcaption>
-						<h5 className="from-top mb-0">Read More</h5>
-					</figcaption>
-				);
-			}
-		}
-		return null;
-	};
 
 	// Проверяем FAQ ПЕРВЫМ, чтобы избежать конфликта имен шаблонов
 	if (postType === 'faq') {
@@ -796,7 +770,6 @@ export const PostGridItemRender = ({
 						>
 							<img src={imageUrl} alt={post.alt || postTitle} />
 						</a>
-						{renderFigcaption()}
 					</figure>
 					<div className="card-body p-6">
 						<div className="post-header">
@@ -884,7 +857,6 @@ export const PostGridItemRender = ({
 							<img src={imageUrl} alt={post.alt || postTitle} />
 							<span className="bg"></span>
 						</a>
-						{renderFigcaption()}
 					</figure>
 					<div className="card-body">
 						<div className="post-header">
@@ -1031,7 +1003,6 @@ export const PostGridItemRender = ({
 							</div>
 							<span className="bg"></span>
 						</a>
-						{renderFigcaption()}
 					</figure>
 					<div className="post-body mt-4">
 						<div className="post-meta d-flex mb-3 fs-16 justify-content-between">
@@ -1371,7 +1342,6 @@ export const PostGridItemRender = ({
 					>
 						<img src={imageUrl} alt={post.alt || postTitle} />
 					</a>
-					{renderFigcaption()}
 				</figure>
 				<div className="post-header">
 					<div className="post-category text-line">

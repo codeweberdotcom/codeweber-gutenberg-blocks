@@ -1,12 +1,11 @@
 import { InspectorControls } from '@wordpress/block-editor';
 import { TabPanel, PanelBody, ToggleControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import { Icon, cog, grid, starFilled } from '@wordpress/icons';
+import { Icon, cog, grid } from '@wordpress/icons';
 import { MainControl } from './controls/MainControl';
 import { LayoutControl } from './controls/LayoutControl';
 import { BorderRadiusControl } from '../../components/border-radius';
 import { BlockMetaFields } from '../../components/block-meta/BlockMetaFields';
-import { ImageHoverControl } from '../../components/image-hover/ImageHoverControl';
 import { LoadMoreControl } from '../../components/load-more';
 
 // Tab icon with native title tooltip
@@ -40,15 +39,6 @@ export const PostGridSidebar = ({ attributes, setAttributes }) => {
 				<TabIcon
 					icon={grid}
 					label={__('Layout', 'codeweber-gutenberg-blocks')}
-				/>
-			),
-		},
-		{
-			name: 'effects',
-			title: (
-				<TabIcon
-					icon={starFilled}
-					label={__('Effects', 'codeweber-gutenberg-blocks')}
 				/>
 			),
 		},
@@ -121,16 +111,6 @@ export const PostGridSidebar = ({ attributes, setAttributes }) => {
 										}
 									/>
 								</div>
-							</PanelBody>
-						)}
-
-						{/* EFFECTS TAB */}
-						{tab.name === 'effects' && (
-							<PanelBody>
-								<ImageHoverControl
-									attributes={attributes}
-									setAttributes={setAttributes}
-								/>
 							</PanelBody>
 						)}
 

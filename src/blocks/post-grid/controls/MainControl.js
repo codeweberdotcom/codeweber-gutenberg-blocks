@@ -23,6 +23,7 @@ export const MainControl = ({ attributes, setAttributes }) => {
 		titleClass,
 		enableLink,
 		selectedTaxonomies,
+		simpleEffect,
 	} = attributes;
 
 	const titleTagOptions = [
@@ -136,6 +137,20 @@ export const MainControl = ({ attributes, setAttributes }) => {
 						setAttributes({ orderBy: value })
 					}
 					onOrderChange={(value) => setAttributes({ order: value })}
+				/>
+			</div>
+
+			<div style={{ marginTop: '16px' }}>
+				<ToggleControl
+					label={__('Lift hover effect', 'codeweber-gutenberg-blocks')}
+					checked={simpleEffect === 'lift'}
+					onChange={(value) =>
+						setAttributes({ simpleEffect: value ? 'lift' : 'none' })
+					}
+					help={__(
+						'Card lifts on hover (works with staff and testimonials templates).',
+						'codeweber-gutenberg-blocks'
+					)}
 				/>
 			</div>
 		</>

@@ -697,9 +697,10 @@ if (!function_exists('render_post_grid_item')) {
 				}
 
 				// default-clickable исторически всегда lift; для остальных — управляется simpleEffect
+				$item_simple_effect = isset($attributes['simpleEffect']) ? $attributes['simpleEffect'] : 'none';
 				$enable_lift = ($template === 'default-clickable')
 					? true
-					: ($simple_effect === 'lift');
+					: ($item_simple_effect === 'lift');
 
 				$template_args = [
 					'image_size'      => $image_size,

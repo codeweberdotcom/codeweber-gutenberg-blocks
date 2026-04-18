@@ -30,8 +30,6 @@ export const MainControl = ({ attributes, setAttributes }) => {
 				}
 			/>
 
-			<SchemaTypeNotice mode="post" postType={postType || ''} />
-
 			<div style={{ marginTop: '16px' }}>
 				<PostGridTemplateControl
 					value={template}
@@ -57,6 +55,8 @@ export const MainControl = ({ attributes, setAttributes }) => {
 					</div>
 				)}
 			</div>
+
+			<SchemaTypeNotice mode="post" postType={postType || ''} />
 
 			<RangeControl
 				label={__('Posts Per Page', 'codeweber-gutenberg-blocks')}

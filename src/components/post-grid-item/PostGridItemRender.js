@@ -1165,10 +1165,14 @@ export const PostGridItemRender = ({
 							isEditor ? (e) => e.preventDefault() : undefined
 						}
 					>
-						<div className="bottom-overlay post-meta fs-16 justify-content-between position-absolute zindex-1 d-flex flex-column h-100 w-100 p-5">
-							<div className="d-flex w-100 justify-content-end"></div>
+						<div className="bottom-overlay post-meta fs-16 position-absolute zindex-1 d-flex flex-column h-100 w-100 p-5">
+							{showDate && (
+								<div className="d-flex w-100 justify-content-end"></div>
+							)}
 							{showTitle && (
-								<TitleTag className={titleClassNameOverlay}>{titleLimited}</TitleTag>
+								<div className="mt-auto">
+									<TitleTag className={titleClassNameOverlay}>{titleLimited}</TitleTag>
+								</div>
 							)}
 						</div>
 						<img src={imageUrl} alt={post.alt || postTitle} />

@@ -15,8 +15,16 @@ export const PostGridItemRender = ({
 	postType = 'post',
 	titleTag = 'h3',
 	titleClass = '',
+	showTitle = true,
+	showDate = true,
+	showCategory = true,
+	showComments = true,
+	showExcerpt = false,
+	titleLength = 56,
+	excerptLength = 20,
 }) => {
 	const TitleTag = ALLOWED_TITLE_TAGS.includes(titleTag) ? titleTag : 'h3';
+	const liftClass = simpleEffect === 'lift' ? ' lift' : '';
 	const titleClassName =
 		titleClass && titleClass.trim() !== ''
 			? titleClass.trim()
@@ -52,27 +60,26 @@ export const PostGridItemRender = ({
 		imageUrl = placeholderUrl;
 	}
 
-	// Ограничиваем заголовок до 56 символов
+	// Ограничиваем заголовок (titleLength: 0 = без ограничения)
 	let titleLimited = postTitle ? postTitle.replace(/<[^>]*>/g, '') : '';
 	titleLimited = titleLimited.replace(/\s+/g, ' ').trim();
-	if (titleLimited.length > 56) {
-		titleLimited = titleLimited.substring(0, 56) + '...';
+	if (titleLength > 0 && titleLimited.length > titleLength) {
+		titleLimited = titleLimited.substring(0, titleLength) + '...';
 	}
 
-	// Ограничиваем описание до 50 символов
+	// Ограничиваем описание для editor preview (приближённо к словам PHP-шаблона: ~6 chars/word)
 	let descriptionLimited = postDescription
 		? postDescription.replace(/<[^>]*>/g, '')
 		: '';
 	descriptionLimited = descriptionLimited.replace(/\s+/g, ' ').trim();
-	if (descriptionLimited.length > 50) {
-		descriptionLimited = descriptionLimited.substring(0, 50) + '...';
+	const excerptCharCap = excerptLength > 0 ? excerptLength * 6 : 0;
+	if (excerptCharCap > 0 && descriptionLimited.length > excerptCharCap) {
+		descriptionLimited =
+			descriptionLimited.substring(0, excerptCharCap) + '...';
 	}
 
-	// Формируем классы для figure
+	// Формируем классы для figure (lift теперь идёт на article/card-обёртку, не на figure)
 	const figureClasses = [];
-	if (simpleEffect === 'lift') {
-		figureClasses.push('lift');
-	}
 	if (borderRadius) {
 		figureClasses.push(borderRadius);
 	}
@@ -760,7 +767,7 @@ export const PostGridItemRender = ({
 		// Card template
 		return (
 			<article className="h-100 mb-6">
-				<div className="card shadow-lg d-flex flex-column h-100">
+				<div className={`card shadow-lg d-flex flex-column h-100${liftClass}`}>
 					<figure className={figureClassString}>
 						<a
 							href={isEditor ? '#' : postLink}
@@ -773,80 +780,91 @@ export const PostGridItemRender = ({
 					</figure>
 					<div className="card-body p-6">
 						<div className="post-header">
-							<div className="post-category">
-								<a
-									href={isEditor ? '#' : postLink}
-									className="hover"
-									rel="category"
-									onClick={
-										isEditor
-											? (e) => e.preventDefault()
-											: undefined
-									}
-								>
-									{__(
-										'Category',
-										'codeweber-gutenberg-blocks'
-									)}
-								</a>
-							</div>
-							<TitleTag className={titleClassName}>
-								<a
-									className="link-dark"
-									href={isEditor ? '#' : postLink}
-									onClick={
-										isEditor
-											? (e) => e.preventDefault()
-											: undefined
-									}
-								>
-									{titleLimited}
-								</a>
-							</TitleTag>
-						</div>
-						<div className="post-footer mt-auto">
-							<ul className="post-meta d-flex mb-0">
-								<li className="post-date">
-									<i className="uil uil-calendar-alt"></i>
-									<span>
-										{__(
-											'Date',
-											'codeweber-gutenberg-blocks'
-										)}
-									</span>
-								</li>
-								<li className="post-comments">
+							{showCategory && (
+								<div className="post-category">
 									<a
-										href={
-											isEditor
-												? '#'
-												: postLink + '#comments'
-										}
+										href={isEditor ? '#' : postLink}
+										className="hover"
+										rel="category"
 										onClick={
 											isEditor
 												? (e) => e.preventDefault()
 												: undefined
 										}
 									>
-										<i className="uil uil-comment"></i>
-										{__('0', 'codeweber-gutenberg-blocks')}
+										{__(
+											'Category',
+											'codeweber-gutenberg-blocks'
+										)}
 									</a>
-								</li>
-							</ul>
+								</div>
+							)}
+							{showTitle && (
+								<TitleTag className={titleClassName}>
+									<a
+										className="link-dark"
+										href={isEditor ? '#' : postLink}
+										onClick={
+											isEditor
+												? (e) => e.preventDefault()
+												: undefined
+										}
+									>
+										{titleLimited}
+									</a>
+								</TitleTag>
+							)}
 						</div>
+						{showExcerpt && descriptionLimited && (
+							<div className="post-content">
+								<p className="mb-0">{descriptionLimited}</p>
+							</div>
+						)}
+						{(showDate || showComments) && (
+							<div className="post-footer mt-auto">
+								<ul className="post-meta d-flex mb-0">
+									{showDate && (
+										<li className="post-date">
+											<i className="uil uil-calendar-alt"></i>
+											<span>
+												{__(
+													'Date',
+													'codeweber-gutenberg-blocks'
+												)}
+											</span>
+										</li>
+									)}
+									{showComments && (
+										<li className="post-comments">
+											<a
+												href={
+													isEditor
+														? '#'
+														: postLink + '#comments'
+												}
+												onClick={
+													isEditor
+														? (e) => e.preventDefault()
+														: undefined
+												}
+											>
+												<i className="uil uil-comment"></i>
+												{__('0', 'codeweber-gutenberg-blocks')}
+											</a>
+										</li>
+									)}
+								</ul>
+							</div>
+						)}
 					</div>
 				</div>
 			</article>
 		);
 	} else if (template === 'card-content') {
 		// Card Content template
-		const excerptLimited =
-			descriptionLimited.length > 116
-				? descriptionLimited.substring(0, 116) + '...'
-				: descriptionLimited;
 		return (
 			<article className="h-100 mb-6">
-				<div className="card d-flex flex-column h-100">
+				<div className={`card d-flex flex-column h-100${liftClass}`}>
 					<figure className={figureClassString + ' hover-scale'}>
 						<a
 							href={isEditor ? '#' : postLink}
@@ -860,73 +878,83 @@ export const PostGridItemRender = ({
 					</figure>
 					<div className="card-body">
 						<div className="post-header">
-							<div className="post-category text-line">
-								<a
-									href={isEditor ? '#' : postLink}
-									className="hover"
-									rel="category"
-									onClick={
-										isEditor
-											? (e) => e.preventDefault()
-											: undefined
-									}
-								>
-									{__(
-										'Category',
-										'codeweber-gutenberg-blocks'
-									)}
-								</a>
-							</div>
-							<TitleTag className={titleClassName}>
-								<a
-									className="link-dark"
-									href={isEditor ? '#' : postLink}
-									onClick={
-										isEditor
-											? (e) => e.preventDefault()
-											: undefined
-									}
-								>
-									{titleLimited}
-								</a>
-							</TitleTag>
+							{showCategory && (
+								<div className="post-category text-line">
+									<a
+										href={isEditor ? '#' : postLink}
+										className="hover"
+										rel="category"
+										onClick={
+											isEditor
+												? (e) => e.preventDefault()
+												: undefined
+										}
+									>
+										{__(
+											'Category',
+											'codeweber-gutenberg-blocks'
+										)}
+									</a>
+								</div>
+							)}
+							{showTitle && (
+								<TitleTag className={titleClassName}>
+									<a
+										className="link-dark"
+										href={isEditor ? '#' : postLink}
+										onClick={
+											isEditor
+												? (e) => e.preventDefault()
+												: undefined
+										}
+									>
+										{titleLimited}
+									</a>
+								</TitleTag>
+							)}
 						</div>
-						{excerptLimited && (
+						{showExcerpt && descriptionLimited && (
 							<div className="post-content">
-								<p className="mb-0">{excerptLimited}</p>
+								<p className="mb-0">{descriptionLimited}</p>
 							</div>
 						)}
 					</div>
-					<div className="card-footer mt-auto">
-						<ul className="post-meta d-flex mb-0">
-							<li className="post-date">
-								<i className="uil uil-calendar-alt"></i>
-								<span>
-									{__('Date', 'codeweber-gutenberg-blocks')}
-								</span>
-							</li>
-							<li className="post-comments">
-								<a
-									href={
-										isEditor ? '#' : postLink + '#comments'
-									}
-									onClick={
-										isEditor
-											? (e) => e.preventDefault()
-											: undefined
-									}
-								>
-									<i className="uil uil-comment"></i>
-									{__('0', 'codeweber-gutenberg-blocks')}
-								</a>
-							</li>
-						</ul>
-					</div>
+					{(showDate || showComments) && (
+						<div className="card-footer mt-auto">
+							<ul className="post-meta d-flex mb-0">
+								{showDate && (
+									<li className="post-date">
+										<i className="uil uil-calendar-alt"></i>
+										<span>
+											{__('Date', 'codeweber-gutenberg-blocks')}
+										</span>
+									</li>
+								)}
+								{showComments && (
+									<li className="post-comments">
+										<a
+											href={
+												isEditor ? '#' : postLink + '#comments'
+											}
+											onClick={
+												isEditor
+													? (e) => e.preventDefault()
+													: undefined
+											}
+										>
+											<i className="uil uil-comment"></i>
+											{__('0', 'codeweber-gutenberg-blocks')}
+										</a>
+									</li>
+								)}
+							</ul>
+						</div>
+					)}
 				</div>
 			</article>
 		);
 	} else if (template === 'default-clickable') {
-		// Default Clickable template
+		// Default Clickable template (lift всегда — задано самим шаблоном)
 		return (
 			<article className="h-100">
 				<a
@@ -938,43 +966,54 @@ export const PostGridItemRender = ({
 						<img src={imageUrl} alt={post.alt || postTitle} />
 					</figure>
 					<div className="post-header p-4">
-						<div className="post-category text-line">
-							<span className="hover" rel="category">
-								{__('Category', 'codeweber-gutenberg-blocks')}
-							</span>
+						{showCategory && (
+							<div className="post-category text-line">
+								<span className="hover" rel="category">
+									{__('Category', 'codeweber-gutenberg-blocks')}
+								</span>
+							</div>
+						)}
+						{showTitle && (
+							<TitleTag className={titleClassName}>
+								<span className="link-dark">{titleLimited}</span>
+							</TitleTag>
+						)}
+					</div>
+					{showExcerpt && descriptionLimited && (
+						<div className="post-content p-4">
+							<p className="mb-0">{descriptionLimited}</p>
 						</div>
-						<TitleTag className={titleClassName}>
-							<span className="link-dark">{titleLimited}</span>
-						</TitleTag>
-					</div>
-					<div className="post-footer p-4 mt-auto">
-						<ul className="post-meta">
-							<li className="post-date">
-								<i className="uil uil-calendar-alt"></i>
-								<span>
-									{__('Date', 'codeweber-gutenberg-blocks')}
-								</span>
-							</li>
-							<li className="post-comments">
-								<span>
-									<i className="uil uil-comment"></i>
-									{__('0', 'codeweber-gutenberg-blocks')}
-								</span>
-							</li>
-						</ul>
-					</div>
+					)}
+					{(showDate || showComments) && (
+						<div className="post-footer p-4 mt-auto">
+							<ul className="post-meta">
+								{showDate && (
+									<li className="post-date">
+										<i className="uil uil-calendar-alt"></i>
+										<span>
+											{__('Date', 'codeweber-gutenberg-blocks')}
+										</span>
+									</li>
+								)}
+								{showComments && (
+									<li className="post-comments">
+										<span>
+											<i className="uil uil-comment"></i>
+											{__('0', 'codeweber-gutenberg-blocks')}
+										</span>
+									</li>
+								)}
+							</ul>
+						</div>
+					)}
 				</a>
 			</article>
 		);
 	} else if (template === 'slider') {
 		// Slider template
-		const excerptLimited =
-			descriptionLimited.length > 116
-				? descriptionLimited.substring(0, 116) + '...'
-				: descriptionLimited;
 		return (
 			<article>
-				<div className="post-col">
+				<div className={`post-col${liftClass}`}>
 					<figure
 						className={
 							'post-figure ' +
@@ -993,51 +1032,61 @@ export const PostGridItemRender = ({
 								alt={post.alt || postTitle}
 								className="post-image"
 							/>
-							<div className="caption-wrapper p-7">
-								<div className="caption bg-matte-color mt-auto label-u text-neutral-50 px-4 py-2">
-									{__(
-										'Category',
-										'codeweber-gutenberg-blocks'
-									)}
+							{showCategory && (
+								<div className="caption-wrapper p-7">
+									<div className="caption bg-matte-color mt-auto label-u text-neutral-50 px-4 py-2">
+										{__(
+											'Category',
+											'codeweber-gutenberg-blocks'
+										)}
+									</div>
 								</div>
-							</div>
+							)}
 							<span className="bg"></span>
 						</a>
 					</figure>
 					<div className="post-body mt-4">
-						<div className="post-meta d-flex mb-3 fs-16 justify-content-between">
-							<span className="post-date">
-								{__('Date', 'codeweber-gutenberg-blocks')}
-							</span>
-							<a
-								href={isEditor ? '#' : postLink + '#comments'}
-								className="post-comments"
-								onClick={
-									isEditor
-										? (e) => e.preventDefault()
-										: undefined
-								}
-							>
-								<i className="uil uil-comment"></i>
-								{__('0', 'codeweber-gutenberg-blocks')}
-							</a>
-						</div>
-						<TitleTag className={titleClassNameSlider} title={postTitle}>
-							<a
-								className="link-dark"
-								href={isEditor ? '#' : postLink}
-								onClick={
-									isEditor
-										? (e) => e.preventDefault()
-										: undefined
-								}
-							>
-								{titleLimited}
-							</a>
-						</TitleTag>
-						{excerptLimited && (
+						{(showDate || showComments) && (
+							<div className="post-meta d-flex mb-3 fs-16 justify-content-between">
+								{showDate && (
+									<span className="post-date">
+										{__('Date', 'codeweber-gutenberg-blocks')}
+									</span>
+								)}
+								{showComments && (
+									<a
+										href={isEditor ? '#' : postLink + '#comments'}
+										className="post-comments"
+										onClick={
+											isEditor
+												? (e) => e.preventDefault()
+												: undefined
+										}
+									>
+										<i className="uil uil-comment"></i>
+										{__('0', 'codeweber-gutenberg-blocks')}
+									</a>
+								)}
+							</div>
+						)}
+						{showTitle && (
+							<TitleTag className={titleClassNameSlider} title={postTitle}>
+								<a
+									className="link-dark"
+									href={isEditor ? '#' : postLink}
+									onClick={
+										isEditor
+											? (e) => e.preventDefault()
+											: undefined
+									}
+								>
+									{titleLimited}
+								</a>
+							</TitleTag>
+						)}
+						{showExcerpt && descriptionLimited && (
 							<div className="body-l-l mb-4 post-excerpt">
-								{excerptLimited}
+								{descriptionLimited}
 							</div>
 						)}
 						<a
@@ -1055,11 +1104,7 @@ export const PostGridItemRender = ({
 		);
 	} else if (template === 'overlay-5') {
 		// Overlay-5 template
-		const excerptLimited =
-			descriptionLimited.length > 116
-				? descriptionLimited.substring(0, 113) + '...'
-				: descriptionLimited;
-		const overlay5Classes = `overlay overlay-5 hover-scale ${borderRadius || 'rounded'}`;
+		const overlay5Classes = `overlay overlay-5 hover-scale ${borderRadius || 'rounded'}${liftClass}`;
 
 		return (
 			<article>
@@ -1072,14 +1117,16 @@ export const PostGridItemRender = ({
 					>
 						<div className="bottom-overlay post-meta fs-16 justify-content-between position-absolute zindex-1 d-flex flex-column h-100 w-100 p-5">
 							<div className="d-flex w-100 justify-content-end"></div>
-							<TitleTag className={titleClassNameOverlay}>{titleLimited}</TitleTag>
+							{showTitle && (
+								<TitleTag className={titleClassNameOverlay}>{titleLimited}</TitleTag>
+							)}
 						</div>
 						<img src={imageUrl} alt={post.alt || postTitle} />
 					</a>
 					<figcaption className="p-5">
 						<div className="post-body h-100 d-flex flex-column justify-content-between from-left">
-							{excerptLimited && (
-								<p className="mb-3">{excerptLimited}</p>
+							{showExcerpt && descriptionLimited && (
+								<p className="mb-3">{descriptionLimited}</p>
 							)}
 							<div className="d-block">
 								<a
@@ -1332,7 +1379,7 @@ export const PostGridItemRender = ({
 	} else {
 		// Default template
 		return (
-			<article>
+			<article className={liftClass.trim()}>
 				<figure className={figureClassString + ' mb-5'}>
 					<a
 						href={isEditor ? '#' : postLink}
@@ -1344,53 +1391,68 @@ export const PostGridItemRender = ({
 					</a>
 				</figure>
 				<div className="post-header">
-					<div className="post-category text-line">
-						<a
-							href={isEditor ? '#' : postLink}
-							className="hover"
-							rel="category"
-							onClick={
-								isEditor ? (e) => e.preventDefault() : undefined
-							}
-						>
-							{__('Category', 'codeweber-gutenberg-blocks')}
-						</a>
-					</div>
-					<TitleTag className={titleClassName}>
-						<a
-							className="link-dark"
-							href={isEditor ? '#' : postLink}
-							onClick={
-								isEditor ? (e) => e.preventDefault() : undefined
-							}
-						>
-							{titleLimited}
-						</a>
-					</TitleTag>
-				</div>
-				<div className="post-footer">
-					<ul className="post-meta">
-						<li className="post-date">
-							<i className="uil uil-calendar-alt"></i>
-							<span>
-								{__('Date', 'codeweber-gutenberg-blocks')}
-							</span>
-						</li>
-						<li className="post-comments">
+					{showCategory && (
+						<div className="post-category text-line">
 							<a
-								href={isEditor ? '#' : postLink + '#comments'}
+								href={isEditor ? '#' : postLink}
+								className="hover"
+								rel="category"
 								onClick={
-									isEditor
-										? (e) => e.preventDefault()
-										: undefined
+									isEditor ? (e) => e.preventDefault() : undefined
 								}
 							>
-								<i className="uil uil-comment"></i>
-								{__('0', 'codeweber-gutenberg-blocks')}
+								{__('Category', 'codeweber-gutenberg-blocks')}
 							</a>
-						</li>
-					</ul>
+						</div>
+					)}
+					{showTitle && (
+						<TitleTag className={titleClassName}>
+							<a
+								className="link-dark"
+								href={isEditor ? '#' : postLink}
+								onClick={
+									isEditor ? (e) => e.preventDefault() : undefined
+								}
+							>
+								{titleLimited}
+							</a>
+						</TitleTag>
+					)}
 				</div>
+				{showExcerpt && descriptionLimited && (
+					<div className="post-content mb-3">
+						<p className="mb-0">{descriptionLimited}</p>
+					</div>
+				)}
+				{(showDate || showComments) && (
+					<div className="post-footer">
+						<ul className="post-meta">
+							{showDate && (
+								<li className="post-date">
+									<i className="uil uil-calendar-alt"></i>
+									<span>
+										{__('Date', 'codeweber-gutenberg-blocks')}
+									</span>
+								</li>
+							)}
+							{showComments && (
+								<li className="post-comments">
+									<a
+										href={isEditor ? '#' : postLink + '#comments'}
+										onClick={
+											isEditor
+												? (e) => e.preventDefault()
+												: undefined
+										}
+									>
+										<i className="uil uil-comment"></i>
+										{__('0', 'codeweber-gutenberg-blocks')}
+									</a>
+								</li>
+							)}
+						</ul>
+					</div>
+				)}
 			</article>
 		);
 	}

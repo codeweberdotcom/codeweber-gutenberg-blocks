@@ -251,6 +251,34 @@
 			"type": "string",
 			"default": ""
 		},
+		"showTitle": {
+			"type": "boolean",
+			"default": true
+		},
+		"showDate": {
+			"type": "boolean",
+			"default": true
+		},
+		"showCategory": {
+			"type": "boolean",
+			"default": true
+		},
+		"showComments": {
+			"type": "boolean",
+			"default": true
+		},
+		"showExcerpt": {
+			"type": "boolean",
+			"default": false
+		},
+		"titleLength": {
+			"type": "number",
+			"default": 56
+		},
+		"excerptLength": {
+			"type": "number",
+			"default": 20
+		},
 		"enableLink": {
 			"type": "boolean",
 			"default": false

@@ -629,44 +629,39 @@ if (!function_exists('render_post_grid_item')) {
 				
 				// Если функция вернула пустую строку, продолжаем с fallback ниже
 			} else {
-				// Настройки отображения для обычных постов
+				// Настройки отображения для обычных постов — читаются из атрибутов блока
 				$display_settings = [
-					'show_title' => true,
-					'show_date' => true,
-					'show_category' => true,
-					'show_comments' => true,
-					'title_length' => 56,
-					'excerpt_length' => 0,
-					'title_tag' => $title_tag,
-					'title_class' => $title_class,
+					'show_title'     => array_key_exists('showTitle', $attributes)    ? (bool) $attributes['showTitle']    : true,
+					'show_date'      => array_key_exists('showDate', $attributes)     ? (bool) $attributes['showDate']     : true,
+					'show_category'  => array_key_exists('showCategory', $attributes) ? (bool) $attributes['showCategory'] : true,
+					'show_comments'  => array_key_exists('showComments', $attributes) ? (bool) $attributes['showComments'] : true,
+					'show_excerpt'   => array_key_exists('showExcerpt', $attributes)  ? (bool) $attributes['showExcerpt']  : false,
+					'title_length'   => isset($attributes['titleLength'])   ? (int) $attributes['titleLength']   : 56,
+					'excerpt_length' => isset($attributes['excerptLength']) ? (int) $attributes['excerptLength'] : 20,
+					'title_tag'      => $title_tag,
+					'title_class'    => $title_class,
 				];
-				
-				// Для card-content и slider включаем excerpt
-				if ($template === 'card-content' || $template === 'slider') {
-					$display_settings['excerpt_length'] = 20;
-				}
-				// Для overlay-5 используем больше слов для обрезки до 116 символов
-				if ($template === 'overlay-5') {
-					$display_settings['excerpt_length'] = 40;
-				}
-				
-				// Настройки шаблона
+
+				// Hover-классы для фигуры (зависят только от шаблона)
 				$hover_classes = 'overlay overlay-1';
-				// Для overlay-5 используем overlay-5
 				if ($template === 'overlay-5') {
 					$hover_classes = 'overlay overlay-5';
 				}
-				// Добавляем hover-scale для соответствующих шаблонов
 				if ($template === 'slider' || $template === 'card-content') {
 					$hover_classes .= ' hover-scale';
 				}
-				
+
+				// default-clickable исторически всегда lift; для остальных — управляется simpleEffect
+				$enable_lift = ($template === 'default-clickable')
+					? true
+					: ($simple_effect === 'lift');
+
 				$template_args = [
-					'image_size' => $image_size,
-					'hover_classes' => $hover_classes,
-					'border_radius' => isset($attributes['borderRadius']) ? $attributes['borderRadius'] : 'rounded',
+					'image_size'      => $image_size,
+					'hover_classes'   => $hover_classes,
+					'border_radius'   => isset($attributes['borderRadius']) ? $attributes['borderRadius'] : 'rounded',
 					'show_figcaption' => true,
-					'enable_lift' => ($template === 'default-clickable') ? true : false,
+					'enable_lift'     => $enable_lift,
 				];
 			}
 			

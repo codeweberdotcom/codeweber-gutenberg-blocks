@@ -985,6 +985,21 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 										postType={postType}
 										titleTag={titleTag}
 										titleClass={titleClass}
+										showTitle={attributes.showTitle !== false}
+										showDate={attributes.showDate !== false}
+										showCategory={attributes.showCategory !== false}
+										showComments={attributes.showComments !== false}
+										showExcerpt={!!attributes.showExcerpt}
+										titleLength={
+											typeof attributes.titleLength === 'number'
+												? attributes.titleLength
+												: 56
+										}
+										excerptLength={
+											typeof attributes.excerptLength === 'number'
+												? attributes.excerptLength
+												: 20
+										}
 									/>
 								) : (
 									<ImageSimpleRender
@@ -1126,6 +1141,21 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 										postType={postType}
 										titleTag={titleTag}
 										titleClass={titleClass}
+										showTitle={attributes.showTitle !== false}
+										showDate={attributes.showDate !== false}
+										showCategory={attributes.showCategory !== false}
+										showComments={attributes.showComments !== false}
+										showExcerpt={!!attributes.showExcerpt}
+										titleLength={
+											typeof attributes.titleLength === 'number'
+												? attributes.titleLength
+												: 56
+										}
+										excerptLength={
+											typeof attributes.excerptLength === 'number'
+												? attributes.excerptLength
+												: 20
+										}
 									/>
 								) : (
 									<ImageSimpleRender

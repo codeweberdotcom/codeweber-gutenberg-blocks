@@ -401,11 +401,16 @@ if (!function_exists('render_post_grid_item')) {
 	function render_post_grid_item($post, $attributes, $image_url, $image_size, $grid_type, $col_classes, $is_swiper = false) {
 		$template = isset($attributes['template']) ? $attributes['template'] : 'default';
 
-		// Title tag and classes from block (allowed in this scope)
+		// Title tag: display-* рендерится как <h2 class="display-*"> (класс добавит compose_title_class).
 		$allowed_title_tags = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'div', 'span'];
-		$title_tag = isset($attributes['titleTag']) ? $attributes['titleTag'] : 'h3';
-		$title_tag = in_array($title_tag, $allowed_title_tags, true) ? $title_tag : 'h3';
-		$title_class = isset($attributes['titleClass']) ? sanitize_text_field($attributes['titleClass']) : '';
+		$title_tag_raw = isset($attributes['titleTag']) ? $attributes['titleTag'] : 'h3';
+		if (strpos($title_tag_raw, 'display-') === 0) {
+			$title_tag = 'h2';
+		} else {
+			$title_tag = in_array($title_tag_raw, $allowed_title_tags, true) ? $title_tag_raw : 'h3';
+		}
+		// Итоговый title_class = size + weight + transform + color + custom — та же логика что и в верхнем скоупе.
+		$title_class = sanitize_text_field(cwgb_post_grid_compose_title_class($attributes));
 
 		// Загружаем новую систему шаблонов из темы, если доступна
 		$post_card_templates_path = get_template_directory() . '/functions/post-card-templates.php';
@@ -511,8 +516,8 @@ if (!function_exists('render_post_grid_item')) {
 					'show_comments' => false,
 					'title_length' => 56,
 					'excerpt_length' => 40,
-					'title_tag' => 'h2',
-					'title_class' => '',
+					'title_tag' => $title_tag,
+					'title_class' => $title_class,
 				];
 				
 				// Настройки шаблона для documents (overlay-5 стиль)
@@ -590,10 +595,10 @@ if (!function_exists('render_post_grid_item')) {
 					'show_comments' => false,
 					'title_length' => 0,
 					'excerpt_length' => 0,
-					'title_tag' => 'h4',
-					'title_class' => '',
+					'title_tag' => $title_tag,
+					'title_class' => $title_class,
 				];
-				
+
 				// Размер изображения по умолчанию для staff
 				if ($image_size === 'full' || empty($image_size)) {
 					$image_size = 'codeweber_staff';

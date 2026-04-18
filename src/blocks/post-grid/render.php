@@ -697,6 +697,9 @@ if (!function_exists('render_post_grid_item')) {
 				if ($template === 'overlay-5') {
 					$hover_classes = 'overlay overlay-5';
 				}
+				if ($template === 'overlay-5-primary') {
+					$hover_classes = 'overlay overlay-5 color';
+				}
 				if ($template === 'slider' || $template === 'card-content') {
 					$hover_classes .= ' hover-scale';
 				}

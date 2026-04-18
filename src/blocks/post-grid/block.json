@@ -247,6 +247,26 @@
 			"type": "string",
 			"default": "h3"
 		},
+		"titleColor": {
+			"type": "string",
+			"default": ""
+		},
+		"titleColorType": {
+			"type": "string",
+			"default": "solid"
+		},
+		"titleSize": {
+			"type": "string",
+			"default": ""
+		},
+		"titleWeight": {
+			"type": "string",
+			"default": ""
+		},
+		"titleTransform": {
+			"type": "string",
+			"default": ""
+		},
 		"titleClass": {
 			"type": "string",
 			"default": ""

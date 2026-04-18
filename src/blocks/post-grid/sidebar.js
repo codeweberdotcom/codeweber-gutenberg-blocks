@@ -1,9 +1,10 @@
 import { InspectorControls } from '@wordpress/block-editor';
 import { TabPanel, PanelBody, ToggleControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import { Icon, cog, grid } from '@wordpress/icons';
+import { Icon, cog, grid, typography } from '@wordpress/icons';
 import { MainControl } from './controls/MainControl';
 import { LayoutControl } from './controls/LayoutControl';
+import { TitleControl } from './controls/TitleControl';
 import { BorderRadiusControl } from '../../components/border-radius';
 import { BlockMetaFields } from '../../components/block-meta/BlockMetaFields';
 import { LoadMoreControl } from '../../components/load-more';
@@ -39,6 +40,15 @@ export const PostGridSidebar = ({ attributes, setAttributes }) => {
 				<TabIcon
 					icon={grid}
 					label={__('Layout', 'codeweber-gutenberg-blocks')}
+				/>
+			),
+		},
+		{
+			name: 'title',
+			title: (
+				<TabIcon
+					icon={typography}
+					label={__('Title', 'codeweber-gutenberg-blocks')}
 				/>
 			),
 		},
@@ -111,6 +121,16 @@ export const PostGridSidebar = ({ attributes, setAttributes }) => {
 										}
 									/>
 								</div>
+							</PanelBody>
+						)}
+
+						{/* TITLE TAB */}
+						{tab.name === 'title' && (
+							<PanelBody>
+								<TitleControl
+									attributes={attributes}
+									setAttributes={setAttributes}
+								/>
 							</PanelBody>
 						)}
 

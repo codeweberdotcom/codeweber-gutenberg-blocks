@@ -1,8 +1,30 @@
 import { __ } from '@wordpress/i18n';
 import { ImageSimpleRender } from '../image/ImageSimpleRender';
 import { getImageUrl } from '../../utilities/image-url';
+import {
+	generateColorClass,
+	generateTypographyClasses,
+} from '../../utilities/class-generators';
 
 const ALLOWED_TITLE_TAGS = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'div', 'span'];
+
+// Собрать итоговый класс заголовка: size + weight + transform + color + custom.
+// Возвращает пустую строку если ничего не задано.
+const composeTitleClass = (attrs) => {
+	const classes = [];
+	if (attrs.titleTag && attrs.titleTag.startsWith('display-')) {
+		classes.push(attrs.titleTag);
+	}
+	classes.push(...generateTypographyClasses(attrs, 'title'));
+	const colorClass = generateColorClass(
+		attrs.titleColor,
+		attrs.titleColorType,
+		'text'
+	);
+	if (colorClass) classes.push(colorClass);
+	if (attrs.titleClass) classes.push(attrs.titleClass);
+	return Array.from(new Set(classes.filter(Boolean))).join(' ');
+};
 
 export const PostGridItemRender = ({
 	post,
@@ -15,6 +37,11 @@ export const PostGridItemRender = ({
 	postType = 'post',
 	titleTag = 'h3',
 	titleClass = '',
+	titleColor = '',
+	titleColorType = 'solid',
+	titleSize = '',
+	titleWeight = '',
+	titleTransform = '',
 	showTitle = true,
 	showDate = true,
 	showCategory = true,
@@ -23,22 +50,32 @@ export const PostGridItemRender = ({
 	titleLength = 56,
 	excerptLength = 20,
 }) => {
-	const TitleTag = ALLOWED_TITLE_TAGS.includes(titleTag) ? titleTag : 'h3';
+	// display-* теги → ставим h2 и добавляем класс display-*
+	const resolvedTitleTag = titleTag && titleTag.startsWith('display-')
+		? 'h2'
+		: (ALLOWED_TITLE_TAGS.includes(titleTag) ? titleTag : 'h3');
+	const TitleTag = resolvedTitleTag;
 	const liftClass = simpleEffect === 'lift' ? ' lift' : '';
-	const titleClassName =
-		titleClass && titleClass.trim() !== ''
-			? titleClass.trim()
-			: 'post-title h3 mt-1 mb-3';
-	const titleClassNameSlider =
-		titleClass && titleClass.trim() !== '' ? titleClass.trim() : 'post-title h4';
-	const titleClassNameOverlay =
-		titleClass && titleClass.trim() !== '' ? titleClass.trim() : 'h5 mb-0';
-	const titleClassNameFaq =
-		titleClass && titleClass.trim() !== '' ? titleClass.trim() : 'mb-0';
-	const titleClassNameStaff =
-		titleClass && titleClass.trim() !== '' ? titleClass.trim() : 'h4 mb-1';
-	const titleClassNameTestimonial =
-		titleClass && titleClass.trim() !== '' ? titleClass.trim() : 'mb-1';
+
+	// Если юзер задал хоть один стиль — подменяем дефолтные классы шаблона.
+	const computedTitleClass = composeTitleClass({
+		titleTag,
+		titleColor,
+		titleColorType,
+		titleSize,
+		titleWeight,
+		titleTransform,
+		titleClass,
+	});
+	const customTitleClass = computedTitleClass && computedTitleClass.trim() !== ''
+		? computedTitleClass.trim()
+		: '';
+	const titleClassName = customTitleClass || 'post-title h3 mt-1 mb-3';
+	const titleClassNameSlider = customTitleClass || 'post-title h4';
+	const titleClassNameOverlay = customTitleClass || 'h5 mb-0';
+	const titleClassNameFaq = customTitleClass || 'mb-0';
+	const titleClassNameStaff = customTitleClass || 'h4 mb-1';
+	const titleClassNameTestimonial = customTitleClass || 'mb-1';
 
 	const postLink = post.linkUrl || '#';
 	const postTitle = post.title || '';

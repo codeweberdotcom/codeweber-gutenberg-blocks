@@ -2,8 +2,6 @@ import { __ } from '@wordpress/i18n';
 import {
 	PanelBody,
 	RangeControl,
-	SelectControl,
-	TextControl,
 	ToggleControl,
 } from '@wordpress/components';
 import { ImageSizeControl } from '../../../components/image-size';
@@ -20,8 +18,6 @@ export const MainControl = ({ attributes, setAttributes }) => {
 		orderBy,
 		order,
 		template,
-		titleTag,
-		titleClass,
 		enableLink,
 		selectedTaxonomies,
 		simpleEffect,
@@ -37,18 +33,6 @@ export const MainControl = ({ attributes, setAttributes }) => {
 	// Card Display panel hidden for clients (logos only — no titles/dates).
 	const showCardDisplayPanel = postType !== 'clients';
 
-	const titleTagOptions = [
-		{ value: 'h1', label: 'H1' },
-		{ value: 'h2', label: 'H2' },
-		{ value: 'h3', label: 'H3' },
-		{ value: 'h4', label: 'H4' },
-		{ value: 'h5', label: 'H5' },
-		{ value: 'h6', label: 'H6' },
-		{ value: 'p', label: __('Paragraph', 'codeweber-gutenberg-blocks') },
-		{ value: 'div', label: 'div' },
-		{ value: 'span', label: 'span' },
-	];
-
 	return (
 		<>
 			<PostTypeTaxonomyControl
@@ -61,32 +45,6 @@ export const MainControl = ({ attributes, setAttributes }) => {
 			/>
 
 			<SchemaTypeNotice mode="post" postType={postType || ''} />
-
-			<div style={{ marginTop: '16px' }}>
-				<SelectControl
-					label={__('Title Tag', 'codeweber-gutenberg-blocks')}
-					value={titleTag || 'h3'}
-					options={titleTagOptions}
-					onChange={(value) => setAttributes({ titleTag: value })}
-					help={__(
-						'HTML tag for post/card title.',
-						'codeweber-gutenberg-blocks'
-					)}
-				/>
-			</div>
-
-			<div style={{ marginTop: '16px' }}>
-				<TextControl
-					label={__('Title Classes', 'codeweber-gutenberg-blocks')}
-					value={titleClass || ''}
-					onChange={(value) => setAttributes({ titleClass: value })}
-					help={__(
-						'Additional CSS classes for the title (space-separated).',
-						'codeweber-gutenberg-blocks'
-					)}
-					placeholder="e.g. mt-1 mb-3"
-				/>
-			</div>
 
 			<div style={{ marginTop: '16px' }}>
 				<PostGridTemplateControl

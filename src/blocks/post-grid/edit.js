@@ -985,6 +985,11 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 										postType={postType}
 										titleTag={titleTag}
 										titleClass={titleClass}
+										titleColor={attributes.titleColor || ''}
+										titleColorType={attributes.titleColorType || 'solid'}
+										titleSize={attributes.titleSize || ''}
+										titleWeight={attributes.titleWeight || ''}
+										titleTransform={attributes.titleTransform || ''}
 										showTitle={attributes.showTitle !== false}
 										showDate={attributes.showDate !== false}
 										showCategory={attributes.showCategory !== false}
@@ -1141,6 +1146,11 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 										postType={postType}
 										titleTag={titleTag}
 										titleClass={titleClass}
+										titleColor={attributes.titleColor || ''}
+										titleColorType={attributes.titleColorType || 'solid'}
+										titleSize={attributes.titleSize || ''}
+										titleWeight={attributes.titleWeight || ''}
+										titleTransform={attributes.titleTransform || ''}
 										showTitle={attributes.showTitle !== false}
 										showDate={attributes.showDate !== false}
 										showCategory={attributes.showCategory !== false}

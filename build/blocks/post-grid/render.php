@@ -37,10 +37,53 @@ $template = isset($attributes['template']) ? $attributes['template'] : 'default'
 $selected_taxonomies = isset($attributes['selectedTaxonomies']) ? $attributes['selectedTaxonomies'] : [];
 
 // Title tag and classes from block (with allowed values)
+// display-* передаём в шаблон как title-size-класс (см. compose_title_class), а тегом ставим h2.
 $allowed_title_tags = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'div', 'span'];
-$title_tag = isset($attributes['titleTag']) ? $attributes['titleTag'] : 'h3';
-$title_tag = in_array($title_tag, $allowed_title_tags, true) ? $title_tag : 'h3';
-$title_class = isset($attributes['titleClass']) ? sanitize_text_field($attributes['titleClass']) : '';
+$title_tag_raw = isset($attributes['titleTag']) ? $attributes['titleTag'] : 'h3';
+if (strpos($title_tag_raw, 'display-') === 0) {
+	$title_tag = 'h2';
+} else {
+	$title_tag = in_array($title_tag_raw, $allowed_title_tags, true) ? $title_tag_raw : 'h3';
+}
+
+// Собрать итоговый title_class: size + weight + transform + color + custom.
+// Возвращает пустую строку если ничего не задано — шаблон использует свой дефолт.
+if (!function_exists('cwgb_post_grid_compose_title_class')) {
+	function cwgb_post_grid_compose_title_class($attributes) {
+		$parts = [];
+
+		$tag = isset($attributes['titleTag']) ? $attributes['titleTag'] : '';
+		if ($tag && strpos($tag, 'display-') === 0) {
+			$parts[] = $tag;
+		}
+
+		foreach (['titleSize', 'titleWeight', 'titleTransform'] as $key) {
+			if (!empty($attributes[$key])) {
+				$parts[] = $attributes[$key];
+			}
+		}
+
+		$color = isset($attributes['titleColor']) ? $attributes['titleColor'] : '';
+		$color_type = isset($attributes['titleColorType']) ? $attributes['titleColorType'] : 'solid';
+		if ($color) {
+			if ($color_type === 'soft') {
+				$parts[] = 'text-soft-' . $color;
+			} elseif ($color_type === 'pale') {
+				$parts[] = 'text-pale-' . $color;
+			} else {
+				$parts[] = 'text-' . $color;
+			}
+		}
+
+		if (!empty($attributes['titleClass'])) {
+			$parts[] = $attributes['titleClass'];
+		}
+
+		return trim(implode(' ', array_filter($parts)));
+	}
+}
+
+$title_class = sanitize_text_field(cwgb_post_grid_compose_title_class($attributes));
 
 // Генерируем уникальный ID для блока, если он не задан (необходимо для Load More)
 if (empty($block_id)) {

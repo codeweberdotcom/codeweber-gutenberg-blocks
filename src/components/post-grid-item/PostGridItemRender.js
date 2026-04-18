@@ -1198,7 +1198,8 @@ export const PostGridItemRender = ({
 			</article>
 		);
 	} else if (template === 'overlay-5-primary') {
-		// Overlay-5 Primary: primary color overlay on hover, title + excerpt slide from left
+		// Overlay-5 Primary: полный аналог overlay-5 с класс `color` на figure
+		// (primary-colored overlay вместо тёмного).
 		const overlay5PrimaryClasses = `overlay overlay-5 hover-scale color card-interactive ${borderRadius || 'rounded'}${liftClass}`;
 
 		const readMoreLabels = {
@@ -1207,7 +1208,6 @@ export const PostGridItemRender = ({
 			read: __('Read', 'codeweber-gutenberg-blocks'),
 		};
 		const readMoreLabel = readMoreLabels[cardReadMore] || '';
-		const primaryTitleClass = customTitleClass || 'from-left mb-1';
 
 		return (
 			<article>
@@ -1218,24 +1218,31 @@ export const PostGridItemRender = ({
 							isEditor ? (e) => e.preventDefault() : undefined
 						}
 					>
+						<div className="bottom-overlay post-meta fs-16 position-absolute zindex-1 d-flex flex-column h-100 w-100 p-5">
+							{showDate && (
+								<div className="d-flex w-100 justify-content-end"></div>
+							)}
+							{showTitle && (
+								<div className="mt-auto">
+									<TitleTag className={titleClassNameOverlay}>
+										{titleLimited}
+									</TitleTag>
+								</div>
+							)}
+						</div>
 						<img src={imageUrl} alt={post.alt || postTitle} />
 					</a>
-					<figcaption>
-						{showTitle && (
-							<TitleTag className={primaryTitleClass}>
-								{titleLimited}
-							</TitleTag>
-						)}
-						{showExcerpt && descriptionLimited && (
-							<p className="from-left mb-0">
-								{descriptionLimited}
-							</p>
-						)}
-						{readMoreLabel && (
-							<span className="hover more from-left mt-3 d-inline-block">
-								{readMoreLabel}
-							</span>
-						)}
+					<figcaption className="p-5">
+						<div className="post-body h-100 d-flex flex-column from-left justify-content-end">
+							{showExcerpt && descriptionLimited && (
+								<p className="mb-3">{descriptionLimited}</p>
+							)}
+							{readMoreLabel && (
+								<span className="hover more me-4">
+									{readMoreLabel}
+								</span>
+							)}
+						</div>
 					</figcaption>
 					{showCardArrow && (
 						<div className="hover_card_button_hide position-absolute top-0 end-0 p-5 zindex-10">

@@ -299,6 +299,14 @@
 			"type": "number",
 			"default": 20
 		},
+		"showCardArrow": {
+			"type": "boolean",
+			"default": true
+		},
+		"cardReadMore": {
+			"type": "string",
+			"default": "none"
+		},
 		"enableLink": {
 			"type": "boolean",
 			"default": false

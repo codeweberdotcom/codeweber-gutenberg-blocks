@@ -1005,6 +1005,12 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 												? attributes.excerptLength
 												: 20
 										}
+										showCardArrow={
+											attributes.showCardArrow !== false
+										}
+										cardReadMore={
+											attributes.cardReadMore || 'none'
+										}
 									/>
 								) : (
 									<ImageSimpleRender
@@ -1165,6 +1171,12 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 											typeof attributes.excerptLength === 'number'
 												? attributes.excerptLength
 												: 20
+										}
+										showCardArrow={
+											attributes.showCardArrow !== false
+										}
+										cardReadMore={
+											attributes.cardReadMore || 'none'
 										}
 									/>
 								) : (

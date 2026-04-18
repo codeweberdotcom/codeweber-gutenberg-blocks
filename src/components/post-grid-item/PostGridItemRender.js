@@ -53,6 +53,8 @@ export const PostGridItemRender = ({
 	showExcerpt = false,
 	titleLength = 56,
 	excerptLength = 20,
+	showCardArrow = true,
+	cardReadMore = 'none',
 }) => {
 	// display-* теги → ставим h2 и добавляем класс display-*
 	const resolvedTitleTag = titleTag && titleTag.startsWith('display-')
@@ -1145,7 +1147,14 @@ export const PostGridItemRender = ({
 		);
 	} else if (template === 'overlay-5') {
 		// Overlay-5 template
-		const overlay5Classes = `overlay overlay-5 hover-scale ${borderRadius || 'rounded'}${liftClass}`;
+		const overlay5Classes = `overlay overlay-5 hover-scale card-interactive ${borderRadius || 'rounded'}${liftClass}`;
+
+		const readMoreLabels = {
+			view: __('View', 'codeweber-gutenberg-blocks'),
+			more: __('Read more', 'codeweber-gutenberg-blocks'),
+			read: __('Read', 'codeweber-gutenberg-blocks'),
+		};
+		const readMoreLabel = readMoreLabels[cardReadMore] || '';
 
 		return (
 			<article>
@@ -1165,28 +1174,22 @@ export const PostGridItemRender = ({
 						<img src={imageUrl} alt={post.alt || postTitle} />
 					</a>
 					<figcaption className="p-5">
-						<div className="post-body h-100 d-flex flex-column justify-content-between from-left">
+						<div className="post-body h-100 d-flex flex-column from-left justify-content-end">
 							{showExcerpt && descriptionLimited && (
 								<p className="mb-3">{descriptionLimited}</p>
 							)}
-							<div className="d-block">
-								<a
-									href={isEditor ? '#' : postLink}
-									className="hover-8 link-body label-s text-charcoal-blue me-4 post-read-more"
-									onClick={
-										isEditor
-											? (e) => e.preventDefault()
-											: undefined
-									}
-								>
-									{__(
-										'Read more',
-										'codeweber-gutenberg-blocks'
-									)}
-								</a>
-							</div>
+							{readMoreLabel && (
+								<span className="hover more me-4">
+									{readMoreLabel}
+								</span>
+							)}
 						</div>
 					</figcaption>
+					{showCardArrow && (
+						<div className="hover_card_button_hide position-absolute top-0 end-0 p-5 zindex-10">
+							<i className="fs-25 uil uil-arrow-right lh-1"></i>
+						</div>
+					)}
 				</figure>
 			</article>
 		);

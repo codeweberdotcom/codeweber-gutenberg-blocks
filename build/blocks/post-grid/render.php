@@ -703,11 +703,13 @@ if (!function_exists('render_post_grid_item')) {
 					: ($item_simple_effect === 'lift');
 
 				$template_args = [
-					'image_size'      => $image_size,
-					'hover_classes'   => $hover_classes,
-					'border_radius'   => isset($attributes['borderRadius']) ? $attributes['borderRadius'] : 'rounded',
-					'show_figcaption' => true,
-					'enable_lift'     => $enable_lift,
+					'image_size'           => $image_size,
+					'hover_classes'        => $hover_classes,
+					'border_radius'        => isset($attributes['borderRadius']) ? $attributes['borderRadius'] : 'rounded',
+					'show_figcaption'      => true,
+					'enable_lift'          => $enable_lift,
+					'show_card_arrow'      => array_key_exists('showCardArrow', $attributes) ? (bool) $attributes['showCardArrow'] : true,
+					'card_read_more'       => isset($attributes['cardReadMore']) ? $attributes['cardReadMore'] : 'none',
 				];
 			}
 			

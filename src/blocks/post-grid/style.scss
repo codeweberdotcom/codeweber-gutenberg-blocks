@@ -2,14 +2,11 @@
 .cwgb-post-grid-block {
 	// Inherit styles from Image Simple
 	@import '../image-simple/style.scss';
+
+	// Когда пользователь выбрал кастомный цвет заголовка — нужно, чтобы вложенная
+	// ссылка (<a class="link-dark">) унаследовала цвет от заголовка, а не держала
+	// свой $main-dark из темы.
+	.cwgb-title-color a {
+		color: inherit !important;
+	}
 }
-
-
-
-
-
-
-
-
-
-

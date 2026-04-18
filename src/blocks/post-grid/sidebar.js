@@ -1,10 +1,11 @@
 import { InspectorControls } from '@wordpress/block-editor';
 import { TabPanel, PanelBody, ToggleControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import { Icon, cog, grid, typography } from '@wordpress/icons';
+import { Icon, cog, grid, typography, seen } from '@wordpress/icons';
 import { MainControl } from './controls/MainControl';
 import { LayoutControl } from './controls/LayoutControl';
 import { TitleControl } from './controls/TitleControl';
+import { DisplayControl } from './controls/DisplayControl';
 import { BorderRadiusControl } from '../../components/border-radius';
 import { BlockMetaFields } from '../../components/block-meta/BlockMetaFields';
 import { LoadMoreControl } from '../../components/load-more';
@@ -24,6 +25,9 @@ const TabIcon = ({ icon, label }) => (
 );
 
 export const PostGridSidebar = ({ attributes, setAttributes }) => {
+	// Display tab hidden for clients (logos only — no titles/dates).
+	const hasDisplayTab = attributes.postType !== 'clients';
+
 	const tabs = [
 		{
 			name: 'main',
@@ -52,6 +56,22 @@ export const PostGridSidebar = ({ attributes, setAttributes }) => {
 				/>
 			),
 		},
+		...(hasDisplayTab
+			? [
+					{
+						name: 'display',
+						title: (
+							<TabIcon
+								icon={seen}
+								label={__(
+									'Display',
+									'codeweber-gutenberg-blocks'
+								)}
+							/>
+						),
+					},
+				]
+			: []),
 		{
 			name: 'settings',
 			title: (
@@ -128,6 +148,16 @@ export const PostGridSidebar = ({ attributes, setAttributes }) => {
 						{tab.name === 'title' && (
 							<PanelBody>
 								<TitleControl
+									attributes={attributes}
+									setAttributes={setAttributes}
+								/>
+							</PanelBody>
+						)}
+
+						{/* DISPLAY TAB */}
+						{tab.name === 'display' && (
+							<PanelBody>
+								<DisplayControl
 									attributes={attributes}
 									setAttributes={setAttributes}
 								/>

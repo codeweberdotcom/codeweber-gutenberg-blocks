@@ -21,7 +21,11 @@ const composeTitleClass = (attrs) => {
 		attrs.titleColorType,
 		'text'
 	);
-	if (colorClass) classes.push(colorClass);
+	if (colorClass) {
+		classes.push(colorClass);
+		// Маркер для CSS-правила, которое пробрасывает цвет на вложенный <a class="link-dark">.
+		classes.push('cwgb-title-color');
+	}
 	if (attrs.titleClass) classes.push(attrs.titleClass);
 	return Array.from(new Set(classes.filter(Boolean))).join(' ');
 };

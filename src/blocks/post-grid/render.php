@@ -73,6 +73,8 @@ if (!function_exists('cwgb_post_grid_compose_title_class')) {
 			} else {
 				$parts[] = 'text-' . $color;
 			}
+			// Маркер — чтобы CSS пробросил цвет через наследование на вложенный <a class="link-dark">.
+			$parts[] = 'cwgb-title-color';
 		}
 
 		if (!empty($attributes['titleClass'])) {

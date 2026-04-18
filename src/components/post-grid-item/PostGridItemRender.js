@@ -1147,7 +1147,7 @@ export const PostGridItemRender = ({
 		);
 	} else if (template === 'overlay-5') {
 		// Overlay-5 template
-		const overlay5Classes = `overlay overlay-5 hover-scale card-interactive text-start ${borderRadius || 'rounded'}${liftClass}`;
+		const overlay5Classes = `overlay overlay-5 hover-scale card-interactive ${borderRadius || 'rounded'}${liftClass}`;
 
 		const readMoreLabels = {
 			view: __('View', 'codeweber-gutenberg-blocks'),
@@ -1200,7 +1200,7 @@ export const PostGridItemRender = ({
 	} else if (template === 'overlay-5-primary') {
 		// Overlay-5 Primary: полный аналог overlay-5 с класс `color` на figure
 		// (primary-colored overlay вместо тёмного).
-		const overlay5PrimaryClasses = `overlay overlay-5 hover-scale color card-interactive text-start ${borderRadius || 'rounded'}${liftClass}`;
+		const overlay5PrimaryClasses = `overlay overlay-5 hover-scale color card-interactive ${borderRadius || 'rounded'}${liftClass}`;
 
 		const readMoreLabels = {
 			view: __('View', 'codeweber-gutenberg-blocks'),

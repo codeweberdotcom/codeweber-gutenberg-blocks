@@ -841,24 +841,48 @@ if (!function_exists('render_post_grid_item')) {
 		$filter_item_classes = cwgb_post_grid_filter_item_classes($filter_style, $filter_active_color, $filter_active_color_type);
 		$base_item_class = implode(' ', $filter_item_classes['base']);
 		$active_item_class = implode(' ', $filter_item_classes['active']);
-		$container_classes = ['cwgb-post-grid-filter', 'filter', 'mb-6', 'list-unstyled', 'd-flex', 'flex-wrap', 'gap-2'];
-		if ($filter_style === 'default') {
-			$container_classes[] = 'isotope-filter';
+
+		// Разметка зависит от стиля:
+		// - default: <ul class="filter isotope-filter"> — тема сама обнулит bullets/padding
+		//   и применит типографику через .filter:not(.basic-filter).
+		// - остальные: <div class="d-flex flex-wrap gap-2"> с прямыми <a> детьми,
+		//   чтобы не триггерить list-стили темы (включая сломанный
+		//   .list-unstyled li a.active { color: #9c886f !important }).
+		$is_default_style = ($filter_style === 'default');
+
+		if ($is_default_style) {
+			$container_classes = ['cwgb-post-grid-filter', 'filter', 'isotope-filter', 'mb-6'];
+		} else {
+			$container_classes = ['cwgb-post-grid-filter', 'mb-6', 'd-flex', 'flex-wrap', 'gap-2', 'align-items-center'];
 		}
+
+		$common_data_attrs = sprintf(
+			'data-cwgb-filter-for="%s" data-cwgb-filter-taxonomy="%s" data-cwgb-filter-style="%s"',
+			esc_attr($block_id),
+			esc_attr($filter_taxonomy),
+			esc_attr($filter_style)
+		);
+
 		$render_filter_item = function ($label, $term_id, $is_active) use ($base_item_class, $active_item_class) {
-			$cls = $base_item_class . ($is_active ? ' ' . $active_item_class : '');
-			echo '<li><a href="#" class="filter-item ' . esc_attr(trim($cls)) . '" data-cwgb-filter-term="' . esc_attr($term_id) . '">' . esc_html($label) . '</a></li>';
+			$cls = trim('filter-item ' . $base_item_class . ($is_active ? ' ' . $active_item_class : ''));
+			return '<a href="#" class="' . esc_attr($cls) . '" data-cwgb-filter-term="' . esc_attr($term_id) . '">' . esc_html($label) . '</a>';
 		};
 		?>
-		<ul class="<?php echo esc_attr(implode(' ', $container_classes)); ?>"
-			data-cwgb-filter-for="<?php echo esc_attr($block_id); ?>"
-			data-cwgb-filter-taxonomy="<?php echo esc_attr($filter_taxonomy); ?>"
-			data-cwgb-filter-style="<?php echo esc_attr($filter_style); ?>">
-			<?php $render_filter_item($filter_all_label, 0, $filter_active_term === 0); ?>
-			<?php foreach ($filter_terms as $term) : ?>
-				<?php $render_filter_item($term->name, $term->term_id, $filter_active_term === (int) $term->term_id); ?>
-			<?php endforeach; ?>
-		</ul>
+		<?php if ($is_default_style) : ?>
+			<ul class="<?php echo esc_attr(implode(' ', $container_classes)); ?>" <?php echo $common_data_attrs; ?>>
+				<li><?php echo $render_filter_item($filter_all_label, 0, $filter_active_term === 0); ?></li>
+				<?php foreach ($filter_terms as $term) : ?>
+					<li><?php echo $render_filter_item($term->name, $term->term_id, $filter_active_term === (int) $term->term_id); ?></li>
+				<?php endforeach; ?>
+			</ul>
+		<?php else : ?>
+			<div class="<?php echo esc_attr(implode(' ', $container_classes)); ?>" <?php echo $common_data_attrs; ?>>
+				<?php echo $render_filter_item($filter_all_label, 0, $filter_active_term === 0); ?>
+				<?php foreach ($filter_terms as $term) : ?>
+					<?php echo $render_filter_item($term->name, $term->term_id, $filter_active_term === (int) $term->term_id); ?>
+				<?php endforeach; ?>
+			</div>
+		<?php endif; ?>
 	<?php endif; ?>
 
 	<div class="cwgb-post-grid-results" data-cwgb-results-for="<?php echo esc_attr($block_id); ?>">

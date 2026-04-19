@@ -327,6 +327,10 @@
 			"type": "string",
 			"default": "solid"
 		},
+		"filterTextReset": {
+			"type": "boolean",
+			"default": false
+		},
 		"filterAllLabel": {
 			"type": "string",
 			"default": "All"

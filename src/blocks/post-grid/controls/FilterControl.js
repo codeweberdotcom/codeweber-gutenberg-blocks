@@ -21,6 +21,7 @@ export const FilterControl = ({ attributes, setAttributes }) => {
 		filterStyle,
 		filterActiveColor,
 		filterActiveColorType,
+		filterTextReset,
 		filterAllLabel,
 		selectedTaxonomies,
 	} = attributes;
@@ -194,6 +195,21 @@ export const FilterControl = ({ attributes, setAttributes }) => {
 						}
 						help={__(
 							'Leave empty to use the theme default.',
+							'codeweber-gutenberg-blocks'
+						)}
+					/>
+
+					<ToggleControl
+						label={__(
+							'Inherit Text Color (text-reset)',
+							'codeweber-gutenberg-blocks'
+						)}
+						checked={!!filterTextReset}
+						onChange={(value) =>
+							setAttributes({ filterTextReset: value })
+						}
+						help={__(
+							'Adds Bootstrap .text-reset to the filter container so text inherits the surrounding section color (useful on dark or inverse backgrounds).',
 							'codeweber-gutenberg-blocks'
 						)}
 					/>

@@ -856,6 +856,10 @@ if (!function_exists('render_post_grid_item')) {
 			$container_classes = ['cwgb-post-grid-filter', 'mb-6', 'd-flex', 'flex-wrap', 'gap-2', 'align-items-center'];
 		}
 
+		if (!empty($attributes['filterTextReset'])) {
+			$container_classes[] = 'text-reset';
+		}
+
 		$common_data_attrs = sprintf(
 			'data-cwgb-filter-for="%s" data-cwgb-filter-taxonomy="%s" data-cwgb-filter-style="%s"',
 			esc_attr($block_id),

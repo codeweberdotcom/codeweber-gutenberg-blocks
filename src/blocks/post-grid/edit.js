@@ -524,6 +524,15 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 							};
 						}
 
+						// Services: короткое описание из meta (show_in_rest=true).
+						// Приоритет при рендере excerpt в карточках услуг.
+						const shortDescription =
+							postType === 'services'
+								? post._service_short_description ||
+									post.meta?._service_short_description ||
+									''
+								: '';
+
 						const postData = {
 							id: imageId || post.id,
 							url: finalImageUrl, // Всегда должен быть заполнен
@@ -532,6 +541,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 							title: titleText,
 							caption: '',
 							description: excerptText,
+							shortDescription: shortDescription,
 							linkUrl: linkUrl,
 							documentFile: documentFileUrl, // URL файла документа для documents
 							...testimonialData, // Добавляем данные testimonials если есть

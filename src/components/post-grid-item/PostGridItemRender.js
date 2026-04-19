@@ -85,7 +85,11 @@ export const PostGridItemRender = ({
 
 	const postLink = post.linkUrl || '#';
 	const postTitle = post.title || '';
-	const postDescription = post.description || '';
+	// Services: Short Description meta используется в приоритете, fallback на excerpt.
+	const postDescription =
+		postType === 'services' && post.shortDescription
+			? post.shortDescription
+			: post.description || '';
 	let imageUrl = getImageUrl(post, imageSize);
 
 	// Если изображения нет, используем placeholder

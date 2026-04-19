@@ -206,9 +206,42 @@
 							results.innerHTML = newResults.innerHTML;
 						}
 
-						// Реинициализация swiper если режим slider (на всякий случай).
-						if (typeof window.theme?.swiperSlider === 'function') {
-							window.theme.swiperSlider();
+						// Переинициализация динамических эффектов темы.
+						// Поскольку DOM внутри results был полностью заменён, теме надо
+						// заново добавить span.bg, привязать hover-события, ripple и swiper.
+						// Убираем старые артефакты (если вдруг просочились из ответа),
+						// затем зовём инициализаторы. Имитируем паттерн из edit.js.
+						try {
+							var stale = results.querySelectorAll(
+								'.overlay > a > span.bg, .overlay > span > span.bg'
+							);
+							stale.forEach(function (s) {
+								s.remove();
+							});
+							if (
+								typeof window.theme?.imageHoverOverlay ===
+								'function'
+							) {
+								window.theme.imageHoverOverlay();
+							}
+							if (typeof window.theme?.iTooltip === 'function') {
+								window.theme.iTooltip();
+							}
+							if (
+								typeof window.custom?.rippleEffect === 'function'
+							) {
+								window.custom.rippleEffect();
+							}
+							if (
+								typeof window.theme?.swiperSlider === 'function'
+							) {
+								window.theme.swiperSlider();
+							}
+						} catch (initErr) {
+							console.warn(
+								'Post Grid filter: re-init warning',
+								initErr
+							);
 						}
 					})
 					.catch(function (err) {

@@ -144,6 +144,11 @@
 					return;
 				}
 
+				// Синхронизируем blockId — render.php в AJAX-контексте получит
+				// get_the_ID() === 0 и без этого сгенерирует другой хеш, из-за чего
+				// data-cwgb-results-for в ответе не совпадёт с нашим и подмена не произойдёт.
+				attrs.blockId = blockId;
+
 				// UI: активная кнопка
 				bar.querySelectorAll('.filter-item').forEach(function (b) {
 					b.classList.remove('active');
@@ -181,7 +186,10 @@
 					.then(function (data) {
 						if (!data || !data.html) return;
 
-						// Парсим ответ и извлекаем только наш results-контейнер.
+						// Парсим ответ и извлекаем results-контейнер. Сначала
+						// ищем по blockId (ожидаемо, если синхронизация сработала),
+						// иначе берём первый .cwgb-post-grid-results в ответе —
+						// render_block() возвращает HTML только нашего блока.
 						var parser = new DOMParser();
 						var doc = parser.parseFromString(data.html, 'text/html');
 						var newResults = doc.querySelector(
@@ -189,6 +197,11 @@
 								blockId +
 								'"]'
 						);
+						if (!newResults) {
+							newResults = doc.querySelector(
+								'.cwgb-post-grid-results'
+							);
+						}
 						if (newResults) {
 							results.innerHTML = newResults.innerHTML;
 						}

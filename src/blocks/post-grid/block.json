@@ -317,7 +317,15 @@
 		},
 		"filterStyle": {
 			"type": "string",
-			"default": "buttons"
+			"default": "default"
+		},
+		"filterActiveColor": {
+			"type": "string",
+			"default": ""
+		},
+		"filterActiveColorType": {
+			"type": "string",
+			"default": "solid"
 		},
 		"filterAllLabel": {
 			"type": "string",

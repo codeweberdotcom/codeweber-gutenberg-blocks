@@ -109,7 +109,9 @@ $simple_effect = isset($attributes['simpleEffect']) ? $attributes['simpleEffect'
 // Filter bar — читается в общем разделе чтобы можно было найти активный term из GET-параметра при переходе.
 $enable_filter = !empty($attributes['enableFilter']);
 $filter_taxonomy = isset($attributes['filterTaxonomy']) ? sanitize_key($attributes['filterTaxonomy']) : '';
-$filter_style = isset($attributes['filterStyle']) ? $attributes['filterStyle'] : 'buttons';
+$filter_style = isset($attributes['filterStyle']) ? $attributes['filterStyle'] : 'default';
+$filter_active_color = isset($attributes['filterActiveColor']) ? sanitize_key($attributes['filterActiveColor']) : '';
+$filter_active_color_type = isset($attributes['filterActiveColorType']) ? $attributes['filterActiveColorType'] : 'solid';
 $filter_all_label = isset($attributes['filterAllLabel']) && $attributes['filterAllLabel'] !== ''
 	? $attributes['filterAllLabel']
 	: __('All', 'codeweber-gutenberg-blocks');
@@ -122,6 +124,60 @@ if ($enable_filter && $filter_taxonomy && taxonomy_exists($filter_taxonomy)) {
 	]);
 	if (is_wp_error($filter_terms)) {
 		$filter_terms = [];
+	}
+}
+
+// Helper: классы для одного элемента фильтр-бара в зависимости от стиля.
+// Возвращает ['base' => [базовые классы], 'active' => [классы активного состояния]].
+if (!function_exists('cwgb_post_grid_filter_item_classes')) {
+	function cwgb_post_grid_filter_item_classes($style, $color, $color_type) {
+		$base = [];
+		$active = ['active'];
+
+		// Префикс цветовой модификатор (btn-primary / text-primary / bg-primary).
+		$color_mod = '';
+		if ($color) {
+			$prefix_map = [
+				'default' => 'text',
+				'btn-xs'  => 'btn',
+				'btn-sm'  => 'btn',
+				'badge'   => 'bg',
+			];
+			$prefix = isset($prefix_map[$style]) ? $prefix_map[$style] : 'text';
+			if ($color_type === 'soft') {
+				$color_mod = $prefix . '-soft-' . $color;
+			} elseif ($color_type === 'pale') {
+				$color_mod = $prefix . '-pale-' . $color;
+			} else {
+				$color_mod = $prefix . '-' . $color;
+			}
+		}
+
+		switch ($style) {
+			case 'btn-xs':
+				$base = ['btn', 'btn-xs'];
+				$active[] = $color_mod ?: 'btn-primary';
+				break;
+			case 'btn-sm':
+				$base = ['btn', 'btn-sm'];
+				$active[] = $color_mod ?: 'btn-primary';
+				break;
+			case 'badge':
+				$base = ['badge', 'rounded-pill'];
+				$active[] = $color_mod ?: 'bg-primary';
+				$active[] = 'text-white';
+				break;
+			case 'default':
+			default:
+				// filter-item добавляется в разметке глобально (для JS-селектора),
+				// дополнительных базовых классов не требуется.
+				if ($color_mod) {
+					$active[] = $color_mod;
+				}
+				break;
+		}
+
+		return ['base' => $base, 'active' => $active];
 	}
 }
 
@@ -781,23 +837,26 @@ if (!function_exists('render_post_grid_item')) {
 ?>
 
 <div <?php echo $wrapper_attributes; ?>>
-	<?php if ($enable_filter && !empty($filter_terms)) : ?>
-		<ul class="cwgb-post-grid-filter isotope-filter filter mb-6"
+	<?php if ($enable_filter && !empty($filter_terms)) :
+		$filter_item_classes = cwgb_post_grid_filter_item_classes($filter_style, $filter_active_color, $filter_active_color_type);
+		$base_item_class = implode(' ', $filter_item_classes['base']);
+		$active_item_class = implode(' ', $filter_item_classes['active']);
+		$container_classes = ['cwgb-post-grid-filter', 'filter', 'mb-6', 'list-unstyled', 'd-flex', 'flex-wrap', 'gap-2'];
+		if ($filter_style === 'default') {
+			$container_classes[] = 'isotope-filter';
+		}
+		$render_filter_item = function ($label, $term_id, $is_active) use ($base_item_class, $active_item_class) {
+			$cls = $base_item_class . ($is_active ? ' ' . $active_item_class : '');
+			echo '<li><a href="#" class="filter-item ' . esc_attr(trim($cls)) . '" data-cwgb-filter-term="' . esc_attr($term_id) . '">' . esc_html($label) . '</a></li>';
+		};
+		?>
+		<ul class="<?php echo esc_attr(implode(' ', $container_classes)); ?>"
 			data-cwgb-filter-for="<?php echo esc_attr($block_id); ?>"
-			data-cwgb-filter-taxonomy="<?php echo esc_attr($filter_taxonomy); ?>">
-			<li>
-				<a href="#" class="filter-item<?php echo $filter_active_term === 0 ? ' active' : ''; ?>"
-					data-cwgb-filter-term="0">
-					<?php echo esc_html($filter_all_label); ?>
-				</a>
-			</li>
+			data-cwgb-filter-taxonomy="<?php echo esc_attr($filter_taxonomy); ?>"
+			data-cwgb-filter-style="<?php echo esc_attr($filter_style); ?>">
+			<?php $render_filter_item($filter_all_label, 0, $filter_active_term === 0); ?>
 			<?php foreach ($filter_terms as $term) : ?>
-				<li>
-					<a href="#" class="filter-item<?php echo $filter_active_term === (int) $term->term_id ? ' active' : ''; ?>"
-						data-cwgb-filter-term="<?php echo esc_attr($term->term_id); ?>">
-						<?php echo esc_html($term->name); ?>
-					</a>
-				</li>
+				<?php $render_filter_item($term->name, $term->term_id, $filter_active_term === (int) $term->term_id); ?>
 			<?php endforeach; ?>
 		</ul>
 	<?php endif; ?>

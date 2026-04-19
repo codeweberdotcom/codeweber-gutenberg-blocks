@@ -92,10 +92,6 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 			if (!template || !template.startsWith('client-')) {
 				updates.template = 'client-simple';
 			}
-			// Если imageSize = 'full' или пустой, меняем на codeweber_clients_300-200
-			if (imageSize === 'full' || !imageSize) {
-				updates.imageSize = 'codeweber_clients_300-200';
-			}
 			if (Object.keys(updates).length > 0) {
 				setAttributes(updates);
 			}

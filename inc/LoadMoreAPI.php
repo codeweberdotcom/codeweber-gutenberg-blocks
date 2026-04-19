@@ -830,12 +830,7 @@ class LoadMoreAPI {
 					'title_tag' => 'h2',
 					'title_class' => '',
 				];
-				
-				// Размер изображения по умолчанию для clients
-				if ($image_size === 'full' || empty($image_size)) {
-					$image_size = 'codeweber_clients_300-200';
-				}
-				
+
 				$template_args = [
 					'image_size' => $image_size,
 					'enable_link' => isset($attributes['enableLink']) ? (bool) $attributes['enableLink'] : false,
@@ -929,12 +924,7 @@ class LoadMoreAPI {
 					'title_tag' => 'h4',
 					'title_class' => '',
 				];
-				
-				// Размер изображения по умолчанию для staff
-				if ($image_size === 'full' || empty($image_size)) {
-					$image_size = 'codeweber_staff';
-				}
-				
+
 				// Определяем шаблон для staff
 				$staff_template = 'default';
 				if (strpos($template, 'staff-') === 0) {

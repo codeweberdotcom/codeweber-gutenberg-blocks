@@ -316,7 +316,7 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 						<div className={wrapperClasses}>
 							{canWrapLightbox ? (
 								<a
-									href={getImageUrl(imagesToRender[0], 'codeweber_extralarge')}
+									href={getImageUrl(imagesToRender[0], 'cw_wide_4x3_xl')}
 									className="h-100"
 									{...getBgLightboxAttrs(imagesToRender[0])}
 								>
@@ -358,7 +358,7 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 										>
 											{hasBgLightbox ? (
 												<a
-													href={getImageUrl(image, 'codeweber_extralarge')}
+													href={getImageUrl(image, 'cw_wide_4x3_xl')}
 													className="h-100"
 													{...getBgLightboxAttrs(image)}
 												>
@@ -409,7 +409,7 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 										>
 											{hasBgLightbox ? (
 												<a
-													href={getImageUrl(image, 'codeweber_extralarge')}
+													href={getImageUrl(image, 'cw_wide_4x3_xl')}
 													className="h-100"
 													{...getBgLightboxAttrs(image)}
 												>
@@ -466,7 +466,7 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 							cursorStyle={cursorStyle}
 							imageRenderType={renderType}
 							isEditor={isEditor}
-							lightboxImageSize="codeweber_extralarge"
+							lightboxImageSize="cw_wide_4x3_xl"
 						/>
 					</div>
 				);
@@ -499,7 +499,7 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 										cursorStyle={cursorStyle}
 										imageRenderType={renderType}
 										isEditor={isEditor}
-										lightboxImageSize="codeweber_extralarge"
+										lightboxImageSize="cw_wide_4x3_xl"
 									/>
 								</div>
 							))}
@@ -546,7 +546,7 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 										cursorStyle={cursorStyle}
 										imageRenderType={renderType}
 										isEditor={isEditor}
-										lightboxImageSize="codeweber_extralarge"
+										lightboxImageSize="cw_wide_4x3_xl"
 									/>
 								</SwiperSlide>
 							))}

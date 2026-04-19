@@ -380,7 +380,7 @@ export const MediaControl = ({ attributes, setAttributes }) => {
 								'medium',
 								'medium_large',
 								'large',
-								'codeweber_extralarge',
+								'cw_wide_4x3_xl',
 								'full',
 							]}
 							/>

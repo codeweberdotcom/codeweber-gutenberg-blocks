@@ -52,7 +52,7 @@ export const ImageRender = ({ attributes, isEditor = false }) => {
 	);
 
 	// Определяем href и обработчик клика
-	const lightboxUrl = getImageUrl(image, 'codeweber_extralarge');
+	const lightboxUrl = getImageUrl(image, 'cw_wide_4x3_xl');
 	const href = enableLightbox && !isEditor ? lightboxUrl : '#';
 	const onClickHandler = (e) => {
 		if (isEditor) {

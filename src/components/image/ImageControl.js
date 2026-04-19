@@ -139,7 +139,7 @@ export const ImageControl = ({ images, setAttributes, imageSize }) => {
 								'medium',
 								'medium_large',
 								'large',
-								'codeweber_extralarge',
+								'cw_wide_4x3_xl',
 								'full',
 							]}
 						/>

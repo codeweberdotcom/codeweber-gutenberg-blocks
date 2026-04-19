@@ -457,12 +457,7 @@ if (!function_exists('render_post_grid_item')) {
 					'title_tag' => $title_tag,
 					'title_class' => $title_class,
 				];
-				
-				// Размер изображения по умолчанию для clients
-				if ($image_size === 'full' || empty($image_size)) {
-					$image_size = 'codeweber_clients_300-200';
-				}
-				
+
 				$template_args = [
 					'image_size' => $image_size,
 					'enable_link' => isset($attributes['enableLink']) ? (bool) $attributes['enableLink'] : false,
@@ -599,11 +594,6 @@ if (!function_exists('render_post_grid_item')) {
 					'title_class' => $title_class,
 				];
 
-				// Размер изображения по умолчанию для staff
-				if ($image_size === 'full' || empty($image_size)) {
-					$image_size = 'codeweber_staff';
-				}
-				
 				// Определяем шаблон для staff
 				// Если шаблон начинается с "staff-", используем его
 				// Иначе используем default для staff

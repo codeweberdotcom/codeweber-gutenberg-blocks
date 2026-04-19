@@ -96,6 +96,9 @@ class Plugin {
 		// Register REST API endpoint for taxonomies and terms
 		add_action('rest_api_init', __CLASS__ . '::register_taxonomies_endpoint');
 
+		// Register REST API endpoint for Post Grid filter bar (runtime taxonomy filter)
+		add_action('rest_api_init', __CLASS__ . '::register_post_grid_filter_endpoint');
+
 		// Register REST API endpoint for accordion posts (using WP_Query)
 		add_action('rest_api_init', __CLASS__ . '::register_accordion_posts_endpoint');
 
@@ -884,6 +887,59 @@ class Plugin {
 		$templates = codeweber_get_post_card_templates_for($post_type);
 
 		return new \WP_REST_Response($templates, 200);
+	}
+
+	/**
+	 * Register REST API endpoint for Post Grid filter bar (runtime taxonomy filter).
+	 *
+	 * Принимает attributes блока + term_id фильтра. Прогоняет render_block
+	 * для блока post-grid, чтобы переиспользовать всю логику рендера (один источник
+	 * правды). Клиент парсит ответ и подменяет только `.cwgb-post-grid-results`.
+	 */
+	public static function register_post_grid_filter_endpoint() {
+		register_rest_route('codeweber-gutenberg-blocks/v1', '/post-grid/filter', [
+			'methods'             => 'POST',
+			'callback'            => __CLASS__ . '::post_grid_filter_callback',
+			'permission_callback' => '__return_true',
+			'args' => [
+				'attributes' => [
+					'required' => true,
+					'type'     => 'object',
+				],
+				'term_id' => [
+					'required' => false,
+					'type'     => 'integer',
+					'default'  => 0,
+				],
+			],
+		]);
+	}
+
+	public static function post_grid_filter_callback($request) {
+		$attributes = (array) $request->get_param('attributes');
+		$term_id    = (int) $request->get_param('term_id');
+
+		// Пробрасываем выбранный term через GET — render.php читает $_GET['cwgb_filter'].
+		$prev_get = isset($_GET['cwgb_filter']) ? $_GET['cwgb_filter'] : null;
+		$_GET['cwgb_filter'] = $term_id;
+
+		$html = render_block([
+			'blockName'    => 'codeweber-blocks/post-grid',
+			'attrs'        => $attributes,
+			'innerBlocks'  => [],
+			'innerHTML'    => '',
+			'innerContent' => [],
+		]);
+
+		if ($prev_get === null) {
+			unset($_GET['cwgb_filter']);
+		} else {
+			$_GET['cwgb_filter'] = $prev_get;
+		}
+
+		return new \WP_REST_Response([
+			'html' => $html,
+		], 200);
 	}
 
 	/**

@@ -897,6 +897,30 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 			/>
 
 			<div {...blockProps}>
+				{attributes.enableFilter && attributes.filterTaxonomy && (
+					<div
+						className="cwgb-post-grid-filter-preview"
+						style={{
+							padding: '8px 12px',
+							marginBottom: '16px',
+							background: '#f0f0f1',
+							border: '1px dashed #ccd0d4',
+							borderRadius: '4px',
+							fontSize: '12px',
+							color: '#757575',
+						}}
+					>
+						{__(
+							'Filter bar (taxonomy:',
+							'codeweber-gutenberg-blocks'
+						)}{' '}
+						<code>{attributes.filterTaxonomy}</code>){' '}
+						{__(
+							'— visible on frontend only.',
+							'codeweber-gutenberg-blocks'
+						)}
+					</div>
+				)}
 				{postType === 'product' ? (
 					<ServerSideRender
 						block="codeweber-blocks/post-grid"

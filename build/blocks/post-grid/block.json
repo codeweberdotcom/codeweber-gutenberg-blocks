@@ -313,6 +313,22 @@
       "type": "string",
       "default": "none"
     },
+    "enableFilter": {
+      "type": "boolean",
+      "default": false
+    },
+    "filterTaxonomy": {
+      "type": "string",
+      "default": ""
+    },
+    "filterStyle": {
+      "type": "string",
+      "default": "buttons"
+    },
+    "filterAllLabel": {
+      "type": "string",
+      "default": "All"
+    },
     "enableLink": {
       "type": "boolean",
       "default": false

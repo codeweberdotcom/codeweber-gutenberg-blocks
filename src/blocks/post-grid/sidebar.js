@@ -1,11 +1,12 @@
 import { InspectorControls } from '@wordpress/block-editor';
 import { TabPanel, PanelBody, ToggleControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import { Icon, cog, grid, typography, seen } from '@wordpress/icons';
+import { Icon, cog, grid, typography, seen, filter } from '@wordpress/icons';
 import { MainControl } from './controls/MainControl';
 import { LayoutControl } from './controls/LayoutControl';
 import { TitleControl } from './controls/TitleControl';
 import { DisplayControl } from './controls/DisplayControl';
+import { FilterControl } from './controls/FilterControl';
 import { BorderRadiusControl } from '../../components/border-radius';
 import { BlockMetaFields } from '../../components/block-meta/BlockMetaFields';
 import { LoadMoreControl } from '../../components/load-more';
@@ -72,6 +73,15 @@ export const PostGridSidebar = ({ attributes, setAttributes }) => {
 					},
 				]
 			: []),
+		{
+			name: 'filter',
+			title: (
+				<TabIcon
+					icon={filter}
+					label={__('Filter', 'codeweber-gutenberg-blocks')}
+				/>
+			),
+		},
 		{
 			name: 'settings',
 			title: (
@@ -158,6 +168,16 @@ export const PostGridSidebar = ({ attributes, setAttributes }) => {
 						{tab.name === 'display' && (
 							<PanelBody>
 								<DisplayControl
+									attributes={attributes}
+									setAttributes={setAttributes}
+								/>
+							</PanelBody>
+						)}
+
+						{/* FILTER TAB */}
+						{tab.name === 'filter' && (
+							<PanelBody>
+								<FilterControl
 									attributes={attributes}
 									setAttributes={setAttributes}
 								/>

@@ -96,6 +96,125 @@
 		}
 	}
 
+	/**
+	 * Post Grid filter bar — runtime taxonomy filter.
+	 *
+	 * На клик по кнопке .cwgb-post-grid-filter .filter-item отправляем POST
+	 * в REST /codeweber-gutenberg-blocks/v1/post-grid/filter с текущими attributes
+	 * блока (берём из data-block-attributes на wrapper'е) и term_id. Ответ —
+	 * обновлённый HTML всего блока; подменяем только .cwgb-post-grid-results.
+	 */
+	function bindFilterBars() {
+		var bars = document.querySelectorAll('.cwgb-post-grid-filter');
+		bars.forEach(function (bar) {
+			if (bar.dataset.cwgbFilterBound === '1') return;
+			bar.dataset.cwgbFilterBound = '1';
+
+			bar.addEventListener('click', function (ev) {
+				var btn = ev.target.closest('.filter-item');
+				if (!btn) return;
+				ev.preventDefault();
+
+				var blockId = bar.getAttribute('data-cwgb-filter-for');
+				if (!blockId) return;
+
+				var termId = parseInt(
+					btn.getAttribute('data-cwgb-filter-term') || '0',
+					10
+				);
+
+				var block = document.querySelector(
+					'.cwgb-post-grid-block[data-block-id="' + blockId + '"]'
+				);
+				if (!block) return;
+
+				var results = block.querySelector(
+					'.cwgb-post-grid-results[data-cwgb-results-for="' +
+						blockId +
+						'"]'
+				);
+				if (!results) return;
+
+				var attrsRaw = block.getAttribute('data-block-attributes');
+				var attrs = {};
+				try {
+					attrs = attrsRaw ? JSON.parse(attrsRaw) : {};
+				} catch (e) {
+					console.error('Post Grid filter: attrs parse failed', e);
+					return;
+				}
+
+				// UI: активная кнопка
+				bar.querySelectorAll('.filter-item').forEach(function (b) {
+					b.classList.remove('active');
+				});
+				btn.classList.add('active');
+
+				// Визуальная блокировка результатов
+				results.style.opacity = '0.5';
+				results.style.pointerEvents = 'none';
+
+				var restUrl =
+					(window.wpApiSettings && window.wpApiSettings.root
+						? window.wpApiSettings.root
+						: '/wp-json/') +
+					'codeweber-gutenberg-blocks/v1/post-grid/filter';
+
+				fetch(restUrl, {
+					method: 'POST',
+					credentials: 'same-origin',
+					headers: {
+						'Content-Type': 'application/json',
+						'X-WP-Nonce':
+							window.wpApiSettings && window.wpApiSettings.nonce
+								? window.wpApiSettings.nonce
+								: '',
+					},
+					body: JSON.stringify({
+						attributes: attrs,
+						term_id: termId,
+					}),
+				})
+					.then(function (r) {
+						return r.json();
+					})
+					.then(function (data) {
+						if (!data || !data.html) return;
+
+						// Парсим ответ и извлекаем только наш results-контейнер.
+						var parser = new DOMParser();
+						var doc = parser.parseFromString(data.html, 'text/html');
+						var newResults = doc.querySelector(
+							'.cwgb-post-grid-results[data-cwgb-results-for="' +
+								blockId +
+								'"]'
+						);
+						if (newResults) {
+							results.innerHTML = newResults.innerHTML;
+						}
+
+						// Реинициализация swiper если режим slider (на всякий случай).
+						if (typeof window.theme?.swiperSlider === 'function') {
+							window.theme.swiperSlider();
+						}
+					})
+					.catch(function (err) {
+						console.error('Post Grid filter: request failed', err);
+					})
+					.finally(function () {
+						results.style.opacity = '';
+						results.style.pointerEvents = '';
+					});
+			});
+		});
+	}
+
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', bindFilterBars);
+	} else {
+		bindFilterBars();
+	}
+
 	// Также инициализируем при загрузке через AJAX (для Load More и других динамических загрузок)
 	// Используем MutationObserver для отслеживания добавления новых блоков
 	if (typeof MutationObserver !== 'undefined') {
@@ -125,6 +244,7 @@
 							) {
 								window.theme.swiperSlider();
 							}
+							bindFilterBars();
 						}, 200);
 					}
 				}

@@ -106,6 +106,25 @@ if (empty($block_id)) {
 // Hover effects
 $simple_effect = isset($attributes['simpleEffect']) ? $attributes['simpleEffect'] : 'none';
 
+// Filter bar — читается в общем разделе чтобы можно было найти активный term из GET-параметра при переходе.
+$enable_filter = !empty($attributes['enableFilter']);
+$filter_taxonomy = isset($attributes['filterTaxonomy']) ? sanitize_key($attributes['filterTaxonomy']) : '';
+$filter_style = isset($attributes['filterStyle']) ? $attributes['filterStyle'] : 'buttons';
+$filter_all_label = isset($attributes['filterAllLabel']) && $attributes['filterAllLabel'] !== ''
+	? $attributes['filterAllLabel']
+	: __('All', 'codeweber-gutenberg-blocks');
+$filter_terms = [];
+$filter_active_term = isset($_GET['cwgb_filter']) ? (int) $_GET['cwgb_filter'] : 0;
+if ($enable_filter && $filter_taxonomy && taxonomy_exists($filter_taxonomy)) {
+	$filter_terms = get_terms([
+		'taxonomy' => $filter_taxonomy,
+		'hide_empty' => true,
+	]);
+	if (is_wp_error($filter_terms)) {
+		$filter_terms = [];
+	}
+}
+
 // Load More
 $load_more_enable = isset($attributes['loadMoreEnable']) ? $attributes['loadMoreEnable'] : false;
 $load_more_initial_count = isset($attributes['loadMoreInitialCount']) ? (int) $attributes['loadMoreInitialCount'] : 6;
@@ -221,11 +240,21 @@ $col_classes = get_post_grid_col_classes($attributes, $grid_type);
 		'order' => $order,
 	);
 
+	// Runtime-фильтр: если фильтр-бар включён и выбран активный term, он переопределяет
+	// ограничение по filter_taxonomy из selectedTaxonomies (иначе initial и runtime конфликтуют).
+	$runtime_selected_taxonomies = $selected_taxonomies;
+	if ($enable_filter && $filter_taxonomy && $filter_active_term > 0) {
+		if (!is_array($runtime_selected_taxonomies)) {
+			$runtime_selected_taxonomies = [];
+		}
+		$runtime_selected_taxonomies[$filter_taxonomy] = [$filter_active_term];
+	}
+
 	// Добавляем фильтрацию по таксономиям, если выбраны термины
-	if (!empty($selected_taxonomies) && is_array($selected_taxonomies)) {
+	if (!empty($runtime_selected_taxonomies) && is_array($runtime_selected_taxonomies)) {
 		$tax_query = array('relation' => 'AND');
-		
-		foreach ($selected_taxonomies as $taxonomy_slug => $term_ids) {
+
+		foreach ($runtime_selected_taxonomies as $taxonomy_slug => $term_ids) {
 			if (!empty($term_ids) && is_array($term_ids)) {
 				$tax_query[] = array(
 					'taxonomy' => $taxonomy_slug,
@@ -235,7 +264,7 @@ $col_classes = get_post_grid_col_classes($attributes, $grid_type);
 				);
 			}
 		}
-		
+
 		if (count($tax_query) > 1) { // Если есть хотя бы одна таксономия с терминами
 			$args['tax_query'] = $tax_query;
 		}
@@ -752,6 +781,28 @@ if (!function_exists('render_post_grid_item')) {
 ?>
 
 <div <?php echo $wrapper_attributes; ?>>
+	<?php if ($enable_filter && !empty($filter_terms)) : ?>
+		<ul class="cwgb-post-grid-filter isotope-filter filter mb-6"
+			data-cwgb-filter-for="<?php echo esc_attr($block_id); ?>"
+			data-cwgb-filter-taxonomy="<?php echo esc_attr($filter_taxonomy); ?>">
+			<li>
+				<a href="#" class="filter-item<?php echo $filter_active_term === 0 ? ' active' : ''; ?>"
+					data-cwgb-filter-term="0">
+					<?php echo esc_html($filter_all_label); ?>
+				</a>
+			</li>
+			<?php foreach ($filter_terms as $term) : ?>
+				<li>
+					<a href="#" class="filter-item<?php echo $filter_active_term === (int) $term->term_id ? ' active' : ''; ?>"
+						data-cwgb-filter-term="<?php echo esc_attr($term->term_id); ?>">
+						<?php echo esc_html($term->name); ?>
+					</a>
+				</li>
+			<?php endforeach; ?>
+		</ul>
+	<?php endif; ?>
+
+	<div class="cwgb-post-grid-results" data-cwgb-results-for="<?php echo esc_attr($block_id); ?>">
 	<?php if ($query->have_posts() && !empty($query->posts)) : ?>
 		<?php if ($display_mode === 'swiper') : ?>
 			<?php
@@ -912,6 +963,7 @@ if (!function_exists('render_post_grid_item')) {
 	<?php else : ?>
 		<p><?php esc_html_e('No posts found.', 'codeweber-gutenberg-blocks'); ?></p>
 	<?php endif; ?>
+	</div><!-- /.cwgb-post-grid-results -->
 </div>
 <?php
 // Register Schema.org data for the theme's SEO module.

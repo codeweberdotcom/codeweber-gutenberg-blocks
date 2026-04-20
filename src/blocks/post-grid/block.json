@@ -339,6 +339,14 @@
 			"type": "boolean",
 			"default": false
 		},
+		"filterByImageTag": {
+			"type": "boolean",
+			"default": false
+		},
+		"filterImageTagId": {
+			"type": "number",
+			"default": 0
+		},
 		"swiperEffect": {
 			"type": "string",
 			"default": "slide"

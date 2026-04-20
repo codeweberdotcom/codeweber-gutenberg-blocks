@@ -99,6 +99,9 @@ class Plugin {
 		// Register REST API endpoint for Post Grid filter bar (runtime taxonomy filter)
 		add_action('rest_api_init', __CLASS__ . '::register_post_grid_filter_endpoint');
 
+		// Register REST API endpoint for Projects preview-images-by-tag (editor preview sync)
+		add_action('rest_api_init', __CLASS__ . '::register_projects_preview_images_endpoint');
+
 		// Register REST API endpoint for accordion posts (using WP_Query)
 		add_action('rest_api_init', __CLASS__ . '::register_accordion_posts_endpoint');
 
@@ -913,6 +916,81 @@ class Plugin {
 				],
 			],
 		]);
+	}
+
+	/**
+	 * Register REST endpoint for projects preview-images-by-tag (editor preview sync).
+	 *
+	 * Принимает массив post_ids и term_id (image_tag). Для каждого проекта ищет
+	 * первое изображение в _project_gallery с этим тегом. Возвращает карту
+	 * { post_id: { attachment_id, url, alt } | null }.
+	 */
+	public static function register_projects_preview_images_endpoint() {
+		register_rest_route('codeweber-gutenberg-blocks/v1', '/post-grid/projects-preview-images', [
+			'methods'             => 'POST',
+			'callback'            => __CLASS__ . '::projects_preview_images_callback',
+			'permission_callback' => function () {
+				return current_user_can('edit_posts');
+			},
+			'args' => [
+				'post_ids' => [
+					'required' => true,
+					'type'     => 'array',
+				],
+				'term_id' => [
+					'required' => true,
+					'type'     => 'integer',
+				],
+				'image_size' => [
+					'required' => false,
+					'type'     => 'string',
+					'default'  => 'full',
+				],
+			],
+		]);
+	}
+
+	public static function projects_preview_images_callback($request) {
+		$post_ids   = (array) $request->get_param('post_ids');
+		$term_id    = (int) $request->get_param('term_id');
+		$image_size = (string) $request->get_param('image_size');
+
+		$result = [];
+		if ($term_id <= 0) {
+			return new \WP_REST_Response($result, 200);
+		}
+
+		foreach ($post_ids as $post_id) {
+			$post_id = (int) $post_id;
+			if ($post_id <= 0) continue;
+
+			$result[$post_id] = null;
+			$gallery_ids = get_post_meta($post_id, '_project_gallery', true);
+			if (empty($gallery_ids) || !is_array($gallery_ids)) {
+				continue;
+			}
+
+			foreach ($gallery_ids as $attachment_id) {
+				$attachment_id = (int) $attachment_id;
+				if ($attachment_id <= 0) continue;
+
+				if (has_term($term_id, 'image_tag', $attachment_id)) {
+					$image = wp_get_attachment_image_src($attachment_id, $image_size);
+					if ($image) {
+						$result[$post_id] = [
+							'attachment_id' => $attachment_id,
+							'url'           => $image[0],
+							'width'         => $image[1],
+							'height'        => $image[2],
+							'alt'           => (string) get_post_meta($attachment_id, '_wp_attachment_image_alt', true),
+						];
+					}
+					break;
+				}
+			}
+		}
+
+		return new \WP_REST_Response($result, 200);
 	}
 
 	public static function post_grid_filter_callback($request) {

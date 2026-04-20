@@ -106,6 +106,12 @@ if (empty($block_id)) {
 // Hover effects
 $simple_effect = isset($attributes['simpleEffect']) ? $attributes['simpleEffect'] : 'none';
 
+// Projects-only: preview image by image_tag (из галереи проекта).
+$projects_filter_image_tag = 0;
+if ($post_type === 'projects' && !empty($attributes['filterByImageTag'])) {
+	$projects_filter_image_tag = isset($attributes['filterImageTagId']) ? (int) $attributes['filterImageTagId'] : 0;
+}
+
 // Filter bar — читается в общем разделе чтобы можно было найти активный term из GET-параметра при переходе.
 $enable_filter = !empty($attributes['enableFilter']);
 $filter_taxonomy = isset($attributes['filterTaxonomy']) ? sanitize_key($attributes['filterTaxonomy']) : '';
@@ -378,9 +384,34 @@ if (!function_exists('get_post_image_url')) {
 			// Используем placeholder если изображения нет
 			return GUTENBERG_BLOCKS_URL . 'placeholder.jpg';
 		}
-		
+
 		$image = wp_get_attachment_image_src($thumbnail_id, $image_size);
 		return $image ? $image[0] : GUTENBERG_BLOCKS_URL . 'placeholder.jpg';
+	}
+}
+
+// Projects-only: найти первое изображение в _project_gallery с указанным image_tag.
+// Возвращает attachment ID или null. Читает и учитывает только реально attach'нутые вложения.
+if (!function_exists('cwgb_projects_find_image_by_tag')) {
+	function cwgb_projects_find_image_by_tag($post_id, $term_id) {
+		$term_id = (int) $term_id;
+		if ($term_id <= 0) {
+			return null;
+		}
+		$gallery_ids = get_post_meta($post_id, '_project_gallery', true);
+		if (empty($gallery_ids) || !is_array($gallery_ids)) {
+			return null;
+		}
+		foreach ($gallery_ids as $attachment_id) {
+			$attachment_id = (int) $attachment_id;
+			if ($attachment_id <= 0) {
+				continue;
+			}
+			if (has_term($term_id, 'image_tag', $attachment_id)) {
+				return $attachment_id;
+			}
+		}
+		return null;
 	}
 }
 
@@ -966,9 +997,27 @@ if (!function_exists('render_post_grid_item')) {
 					<div class="<?php echo esc_attr($wrapper_classes); ?>">
 						<?php foreach ($query->posts as $post) : setup_postdata($post); ?>
 							<?php
+							// Projects: override thumbnail через первое подходящее из _project_gallery.
+							$projects_override_thumb_id = null;
+							$projects_thumb_filter_cb = null;
+							if ($projects_filter_image_tag > 0) {
+								$projects_override_thumb_id = cwgb_projects_find_image_by_tag($post->ID, $projects_filter_image_tag);
+								if ($projects_override_thumb_id) {
+									$_captured_pid = (int) $post->ID;
+									$_captured_tid = (int) $projects_override_thumb_id;
+									$projects_thumb_filter_cb = function ($value, $object_id, $meta_key, $single) use ($_captured_pid, $_captured_tid) {
+										if ((int) $object_id === $_captured_pid && $meta_key === '_thumbnail_id') {
+											return $_captured_tid;
+										}
+										return $value;
+									};
+									add_filter('get_post_metadata', $projects_thumb_filter_cb, 10, 4);
+								}
+							}
+
 							// get_post_image_url всегда возвращает URL (либо изображение, либо placeholder)
 							$image_url = get_post_image_url($post, $image_size);
-							
+
 							$slide_class = 'swiper-slide';
 							if ($template === 'client-simple') {
 								$slide_class .= ' px-5';
@@ -980,6 +1029,9 @@ if (!function_exists('render_post_grid_item')) {
 							?>
 							<?php
 							$item_html = render_post_grid_item($post, $attributes, $image_url, $image_size, $grid_type, $col_classes, true);
+							if ($projects_thumb_filter_cb) {
+								remove_filter('get_post_metadata', $projects_thumb_filter_cb, 10);
+							}
 							if (!empty($item_html) && trim($item_html) !== '') :
 							?>
 							<div class="<?php echo esc_attr($slide_class); ?>">
@@ -994,10 +1046,33 @@ if (!function_exists('render_post_grid_item')) {
 			<div class="cwgb-load-more-items <?php echo esc_attr($grid_classes); ?>">
 				<?php foreach ($posts_to_show as $post) : setup_postdata($post); ?>
 					<?php
+					// Projects: override thumbnail через первое подходящее из _project_gallery.
+					$projects_override_thumb_id = null;
+					$projects_thumb_filter_cb = null;
+					if ($projects_filter_image_tag > 0) {
+						$projects_override_thumb_id = cwgb_projects_find_image_by_tag($post->ID, $projects_filter_image_tag);
+						if ($projects_override_thumb_id) {
+							$_captured_pid = (int) $post->ID;
+							$_captured_tid = (int) $projects_override_thumb_id;
+							$projects_thumb_filter_cb = function ($value, $object_id, $meta_key, $single) use ($_captured_pid, $_captured_tid) {
+								if ((int) $object_id === $_captured_pid && $meta_key === '_thumbnail_id') {
+									return $_captured_tid;
+								}
+								return $value;
+							};
+							add_filter('get_post_metadata', $projects_thumb_filter_cb, 10, 4);
+						}
+					}
+
 					// get_post_image_url всегда возвращает URL (либо изображение, либо placeholder)
 					$image_url = get_post_image_url($post, $image_size);
-					
+
 					$item_html = render_post_grid_item($post, $attributes, $image_url, $image_size, $grid_type, $col_classes);
+
+					if ($projects_thumb_filter_cb) {
+						remove_filter('get_post_metadata', $projects_thumb_filter_cb, 10);
+					}
+
 					if (!empty($item_html) && trim($item_html) !== '') {
 						echo $item_html;
 					}

@@ -74,6 +74,8 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		titleClass = '',
 		enableLink = false,
 		selectedTaxonomies = {},
+		filterByImageTag = false,
+		filterImageTagId = 0,
 	} = attributes;
 
 	const [posts, setPosts] = useState([]);
@@ -561,6 +563,51 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 					postsAsImages.length
 				);
 
+				// Projects + filterByImageTag: batch-запрос override preview-URL
+				// для каждого поста. Заменяем url на первое изображение из
+				// _project_gallery, у которого есть выбранный image_tag.
+				if (
+					postType === 'projects' &&
+					filterByImageTag &&
+					filterImageTagId > 0 &&
+					postsAsImages.length > 0
+				) {
+					try {
+						const overrideMap = await apiFetch({
+							path: '/codeweber-gutenberg-blocks/v1/post-grid/projects-preview-images',
+							method: 'POST',
+							data: {
+								post_ids: postsAsImages
+									.map((p) => p.id)
+									.filter(Boolean),
+								term_id: filterImageTagId,
+								image_size: imageSize || 'full',
+							},
+						});
+						if (overrideMap && typeof overrideMap === 'object') {
+							const mapped = postsAsImages.map((p) => {
+								const override = overrideMap[p.id];
+								if (override && override.url) {
+									return {
+										...p,
+										url: override.url,
+										id: override.attachment_id || p.id,
+										alt: override.alt || p.alt,
+									};
+								}
+								return p;
+							});
+							setPosts(mapped);
+							return;
+						}
+					} catch (err) {
+						console.warn(
+							'Post Grid: preview-by-tag fetch failed, falling back to featured',
+							err
+						);
+					}
+				}
+
 				setPosts(postsAsImages);
 			} catch (error) {
 				console.error('Post Grid: Error fetching posts:', error);
@@ -583,6 +630,9 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		order,
 		selectedTaxonomies,
 		enableLink,
+		filterByImageTag,
+		filterImageTagId,
+		imageSize,
 	]);
 
 	// Функция для получения классов контейнера

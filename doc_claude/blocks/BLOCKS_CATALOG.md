@@ -76,7 +76,7 @@ Legend: `S` = static (JS save) | `D` = dynamic (PHP render.php)
 | `navbar` | D | Full navigation bar (Bootstrap navbar) |
 | `top-header` | D | Top bar above navbar (contacts, social icons, etc.) |
 | `header-widgets` | D | Widget area inside header CPT (restricted to CPT `header`) |
-| `menu` | D | WordPress menu rendered with Bootstrap nav-walker |
+| `menu` | D | Menu (custom/wp-menu/taxonomy), horizontal (`flex-md-row`) / vertical — см. `MENU_BLOCK.md` |
 | `search` | D | Ajax search form |
 
 ---

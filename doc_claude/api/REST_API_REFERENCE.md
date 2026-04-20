@@ -44,6 +44,39 @@ Returns all taxonomies and their terms for a given post type.
 
 ---
 
+### GET `/post-card-templates`
+
+Returns available card templates for a given post type. The list is sourced from the theme's registry (`codeweber_get_post_card_templates_for()` in `functions/post-cards-registry.php`) — if the CPT is not registered, it falls back to `post` templates.
+
+**File:** `Plugin::register_post_card_templates_endpoint()`
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `post_type` | string | No | Post type slug (defaults to `post`) |
+
+**Response:** Array of `{ value, label, description, supports: string[] }`
+
+**Auth:** `edit_posts`
+
+**Empty response when:** the theme's registry is not loaded (function `codeweber_get_post_card_templates_for` is undefined). In that case the consumer should fall back to a minimal local list.
+
+**Used by:** Post Grid block's `PostGridTemplateControl` — fetches on `postType` change and auto-selects the first template if the saved value is no longer in the list.
+
+**Example:**
+```
+GET /wp-json/codeweber-gutenberg-blocks/v1/post-card-templates?post_type=clients
+
+[
+    { "value": "client-simple", "label": "Client Simple", "description": "...", "supports": ["image"] },
+    { "value": "client-grid",   "label": "Client Grid",   "description": "...", "supports": ["image"] },
+    { "value": "client-card",   "label": "Client Card",   "description": "...", "supports": ["image"] }
+]
+```
+
+See **[POST_CARDS_SYSTEM.md](../../../../themes/codeweber/doc_claude/templates/POST_CARDS_SYSTEM.md#templates-registry)** in the theme for the registry structure and how to extend it.
+
+---
+
 ### GET `/accordion-posts`
 
 Returns posts for accordion block in "Post" mode (mirrors render.php WP_Query).

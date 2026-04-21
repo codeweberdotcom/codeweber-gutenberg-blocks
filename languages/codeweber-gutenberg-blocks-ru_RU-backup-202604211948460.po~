@@ -23,23 +23,20 @@ msgstr ""
 "X-Loco-Version: 2.8.1; wp-6.9.1; php-8.1.10"
 
 #: build/blocks/post-grid/index.js:1
-#, fuzzy
 msgid "\"All\" Button Label"
-msgstr "Все"
+msgstr ""
 
 #: build/blocks/copyright/index.js:1
-#, fuzzy
 msgid "(both sections disabled)"
-msgstr "(обе секции отключены)"
+msgstr ""
 
 #: build/blocks/accordion/index.js:1
 msgid "+ Add Accordion Item"
 msgstr "+ Добавить элемент аккордеона"
 
 #: build/blocks/tables/index.js:1
-#, fuzzy
 msgid "+ Add Column"
-msgstr "+ Добавить столбец"
+msgstr ""
 
 #: build/blocks/form-field/index.js:35
 msgid "+ Add Consent"
@@ -50,14 +47,12 @@ msgid "+ Add List Item"
 msgstr "+ Добавить элемент списка"
 
 #: build/blocks/menu/index.js:1
-#, fuzzy
 msgid "+ Add Menu Item"
-msgstr "+ Добавить пункт меню"
+msgstr ""
 
 #: build/blocks/tables/index.js:1
-#, fuzzy
 msgid "+ Add Row"
-msgstr "+ Добавить строку"
+msgstr ""
 
 #: build/blocks/tabs/index.js:1
 msgid "+ Add Tab"
@@ -80,35 +75,27 @@ msgid "0"
 msgstr "0"
 
 #: build/blocks/blog-post-widget/index.js:1
-#, fuzzy
 msgid "0 = no limit. Max characters for the post title."
 msgstr ""
-"0 = без ограничений. Максимальное количество символов для заголовка записи."
 
 #: build/blocks/blog-category-widget/index.js:1
 #: build/blocks/blog-tag-widget/index.js:1
-#, fuzzy
 msgid "0 = show all."
-msgstr "0 = показать все."
+msgstr ""
 
 #: build/blocks/menu/index.js:1
-#, fuzzy
 msgid "1"
-msgstr "1"
+msgstr ""
 
 #: build/blocks/menu/index.js:1
-#, fuzzy
 msgid "1 = top level only, 2 = top + 1 sublevel, etc."
-msgstr "1 = только верхний уровень, 2 = верхний уровень + 1 подуровень и т. д."
+msgstr ""
 
 #: build/blocks/menu/index.js:1
-#, fuzzy
 msgid ""
 "1 = top level only. For hierarchical taxonomies (e.g. Categories) sublevels "
 "are shown."
 msgstr ""
-"1 = только верхний уровень. Для иерархических таксономий (например, "
-"Категории) показаны подуровни."
 
 #: build/blocks/lists/index.js:1
 msgid "1 col"
@@ -122,9 +109,8 @@ msgid "1 column"
 msgstr "1 колонка"
 
 #: build/blocks/wc-filter-panel/index.js:1
-#, fuzzy
 msgid "1 колонка"
-msgstr "1 колонка"
+msgstr ""
 
 #: build/blocks/banners/index.js:1 build/blocks/column/index.js:1
 #: build/blocks/columns/index.js:1 build/blocks/form-field/index.js:1
@@ -148,13 +134,10 @@ msgid "12 columns"
 msgstr "12 колонок"
 
 #: build/blocks/menu/index.js:1
-#, fuzzy
 msgid ""
 "1: compact, 2: with borders, 3: bordered container, 4: simple list, 5: "
 "vertical dropdown (right)."
 msgstr ""
-"1: компактный, 2: с границами, 3: контейнер с границей, 4: простой список, 5:"
-" вертикальный выпадающий список (справа)."
 
 #: build/blocks/card/index.js:1 build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1 build/blocks/section/index.js:1
@@ -162,9 +145,8 @@ msgid "1px"
 msgstr "1px"
 
 #: build/blocks/menu/index.js:1
-#, fuzzy
 msgid "2"
-msgstr "2"
+msgstr ""
 
 #: build/blocks/lists/index.js:1
 msgid "2 col"
@@ -178,9 +160,8 @@ msgid "2 columns"
 msgstr "2 колонки"
 
 #: build/blocks/wc-filter-panel/index.js:1
-#, fuzzy
 msgid "2 колонки"
-msgstr "2 столбца"
+msgstr ""
 
 #: build/blocks/label-plus/index.js:1
 msgid "25000+"
@@ -192,9 +173,8 @@ msgid "2px"
 msgstr "2px"
 
 #: build/blocks/menu/index.js:1
-#, fuzzy
 msgid "3"
-msgstr "3"
+msgstr ""
 
 #: build/blocks/lists/index.js:1
 msgid "3 col"
@@ -213,9 +193,8 @@ msgid "3px"
 msgstr "3px"
 
 #: build/blocks/menu/index.js:1
-#, fuzzy
 msgid "4"
-msgstr "4"
+msgstr ""
 
 #: build/blocks/banners/index.js:1 build/blocks/column/index.js:1
 #: build/blocks/columns/index.js:1 build/blocks/form-field/index.js:1
@@ -230,9 +209,8 @@ msgid "4px"
 msgstr "4px"
 
 #: build/blocks/menu/index.js:1
-#, fuzzy
 msgid "5"
-msgstr "5"
+msgstr ""
 
 #: build/blocks/banners/index.js:1 build/blocks/column/index.js:1
 #: build/blocks/columns/index.js:1 build/blocks/form-field/index.js:1
@@ -282,9 +260,8 @@ msgstr ""
 
 #: build/blocks/card/index.js:1 build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1 build/blocks/section/index.js:1
-#, fuzzy
 msgid "Accent Border"
-msgstr "Акцентная рамка"
+msgstr ""
 
 #: build/blocks/form-field/index.js:35
 msgid "Accept"
@@ -311,14 +288,12 @@ msgid "Accordion Style"
 msgstr "Стиль аккордеона"
 
 #: build/blocks/post-grid/index.js:1
-#, fuzzy
 msgid "Active Color"
-msgstr "Активный цвет"
+msgstr ""
 
 #: build/blocks/post-grid/index.js:1
-#, fuzzy
 msgid "Active Color Type"
-msgstr "Активный тип цвета"
+msgstr ""
 
 #: build/blocks/banners/index.js:1 build/blocks/image-simple/index.js:1
 #: build/blocks/post-grid/index.js:1
@@ -330,14 +305,12 @@ msgid "Actual Address"
 msgstr "Фактический адрес"
 
 #: build/blocks/post-grid/index.js:1
-#, fuzzy
 msgid "Add"
-msgstr "Добавить"
+msgstr ""
 
 #: build/blocks/label-plus/index.js:1
-#, fuzzy
 msgid "Add \"counter\" class"
-msgstr "Добавить класс \"counter\""
+msgstr ""
 
 #: build/blocks/navbar/index.js:1
 msgid "Add bg-* class to header wrapper. Default: no class."
@@ -364,14 +337,12 @@ msgid "Add Item"
 msgstr "Добавить элемент"
 
 #: build/blocks/social-icons/index.js:1
-#, fuzzy
 msgid "Add link"
-msgstr "Добавить ссылку"
+msgstr ""
 
 #: build/blocks/social-icons/index.js:1
-#, fuzzy
 msgid "Add links in the block settings."
-msgstr "Добавить ссылки в настройках блока."
+msgstr ""
 
 #: build/blocks/yandex-map/index.js:1
 msgid "Add Marker"
@@ -390,28 +361,24 @@ msgid "Add Point"
 msgstr "Добавить точку"
 
 #: build/blocks/menu/index.js:1
-#, fuzzy
 msgid "Add widget title"
-msgstr "Добавить заголовок виджета"
+msgstr ""
 
 #: build/blocks/menu/index.js:1
-#, fuzzy
 msgid "Add widget wrapper div with class \"widget\""
-msgstr "Добавить div-обертку виджета с классом \"widget\""
+msgstr ""
 
 #: build/blocks/text-rotator/index.js:1
-#, fuzzy
 msgid "Add word"
-msgstr "Добавить слово"
+msgstr ""
 
 #: build/blocks/accordion/index.js:1
 msgid "Add your content here..."
 msgstr "Добавьте ваш контент здесь..."
 
 #: build/blocks/social-wrapper/index.js:1
-#, fuzzy
 msgid "Additional CSS class for the wrapper (nav)."
-msgstr "Дополнительный CSS-класс для обертки (nav)."
+msgstr ""
 
 #: build/blocks/divider/index.js:1
 msgid "Additional CSS Classes"
@@ -425,19 +392,16 @@ msgid "Additional CSS classes"
 msgstr "Дополнительные CSS классы"
 
 #: build/blocks/post-grid/index.js:1
-#, fuzzy
 msgid "Additional CSS classes (appended to computed classes)."
-msgstr "Дополнительные CSS-классы (добавляются к вычисленным классам)."
+msgstr ""
 
 #: build/blocks/text-rotator/index.js:1
-#, fuzzy
 msgid "Additional CSS classes for the heading"
-msgstr "Дополнительные CSS-классы для заголовка"
+msgstr ""
 
 #: build/blocks/menu/index.js:1
-#, fuzzy
 msgid "Additional CSS classes for the menu list"
-msgstr "Дополнительные CSS-классы для списка меню"
+msgstr ""
 
 #: build/blocks/avatar/index.js:1
 msgid "Additional Data"
@@ -483,19 +447,15 @@ msgid "Address will be displayed here"
 msgstr "Здесь будет отображаться адрес"
 
 #: build/blocks/post-grid/index.js:1
-#, fuzzy
 msgid ""
 "Adds \"text-inverse\" class to the block wrapper (for dark backgrounds)."
-msgstr "Добавляет класс \"text-inverse\" к оболочке блока (для темных фонов)."
+msgstr ""
 
 #: build/blocks/post-grid/index.js:1
-#, fuzzy
 msgid ""
 "Adds Bootstrap .text-reset to the filter container so text inherits the "
 "surrounding section color (useful on dark or inverse backgrounds)."
 msgstr ""
-"Добавляет .text-reset Bootstrap к контейнеру фильтра, чтобы текст наследовал "
-"цвет окружающего раздела (полезно на темном или инвертированном фоне)."
 
 #: build/blocks/contacts/index.js:1 build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1 build/blocks/icon/index.js:1
@@ -531,9 +491,8 @@ msgid "Align Items"
 msgstr "Выравнивание элементов"
 
 #: build/blocks/copyright/index.js:1
-#, fuzzy
 msgid "Alignment"
-msgstr "Выравнивание"
+msgstr ""
 
 #: build/blocks/post-grid/render.php:123 build/blocks/card/index.js:1
 #: build/blocks/feature/index.js:1 build/blocks/features/index.js:1
@@ -542,15 +501,12 @@ msgid "All"
 msgstr "Все"
 
 #: build/blocks/blog-post-widget/index.js:1
-#, fuzzy
 msgid "All categories"
-msgstr "Все категории"
+msgstr ""
 
 #: build/blocks/contacts/index.js:1
-#, fuzzy
 msgid "All contact items are disabled. Enable items in the sidebar."
 msgstr ""
-"Все контактные элементы отключены. Включите элементы на боковой панели."
 
 #: build/blocks/banners/index.js:1 build/blocks/card/index.js:1
 #: build/blocks/feature/index.js:1 build/blocks/features/index.js:1
@@ -560,28 +516,24 @@ msgid "All Sides"
 msgstr "Все стороны"
 
 #: build/blocks/blog-post-widget/index.js:1
-#, fuzzy
 msgid "All tags"
-msgstr "Все теги"
+msgstr ""
 
 #: build/blocks/blog-post-widget/index.js:1
-#, fuzzy
 msgid "All years"
-msgstr "Все годы"
+msgstr ""
 
 #: build/blocks/tabulator/index.js:1
-#, fuzzy
 msgid "Allow drag to reorder columns"
-msgstr "Разрешить перетаскивание для изменения порядка столбцов"
+msgstr ""
 
 #: build/blocks/accordion/index.js:1
 msgid "Allow Multiple Items Open"
 msgstr "Разрешить открытие нескольких элементов"
 
 #: build/blocks/tabulator/index.js:1
-#, fuzzy
 msgid "Allow sorting by clicking column header"
-msgstr "Разрешить сортировку нажатием на заголовок столбца"
+msgstr ""
 
 #. Description of the plugin
 #: plugin.php
@@ -593,23 +545,20 @@ msgid "An error occurred. Please try again."
 msgstr "Произошла ошибка. Пожалуйста, попробуйте снова."
 
 #: build/blocks/wc-filter-panel/index.js:1
-#, fuzzy
 msgid "AND — все из выбранных"
-msgstr "ИЛИ - все из выбранных"
+msgstr ""
 
 #: build/blocks/section/index.js:1
 msgid "Angles"
 msgstr "Углы"
 
 #: build/blocks/text-rotator/index.js:1
-#, fuzzy
 msgid "Animated text rotator: typer, rotator-fade, rotator-zoom."
-msgstr "Анимированный текстовый ротатор: typer, rotator-fade, rotator-zoom."
+msgstr ""
 
 #: build/blocks/text-rotator/index.js:1
-#, fuzzy
 msgid "Animated words"
-msgstr "Анимированные слова"
+msgstr ""
 
 #: build/blocks/card/index.js:1 build/blocks/feature/index.js:1
 #: build/blocks/group-button/index.js:1
@@ -619,9 +568,8 @@ msgid "Animation"
 msgstr "Анимация"
 
 #: build/blocks/text-rotator/index.js:1
-#, fuzzy
 msgid "Animation Color"
-msgstr "Цвет анимации"
+msgstr ""
 
 #: build/blocks/card/index.js:1 build/blocks/feature/index.js:1
 #: build/blocks/group-button/index.js:1
@@ -631,9 +579,8 @@ msgid "Animation Type"
 msgstr "Тип анимации"
 
 #: build/blocks/copyright/index.js:1
-#, fuzzy
 msgid "Appearance"
-msgstr "Внешний вид"
+msgstr ""
 
 #: build/blocks/columns/index.js:1
 msgid "Apply column width to all child columns:"
@@ -644,21 +591,18 @@ msgid "Archive"
 msgstr "Архив"
 
 #: build/blocks/blog-year-widget/index.js:1
-#, fuzzy
 msgid "archive"
-msgstr "архив"
+msgstr ""
 
 #: build/blocks/post-grid/index.js:1
-#, fuzzy
 msgid "Arrow icon visible on hover."
-msgstr "Стрелка видна при наведении."
+msgstr ""
 
 #: build/blocks/blog-category-widget/index.js:1
 #: build/blocks/blog-post-widget/index.js:1
 #: build/blocks/blog-tag-widget/index.js:1
-#, fuzzy
 msgid "ASC"
-msgstr "АСК"
+msgstr ""
 
 #: build/blocks/accordion/index.js:1 build/blocks/lists/index.js:1
 #: build/blocks/post-grid/index.js:1 build/blocks/yandex-map/index.js:1
@@ -671,9 +615,8 @@ msgid "Author"
 msgstr "Автор"
 
 #: build/blocks/blockquote/index.js:1
-#, fuzzy
 msgid "Author or source (optional)"
-msgstr "Автор или источник (необязательно)"
+msgstr ""
 
 #: build/blocks/form-field/index.js:35
 msgid "Author Role (Position)"
@@ -817,9 +760,8 @@ msgid "Background Settings"
 msgstr "Настройки фона"
 
 #: build/blocks/divider/index.js:1
-#, fuzzy
 msgid "Background settings are available only for Text divider style."
-msgstr "Настройки фона доступны только для стиля Разделитель текста."
+msgstr ""
 
 #: build/blocks/navbar/index.js:1
 msgid "Background style"
@@ -840,9 +782,8 @@ msgid "Background Video"
 msgstr "Видео фон"
 
 #: build/blocks/post-grid/index.js:1
-#, fuzzy
 msgid "Badge"
-msgstr "Значок"
+msgstr ""
 
 #: build/blocks/yandex-map/index.js:1
 msgid "Balloon Close Button"
@@ -963,9 +904,8 @@ msgstr "Снизу"
 
 #: build/blocks/header-widgets/index.js:1 build/blocks/navbar/index.js:1
 #: build/blocks/social-icons/index.js:1
-#, fuzzy
 msgid "Block"
-msgstr "Блок"
+msgstr ""
 
 #: build/blocks/avatar/index.js:1 build/blocks/button/index.js:1
 #: build/blocks/card/index.js:1 build/blocks/column/index.js:1
@@ -1008,154 +948,110 @@ msgid "Block Data"
 msgstr "Данные блока"
 
 #: build/blocks/divider/block.json
-#, fuzzy
 msgctxt "block description"
 msgid ""
 "Add dividers to separate sections. Supports borders, waves, and vertical "
 "dividers."
 msgstr ""
-"Добавить разделители для разделения секций. Поддерживает границы, волны и "
-"вертикальные разделители."
 
 #: build/blocks/form-field/block.json
-#, fuzzy
 msgctxt "block description"
 msgid "Add form field (text, email, textarea, etc.)"
-msgstr "Добавить поле формы (текст, email, текстовая область и т.д.)"
+msgstr ""
 
 #: build/blocks/search/block.json
-#, fuzzy
 msgctxt "block description"
 msgid ""
 "AJAX search form. Display as inline form or dropdown (no trigger button). "
 "Markup only, no shortcode."
 msgstr ""
-"Форма поиска AJAX. Отображать как встроенную форму или выпадающий список "
-"(без кнопки запуска). Только разметка, без шорткода."
 
 #: build/blocks/text-rotator/block.json
-#, fuzzy
 msgctxt "block description"
 msgid ""
 "Animated text rotator: typer, rotator-fade, rotator-zoom. Repeater for words,"
 " full typography control."
 msgstr ""
-"Анимированный текстовый ротатор: typer, rotator-fade, rotator-zoom. "
-"Повторитель для слов, полный контроль над типографикой."
 
 #: build/blocks/avatar/block.json
-#, fuzzy
 msgctxt "block description"
 msgid ""
 "Avatar block with letters or image. Supports different sizes and color "
 "styles."
 msgstr ""
-"Блок аватара с буквами или изображением. Поддерживает разные размеры и стили "
-"цвета."
 
 #: build/blocks/banners/block.json
-#, fuzzy
 msgctxt "block description"
 msgid "Banners block with multiple predefined layouts (Banner 34, etc.)"
 msgstr ""
-"Блок баннеров с несколькими предустановленными макетами (Баннер 34 и т. д.)"
 
 #: build/blocks/button/block.json
-#, fuzzy
 msgctxt "block description"
 msgid "Block button with settings. Social type renders multiple social links."
 msgstr ""
-"Кнопка блока с настройками. Тип \"Социальные сети\" отображает несколько "
-"ссылок на социальные сети."
 
 #: build/blocks/blockquote/block.json
-#, fuzzy
 msgctxt "block description"
 msgid "Blockquote with optional caption. Simple figure or card layout."
 msgstr ""
-"Блок с цитатой и необязательной подписью. Простой макет фигуры или карточки."
 
 #: build/blocks/tables/block.json
-#, fuzzy
 msgctxt "block description"
 msgid ""
 "Bootstrap 5 tables. Supports Simple, Dark, Striped, Bordered, Borderless, "
 "Hoverable, and Responsive styles."
 msgstr ""
-"Таблицы Bootstrap 5. Поддерживает стили: Простая, Темная, Полосатая, С "
-"границами, Без границ, С эффектом наведения и Адаптивная."
 
 #: build/blocks/accordion/block.json
-#, fuzzy
 msgctxt "block description"
 msgid ""
 "Bootstrap accordion with multiple items. Supports simple, background, and "
 "icon styles."
 msgstr ""
-"Bootstrap аккордеон с несколькими элементами. Поддерживает простые, фоновые "
-"и иконочные стили."
 
 #: build/blocks/tabs/block.json
-#, fuzzy
 msgctxt "block description"
 msgid ""
 "Bootstrap tabs with multiple items. Supports basic and pills styles with "
 "icons."
 msgstr ""
-"Bootstrap вкладки с несколькими элементами. Поддерживает базовый стиль и "
-"стиль вкладок-таблеток с иконками."
 
 #: build/blocks/group-button/block.json
-#, fuzzy
 msgctxt "block description"
 msgid ""
 "Button group wrapper with InnerBlocks support. Allows only button blocks "
 "inside."
 msgstr ""
-"Группа кнопок с поддержкой InnerBlocks. Разрешает только блоки кнопок внутри."
 
 #: build/blocks/code/block.json
-#, fuzzy
 msgctxt "block description"
 msgid ""
 "Code snippet with Copy button and optional language (HTML, CSS, JS, etc.)."
 msgstr ""
-"Фрагмент кода с кнопкой \"Копировать\" и необязательным языком (HTML, CSS, "
-"JS и т.д.)."
 
 #: build/blocks/copyright/block.json
-#, fuzzy
 msgctxt "block description"
 msgid ""
 "Copyright and developer credit block for footer. Auto-updates the current "
 "year."
 msgstr ""
-"Блок с информацией об авторских правах и разработчике для подвала. "
-"Автоматически обновляет текущий год."
 
 #: build/blocks/columns/block.json
-#, fuzzy
 msgctxt "block description"
 msgid "Custom columns block with layout controls."
-msgstr "Блок с настраиваемыми колонками и элементами управления макетом."
+msgstr ""
 
 #: build/blocks/lists/block.json
-#, fuzzy
 msgctxt "block description"
 msgid "Custom lists with icons and colors. Supports Custom and Post modes."
 msgstr ""
-"Пользовательские списки с иконками и цветами. Поддерживает режимы "
-"\"Пользовательский\" и \"Запись\"."
 
 #: build/blocks/contacts/block.json
-#, fuzzy
 msgctxt "block description"
 msgid ""
 "Display contact information from Codeweber theme Redux settings (address, "
 "email, phone)."
 msgstr ""
-"Отобразить контактную информацию из настроек Redux темы Codeweber (адрес, "
-"email, телефон)."
 
 #: build/blocks/media/block.json
 msgctxt "block description"
@@ -1163,234 +1059,172 @@ msgid "Display image or video with effects, masks and lightbox"
 msgstr "Отображение изображения или видео с эффектами, масками и лайтбоксом"
 
 #: build/blocks/post-grid/block.json
-#, fuzzy
 msgctxt "block description"
 msgid "Display posts in a grid layout with images from posts"
-msgstr "Отображать записи в сеточной компоновке с изображениями из записей"
+msgstr ""
 
 #: build/blocks/social-icons/block.json
-#, fuzzy
 msgctxt "block description"
 msgid ""
 "Display social network links as icons. Use theme settings or custom links."
 msgstr ""
-"Отображать ссылки на социальные сети в виде значков. Используйте настройки "
-"темы или пользовательские ссылки."
 
 #: build/blocks/yandex-map/block.json
-#, fuzzy
 msgctxt "block description"
 msgid "Display Yandex Maps with offices or custom markers"
-msgstr "Отобразить Яндекс.Карты с офисами или пользовательскими метками"
+msgstr ""
 
 #: build/blocks/dropcap/block.json
-#, fuzzy
 msgctxt "block description"
 msgid "Drop cap letter with color and style options (simple, colored, circle)."
 msgstr ""
-"Буква с выпадающим шрифтом с цветовыми и стилистическими опциями (простой, "
-"цветной, в круге)."
 
 #: build/blocks/feature/block.json
-#, fuzzy
 msgctxt "block description"
 msgid ""
 "Feature block with Icon, Title, Paragraph, and Button. Supports three layout "
 "variants."
 msgstr ""
-"Блок с функцией, иконкой, заголовком, абзацем и кнопкой. Поддерживает три "
-"варианта макета."
 
 #: build/blocks/features/block.json
-#, fuzzy
 msgctxt "block description"
 msgid ""
 "Features wrapper block that manages child feature blocks. Creates 4 columns "
 "with feature blocks automatically."
 msgstr ""
-"Блок-обертка функций, управляющий дочерними блоками функций. Автоматически "
-"создает 4 колонки с блоками функций."
 
 #: build/blocks/card/block.json
-#, fuzzy
 msgctxt "block description"
 msgid ""
 "Flexible card container with InnerBlocks support and advanced styling "
 "options."
 msgstr ""
-"Гибкий контейнер для карточек с поддержкой InnerBlocks и расширенными "
-"параметрами стилизации."
 
 #: build/blocks/label-plus/block.json
-#, fuzzy
 msgctxt "block description"
 msgid "Floating label card with icon, counter and text."
-msgstr "Плавающая метка карточки с иконкой, счетчиком и текстом."
+msgstr ""
 
 #: build/blocks/header-widgets/block.json
-#, fuzzy
 msgctxt "block description"
 msgid ""
 "Header/navbar elements: offcanvas toggle, buttons. Enable/disable and "
 "reorder items."
 msgstr ""
-"Элементы заголовка/навигационной панели: переключатель боковой панели, "
-"кнопки. Включить/отключить и изменить порядок элементов."
 
 #: build/blocks/heading-subtitle/block.json
-#, fuzzy
 msgctxt "block description"
 msgid "Heading and subtitle block with advanced typography controls."
-msgstr "Блок заголовка и подзаголовка с расширенными настройками типографики."
+msgstr ""
 
 #: build/blocks/image-simple/block.json
-#, fuzzy
 msgctxt "block description"
 msgid ""
 "Image block with gallery, carousel and hover effects (tooltip, overlay, "
 "cursor)"
 msgstr ""
-"Блок изображений с галереей, каруселью и эффектами при наведении "
-"(всплывающая подсказка, наложение, курсор)"
 
 #: build/blocks/tabulator/block.json
-#, fuzzy
 msgctxt "block description"
 msgid ""
 "Interactive Tabulator table from Documents (CSV/XLS/XLSX). Supports sorting, "
 "filtering, resizable columns."
 msgstr ""
-"Интерактивная таблица Tabulator из документов (CSV/XLS/XLSX). Поддерживает "
-"сортировку, фильтрацию, изменение размера столбцов."
 
 #: build/blocks/logo/block.json
-#, fuzzy
 msgctxt "block description"
 msgid "Logo block with light/dark variant selection and size control."
 msgstr ""
-"Блок логотипа с выбором светлого/темного варианта и управлением размером."
 
 #: build/blocks/menu/block.json
-#, fuzzy
 msgctxt "block description"
 msgid ""
 "Menu block with Custom, WordPress Menu and Taxonomy modes. Supports "
 "dark/light theme and list styling options."
 msgstr ""
-"Блок меню с режимами \"Пользовательский\", \"Меню WordPress\" и "
-"\"Таксономия\". Поддерживает темную/светлую тему и параметры стиля списка."
 
 #: build/blocks/navbar/block.json
-#, fuzzy
 msgctxt "block description"
 msgid ""
 "Navbar block with multiple predefined header templates (Classic, Fancy, "
 "Extended, etc.)"
 msgstr ""
-"Блок навигационной панели с несколькими предустановленными шаблонами "
-"заголовка (Классический, Элегантный, Расширенный и т. д.)"
 
 #: build/blocks/paragraph/block.json
-#, fuzzy
 msgctxt "block description"
 msgid "Paragraph block with advanced typography controls."
-msgstr "Блок абзаца с расширенными элементами управления типографикой."
+msgstr ""
 
 #: build/blocks/shortcode-render/block.json
-#, fuzzy
 msgctxt "block description"
 msgid "Render any WordPress shortcode. Enter the shortcode in the sidebar."
-msgstr "Отобразить любой шорткод WordPress. Введите шорткод в боковой панели."
+msgstr ""
 
 #: build/blocks/section/block.json
-#, fuzzy
 msgctxt "block description"
 msgid "Section block with background options and inner blocks support."
-msgstr "Блок секции с опциями фона и поддержкой внутренних блоков."
+msgstr ""
 
 #: build/blocks/column/block.json
-#, fuzzy
 msgctxt "block description"
 msgid "Standalone column block with extra background and meta settings."
 msgstr ""
-"Отдельный блочный столбец с дополнительными настройками фона и метаданных."
 
 #: build/blocks/submit-button/block.json
-#, fuzzy
 msgctxt "block description"
 msgid "Submit button for forms"
-msgstr "Кнопка отправки для форм"
+msgstr ""
 
 #: build/blocks/swiper/block.json
-#, fuzzy
 msgctxt "block description"
 msgid ""
 "Swiper slider with unlimited inner blocks. Each inner block becomes a slide."
 msgstr ""
-"Слайдер Swiper с неограниченным количеством внутренних блоков. Каждый "
-"внутренний блок становится слайдом."
 
 #: build/blocks/top-header/block.json
-#, fuzzy
 msgctxt "block description"
 msgid ""
 "Top bar with address, email and phone from Redux. Use in custom headers."
 msgstr ""
-"Верхняя панель с адресом, электронной почтой и телефоном из Redux. "
-"Используйте в пользовательских шапках."
 
 #: build/blocks/icon/block.json
-#, fuzzy
 msgctxt "block description"
 msgid ""
 "Universal icon block. Supports Font Icons (Unicons), SVG icons and custom "
 "SVG."
 msgstr ""
-"Универсальный блок иконок. Поддерживает иконки шрифтов (Unicons), SVG иконки "
-"и пользовательские SVG."
 
 #: build/blocks/widget/block.json
-#, fuzzy
 msgctxt "block description"
 msgid "Widget container with title and InnerBlocks support."
-msgstr "Контейнер виджета с заголовком и поддержкой InnerBlocks."
+msgstr ""
 
 #: build/blocks/blog-category-widget/block.json
-#, fuzzy
 msgctxt "block description"
 msgid "Widget list of blog categories with optional post count."
-msgstr "Список виджетов категорий блога с указанием количества записей."
+msgstr ""
 
 #: build/blocks/blog-tag-widget/block.json
-#, fuzzy
 msgctxt "block description"
 msgid "Widget list of blog tags as pill buttons."
-msgstr "Список виджетов тегов блога в виде кнопок-таблеток."
+msgstr ""
 
 #: build/blocks/blog-year-widget/block.json
-#, fuzzy
 msgctxt "block description"
 msgid "Widget list of monthly archive links (e.g. February 2019)."
 msgstr ""
-"Виджет со списком ссылок на ежемесячные архивы (например, Февраль 2019)."
 
 #: build/blocks/blog-post-widget/block.json
-#, fuzzy
 msgctxt "block description"
 msgid "Widget list of recent blog posts with image, title, date and comments."
 msgstr ""
-"Виджет списка последних записей блога с изображением, заголовком, датой и "
-"комментариями."
 
 #: build/blocks/wc-filter-panel/block.json
-#, fuzzy
 msgctxt "block description"
 msgid ""
 "WooCommerce shop filter panel: price, attributes, categories, rating, stock. "
 "Integrates with shop PJAX navigation."
 msgstr ""
-"Панель фильтра магазина WooCommerce: цена, атрибуты, категории, рейтинг, "
-"наличие. Интегрируется с PJAX-навигацией магазина."
 
 #: build/blocks/social-wrapper/block.json
 msgctxt "block description"
@@ -4974,22 +4808,16 @@ msgid "ID for block wrapper (without #)"
 msgstr "ID обёртки блока (без #)"
 
 #: build/blocks/header-widgets/index.js:1
-#, fuzzy
 msgid ""
 "If filled, outputs <div class=\"offcanvas-body\">…</div> inside the "
 "offcanvas."
 msgstr ""
-"Если заполнено, выводит <div class=\"offcanvas-body\">… </div>внутри боковой "
-"панели."
 
 #: build/blocks/header-widgets/index.js:1
-#, fuzzy
 msgid ""
 "If filled, outputs <div class=\"offcanvas-header\">…</div> inside the "
 "offcanvas."
 msgstr ""
-"Если заполнено, выводит <div class=\"offcanvas-header\">… </div>внутри "
-"боковой панели."
 
 #: build/blocks/banners/index.js:1
 msgid "If specified, replaces default column classes"

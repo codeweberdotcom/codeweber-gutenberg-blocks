@@ -962,7 +962,11 @@ if (!function_exists('render_post_grid_item')) {
 					if ($html_post_id > 0) :
 						$html_post = get_post($html_post_id);
 						if ($html_post && $html_post->post_status === 'publish') :
-						echo do_blocks( get_the_content( null, false, $html_post ) );
+						if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
+							echo '<div class="border border-secondary border-opacity-50 rounded p-2 text-secondary small">[HTML Block: ' . esc_html( $html_post->post_title ) . ']</div>';
+						} else {
+							echo do_blocks( $html_post->post_content );
+						}
 					endif;
 					endif;
 				else :

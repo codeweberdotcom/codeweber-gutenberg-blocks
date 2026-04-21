@@ -134,15 +134,7 @@ export const ImageControl = ({ images, setAttributes, imageSize }) => {
 								'Choose image size for display',
 								'codeweber-gutenberg-blocks'
 							)}
-							availableSizes={[
-								'thumbnail',
-								'medium',
-								'medium_large',
-								'large',
-								'cw_wide_4x3_xl',
-								'full',
-							]}
-						/>
+							/>
 					</div>
 
 					<div className="cwgb-image-list">

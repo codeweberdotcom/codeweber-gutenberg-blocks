@@ -375,15 +375,7 @@ export const MediaControl = ({ attributes, setAttributes }) => {
 									'Image Size',
 									'codeweber-gutenberg-blocks'
 								)}
-								availableSizes={[
-								'thumbnail',
-								'medium',
-								'medium_large',
-								'large',
-								'cw_wide_4x3_xl',
-								'full',
-							]}
-							/>
+								/>
 
 							{/* Image Mask */}
 							<div style={{ marginTop: '16px' }}>

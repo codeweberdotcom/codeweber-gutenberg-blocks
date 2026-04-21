@@ -961,11 +961,9 @@ if (!function_exists('render_post_grid_item')) {
 					$html_post_id = isset($item['id']) ? (int) $item['id'] : 0;
 					if ($html_post_id > 0) :
 						$html_post = get_post($html_post_id);
-						if ($html_post && $html_post->post_status === 'publish') : ?>
-							<div class="col-12">
-								<?php echo do_blocks( get_the_content( null, false, $html_post ) ); ?>
-							</div>
-						<?php endif;
+						if ($html_post && $html_post->post_status === 'publish') :
+						echo do_blocks( get_the_content( null, false, $html_post ) );
+					endif;
 					endif;
 				else :
 					$item_post_id = isset($item['id']) ? (int) $item['id'] : 0;

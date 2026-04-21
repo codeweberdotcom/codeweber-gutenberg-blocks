@@ -286,49 +286,75 @@ if (!function_exists('get_post_grid_col_classes')) {
 $grid_classes = get_post_grid_container_classes($attributes, $grid_type);
 $col_classes = get_post_grid_col_classes($attributes, $grid_type);
 
-	// Query posts
-	// Если Load More включен, запрашиваем только initialCount постов для начальной загрузки
-	// Остальные посты будут загружаться через AJAX
-	// Иначе используем стандартный posts_per_page
-	$query_posts_per_page = $load_more_enable 
-		? $load_more_initial_count // Запрашиваем только начальное количество
-		: $posts_per_page;
-	
-	$args = array(
-		'post_type' => $post_type,
-		'posts_per_page' => $query_posts_per_page,
-		'post_status' => 'publish',
-		'orderby' => $order_by,
-		'order' => $order,
-	);
+	// Manual selection mode: query only the explicitly chosen posts in their saved order.
+	$manual_mode    = ! empty( $attributes['manualMode'] );
+	$manual_posts_raw = isset( $attributes['manualPosts'] ) && is_array( $attributes['manualPosts'] )
+		? $attributes['manualPosts']
+		: [];
+	$manual_post_ids = array_values( array_filter(
+		array_map( function ( $item ) {
+			return isset( $item['id'] ) ? (int) $item['id'] : 0;
+		}, $manual_posts_raw ),
+		function ( $id ) { return $id > 0; }
+	) );
 
-	// Runtime-фильтр: если фильтр-бар включён и выбран активный term, он переопределяет
-	// ограничение по filter_taxonomy из selectedTaxonomies (иначе initial и runtime конфликтуют).
-	$runtime_selected_taxonomies = $selected_taxonomies;
-	if ($enable_filter && $filter_taxonomy && $filter_active_term > 0) {
-		if (!is_array($runtime_selected_taxonomies)) {
-			$runtime_selected_taxonomies = [];
-		}
-		$runtime_selected_taxonomies[$filter_taxonomy] = [$filter_active_term];
-	}
+	if ( $manual_mode && ! empty( $manual_post_ids ) ) {
+		$args = array(
+			'post_type'           => $post_type,
+			'posts_per_page'      => count( $manual_post_ids ),
+			'post_status'         => 'publish',
+			'post__in'            => $manual_post_ids,
+			'orderby'             => 'post__in',
+			'ignore_sticky_posts' => 1,
+		);
+		// Disable load-more and filter-bar in manual mode — not applicable.
+		$load_more_enable = false;
+		$enable_filter    = false;
+	} else {
+		// Query posts
+		// Если Load More включен, запрашиваем только initialCount постов для начальной загрузки
+		// Остальные посты будут загружаться через AJAX
+		// Иначе используем стандартный posts_per_page
+		$query_posts_per_page = $load_more_enable
+			? $load_more_initial_count
+			: $posts_per_page;
 
-	// Добавляем фильтрацию по таксономиям, если выбраны термины
-	if (!empty($runtime_selected_taxonomies) && is_array($runtime_selected_taxonomies)) {
-		$tax_query = array('relation' => 'AND');
+		$args = array(
+			'post_type'      => $post_type,
+			'posts_per_page' => $query_posts_per_page,
+			'post_status'    => 'publish',
+			'orderby'        => $order_by,
+			'order'          => $order,
+		);
 
-		foreach ($runtime_selected_taxonomies as $taxonomy_slug => $term_ids) {
-			if (!empty($term_ids) && is_array($term_ids)) {
-				$tax_query[] = array(
-					'taxonomy' => $taxonomy_slug,
-					'field' => 'term_id',
-					'terms' => array_map('intval', $term_ids),
-					'operator' => 'IN',
-				);
+		// Runtime-фильтр: если фильтр-бар включён и выбран активный term, он переопределяет
+		// ограничение по filter_taxonomy из selectedTaxonomies (иначе initial и runtime конфликтуют).
+		$runtime_selected_taxonomies = $selected_taxonomies;
+		if ( $enable_filter && $filter_taxonomy && $filter_active_term > 0 ) {
+			if ( ! is_array( $runtime_selected_taxonomies ) ) {
+				$runtime_selected_taxonomies = [];
 			}
+			$runtime_selected_taxonomies[ $filter_taxonomy ] = [ $filter_active_term ];
 		}
 
-		if (count($tax_query) > 1) { // Если есть хотя бы одна таксономия с терминами
-			$args['tax_query'] = $tax_query;
+		// Добавляем фильтрацию по таксономиям, если выбраны термины
+		if ( ! empty( $runtime_selected_taxonomies ) && is_array( $runtime_selected_taxonomies ) ) {
+			$tax_query = array( 'relation' => 'AND' );
+
+			foreach ( $runtime_selected_taxonomies as $taxonomy_slug => $term_ids ) {
+				if ( ! empty( $term_ids ) && is_array( $term_ids ) ) {
+					$tax_query[] = array(
+						'taxonomy' => $taxonomy_slug,
+						'field'    => 'term_id',
+						'terms'    => array_map( 'intval', $term_ids ),
+						'operator' => 'IN',
+					);
+				}
+			}
+
+			if ( count( $tax_query ) > 1 ) {
+				$args['tax_query'] = $tax_query;
+			}
 		}
 	}
 

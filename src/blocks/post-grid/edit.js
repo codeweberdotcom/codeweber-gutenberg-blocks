@@ -76,6 +76,8 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		selectedTaxonomies = {},
 		filterByImageTag = false,
 		filterImageTagId = 0,
+		manualMode = false,
+		manualPosts = [],
 	} = attributes;
 
 	const [posts, setPosts] = useState([]);
@@ -176,9 +178,106 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		}
 	}, [postType]);
 
+	// Resolve REST endpoint for a given post type.
+	const resolveEndpoint = async ( type ) => {
+		let endpoint = type === 'post' ? 'posts' : type;
+		try {
+			const typeData = await apiFetch( {
+				path: `/wp/v2/types/${ type }`,
+			} );
+			if ( typeData?.rest_base ) endpoint = typeData.rest_base;
+		} catch ( _e ) {
+			// fallback already set
+		}
+		return endpoint;
+	};
+
 	// Загружаем посты через REST API
 	useEffect(() => {
 		if (!postType) return;
+
+		// Manual mode: fetch posts by explicit IDs in order.
+		if ( manualMode ) {
+			if ( ! manualPosts || manualPosts.length === 0 ) {
+				setPosts( [] );
+				return;
+			}
+			const fetchManualPosts = async () => {
+				setIsLoading( true );
+				try {
+					const endpoint = await resolveEndpoint( postType );
+					const ids = manualPosts.map( ( p ) => p.id ).join( ',' );
+					const embedParam = postType === 'testimonials' ? '_embed=1' : '_embed=wp:featuredmedia';
+					const fetchedPosts = await apiFetch( {
+						path: `/wp/v2/${ endpoint }?include=${ ids }&orderby=include&per_page=100&${ embedParam }`,
+					} );
+					if ( ! Array.isArray( fetchedPosts ) ) {
+						setPosts( [] );
+						return;
+					}
+					// Restore manual order (REST API may not honour it perfectly).
+					const byId = {};
+					fetchedPosts.forEach( ( p ) => ( byId[ p.id ] = p ) );
+					const ordered = manualPosts
+						.map( ( m ) => byId[ m.id ] )
+						.filter( Boolean );
+					// Reuse the same transformation below by running through postsAsImages logic.
+					// We build the transformed array here inline to stay DRY.
+					const postsAsImages = ordered
+						.map( ( post ) => {
+							const featuredMedia =
+								post._embedded?.[ 'wp:featuredmedia' ]?.[ 0 ];
+							const imageUrl = featuredMedia?.source_url || '';
+							const imageId = featuredMedia?.id || 0;
+							const imageAlt =
+								featuredMedia?.alt_text ||
+								post.title?.rendered ||
+								'';
+							const imageSizes =
+								featuredMedia?.media_details?.sizes || {};
+							let placeholderUrl =
+								'/wp-content/plugins/codeweber-gutenberg-blocks/placeholder.jpg';
+							if ( window.codeweberBlocksData?.pluginUrl ) {
+								const pluginUrl = window.codeweberBlocksData.pluginUrl;
+								placeholderUrl = pluginUrl.endsWith( '/' )
+									? `${ pluginUrl }placeholder.jpg`
+									: `${ pluginUrl }/placeholder.jpg`;
+							}
+							const finalImageUrl = imageUrl || placeholderUrl;
+
+							const titleTempDiv = document.createElement( 'div' );
+							titleTempDiv.innerHTML = post.title?.rendered || '';
+							let titleText = ( titleTempDiv.textContent || '' ).replace( /\s+/g, ' ' ).trim();
+							if ( titleText.length > 56 ) titleText = titleText.substring( 0, 56 ) + '...';
+
+							const tempDiv = document.createElement( 'div' );
+							tempDiv.innerHTML = post.excerpt?.rendered || '';
+							let excerptText = ( tempDiv.textContent || '' ).replace( /\s+/g, ' ' ).trim();
+							if ( excerptText.length > 50 ) excerptText = excerptText.substring( 0, 50 ) + '...';
+
+							return {
+								id: imageId || post.id,
+								url: finalImageUrl,
+								sizes: imageSizes,
+								alt: imageAlt,
+								title: titleText,
+								caption: '',
+								description: excerptText,
+								shortDescription: postType === 'services' ? ( post._service_short_description || post.meta?._service_short_description || '' ) : '',
+								linkUrl: post.link || '',
+							};
+						} )
+						.filter( ( p ) => p && p.url );
+					setPosts( postsAsImages );
+				} catch ( _err ) {
+					setPosts( [] );
+				} finally {
+					setIsLoading( false );
+				}
+			};
+			fetchManualPosts();
+			return;
+		}
 
 		const fetchPosts = async () => {
 			setIsLoading(true);
@@ -187,31 +286,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 				const orderParam = order || 'desc';
 
 				// Получаем правильный REST API endpoint для типа записи
-				// Сначала пытаемся получить rest_base из типа записи
-				let endpoint = postType;
-				try {
-					const postTypeData = await apiFetch({
-						path: `/wp/v2/types/${postType}`,
-					});
-					// Используем rest_base если он есть, иначе используем postType
-					if (postTypeData && postTypeData.rest_base) {
-						endpoint = postTypeData.rest_base;
-					} else {
-						// Fallback для стандартных типов
-						if (postType === 'post') {
-							endpoint = 'posts';
-						}
-					}
-				} catch (error) {
-					// Если не удалось получить данные типа, используем fallback
-					console.warn(
-						'Post Grid: Could not fetch post type data, using fallback:',
-						error
-					);
-					if (postType === 'post') {
-						endpoint = 'posts';
-					}
-				}
+				const endpoint = await resolveEndpoint( postType );
 
 				// Формируем параметры для фильтрации по таксономиям
 				let queryParams = `per_page=${postsPerPage || 6}&orderby=${orderByParam}&order=${orderParam}&_embed`;
@@ -633,6 +708,9 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		filterByImageTag,
 		filterImageTagId,
 		imageSize,
+		manualMode,
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		JSON.stringify( manualPosts ),
 	]);
 
 	// Функция для получения классов контейнера

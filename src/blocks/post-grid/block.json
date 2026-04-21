@@ -462,6 +462,14 @@
 		"selectedTaxonomies": {
 			"type": "object",
 			"default": {}
+		},
+		"manualMode": {
+			"type": "boolean",
+			"default": false
+		},
+		"manualPosts": {
+			"type": "array",
+			"default": []
 		}
 	}
 }

@@ -5,8 +5,6 @@ import {
 	ToggleControl,
 } from '@wordpress/components';
 
-const TEMPLATES_WITH_OVERLAY_OPTIONS = ['overlay-5'];
-
 export const DisplayControl = ({ attributes, setAttributes }) => {
 	const {
 		template,
@@ -21,7 +19,7 @@ export const DisplayControl = ({ attributes, setAttributes }) => {
 		cardReadMore,
 	} = attributes;
 
-	const hasOverlayOptions = TEMPLATES_WITH_OVERLAY_OPTIONS.includes(template);
+	const hasOverlayOptions = template?.includes('overlay-5');
 
 	return (
 		<>

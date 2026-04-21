@@ -4,7 +4,6 @@ import {
 	RangeControl,
 	SelectControl,
 	Spinner,
-	TextControl,
 	ToggleControl,
 } from '@wordpress/components';
 import { useEffect, useState } from '@wordpress/element';
@@ -17,73 +16,90 @@ import { PostGridTemplateControl } from '../../../components/post-grid-template'
 import { PostTypeTaxonomyControl } from '../../../components/post-type-taxonomy/PostTypeTaxonomyControl';
 import { SchemaTypeNotice } from '../../../components/schema-type';
 
-// Manual post selection: search by title and reorder with up/down arrows.
+const decodeTitle = ( rendered ) => {
+	if ( ! rendered ) return '';
+	const div = document.createElement( 'div' );
+	div.innerHTML = rendered;
+	return div.textContent || div.innerText || '';
+};
+
+// Manual post selection: CPT dropdown → post dropdown → Add button → reorder list.
 const ManualPostsSection = ( { postType, manualPosts = [], setAttributes } ) => {
-	const [ searchQuery, setSearchQuery ] = useState( '' );
-	const [ searchResults, setSearchResults ] = useState( [] );
-	const [ isSearching, setIsSearching ] = useState( false );
+	const [ postTypes, setPostTypes ] = useState( [] );
+	const [ typesLoading, setTypesLoading ] = useState( true );
+	const [ allPosts, setAllPosts ] = useState( [] );
+	const [ postsLoading, setPostsLoading ] = useState( false );
+	const [ selectedPostId, setSelectedPostId ] = useState( '' );
 
+	// Fetch available post types once.
 	useEffect( () => {
-		if ( ! searchQuery || searchQuery.length < 2 ) {
-			setSearchResults( [] );
-			return;
-		}
-		const timer = setTimeout( async () => {
-			setIsSearching( true );
-			try {
-				let endpoint = postType === 'post' ? 'posts' : postType;
-				try {
-					const typeData = await apiFetch( {
-						path: `/wp/v2/types/${ postType }`,
-					} );
-					if ( typeData?.rest_base ) endpoint = typeData.rest_base;
-				} catch ( _e ) {}
+		let cancelled = false;
+		apiFetch( { path: '/wp/v2/types' } )
+			.then( ( data ) => {
+				if ( cancelled ) return;
+				const list = Object.values( data || {} )
+					.filter( ( t ) => t.rest_base && t.viewable !== false )
+					.map( ( t ) => ( { value: t.slug, label: t.name, restBase: t.rest_base } ) )
+					.sort( ( a, b ) => a.label.localeCompare( b.label ) );
+				setPostTypes( list );
+				setTypesLoading( false );
+			} )
+			.catch( () => {
+				if ( cancelled ) return;
+				setTypesLoading( false );
+			} );
+		return () => { cancelled = true; };
+	}, [] );
 
-				const results = await apiFetch( {
-					path: addQueryArgs( `/wp/v2/${ endpoint }`, {
-						search: searchQuery,
-						per_page: 10,
-						_fields: 'id,title',
-					} ),
-				} );
-				setSearchResults( Array.isArray( results ) ? results : [] );
-			} catch ( _e ) {
-				setSearchResults( [] );
-			} finally {
-				setIsSearching( false );
-			}
-		}, 400 );
-		return () => clearTimeout( timer );
-	}, [ searchQuery, postType ] );
+	// Fetch all posts for the selected CPT.
+	useEffect( () => {
+		if ( ! postType ) return;
+		let cancelled = false;
+		setPostsLoading( true );
+		setAllPosts( [] );
+		setSelectedPostId( '' );
 
-	const decodeTitle = ( rendered ) => {
-		if ( ! rendered ) return '';
-		const div = document.createElement( 'div' );
-		div.innerHTML = rendered;
-		return div.textContent || div.innerText || '';
+		const typeInfo = postTypes.find( ( t ) => t.value === postType );
+		const restBase = typeInfo?.restBase || ( postType === 'post' ? 'posts' : postType );
+
+		apiFetch( {
+			path: addQueryArgs( `/wp/v2/${ restBase }`, {
+				per_page: 100,
+				_fields: 'id,title',
+				orderby: 'title',
+				order: 'asc',
+				status: 'publish',
+			} ),
+		} )
+			.then( ( data ) => {
+				if ( cancelled ) return;
+				setAllPosts( Array.isArray( data ) ? data : [] );
+				setPostsLoading( false );
+			} )
+			.catch( () => {
+				if ( cancelled ) return;
+				setAllPosts( [] );
+				setPostsLoading( false );
+			} );
+		return () => { cancelled = true; };
+	}, [ postType, postTypes ] );
+
+	const handleCptChange = ( value ) => {
+		setAttributes( { postType: value } );
 	};
 
-	const addPost = ( post ) => {
-		const already = manualPosts.some( ( p ) => p.id === post.id );
-		if ( ! already ) {
-			setAttributes( {
-				manualPosts: [
-					...manualPosts,
-					{
-						id: post.id,
-						title: decodeTitle( post.title?.rendered ),
-					},
-				],
-			} );
-		}
-		setSearchQuery( '' );
-		setSearchResults( [] );
+	const handleAdd = () => {
+		const id = parseInt( selectedPostId, 10 );
+		if ( ! id ) return;
+		const already = manualPosts.some( ( p ) => p.id === id );
+		if ( already ) return;
+		const found = allPosts.find( ( p ) => p.id === id );
+		const title = found ? decodeTitle( found.title?.rendered ) : `#${ id }`;
+		setAttributes( { manualPosts: [ ...manualPosts, { id, title } ] } );
 	};
 
 	const removePost = ( idx ) =>
-		setAttributes( {
-			manualPosts: manualPosts.filter( ( _, i ) => i !== idx ),
-		} );
+		setAttributes( { manualPosts: manualPosts.filter( ( _, i ) => i !== idx ) } );
 
 	const movePost = ( idx, dir ) => {
 		const newIdx = idx + dir;
@@ -94,74 +110,67 @@ const ManualPostsSection = ( { postType, manualPosts = [], setAttributes } ) => 
 		setAttributes( { manualPosts: arr } );
 	};
 
+	const postOptions = [
+		{ value: '', label: __( '— Select post —', 'codeweber-gutenberg-blocks' ) },
+		...allPosts.map( ( p ) => ( {
+			value: String( p.id ),
+			label: decodeTitle( p.title?.rendered ) || `#${ p.id }`,
+		} ) ),
+	];
+
+	const cptOptions = [
+		{ value: '', label: __( '— Select type —', 'codeweber-gutenberg-blocks' ) },
+		...postTypes.map( ( t ) => ( { value: t.value, label: t.label } ) ),
+	];
+
 	return (
 		<div style={ { marginTop: '16px' } }>
-			<TextControl
-				label={ __( 'Search posts', 'codeweber-gutenberg-blocks' ) }
-				value={ searchQuery }
-				onChange={ setSearchQuery }
-				placeholder={ __(
-					'Type to search…',
-					'codeweber-gutenberg-blocks'
-				) }
-				__nextHasNoMarginBottom
-			/>
-
-			{ isSearching && (
-				<p style={ { marginTop: 6 } }>
-					<Spinner />
-				</p>
+			{ typesLoading ? (
+				<Spinner />
+			) : (
+				<SelectControl
+					label={ __( 'Post Type', 'codeweber-gutenberg-blocks' ) }
+					value={ postType || '' }
+					options={ cptOptions }
+					onChange={ handleCptChange }
+					__nextHasNoMarginBottom
+				/>
 			) }
 
-			{ ! isSearching && searchResults.length > 0 && (
-				<div
-					style={ {
-						border: '1px solid #ddd',
-						borderRadius: 4,
-						marginTop: 4,
-						marginBottom: 8,
-						maxHeight: 200,
-						overflowY: 'auto',
-					} }
-				>
-					{ searchResults.map( ( post ) => (
-						<button
-							key={ post.id }
-							style={ {
-								display: 'block',
-								width: '100%',
-								textAlign: 'left',
-								padding: '6px 10px',
-								background: 'none',
-								border: 'none',
-								borderBottom: '1px solid #eee',
-								cursor: 'pointer',
-								fontSize: 12,
-							} }
-							onClick={ () => addPost( post ) }
-						>
-							{ decodeTitle( post.title?.rendered ) ||
-								`#${ post.id }` }
-						</button>
-					) ) }
+			{ postType && (
+				<div style={ { marginTop: 12 } }>
+					{ postsLoading ? (
+						<Spinner />
+					) : (
+						<div style={ { display: 'flex', gap: 8, alignItems: 'flex-end' } }>
+							<div style={ { flex: 1 } }>
+								<SelectControl
+									label={ __( 'Post', 'codeweber-gutenberg-blocks' ) }
+									value={ selectedPostId }
+									options={ postOptions }
+									onChange={ setSelectedPostId }
+									__nextHasNoMarginBottom
+								/>
+							</div>
+							<Button
+								variant="primary"
+								onClick={ handleAdd }
+								disabled={ ! selectedPostId }
+								style={ { marginBottom: 1 } }
+							>
+								{ __( 'Add', 'codeweber-gutenberg-blocks' ) }
+							</Button>
+						</div>
+					) }
 				</div>
 			) }
 
 			{ manualPosts.length === 0 ? (
-				<p
-					style={ {
-						color: '#757575',
-						fontSize: 12,
-						margin: '8px 0',
-					} }
-				>
-					{ __(
-						'No posts selected. Search above to add.',
-						'codeweber-gutenberg-blocks'
-					) }
+				<p style={ { color: '#757575', fontSize: 12, margin: '12px 0 0' } }>
+					{ __( 'No posts selected.', 'codeweber-gutenberg-blocks' ) }
 				</p>
 			) : (
-				<div style={ { marginTop: 8 } }>
+				<div style={ { marginTop: 12 } }>
 					{ manualPosts.map( ( post, idx ) => (
 						<div
 							key={ post.id || idx }
@@ -176,44 +185,23 @@ const ManualPostsSection = ( { postType, manualPosts = [], setAttributes } ) => 
 								border: '1px solid #e0e0e0',
 							} }
 						>
-							<div
-								style={ {
-									display: 'flex',
-									flexDirection: 'column',
-									gap: 2,
-									flexShrink: 0,
-								} }
-							>
+							<div style={ { display: 'flex', flexDirection: 'column', gap: 2, flexShrink: 0 } }>
 								<Button
 									icon={ chevronUp }
 									iconSize={ 14 }
 									disabled={ idx === 0 }
 									onClick={ () => movePost( idx, -1 ) }
-									label={ __(
-										'Move up',
-										'codeweber-gutenberg-blocks'
-									) }
+									label={ __( 'Move up', 'codeweber-gutenberg-blocks' ) }
 								/>
 								<Button
 									icon={ chevronDown }
 									iconSize={ 14 }
 									disabled={ idx === manualPosts.length - 1 }
 									onClick={ () => movePost( idx, 1 ) }
-									label={ __(
-										'Move down',
-										'codeweber-gutenberg-blocks'
-									) }
+									label={ __( 'Move down', 'codeweber-gutenberg-blocks' ) }
 								/>
 							</div>
-							<span
-								style={ {
-									flex: 1,
-									fontSize: 12,
-									overflow: 'hidden',
-									textOverflow: 'ellipsis',
-									whiteSpace: 'nowrap',
-								} }
-							>
+							<span style={ { flex: 1, fontSize: 12, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' } }>
 								{ post.title || `#${ post.id }` }
 							</span>
 							<Button

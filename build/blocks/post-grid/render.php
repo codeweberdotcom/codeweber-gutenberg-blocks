@@ -849,7 +849,7 @@ if (!function_exists('render_post_grid_item')) {
 					'show_figcaption'      => true,
 					'enable_lift'          => $enable_lift,
 					'show_card_arrow'      => array_key_exists('showCardArrow', $attributes) ? (bool) $attributes['showCardArrow'] : true,
-					'card_read_more'       => isset($attributes['cardReadMore']) ? $attributes['cardReadMore'] : 'none',
+					'card_read_more'       => isset($attributes['cardReadMore']) ? $attributes['cardReadMore'] : 'more',
 				];
 			}
 			

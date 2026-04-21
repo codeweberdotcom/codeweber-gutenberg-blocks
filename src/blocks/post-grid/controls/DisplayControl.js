@@ -99,34 +99,16 @@ export const DisplayControl = ({ attributes, setAttributes }) => {
 					)}
 					value={cardReadMore || 'none'}
 					options={[
-						{
-							value: 'none',
-							label: __(
-								'None',
-								'codeweber-gutenberg-blocks'
-							),
-						},
-						{
-							value: 'view',
-							label: __(
-								'View',
-								'codeweber-gutenberg-blocks'
-							),
-						},
-						{
-							value: 'more',
-							label: __(
-								'Read more',
-								'codeweber-gutenberg-blocks'
-							),
-						},
-						{
-							value: 'read',
-							label: __(
-								'Read',
-								'codeweber-gutenberg-blocks'
-							),
-						},
+						{ value: 'none',    label: __( 'None',        'codeweber-gutenberg-blocks' ) },
+						{ value: 'more',    label: __( 'Read more',   'codeweber-gutenberg-blocks' ) },
+						{ value: 'read',    label: __( 'Read',        'codeweber-gutenberg-blocks' ) },
+						{ value: 'view',    label: __( 'View',        'codeweber-gutenberg-blocks' ) },
+						{ value: 'go',      label: __( 'Go',          'codeweber-gutenberg-blocks' ) },
+						{ value: 'open',    label: __( 'Open',        'codeweber-gutenberg-blocks' ) },
+						{ value: 'details', label: __( 'Details',     'codeweber-gutenberg-blocks' ) },
+						{ value: 'learn',   label: __( 'Learn more',  'codeweber-gutenberg-blocks' ) },
+						{ value: 'buy',     label: __( 'Buy',         'codeweber-gutenberg-blocks' ) },
+						{ value: 'order',   label: __( 'Order',       'codeweber-gutenberg-blocks' ) },
 					]}
 					onChange={(value) =>
 						setAttributes({ cardReadMore: value })

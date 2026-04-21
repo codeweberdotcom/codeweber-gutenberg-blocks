@@ -1,40 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   Loco Translate configuration for Codeweber Gutenberg Blocks.
-
-  Source strategy: PHP files + compiled JS in build/blocks/
-  wp i18n make-pot scans webpack output — strings are preserved as literals.
+  Source strategy: PHP files + compiled JS in build/blocks/ (webpack output).
   Run `npm run i18n:update` after adding new translatable strings.
 -->
-<loco version="2">
+<bundle name="Codeweber Gutenberg Blocks">
 
-  <meta>
-    <name>Codeweber Gutenberg Blocks</name>
-    <domain>codeweber-gutenberg-blocks</domain>
-  </meta>
+  <domain name="codeweber-gutenberg-blocks">
+    <project name="Codeweber Gutenberg Blocks">
 
-  <file type="po" id="default">
-    <name>POT Template</name>
-    <locale/>
-    <domain>codeweber-gutenberg-blocks</domain>
-    <path>languages/codeweber-gutenberg-blocks.pot</path>
-    <!-- Scan PHP files and compiled JS blocks; skip sources and deps -->
-    <source>plugin.php</source>
-    <source>inc/**/*.php</source>
-    <source>settings/**/*.php</source>
-    <source>build/blocks/**/*.js</source>
-    <exclude>node_modules/**</exclude>
-    <exclude>src/**</exclude>
-    <exclude>vendor/**</exclude>
-    <exclude>scripts/**</exclude>
-    <exclude>build/blocks/**/view.js</exclude>
-  </file>
+      <source>
+        <file>plugin.php</file>
+        <directory>inc</directory>
+        <directory>settings</directory>
+        <directory>build/blocks</directory>
+        <exclude>
+          <path>node_modules</path>
+          <path>src</path>
+          <path>vendor</path>
+          <path>scripts</path>
+        </exclude>
+      </source>
 
-  <file type="po" id="ru_RU">
-    <name>Russian</name>
-    <locale>ru_RU</locale>
-    <domain>codeweber-gutenberg-blocks</domain>
-    <path>languages/codeweber-gutenberg-blocks-ru_RU.po</path>
-  </file>
+      <target>
+        <directory>languages</directory>
+      </target>
 
-</loco>
+      <template>
+        <file>languages/codeweber-gutenberg-blocks.pot</file>
+      </template>
+
+    </project>
+  </domain>
+
+</bundle>

@@ -958,10 +958,13 @@ if (!function_exists('render_post_grid_item')) {
 			<?php foreach ($manual_items as $item) :
 				$item_type = isset($item['type']) ? $item['type'] : 'post';
 				if ($item_type === 'html') :
-					$html_content = isset($item['html']) ? $item['html'] : '';
-					if ($html_content) : ?>
-						<div class="col-12"><?php echo wp_kses_post($html_content); ?></div>
-					<?php endif;
+					$html_post_id = isset($item['id']) ? (int) $item['id'] : 0;
+					if ($html_post_id > 0) :
+						$html_post = get_post($html_post_id);
+						if ($html_post && $html_post->post_status === 'publish') : ?>
+							<div class="col-12"><?php echo wp_kses_post($html_post->post_content); ?></div>
+						<?php endif;
+					endif;
 				else :
 					$item_post_id = isset($item['id']) ? (int) $item['id'] : 0;
 					if ($item_post_id <= 0) continue;

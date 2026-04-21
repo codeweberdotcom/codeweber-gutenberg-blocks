@@ -4,6 +4,8 @@ import {
 	RangeControl,
 	SelectControl,
 	Spinner,
+	TextareaControl,
+	TextControl,
 	ToggleControl,
 } from '@wordpress/components';
 import { useEffect, useState } from '@wordpress/element';
@@ -23,13 +25,25 @@ const decodeTitle = ( rendered ) => {
 	return div.textContent || div.innerText || '';
 };
 
-// Manual post selection: CPT dropdown → post dropdown → Add button → reorder list.
-const ManualPostsSection = ( { postType, manualPosts = [], setAttributes } ) => {
+// Manual post selection with HTML block injection support.
+const ManualPostsSection = ( { postType, manualPosts = [], manualItems = [], setAttributes } ) => {
 	const [ postTypes, setPostTypes ] = useState( [] );
 	const [ typesLoading, setTypesLoading ] = useState( true );
 	const [ allPosts, setAllPosts ] = useState( [] );
 	const [ postsLoading, setPostsLoading ] = useState( false );
 	const [ selectedPostId, setSelectedPostId ] = useState( '' );
+	const [ showHtmlForm, setShowHtmlForm ] = useState( false );
+	const [ htmlLabel, setHtmlLabel ] = useState( '' );
+	const [ htmlContent, setHtmlContent ] = useState( '' );
+	const [ editingHtmlId, setEditingHtmlId ] = useState( null );
+
+	// Migrate legacy manualPosts → manualItems on first render.
+	useEffect( () => {
+		if ( manualItems.length === 0 && manualPosts.length > 0 ) {
+			const migrated = manualPosts.map( ( p ) => ( { type: 'post', id: p.id, title: p.title } ) );
+			setAttributes( { manualItems: migrated, manualPosts: [] } );
+		}
+	}, [] ); // eslint-disable-line react-hooks/exhaustive-deps
 
 	// Fetch available post types once.
 	useEffect( () => {
@@ -84,30 +98,53 @@ const ManualPostsSection = ( { postType, manualPosts = [], setAttributes } ) => 
 		return () => { cancelled = true; };
 	}, [ postType, postTypes ] );
 
-	const handleCptChange = ( value ) => {
-		setAttributes( { postType: value } );
-	};
+	const handleCptChange = ( value ) => setAttributes( { postType: value } );
 
-	const handleAdd = () => {
+	const handleAddPost = () => {
 		const id = parseInt( selectedPostId, 10 );
 		if ( ! id ) return;
-		const already = manualPosts.some( ( p ) => p.id === id );
+		const already = manualItems.some( ( p ) => p.type === 'post' && p.id === id );
 		if ( already ) return;
 		const found = allPosts.find( ( p ) => p.id === id );
 		const title = found ? decodeTitle( found.title?.rendered ) : `#${ id }`;
-		setAttributes( { manualPosts: [ ...manualPosts, { id, title } ] } );
+		setAttributes( { manualItems: [ ...manualItems, { type: 'post', id, title } ] } );
+		setSelectedPostId( '' );
 	};
 
-	const removePost = ( idx ) =>
-		setAttributes( { manualPosts: manualPosts.filter( ( _, i ) => i !== idx ) } );
+	const handleAddHtml = () => {
+		const id = 'html-' + Date.now();
+		setAttributes( {
+			manualItems: [
+				...manualItems,
+				{
+					type: 'html',
+					id,
+					label: htmlLabel.trim() || __( 'HTML Block', 'codeweber-gutenberg-blocks' ),
+					html: htmlContent,
+				},
+			],
+		} );
+		setHtmlLabel( '' );
+		setHtmlContent( '' );
+		setShowHtmlForm( false );
+	};
 
-	const movePost = ( idx, dir ) => {
+	const removeItem = ( idx ) =>
+		setAttributes( { manualItems: manualItems.filter( ( _, i ) => i !== idx ) } );
+
+	const moveItem = ( idx, dir ) => {
 		const newIdx = idx + dir;
-		if ( newIdx < 0 || newIdx >= manualPosts.length ) return;
-		const arr = [ ...manualPosts ];
+		if ( newIdx < 0 || newIdx >= manualItems.length ) return;
+		const arr = [ ...manualItems ];
 		const [ removed ] = arr.splice( idx, 1 );
 		arr.splice( newIdx, 0, removed );
-		setAttributes( { manualPosts: arr } );
+		setAttributes( { manualItems: arr } );
+	};
+
+	const updateItem = ( idx, patch ) => {
+		const arr = [ ...manualItems ];
+		arr[ idx ] = { ...arr[ idx ], ...patch };
+		setAttributes( { manualItems: arr } );
 	};
 
 	const postOptions = [
@@ -154,7 +191,7 @@ const ManualPostsSection = ( { postType, manualPosts = [], setAttributes } ) => 
 							</div>
 							<Button
 								variant="primary"
-								onClick={ handleAdd }
+								onClick={ handleAddPost }
 								disabled={ ! selectedPostId }
 								style={ { marginBottom: 1 } }
 							>
@@ -165,55 +202,166 @@ const ManualPostsSection = ( { postType, manualPosts = [], setAttributes } ) => 
 				</div>
 			) }
 
-			{ manualPosts.length === 0 ? (
+			{ /* HTML block form */ }
+			<div style={ { marginTop: 12 } }>
+				{ ! showHtmlForm ? (
+					<Button
+						variant="secondary"
+						onClick={ () => setShowHtmlForm( true ) }
+						style={ { width: '100%' } }
+					>
+						{ __( '+ Add HTML Block', 'codeweber-gutenberg-blocks' ) }
+					</Button>
+				) : (
+					<div
+						style={ {
+							padding: '12px',
+							background: '#f0f4ff',
+							borderRadius: 4,
+							border: '1px solid #c5d0e6',
+						} }
+					>
+						<TextControl
+							label={ __( 'Label', 'codeweber-gutenberg-blocks' ) }
+							value={ htmlLabel }
+							onChange={ setHtmlLabel }
+							placeholder={ __( 'e.g. CTA Block', 'codeweber-gutenberg-blocks' ) }
+							__nextHasNoMarginBottom
+						/>
+						<div style={ { marginTop: 8 } }>
+							<TextareaControl
+								label={ __( 'HTML', 'codeweber-gutenberg-blocks' ) }
+								value={ htmlContent }
+								onChange={ setHtmlContent }
+								rows={ 5 }
+								__nextHasNoMarginBottom
+							/>
+						</div>
+						<div style={ { display: 'flex', gap: 8, marginTop: 8 } }>
+							<Button
+								variant="primary"
+								onClick={ handleAddHtml }
+								disabled={ ! htmlContent.trim() }
+							>
+								{ __( 'Add', 'codeweber-gutenberg-blocks' ) }
+							</Button>
+							<Button
+								variant="tertiary"
+								onClick={ () => {
+									setShowHtmlForm( false );
+									setHtmlLabel( '' );
+									setHtmlContent( '' );
+								} }
+							>
+								{ __( 'Cancel', 'codeweber-gutenberg-blocks' ) }
+							</Button>
+						</div>
+					</div>
+				) }
+			</div>
+
+			{ manualItems.length === 0 ? (
 				<p style={ { color: '#757575', fontSize: 12, margin: '12px 0 0' } }>
-					{ __( 'No posts selected.', 'codeweber-gutenberg-blocks' ) }
+					{ __( 'No items selected.', 'codeweber-gutenberg-blocks' ) }
 				</p>
 			) : (
 				<div style={ { marginTop: 12 } }>
-					{ manualPosts.map( ( post, idx ) => (
-						<div
-							key={ post.id || idx }
-							style={ {
-								display: 'flex',
-								alignItems: 'center',
-								gap: 6,
-								marginBottom: 4,
-								padding: '4px 8px',
-								background: '#f9f9f9',
-								borderRadius: 4,
-								border: '1px solid #e0e0e0',
-							} }
-						>
-							<div style={ { display: 'flex', flexDirection: 'column', gap: 2, flexShrink: 0 } }>
-								<Button
-									icon={ chevronUp }
-									iconSize={ 14 }
-									disabled={ idx === 0 }
-									onClick={ () => movePost( idx, -1 ) }
-									label={ __( 'Move up', 'codeweber-gutenberg-blocks' ) }
-								/>
-								<Button
-									icon={ chevronDown }
-									iconSize={ 14 }
-									disabled={ idx === manualPosts.length - 1 }
-									onClick={ () => movePost( idx, 1 ) }
-									label={ __( 'Move down', 'codeweber-gutenberg-blocks' ) }
-								/>
-							</div>
-							<span style={ { flex: 1, fontSize: 12, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' } }>
-								{ post.title || `#${ post.id }` }
-							</span>
-							<Button
-								isSmall
-								isDestructive
-								onClick={ () => removePost( idx ) }
-								style={ { flexShrink: 0 } }
+					{ manualItems.map( ( item, idx ) => {
+						const isHtml = item.type === 'html';
+						const isEditing = editingHtmlId === item.id;
+						return (
+							<div
+								key={ item.id || idx }
+								style={ {
+									marginBottom: 4,
+									borderRadius: 4,
+									border: '1px solid #e0e0e0',
+									background: isHtml ? '#f0f4ff' : '#f9f9f9',
+									overflow: 'hidden',
+								} }
 							>
-								✕
-							</Button>
-						</div>
-					) ) }
+								<div
+									style={ {
+										display: 'flex',
+										alignItems: 'center',
+										gap: 6,
+										padding: '4px 8px',
+									} }
+								>
+									<div style={ { display: 'flex', flexDirection: 'column', gap: 2, flexShrink: 0 } }>
+										<Button
+											icon={ chevronUp }
+											iconSize={ 14 }
+											disabled={ idx === 0 }
+											onClick={ () => moveItem( idx, -1 ) }
+											label={ __( 'Move up', 'codeweber-gutenberg-blocks' ) }
+										/>
+										<Button
+											icon={ chevronDown }
+											iconSize={ 14 }
+											disabled={ idx === manualItems.length - 1 }
+											onClick={ () => moveItem( idx, 1 ) }
+											label={ __( 'Move down', 'codeweber-gutenberg-blocks' ) }
+										/>
+									</div>
+									<span
+										style={ {
+											flex: 1,
+											fontSize: 12,
+											overflow: 'hidden',
+											textOverflow: 'ellipsis',
+											whiteSpace: 'nowrap',
+											color: isHtml ? '#3c5a99' : 'inherit',
+										} }
+									>
+										{ isHtml
+											? `⟨/⟩ ${ item.label || __( 'HTML Block', 'codeweber-gutenberg-blocks' ) }`
+											: item.title || `#${ item.id }` }
+									</span>
+									{ isHtml && (
+										<Button
+											isSmall
+											onClick={ () =>
+												setEditingHtmlId( isEditing ? null : item.id )
+											}
+											style={ { flexShrink: 0 } }
+										>
+											{ isEditing
+												? __( 'Done', 'codeweber-gutenberg-blocks' )
+												: __( 'Edit', 'codeweber-gutenberg-blocks' ) }
+										</Button>
+									) }
+									<Button
+										isSmall
+										isDestructive
+										onClick={ () => removeItem( idx ) }
+										style={ { flexShrink: 0 } }
+									>
+										✕
+									</Button>
+								</div>
+								{ isHtml && isEditing && (
+									<div style={ { padding: '8px 12px 12px', borderTop: '1px solid #c5d0e6' } }>
+										<TextControl
+											label={ __( 'Label', 'codeweber-gutenberg-blocks' ) }
+											value={ item.label || '' }
+											onChange={ ( v ) => updateItem( idx, { label: v } ) }
+											__nextHasNoMarginBottom
+										/>
+										<div style={ { marginTop: 8 } }>
+											<TextareaControl
+												label={ __( 'HTML', 'codeweber-gutenberg-blocks' ) }
+												value={ item.html || '' }
+												onChange={ ( v ) => updateItem( idx, { html: v } ) }
+												rows={ 6 }
+												__nextHasNoMarginBottom
+											/>
+										</div>
+									</div>
+								) }
+							</div>
+						);
+					} ) }
 				</div>
 			) }
 		</div>
@@ -331,6 +479,7 @@ export const MainControl = ( { attributes, setAttributes } ) => {
 		filterImageTagId,
 		manualMode = false,
 		manualPosts = [],
+		manualItems = [],
 	} = attributes;
 
 	return (
@@ -368,6 +517,7 @@ export const MainControl = ( { attributes, setAttributes } ) => {
 				<ManualPostsSection
 					postType={ postType }
 					manualPosts={ manualPosts }
+					manualItems={ manualItems }
 					setAttributes={ setAttributes }
 				/>
 			) }

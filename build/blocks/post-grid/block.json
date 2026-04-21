@@ -476,6 +476,10 @@
     "manualPosts": {
       "type": "array",
       "default": []
+    },
+    "manualItems": {
+      "type": "array",
+      "default": []
     }
   }
 }

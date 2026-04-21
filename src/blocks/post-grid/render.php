@@ -298,7 +298,15 @@ $col_classes = get_post_grid_col_classes($attributes, $grid_type);
 		function ( $id ) { return $id > 0; }
 	) );
 
-	if ( $manual_mode && ! empty( $manual_post_ids ) ) {
+	$manual_items = isset( $attributes['manualItems'] ) && is_array( $attributes['manualItems'] )
+		? $attributes['manualItems']
+		: [];
+	$manual_items_mode = $manual_mode && ! empty( $manual_items );
+
+	if ( $manual_items_mode ) {
+		$load_more_enable = false;
+		$enable_filter    = false;
+	} elseif ( $manual_mode && ! empty( $manual_post_ids ) ) {
 		$args = array(
 			'post_type'           => $post_type,
 			'posts_per_page'      => count( $manual_post_ids ),
@@ -358,7 +366,7 @@ $col_classes = get_post_grid_col_classes($attributes, $grid_type);
 		}
 	}
 
-$query = new WP_Query($args);
+$query = $manual_items_mode ? null : new WP_Query($args);
 
 // Block wrapper attributes
 $text_inverse = !empty($attributes['textInverse']);
@@ -395,12 +403,10 @@ if ($block_data) {
 }
 
 // Determine which posts to show initially
-// Если Load More включен, мы уже запросили только initialCount постов, поэтому показываем все
-$posts_to_show = $query->posts;
+$posts_to_show = $manual_items_mode ? [] : $query->posts;
 
 // Проверяем, есть ли еще посты для загрузки
-// Сравниваем общее количество найденных постов с уже загруженными
-$has_more = $load_more_enable && $query->found_posts > $load_more_initial_count;
+$has_more = ! $manual_items_mode && $load_more_enable && $query->found_posts > $load_more_initial_count;
 
 // Helper function to get image URL
 if (!function_exists('get_post_image_url')) {
@@ -947,7 +953,31 @@ if (!function_exists('render_post_grid_item')) {
 	<?php endif; ?>
 
 	<div class="cwgb-post-grid-results" data-cwgb-results-for="<?php echo esc_attr($block_id); ?>">
-	<?php if ($query->have_posts() && !empty($query->posts)) : ?>
+	<?php if ($manual_items_mode) : ?>
+		<div class="cwgb-load-more-items <?php echo esc_attr($grid_classes); ?>">
+			<?php foreach ($manual_items as $item) :
+				$item_type = isset($item['type']) ? $item['type'] : 'post';
+				if ($item_type === 'html') :
+					$html_content = isset($item['html']) ? $item['html'] : '';
+					if ($html_content) : ?>
+						<div class="col-12"><?php echo wp_kses_post($html_content); ?></div>
+					<?php endif;
+				else :
+					$item_post_id = isset($item['id']) ? (int) $item['id'] : 0;
+					if ($item_post_id <= 0) continue;
+					$item_post = get_post($item_post_id);
+					if (!$item_post || $item_post->post_status !== 'publish') continue;
+					setup_postdata($item_post);
+					$item_image_url = get_post_image_url($item_post, $image_size);
+					$item_html = render_post_grid_item($item_post, $attributes, $item_image_url, $image_size, $grid_type, $col_classes);
+					wp_reset_postdata();
+					if (!empty($item_html) && trim($item_html) !== '') {
+						echo $item_html;
+					}
+				endif;
+			endforeach; ?>
+		</div>
+	<?php elseif ($query && $query->have_posts() && !empty($query->posts)) : ?>
 		<?php if ($display_mode === 'swiper') : ?>
 			<?php
 			// Swiper mode
@@ -1148,7 +1178,7 @@ if (!function_exists('render_post_grid_item')) {
 				</div>
 			<?php endif; ?>
 		<?php endif; ?>
-	<?php else : ?>
+	<?php elseif (!$manual_items_mode) : ?>
 		<p><?php esc_html_e('No posts found.', 'codeweber-gutenberg-blocks'); ?></p>
 	<?php endif; ?>
 	</div><!-- /.cwgb-post-grid-results -->

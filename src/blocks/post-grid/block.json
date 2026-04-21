@@ -305,7 +305,7 @@
 		},
 		"cardReadMore": {
 			"type": "string",
-			"default": "none"
+			"default": "more"
 		},
 		"enableFilter": {
 			"type": "boolean",

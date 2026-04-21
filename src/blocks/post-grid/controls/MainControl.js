@@ -282,7 +282,6 @@ const ManualPostsSection = ( { postType, manualPosts = [], manualItems = [], set
 				<div style={ { marginTop: 12 } }>
 					{ manualItems.map( ( item, idx ) => {
 						const isHtml = item.type === 'html';
-						const isEditing = editingHtmlId === item.id;
 						return (
 							<div
 								key={ item.id || idx }

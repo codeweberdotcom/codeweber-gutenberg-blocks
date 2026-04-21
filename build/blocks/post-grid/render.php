@@ -953,34 +953,54 @@ if (!function_exists('render_post_grid_item')) {
 	<?php endif; ?>
 
 	<div class="cwgb-post-grid-results" data-cwgb-results-for="<?php echo esc_attr($block_id); ?>">
-	<?php if ($manual_items_mode) : ?>
-		<div class="cwgb-load-more-items <?php echo esc_attr($grid_classes); ?>">
-			<?php foreach ($manual_items as $item) :
-				$item_type = isset($item['type']) ? $item['type'] : 'post';
-				if ($item_type === 'html') :
-					$html_post_id = isset($item['id']) ? (int) $item['id'] : 0;
-					if ($html_post_id > 0) :
-						$html_post = get_post($html_post_id);
-						if ($html_post && $html_post->post_status === 'publish') : ?>
-							<div class="col-12"><?php echo wp_kses_post($html_post->post_content); ?></div>
-						<?php endif;
+	<?php if ($manual_items_mode) :
+		// Split items into segments: runs of posts go inside a row div,
+		// html_blocks are rendered directly between rows (no grid wrapper).
+		$segments = [];
+		$current_posts = [];
+		foreach ($manual_items as $item) {
+			$itype = isset($item['type']) ? $item['type'] : 'post';
+			if ($itype === 'html') {
+				if (!empty($current_posts)) {
+					$segments[] = ['type' => 'posts', 'items' => $current_posts];
+					$current_posts = [];
+				}
+				$segments[] = ['type' => 'html', 'item' => $item];
+			} else {
+				$current_posts[] = $item;
+			}
+		}
+		if (!empty($current_posts)) {
+			$segments[] = ['type' => 'posts', 'items' => $current_posts];
+		}
+		foreach ($segments as $segment) :
+			if ($segment['type'] === 'html') :
+				$html_post_id = isset($segment['item']['id']) ? (int) $segment['item']['id'] : 0;
+				if ($html_post_id > 0) :
+					$html_post = get_post($html_post_id);
+					if ($html_post && $html_post->post_status === 'publish') :
+						echo do_blocks( get_the_content( null, false, $html_post ) );
 					endif;
-				else :
-					$item_post_id = isset($item['id']) ? (int) $item['id'] : 0;
-					if ($item_post_id <= 0) continue;
-					$item_post = get_post($item_post_id);
-					if (!$item_post || $item_post->post_status !== 'publish') continue;
-					setup_postdata($item_post);
-					$item_image_url = get_post_image_url($item_post, $image_size);
-					$item_html = render_post_grid_item($item_post, $attributes, $item_image_url, $image_size, $grid_type, $col_classes);
-					wp_reset_postdata();
-					if (!empty($item_html) && trim($item_html) !== '') {
-						echo $item_html;
-					}
 				endif;
-			endforeach; ?>
-		</div>
-	<?php elseif ($query && $query->have_posts() && !empty($query->posts)) : ?>
+			else : ?>
+				<div class="cwgb-load-more-items <?php echo esc_attr($grid_classes); ?>">
+					<?php foreach ($segment['items'] as $seg_item) :
+						$item_post_id = isset($seg_item['id']) ? (int) $seg_item['id'] : 0;
+						if ($item_post_id <= 0) continue;
+						$item_post = get_post($item_post_id);
+						if (!$item_post || $item_post->post_status !== 'publish') continue;
+						setup_postdata($item_post);
+						$item_image_url = get_post_image_url($item_post, $image_size);
+						$item_html = render_post_grid_item($item_post, $attributes, $item_image_url, $image_size, $grid_type, $col_classes);
+						wp_reset_postdata();
+						if (!empty($item_html) && trim($item_html) !== '') {
+							echo $item_html;
+						}
+					endforeach; ?>
+				</div>
+			<?php endif;
+		endforeach;
+	elseif ($query && $query->have_posts() && !empty($query->posts)) : ?>
 		<?php if ($display_mode === 'swiper') : ?>
 			<?php
 			// Swiper mode

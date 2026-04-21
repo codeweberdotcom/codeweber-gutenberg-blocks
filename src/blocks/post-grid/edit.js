@@ -78,6 +78,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		filterImageTagId = 0,
 		manualMode = false,
 		manualPosts = [],
+		manualItems = [],
 	} = attributes;
 
 	const [posts, setPosts] = useState([]);
@@ -198,6 +199,11 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 
 		// Manual mode: fetch posts by explicit IDs in order.
 		if ( manualMode ) {
+			// manualItems mode is rendered via ServerSideRender — skip fetch.
+			if ( manualItems && manualItems.length > 0 ) {
+				setPosts( [] );
+				return;
+			}
 			if ( ! manualPosts || manualPosts.length === 0 ) {
 				setPosts( [] );
 				return;
@@ -711,6 +717,8 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		manualMode,
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		JSON.stringify( manualPosts ),
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		JSON.stringify( manualItems ),
 	]);
 
 	// Функция для получения классов контейнера
@@ -1049,7 +1057,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 						)}
 					</div>
 				)}
-				{postType === 'product' ? (
+				{postType === 'product' || ( manualMode && manualItems.length > 0 ) ? (
 					<ServerSideRender
 						block="codeweber-blocks/post-grid"
 						attributes={attributes}

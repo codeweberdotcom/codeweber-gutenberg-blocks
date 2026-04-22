@@ -126,6 +126,7 @@ const SectionSave = ({ attributes }) => {
 		sectionClass,
 		sectionData,
 		sectionId,
+		anchor,
 	} = attributes;
 
 	const Tag = ALLOWED_SECTION_TAGS.includes(sectionTag)
@@ -146,7 +147,7 @@ const SectionSave = ({ attributes }) => {
 
 	const blockProps = useBlockProps.save({
 		className: `wrapper ${getSectionClasses(attributes)} ${sectionFrame ? 'section-frame' : ''} ${overflowHidden ? 'overflow-hidden' : ''} ${positionRelative ? 'position-relative' : ''} ${normalizedMinHeight} ${sectionAlignClassNames} ${sectionClass}`,
-		id: safeSectionId || undefined,
+		id: safeSectionId || anchor || undefined,
 		role: 'region',
 		'aria-label': safeSectionId
 			? `Section ${safeSectionId}`

@@ -24,7 +24,7 @@ import {
 } from './banners';
 
 const BannersSave = ({ attributes }) => {
-	const { bannerType } = attributes;
+	const { bannerType, anchor } = attributes;
 
 	const renderBanner = () => {
 		switch (bannerType) {
@@ -100,6 +100,15 @@ const BannersSave = ({ attributes }) => {
 				return <Banner34 attributes={attributes} isEditor={false} />;
 		}
 	};
+
+	if ( anchor ) {
+		return (
+			<>
+				<span id={ anchor } />
+				{ renderBanner() }
+			</>
+		);
+	}
 
 	return renderBanner();
 };

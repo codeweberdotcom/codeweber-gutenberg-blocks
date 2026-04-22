@@ -130,12 +130,10 @@
 }
 
 // ── Popup ────────────────────────────────────────────────────
-// border-radius and box-shadow come from Bootstrap card + shadow classes
 .cwgb-floating-nav__popup {
 	position: absolute;
 	min-width: 240px;
 	max-width: 340px;
-	padding: 6px 0 12px;
 	opacity: 0;
 	pointer-events: none;
 	z-index: 3;
@@ -252,17 +250,12 @@
 }
 
 // ── Popup title ──────────────────────────────────────────────
-// font-weight, text-transform, border-bottom come from Bootstrap fs-15 text-uppercase border-bottom
 .cwgb-floating-nav__popup-title {
-	padding: 12px 24px 10px;
 	opacity: 0.6;
-	margin-bottom: 4px;
 }
 
 // ── Popup items ──────────────────────────────────────────────
-// display:block and text-decoration:none come from Bootstrap d-block text-decoration-none
 .cwgb-floating-nav__item {
-	padding: 10px 24px;
 	font-size: 0.9rem;
 	line-height: 1.4;
 	transition: background 0.15s ease;
@@ -273,8 +266,6 @@
 
 	& + & {
 		border-top: 1px solid rgba(0, 0, 0, 0.06);
-		margin-top: 2px;
-		padding-top: 12px;
 	}
 
 	// Active section highlight — inset shadow avoids layout shift

@@ -105,12 +105,12 @@ $anchor_ids = array_filter( array_column( $items, 'anchor' ) );
 
 	<div
 		id="<?php echo esc_attr( $unique_id . '-popup' ); ?>"
-		class="cwgb-floating-nav__popup card shadow <?php echo esc_attr( $popup_bg_class ); ?>"
+		class="cwgb-floating-nav__popup shadow-lg rounded-3 py-2 <?php echo esc_attr( $popup_bg_class ); ?>"
 		aria-hidden="true"
 		role="navigation"
 	>
 		<?php if ( $popup_title ) : ?>
-			<div class="cwgb-floating-nav__popup-title fs-15 text-uppercase border-bottom">
+			<div class="cwgb-floating-nav__popup-title fs-15 text-uppercase border-bottom px-4 py-3 mb-1">
 				<?php echo esc_html( $popup_title ); ?>
 			</div>
 		<?php endif; ?>
@@ -123,7 +123,7 @@ $anchor_ids = array_filter( array_column( $items, 'anchor' ) );
 			?>
 			<a
 				href="#<?php echo esc_attr( $item['anchor'] ); ?>"
-				class="cwgb-floating-nav__item d-block text-decoration-none scroll"
+				class="cwgb-floating-nav__item d-block text-decoration-none scroll px-4 py-2"
 				data-anchor="<?php echo esc_attr( $item['anchor'] ); ?>"
 			><?php echo esc_html( $label ); ?></a>
 		<?php endforeach; ?>

@@ -154,11 +154,13 @@
 	}
 }
 
-// Rotated pill: writing-mode swaps axes, so let height be natural (no forced aspect-ratio)
+// Rotated pill: writing-mode turns horizontal padding into visual width — tighten it
 .cwgb-floating-nav[data-rotate='true'][data-btn-type-desktop='button'] .cwgb-floating-nav__trigger {
 	aspect-ratio: auto;
 	width: auto;
 	height: auto;
+	padding-left: 0.55em;
+	padding-right: 0.55em;
 }
 
 @media (max-width: 991.98px) {
@@ -166,6 +168,8 @@
 		aspect-ratio: auto;
 		width: auto;
 		height: auto;
+		padding-left: 0.55em;
+		padding-right: 0.55em;
 	}
 }
 
@@ -174,6 +178,8 @@
 		aspect-ratio: auto;
 		width: auto;
 		height: auto;
+		padding-left: 0.55em;
+		padding-right: 0.55em;
 	}
 }
 
@@ -206,20 +212,10 @@
 	}
 }
 
-// ── Popup title ──────────────────────────────────────────────
-.cwgb-floating-nav__popup-title {
-	opacity: 0.6;
-}
-
 // ── Popup items ──────────────────────────────────────────────
 .cwgb-floating-nav__item {
-	& + & {
-		border-top: 1px solid rgba(0, 0, 0, 0.06);
-	}
-
 	// Active section highlight — inset shadow avoids layout shift
 	&.active {
 		box-shadow: inset 3px 0 0 currentColor;
-		font-weight: 600;
 	}
 }

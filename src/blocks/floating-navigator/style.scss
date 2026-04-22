@@ -198,6 +198,30 @@
 	transform: rotate(180deg);
 }
 
+// Pill button in rotated state: swap geometry so width is thin and height follows text.
+// Without this, physical height/padding-x from the pill rule make a wide flat button.
+.cwgb-floating-nav[data-rotate='true'][data-btn-type-desktop='button'] .cwgb-floating-nav__trigger {
+	width: var(--fn-btn-size, 2.2rem);
+	height: auto;
+	padding: calc(var(--fn-btn-size, 2.2rem) * 0.55) 0;
+}
+
+@media (max-width: 991.98px) {
+	.cwgb-floating-nav[data-rotate='true'][data-btn-type-tablet='button'] .cwgb-floating-nav__trigger {
+		width: var(--fn-btn-size, 2.2rem);
+		height: auto;
+		padding: calc(var(--fn-btn-size, 2.2rem) * 0.55) 0;
+	}
+}
+
+@media (max-width: 575.98px) {
+	.cwgb-floating-nav[data-rotate='true'][data-btn-type-mobile='button'] .cwgb-floating-nav__trigger {
+		width: var(--fn-btn-size, 2.2rem);
+		height: auto;
+		padding: calc(var(--fn-btn-size, 2.2rem) * 0.55) 0;
+	}
+}
+
 // ── Popup direction for rotated right-side buttons ───────────
 // Rotated button on right → popup opens to the LEFT of the button
 .cwgb-floating-nav[data-rotate='true'][data-position^='right-'] .cwgb-floating-nav__popup {

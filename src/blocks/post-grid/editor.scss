@@ -1,6 +1,13 @@
 // Post Grid Editor Styles
 @import '../../components/post-type-taxonomy/editor.scss';
 
+.block-editor-inner-blocks .card {
+	margin-top: 0 !important;
+	padding: 0 !important;
+	min-width: 100% !important;
+	max-width: 100% !important;
+}
+
 .cwgb-post-grid-block {
 	.cwgb-post-grid-placeholder {
 		padding: 20px;

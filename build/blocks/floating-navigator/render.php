@@ -183,7 +183,7 @@ $anchor_ids = array_filter( array_column( $items, 'anchor' ) );
 
 		function getHeaderHeight() {
 			var navbar = document.querySelector( '.navbar-clone.navbar-stick, .navbar.fixed' );
-			return navbar ? navbar.offsetHeight + 20 : 20;
+			return navbar ? navbar.offsetHeight + 60 : 60;
 		}
 
 		function updateActive() {

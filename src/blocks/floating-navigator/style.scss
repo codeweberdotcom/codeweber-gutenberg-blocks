@@ -216,6 +216,6 @@
 .cwgb-floating-nav__item {
 	// Active section highlight — inset shadow avoids layout shift
 	&.active {
-		box-shadow: inset 3px 0 0 currentColor;
+		box-shadow: inset 3px 0 0 var(--bs-primary);
 	}
 }

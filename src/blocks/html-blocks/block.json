@@ -6,13 +6,21 @@
 	"category": "codeweber-gutenberg-blocks",
 	"icon": "code",
 	"description": "Выберите и отобразите HTML блок из CPT html_blocks",
-	"keywords": ["html", "blocks", "cpt"],
+	"keywords": [
+		"html",
+		"blocks",
+		"cpt"
+	],
 	"supports": {
 		"html": false,
 		"customClassName": true,
 		"anchor": true
 	},
 	"attributes": {
+		"anchor": {
+			"type": "string",
+			"default": ""
+		},
 		"selectedBlockId": {
 			"type": "number",
 			"default": 0

@@ -6,13 +6,20 @@
 	"category": "codeweber-gutenberg-widgets",
 	"icon": "shortcode",
 	"description": "Render any WordPress shortcode. Enter the shortcode in the sidebar.",
-	"keywords": ["shortcode", "widget"],
+	"keywords": [
+		"shortcode",
+		"widget"
+	],
 	"supports": {
 		"html": false,
 		"customClassName": true,
 		"anchor": true
 	},
 	"attributes": {
+		"anchor": {
+			"type": "string",
+			"default": ""
+		},
 		"shortcode": {
 			"type": "string",
 			"default": ""

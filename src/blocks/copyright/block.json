@@ -6,26 +6,74 @@
 	"category": "codeweber-gutenberg-elements",
 	"icon": "shield",
 	"description": "Copyright and developer credit block for footer. Auto-updates the current year.",
-	"keywords": [ "copyright", "footer", "credits", "developer" ],
+	"keywords": [
+		"copyright",
+		"footer",
+		"credits",
+		"developer"
+	],
 	"supports": {
 		"html": false,
 		"customClassName": true,
 		"anchor": true
 	},
 	"attributes": {
-		"showCopyright": { "type": "boolean", "default": true },
-		"showYear": { "type": "boolean", "default": true },
-		"copyrightText": { "type": "string", "default": "All rights reserved" },
-		"showDeveloper": { "type": "boolean", "default": true },
-		"developerLabel": { "type": "string", "default": "Developed by" },
-		"developerName": { "type": "string", "default": "Codeweber" },
-		"developerUrl": { "type": "string", "default": "https://codeweber.ru" },
-		"developerTarget": { "type": "boolean", "default": true },
-		"textColor": { "type": "string", "default": "" },
-		"linkColor": { "type": "string", "default": "" },
-		"alignment": { "type": "string", "default": "text-center" },
-		"separator": { "type": "string", "default": " - " },
-		"layout": { "type": "string", "default": "inline" }
+		"anchor": {
+			"type": "string",
+			"default": ""
+		},
+		"showCopyright": {
+			"type": "boolean",
+			"default": true
+		},
+		"showYear": {
+			"type": "boolean",
+			"default": true
+		},
+		"copyrightText": {
+			"type": "string",
+			"default": "All rights reserved"
+		},
+		"showDeveloper": {
+			"type": "boolean",
+			"default": true
+		},
+		"developerLabel": {
+			"type": "string",
+			"default": "Developed by"
+		},
+		"developerName": {
+			"type": "string",
+			"default": "Codeweber"
+		},
+		"developerUrl": {
+			"type": "string",
+			"default": "https://codeweber.ru"
+		},
+		"developerTarget": {
+			"type": "boolean",
+			"default": true
+		},
+		"textColor": {
+			"type": "string",
+			"default": ""
+		},
+		"linkColor": {
+			"type": "string",
+			"default": ""
+		},
+		"alignment": {
+			"type": "string",
+			"default": "text-center"
+		},
+		"separator": {
+			"type": "string",
+			"default": " - "
+		},
+		"layout": {
+			"type": "string",
+			"default": "inline"
+		}
 	},
 	"textdomain": "codeweber-gutenberg-blocks",
 	"editorScript": "file:./index.js",

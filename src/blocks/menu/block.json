@@ -6,13 +6,22 @@
 	"category": "codeweber-gutenberg-elements",
 	"icon": "menu",
 	"description": "Menu block with Custom, WordPress Menu and Taxonomy modes. Supports dark/light theme and list styling options.",
-	"keywords": ["menu", "navigation", "nav", "list"],
+	"keywords": [
+		"menu",
+		"navigation",
+		"nav",
+		"list"
+	],
 	"supports": {
 		"html": false,
 		"customClassName": true,
 		"anchor": true
 	},
 	"attributes": {
+		"anchor": {
+			"type": "string",
+			"default": ""
+		},
 		"mode": {
 			"type": "string",
 			"default": "custom"

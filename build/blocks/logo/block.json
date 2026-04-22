@@ -22,6 +22,10 @@
     ]
   },
   "attributes": {
+    "anchor": {
+      "type": "string",
+      "default": ""
+    },
     "logoType": {
       "type": "string",
       "default": "both"

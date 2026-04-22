@@ -6,13 +6,22 @@
 	"category": "codeweber-gutenberg-elements",
 	"icon": "slides",
 	"description": "Swiper slider with unlimited inner blocks. Each inner block becomes a slide.",
-	"keywords": ["swiper", "slider", "carousel", "slides"],
+	"keywords": [
+		"swiper",
+		"slider",
+		"carousel",
+		"slides"
+	],
 	"supports": {
 		"html": false,
 		"customClassName": true,
 		"anchor": true
 	},
 	"attributes": {
+		"anchor": {
+			"type": "string",
+			"default": ""
+		},
 		"swiperMargin": {
 			"type": "string",
 			"default": "30"

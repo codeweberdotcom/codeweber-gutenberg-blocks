@@ -6,14 +6,26 @@
 	"category": "codeweber-gutenberg-elements",
 	"icon": "admin-site-alt3",
 	"description": "Logo block with light/dark variant selection and size control.",
-	"keywords": ["logo", "brand", "image"],
+	"keywords": [
+		"logo",
+		"brand",
+		"image"
+	],
 	"supports": {
 		"html": false,
 		"customClassName": true,
 		"anchor": true,
-		"align": ["left", "center", "right"]
+		"align": [
+			"left",
+			"center",
+			"right"
+		]
 	},
 	"attributes": {
+		"anchor": {
+			"type": "string",
+			"default": ""
+		},
 		"logoType": {
 			"type": "string",
 			"default": "both"

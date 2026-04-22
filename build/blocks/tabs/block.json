@@ -18,6 +18,10 @@
     "anchor": true
   },
   "attributes": {
+    "anchor": {
+      "type": "string",
+      "default": ""
+    },
     "tabStyle": {
       "type": "string",
       "default": "basic"

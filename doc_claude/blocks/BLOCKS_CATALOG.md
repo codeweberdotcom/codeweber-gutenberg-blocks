@@ -96,7 +96,7 @@ Legend: `S` = static (JS save) | `D` = dynamic (PHP render.php)
 
 | Block | Type | Description |
 |-------|------|-------------|
-| `tabs` | S | Bootstrap tabs |
+| `tabs` | D | Bootstrap tabs (render.php via `"render"` in block.json) |
 
 ---
 
@@ -116,7 +116,7 @@ Legend: `S` = static (JS save) | `D` = dynamic (PHP render.php)
 | `yandex-map` | D | Yandex Maps embed with hotspot support |
 | `contacts` | D | Contacts from theme Redux options |
 | `social-icons` | D | Social icons from theme Redux options |
-| `logo` | S | Logo from theme Redux options |
+| `logo` | D | Logo from theme Redux options |
 | `avatar` | D | User/staff avatar (D only for user/staff modes) |
 | `html-blocks` | D | Render HTML Block CPT content |
 | `shortcode-render` | D | WordPress shortcode renderer |
@@ -144,6 +144,18 @@ Legend: `S` = static (JS save) | `D` = dynamic (PHP render.php)
 
 | Type | Count |
 |------|-------|
-| Static (S) | ~25 |
-| Dynamic (D) | ~23 |
+| Static (S) | ~23 |
+| Dynamic (D) | ~25 |
 | **Total** | **48** |
+
+---
+
+## Anchor Attribute — Important Note for Dynamic Blocks
+
+WordPress 6.8+ registers the `anchor` attribute (from `supports.anchor: true`) with `source: "attribute"`, which means the value is **not serialized in the block comment** — only in the saved HTML. For dynamic blocks (render.php), there is no saved HTML, so `$parsed_block['attrs']['anchor']` is always empty without explicit declaration.
+
+**Fix applied**: All dynamic blocks with `supports.anchor: true` explicitly declare `anchor` in `block.json` without `source`:
+```json
+"anchor": { "type": "string", "default": "" }
+```
+This overrides WordPress auto-registration and ensures anchor IS serialized in the block comment, making it available to render.php via `$attributes['anchor']`.

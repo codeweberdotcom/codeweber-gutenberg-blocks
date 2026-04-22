@@ -1,136 +1,146 @@
 {
-  "apiVersion": 3,
-  "name": "codeweber-blocks/wc-filter-panel",
-  "version": "0.3.0",
-  "title": "WC Filter Panel",
-  "category": "codeweber-gutenberg-elements",
-  "icon": "filter",
-  "description": "WooCommerce shop filter panel: price, attributes, categories, rating, stock. Integrates with shop PJAX navigation.",
-  "keywords": ["filter", "shop", "woocommerce", "price", "attributes"],
-  "supports": {
-    "html": false,
-    "customClassName": true,
-    "anchor": true
-  },
-  "attributes": {
-    "items": {
-      "type": "array",
-      "default": [
-        {
-          "id": "item-price",
-          "type": "filter",
-          "filterType": "price",
-          "label": "Цена",
-          "displayMode": "list",
-          "queryType": "or",
-          "taxonomy": "",
-          "showCount": true,
-          "checkboxColumns": 1,
-          "swatchColumns": 0,
-          "swatchItemClass": "",
-          "swatchShape": "default",
-          "singleSelect": false,
-          "countUnfiltered": false,
-          "collapseListType": "1",
-          "countWithChildren": false,
-          "emptyBehavior": "disable",
-          "itemClass": "",
-          "limitType": "none",
-          "limitValue": 5,
-          "showMoreText": "",
-          "showLessText": "",
-          "enabled": true
-        }
-      ]
-    },
-    "sectionStyle": {
-      "type": "string",
-      "default": "plain"
-    },
-    "sectionsOpen": {
-      "type": "boolean",
-      "default": true
-    },
-    "wrapperClass": {
-      "type": "string",
-      "default": "mb-4"
-    },
-    "headingTag": {
-      "type": "string",
-      "default": "h4"
-    },
-    "headingClass": {
-      "type": "string",
-      "default": "widget-title mb-3"
-    },
-    "checkboxSize": {
-      "type": "string",
-      "default": ""
-    },
-    "checkboxItemClass": {
-      "type": "string",
-      "default": ""
-    },
-    "radioSize": {
-      "type": "string",
-      "default": ""
-    },
-    "radioItemClass": {
-      "type": "string",
-      "default": ""
-    },
-    "buttonSize": {
-      "type": "string",
-      "default": "btn-sm"
-    },
-    "buttonShape": {
-      "type": "string",
-      "default": "theme"
-    },
-    "buttonExtraClass": {
-      "type": "string",
-      "default": ""
-    },
-    "buttonStyle": {
-      "type": "string",
-      "default": "outline"
-    },
-    "buttonColor": {
-      "type": "string",
-      "default": "secondary"
-    },
-    "resetLabel": {
-      "type": "string",
-      "default": ""
-    },
-    "sliderSize": {
-      "type": "string",
-      "default": "lg"
-    },
-    "badgeSize": {
-      "type": "string",
-      "default": ""
-    },
-    "badgeShape": {
-      "type": "string",
-      "default": "rounded-pill"
-    },
-    "badgeColor": {
-      "type": "string",
-      "default": "primary"
-    },
-    "badgeExtraClass": {
-      "type": "string",
-      "default": ""
-    },
-    "navbarScheme": {
-      "type": "string",
-      "default": "navbar-light"
-    }
-  },
-  "textdomain": "codeweber-gutenberg-blocks",
-  "editorScript": "file:./index.js",
-  "editorStyle": "file:./index.css",
-  "style": "file:./style-index.css",
-  "render": "file:./render.php"
+	"apiVersion": 3,
+	"name": "codeweber-blocks/wc-filter-panel",
+	"version": "0.3.0",
+	"title": "WC Filter Panel",
+	"category": "codeweber-gutenberg-elements",
+	"icon": "filter",
+	"description": "WooCommerce shop filter panel: price, attributes, categories, rating, stock. Integrates with shop PJAX navigation.",
+	"keywords": [
+		"filter",
+		"shop",
+		"woocommerce",
+		"price",
+		"attributes"
+	],
+	"supports": {
+		"html": false,
+		"customClassName": true,
+		"anchor": true
+	},
+	"attributes": {
+		"anchor": {
+			"type": "string",
+			"default": ""
+		},
+		"items": {
+			"type": "array",
+			"default": [
+				{
+					"id": "item-price",
+					"type": "filter",
+					"filterType": "price",
+					"label": "Цена",
+					"displayMode": "list",
+					"queryType": "or",
+					"taxonomy": "",
+					"showCount": true,
+					"checkboxColumns": 1,
+					"swatchColumns": 0,
+					"swatchItemClass": "",
+					"swatchShape": "default",
+					"singleSelect": false,
+					"countUnfiltered": false,
+					"collapseListType": "1",
+					"countWithChildren": false,
+					"emptyBehavior": "disable",
+					"itemClass": "",
+					"limitType": "none",
+					"limitValue": 5,
+					"showMoreText": "",
+					"showLessText": "",
+					"enabled": true
+				}
+			]
+		},
+		"sectionStyle": {
+			"type": "string",
+			"default": "plain"
+		},
+		"sectionsOpen": {
+			"type": "boolean",
+			"default": true
+		},
+		"wrapperClass": {
+			"type": "string",
+			"default": "mb-4"
+		},
+		"headingTag": {
+			"type": "string",
+			"default": "h4"
+		},
+		"headingClass": {
+			"type": "string",
+			"default": "widget-title mb-3"
+		},
+		"checkboxSize": {
+			"type": "string",
+			"default": ""
+		},
+		"checkboxItemClass": {
+			"type": "string",
+			"default": ""
+		},
+		"radioSize": {
+			"type": "string",
+			"default": ""
+		},
+		"radioItemClass": {
+			"type": "string",
+			"default": ""
+		},
+		"buttonSize": {
+			"type": "string",
+			"default": "btn-sm"
+		},
+		"buttonShape": {
+			"type": "string",
+			"default": "theme"
+		},
+		"buttonExtraClass": {
+			"type": "string",
+			"default": ""
+		},
+		"buttonStyle": {
+			"type": "string",
+			"default": "outline"
+		},
+		"buttonColor": {
+			"type": "string",
+			"default": "secondary"
+		},
+		"resetLabel": {
+			"type": "string",
+			"default": ""
+		},
+		"sliderSize": {
+			"type": "string",
+			"default": "lg"
+		},
+		"badgeSize": {
+			"type": "string",
+			"default": ""
+		},
+		"badgeShape": {
+			"type": "string",
+			"default": "rounded-pill"
+		},
+		"badgeColor": {
+			"type": "string",
+			"default": "primary"
+		},
+		"badgeExtraClass": {
+			"type": "string",
+			"default": ""
+		},
+		"navbarScheme": {
+			"type": "string",
+			"default": "navbar-light"
+		}
+	},
+	"textdomain": "codeweber-gutenberg-blocks",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"render": "file:./render.php"
 }

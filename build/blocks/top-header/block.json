@@ -20,6 +20,10 @@
     "anchor": true
   },
   "attributes": {
+    "anchor": {
+      "type": "string",
+      "default": ""
+    },
     "showAddress": {
       "type": "boolean",
       "default": true

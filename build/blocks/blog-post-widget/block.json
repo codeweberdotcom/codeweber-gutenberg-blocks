@@ -19,6 +19,10 @@
     "anchor": true
   },
   "attributes": {
+    "anchor": {
+      "type": "string",
+      "default": ""
+    },
     "postsPerPage": {
       "type": "number",
       "default": 3

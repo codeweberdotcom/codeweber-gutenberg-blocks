@@ -25,11 +25,14 @@ if ( ! $show_copyright && ! $show_developer ) {
 	return;
 }
 
+$anchor        = isset( $attributes['anchor'] ) ? trim( (string) $attributes['anchor'] ) : '';
 $extra_classes = array_filter( [ $alignment, $text_color ] );
 
-$wrapper_attributes = get_block_wrapper_attributes( [
-	'class' => implode( ' ', $extra_classes ),
-] );
+$wrapper_extra = [ 'class' => implode( ' ', $extra_classes ) ];
+if ( $anchor ) {
+	$wrapper_extra['id'] = $anchor;
+}
+$wrapper_attributes = get_block_wrapper_attributes( $wrapper_extra );
 
 // Build copyright part.
 $copyright_part = '';

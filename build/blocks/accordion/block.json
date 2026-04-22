@@ -18,6 +18,10 @@
     "anchor": true
   },
   "attributes": {
+    "anchor": {
+      "type": "string",
+      "default": ""
+    },
     "accordionStyle": {
       "type": "string",
       "default": "simple"

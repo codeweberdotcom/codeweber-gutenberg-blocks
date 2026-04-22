@@ -24,7 +24,8 @@ if ( ! function_exists( 'cw_render_filter_items' ) ) {
 	return;
 }
 
-$items = isset( $attributes['items'] ) && is_array( $attributes['items'] ) ? $attributes['items'] : [];
+$anchor = isset( $attributes['anchor'] ) ? trim( (string) $attributes['anchor'] ) : '';
+$items  = isset( $attributes['items'] ) && is_array( $attributes['items'] ) ? $attributes['items'] : [];
 
 $panel_atts = [
 	'section_style'      => in_array( $attributes['sectionStyle'] ?? 'plain', [ 'plain', 'accordion' ], true )
@@ -76,7 +77,11 @@ cw_render_filter_items( $items, $panel_atts );
 $panel_html = ob_get_clean();
 
 if ( '' !== trim( $panel_html ) ) {
-	$wrapper_attributes = get_block_wrapper_attributes( [ 'class' => 'cwgb-wc-filter-panel' ] );
+	$wrapper_extra = [ 'class' => 'cwgb-wc-filter-panel' ];
+	if ( $anchor ) {
+		$wrapper_extra['id'] = $anchor;
+	}
+	$wrapper_attributes = get_block_wrapper_attributes( $wrapper_extra );
 	echo '<div ' . $wrapper_attributes . '>'; // phpcs:ignore WordPress.Security.EscapeOutput
 	echo $panel_html; // phpcs:ignore WordPress.Security.EscapeOutput
 	echo '</div>';

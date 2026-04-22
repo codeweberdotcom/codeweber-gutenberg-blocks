@@ -6,13 +6,22 @@
 	"category": "codeweber-gutenberg-elements",
 	"icon": "share",
 	"description": "Display social network links as icons. Use theme settings or custom links.",
-	"keywords": ["social", "icons", "links", "share"],
+	"keywords": [
+		"social",
+		"icons",
+		"links",
+		"share"
+	],
 	"supports": {
 		"html": false,
 		"customClassName": true,
 		"anchor": true
 	},
 	"attributes": {
+		"anchor": {
+			"type": "string",
+			"default": ""
+		},
 		"dataSource": {
 			"type": "string",
 			"default": "theme"
@@ -48,9 +57,24 @@
 		"items": {
 			"type": "array",
 			"default": [
-				{ "id": "item-1", "icon": "facebook-f", "url": "#", "label": "Facebook" },
-				{ "id": "item-2", "icon": "twitter", "url": "#", "label": "Twitter" },
-				{ "id": "item-3", "icon": "instagram", "url": "#", "label": "Instagram" }
+				{
+					"id": "item-1",
+					"icon": "facebook-f",
+					"url": "#",
+					"label": "Facebook"
+				},
+				{
+					"id": "item-2",
+					"icon": "twitter",
+					"url": "#",
+					"label": "Twitter"
+				},
+				{
+					"id": "item-3",
+					"icon": "instagram",
+					"url": "#",
+					"label": "Instagram"
+				}
 			]
 		},
 		"blockClass": {

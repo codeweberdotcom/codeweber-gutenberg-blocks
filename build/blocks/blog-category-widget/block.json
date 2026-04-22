@@ -19,6 +19,10 @@
     "anchor": true
   },
   "attributes": {
+    "anchor": {
+      "type": "string",
+      "default": ""
+    },
     "showCount": {
       "type": "boolean",
       "default": true

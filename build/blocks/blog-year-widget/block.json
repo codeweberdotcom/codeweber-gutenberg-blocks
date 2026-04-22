@@ -20,6 +20,10 @@
     "anchor": true
   },
   "attributes": {
+    "anchor": {
+      "type": "string",
+      "default": ""
+    },
     "number": {
       "type": "number",
       "default": 12

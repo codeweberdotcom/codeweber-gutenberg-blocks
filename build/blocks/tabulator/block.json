@@ -19,6 +19,10 @@
     "anchor": true
   },
   "attributes": {
+    "anchor": {
+      "type": "string",
+      "default": ""
+    },
     "documentId": {
       "type": "number",
       "default": 0

@@ -16,6 +16,10 @@
     "anchor": true
   },
   "attributes": {
+    "anchor": {
+      "type": "string",
+      "default": ""
+    },
     "shortcode": {
       "type": "string",
       "default": ""

@@ -18,6 +18,10 @@
     "anchor": true
   },
   "attributes": {
+    "anchor": {
+      "type": "string",
+      "default": ""
+    },
     "swiperMargin": {
       "type": "string",
       "default": "30"

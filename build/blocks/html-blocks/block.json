@@ -17,6 +17,10 @@
     "anchor": true
   },
   "attributes": {
+    "anchor": {
+      "type": "string",
+      "default": ""
+    },
     "selectedBlockId": {
       "type": "number",
       "default": 0

@@ -23,10 +23,13 @@ $tabs_id            = isset( $attributes['tabsId'] ) ? $attributes['tabsId'] : '
 $tabs_class         = isset( $attributes['tabsClass'] ) ? $attributes['tabsClass'] : '';
 $tabs_data          = isset( $attributes['tabsData'] ) ? $attributes['tabsData'] : '';
 $inner_blocks_by_tab = isset( $attributes['innerBlocksByTab'] ) ? $attributes['innerBlocksByTab'] : array();
+$anchor              = isset( $attributes['anchor'] ) ? trim( (string) $attributes['anchor'] ) : '';
 
 if ( empty( $tabs_id ) ) {
 	$tabs_id = 'tabs-' . substr( md5( (string) get_the_ID() . wp_json_encode( $items ) ), 0, 8 );
 }
+
+$container_id = $anchor ?: $tabs_id;
 
 // Build nav classes
 $nav_classes = array( 'nav', 'nav-tabs' );
@@ -67,8 +70,8 @@ if ( $tabs_class ) {
 
 // Build wrapper attributes via get_block_wrapper_attributes()
 $wrapper_attrs_extra = array();
-if ( $tabs_id ) {
-	$wrapper_attrs_extra['id'] = $tabs_id;
+if ( $container_id ) {
+	$wrapper_attrs_extra['id'] = $container_id;
 }
 if ( $tabs_data ) {
 	$wrapper_attrs_extra['data-codeweber'] = $tabs_data;

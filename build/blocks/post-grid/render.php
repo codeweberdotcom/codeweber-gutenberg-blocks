@@ -963,9 +963,9 @@ if (!function_exists('render_post_grid_item')) {
 						$html_post = get_post($html_post_id);
 						if ($html_post && $html_post->post_status === 'publish') :
 						if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
-							echo '<div class="border border-secondary border-opacity-50 rounded p-2 text-secondary small">[HTML Block: ' . esc_html( $html_post->post_title ) . ']</div>';
+							echo '<div class="col-12"><div class="border border-secondary border-opacity-50 rounded p-2 text-secondary small">[HTML Block: ' . esc_html( $html_post->post_title ) . ']</div></div>';
 						} else {
-							echo do_blocks( $html_post->post_content );
+							echo '<div class="col-12">' . do_blocks( $html_post->post_content ) . '</div>';
 						}
 					endif;
 					endif;

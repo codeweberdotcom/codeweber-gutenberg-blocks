@@ -6,29 +6,45 @@
 
 import { __ } from '@wordpress/i18n';
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
-import { useMemo, useCallback } from '@wordpress/element';
+import { useMemo, useCallback, useState } from '@wordpress/element';
 import {
 	PanelBody,
 	SelectControl,
 	TextControl,
 	RangeControl,
-	ColorPicker,
+	ColorPalette,
 	TabPanel,
 	Button,
-	CheckboxControl,
 	Flex,
 	FlexItem,
 	FlexBlock,
+	BaseControl,
 	__experimentalText as Text,
 } from '@wordpress/components';
 import { chevronUp, chevronDown, trash } from '@wordpress/icons';
 import { useSelect } from '@wordpress/data';
 
+import { IconPicker } from '../../components/icon/IconPicker';
+
+const BUTTON_TYPE_OPTIONS = [
+	{ value: 'icon', label: __( 'Icon only', 'codeweber-gutenberg-blocks' ) },
+	{ value: 'button', label: __( 'Icon + text', 'codeweber-gutenberg-blocks' ) },
+];
+
+const POSITION_LABELS = {
+	'right-bottom': __( 'Bottom Right', 'codeweber-gutenberg-blocks' ),
+	'right-top': __( 'Top Right', 'codeweber-gutenberg-blocks' ),
+	'left-bottom': __( 'Bottom Left', 'codeweber-gutenberg-blocks' ),
+	'left-top': __( 'Top Left', 'codeweber-gutenberg-blocks' ),
+};
+
 export default function Edit( { attributes, setAttributes, clientId } ) {
 	const {
 		items,
 		position,
-		buttonType,
+		buttonTypeDesktop,
+		buttonTypeTablet,
+		buttonTypeMobile,
 		buttonText,
 		buttonIcon,
 		buttonColor,
@@ -42,81 +58,72 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 		offsetYMobile,
 	} = attributes;
 
+	const [ isIconPickerOpen, setIsIconPickerOpen ] = useState( false );
+
 	const blockProps = useBlockProps( {
 		className: 'cwgb-floating-navigator-editor',
 	} );
 
-	// Get all blocks on the page that have an anchor set
-	const pageBlocks = useSelect( ( select ) => {
-		const allBlocks = select( 'core/block-editor' ).getBlocks();
-		const flatBlocks = [];
-		const flatten = ( blocks ) => {
-			blocks.forEach( ( block ) => {
-				if ( block.clientId !== clientId ) {
-					flatBlocks.push( block );
-				}
-				if ( block.innerBlocks && block.innerBlocks.length ) {
-					flatten( block.innerBlocks );
-				}
-			} );
-		};
-		flatten( allBlocks );
-		return flatBlocks;
-	}, [ clientId ] );
+	// All blocks on the page that have an anchor
+	const anchoredBlocks = useSelect(
+		( select ) => {
+			const allBlocks = select( 'core/block-editor' ).getBlocks();
+			const result = [];
+			const flatten = ( blocks ) => {
+				blocks.forEach( ( block ) => {
+					if ( block.clientId !== clientId && block.attributes?.anchor ) {
+						result.push( block );
+					}
+					if ( block.innerBlocks?.length ) {
+						flatten( block.innerBlocks );
+					}
+				} );
+			};
+			flatten( allBlocks );
+			return result;
+		},
+		[ clientId ]
+	);
 
-	const anchoredBlocks = useMemo( () => {
-		return pageBlocks.filter(
-			( block ) => block.attributes && block.attributes.anchor
-		);
-	}, [ pageBlocks ] );
+	const selectedAnchors = useMemo(
+		() => new Set( items.map( ( i ) => i.anchor ) ),
+		[ items ]
+	);
 
-	// Toggle item selection
 	const toggleItem = useCallback(
 		( block ) => {
 			const anchor = block.attributes.anchor;
-			const label =
-				block.attributes.content ||
-				block.attributes.text ||
-				block.attributes.title ||
-				block.name.replace( 'codeweber-blocks/', '' );
-			const exists = items.some( ( i ) => i.anchor === anchor );
-			if ( exists ) {
-				setAttributes( {
-					items: items.filter( ( i ) => i.anchor !== anchor ),
-				} );
+			if ( selectedAnchors.has( anchor ) ) {
+				setAttributes( { items: items.filter( ( i ) => i.anchor !== anchor ) } );
 			} else {
+				const rawLabel =
+					block.attributes.content ||
+					block.attributes.text ||
+					block.attributes.title ||
+					anchor;
+				const label =
+					typeof rawLabel === 'string'
+						? rawLabel.replace( /<[^>]+>/g, '' ).substring( 0, 60 )
+						: anchor;
 				setAttributes( {
-					items: [
-						...items,
-						{
-							anchor,
-							label:
-								typeof label === 'string'
-									? label.replace( /<[^>]+>/g, '' ).substring( 0, 60 )
-									: anchor,
-							clientId: block.clientId,
-						},
-					],
+					items: [ ...items, { anchor, label, clientId: block.clientId } ],
 				} );
 			}
 		},
-		[ items, setAttributes ]
+		[ items, selectedAnchors, setAttributes ]
 	);
 
 	const updateItemLabel = useCallback(
 		( idx, label ) => {
-			const updated = items.map( ( item, i ) =>
-				i === idx ? { ...item, label } : item
-			);
-			setAttributes( { items: updated } );
+			setAttributes( {
+				items: items.map( ( item, i ) => ( i === idx ? { ...item, label } : item ) ),
+			} );
 		},
 		[ items, setAttributes ]
 	);
 
 	const removeItem = useCallback(
-		( idx ) => {
-			setAttributes( { items: items.filter( ( _, i ) => i !== idx ) } );
-		},
+		( idx ) => setAttributes( { items: items.filter( ( _, i ) => i !== idx ) } ),
 		[ items, setAttributes ]
 	);
 
@@ -132,131 +139,139 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 		[ items, setAttributes ]
 	);
 
-	const selectedAnchors = useMemo(
-		() => new Set( items.map( ( i ) => i.anchor ) ),
-		[ items ]
-	);
-
-	const positionLabels = {
-		'right-bottom': __( 'Bottom Right', 'codeweber-gutenberg-blocks' ),
-		'right-top': __( 'Top Right', 'codeweber-gutenberg-blocks' ),
-		'left-bottom': __( 'Bottom Left', 'codeweber-gutenberg-blocks' ),
-		'left-top': __( 'Top Left', 'codeweber-gutenberg-blocks' ),
-	};
+	// Find label for a selected item (may have been manually edited)
+	const getItemForAnchor = ( anchor ) => items.find( ( i ) => i.anchor === anchor );
 
 	return (
 		<>
 			<InspectorControls>
-				{ /* === CONTENT PANEL === */ }
+
+				{ /* ── CONTENT ── */ }
 				<PanelBody
 					title={ __( 'Content', 'codeweber-gutenberg-blocks' ) }
 					initialOpen={ true }
 				>
-					<p style={ { fontSize: 12, color: '#757575', marginBottom: 8 } }>
-						{ __(
-							'Select blocks with anchors to include in the navigation. Set an anchor in each block\'s Advanced settings.',
-							'codeweber-gutenberg-blocks'
-						) }
-					</p>
-
 					{ anchoredBlocks.length === 0 ? (
-						<p style={ { fontSize: 12, color: '#b0b0b0', fontStyle: 'italic' } }>
+						<p style={ { fontSize: 12, color: '#b0b0b0', fontStyle: 'italic', margin: 0 } }>
 							{ __(
-								'No blocks with anchors found on this page.',
+								'No blocks with anchors on this page. Set an anchor in Advanced settings of any block.',
 								'codeweber-gutenberg-blocks'
 							) }
 						</p>
 					) : (
-						<div style={ { marginBottom: 16 } }>
+						<>
 							<Text
 								size={ 11 }
 								upperCase
 								weight={ 600 }
-								style={ { color: '#757575', display: 'block', marginBottom: 6 } }
+								style={ { color: '#757575', display: 'block', marginBottom: 8 } }
 							>
-								{ __( 'Available blocks', 'codeweber-gutenberg-blocks' ) }
+								{ __( 'Select blocks', 'codeweber-gutenberg-blocks' ) }
 							</Text>
-							{ anchoredBlocks.map( ( block ) => (
-								<CheckboxControl
-									key={ block.clientId }
-									label={ `#${ block.attributes.anchor } (${ block.name.replace( 'codeweber-blocks/', '' ) })` }
-									checked={ selectedAnchors.has( block.attributes.anchor ) }
-									onChange={ () => toggleItem( block ) }
-								/>
-							) ) }
-						</div>
-					) }
 
-					{ items.length > 0 && (
-						<div>
-							<Text
-								size={ 11 }
-								upperCase
-								weight={ 600 }
-								style={ { color: '#757575', display: 'block', marginBottom: 6 } }
-							>
-								{ __( 'Order & Labels', 'codeweber-gutenberg-blocks' ) }
-							</Text>
-							{ items.map( ( item, idx ) => (
-								<div
-									key={ item.anchor }
-									style={ {
-										border: '1px solid #ddd',
-										borderRadius: 4,
-										padding: '8px 10px',
-										marginBottom: 6,
-										background: '#fafafa',
-									} }
-								>
-									<Flex align="center" gap={ 2 }>
-										<FlexItem>
-											<Flex direction="column" gap={ 1 }>
-												<Button
-													icon={ chevronUp }
-													isSmall
-													disabled={ idx === 0 }
-													onClick={ () => moveItem( idx, -1 ) }
-													label={ __( 'Move up', 'codeweber-gutenberg-blocks' ) }
+							{ anchoredBlocks.map( ( block ) => {
+								const anchor = block.attributes.anchor;
+								const isSelected = selectedAnchors.has( anchor );
+								const item = getItemForAnchor( anchor );
+								const itemIdx = items.findIndex( ( i ) => i.anchor === anchor );
+
+								return (
+									<div
+										key={ block.clientId }
+										style={ {
+											border: `1px solid ${ isSelected ? '#007cba' : '#ddd' }`,
+											borderRadius: 4,
+											padding: '8px 10px',
+											marginBottom: 6,
+											background: isSelected ? '#f0f7fb' : '#fafafa',
+										} }
+									>
+										<Flex align="center" gap={ 2 }>
+											{ /* Checkbox */ }
+											<FlexItem>
+												<input
+													type="checkbox"
+													id={ `fn-block-${ block.clientId }` }
+													checked={ isSelected }
+													onChange={ () => toggleItem( block ) }
+													style={ { marginTop: 2 } }
 												/>
-												<Button
-													icon={ chevronDown }
-													isSmall
-													disabled={ idx === items.length - 1 }
-													onClick={ () => moveItem( idx, 1 ) }
-													label={ __( 'Move down', 'codeweber-gutenberg-blocks' ) }
-												/>
-											</Flex>
-										</FlexItem>
-										<FlexBlock>
-											<TextControl
-												value={ item.label }
-												onChange={ ( val ) => updateItemLabel( idx, val ) }
-												placeholder={ item.anchor }
-												hideLabelFromVision
-												label={ __( 'Label', 'codeweber-gutenberg-blocks' ) }
-												__nextHasNoMarginBottom
-											/>
-											<Text size={ 10 } style={ { color: '#aaa', display: 'block' } }>
-												#{ item.anchor }
-											</Text>
-										</FlexBlock>
-										<FlexItem>
-											<Button
-												icon={ trash }
-												isSmall
-												isDestructive
-												onClick={ () => removeItem( idx ) }
-												label={ __( 'Remove', 'codeweber-gutenberg-blocks' ) }
-											/>
-										</FlexItem>
-									</Flex>
-								</div>
-							) ) }
-						</div>
+											</FlexItem>
+
+											{ /* Anchor label + text input */ }
+											<FlexBlock>
+												<label
+													htmlFor={ `fn-block-${ block.clientId }` }
+													style={ {
+														fontSize: 11,
+														color: '#555',
+														display: 'block',
+														marginBottom: isSelected ? 4 : 0,
+														cursor: 'pointer',
+													} }
+												>
+													<code style={ { fontSize: 11 } }>#{ anchor }</code>
+													{ ' ' }
+													<span style={ { color: '#999' } }>
+														{ block.name.replace( 'codeweber-blocks/', '' ) }
+													</span>
+												</label>
+
+												{ isSelected && (
+													<TextControl
+														value={ item?.label || '' }
+														onChange={ ( val ) => updateItemLabel( itemIdx, val ) }
+														placeholder={ anchor }
+														hideLabelFromVision
+														label={ __( 'Label', 'codeweber-gutenberg-blocks' ) }
+														__nextHasNoMarginBottom
+													/>
+												) }
+											</FlexBlock>
+
+											{ /* Reorder buttons (only when selected) */ }
+											{ isSelected && (
+												<FlexItem>
+													<Flex direction="column" gap={ 1 }>
+														<Button
+															icon={ chevronUp }
+															isSmall
+															disabled={ itemIdx === 0 }
+															onClick={ () => moveItem( itemIdx, -1 ) }
+															label={ __( 'Move up', 'codeweber-gutenberg-blocks' ) }
+														/>
+														<Button
+															icon={ chevronDown }
+															isSmall
+															disabled={ itemIdx === items.length - 1 }
+															onClick={ () => moveItem( itemIdx, 1 ) }
+															label={ __( 'Move down', 'codeweber-gutenberg-blocks' ) }
+														/>
+													</Flex>
+												</FlexItem>
+											) }
+
+											{ /* Remove */ }
+											{ isSelected && (
+												<FlexItem>
+													<Button
+														icon={ trash }
+														isSmall
+														isDestructive
+														onClick={ () => removeItem( itemIdx ) }
+														label={ __( 'Remove', 'codeweber-gutenberg-blocks' ) }
+													/>
+												</FlexItem>
+											) }
+										</Flex>
+									</div>
+								);
+							} ) }
+						</>
 					) }
 				</PanelBody>
 
-				{ /* === APPEARANCE PANEL === */ }
+				{ /* ── APPEARANCE ── */ }
 				<PanelBody
 					title={ __( 'Appearance', 'codeweber-gutenberg-blocks' ) }
 					initialOpen={ false }
@@ -264,41 +279,107 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 					<SelectControl
 						label={ __( 'Position', 'codeweber-gutenberg-blocks' ) }
 						value={ position }
-						options={ Object.entries( positionLabels ).map( ( [ value, label ] ) => ( {
+						options={ Object.entries( POSITION_LABELS ).map( ( [ value, label ] ) => ( {
 							value,
 							label,
 						} ) ) }
 						onChange={ ( val ) => setAttributes( { position: val } ) }
 						__nextHasNoMarginBottom
 					/>
-					<SelectControl
+
+					{ /* Icon picker */ }
+					<BaseControl
+						label={ __( 'Button icon', 'codeweber-gutenberg-blocks' ) }
+						__nextHasNoMarginBottom
+					>
+						<Flex align="center" gap={ 2 } style={ { marginTop: 4 } }>
+							<FlexItem>
+								<span
+									style={ {
+										display: 'inline-flex',
+										alignItems: 'center',
+										justifyContent: 'center',
+										width: 36,
+										height: 36,
+										border: '1px solid #ddd',
+										borderRadius: 4,
+										background: '#f8f8f8',
+										fontSize: 20,
+									} }
+								>
+									<i className={ `uil uil-${ buttonIcon }` } />
+								</span>
+							</FlexItem>
+							<FlexItem>
+								<Button
+									variant="secondary"
+									isSmall
+									onClick={ () => setIsIconPickerOpen( true ) }
+								>
+									{ __( 'Select icon', 'codeweber-gutenberg-blocks' ) }
+								</Button>
+							</FlexItem>
+						</Flex>
+					</BaseControl>
+
+					<IconPicker
+						isOpen={ isIconPickerOpen }
+						onClose={ () => setIsIconPickerOpen( false ) }
+						onSelect={ ( selection ) => {
+							if ( selection.iconName ) {
+								setAttributes( { buttonIcon: selection.iconName } );
+							}
+						} }
+						selectedIcon={ buttonIcon }
+						selectedType="font"
+						initialTab="font"
+						allowFont={ true }
+						allowSvgLineal={ false }
+						allowSvgSolid={ false }
+					/>
+
+					{ /* Button type per device */ }
+					<BaseControl
 						label={ __( 'Button type', 'codeweber-gutenberg-blocks' ) }
-						value={ buttonType }
-						options={ [
-							{
-								value: 'icon',
-								label: __( 'Icon only', 'codeweber-gutenberg-blocks' ),
-							},
-							{
-								value: 'button',
-								label: __( 'Icon + text', 'codeweber-gutenberg-blocks' ),
-							},
-						] }
-						onChange={ ( val ) => setAttributes( { buttonType: val } ) }
 						__nextHasNoMarginBottom
-					/>
-					<TextControl
-						label={ __( 'Button icon (Unicons class)', 'codeweber-gutenberg-blocks' ) }
-						value={ buttonIcon }
-						onChange={ ( val ) => setAttributes( { buttonIcon: val } ) }
-						placeholder="list-ul"
-						help={ __(
-							'Unicons class without "uil-" prefix, e.g. list-ul, compass, map',
-							'codeweber-gutenberg-blocks'
-						) }
-						__nextHasNoMarginBottom
-					/>
-					{ buttonType === 'button' && (
+					>
+						<TabPanel
+							tabs={ [
+								{ name: 'desktop', title: __( 'Desktop', 'codeweber-gutenberg-blocks' ) },
+								{ name: 'tablet', title: __( 'Tablet', 'codeweber-gutenberg-blocks' ) },
+								{ name: 'mobile', title: __( 'Mobile', 'codeweber-gutenberg-blocks' ) },
+							] }
+						>
+							{ ( tab ) => {
+								const attrMap = {
+									desktop: 'buttonTypeDesktop',
+									tablet: 'buttonTypeTablet',
+									mobile: 'buttonTypeMobile',
+								};
+								const valueMap = {
+									desktop: buttonTypeDesktop,
+									tablet: buttonTypeTablet,
+									mobile: buttonTypeMobile,
+								};
+								return (
+									<SelectControl
+										value={ valueMap[ tab.name ] }
+										options={ BUTTON_TYPE_OPTIONS }
+										onChange={ ( val ) =>
+											setAttributes( { [ attrMap[ tab.name ] ]: val } )
+										}
+										hideLabelFromVision
+										label={ __( 'Type', 'codeweber-gutenberg-blocks' ) }
+										__nextHasNoMarginBottom
+									/>
+								);
+							} }
+						</TabPanel>
+					</BaseControl>
+
+					{ ( buttonTypeDesktop === 'button' ||
+						buttonTypeTablet === 'button' ||
+						buttonTypeMobile === 'button' ) && (
 						<TextControl
 							label={ __( 'Button text', 'codeweber-gutenberg-blocks' ) }
 							value={ buttonText }
@@ -306,6 +387,7 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 							__nextHasNoMarginBottom
 						/>
 					) }
+
 					<SelectControl
 						label={ __( 'Button color', 'codeweber-gutenberg-blocks' ) }
 						value={ buttonColor }
@@ -324,44 +406,36 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 					/>
 				</PanelBody>
 
-				{ /* === COLORS PANEL === */ }
+				{ /* ── POPUP COLORS ── */ }
 				<PanelBody
 					title={ __( 'Popup Colors', 'codeweber-gutenberg-blocks' ) }
 					initialOpen={ false }
 				>
-					<div>
-						<Text
-							size={ 12 }
-							weight={ 600 }
-							style={ { display: 'block', marginBottom: 8 } }
-						>
-							{ __( 'Popup background', 'codeweber-gutenberg-blocks' ) }
-						</Text>
-						<ColorPicker
-							color={ popupBgColor }
-							onChange={ ( val ) => setAttributes( { popupBgColor: val } ) }
-							enableAlpha
-							defaultValue="#ffffff"
+					<BaseControl
+						label={ __( 'Background', 'codeweber-gutenberg-blocks' ) }
+						__nextHasNoMarginBottom
+					>
+						<ColorPalette
+							value={ popupBgColor }
+							onChange={ ( val ) => setAttributes( { popupBgColor: val || '#ffffff' } ) }
+							enableAlpha={ false }
 						/>
-					</div>
-					<div style={ { marginTop: 16 } }>
-						<Text
-							size={ 12 }
-							weight={ 600 }
-							style={ { display: 'block', marginBottom: 8 } }
-						>
-							{ __( 'Popup text color', 'codeweber-gutenberg-blocks' ) }
-						</Text>
-						<ColorPicker
-							color={ popupTextColor }
-							onChange={ ( val ) => setAttributes( { popupTextColor: val } ) }
-							enableAlpha
-							defaultValue="#212529"
+					</BaseControl>
+
+					<BaseControl
+						label={ __( 'Text color', 'codeweber-gutenberg-blocks' ) }
+						__nextHasNoMarginBottom
+						style={ { marginTop: 12 } }
+					>
+						<ColorPalette
+							value={ popupTextColor }
+							onChange={ ( val ) => setAttributes( { popupTextColor: val || '#212529' } ) }
+							enableAlpha={ false }
 						/>
-					</div>
+					</BaseControl>
 				</PanelBody>
 
-				{ /* === OFFSETS PANEL === */ }
+				{ /* ── OFFSETS ── */ }
 				<PanelBody
 					title={ __( 'Offsets', 'codeweber-gutenberg-blocks' ) }
 					initialOpen={ false }
@@ -374,76 +448,26 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 						] }
 					>
 						{ ( tab ) => {
-							if ( tab.name === 'desktop' ) {
-								return (
-									<>
-										<RangeControl
-											label={ __( 'Horizontal offset (px)', 'codeweber-gutenberg-blocks' ) }
-											value={ offsetXDesktop }
-											onChange={ ( val ) =>
-												setAttributes( { offsetXDesktop: val } )
-											}
-											min={ 0 }
-											max={ 120 }
-											__nextHasNoMarginBottom
-										/>
-										<RangeControl
-											label={ __( 'Vertical offset (px)', 'codeweber-gutenberg-blocks' ) }
-											value={ offsetYDesktop }
-											onChange={ ( val ) =>
-												setAttributes( { offsetYDesktop: val } )
-											}
-											min={ 0 }
-											max={ 200 }
-											__nextHasNoMarginBottom
-										/>
-									</>
-								);
-							}
-							if ( tab.name === 'tablet' ) {
-								return (
-									<>
-										<RangeControl
-											label={ __( 'Horizontal offset (px)', 'codeweber-gutenberg-blocks' ) }
-											value={ offsetXTablet }
-											onChange={ ( val ) =>
-												setAttributes( { offsetXTablet: val } )
-											}
-											min={ 0 }
-											max={ 120 }
-											__nextHasNoMarginBottom
-										/>
-										<RangeControl
-											label={ __( 'Vertical offset (px)', 'codeweber-gutenberg-blocks' ) }
-											value={ offsetYTablet }
-											onChange={ ( val ) =>
-												setAttributes( { offsetYTablet: val } )
-											}
-											min={ 0 }
-											max={ 200 }
-											__nextHasNoMarginBottom
-										/>
-									</>
-								);
-							}
+							const map = {
+								desktop: { x: offsetXDesktop, y: offsetYDesktop, xAttr: 'offsetXDesktop', yAttr: 'offsetYDesktop' },
+								tablet:  { x: offsetXTablet,  y: offsetYTablet,  xAttr: 'offsetXTablet',  yAttr: 'offsetYTablet'  },
+								mobile:  { x: offsetXMobile,  y: offsetYMobile,  xAttr: 'offsetXMobile',  yAttr: 'offsetYMobile'  },
+							};
+							const { x, y, xAttr, yAttr } = map[ tab.name ];
 							return (
 								<>
 									<RangeControl
 										label={ __( 'Horizontal offset (px)', 'codeweber-gutenberg-blocks' ) }
-										value={ offsetXMobile }
-										onChange={ ( val ) =>
-											setAttributes( { offsetXMobile: val } )
-										}
+										value={ x }
+										onChange={ ( val ) => setAttributes( { [ xAttr ]: val } ) }
 										min={ 0 }
 										max={ 120 }
 										__nextHasNoMarginBottom
 									/>
 									<RangeControl
 										label={ __( 'Vertical offset (px)', 'codeweber-gutenberg-blocks' ) }
-										value={ offsetYMobile }
-										onChange={ ( val ) =>
-											setAttributes( { offsetYMobile: val } )
-										}
+										value={ y }
+										onChange={ ( val ) => setAttributes( { [ yAttr ]: val } ) }
 										min={ 0 }
 										max={ 200 }
 										__nextHasNoMarginBottom
@@ -453,6 +477,7 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 						} }
 					</TabPanel>
 				</PanelBody>
+
 			</InspectorControls>
 
 			<div { ...blockProps }>
@@ -461,15 +486,16 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 						className={ `cwgb-floating-navigator-editor__btn btn btn-${ buttonColor } btn-circle` }
 					>
 						<i className={ `uil uil-${ buttonIcon }` } />
-						{ buttonType === 'button' && (
+						{ buttonTypeDesktop === 'button' && (
 							<span style={ { marginLeft: 6 } }>{ buttonText }</span>
 						) }
 					</span>
 					<span className="cwgb-floating-navigator-editor__meta">
 						{ __( 'Floating Navigator', 'codeweber-gutenberg-blocks' ) }
 						{ ' — ' }
-						{ positionLabels[ position ] }
-						{ items.length > 0 && ` · ${ items.length } ${ __( 'items', 'codeweber-gutenberg-blocks' ) }` }
+						{ POSITION_LABELS[ position ] }
+						{ items.length > 0 &&
+							` · ${ items.length } ${ __( 'items', 'codeweber-gutenberg-blocks' ) }` }
 					</span>
 				</div>
 			</div>

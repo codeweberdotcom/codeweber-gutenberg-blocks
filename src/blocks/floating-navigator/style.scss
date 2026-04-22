@@ -27,6 +27,7 @@
 		top: var(--fn-offset-y-desktop);
 	}
 
+	// Tablet (≤ 991px)
 	@media (max-width: 991.98px) {
 		&[data-position='right-bottom'] {
 			right: var(--fn-offset-x-tablet);
@@ -49,6 +50,7 @@
 		}
 	}
 
+	// Mobile (≤ 575px)
 	@media (max-width: 575.98px) {
 		&[data-position='right-bottom'] {
 			right: var(--fn-offset-x-mobile);
@@ -72,6 +74,7 @@
 	}
 }
 
+// ── Trigger button ──────────────────────────────────────────
 .cwgb-floating-nav__trigger {
 	position: relative;
 	z-index: 2;
@@ -87,14 +90,42 @@
 		transform: translateY(-1px);
 	}
 
-	&[aria-expanded='true'] {
-		.uil {
-			transform: rotate(90deg);
-		}
+	&[aria-expanded='true'] .uil {
+		transform: rotate(90deg);
 	}
 
 	.uil {
 		transition: transform 0.25s ease;
+	}
+}
+
+// ── Button text — per-device visibility ─────────────────────
+// Text is always in the DOM; CSS shows/hides per breakpoint via data-attributes on the wrapper.
+
+// Desktop (≥ 992px): hide if icon-only
+.cwgb-floating-nav[data-btn-type-desktop='icon'] .cwgb-floating-nav__trigger-text {
+	display: none;
+}
+
+// Tablet (≤ 991px)
+@media (max-width: 991.98px) {
+	.cwgb-floating-nav[data-btn-type-tablet='button'] .cwgb-floating-nav__trigger-text {
+		display: inline;
+	}
+
+	.cwgb-floating-nav[data-btn-type-tablet='icon'] .cwgb-floating-nav__trigger-text {
+		display: none;
+	}
+}
+
+// Mobile (≤ 575px)
+@media (max-width: 575.98px) {
+	.cwgb-floating-nav[data-btn-type-mobile='button'] .cwgb-floating-nav__trigger-text {
+		display: inline;
+	}
+
+	.cwgb-floating-nav[data-btn-type-mobile='icon'] .cwgb-floating-nav__trigger-text {
+		display: none;
 	}
 }
 
@@ -103,6 +134,7 @@
 	font-weight: 500;
 }
 
+// ── Popup ────────────────────────────────────────────────────
 .cwgb-floating-nav__popup {
 	position: absolute;
 	min-width: 200px;
@@ -114,15 +146,14 @@
 	padding: 8px 0;
 	opacity: 0;
 	pointer-events: none;
-	transform: scale(0.92) translateY(8px);
-	transform-origin: bottom center;
-	transition: opacity 0.2s ease, transform 0.2s ease;
 	z-index: 3;
 
-	// Popup above trigger
+	// Default: popup above trigger, centred horizontally
 	bottom: calc(100% + 10px);
 	left: 50%;
 	transform: translateX(-50%) scale(0.92) translateY(8px);
+	transform-origin: bottom center;
+	transition: opacity 0.2s ease, transform 0.2s ease;
 
 	&.is-open {
 		opacity: 1;
@@ -130,7 +161,7 @@
 		transform: translateX(-50%) scale(1) translateY(0);
 	}
 
-	// Adjust for top-positioned widgets: popup appears below
+	// Top-positioned widgets: popup appears below
 	.cwgb-floating-nav[data-position$='-top'] & {
 		bottom: auto;
 		top: calc(100% + 10px);
@@ -142,7 +173,7 @@
 		}
 	}
 
-	// Keep popup within left edge for left-positioned widgets
+	// Left-aligned: anchor popup to left edge of button
 	.cwgb-floating-nav[data-position^='left-'] & {
 		left: 0;
 		transform: scale(0.92) translateY(8px);
@@ -163,6 +194,7 @@
 	}
 }
 
+// ── Popup items ──────────────────────────────────────────────
 .cwgb-floating-nav__item {
 	display: block;
 	padding: 9px 18px;

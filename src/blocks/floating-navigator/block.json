@@ -24,7 +24,15 @@
 			"type": "string",
 			"default": "right-bottom"
 		},
-		"buttonType": {
+		"buttonTypeDesktop": {
+			"type": "string",
+			"default": "button"
+		},
+		"buttonTypeTablet": {
+			"type": "string",
+			"default": "icon"
+		},
+		"buttonTypeMobile": {
 			"type": "string",
 			"default": "icon"
 		},
@@ -35,6 +43,10 @@
 		"buttonIcon": {
 			"type": "string",
 			"default": "list-ul"
+		},
+		"buttonIconType": {
+			"type": "string",
+			"default": "font"
 		},
 		"buttonColor": {
 			"type": "string",

@@ -14,7 +14,7 @@
 	},
 	"textdomain": "codeweber-gutenberg-blocks",
 	"editorScript": "file:./index.js",
-	"editorStyle": "file:./editor.scss",
+	"editorStyle": "file:./index.css",
 	"style": "file:./style.scss",
 	"viewScript": "file:./view.js",
 	"render": "file:./render.php",

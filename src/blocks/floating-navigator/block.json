@@ -1,0 +1,81 @@
+{
+	"apiVersion": 3,
+	"name": "codeweber-blocks/floating-navigator",
+	"version": "0.1.0",
+	"title": "Floating Navigator",
+	"category": "codeweber-gutenberg-elements",
+	"icon": "list-view",
+	"description": "Floating widget with a popup list of anchor links to page sections. Click to scroll smoothly.",
+	"keywords": ["floating", "navigation", "anchor", "scroll", "toc"],
+	"supports": {
+		"html": false,
+		"customClassName": false,
+		"anchor": false
+	},
+	"attributes": {
+		"items": {
+			"type": "array",
+			"default": [],
+			"items": {
+				"type": "object"
+			}
+		},
+		"position": {
+			"type": "string",
+			"default": "right-bottom"
+		},
+		"buttonType": {
+			"type": "string",
+			"default": "icon"
+		},
+		"buttonText": {
+			"type": "string",
+			"default": "Navigation"
+		},
+		"buttonIcon": {
+			"type": "string",
+			"default": "list-ul"
+		},
+		"buttonColor": {
+			"type": "string",
+			"default": "primary"
+		},
+		"popupBgColor": {
+			"type": "string",
+			"default": "#ffffff"
+		},
+		"popupTextColor": {
+			"type": "string",
+			"default": "#212529"
+		},
+		"offsetXDesktop": {
+			"type": "number",
+			"default": 24
+		},
+		"offsetYDesktop": {
+			"type": "number",
+			"default": 24
+		},
+		"offsetXTablet": {
+			"type": "number",
+			"default": 16
+		},
+		"offsetYTablet": {
+			"type": "number",
+			"default": 16
+		},
+		"offsetXMobile": {
+			"type": "number",
+			"default": 12
+		},
+		"offsetYMobile": {
+			"type": "number",
+			"default": 12
+		}
+	},
+	"textdomain": "codeweber-gutenberg-blocks",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"render": "file:./render.php"
+}

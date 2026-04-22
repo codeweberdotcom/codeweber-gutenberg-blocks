@@ -1,0 +1,185 @@
+/**
+ * Floating Navigator Block - Frontend styles
+ */
+
+.cwgb-floating-nav {
+	position: fixed;
+	z-index: 1050;
+
+	// Position variants via data-attribute
+	&[data-position='right-bottom'] {
+		right: var(--fn-offset-x-desktop);
+		bottom: var(--fn-offset-y-desktop);
+	}
+
+	&[data-position='right-top'] {
+		right: var(--fn-offset-x-desktop);
+		top: var(--fn-offset-y-desktop);
+	}
+
+	&[data-position='left-bottom'] {
+		left: var(--fn-offset-x-desktop);
+		bottom: var(--fn-offset-y-desktop);
+	}
+
+	&[data-position='left-top'] {
+		left: var(--fn-offset-x-desktop);
+		top: var(--fn-offset-y-desktop);
+	}
+
+	@media (max-width: 991.98px) {
+		&[data-position='right-bottom'] {
+			right: var(--fn-offset-x-tablet);
+			bottom: var(--fn-offset-y-tablet);
+		}
+
+		&[data-position='right-top'] {
+			right: var(--fn-offset-x-tablet);
+			top: var(--fn-offset-y-tablet);
+		}
+
+		&[data-position='left-bottom'] {
+			left: var(--fn-offset-x-tablet);
+			bottom: var(--fn-offset-y-tablet);
+		}
+
+		&[data-position='left-top'] {
+			left: var(--fn-offset-x-tablet);
+			top: var(--fn-offset-y-tablet);
+		}
+	}
+
+	@media (max-width: 575.98px) {
+		&[data-position='right-bottom'] {
+			right: var(--fn-offset-x-mobile);
+			bottom: var(--fn-offset-y-mobile);
+		}
+
+		&[data-position='right-top'] {
+			right: var(--fn-offset-x-mobile);
+			top: var(--fn-offset-y-mobile);
+		}
+
+		&[data-position='left-bottom'] {
+			left: var(--fn-offset-x-mobile);
+			bottom: var(--fn-offset-y-mobile);
+		}
+
+		&[data-position='left-top'] {
+			left: var(--fn-offset-x-mobile);
+			top: var(--fn-offset-y-mobile);
+		}
+	}
+}
+
+.cwgb-floating-nav__trigger {
+	position: relative;
+	z-index: 2;
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	white-space: nowrap;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+	&:hover {
+		box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28);
+		transform: translateY(-1px);
+	}
+
+	&[aria-expanded='true'] {
+		.uil {
+			transform: rotate(90deg);
+		}
+	}
+
+	.uil {
+		transition: transform 0.25s ease;
+	}
+}
+
+.cwgb-floating-nav__trigger-text {
+	font-size: 0.875rem;
+	font-weight: 500;
+}
+
+.cwgb-floating-nav__popup {
+	position: absolute;
+	min-width: 200px;
+	max-width: 280px;
+	background: var(--fn-popup-bg, #fff);
+	color: var(--fn-popup-text, #212529);
+	border-radius: 8px;
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+	padding: 8px 0;
+	opacity: 0;
+	pointer-events: none;
+	transform: scale(0.92) translateY(8px);
+	transform-origin: bottom center;
+	transition: opacity 0.2s ease, transform 0.2s ease;
+	z-index: 3;
+
+	// Popup above trigger
+	bottom: calc(100% + 10px);
+	left: 50%;
+	transform: translateX(-50%) scale(0.92) translateY(8px);
+
+	&.is-open {
+		opacity: 1;
+		pointer-events: auto;
+		transform: translateX(-50%) scale(1) translateY(0);
+	}
+
+	// Adjust for top-positioned widgets: popup appears below
+	.cwgb-floating-nav[data-position$='-top'] & {
+		bottom: auto;
+		top: calc(100% + 10px);
+		transform: translateX(-50%) scale(0.92) translateY(-8px);
+		transform-origin: top center;
+
+		&.is-open {
+			transform: translateX(-50%) scale(1) translateY(0);
+		}
+	}
+
+	// Keep popup within left edge for left-positioned widgets
+	.cwgb-floating-nav[data-position^='left-'] & {
+		left: 0;
+		transform: scale(0.92) translateY(8px);
+		transform-origin: bottom left;
+
+		&.is-open {
+			transform: scale(1) translateY(0);
+		}
+	}
+
+	.cwgb-floating-nav[data-position='left-top'] & {
+		transform: scale(0.92) translateY(-8px);
+		transform-origin: top left;
+
+		&.is-open {
+			transform: scale(1) translateY(0);
+		}
+	}
+}
+
+.cwgb-floating-nav__item {
+	display: block;
+	padding: 9px 18px;
+	color: var(--fn-popup-text, #212529);
+	text-decoration: none;
+	font-size: 0.9rem;
+	line-height: 1.3;
+	transition: background 0.15s ease, padding-left 0.15s ease;
+
+	&:hover {
+		background: rgba(0, 0, 0, 0.05);
+		padding-left: 22px;
+		color: var(--fn-popup-text, #212529);
+		text-decoration: none;
+	}
+
+	& + & {
+		border-top: 1px solid rgba(0, 0, 0, 0.06);
+	}
+}

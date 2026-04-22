@@ -306,6 +306,7 @@ class Plugin {
 		'top-header',
 		'wc-filter-panel',
 		'copyright',
+		'floating-navigator',
 	];
 	}
 

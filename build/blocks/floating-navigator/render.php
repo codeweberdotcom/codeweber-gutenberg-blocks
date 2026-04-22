@@ -123,7 +123,7 @@ $anchor_ids = array_filter( array_column( $items, 'anchor' ) );
 			?>
 			<a
 				href="#<?php echo esc_attr( $item['anchor'] ); ?>"
-				class="cwgb-floating-nav__item nav-link text-reset scroll px-6 py-2"
+				class="cwgb-floating-nav__item nav-link text-reset px-6 py-2"
 				data-anchor="<?php echo esc_attr( $item['anchor'] ); ?>"
 			><?php echo esc_html( $label ); ?></a>
 		<?php endforeach; ?>
@@ -183,11 +183,21 @@ $anchor_ids = array_filter( array_column( $items, 'anchor' ) );
 
 		function getHeaderHeight() {
 			var navbar = document.querySelector( '.navbar-clone.navbar-stick, .navbar.fixed' );
-			return navbar ? navbar.offsetHeight + 60 : 60;
+			return navbar ? navbar.offsetHeight + 20 : 20;
 		}
 
+		// Smooth scroll on click (using getElementById — works with any ID format)
+		links.forEach( function ( link ) {
+			link.addEventListener( 'click', function ( e ) {
+				e.preventDefault();
+				var target = document.getElementById( this.getAttribute( 'data-anchor' ) );
+				if ( ! target ) return;
+				scroll( { top: Math.max( 0, target.offsetTop - getHeaderHeight() ), behavior: 'smooth' } );
+			} );
+		} );
+
 		function updateActive() {
-			var threshold = getHeaderHeight();
+			var threshold = getHeaderHeight() + 40;
 			var found = null;
 			anchors.forEach( function ( id ) {
 				var el = document.getElementById( id );

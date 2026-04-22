@@ -962,10 +962,11 @@ if (!function_exists('render_post_grid_item')) {
 					if ($html_post_id > 0) :
 						$html_post = get_post($html_post_id);
 						if ($html_post && $html_post->post_status === 'publish') :
+						$html_col_class = !empty( $col_classes ) ? $col_classes : 'col';
 						if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
-							echo '<div class="col-12"><div class="border border-secondary border-opacity-50 rounded p-2 text-secondary small">[HTML Block: ' . esc_html( $html_post->post_title ) . ']</div></div>';
+							echo '<div class="' . esc_attr( $html_col_class ) . '"><div class="border border-secondary border-opacity-50 rounded p-2 text-secondary small">[HTML Block: ' . esc_html( $html_post->post_title ) . ']</div></div>';
 						} else {
-							echo '<div class="col-12">' . do_blocks( $html_post->post_content ) . '</div>';
+							echo '<div class="' . esc_attr( $html_col_class ) . '">' . do_blocks( $html_post->post_content ) . '</div>';
 						}
 					endif;
 					endif;

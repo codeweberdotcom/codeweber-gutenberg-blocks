@@ -37,6 +37,28 @@ class ImageHotspotCPT {
 		// Endpoint для загрузки только CSS с определениями иконок
 		add_action('admin_enqueue_scripts', [$this, 'enqueue_unicons_icons_css']);
 
+		// Загружаем фронтенд-ассеты в редакторе Gutenberg (для превью шорткода)
+		add_action('enqueue_block_editor_assets', [$this, 'enqueue_frontend_for_editor']);
+
+	}
+
+	/**
+	 * Загрузить фронтенд-скрипты/стили в редакторе Gutenberg
+	 */
+	public function enqueue_frontend_for_editor() {
+		wp_enqueue_style(
+			'cw-hotspot-frontend',
+			GUTENBERG_BLOCKS_URL . 'includes/css/image-hotspot-frontend.css',
+			[],
+			GUTENBERG_BLOCKS_VERSION
+		);
+		wp_enqueue_script(
+			'cw-hotspot-frontend',
+			GUTENBERG_BLOCKS_URL . 'includes/js/image-hotspot-frontend.js',
+			['jquery'],
+			GUTENBERG_BLOCKS_VERSION,
+			true
+		);
 	}
 
 	/**

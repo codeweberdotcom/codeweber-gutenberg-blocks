@@ -181,13 +181,13 @@ $anchor_ids = array_filter( array_column( $items, 'anchor' ) );
 			} );
 		}
 
-		// On click — set active immediately, block observer during scroll animation
-		var scrollLock = false;
+		// On click — set active immediately, block observer until target is reached
+		var scrollTarget = null;
 		links.forEach( function ( link ) {
 			link.addEventListener( 'click', function () {
-				setActive( this.getAttribute( 'data-anchor' ) );
-				scrollLock = true;
-				setTimeout( function () { scrollLock = false; }, 800 );
+				var anchor = this.getAttribute( 'data-anchor' );
+				setActive( anchor );
+				scrollTarget = anchor;
 			} );
 		} );
 
@@ -198,9 +198,13 @@ $anchor_ids = array_filter( array_column( $items, 'anchor' ) );
 				entries.forEach( function ( entry ) {
 					visible[ entry.target.id ] = entry.isIntersecting;
 				} );
-				if ( scrollLock ) return;
-				var found = anchors.find( function ( id ) { return visible[ id ]; } );
-				if ( found ) setActive( found );
+					var found = anchors.find( function ( id ) { return visible[ id ]; } );
+				if ( ! found ) return;
+				if ( scrollTarget ) {
+					if ( found === scrollTarget ) scrollTarget = null;
+					return;
+				}
+				setActive( found );
 			},
 			{ rootMargin: '0px 0px -40% 0px', threshold: 0 }
 		);

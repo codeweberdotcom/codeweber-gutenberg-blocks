@@ -26,6 +26,8 @@ $btn_type_mobile    = isset( $attributes['buttonTypeMobile'] ) ? $attributes['bu
 $button_text        = isset( $attributes['buttonText'] ) ? $attributes['buttonText'] : 'Navigation';
 $button_icon        = isset( $attributes['buttonIcon'] ) ? $attributes['buttonIcon'] : 'list-ul';
 $button_color       = isset( $attributes['buttonColor'] ) ? $attributes['buttonColor'] : 'primary';
+$button_size        = isset( $attributes['buttonSize'] ) ? $attributes['buttonSize'] : 'md';
+$button_rotate      = ! empty( $attributes['buttonRotate'] );
 $popup_bg           = isset( $attributes['popupBgColor'] ) ? $attributes['popupBgColor'] : '#ffffff';
 $popup_text         = isset( $attributes['popupTextColor'] ) ? $attributes['popupTextColor'] : '#212529';
 $offset_x_desktop   = isset( $attributes['offsetXDesktop'] ) ? (int) $attributes['offsetXDesktop'] : 24;
@@ -42,17 +44,22 @@ if ( empty( $items ) ) {
 // Sanitize
 $allowed_positions  = [ 'right-bottom', 'right-top', 'left-bottom', 'left-top' ];
 $allowed_btn_types  = [ 'icon', 'button' ];
+$allowed_sizes      = [ 'sm', 'md', 'lg', 'elg' ];
 $position           = in_array( $position, $allowed_positions, true ) ? $position : 'right-bottom';
 $btn_type_desktop   = in_array( $btn_type_desktop, $allowed_btn_types, true ) ? $btn_type_desktop : 'button';
 $btn_type_tablet    = in_array( $btn_type_tablet, $allowed_btn_types, true ) ? $btn_type_tablet : 'icon';
 $btn_type_mobile    = in_array( $btn_type_mobile, $allowed_btn_types, true ) ? $btn_type_mobile : 'icon';
 $button_color       = preg_replace( '/[^a-z0-9\-]/', '', $button_color );
 $button_icon        = preg_replace( '/[^a-z0-9\-]/', '', $button_icon );
+$button_size        = in_array( $button_size, $allowed_sizes, true ) ? $button_size : 'md';
 $popup_bg           = sanitize_hex_color( $popup_bg ) ?: '#ffffff';
 $popup_text         = sanitize_hex_color( $popup_text ) ?: '#212529';
 
 // Text is shown when at least one breakpoint uses 'button' type
-$has_text = 'button' === $btn_type_desktop || 'button' === $btn_type_tablet || 'button' === $btn_type_mobile;
+$has_text  = 'button' === $btn_type_desktop || 'button' === $btn_type_tablet || 'button' === $btn_type_mobile;
+// Size map → CSS custom property value
+$size_map  = [ 'sm' => '1.8rem', 'md' => '2.2rem', 'lg' => '3rem', 'elg' => '4rem' ];
+$btn_size_value = $size_map[ $button_size ] ?? '2.2rem';
 
 $unique_id = 'cwgb-fn-' . substr( md5( wp_json_encode( $attributes ) ), 0, 8 );
 
@@ -65,6 +72,7 @@ $css_vars = implode( '; ', [
 	"--fn-offset-y-mobile:{$offset_y_mobile}px",
 	"--fn-popup-bg:{$popup_bg}",
 	"--fn-popup-text:{$popup_text}",
+	"--fn-btn-size:{$btn_size_value}",
 ] );
 ?>
 <div
@@ -74,11 +82,13 @@ $css_vars = implode( '; ', [
 	data-btn-type-desktop="<?php echo esc_attr( $btn_type_desktop ); ?>"
 	data-btn-type-tablet="<?php echo esc_attr( $btn_type_tablet ); ?>"
 	data-btn-type-mobile="<?php echo esc_attr( $btn_type_mobile ); ?>"
+	data-btn-size="<?php echo esc_attr( $button_size ); ?>"
+	<?php if ( $button_rotate ) : ?>data-rotate="true"<?php endif; ?>
 	style="<?php echo esc_attr( $css_vars ); ?>"
 	aria-label="<?php esc_attr_e( 'Page navigation', 'codeweber-gutenberg-blocks' ); ?>"
 >
 	<button
-		class="cwgb-floating-nav__trigger btn btn-<?php echo esc_attr( $button_color ); ?> btn-circle"
+		class="cwgb-floating-nav__trigger btn btn-<?php echo esc_attr( $button_color ); ?>"
 		aria-expanded="false"
 		aria-haspopup="true"
 		aria-controls="<?php echo esc_attr( $unique_id . '-popup' ); ?>"

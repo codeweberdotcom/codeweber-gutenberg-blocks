@@ -15,6 +15,8 @@ import {
 	ColorPalette,
 	TabPanel,
 	Button,
+	ButtonGroup,
+	ToggleControl,
 	Flex,
 	FlexItem,
 	FlexBlock,
@@ -48,6 +50,8 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 		buttonText,
 		buttonIcon,
 		buttonColor,
+		buttonSize,
+		buttonRotate,
 		popupBgColor,
 		popupTextColor,
 		offsetXDesktop,
@@ -338,6 +342,30 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 						allowSvgSolid={ false }
 					/>
 
+					{ /* Button size */ }
+					<BaseControl
+						label={ __( 'Button size', 'codeweber-gutenberg-blocks' ) }
+						__nextHasNoMarginBottom
+					>
+						<ButtonGroup>
+							{ [
+								{ value: 'sm',  label: 'S' },
+								{ value: 'md',  label: 'M' },
+								{ value: 'lg',  label: 'L' },
+								{ value: 'elg', label: 'XL' },
+							].map( ( { value, label } ) => (
+								<Button
+									key={ value }
+									variant={ buttonSize === value ? 'primary' : 'secondary' }
+									onClick={ () => setAttributes( { buttonSize: value } ) }
+									size="compact"
+								>
+									{ label }
+								</Button>
+							) ) }
+						</ButtonGroup>
+					</BaseControl>
+
 					{ /* Button type per device */ }
 					<BaseControl
 						label={ __( 'Button type', 'codeweber-gutenberg-blocks' ) }
@@ -387,6 +415,17 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 							__nextHasNoMarginBottom
 						/>
 					) }
+
+					<ToggleControl
+						label={ __( 'Rotate button 90°', 'codeweber-gutenberg-blocks' ) }
+						help={ __(
+							'Rotates the button sideways — useful for side-positioned widgets.',
+							'codeweber-gutenberg-blocks'
+						) }
+						checked={ buttonRotate }
+						onChange={ ( val ) => setAttributes( { buttonRotate: val } ) }
+						__nextHasNoMarginBottom
+					/>
 
 					<SelectControl
 						label={ __( 'Button color', 'codeweber-gutenberg-blocks' ) }

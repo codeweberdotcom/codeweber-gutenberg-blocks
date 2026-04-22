@@ -48,6 +48,14 @@
 			"type": "string",
 			"default": "font"
 		},
+		"buttonSize": {
+			"type": "string",
+			"default": "md"
+		},
+		"buttonRotate": {
+			"type": "boolean",
+			"default": false
+		},
 		"buttonColor": {
 			"type": "string",
 			"default": "primary"

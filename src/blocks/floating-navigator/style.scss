@@ -2,143 +2,145 @@
  * Floating Navigator Block - Frontend styles
  */
 
+// ── Widget wrapper (fixed positioning) ──────────────────────
 .cwgb-floating-nav {
 	position: fixed;
 	z-index: 1050;
 
-	// Position variants via data-attribute
-	&[data-position='right-bottom'] {
-		right: var(--fn-offset-x-desktop);
-		bottom: var(--fn-offset-y-desktop);
-	}
-
-	&[data-position='right-top'] {
-		right: var(--fn-offset-x-desktop);
-		top: var(--fn-offset-y-desktop);
-	}
-
-	&[data-position='left-bottom'] {
-		left: var(--fn-offset-x-desktop);
-		bottom: var(--fn-offset-y-desktop);
-	}
-
-	&[data-position='left-top'] {
-		left: var(--fn-offset-x-desktop);
-		top: var(--fn-offset-y-desktop);
-	}
+	// Position variants — desktop
+	&[data-position='right-bottom'] { right: var(--fn-offset-x-desktop); bottom: var(--fn-offset-y-desktop); }
+	&[data-position='right-top']    { right: var(--fn-offset-x-desktop); top:    var(--fn-offset-y-desktop); }
+	&[data-position='left-bottom']  { left:  var(--fn-offset-x-desktop); bottom: var(--fn-offset-y-desktop); }
+	&[data-position='left-top']     { left:  var(--fn-offset-x-desktop); top:    var(--fn-offset-y-desktop); }
 
 	// Tablet (≤ 991px)
 	@media (max-width: 991.98px) {
-		&[data-position='right-bottom'] {
-			right: var(--fn-offset-x-tablet);
-			bottom: var(--fn-offset-y-tablet);
-		}
-
-		&[data-position='right-top'] {
-			right: var(--fn-offset-x-tablet);
-			top: var(--fn-offset-y-tablet);
-		}
-
-		&[data-position='left-bottom'] {
-			left: var(--fn-offset-x-tablet);
-			bottom: var(--fn-offset-y-tablet);
-		}
-
-		&[data-position='left-top'] {
-			left: var(--fn-offset-x-tablet);
-			top: var(--fn-offset-y-tablet);
-		}
+		&[data-position='right-bottom'] { right: var(--fn-offset-x-tablet); bottom: var(--fn-offset-y-tablet); }
+		&[data-position='right-top']    { right: var(--fn-offset-x-tablet); top:    var(--fn-offset-y-tablet); }
+		&[data-position='left-bottom']  { left:  var(--fn-offset-x-tablet); bottom: var(--fn-offset-y-tablet); }
+		&[data-position='left-top']     { left:  var(--fn-offset-x-tablet); top:    var(--fn-offset-y-tablet); }
 	}
 
 	// Mobile (≤ 575px)
 	@media (max-width: 575.98px) {
-		&[data-position='right-bottom'] {
-			right: var(--fn-offset-x-mobile);
-			bottom: var(--fn-offset-y-mobile);
-		}
-
-		&[data-position='right-top'] {
-			right: var(--fn-offset-x-mobile);
-			top: var(--fn-offset-y-mobile);
-		}
-
-		&[data-position='left-bottom'] {
-			left: var(--fn-offset-x-mobile);
-			bottom: var(--fn-offset-y-mobile);
-		}
-
-		&[data-position='left-top'] {
-			left: var(--fn-offset-x-mobile);
-			top: var(--fn-offset-y-mobile);
-		}
+		&[data-position='right-bottom'] { right: var(--fn-offset-x-mobile); bottom: var(--fn-offset-y-mobile); }
+		&[data-position='right-top']    { right: var(--fn-offset-x-mobile); top:    var(--fn-offset-y-mobile); }
+		&[data-position='left-bottom']  { left:  var(--fn-offset-x-mobile); bottom: var(--fn-offset-y-mobile); }
+		&[data-position='left-top']     { left:  var(--fn-offset-x-mobile); top:    var(--fn-offset-y-mobile); }
 	}
 }
 
-// ── Trigger button ──────────────────────────────────────────
+// ── Trigger button — base ────────────────────────────────────
 .cwgb-floating-nav__trigger {
 	position: relative;
 	z-index: 2;
-	display: flex;
+	display: inline-flex;
 	align-items: center;
+	justify-content: center;
 	gap: 6px;
 	white-space: nowrap;
 	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-	transition: transform 0.2s ease, box-shadow 0.2s ease;
+	transition: transform 0.2s ease, box-shadow 0.2s ease, border-radius 0s;
+	line-height: 1;
 
-	&:hover {
-		box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28);
-		transform: translateY(-1px);
-	}
-
+	// Rotate icon when expanded
 	&[aria-expanded='true'] .uil {
 		transform: rotate(90deg);
 	}
 
 	.uil {
 		transition: transform 0.25s ease;
+		font-size: inherit;
+		line-height: 1;
+	}
+
+	&:hover {
+		box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28);
+		transform: translateY(-1px);
 	}
 }
 
-// ── Button text — per-device visibility ─────────────────────
-// Text is always in the DOM; CSS shows/hides per breakpoint via data-attributes on the wrapper.
+// ── Button shape & size — Desktop (≥ 992px) ──────────────────
+// icon-only → circle
+.cwgb-floating-nav[data-btn-type-desktop='icon'] .cwgb-floating-nav__trigger {
+	border-radius: 50% !important;
+	width: var(--fn-btn-size, 2.2rem);
+	height: var(--fn-btn-size, 2.2rem);
+	padding: 0;
+	font-size: calc(var(--fn-btn-size, 2.2rem) * 0.5);
+}
 
-// Desktop (≥ 992px): hide if icon-only
+// icon + text → pill
+.cwgb-floating-nav[data-btn-type-desktop='button'] .cwgb-floating-nav__trigger {
+	border-radius: 50px !important;
+	height: var(--fn-btn-size, 2.2rem);
+	padding: 0 calc(var(--fn-btn-size, 2.2rem) * 0.55);
+	font-size: calc(var(--fn-btn-size, 2.2rem) * 0.42);
+}
+
+// ── Tablet override (≤ 991px) ────────────────────────────────
+@media (max-width: 991.98px) {
+	.cwgb-floating-nav[data-btn-type-tablet='icon'] .cwgb-floating-nav__trigger {
+		border-radius: 50% !important;
+		width: var(--fn-btn-size, 2.2rem);
+		height: var(--fn-btn-size, 2.2rem);
+		padding: 0;
+		font-size: calc(var(--fn-btn-size, 2.2rem) * 0.5);
+	}
+
+	.cwgb-floating-nav[data-btn-type-tablet='button'] .cwgb-floating-nav__trigger {
+		border-radius: 50px !important;
+		width: auto;
+		height: var(--fn-btn-size, 2.2rem);
+		padding: 0 calc(var(--fn-btn-size, 2.2rem) * 0.55);
+		font-size: calc(var(--fn-btn-size, 2.2rem) * 0.42);
+	}
+}
+
+// ── Mobile override (≤ 575px) ────────────────────────────────
+@media (max-width: 575.98px) {
+	.cwgb-floating-nav[data-btn-type-mobile='icon'] .cwgb-floating-nav__trigger {
+		border-radius: 50% !important;
+		width: var(--fn-btn-size, 2.2rem);
+		height: var(--fn-btn-size, 2.2rem);
+		padding: 0;
+		font-size: calc(var(--fn-btn-size, 2.2rem) * 0.5);
+	}
+
+	.cwgb-floating-nav[data-btn-type-mobile='button'] .cwgb-floating-nav__trigger {
+		border-radius: 50px !important;
+		width: auto;
+		height: var(--fn-btn-size, 2.2rem);
+		padding: 0 calc(var(--fn-btn-size, 2.2rem) * 0.55);
+		font-size: calc(var(--fn-btn-size, 2.2rem) * 0.42);
+	}
+}
+
+// ── Button text visibility per device ────────────────────────
 .cwgb-floating-nav[data-btn-type-desktop='icon'] .cwgb-floating-nav__trigger-text {
 	display: none;
 }
 
-// Tablet (≤ 991px)
 @media (max-width: 991.98px) {
-	.cwgb-floating-nav[data-btn-type-tablet='button'] .cwgb-floating-nav__trigger-text {
-		display: inline;
-	}
-
-	.cwgb-floating-nav[data-btn-type-tablet='icon'] .cwgb-floating-nav__trigger-text {
-		display: none;
-	}
+	.cwgb-floating-nav[data-btn-type-tablet='button'] .cwgb-floating-nav__trigger-text { display: inline; }
+	.cwgb-floating-nav[data-btn-type-tablet='icon']   .cwgb-floating-nav__trigger-text { display: none; }
 }
 
-// Mobile (≤ 575px)
 @media (max-width: 575.98px) {
-	.cwgb-floating-nav[data-btn-type-mobile='button'] .cwgb-floating-nav__trigger-text {
-		display: inline;
-	}
-
-	.cwgb-floating-nav[data-btn-type-mobile='icon'] .cwgb-floating-nav__trigger-text {
-		display: none;
-	}
+	.cwgb-floating-nav[data-btn-type-mobile='button'] .cwgb-floating-nav__trigger-text { display: inline; }
+	.cwgb-floating-nav[data-btn-type-mobile='icon']   .cwgb-floating-nav__trigger-text { display: none; }
 }
 
 .cwgb-floating-nav__trigger-text {
-	font-size: 0.875rem;
 	font-weight: 500;
+	font-size: inherit;
 }
 
-// ── Popup ────────────────────────────────────────────────────
+// ── Popup (×1.2 wider: 240–340px) ───────────────────────────
 .cwgb-floating-nav__popup {
 	position: absolute;
-	min-width: 200px;
-	max-width: 280px;
+	min-width: 240px;
+	max-width: 340px;
 	background: var(--fn-popup-bg, #fff);
 	color: var(--fn-popup-text, #212529);
 	border-radius: 8px;
@@ -191,6 +193,22 @@
 		&.is-open {
 			transform: scale(1) translateY(0);
 		}
+	}
+}
+
+// ── Button rotation ──────────────────────────────────────────
+// Rotates the trigger -90deg (counter-clockwise) while keeping popup position intact.
+// The popup is positioned relative to the outer wrapper, not the rotated button.
+.cwgb-floating-nav[data-rotate='true'] .cwgb-floating-nav__trigger {
+	transform: rotate(-90deg);
+
+	&:hover {
+		transform: rotate(-90deg) translateY(-1px);
+	}
+
+	&[aria-expanded='true'] .uil {
+		// Cancel icon spin since button itself rotates
+		transform: none;
 	}
 }
 

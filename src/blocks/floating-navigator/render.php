@@ -123,7 +123,7 @@ $anchor_ids = array_filter( array_column( $items, 'anchor' ) );
 			?>
 			<a
 				href="#<?php echo esc_attr( $item['anchor'] ); ?>"
-				class="cwgb-floating-nav__item d-block text-decoration-none scroll px-4 py-2"
+				class="cwgb-floating-nav__item nav-link text-reset scroll"
 				data-anchor="<?php echo esc_attr( $item['anchor'] ); ?>"
 			><?php echo esc_html( $label ); ?></a>
 		<?php endforeach; ?>
@@ -159,6 +159,10 @@ $anchor_ids = array_filter( array_column( $items, 'anchor' ) );
 
 	document.addEventListener( 'click', function ( e ) {
 		if ( ! widget.contains( e.target ) ) close();
+	} );
+
+	links.forEach( function ( link ) {
+		link.addEventListener( 'click', function () { close(); } );
 	} );
 
 	document.addEventListener( 'keydown', function ( e ) {

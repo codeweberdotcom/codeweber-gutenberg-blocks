@@ -181,16 +181,6 @@ $anchor_ids = array_filter( array_column( $items, 'anchor' ) );
 			} );
 		}
 
-		// On click — set active immediately, block observer until target is reached
-		var scrollTarget = null;
-		links.forEach( function ( link ) {
-			link.addEventListener( 'click', function () {
-				var anchor = this.getAttribute( 'data-anchor' );
-				setActive( anchor );
-				scrollTarget = anchor;
-			} );
-		} );
-
 		var visible = {};
 
 		var observer = new IntersectionObserver(
@@ -198,13 +188,10 @@ $anchor_ids = array_filter( array_column( $items, 'anchor' ) );
 				entries.forEach( function ( entry ) {
 					visible[ entry.target.id ] = entry.isIntersecting;
 				} );
-					var found = anchors.find( function ( id ) { return visible[ id ]; } );
-				if ( ! found ) return;
-				if ( scrollTarget ) {
-					if ( found === scrollTarget ) scrollTarget = null;
-					return;
-				}
-				setActive( found );
+				// Last visible anchor = deepest section in viewport = most accurate active
+				var found = null;
+				anchors.forEach( function ( id ) { if ( visible[ id ] ) found = id; } );
+				if ( found ) setActive( found );
 			},
 			{ rootMargin: '0px 0px -40% 0px', threshold: 0 }
 		);

@@ -139,7 +139,7 @@
 	color: var(--fn-popup-text, #212529);
 	border-radius: 8px;
 	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-	padding: 8px 0;
+	padding: 6px 0 12px;
 	opacity: 0;
 	pointer-events: none;
 	z-index: 3;
@@ -196,18 +196,6 @@
 .cwgb-floating-nav[data-rotate='true'] .cwgb-floating-nav__trigger {
 	writing-mode: vertical-rl;
 	transform: rotate(180deg);
-
-	// Keep the icon upright inside the rotated button
-	.uil {
-		writing-mode: horizontal-tb;
-		transform: none;
-		display: block;
-	}
-
-	// Suppress icon spin on expand (button itself is rotated)
-	&[aria-expanded='true'] .uil {
-		transform: none;
-	}
 }
 
 // ── Popup direction for rotated right-side buttons ───────────
@@ -241,7 +229,7 @@
 
 // ── Popup title ──────────────────────────────────────────────
 .cwgb-floating-nav__popup-title {
-	padding: 8px 18px 6px;
+	padding: 10px 20px 8px;
 	font-size: 0.75rem;
 	font-weight: 600;
 	text-transform: uppercase;
@@ -255,16 +243,15 @@
 // ── Popup items ──────────────────────────────────────────────
 .cwgb-floating-nav__item {
 	display: block;
-	padding: 9px 18px;
+	padding: 10px 20px;
 	color: var(--fn-popup-text, #212529);
 	text-decoration: none;
 	font-size: 0.9rem;
 	line-height: 1.3;
-	transition: background 0.15s ease, padding-left 0.15s ease;
+	transition: background 0.15s ease;
 
 	&:hover {
 		background: rgba(0, 0, 0, 0.05);
-		padding-left: 22px;
 		color: var(--fn-popup-text, #212529);
 		text-decoration: none;
 	}
@@ -273,15 +260,9 @@
 		border-top: 1px solid rgba(0, 0, 0, 0.06);
 	}
 
-	// Active section highlight
+	// Active section highlight — inset shadow avoids layout shift
 	&.active {
-		border-left: 3px solid currentColor;
-		padding-left: 15px;
+		box-shadow: inset 3px 0 0 currentColor;
 		font-weight: 600;
-		opacity: 1;
-
-		&:hover {
-			padding-left: 19px;
-		}
 	}
 }

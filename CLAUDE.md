@@ -73,6 +73,7 @@ Task-oriented documentation in `doc_claude/`.
 | Button block: all LinkTypes, data-attributes, modal/video/download | `doc_claude/blocks/BUTTON_LINK_TYPES.md` |
 | Menu block: horizontal/vertical orientation, flex-md-row, deprecated entries | `doc_claude/blocks/MENU_BLOCK.md` |
 | Post Grid: tabs, attributes, per-CPT behavior, filter bar, REST, gotchas | `doc_claude/blocks/POST_GRID.md` |
+| Floating Navigator: attributes, HTML, JS scroll/active, rotation CSS, gotchas | `doc_claude/blocks/FLOATING_NAVIGATOR.md` |
 | REST API endpoints | `doc_claude/api/REST_API_REFERENCE.md` |
 | Plugin hooks | `doc_claude/api/HOOKS_REFERENCE.md` |
 | Theme integration | `doc_claude/integrations/THEME_INTEGRATION.md` |

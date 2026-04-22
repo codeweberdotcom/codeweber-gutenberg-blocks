@@ -12,7 +12,6 @@ import {
 	SelectControl,
 	TextControl,
 	RangeControl,
-	ColorPalette,
 	TabPanel,
 	Button,
 	ButtonGroup,
@@ -23,6 +22,8 @@ import {
 	BaseControl,
 	__experimentalText as Text,
 } from '@wordpress/components';
+import { ColorTypeControl } from '../../components/colors/ColorTypeControl';
+import { colors } from '../../utilities/colors';
 import { chevronUp, chevronDown, trash } from '@wordpress/icons';
 import { useSelect } from '@wordpress/data';
 
@@ -54,7 +55,7 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 		buttonRotate,
 		popupTitle,
 		popupBgColor,
-		popupTextColor,
+		popupBgColorType,
 		offsetXDesktop,
 		offsetYDesktop,
 		offsetXTablet,
@@ -459,29 +460,24 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 						__nextHasNoMarginBottom
 					/>
 
-					<BaseControl
-						label={ __( 'Background', 'codeweber-gutenberg-blocks' ) }
-						__nextHasNoMarginBottom
-						style={ { marginTop: 12 } }
-					>
-						<ColorPalette
-							value={ popupBgColor }
-							onChange={ ( val ) => setAttributes( { popupBgColor: val || '#ffffff' } ) }
-							enableAlpha={ false }
-						/>
-					</BaseControl>
+					<ColorTypeControl
+						label={ __( 'Background type', 'codeweber-gutenberg-blocks' ) }
+						value={ popupBgColorType }
+						onChange={ ( val ) => setAttributes( { popupBgColorType: val } ) }
+						options={ [
+							{ value: 'solid', label: __( 'Solid', 'codeweber-gutenberg-blocks' ) },
+							{ value: 'soft',  label: __( 'Soft',  'codeweber-gutenberg-blocks' ) },
+							{ value: 'pale',  label: __( 'Pale',  'codeweber-gutenberg-blocks' ) },
+						] }
+					/>
 
-					<BaseControl
-						label={ __( 'Text color', 'codeweber-gutenberg-blocks' ) }
+					<SelectControl
+						label={ __( 'Background color', 'codeweber-gutenberg-blocks' ) }
+						value={ popupBgColor }
+						options={ colors.map( ( c ) => ( { value: c.value, label: c.label } ) ) }
+						onChange={ ( val ) => setAttributes( { popupBgColor: val } ) }
 						__nextHasNoMarginBottom
-						style={ { marginTop: 12 } }
-					>
-						<ColorPalette
-							value={ popupTextColor }
-							onChange={ ( val ) => setAttributes( { popupTextColor: val || '#212529' } ) }
-							enableAlpha={ false }
-						/>
-					</BaseControl>
+					/>
 				</PanelBody>
 
 				{ /* ── OFFSETS ── */ }

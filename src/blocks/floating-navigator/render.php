@@ -2,10 +2,6 @@
 /**
  * Floating Navigator Block - Server-side render
  *
- * Floating button → popup with anchor links → smooth scroll.
- * Active item highlighted via IntersectionObserver.
- * Popup closes only on outside click or Escape.
- *
  * @package CodeWeber Gutenberg Blocks
  *
  * @var array $attributes Block attributes.
@@ -30,8 +26,8 @@ $button_color     = isset( $attributes['buttonColor'] ) ? $attributes['buttonCol
 $button_size      = isset( $attributes['buttonSize'] ) ? $attributes['buttonSize'] : 'md';
 $button_rotate    = ! empty( $attributes['buttonRotate'] );
 $popup_title      = isset( $attributes['popupTitle'] ) ? $attributes['popupTitle'] : 'Contents';
-$popup_bg         = isset( $attributes['popupBgColor'] ) ? $attributes['popupBgColor'] : '#ffffff';
-$popup_text       = isset( $attributes['popupTextColor'] ) ? $attributes['popupTextColor'] : '#212529';
+$popup_bg_color   = isset( $attributes['popupBgColor'] ) ? $attributes['popupBgColor'] : 'white';
+$popup_bg_type    = isset( $attributes['popupBgColorType'] ) ? $attributes['popupBgColorType'] : 'solid';
 $offset_x_desktop = isset( $attributes['offsetXDesktop'] ) ? (int) $attributes['offsetXDesktop'] : 24;
 $offset_y_desktop = isset( $attributes['offsetYDesktop'] ) ? (int) $attributes['offsetYDesktop'] : 24;
 $offset_x_tablet  = isset( $attributes['offsetXTablet'] ) ? (int) $attributes['offsetXTablet'] : 16;
@@ -47,6 +43,7 @@ if ( empty( $items ) ) {
 $allowed_positions = [ 'right-bottom', 'right-top', 'left-bottom', 'left-top' ];
 $allowed_types     = [ 'icon', 'button' ];
 $allowed_sizes     = [ 'sm', 'md', 'lg', 'elg' ];
+$allowed_bg_types  = [ 'solid', 'soft', 'pale' ];
 
 $position         = in_array( $position, $allowed_positions, true ) ? $position : 'right-bottom';
 $btn_type_desktop = in_array( $btn_type_desktop, $allowed_types, true ) ? $btn_type_desktop : 'button';
@@ -55,8 +52,11 @@ $btn_type_mobile  = in_array( $btn_type_mobile, $allowed_types, true ) ? $btn_ty
 $button_color     = preg_replace( '/[^a-z0-9\-]/', '', $button_color );
 $button_icon      = preg_replace( '/[^a-z0-9\-]/', '', $button_icon );
 $button_size      = in_array( $button_size, $allowed_sizes, true ) ? $button_size : 'md';
-$popup_bg         = sanitize_hex_color( $popup_bg ) ?: '#ffffff';
-$popup_text       = sanitize_hex_color( $popup_text ) ?: '#212529';
+$popup_bg_color   = preg_replace( '/[^a-z0-9\-]/', '', $popup_bg_color );
+$popup_bg_type    = in_array( $popup_bg_type, $allowed_bg_types, true ) ? $popup_bg_type : 'solid';
+
+// Build bg class: solid → bg-white, soft → bg-soft-white, pale → bg-pale-white
+$popup_bg_class = 'solid' === $popup_bg_type ? "bg-{$popup_bg_color}" : "bg-{$popup_bg_type}-{$popup_bg_color}";
 
 $has_text = 'button' === $btn_type_desktop || 'button' === $btn_type_tablet || 'button' === $btn_type_mobile;
 
@@ -72,8 +72,6 @@ $css_vars = implode( '; ', [
 	"--fn-offset-y-tablet:{$offset_y_tablet}px",
 	"--fn-offset-x-mobile:{$offset_x_mobile}px",
 	"--fn-offset-y-mobile:{$offset_y_mobile}px",
-	"--fn-popup-bg:{$popup_bg}",
-	"--fn-popup-text:{$popup_text}",
 	"--fn-btn-size:{$btn_size_value}",
 ] );
 
@@ -107,12 +105,12 @@ $anchor_ids = array_filter( array_column( $items, 'anchor' ) );
 
 	<div
 		id="<?php echo esc_attr( $unique_id . '-popup' ); ?>"
-		class="cwgb-floating-nav__popup"
+		class="cwgb-floating-nav__popup card shadow <?php echo esc_attr( $popup_bg_class ); ?>"
 		aria-hidden="true"
 		role="navigation"
 	>
 		<?php if ( $popup_title ) : ?>
-			<div class="cwgb-floating-nav__popup-title">
+			<div class="cwgb-floating-nav__popup-title fs-15 text-uppercase border-bottom">
 				<?php echo esc_html( $popup_title ); ?>
 			</div>
 		<?php endif; ?>
@@ -125,7 +123,7 @@ $anchor_ids = array_filter( array_column( $items, 'anchor' ) );
 			?>
 			<a
 				href="#<?php echo esc_attr( $item['anchor'] ); ?>"
-				class="cwgb-floating-nav__item nav-link"
+				class="cwgb-floating-nav__item d-block text-decoration-none scroll"
 				data-anchor="<?php echo esc_attr( $item['anchor'] ); ?>"
 			><?php echo esc_html( $label ); ?></a>
 		<?php endforeach; ?>
@@ -167,17 +165,6 @@ $anchor_ids = array_filter( array_column( $items, 'anchor' ) );
 		if ( e.key === 'Escape' ) close();
 	} );
 
-	// ── Smooth scroll (popup stays open) ───────────────────
-	links.forEach( function ( link ) {
-		link.addEventListener( 'click', function ( e ) {
-			var target = document.getElementById( this.getAttribute( 'href' ).slice( 1 ) );
-			if ( target ) {
-				e.preventDefault();
-				target.scrollIntoView( { behavior: 'smooth', block: 'start' } );
-			}
-		} );
-	} );
-
 	// ── Active item via IntersectionObserver ───────────────
 	var anchors = <?php echo wp_json_encode( array_values( $anchor_ids ) ); ?>;
 
@@ -194,7 +181,6 @@ $anchor_ids = array_filter( array_column( $items, 'anchor' ) );
 			} );
 		}
 
-		// Track which sections are visible and pick the topmost one
 		var visible = {};
 
 		var observer = new IntersectionObserver(
@@ -202,8 +188,6 @@ $anchor_ids = array_filter( array_column( $items, 'anchor' ) );
 				entries.forEach( function ( entry ) {
 					visible[ entry.target.id ] = entry.isIntersecting;
 				} );
-
-				// First visible anchor in DOM order wins
 				var found = anchors.find( function ( id ) { return visible[ id ]; } );
 				if ( found ) setActive( found );
 			},

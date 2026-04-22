@@ -66,11 +66,11 @@
 		},
 		"popupBgColor": {
 			"type": "string",
-			"default": "#ffffff"
+			"default": "white"
 		},
-		"popupTextColor": {
+		"popupBgColorType": {
 			"type": "string",
-			"default": "#212529"
+			"default": "solid"
 		},
 		"offsetXDesktop": {
 			"type": "number",

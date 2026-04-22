@@ -129,15 +129,12 @@
 	font-size: inherit;
 }
 
-// ── Popup (×1.2 wider: 240–340px) ───────────────────────────
+// ── Popup ────────────────────────────────────────────────────
+// border-radius and box-shadow come from Bootstrap card + shadow classes
 .cwgb-floating-nav__popup {
 	position: absolute;
 	min-width: 240px;
 	max-width: 340px;
-	background: var(--fn-popup-bg, #fff);
-	color: var(--fn-popup-text, #212529);
-	border-radius: 8px;
-	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
 	padding: 6px 0 12px;
 	opacity: 0;
 	pointer-events: none;
@@ -255,32 +252,23 @@
 }
 
 // ── Popup title ──────────────────────────────────────────────
+// font-weight, text-transform, border-bottom come from Bootstrap fs-15 text-uppercase border-bottom
 .cwgb-floating-nav__popup-title {
 	padding: 12px 24px 10px;
-	font-size: 0.75rem;
-	font-weight: 600;
-	text-transform: uppercase;
-	letter-spacing: 0.05em;
-	color: var(--fn-popup-text, #212529);
-	opacity: 0.55;
-	border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+	opacity: 0.6;
 	margin-bottom: 4px;
 }
 
 // ── Popup items ──────────────────────────────────────────────
+// display:block and text-decoration:none come from Bootstrap d-block text-decoration-none
 .cwgb-floating-nav__item {
-	display: block;
 	padding: 10px 24px;
-	color: var(--fn-popup-text, #212529);
-	text-decoration: none;
 	font-size: 0.9rem;
 	line-height: 1.4;
 	transition: background 0.15s ease;
 
 	&:hover {
 		background: rgba(0, 0, 0, 0.05);
-		color: var(--fn-popup-text, #212529);
-		text-decoration: none;
 	}
 
 	& + & {

@@ -165,10 +165,10 @@ $anchor_ids = array_filter( array_column( $items, 'anchor' ) );
 		if ( e.key === 'Escape' ) close();
 	} );
 
-	// ── Active item via IntersectionObserver ───────────────
+	// ── Active item via scroll position ───────────────────
 	var anchors = <?php echo wp_json_encode( array_values( $anchor_ids ) ); ?>;
 
-	if ( 'IntersectionObserver' in window && anchors.length ) {
+	if ( anchors.length ) {
 		var activeAnchor = null;
 
 		function setActive( anchor ) {
@@ -181,25 +181,35 @@ $anchor_ids = array_filter( array_column( $items, 'anchor' ) );
 			} );
 		}
 
-		var visible = {};
+		function getHeaderHeight() {
+			var navbar = document.querySelector( '.navbar-clone.navbar-stick, .navbar.fixed' );
+			return navbar ? navbar.offsetHeight + 20 : 20;
+		}
 
-		var observer = new IntersectionObserver(
-			function ( entries ) {
-				entries.forEach( function ( entry ) {
-					visible[ entry.target.id ] = entry.isIntersecting;
+		function updateActive() {
+			var threshold = getHeaderHeight();
+			var found = null;
+			anchors.forEach( function ( id ) {
+				var el = document.getElementById( id );
+				if ( el && el.getBoundingClientRect().top <= threshold ) {
+					found = id;
+				}
+			} );
+			if ( found ) setActive( found );
+		}
+
+		var ticking = false;
+		window.addEventListener( 'scroll', function () {
+			if ( ! ticking ) {
+				requestAnimationFrame( function () {
+					updateActive();
+					ticking = false;
 				} );
-				// Last visible anchor = deepest section in viewport = most accurate active
-				var found = null;
-				anchors.forEach( function ( id ) { if ( visible[ id ] ) found = id; } );
-				if ( found ) setActive( found );
-			},
-			{ rootMargin: '0px 0px -40% 0px', threshold: 0 }
-		);
-
-		anchors.forEach( function ( id ) {
-			var el = document.getElementById( id );
-			if ( el ) observer.observe( el );
+				ticking = true;
+			}
 		} );
+
+		updateActive();
 	}
 } )();
 </script>

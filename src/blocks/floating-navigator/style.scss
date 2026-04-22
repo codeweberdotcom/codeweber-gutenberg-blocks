@@ -30,82 +30,46 @@
 	}
 }
 
-// ── Trigger button — base ────────────────────────────────────
+// ── Trigger button ───────────────────────────────────────────
 .cwgb-floating-nav__trigger {
 	position: relative;
 	z-index: 2;
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	gap: 6px;
-	white-space: nowrap;
-	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-	transition: box-shadow 0.2s ease, border-radius 0s;
-	line-height: 1;
-
-	.uil {
-		font-size: inherit;
-		line-height: 1;
-	}
-
-	&:hover {
-		box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28);
-	}
 }
 
-// ── Button shape & size — Desktop (≥ 992px) ──────────────────
-// icon-only → circle
-.cwgb-floating-nav[data-btn-type-desktop='icon'] .cwgb-floating-nav__trigger {
-	border-radius: 50% !important;
-	width: var(--fn-btn-size, 2.2rem);
-	height: var(--fn-btn-size, 2.2rem);
-	padding: 0;
-	font-size: calc(var(--fn-btn-size, 2.2rem) * 0.5);
-}
-
-// icon + text → pill
-.cwgb-floating-nav[data-btn-type-desktop='button'] .cwgb-floating-nav__trigger {
-	border-radius: 50px !important;
-	height: var(--fn-btn-size, 2.2rem);
-	padding: 0 calc(var(--fn-btn-size, 2.2rem) * 0.55);
-	font-size: calc(var(--fn-btn-size, 2.2rem) * 0.42);
-}
-
-// ── Tablet override (≤ 991px) ────────────────────────────────
+// ── Shape override at tablet (≤ 991px) ──────────────────────
+// Needed because shape class in HTML is set for desktop only
 @media (max-width: 991.98px) {
 	.cwgb-floating-nav[data-btn-type-tablet='icon'] .cwgb-floating-nav__trigger {
-		border-radius: 50% !important;
-		width: var(--fn-btn-size, 2.2rem);
-		height: var(--fn-btn-size, 2.2rem);
+		border-radius: 100% !important;
+		aspect-ratio: 1;
 		padding: 0;
-		font-size: calc(var(--fn-btn-size, 2.2rem) * 0.5);
+		width: auto;
+		height: auto;
 	}
 
 	.cwgb-floating-nav[data-btn-type-tablet='button'] .cwgb-floating-nav__trigger {
-		border-radius: 50px !important;
+		border-radius: 50rem !important;
+		aspect-ratio: auto;
 		width: auto;
-		height: var(--fn-btn-size, 2.2rem);
-		padding: 0 calc(var(--fn-btn-size, 2.2rem) * 0.55);
-		font-size: calc(var(--fn-btn-size, 2.2rem) * 0.42);
+		height: auto;
 	}
 }
 
-// ── Mobile override (≤ 575px) ────────────────────────────────
+// ── Shape override at mobile (≤ 575px) ──────────────────────
 @media (max-width: 575.98px) {
 	.cwgb-floating-nav[data-btn-type-mobile='icon'] .cwgb-floating-nav__trigger {
-		border-radius: 50% !important;
-		width: var(--fn-btn-size, 2.2rem);
-		height: var(--fn-btn-size, 2.2rem);
+		border-radius: 100% !important;
+		aspect-ratio: 1;
 		padding: 0;
-		font-size: calc(var(--fn-btn-size, 2.2rem) * 0.5);
+		width: auto;
+		height: auto;
 	}
 
 	.cwgb-floating-nav[data-btn-type-mobile='button'] .cwgb-floating-nav__trigger {
-		border-radius: 50px !important;
+		border-radius: 50rem !important;
+		aspect-ratio: auto;
 		width: auto;
-		height: var(--fn-btn-size, 2.2rem);
-		padding: 0 calc(var(--fn-btn-size, 2.2rem) * 0.55);
-		font-size: calc(var(--fn-btn-size, 2.2rem) * 0.42);
+		height: auto;
 	}
 }
 
@@ -122,11 +86,6 @@
 @media (max-width: 575.98px) {
 	.cwgb-floating-nav[data-btn-type-mobile='button'] .cwgb-floating-nav__trigger-text { display: inline; }
 	.cwgb-floating-nav[data-btn-type-mobile='icon']   .cwgb-floating-nav__trigger-text { display: none; }
-}
-
-.cwgb-floating-nav__trigger-text {
-	font-weight: 500;
-	font-size: inherit;
 }
 
 // ── Popup ────────────────────────────────────────────────────
@@ -186,7 +145,6 @@
 
 // ── Button rotation (writing-mode) ───────────────────────────
 // writing-mode recalculates the layout box so the button doesn't overflow.
-// The popup is on the wrapper, so it stays correctly positioned.
 .cwgb-floating-nav[data-rotate='true'] .cwgb-floating-nav__trigger {
 	writing-mode: vertical-rl;
 	transform: rotate(180deg);
@@ -196,27 +154,26 @@
 	}
 }
 
-// Pill button in rotated state: swap geometry so width is thin and height follows text.
-// Without this, physical height/padding-x from the pill rule make a wide flat button.
+// Rotated pill: writing-mode swaps axes, so let height be natural (no forced aspect-ratio)
 .cwgb-floating-nav[data-rotate='true'][data-btn-type-desktop='button'] .cwgb-floating-nav__trigger {
-	width: var(--fn-btn-size, 2.2rem);
+	aspect-ratio: auto;
+	width: auto;
 	height: auto;
-	padding: calc(var(--fn-btn-size, 2.2rem) * 0.55) 0;
 }
 
 @media (max-width: 991.98px) {
 	.cwgb-floating-nav[data-rotate='true'][data-btn-type-tablet='button'] .cwgb-floating-nav__trigger {
-		width: var(--fn-btn-size, 2.2rem);
+		aspect-ratio: auto;
+		width: auto;
 		height: auto;
-		padding: calc(var(--fn-btn-size, 2.2rem) * 0.55) 0;
 	}
 }
 
 @media (max-width: 575.98px) {
 	.cwgb-floating-nav[data-rotate='true'][data-btn-type-mobile='button'] .cwgb-floating-nav__trigger {
-		width: var(--fn-btn-size, 2.2rem);
+		aspect-ratio: auto;
+		width: auto;
 		height: auto;
-		padding: calc(var(--fn-btn-size, 2.2rem) * 0.55) 0;
 	}
 }
 
@@ -256,14 +213,6 @@
 
 // ── Popup items ──────────────────────────────────────────────
 .cwgb-floating-nav__item {
-	font-size: 0.9rem;
-	line-height: 1.4;
-	transition: background 0.15s ease;
-
-	&:hover {
-		background: rgba(0, 0, 0, 0.05);
-	}
-
 	& + & {
 		border-top: 1px solid rgba(0, 0, 0, 0.06);
 	}

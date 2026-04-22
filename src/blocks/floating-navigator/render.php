@@ -60,8 +60,21 @@ $popup_bg_class = 'solid' === $popup_bg_type ? "bg-{$popup_bg_color}" : "bg-{$po
 
 $has_text = 'button' === $btn_type_desktop || 'button' === $btn_type_tablet || 'button' === $btn_type_mobile;
 
-$size_map       = [ 'sm' => '1.8rem', 'md' => '2.2rem', 'lg' => '3rem', 'elg' => '4rem' ];
-$btn_size_value = $size_map[ $button_size ] ?? '2.2rem';
+// Button shape class (desktop base): btn-circle for icon, rounded-pill for text+icon
+$btn_shape_class = 'icon' === $btn_type_desktop ? 'btn-circle' : 'rounded-pill';
+
+// Size class: md has no extra class, others map to theme size modifiers
+$size_class_map = [ 'sm' => 'btn-sm', 'md' => '', 'lg' => 'btn-lg', 'elg' => 'btn-elg' ];
+$btn_size_class = $size_class_map[ $button_size ] ?? '';
+
+$btn_classes = trim( implode( ' ', array_filter( [
+	'cwgb-floating-nav__trigger',
+	'btn',
+	"btn-{$button_color}",
+	$btn_shape_class,
+	'has-ripple',
+	$btn_size_class,
+] ) ) );
 
 $unique_id = 'cwgb-fn-' . substr( md5( wp_json_encode( $attributes ) ), 0, 8 );
 
@@ -72,10 +85,9 @@ $css_vars = implode( '; ', [
 	"--fn-offset-y-tablet:{$offset_y_tablet}px",
 	"--fn-offset-x-mobile:{$offset_x_mobile}px",
 	"--fn-offset-y-mobile:{$offset_y_mobile}px",
-	"--fn-btn-size:{$btn_size_value}",
 ] );
 
-// Collect anchor IDs for IntersectionObserver
+// Collect anchor IDs for scroll tracking
 $anchor_ids = array_filter( array_column( $items, 'anchor' ) );
 ?>
 <div
@@ -91,7 +103,7 @@ $anchor_ids = array_filter( array_column( $items, 'anchor' ) );
 	aria-label="<?php esc_attr_e( 'Page navigation', 'codeweber-gutenberg-blocks' ); ?>"
 >
 	<button
-		class="cwgb-floating-nav__trigger btn btn-<?php echo esc_attr( $button_color ); ?>"
+		class="<?php echo esc_attr( $btn_classes ); ?>"
 		aria-expanded="false"
 		aria-haspopup="true"
 		aria-controls="<?php echo esc_attr( $unique_id . '-popup' ); ?>"

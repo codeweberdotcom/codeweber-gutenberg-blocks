@@ -181,10 +181,13 @@ $anchor_ids = array_filter( array_column( $items, 'anchor' ) );
 			} );
 		}
 
-		// On click — set active immediately, don't wait for observer
+		// On click — set active immediately, block observer during scroll animation
+		var scrollLock = false;
 		links.forEach( function ( link ) {
 			link.addEventListener( 'click', function () {
 				setActive( this.getAttribute( 'data-anchor' ) );
+				scrollLock = true;
+				setTimeout( function () { scrollLock = false; }, 800 );
 			} );
 		} );
 
@@ -195,6 +198,7 @@ $anchor_ids = array_filter( array_column( $items, 'anchor' ) );
 				entries.forEach( function ( entry ) {
 					visible[ entry.target.id ] = entry.isIntersecting;
 				} );
+				if ( scrollLock ) return;
 				var found = anchors.find( function ( id ) { return visible[ id ]; } );
 				if ( found ) setActive( found );
 			},

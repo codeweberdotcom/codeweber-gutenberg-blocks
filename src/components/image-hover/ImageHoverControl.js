@@ -343,7 +343,8 @@ export const getImageHoverClasses = (attributes) => {
 			break;
 
 		case 'overlay':
-			classes.push('overlay', overlayStyle);
+			// overlay-5-bottom uses overlay-5 CSS class (bottom-overlay added separately)
+			classes.push('overlay', overlayStyle === 'overlay-5-bottom' ? 'overlay-5' : overlayStyle);
 
 			// Overlay-2 with color
 			if (overlayStyle === 'overlay-2' && overlayColor) {

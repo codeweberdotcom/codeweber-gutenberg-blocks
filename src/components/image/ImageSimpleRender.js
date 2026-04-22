@@ -263,7 +263,6 @@ export const ImageSimpleRender = ({
 									<path d="M220,128a4.0002,4.0002,0,0,1-4,4H132v84a4,4,0,0,1-8,0V132H40a4,4,0,0,1,0-8h84V40a4,4,0,0,1,8,0v84h84A4.0002,4.0002,0,0,1,220,128Z"></path>
 								</svg>
 							</span>
-							<span className="bg"></span>
 						</a>
 						{(image.title || image.caption || image.description) && (
 							<figcaption className="position-absolute bottom-0 start-0 end-0 p-4 text-white">

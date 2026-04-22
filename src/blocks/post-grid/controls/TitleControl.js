@@ -3,6 +3,7 @@ import {
 	SelectControl,
 	TextControl,
 	ComboboxControl,
+	ToggleControl,
 } from '@wordpress/components';
 import { TagControl } from '../../../components/tag';
 import { ColorTypeControl } from '../../../components/colors/ColorTypeControl';
@@ -22,6 +23,7 @@ export const TitleControl = ({ attributes, setAttributes }) => {
 		titleWeight,
 		titleTransform,
 		titleClass,
+		useAltTitle = false,
 	} = attributes;
 
 	return (
@@ -88,6 +90,16 @@ export const TitleControl = ({ attributes, setAttributes }) => {
 				placeholder="mt-1 mb-3"
 				help={__(
 					'Additional CSS classes (appended to computed classes).',
+					'codeweber-gutenberg-blocks'
+				)}
+			/>
+
+			<ToggleControl
+				label={__('Use Alternative Title', 'codeweber-gutenberg-blocks')}
+				checked={useAltTitle}
+				onChange={(value) => setAttributes({ useAltTitle: value })}
+				help={__(
+					'Use the HTML-capable "Alternative Title" meta field instead of the post title. Edit it in the post sidebar.',
 					'codeweber-gutenberg-blocks'
 				)}
 			/>

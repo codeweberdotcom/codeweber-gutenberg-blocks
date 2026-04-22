@@ -38,6 +38,7 @@ $listId = isset($attributes['listId']) ? $attributes['listId'] : '';
 $listData = isset($attributes['listData']) ? $attributes['listData'] : '';
 $columns = isset($attributes['columns']) ? $attributes['columns'] : '1';
 $items = isset($attributes['items']) ? $attributes['items'] : [];
+$use_alt_title = !empty($attributes['useAltTitle']);
 
 // Grid attributes
 $gridRowCols = isset($attributes['gridRowCols']) ? $attributes['gridRowCols'] : '';
@@ -99,6 +100,12 @@ if ($mode === 'post' && !empty($postType)) {
 			$query->the_post();
 			$postId = get_the_ID();
 			$postTitle = get_the_title();
+			if ($use_alt_title) {
+				$alt = get_post_meta($postId, '_alt_title', true);
+				if (!empty($alt)) {
+					$postTitle = wp_kses_post($alt);
+				}
+			}
 			$postUrl = get_permalink();
 			
 			$itemsToRender[] = array(
@@ -209,9 +216,9 @@ foreach ($wrapperAttrs as $key => $value) {
 					<?php endif; ?>
 					<span>
 						<?php if ($enableLinks && !empty($item['url'])) : ?>
-							<a href="<?php echo esc_url($item['url']); ?>"><?php echo esc_html($item['text']); ?></a>
+							<a href="<?php echo esc_url($item['url']); ?>"><?php echo ($use_alt_title && $mode === 'post') ? wp_kses_post($item['text']) : esc_html($item['text']); ?></a>
 						<?php else : ?>
-							<?php echo esc_html($item['text']); ?>
+							<?php echo ($use_alt_title && $mode === 'post') ? wp_kses_post($item['text']) : esc_html($item['text']); ?>
 						<?php endif; ?>
 					</span>
 				</li>

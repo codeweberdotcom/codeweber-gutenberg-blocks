@@ -31,6 +31,7 @@ export const AccordionSidebar = ({ attributes, setAttributes }) => {
 		order,
 		theme,
 		buttonBackgroundColor,
+		useAltTitle = false,
 	} = attributes;
 
 	const bgColorOptions = [
@@ -117,6 +118,23 @@ export const AccordionSidebar = ({ attributes, setAttributes }) => {
 							onOrderChange={(value) =>
 								setAttributes({ order: value })
 							}
+						/>
+					</div>
+
+					<div style={{ marginTop: '16px' }}>
+						<ToggleControl
+							label={__(
+								'Use Alternative Title',
+								'codeweber-gutenberg-blocks'
+							)}
+							checked={useAltTitle}
+							onChange={(value) =>
+								setAttributes({ useAltTitle: value })
+							}
+							help={__(
+								'Use the HTML "Alternative Title" meta field (supports <br>, <strong> etc.).',
+								'codeweber-gutenberg-blocks'
+							)}
 						/>
 					</div>
 				</>

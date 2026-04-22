@@ -868,8 +868,29 @@ if (!function_exists('render_post_grid_item')) {
 				$GLOBALS['cw_shop_col_class'] = $col_classes;
 			}
 
+			// Alt title: override post title with HTML-capable meta field when toggle is on.
+			$use_alt_title    = ! empty( $attributes['useAltTitle'] );
+			$alt_title_filter = null;
+			if ( $use_alt_title && isset( $post->ID ) ) {
+				$alt_title_val = get_post_meta( $post->ID, '_alt_title', true );
+				if ( ! empty( $alt_title_val ) ) {
+					$pid              = $post->ID;
+					$atv              = wp_kses_post( $alt_title_val );
+					$alt_title_filter = function ( $title, $id ) use ( $pid, $atv ) {
+						return ( (int) $id === $pid ) ? $atv : $title;
+					};
+					add_filter( 'the_title', $alt_title_filter, 99, 2 );
+					$display_settings['use_html_title'] = true;
+					$display_settings['title_length']   = 0;
+				}
+			}
+
 			// В режиме Swiper (slider) НИКОГДА не добавляем col-* классы
 			$html = cw_render_post_card($post, $template, $display_settings, $template_args);
+
+			if ( $alt_title_filter ) {
+				remove_filter( 'the_title', $alt_title_filter, 99 );
+			}
 
 			if ($is_wc_shop_template) {
 				unset($GLOBALS['cw_shop_col_class']);

@@ -40,6 +40,7 @@ export const ListsSidebar = ({ attributes, setAttributes }) => {
 		orderBy,
 		order,
 		columns,
+		useAltTitle = false,
 	} = attributes;
 
 	const [iconPickerOpen, setIconPickerOpen] = useState(false);
@@ -181,6 +182,23 @@ export const ListsSidebar = ({ attributes, setAttributes }) => {
 								}
 								help={__(
 									'Enable links to post pages',
+									'codeweber-gutenberg-blocks'
+								)}
+							/>
+						</div>
+
+						<div style={{ marginTop: '16px' }}>
+							<ToggleControl
+								label={__(
+									'Use Alternative Title',
+									'codeweber-gutenberg-blocks'
+								)}
+								checked={useAltTitle}
+								onChange={(value) =>
+									setAttributes({ useAltTitle: value })
+								}
+								help={__(
+									'Use the HTML "Alternative Title" meta field (supports <br>, <strong> etc.).',
 									'codeweber-gutenberg-blocks'
 								)}
 							/>

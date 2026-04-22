@@ -24,6 +24,7 @@ if (defined('WP_DEBUG') && WP_DEBUG) {
 
 // Получаем атрибуты
 $mode = isset($attributes['mode']) ? $attributes['mode'] : 'custom';
+$use_alt_title = !empty($attributes['useAltTitle']);
 $accordionStyle = isset($attributes['accordionStyle']) ? $attributes['accordionStyle'] : 'simple';
 $allowMultiple = isset($attributes['allowMultiple']) ? (bool) $attributes['allowMultiple'] : false;
 $accordionId = isset($attributes['accordionId']) ? $attributes['accordionId'] : '';
@@ -128,6 +129,12 @@ if ($mode === 'post' && !empty($postType)) {
 			
 			// Получаем контент поста
 			$postTitle = get_the_title();
+			if ($use_alt_title) {
+				$alt = get_post_meta($postId, '_alt_title', true);
+				if (!empty($alt)) {
+					$postTitle = wp_kses_post($alt);
+				}
+			}
 			$postContent = '';
 			
 			// Пытаемся получить excerpt
@@ -267,7 +274,7 @@ $wrapperAttributes = 'class="' . esc_attr(implode(' ', $accordionClasses)) . '" 
 							<?php $displayIcon = !empty($itemIcon) ? $itemIcon : 'uil uil-plus'; ?>
 							<span class="icon"><i class="<?php echo esc_attr($displayIcon); ?>"></i></span>
 						<?php endif; ?>
-						<?php echo esc_html($itemTitle); ?>
+						<?php echo ($use_alt_title && $mode === 'post') ? wp_kses_post($itemTitle) : esc_html($itemTitle); ?>
 					</button>
 				</div>
 				<div<?php echo $collapseAttrsString; ?>>

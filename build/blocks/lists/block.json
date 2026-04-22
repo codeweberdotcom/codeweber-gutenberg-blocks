@@ -222,6 +222,10 @@
     "gridGapYXxl": {
       "type": "string",
       "default": ""
+    },
+    "useAltTitle": {
+      "type": "boolean",
+      "default": false
     }
   },
   "textdomain": "codeweber-gutenberg-blocks",

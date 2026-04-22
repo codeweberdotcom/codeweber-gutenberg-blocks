@@ -474,6 +474,10 @@
 		"manualItems": {
 			"type": "array",
 			"default": []
+		},
+		"useAltTitle": {
+			"type": "boolean",
+			"default": false
 		}
 	}
 }

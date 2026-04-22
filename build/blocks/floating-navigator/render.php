@@ -181,6 +181,13 @@ $anchor_ids = array_filter( array_column( $items, 'anchor' ) );
 			} );
 		}
 
+		// On click — set active immediately, don't wait for observer
+		links.forEach( function ( link ) {
+			link.addEventListener( 'click', function () {
+				setActive( this.getAttribute( 'data-anchor' ) );
+			} );
+		} );
+
 		var visible = {};
 
 		var observer = new IntersectionObserver(

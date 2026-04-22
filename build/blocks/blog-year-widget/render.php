@@ -33,7 +33,8 @@ if (empty($archives)) {
 	return;
 }
 
+$anchor = isset($attributes['anchor']) ? trim((string) $attributes['anchor']) : '';
 ?>
-<ul class="<?php echo esc_attr($list_class); ?>">
+<ul class="<?php echo esc_attr($list_class); ?>"<?php echo $anchor ? ' id="' . esc_attr($anchor) . '"' : ''; ?>>
 	<?php echo $archives; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- wp_get_archives() returns escaped HTML ?>
 </ul>

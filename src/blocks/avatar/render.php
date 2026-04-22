@@ -12,6 +12,7 @@
 
 $avatar_type   = isset( $attributes['avatarType'] ) ? $attributes['avatarType'] : 'custom';
 $size          = isset( $attributes['size'] ) ? $attributes['size'] : '15';
+$anchor        = isset( $attributes['anchor'] ) ? trim( (string) $attributes['anchor'] ) : '';
 $show_name     = isset( $attributes['showName'] ) ? $attributes['showName'] : false;
 $user_id       = isset( $attributes['userId'] ) ? intval( $attributes['userId'] ) : 0;
 $staff_id        = isset( $attributes['staffId'] ) ? intval( $attributes['staffId'] ) : 0;
@@ -73,8 +74,8 @@ $avatar_style  = $show_name ? ' style="margin-right: 12px;"' : '';
 
 ob_start();
 ?>
-<div class="<?php echo esc_attr( implode( ' ', $block_classes ) ); ?>" 
-	<?php echo ! empty( $attributes['blockId'] ) ? 'id="' . esc_attr( $attributes['blockId'] ) . '"' : ''; ?>
+<div class="<?php echo esc_attr( implode( ' ', $block_classes ) ); ?>"
+	<?php $avatar_id = $anchor ?: ( ! empty( $attributes['blockId'] ) ? $attributes['blockId'] : '' ); echo $avatar_id ? 'id="' . esc_attr( $avatar_id ) . '"' : ''; ?>
 	<?php echo ! empty( $data_attributes ) ? wp_kses_data( implode( ' ', array_map( function( $key, $value ) { return $key . '="' . $value . '"'; }, array_keys( $data_attributes ), $data_attributes ) ) ) : ''; ?>>
 	<?php if ( $avatar_type === 'user' && $user_id ) : ?>
 		<?php

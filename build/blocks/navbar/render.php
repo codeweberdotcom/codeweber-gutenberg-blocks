@@ -60,6 +60,8 @@ $wrapper_class_attr = isset($attributes['wrapperClass']) ? trim($attributes['wra
 $nav_class_attr    = isset($attributes['navClass']) ? trim($attributes['navClass']) : '';
 $block_class_attr  = isset($attributes['blockClass']) ? trim($attributes['blockClass']) : '';
 $block_id_attr     = isset($attributes['blockId']) ? trim($attributes['blockId']) : '';
+$anchor            = isset($attributes['anchor']) ? trim((string) $attributes['anchor']) : '';
+$block_id_attr     = $anchor ?: $block_id_attr;
 $logo_width_attr   = isset($attributes['logoWidth']) ? trim($attributes['logoWidth']) : '';
 
 $home_link = $home_link_attr !== '' ? esc_url($home_link_attr) : home_url('/');

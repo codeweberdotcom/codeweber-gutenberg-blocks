@@ -35,6 +35,7 @@ $order = isset($attributes['order']) ? $attributes['order'] : 'desc';
 $itemClass = isset($attributes['itemClass']) ? $attributes['itemClass'] : '';
 $listClass = isset($attributes['listClass']) ? $attributes['listClass'] : '';
 $listId = isset($attributes['listId']) ? $attributes['listId'] : '';
+$anchor = isset($attributes['anchor']) ? trim((string) $attributes['anchor']) : '';
 $listData = isset($attributes['listData']) ? $attributes['listData'] : '';
 $columns = isset($attributes['columns']) ? $attributes['columns'] : '1';
 $items = isset($attributes['items']) ? $attributes['items'] : [];
@@ -189,8 +190,9 @@ foreach ($dataAttrs as $key => $value) {
 
 // Wrapper attributes
 $wrapperAttrs = [];
-if ($listId) {
-	$wrapperAttrs['id'] = esc_attr($listId);
+$list_element_id = $anchor ?: $listId;
+if ($list_element_id) {
+	$wrapperAttrs['id'] = esc_attr($list_element_id);
 }
 $wrapperAttrsString = '';
 foreach ($wrapperAttrs as $key => $value) {

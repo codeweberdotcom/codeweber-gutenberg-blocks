@@ -32,6 +32,7 @@ $selected_block_id = isset($attributes['selectedBlockId']) ? intval($attributes[
 $block_class = isset($attributes['blockClass']) ? esc_attr($attributes['blockClass']) : '';
 $block_id = isset($attributes['blockId']) ? esc_attr($attributes['blockId']) : '';
 $block_data = isset($attributes['blockData']) ? esc_attr($attributes['blockData']) : '';
+$anchor = isset($attributes['anchor']) ? trim((string) $attributes['anchor']) : '';
 
 // Если блок не выбран, ничего не выводим
 if (!$selected_block_id || $selected_block_id === 0) {
@@ -53,4 +54,19 @@ if (!$html_block_post || $html_block_post->post_type !== 'html_blocks' || $html_
 // (users without unfiltered_html have scripts stripped automatically).
 $content = $html_block_post->post_content;
 
-echo wp_unslash( $content );
+$html_id = $anchor ?: $block_id;
+if ( $html_id || $block_class ) {
+	$wrapper_open = '<div';
+	if ( $html_id ) {
+		$wrapper_open .= ' id="' . esc_attr( $html_id ) . '"';
+	}
+	if ( $block_class ) {
+		$wrapper_open .= ' class="' . esc_attr( $block_class ) . '"';
+	}
+	$wrapper_open .= '>';
+	echo $wrapper_open; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built from escaped parts
+	echo wp_unslash( $content );
+	echo '</div>';
+} else {
+	echo wp_unslash( $content );
+}

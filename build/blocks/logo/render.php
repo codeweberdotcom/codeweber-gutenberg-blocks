@@ -22,6 +22,7 @@ $logo_type = isset($attributes['logoType']) ? $attributes['logoType'] : 'both';
 $logo_size = isset($attributes['logoSize']) ? $attributes['logoSize'] : '';
 $block_class = isset($attributes['blockClass']) ? $attributes['blockClass'] : '';
 $block_id = isset($attributes['blockId']) ? $attributes['blockId'] : '';
+$anchor = isset($attributes['anchor']) ? trim((string) $attributes['anchor']) : '';
 $block_data = isset($attributes['blockData']) ? $attributes['blockData'] : '';
 $block_align = isset($attributes['blockAlign']) ? $attributes['blockAlign'] : '';
 $enable_link = isset($attributes['enableLink']) ? (bool) $attributes['enableLink'] : true;
@@ -114,8 +115,9 @@ if ($block_data) {
 
 // Формируем атрибуты обертки
 $wrapper_attrs = [];
-if ($block_id) {
-	$wrapper_attrs['id'] = esc_attr($block_id);
+$logo_id = $anchor ?: $block_id;
+if ($logo_id) {
+	$wrapper_attrs['id'] = esc_attr($logo_id);
 }
 foreach ($data_attrs as $key => $value) {
 	$wrapper_attrs[$key] = $value;

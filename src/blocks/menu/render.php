@@ -31,6 +31,7 @@ $textColor = isset($attributes['textColor']) ? $attributes['textColor'] : '';
 $items = isset($attributes['items']) ? $attributes['items'] : [];
 $menuClass = isset($attributes['menuClass']) ? $attributes['menuClass'] : 'list-unstyled mb-0';
 $menuId = isset($attributes['menuId']) ? $attributes['menuId'] : '';
+$anchor = isset($attributes['anchor']) ? trim((string) $attributes['anchor']) : '';
 $menuData = isset($attributes['menuData']) ? $attributes['menuData'] : '';
 $itemClass = isset($attributes['itemClass']) ? $attributes['itemClass'] : '';
 $linkClass = isset($attributes['linkClass']) ? $attributes['linkClass'] : '';
@@ -258,8 +259,9 @@ foreach ($dataAttrs as $key => $value) {
 
 // Wrapper attributes
 $wrapperAttrs = [];
-if ($menuId) {
-	$wrapperAttrs['id'] = esc_attr($menuId);
+$menu_element_id = $anchor ?: $menuId;
+if ($menu_element_id) {
+	$wrapperAttrs['id'] = esc_attr($menu_element_id);
 }
 $wrapperAttrsString = '';
 foreach ($wrapperAttrs as $key => $value) {

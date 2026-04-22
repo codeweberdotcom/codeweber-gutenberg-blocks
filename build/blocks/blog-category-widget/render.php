@@ -22,6 +22,7 @@ $text_inverse = isset($attributes['textInverse']) ? (bool) $attributes['textInve
 if ($text_inverse) {
 	$list_class .= ' text-inverse';
 }
+$anchor = isset($attributes['anchor']) ? trim((string) $attributes['anchor']) : '';
 
 $term_args = [
 	'taxonomy'   => 'category',
@@ -41,7 +42,7 @@ if (is_wp_error($categories) || empty($categories)) {
 }
 
 ?>
-<div class="widget">
+<div class="widget"<?php echo $anchor ? ' id="' . esc_attr($anchor) . '"' : ''; ?>>
 	<ul class="<?php echo esc_attr($list_class); ?>">
 		<?php
 		foreach ($categories as $term) {

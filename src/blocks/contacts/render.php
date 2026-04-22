@@ -57,6 +57,7 @@ $customSvgUrl = isset($attributes['customSvgUrl']) ? $attributes['customSvgUrl']
 $customSvgSize = isset($attributes['customSvgSize']) ? intval($attributes['customSvgSize']) : 0;
 $block_class = isset($attributes['blockClass']) ? $attributes['blockClass'] : '';
 $block_id = isset($attributes['blockId']) ? $attributes['blockId'] : '';
+$anchor = isset($attributes['anchor']) ? trim((string) $attributes['anchor']) : '';
 $block_data = isset($attributes['blockData']) ? $attributes['blockData'] : '';
 $item_class = isset($attributes['itemClass']) ? $attributes['itemClass'] : '';
 // Theme: default = no classes, dark = text-dark, light = text-light
@@ -551,7 +552,8 @@ if ($theme === 'dark') {
     $wrapper_classes[] = 'text-light';
 }
 $wrapper_class_attr = ' class="' . esc_attr(implode(' ', $wrapper_classes)) . '"';
-$wrapper_id_attr = $block_id ? ' id="' . esc_attr($block_id) . '"' : '';
+$element_id = $anchor ?: $block_id;
+$wrapper_id_attr = $element_id ? ' id="' . esc_attr($element_id) . '"' : '';
 $wrapper_data_attr = '';
 if ($block_data) {
     $pairs = array_map('trim', explode(',', $block_data));

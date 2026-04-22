@@ -34,6 +34,7 @@ $theme_file = $theme_css_map[ $theme ] ?? $theme_css_map['midnight'];
 
 $block_id = 'cw-tabulator-' . uniqid();
 $wrapper_class = 'wp-block-codeweber-blocks-tabulator';
+$anchor = isset($attributes['anchor']) ? trim((string) $attributes['anchor']) : '';
 
 if (!defined('GUTENBERG_BLOCKS_URL')) {
 	return '<div class="' . esc_attr($wrapper_class) . '"><p>' . esc_html__('Plugin error.', 'codeweber-gutenberg-blocks') . '</p></div>';
@@ -89,7 +90,7 @@ wp_add_inline_script('tabulator', $init_script, 'after');
 $export_label_csv = esc_attr__('Export CSV', 'codeweber-gutenberg-blocks');
 $export_label_json = esc_attr__('Export JSON', 'codeweber-gutenberg-blocks');
 ?>
-<div class="<?php echo esc_attr($wrapper_class); ?>">
+<div class="<?php echo esc_attr($wrapper_class); ?>"<?php echo $anchor ? ' id="' . esc_attr($anchor) . '"' : ''; ?>>
 	<?php if ($export_enabled) : ?>
 	<div class="cw-tabulator-export" style="display:none">
 		<button type="button" class="btn has-ripple btn-primary btn-xs" data-export="csv" title="<?php echo $export_label_csv; ?>">CSV</button>

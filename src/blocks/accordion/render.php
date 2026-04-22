@@ -28,6 +28,7 @@ $use_alt_title = !empty($attributes['useAltTitle']);
 $accordionStyle = isset($attributes['accordionStyle']) ? $attributes['accordionStyle'] : 'simple';
 $allowMultiple = isset($attributes['allowMultiple']) ? (bool) $attributes['allowMultiple'] : false;
 $accordionId = isset($attributes['accordionId']) ? $attributes['accordionId'] : '';
+$anchor = isset($attributes['anchor']) ? trim((string) $attributes['anchor']) : '';
 $buttonBackgroundColor = isset($attributes['buttonBackgroundColor']) ? $attributes['buttonBackgroundColor'] : '';
 $iconPosition = isset($attributes['iconPosition']) ? $attributes['iconPosition'] : 'left';
 $iconType = isset($attributes['iconType']) ? $attributes['iconType'] : 'type-1';
@@ -52,6 +53,8 @@ if (defined('WP_DEBUG') && WP_DEBUG) {
 if (empty($accordionId)) {
 	$accordionId = 'accordion-' . substr(md5(json_encode($attributes) . get_the_ID()), 0, 8);
 }
+// anchor (WordPress HTML Anchor field) overrides accordionId as the container id
+$container_id = $anchor ?: $accordionId;
 
 // Получаем скругление для аккордеона из Redux (только rounded-0, если выбрано)
 $accordionCardRadius = '';
@@ -197,7 +200,7 @@ if (defined('WP_DEBUG') && WP_DEBUG) {
 
 // Получаем wrapper атрибуты
 // Формируем атрибуты вручную, чтобы избежать проблем с контекстом блока в get_block_wrapper_attributes()
-$wrapperAttributes = 'class="' . esc_attr(implode(' ', $accordionClasses)) . '" id="' . esc_attr($accordionId) . '"';
+$wrapperAttributes = 'class="' . esc_attr(implode(' ', $accordionClasses)) . '" id="' . esc_attr($container_id) . '"';
 ?>
 
 <div <?php echo $wrapperAttributes; ?>>
@@ -251,7 +254,7 @@ $wrapperAttributes = 'class="' . esc_attr(implode(' ', $accordionClasses)) . '" 
 			);
 			
 			if (!$allowMultiple) {
-				$collapseAttrs['data-bs-parent'] = '#' . esc_attr($accordionId);
+				$collapseAttrs['data-bs-parent'] = '#' . esc_attr($container_id);
 			}
 			
 			// Формируем строку атрибутов для collapse

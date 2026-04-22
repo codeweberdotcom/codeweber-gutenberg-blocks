@@ -25,6 +25,7 @@ $background_color = isset($attributes['backgroundColor']) ? sanitize_html_class(
 $text_color = isset($attributes['textColor']) ? sanitize_html_class($attributes['textColor']) : 'white';
 $block_class = isset($attributes['blockClass']) ? esc_attr($attributes['blockClass']) : '';
 $block_id = isset($attributes['blockId']) ? esc_attr($attributes['blockId']) : '';
+$anchor = isset($attributes['anchor']) ? trim((string) $attributes['anchor']) : '';
 
 if (!class_exists('Redux')) {
 	return;
@@ -62,7 +63,7 @@ $link_class = $text_color === 'white' ? 'link-white' : 'link-body';
 $wrapper_class = trim("codeweber-top-header {$bg_class} {$txt_class} fw-bold fs-15 {$block_class}");
 ?>
 
-<div class="<?php echo esc_attr($wrapper_class); ?>"<?php echo $block_id ? ' id="' . $block_id . '"' : ''; ?>>
+<div class="<?php echo esc_attr($wrapper_class); ?>"<?php $top_header_id = $anchor ?: $block_id; echo $top_header_id ? ' id="' . esc_attr($top_header_id) . '"' : ''; ?>>
 	<div class="container d-flex flex-row justify-content-between flex-wrap">
 		<?php if ($show_address && $address) : ?>
 			<div class="d-flex flex-row align-items-center">

@@ -81,8 +81,9 @@ if (!$query->have_posts()) {
 	return;
 }
 
+$anchor = isset($attributes['anchor']) ? trim((string) $attributes['anchor']) : '';
 ?>
-<ul class="image-list<?php echo $text_inverse ? ' text-inverse' : ''; ?>">
+<ul class="image-list<?php echo $text_inverse ? ' text-inverse' : ''; ?>"<?php echo $anchor ? ' id="' . esc_attr($anchor) . '"' : ''; ?>>
 	<?php
 	while ($query->have_posts()) {
 		$query->the_post();

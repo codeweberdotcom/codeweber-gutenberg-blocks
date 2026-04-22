@@ -36,6 +36,7 @@ $swiperDotsStyle = isset($attributes['swiperDotsStyle']) ? $attributes['swiperDo
 $swiperClass = isset($attributes['swiperClass']) ? $attributes['swiperClass'] : '';
 $swiperId = isset($attributes['swiperId']) ? $attributes['swiperId'] : '';
 $swiperData = isset($attributes['swiperData']) ? $attributes['swiperData'] : '';
+$anchor = isset($attributes['anchor']) ? trim((string) $attributes['anchor']) : '';
 
 // Build container classes
 $containerClasses = ['swiper-container', 'mb-10'];
@@ -85,8 +86,9 @@ if ($swiperAutoplay) {
 
 // Build wrapper attributes
 $wrapperAttrs = 'class="' . esc_attr(implode(' ', $containerClasses)) . '"';
-if ($swiperId) {
-	$wrapperAttrs .= ' id="' . esc_attr($swiperId) . '"';
+$swiper_id = $anchor ?: $swiperId;
+if ($swiper_id) {
+	$wrapperAttrs .= ' id="' . esc_attr($swiper_id) . '"';
 }
 if ($swiperData) {
 	$wrapperAttrs .= ' data-codeweber="' . esc_attr($swiperData) . '"';

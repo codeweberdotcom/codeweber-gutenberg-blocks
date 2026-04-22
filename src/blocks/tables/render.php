@@ -71,8 +71,9 @@ if ($source_mode === 'csv' && $csv_document_id > 0 && post_type_exists('document
 }
 
 $wrapper_class = 'wp-block-codeweber-blocks-tables';
+$anchor = isset($attributes['anchor']) ? trim((string) $attributes['anchor']) : '';
 ?>
-<div class="<?php echo esc_attr($wrapper_class); ?>">
+<div class="<?php echo esc_attr($wrapper_class); ?>"<?php echo $anchor ? ' id="' . esc_attr($anchor) . '"' : ''; ?>>
 	<?php if ($responsive) : ?>
 		<div class="table-responsive">
 	<?php endif; ?>

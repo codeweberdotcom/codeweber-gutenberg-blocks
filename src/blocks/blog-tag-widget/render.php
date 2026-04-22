@@ -48,8 +48,9 @@ if (is_wp_error($tags) || empty($tags)) {
 	return;
 }
 
+$anchor = isset($attributes['anchor']) ? trim((string) $attributes['anchor']) : '';
 ?>
-<ul class="list-unstyled tag-list">
+<ul class="list-unstyled tag-list"<?php echo $anchor ? ' id="' . esc_attr($anchor) . '"' : ''; ?>>
 	<?php
 	foreach ($tags as $term) {
 		$url = get_term_link($term);

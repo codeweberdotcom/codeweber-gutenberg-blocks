@@ -21,6 +21,7 @@ if (!isset($attributes) || !is_array($attributes)) {
 
 $block_class   = isset($attributes['blockClass']) ? $attributes['blockClass'] : '';
 $block_id      = isset($attributes['blockId']) ? $attributes['blockId'] : '';
+$anchor        = isset($attributes['anchor']) ? trim((string) $attributes['anchor']) : '';
 $display_type  = isset($attributes['displayType']) && $attributes['displayType'] === 'dropdown' ? 'dropdown' : (isset($attributes['displayType']) ? $attributes['displayType'] : 'form');
 $placeholder   = isset($attributes['placeholder']) && $attributes['placeholder'] !== '' ? $attributes['placeholder'] : __('Type keyword', 'codeweber-gutenberg-blocks');
 $posts_per_page = isset($attributes['postsPerPage']) ? $attributes['postsPerPage'] : '8';
@@ -47,8 +48,9 @@ if ($block_class) {
 	$wrapper_classes[] = $block_class;
 }
 $wrapper_attr = ' class="' . esc_attr(implode(' ', $wrapper_classes)) . '"';
-if ($block_id) {
-	$wrapper_attr .= ' id="' . esc_attr($block_id) . '"';
+$search_id = $anchor ?: $block_id;
+if ($search_id) {
+	$wrapper_attr .= ' id="' . esc_attr($search_id) . '"';
 }
 
 // Form markup (same structure as theme shortcode, no shortcode call)

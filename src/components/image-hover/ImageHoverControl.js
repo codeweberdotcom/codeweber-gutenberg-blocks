@@ -209,6 +209,13 @@ export const ImageHoverControl = ({ attributes, setAttributes, showAdvanced = tr
 							},
 							{
 								label: __(
+									'Overlay 5 + Bottom Caption',
+									'codeweber-gutenberg-blocks'
+								),
+								value: 'overlay-5-bottom',
+							},
+							{
+								label: __(
 									'Overlay 6 (Hover Overlay)',
 									'codeweber-gutenberg-blocks'
 								),
@@ -351,6 +358,11 @@ export const getImageHoverClasses = (attributes) => {
 			// Overlay-5: plus icon with hover-scale
 			if (overlayStyle === 'overlay-5') {
 				classes.push('hover-scale', 'hover-plus');
+			}
+
+			// Overlay-5-bottom: plus icon + always-visible bottom caption
+			if (overlayStyle === 'overlay-5-bottom') {
+				classes.push('hover-scale', 'hover-plus', 'bottom-overlay');
 			}
 
 			// Overlay-6: hover-overlay with icon (no overlay base class)

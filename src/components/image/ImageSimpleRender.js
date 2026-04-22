@@ -232,10 +232,51 @@ export const ImageSimpleRender = ({
 									viewBox="0 0 256 256"
 									xmlns="http://www.w3.org/2000/svg"
 								>
-									<path d="M220,128a4.0002,4.0002,0,0,1-4,4H132v84a4,4,0,0,1-8,0V132H40a4,4,0,0,1,0-8h84V40a4,4,0,0,1,8,0v84h84A4.0002,4.0002,0,0,1,220,128Z"></path>
+									<path d="M220,128a4.0002,4.0002,0,0,1-4,4H132v84a4,4,0,0,1-8,0V132H40a4,4,0,0,1,8,0v84h84A4.0002,4.0002,0,0,1,220,128Z"></path>
 								</svg>
 							</span>
 						</a>
+					</figure>
+				);
+			}
+
+			// Overlay-5-bottom: plus icon + always-visible bottom caption (figcaption outside <a>)
+			if (overlayStyle === 'overlay-5-bottom') {
+				return (
+					<figure className={figureClasses}>
+						<a
+							href={href}
+							onClick={onClickHandler}
+							{...lightboxAttrs}
+						>
+							<img
+								src={imageUrl}
+								alt={image.alt || ''}
+								decoding="async"
+							/>
+							<span className="hover-icon text-white">
+								<svg
+									fill="currentColor"
+									viewBox="0 0 256 256"
+									xmlns="http://www.w3.org/2000/svg"
+								>
+									<path d="M220,128a4.0002,4.0002,0,0,1-4,4H132v84a4,4,0,0,1-8,0V132H40a4,4,0,0,1,0-8h84V40a4,4,0,0,1,8,0v84h84A4.0002,4.0002,0,0,1,220,128Z"></path>
+								</svg>
+							</span>
+							<span className="bg"></span>
+						</a>
+						{(image.title || image.caption || image.description) && (
+							<figcaption className="position-absolute bottom-0 start-0 end-0 p-4 text-white">
+								{(image.title || image.caption) && (
+									<h5 className="text-white mb-0">
+										{image.title || image.caption}
+									</h5>
+								)}
+								{image.description && (
+									<p className="mb-0">{image.description}</p>
+								)}
+							</figcaption>
+						)}
 					</figure>
 				);
 			}
@@ -300,8 +341,8 @@ export const ImageSimpleRender = ({
 		);
 	})();
 
-	// overlay-5/6/7 handle lightbox internally — skip outer wrap
-	if (effectType === 'overlay' && ['overlay-5', 'overlay-6', 'overlay-7'].includes(overlayStyle)) {
+	// overlay-5/6/7/5-bottom handle lightbox internally — skip outer wrap
+	if (effectType === 'overlay' && ['overlay-5', 'overlay-5-bottom', 'overlay-6', 'overlay-7'].includes(overlayStyle)) {
 		return figureElement;
 	}
 

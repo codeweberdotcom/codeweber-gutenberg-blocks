@@ -62,6 +62,10 @@
       "type": "boolean",
       "default": false
     },
+    "popupTitle": {
+      "type": "string",
+      "default": "Contents"
+    },
     "buttonColor": {
       "type": "string",
       "default": "primary"

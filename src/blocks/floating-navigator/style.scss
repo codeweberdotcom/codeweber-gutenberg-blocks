@@ -40,13 +40,8 @@
 	gap: 6px;
 	white-space: nowrap;
 	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-	transition: transform 0.2s ease, box-shadow 0.2s ease, border-radius 0s;
+	transition: box-shadow 0.2s ease, border-radius 0s;
 	line-height: 1;
-
-	// Rotate icon when expanded
-	&[aria-expanded='true'] .uil {
-		transform: rotate(90deg);
-	}
 
 	.uil {
 		transition: transform 0.25s ease;
@@ -56,7 +51,6 @@
 
 	&:hover {
 		box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28);
-		transform: translateY(-1px);
 	}
 }
 
@@ -196,20 +190,66 @@
 	}
 }
 
-// ── Button rotation ──────────────────────────────────────────
-// Rotates the trigger -90deg (counter-clockwise) while keeping popup position intact.
-// The popup is positioned relative to the outer wrapper, not the rotated button.
+// ── Button rotation (writing-mode) ───────────────────────────
+// writing-mode recalculates the layout box so the button doesn't overflow.
+// The popup is on the wrapper, so it stays correctly positioned.
 .cwgb-floating-nav[data-rotate='true'] .cwgb-floating-nav__trigger {
-	transform: rotate(-90deg);
+	writing-mode: vertical-rl;
+	transform: rotate(180deg);
 
-	&:hover {
-		transform: rotate(-90deg) translateY(-1px);
+	// Keep the icon upright inside the rotated button
+	.uil {
+		writing-mode: horizontal-tb;
+		transform: none;
+		display: block;
 	}
 
+	// Suppress icon spin on expand (button itself is rotated)
 	&[aria-expanded='true'] .uil {
-		// Cancel icon spin since button itself rotates
 		transform: none;
 	}
+}
+
+// ── Popup direction for rotated right-side buttons ───────────
+// Rotated button on right → popup opens to the LEFT of the button
+.cwgb-floating-nav[data-rotate='true'][data-position^='right-'] .cwgb-floating-nav__popup {
+	left: auto;
+	right: calc(100% + 10px);
+	bottom: 0;
+	top: auto;
+	transform: scale(0.92) translateX(8px);
+	transform-origin: center right;
+
+	&.is-open {
+		transform: scale(1) translateX(0);
+	}
+}
+
+// Rotated button on left → popup opens to the RIGHT of the button
+.cwgb-floating-nav[data-rotate='true'][data-position^='left-'] .cwgb-floating-nav__popup {
+	left: calc(100% + 10px);
+	right: auto;
+	bottom: 0;
+	top: auto;
+	transform: scale(0.92) translateX(-8px);
+	transform-origin: center left;
+
+	&.is-open {
+		transform: scale(1) translateX(0);
+	}
+}
+
+// ── Popup title ──────────────────────────────────────────────
+.cwgb-floating-nav__popup-title {
+	padding: 8px 18px 6px;
+	font-size: 0.75rem;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	color: var(--fn-popup-text, #212529);
+	opacity: 0.55;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+	margin-bottom: 4px;
 }
 
 // ── Popup items ──────────────────────────────────────────────
@@ -231,5 +271,17 @@
 
 	& + & {
 		border-top: 1px solid rgba(0, 0, 0, 0.06);
+	}
+
+	// Active section highlight
+	&.active {
+		border-left: 3px solid currentColor;
+		padding-left: 15px;
+		font-weight: 600;
+		opacity: 1;
+
+		&:hover {
+			padding-left: 19px;
+		}
 	}
 }

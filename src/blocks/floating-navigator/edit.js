@@ -52,6 +52,7 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 		buttonColor,
 		buttonSize,
 		buttonRotate,
+		popupTitle,
 		popupBgColor,
 		popupTextColor,
 		offsetXDesktop,
@@ -445,14 +446,23 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 					/>
 				</PanelBody>
 
-				{ /* ── POPUP COLORS ── */ }
+				{ /* ── POPUP ── */ }
 				<PanelBody
-					title={ __( 'Popup Colors', 'codeweber-gutenberg-blocks' ) }
+					title={ __( 'Popup', 'codeweber-gutenberg-blocks' ) }
 					initialOpen={ false }
 				>
+					<TextControl
+						label={ __( 'Popup title', 'codeweber-gutenberg-blocks' ) }
+						value={ popupTitle }
+						onChange={ ( val ) => setAttributes( { popupTitle: val } ) }
+						placeholder={ __( 'Contents', 'codeweber-gutenberg-blocks' ) }
+						__nextHasNoMarginBottom
+					/>
+
 					<BaseControl
 						label={ __( 'Background', 'codeweber-gutenberg-blocks' ) }
 						__nextHasNoMarginBottom
+						style={ { marginTop: 12 } }
 					>
 						<ColorPalette
 							value={ popupBgColor }

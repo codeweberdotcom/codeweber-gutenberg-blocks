@@ -47,6 +47,33 @@ const BannersEdit = ({ attributes, setAttributes, clientId }) => {
 		[clientId]
 	);
 
+	// Подгружаем свежие sizes для images[] из WordPress core store (Banner34)
+	const imageIds = (attributes.images || []).map((img) => img.id).filter(Boolean).join(',');
+	const freshSizes = useSelect(
+		(select) => {
+			if (!imageIds) return {};
+			const getMedia = select('core').getMedia;
+			return imageIds.split(',').reduce((acc, idStr) => {
+				const id = parseInt(idStr, 10);
+				const media = getMedia(id);
+				if (media?.media_details?.sizes) {
+					acc[id] = media.media_details.sizes;
+				}
+				return acc;
+			}, {});
+		},
+		[imageIds]
+	);
+	const enrichedAttributes = imageIds
+		? {
+				...attributes,
+				images: (attributes.images || []).map((img) => ({
+					...img,
+					sizes: freshSizes[img.id] || img.sizes,
+				})),
+			}
+		: attributes;
+
 	// Функция для получения шаблона блоков
 	const getTemplateBlocks = () => {
 		if (bannerType === 'banner-3') {
@@ -600,7 +627,7 @@ const BannersEdit = ({ attributes, setAttributes, clientId }) => {
 			case 'banner-34':
 				return (
 					<Banner34
-						attributes={attributes}
+						attributes={enrichedAttributes}
 						isEditor={true}
 						clientId={clientId}
 					/>
@@ -734,7 +761,7 @@ const BannersEdit = ({ attributes, setAttributes, clientId }) => {
 			default:
 				return (
 					<Banner34
-						attributes={attributes}
+						attributes={enrichedAttributes}
 						isEditor={true}
 						clientId={clientId}
 					/>

@@ -1,6 +1,7 @@
 import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
 import { useEffect } from '@wordpress/element';
+import { useSelect } from '@wordpress/data';
 import { ImageSimpleSidebar } from './sidebar';
 import { ImageSimpleRender } from '../../components/image/ImageSimpleRender';
 import {
@@ -80,6 +81,28 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		loadMoreButtonStyle = 'solid',
 		imageRenderType = 'img',
 	} = attributes;
+
+	// Подгружаем свежие sizes из WordPress core store для всех изображений
+	const imageIds = (images || []).map((img) => img.id).filter(Boolean).join(',');
+	const freshSizes = useSelect(
+		(select) => {
+			if (!imageIds) return {};
+			const getMedia = select('core').getMedia;
+			return imageIds.split(',').reduce((acc, idStr) => {
+				const id = parseInt(idStr, 10);
+				const media = getMedia(id);
+				if (media?.media_details?.sizes) {
+					acc[id] = media.media_details.sizes;
+				}
+				return acc;
+			}, {});
+		},
+		[imageIds]
+	);
+	const getEnrichedImage = (image) => ({
+		...image,
+		sizes: freshSizes[image.id] || image.sizes,
+	});
 
 	// Для режима background убираем обертку, применяя атрибуты напрямую к контенту
 	const shouldRemoveWrapper = imageRenderType === 'background';
@@ -318,7 +341,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 			return (
 				<div {...singleDivProps}>
 					<ImageSimpleRender
-						image={images[0]}
+						image={getEnrichedImage(images[0])}
 						imageSize={imageSize}
 						borderRadius={borderRadius}
 						enableLightbox={enableLightbox}
@@ -363,7 +386,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 							}
 						>
 							<ImageSimpleRender
-								image={image}
+								image={getEnrichedImage(image)}
 								imageSize={imageSize}
 								borderRadius={borderRadius}
 								enableLightbox={enableLightbox}
@@ -495,7 +518,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 									key={`${index}-${hoverEffectsKey}-${imageSize}`}
 								>
 									<ImageSimpleRender
-										image={image}
+										image={getEnrichedImage(image)}
 										imageSize={imageSize}
 										borderRadius={borderRadius}
 										enableLightbox={enableLightbox}
@@ -529,7 +552,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 								key={`${index}-${hoverEffectsKey}-${imageSize}`}
 							>
 								<ImageSimpleRender
-									image={image}
+									image={getEnrichedImage(image)}
 									imageSize={imageSize}
 									borderRadius={borderRadius}
 									enableLightbox={enableLightbox}

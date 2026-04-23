@@ -25,6 +25,7 @@ export const AdaptiveControl = ({
 	columnColLg,
 	columnColXl,
 	columnColXxl,
+	columnColXxxl,
 	onChange,
 }) => {
 	return (
@@ -105,6 +106,21 @@ export const AdaptiveControl = ({
 					value={columnColXxl}
 					options={createColumnOptions('col-xxl')}
 					onChange={(value) => onChange('columnColXxl', value)}
+				/>
+			</div>
+			<div className="mb-3">
+				<div className="component-sidebar-title">
+					<label>
+						{__(
+							'Wide (xxxl) ≥1920px',
+							'codeweber-gutenberg-blocks'
+						)}
+					</label>
+				</div>
+				<SelectControl
+					value={columnColXxxl}
+					options={createColumnOptions('col-xxxl')}
+					onChange={(value) => onChange('columnColXxxxl', value)}
 				/>
 			</div>
 		</>

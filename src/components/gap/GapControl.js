@@ -34,6 +34,7 @@ export const GapControl = ({
 	columnsGapLg,
 	columnsGapXl,
 	columnsGapXxl,
+	columnsGapXxxl,
 	onChange,
 }) => {
 	return (
@@ -134,6 +135,21 @@ export const GapControl = ({
 					value={columnsGapXxl}
 					options={createGapOptions(columnsGapType, 'xxl')}
 					onChange={(value) => onChange('columnsGapXxl', value)}
+				/>
+			</div>
+			<div className="mb-3">
+				<div className="component-sidebar-title">
+					<label>
+						{__(
+							'Wide (xxxl) ≥1920px',
+							'codeweber-gutenberg-blocks'
+						)}
+					</label>
+				</div>
+				<SelectControl
+					value={columnsGapXxxl}
+					options={createGapOptions(columnsGapType, 'xxxl')}
+					onChange={(value) => onChange('columnsGapXxxxl', value)}
 				/>
 			</div>
 		</>

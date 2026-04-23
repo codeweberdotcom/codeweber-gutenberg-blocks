@@ -39,6 +39,7 @@ export const getRowColsClasses = (
 		[`${prefix}RowColsLg`]: rowColsLg,
 		[`${prefix}RowColsXl`]: rowColsXl,
 		[`${prefix}RowColsXxl`]: rowColsXxl,
+		[`${prefix}RowColsXxxl`]: rowColsXxxl,
 	} = attrs;
 
 	const responsiveClasses = [
@@ -48,6 +49,7 @@ export const getRowColsClasses = (
 		rowColsClass('row-cols-lg', rowColsLg),
 		rowColsClass('row-cols-xl', rowColsXl),
 		rowColsClass('row-cols-xxl', rowColsXxl),
+		rowColsClass('row-cols-xxxl', rowColsXxxl),
 	].filter(Boolean);
 
 	return responsiveClasses;
@@ -80,6 +82,7 @@ const getGapClassesForType = (
 		[`${prefix}Gap${suffix}Lg`]: gapLg,
 		[`${prefix}Gap${suffix}Xl`]: gapXl,
 		[`${prefix}Gap${suffix}Xxl`]: gapXxl,
+		[`${prefix}Gap${suffix}Xxxl`]: gapXxxl,
 	} = attrs;
 
 	// Базовое значение (default breakpoint) - используем XS если установлен, иначе default
@@ -103,6 +106,9 @@ const getGapClassesForType = (
 	}
 	if (gapXxl && gapXxl !== '') {
 		classes.push(`${gapTypePrefix}-xxl-${gapXxl}`);
+	}
+	if (gapXxxl && gapXxxl !== '') {
+		classes.push(`${gapTypePrefix}-xxxl-${gapXxxl}`);
 	}
 
 	return classes;
@@ -144,6 +150,7 @@ export const getSpacingClasses = (attrs = {}, prefix = 'grid') => {
 		[`${prefix}SpacingLg`]: spacingLg,
 		[`${prefix}SpacingXl`]: spacingXl,
 		[`${prefix}SpacingXxl`]: spacingXxl,
+		[`${prefix}SpacingXxxl`]: spacingXxxl,
 	} = attrs;
 
 	// Определяем префикс классов: 'p' для padding, 'm' для margin
@@ -166,6 +173,9 @@ export const getSpacingClasses = (attrs = {}, prefix = 'grid') => {
 	}
 	if (spacingXxl) {
 		classes.push(`${classPrefix}-xxl-${spacingXxl}`);
+	}
+	if (spacingXxxl) {
+		classes.push(`${classPrefix}-xxxl-${spacingXxxl}`);
 	}
 
 	return classes;
@@ -248,6 +258,10 @@ export const createGridAttributes = (prefix = 'grid', defaults = {}) => {
 			type: 'string',
 			default: defaults.rowColsXxl || '',
 		},
+		[`${prefix}RowColsXxxl`]: {
+			type: 'string',
+			default: defaults.rowColsXxxl || '',
+		},
 		// Gap
 		[`${prefix}GapType`]: {
 			type: 'string',
@@ -277,6 +291,10 @@ export const createGridAttributes = (prefix = 'grid', defaults = {}) => {
 			type: 'string',
 			default: defaults.gapXxl || '',
 		},
+		[`${prefix}GapXxxl`]: {
+			type: 'string',
+			default: defaults.gapXxxl || '',
+		},
 		// Spacing
 		[`${prefix}SpacingType`]: {
 			type: 'string',
@@ -305,6 +323,10 @@ export const createGridAttributes = (prefix = 'grid', defaults = {}) => {
 		[`${prefix}SpacingXxl`]: {
 			type: 'string',
 			default: defaults.spacingXxl || '',
+		},
+		[`${prefix}SpacingXxxl`]: {
+			type: 'string',
+			default: defaults.spacingXxxl || '',
 		},
 	};
 };

@@ -45,6 +45,21 @@ const PRESET_OPTIONS = {
 			'11',
 			'12',
 		],
+		xxxl: [
+			'',
+			'1',
+			'2',
+			'3',
+			'4',
+			'5',
+			'6',
+			'7',
+			'8',
+			'9',
+			'10',
+			'11',
+			'12',
+		],
 	},
 	columns: {
 		all: [
@@ -126,7 +141,7 @@ export const createBreakpointsConfig = ({
 	label,
 	tooltip,
 }) => {
-	const breakpointKeys = ['default', 'xs', 'sm', 'md', 'lg', 'xl', 'xxl'];
+	const breakpointKeys = ['default', 'xs', 'sm', 'md', 'lg', 'xl', 'xxl', 'xxxl'];
 	const breakpointLabels = {
 		default: 'Base',
 		xs: 'XS',
@@ -135,6 +150,7 @@ export const createBreakpointsConfig = ({
 		lg: 'LG',
 		xl: 'XL',
 		xxl: 'XXL',
+		xxxl: 'XXXL',
 	};
 
 	const breakpointDescriptions = {
@@ -145,6 +161,7 @@ export const createBreakpointsConfig = ({
 		lg: __('Large (≥992px)', 'codeweber-gutenberg-blocks'),
 		xl: __('Extra Large (≥1200px)', 'codeweber-gutenberg-blocks'),
 		xxl: __('Extra Extra Large (≥1400px)', 'codeweber-gutenberg-blocks'),
+		xxxl: __('Wide (≥1920px)', 'codeweber-gutenberg-blocks'),
 	};
 
 	// Получаем опции для типа

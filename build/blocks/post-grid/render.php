@@ -495,6 +495,7 @@ if (!function_exists('get_swiper_data_attributes')) {
 		$items_lg = $attributes['swiperItemsLg'] ?? '';
 		$items_xl = $attributes['swiperItemsXl'] ?? '3';
 		$items_xxl = $attributes['swiperItemsXxl'] ?? '';
+		$items_xxxl = $attributes['swiperItemsXxxl'] ?? '';
 		$items_auto = isset($attributes['swiperItemsAuto']) ? $attributes['swiperItemsAuto'] : false;
 		$margin = isset($attributes['swiperMargin']) ? (int) $attributes['swiperMargin'] : 30;
 		$loop = isset($attributes['swiperLoop']) ? $attributes['swiperLoop'] : false;
@@ -523,6 +524,7 @@ if (!function_exists('get_swiper_data_attributes')) {
 			if ($items_lg) $attrs['data-items-lg'] = $items_lg;
 			if ($items_xl) $attrs['data-items-xl'] = $items_xl;
 			if ($items_xxl) $attrs['data-items-xxl'] = $items_xxl;
+			if ($items_xxxl) $attrs['data-items-xxxl'] = $items_xxxl;
 		}
 		
 		$attrs['data-margin'] = (string) $margin;

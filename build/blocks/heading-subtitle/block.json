@@ -213,6 +213,10 @@
       "type": "string",
       "default": ""
     },
+    "spacingXxxl": {
+      "type": "string",
+      "default": ""
+    },
     "animationEnabled": {
       "type": "boolean",
       "default": false

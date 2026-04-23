@@ -84,6 +84,7 @@ export const SectionSidebar = ({ attributes, setAttributes }) => {
 		spacingLg,
 		spacingXl,
 		spacingXxl,
+		spacingXxxl,
 		angledEnabled,
 		angledUpper,
 		angledLower,
@@ -603,6 +604,7 @@ export const SectionSidebar = ({ attributes, setAttributes }) => {
 								spacingLg={spacingLg}
 								spacingXl={spacingXl}
 								spacingXxl={spacingXxl}
+								spacingXxxl={spacingXxxl}
 								onChange={(key, value) =>
 									setAttributes({ [key]: value })
 								}

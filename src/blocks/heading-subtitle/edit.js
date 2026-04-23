@@ -71,6 +71,7 @@ const HeadingSubtitleEdit = ({ attributes, setAttributes }) => {
 		spacingLg,
 		spacingXl,
 		spacingXxl,
+		spacingXxxl,
 		animationEnabled,
 		animationType,
 		animationDuration,
@@ -287,6 +288,7 @@ const HeadingSubtitleEdit = ({ attributes, setAttributes }) => {
 										spacingLg={spacingLg}
 										spacingXl={spacingXl}
 										spacingXxl={spacingXxl}
+										spacingXxxl={spacingXxxl}
 										onChange={(key, value) =>
 											setAttributes({ [key]: value })
 										}

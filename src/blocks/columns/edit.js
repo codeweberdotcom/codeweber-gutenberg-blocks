@@ -169,6 +169,7 @@ const ColumnsEdit = ({ attributes, setAttributes, clientId }) => {
 					columnColLg: '',
 					columnColXl: '',
 					columnColXxl: '',
+					columnColXxxl: '',
 				});
 			}
 		});
@@ -203,6 +204,7 @@ const ColumnsEdit = ({ attributes, setAttributes, clientId }) => {
 				columnsRowColsLg: '',
 				columnsRowColsXl: '',
 				columnsRowColsXxl: '',
+				columnsRowColsXxxl: '',
 				// Очищаем gap
 				columnsGapType: '',
 				columnsGapXs: '',
@@ -211,6 +213,7 @@ const ColumnsEdit = ({ attributes, setAttributes, clientId }) => {
 				columnsGapLg: '',
 				columnsGapXl: '',
 				columnsGapXxl: '',
+				columnsGapXxxl: '',
 				// Очищаем spacing
 				columnsSpacingType: '',
 				columnsSpacingXs: '',
@@ -219,6 +222,7 @@ const ColumnsEdit = ({ attributes, setAttributes, clientId }) => {
 				columnsSpacingLg: '',
 				columnsSpacingXl: '',
 				columnsSpacingXxl: '',
+				columnsSpacingXxxl: '',
 			});
 			// Устанавливаем дефолтные значения для Classic Grid
 			setClassicGridDefaults();

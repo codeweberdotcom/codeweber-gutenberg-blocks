@@ -39,6 +39,7 @@ const SwiperEdit = ({ attributes, setAttributes, clientId }) => {
 		swiperItemsSm,
 		swiperItemsLg,
 		swiperItemsXxl,
+		swiperItemsXxxl,
 		swiperEffect,
 		swiperSpeed,
 		swiperLoop,

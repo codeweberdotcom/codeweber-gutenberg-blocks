@@ -296,6 +296,10 @@
 		"spacingXxl": {
 			"type": "string",
 			"default": ""
+		},
+		"spacingXxxl": {
+			"type": "string",
+			"default": ""
 		}
 	},
 	"textdomain": "codeweber-gutenberg-blocks",

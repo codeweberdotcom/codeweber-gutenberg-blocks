@@ -85,6 +85,7 @@ const Save = ({ attributes }) => {
 		spacingLg,
 		spacingXl,
 		spacingXxl,
+		spacingXxxl,
 		blockClass,
 		blockId,
 		blockData,
@@ -171,6 +172,7 @@ const Save = ({ attributes }) => {
 				spacingLg,
 				spacingXl,
 				spacingXxl,
+				spacingXxxl,
 			})
 		);
 

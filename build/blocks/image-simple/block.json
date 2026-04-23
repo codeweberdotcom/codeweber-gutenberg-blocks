@@ -68,6 +68,10 @@
       "type": "string",
       "default": ""
     },
+    "gridColumnsXxxl": {
+      "type": "string",
+      "default": ""
+    },
     "gridRowCols": {
       "type": "string",
       "default": "12"
@@ -89,6 +93,10 @@
       "default": ""
     },
     "gridRowColsXxl": {
+      "type": "string",
+      "default": ""
+    },
+    "gridRowColsXxxl": {
       "type": "string",
       "default": ""
     },
@@ -129,6 +137,10 @@
       "default": ""
     },
     "gridGapXxl": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapXxxl": {
       "type": "string",
       "default": ""
     },
@@ -209,6 +221,10 @@
       "default": "3"
     },
     "swiperItemsXxl": {
+      "type": "string",
+      "default": ""
+    },
+    "swiperItemsXxxl": {
       "type": "string",
       "default": ""
     },

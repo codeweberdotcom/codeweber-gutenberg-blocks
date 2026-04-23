@@ -139,6 +139,10 @@
       "type": "string",
       "default": ""
     },
+    "gridRowColsXxxl": {
+      "type": "string",
+      "default": ""
+    },
     "gridGapType": {
       "type": "string",
       "default": "general"
@@ -168,6 +172,10 @@
       "default": ""
     },
     "gridGapXxl": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapXxxl": {
       "type": "string",
       "default": ""
     },

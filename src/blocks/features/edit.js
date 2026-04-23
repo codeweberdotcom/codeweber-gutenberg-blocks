@@ -130,6 +130,7 @@ const FeaturesEdit = ({ attributes, setAttributes, clientId }) => {
 		spacingLg,
 		spacingXl,
 		spacingXxl,
+		spacingXxxl,
 	} = attributes;
 
 	const { replaceInnerBlocks, updateBlockAttributes } =
@@ -857,6 +858,7 @@ const FeaturesEdit = ({ attributes, setAttributes, clientId }) => {
 											spacingLg={spacingLg}
 											spacingXl={spacingXl}
 											spacingXxl={spacingXxl}
+											spacingXxxl={spacingXxxl}
 											onChange={(key, value) =>
 												applySettingsToFeatures({
 													[key]: value,

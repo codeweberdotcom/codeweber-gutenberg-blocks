@@ -81,6 +81,10 @@
       "type": "string",
       "default": ""
     },
+    "columnsRowColsXxxl": {
+      "type": "string",
+      "default": ""
+    },
     "columnsGapType": {
       "type": "string",
       "default": "general"
@@ -113,6 +117,10 @@
       "type": "string",
       "default": ""
     },
+    "columnsGapXxxl": {
+      "type": "string",
+      "default": ""
+    },
     "columnsSpacingType": {
       "type": "string",
       "default": "padding"
@@ -138,6 +146,10 @@
       "default": ""
     },
     "columnsSpacingXxl": {
+      "type": "string",
+      "default": ""
+    },
+    "columnsSpacingXxxl": {
       "type": "string",
       "default": ""
     }

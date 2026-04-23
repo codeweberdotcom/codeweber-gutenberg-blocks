@@ -149,6 +149,10 @@
 			"type": "string",
 			"default": ""
 		},
+		"spacingXxxl": {
+			"type": "string",
+			"default": ""
+		},
 		"angledEnabled": {
 			"type": "boolean",
 			"default": false

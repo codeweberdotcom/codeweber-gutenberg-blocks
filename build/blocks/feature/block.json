@@ -292,6 +292,10 @@
       "type": "string",
       "default": ""
     },
+    "spacingXxxl": {
+      "type": "string",
+      "default": ""
+    },
     "blockClass": {
       "type": "string",
       "default": ""

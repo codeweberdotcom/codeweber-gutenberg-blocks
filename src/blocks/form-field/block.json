@@ -73,6 +73,10 @@
 			"type": "string",
 			"default": ""
 		},
+		"fieldColumnsXxxl": {
+			"type": "string",
+			"default": ""
+		},
 		"fieldClass": {
 			"type": "string",
 			"default": ""

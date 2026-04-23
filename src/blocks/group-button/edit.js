@@ -116,6 +116,7 @@ const GroupButtonEdit = ({ attributes, setAttributes, clientId }) => {
 		spacingLg,
 		spacingXl,
 		spacingXxl,
+		spacingXxxl,
 		animationEnabled,
 		animationType,
 		animationDuration,
@@ -254,6 +255,7 @@ const GroupButtonEdit = ({ attributes, setAttributes, clientId }) => {
 										spacingLg={spacingLg}
 										spacingXl={spacingXl}
 										spacingXxl={spacingXxl}
+										spacingXxxl={spacingXxxl}
 										onChange={(key, value) =>
 											setAttributes({ [key]: value })
 										}

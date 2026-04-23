@@ -29,6 +29,7 @@ const getColClassesFromGridColumns = (attributes) => {
 		gridColumnsLg: colsLg,
 		gridColumnsXl: colsXl,
 		gridColumnsXxl: colsXxl,
+		gridColumnsXxxl: colsXxxl,
 	} = attributes;
 
 	// Base (default) - без префикса
@@ -56,6 +57,9 @@ const getColClassesFromGridColumns = (attributes) => {
 	}
 	if (colsXxl) {
 		colClasses.push(`col-xxl-${colsXxl}`);
+	}
+	if (colsXxxl) {
+		colClasses.push(`col-xxxl-${colsXxxl}`);
 	}
 
 	return colClasses;
@@ -106,6 +110,7 @@ export const LayoutControl = ({ attributes, setAttributes }) => {
 		swiperItemsLg,
 		swiperItemsXl,
 		swiperItemsXxl,
+		swiperItemsXxxl,
 		swiperSpeed,
 		swiperAutoplay,
 		swiperAutoplayTime,
@@ -193,6 +198,7 @@ export const LayoutControl = ({ attributes, setAttributes }) => {
 									gridColumnsLg: '',
 									gridColumnsXl: '',
 									gridColumnsXxl: '',
+									gridColumnsXxxl: '',
 									// Устанавливаем значения по умолчанию для Columns Grid
 									gridRowCols: attributes.gridRowCols || '12',
 									gridRowColsMd:
@@ -211,6 +217,7 @@ export const LayoutControl = ({ attributes, setAttributes }) => {
 									gridRowColsLg: '',
 									gridRowColsXl: '',
 									gridRowColsXxl: '',
+									gridRowColsXxxl: '',
 									// Устанавливаем значения по умолчанию для Classic Grid
 									gridColumns: attributes.gridColumns || '1',
 									gridColumnsMd:

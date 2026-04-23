@@ -71,6 +71,7 @@ const FormEdit = ({ attributes, setAttributes, clientId }) => {
 		formGapLg,
 		formGapXl,
 		formGapXxl,
+		formGapXxxl,
 		formAlignItems,
 		formJustifyContent,
 		formTextAlign,

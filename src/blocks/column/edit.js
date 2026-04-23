@@ -114,6 +114,7 @@ const ColumnEdit = ({ attributes, setAttributes }) => {
 		spacingLg,
 		spacingXl,
 		spacingXxl,
+		spacingXxxl,
 		backgroundType,
 		backgroundImageId,
 		backgroundImageUrl,
@@ -372,6 +373,7 @@ const ColumnEdit = ({ attributes, setAttributes }) => {
 										spacingLg={spacingLg}
 										spacingXl={spacingXl}
 										spacingXxl={spacingXxl}
+										spacingXxxl={spacingXxxl}
 										onChange={(key, value) =>
 											setAttributes({ [key]: value })
 										}

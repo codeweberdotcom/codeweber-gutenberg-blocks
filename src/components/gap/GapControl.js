@@ -149,7 +149,7 @@ export const GapControl = ({
 				<SelectControl
 					value={columnsGapXxxl}
 					options={createGapOptions(columnsGapType, 'xxxl')}
-					onChange={(value) => onChange('columnsGapXxxxl', value)}
+					onChange={(value) => onChange('columnsGapXxxl', value)}
 				/>
 			</div>
 		</>

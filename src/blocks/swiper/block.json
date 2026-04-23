@@ -62,6 +62,10 @@
 			"type": "string",
 			"default": ""
 		},
+		"swiperItemsXxxl": {
+			"type": "string",
+			"default": ""
+		},
 		"swiperEffect": {
 			"type": "string",
 			"default": "slide"

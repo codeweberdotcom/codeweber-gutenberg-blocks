@@ -48,6 +48,7 @@ export const SpacingControl = ({
 	spacingLg,
 	spacingXl,
 	spacingXxl,
+	spacingXxxl,
 	onChange,
 }) => {
 	return (
@@ -148,6 +149,21 @@ export const SpacingControl = ({
 					value={spacingXxl}
 					options={createSpacingOptions(spacingType, 'xxl')}
 					onChange={(value) => onChange('spacingXxl', value)}
+				/>
+			</div>
+			<div className="mb-3">
+				<div className="component-sidebar-title">
+					<label>
+						{__(
+							'Wide (xxxl) ≥1921px',
+							'codeweber-gutenberg-blocks'
+						)}
+					</label>
+				</div>
+				<SelectControl
+					value={spacingXxxl}
+					options={createSpacingOptions(spacingType, 'xxxl')}
+					onChange={(value) => onChange('spacingXxxl', value)}
 				/>
 			</div>
 		</>

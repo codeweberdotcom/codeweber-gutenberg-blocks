@@ -39,6 +39,7 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 		fieldColumnsLg,
 		fieldColumnsXl,
 		fieldColumnsXxl,
+		fieldColumnsXxxl,
 		validationType,
 		accept,
 		multiple,
@@ -153,7 +154,8 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 			fieldColumnsMd ||
 			fieldColumnsLg ||
 			fieldColumnsXl ||
-			fieldColumnsXxl
+			fieldColumnsXxl ||
+			fieldColumnsXxxl
 		) {
 			if (fieldColumns) colClasses.push(`col-${fieldColumns}`);
 			if (fieldColumnsXs) colClasses.push(`col-${fieldColumnsXs}`);
@@ -162,6 +164,7 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 			if (fieldColumnsLg) colClasses.push(`col-lg-${fieldColumnsLg}`);
 			if (fieldColumnsXl) colClasses.push(`col-xl-${fieldColumnsXl}`);
 			if (fieldColumnsXxl) colClasses.push(`col-xxl-${fieldColumnsXxl}`);
+			if (fieldColumnsXxxl) colClasses.push(`col-xxxl-${fieldColumnsXxxl}`);
 
 			return colClasses.length > 0 ? colClasses.join(' ') : 'col-12';
 		}

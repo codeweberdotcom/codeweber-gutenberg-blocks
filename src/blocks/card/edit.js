@@ -91,6 +91,7 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 		spacingLg,
 		spacingXl,
 		spacingXxl,
+		spacingXxxl,
 		align,
 		alignItems,
 		justifyContent,
@@ -717,6 +718,7 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 										spacingLg={spacingLg}
 										spacingXl={spacingXl}
 										spacingXxl={spacingXxl}
+										spacingXxxl={spacingXxxl}
 										onChange={(key, value) =>
 											setAttributes({ [key]: value })
 										}

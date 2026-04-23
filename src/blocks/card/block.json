@@ -118,6 +118,10 @@
 			"type": "string",
 			"default": ""
 		},
+		"spacingXxxl": {
+			"type": "string",
+			"default": ""
+		},
 		"align": {
 			"type": "string",
 			"default": ""

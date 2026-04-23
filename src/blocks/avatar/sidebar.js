@@ -53,6 +53,7 @@ export const AvatarSidebar = ({ attributes, setAttributes }) => {
 		spacingLg,
 		spacingXl,
 		spacingXxl,
+		spacingXxxl,
 	} = attributes;
 
 	// Users list state
@@ -797,6 +798,7 @@ export const AvatarSidebar = ({ attributes, setAttributes }) => {
 									spacingLg={spacingLg}
 									spacingXl={spacingXl}
 									spacingXxl={spacingXxl}
+									spacingXxxl={spacingXxxl}
 									onChange={(key, value) =>
 										setAttributes({ [key]: value })
 									}

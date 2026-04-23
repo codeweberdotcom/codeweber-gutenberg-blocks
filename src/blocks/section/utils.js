@@ -54,6 +54,7 @@ export const getSpacingClasses = (attrs = {}) => {
 		spacingLg,
 		spacingXl,
 		spacingXxl,
+		spacingXxxl,
 	} = attrs;
 
 	const prefix = spacingType === 'margin' ? 'm' : 'p';
@@ -75,6 +76,9 @@ export const getSpacingClasses = (attrs = {}) => {
 	}
 	if (spacingXxl) {
 		classes.push(`${prefix}-xxl-${spacingXxl}`);
+	}
+	if (spacingXxxl) {
+		classes.push(`${prefix}-xxxl-${spacingXxxl}`);
 	}
 
 	return classes;

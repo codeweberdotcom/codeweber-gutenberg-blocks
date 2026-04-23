@@ -117,6 +117,10 @@
 			"type": "string",
 			"default": ""
 		},
+		"columnColXxxl": {
+			"type": "string",
+			"default": ""
+		},
 		"spacingType": {
 			"type": "string",
 			"default": "padding"
@@ -142,6 +146,10 @@
 			"default": ""
 		},
 		"spacingXxl": {
+			"type": "string",
+			"default": ""
+		},
+		"spacingXxxl": {
 			"type": "string",
 			"default": ""
 		}

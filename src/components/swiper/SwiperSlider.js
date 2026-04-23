@@ -72,6 +72,7 @@ export const getSwiperDataAttributes = (config = {}) => {
 		itemsLg = '',
 		itemsXl = '3',
 		itemsXxl = '',
+		itemsXxxl = '',
 		itemsAuto = false,
 		margin = '30',
 		loop = false,
@@ -107,6 +108,7 @@ export const getSwiperDataAttributes = (config = {}) => {
 		if (itemsLg) attrs['data-items-lg'] = itemsLg;
 		if (itemsXl) attrs['data-items-xl'] = itemsXl;
 		if (itemsXxl) attrs['data-items-xxl'] = itemsXxl;
+		if (itemsXxxl) attrs['data-items-xxxl'] = itemsXxxl;
 	}
 
 	// Spacing & Behavior
@@ -287,6 +289,7 @@ export const getSwiperConfigFromAttributes = (attributes) => {
 		itemsLg: attributes.swiperItemsLg,
 		itemsXl: attributes.swiperItemsXl,
 		itemsXxl: attributes.swiperItemsXxl,
+		itemsXxxl: attributes.swiperItemsXxxl,
 		itemsAuto: attributes.swiperItemsAuto,
 		margin: attributes.swiperMargin,
 		loop: attributes.swiperLoop,

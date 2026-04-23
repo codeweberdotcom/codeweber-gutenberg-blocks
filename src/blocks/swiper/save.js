@@ -24,6 +24,7 @@ const SwiperSave = ({ attributes }) => {
 		itemsSm: attributes.swiperItemsSm,
 		itemsLg: attributes.swiperItemsLg,
 		itemsXxl: attributes.swiperItemsXxl,
+		itemsXxxl: attributes.swiperItemsXxxl,
 		effect: attributes.swiperEffect,
 		speed: attributes.swiperSpeed,
 		loop: attributes.swiperLoop,

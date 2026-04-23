@@ -149,6 +149,7 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 		spacingLg,
 		spacingXl,
 		spacingXxl,
+		spacingXxxl,
 		blockClass,
 		blockId,
 		blockData,
@@ -497,6 +498,7 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 				spacingLg,
 				spacingXl,
 				spacingXxl,
+				spacingXxxl,
 			})
 		);
 
@@ -1083,6 +1085,7 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 											spacingLg={spacingLg}
 											spacingXl={spacingXl}
 											spacingXxl={spacingXxl}
+											spacingXxxl={spacingXxxl}
 											onChange={(key, value) =>
 												setAttributes({ [key]: value })
 											}

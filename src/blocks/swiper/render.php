@@ -24,6 +24,7 @@ $swiperItems = isset($attributes['swiperItems']) ? $attributes['swiperItems'] : 
 $swiperItemsSm = isset($attributes['swiperItemsSm']) ? $attributes['swiperItemsSm'] : '';
 $swiperItemsLg = isset($attributes['swiperItemsLg']) ? $attributes['swiperItemsLg'] : '';
 $swiperItemsXxl = isset($attributes['swiperItemsXxl']) ? $attributes['swiperItemsXxl'] : '';
+$swiperItemsXxxl = isset($attributes['swiperItemsXxxl']) ? $attributes['swiperItemsXxxl'] : '';
 $swiperEffect = isset($attributes['swiperEffect']) ? $attributes['swiperEffect'] : 'slide';
 $swiperSpeed = isset($attributes['swiperSpeed']) ? (int) $attributes['swiperSpeed'] : 500;
 $swiperLoop = isset($attributes['swiperLoop']) ? (bool) $attributes['swiperLoop'] : false;
@@ -73,6 +74,9 @@ if ($swiperItemsLg) {
 }
 if ($swiperItemsXxl) {
 	$dataAttrs['data-items-xxl'] = esc_attr($swiperItemsXxl);
+}
+if ($swiperItemsXxxl) {
+	$dataAttrs['data-items-xxxl'] = esc_attr($swiperItemsXxxl);
 }
 if ($swiperEffect) {
 	$dataAttrs['data-effect'] = esc_attr($swiperEffect);

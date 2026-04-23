@@ -141,6 +141,7 @@ export default function Save({ attributes }) {
 			gridColumnsLg: colsLg,
 			gridColumnsXl: colsXl,
 			gridColumnsXxl: colsXxl,
+			gridColumnsXxxl: colsXxxl,
 		} = attributes;
 
 		// Base (default) - без префикса
@@ -168,6 +169,9 @@ export default function Save({ attributes }) {
 		}
 		if (colsXxl) {
 			colClasses.push(`col-xxl-${colsXxl}`);
+		}
+		if (colsXxxl) {
+			colClasses.push(`col-xxxl-${colsXxxl}`);
 		}
 
 		return colClasses.join(' ');

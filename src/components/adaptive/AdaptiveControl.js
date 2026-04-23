@@ -120,7 +120,7 @@ export const AdaptiveControl = ({
 				<SelectControl
 					value={columnColXxxl}
 					options={createColumnOptions('col-xxxl')}
-					onChange={(value) => onChange('columnColXxxxl', value)}
+					onChange={(value) => onChange('columnColXxxl', value)}
 				/>
 			</div>
 		</>

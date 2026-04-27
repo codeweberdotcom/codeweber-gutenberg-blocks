@@ -259,6 +259,7 @@ class Plugin {
 		'avatar',
 		'header-widgets',
 		'banners',
+		'blog',
 		'blog-category-widget',
 		'blog-post-widget',
 		'blog-tag-widget',
@@ -633,6 +634,7 @@ class Plugin {
 		$blocks = [
 			'accordion',
 			'banners',
+			'blog',
 			'media',
 			'image-simple',
 			'button',

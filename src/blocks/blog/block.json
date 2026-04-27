@@ -1,0 +1,36 @@
+{
+	"apiVersion": 3,
+	"name": "codeweber-blocks/blog",
+	"version": "0.1.0",
+	"title": "Blog",
+	"category": "codeweber-gutenberg-elements",
+	"icon": "edit",
+	"description": "Blog article section with predefined layout templates (text, image-left, image-right, quote, callout).",
+	"supports": {
+		"html": false,
+		"customClassName": false,
+		"anchor": true
+	},
+	"attributes": {
+		"layoutType": {
+			"type": "string",
+			"default": "text-only"
+		},
+		"blockClass": {
+			"type": "string",
+			"default": ""
+		},
+		"blockData": {
+			"type": "string",
+			"default": ""
+		},
+		"blockId": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"textdomain": "codeweber-gutenberg-blocks",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
+}

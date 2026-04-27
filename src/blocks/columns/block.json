@@ -95,7 +95,7 @@
 		},
 		"columnsGap": {
 			"type": "string",
-			"default": "3"
+			"default": "6"
 		},
 		"columnsGapXs": {
 			"type": "string",
@@ -107,7 +107,7 @@
 		},
 		"columnsGapMd": {
 			"type": "string",
-			"default": "3"
+			"default": "10"
 		},
 		"columnsGapLg": {
 			"type": "string",

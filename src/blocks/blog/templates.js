@@ -17,8 +17,14 @@ const colAttrs = ( colMd ) => ( { columnColMd: String( colMd ) } );
 
 const columnsAttrs = {
 	columnsCount: 2,
-	columnsGap: '5',
+	columnsGap: '6',
+	columnsGapMd: '10',
 	columnsAlignItems: 'align-items-center',
+};
+
+const columnsAttrsReverse = {
+	...columnsAttrs,
+	columnsReverseOnMobile: true,
 };
 
 const imageBlock = [ 'codeweber-blocks/image-simple', { imageSize: 'cw_square_xl' } ];
@@ -70,7 +76,7 @@ export const LAYOUT_TEMPLATES = {
 	'image-right': [
 		[
 			'codeweber-blocks/columns',
-			columnsAttrs,
+			columnsAttrsReverse,
 			[
 				[ 'codeweber-blocks/column', colAttrs( 7 ), [ headingBlock ] ],
 				[ 'codeweber-blocks/column', colAttrs( 5 ), [ imageBlock ] ],

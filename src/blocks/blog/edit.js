@@ -2,7 +2,6 @@ import { useBlockProps, InnerBlocks, InspectorControls, store as blockEditorStor
 import { useEffect, useRef } from '@wordpress/element';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { createBlocksFromInnerBlocksTemplate } from '@wordpress/blocks';
-import { __ } from '@wordpress/i18n';
 import { BlogSidebar } from './sidebar';
 import { LAYOUT_TEMPLATES } from './templates';
 
@@ -42,12 +41,6 @@ const BlogEdit = ( { attributes, setAttributes, clientId } ) => {
 	// Apply template when layout type changes.
 	const handleLayoutChange = ( newLayout ) => {
 		if ( newLayout === prevLayoutType.current ) return;
-
-		const hasContent = innerBlocks.length > 0;
-		// eslint-disable-next-line no-alert
-		if ( hasContent && ! window.confirm( __( 'Changing the layout will replace the current content. Continue?', 'codeweber-gutenberg-blocks' ) ) ) {
-			return;
-		}
 
 		setAttributes( { layoutType: newLayout } );
 		prevLayoutType.current = newLayout;

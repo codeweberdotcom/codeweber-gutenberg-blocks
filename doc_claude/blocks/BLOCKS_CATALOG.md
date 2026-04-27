@@ -1,6 +1,6 @@
 # Blocks Catalog
 
-Total: **47 blocks** in `src/blocks/`. Namespace: `codeweber-blocks/`.
+Total: **48 blocks** in `src/blocks/`. Namespace: `codeweber-blocks/`.
 
 Legend: `S` = static (JS save) | `D` = dynamic (PHP render.php)
 
@@ -60,6 +60,7 @@ Legend: `S` = static (JS save) | `D` = dynamic (PHP render.php)
 
 | Block | Type | Description |
 |-------|------|-------------|
+| `blog` | S | Blog article layout wrapper — dropdown selects template built from inner blocks (text-only, image-left/right, slider-left/right, quote, callout) |
 | `post-grid` | S | Post grid with Load More support |
 | `blog-post-widget` | D | Sidebar widget: recent posts |
 | `blog-category-widget` | D | Sidebar widget: post categories |

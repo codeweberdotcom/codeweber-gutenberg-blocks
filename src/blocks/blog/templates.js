@@ -38,6 +38,13 @@ const sliderBlock = [
 		swiperDots: false,
 		swiperLoop: true,
 		swiperItems: '1',
+		swiperItemsXs: '',
+		swiperItemsSm: '',
+		swiperItemsMd: '',
+		swiperItemsLg: '',
+		swiperItemsXl: '',
+		swiperItemsXxl: '',
+		swiperItemsXxxl: '',
 		swiperNavStyle: 'nav-dark',
 	},
 ];

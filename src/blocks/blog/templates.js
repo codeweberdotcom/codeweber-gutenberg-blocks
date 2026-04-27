@@ -11,6 +11,7 @@ export const LAYOUT_OPTIONS = [
 	{ value: 'slider-right', label: 'Text + Slider' },
 	{ value: 'quote',        label: 'Quote' },
 	{ value: 'callout',      label: 'Callout' },
+	{ value: 'divider',      label: 'Divider' },
 ];
 
 const colAttrs = ( colMd ) => ( { columnColMd: String( colMd ) } );
@@ -63,8 +64,9 @@ const headingBlock = [
 		text: LOREM_TEXT,
 	},
 ];
-const buttonBlock  = [ 'codeweber-blocks/button', {} ];
+const buttonBlock     = [ 'codeweber-blocks/button', {} ];
 const blockquoteBlock = [ 'codeweber-blocks/blockquote', {} ];
+const dividerBlock    = [ 'codeweber-blocks/divider', { enableTitle: false } ];
 
 export const LAYOUT_TEMPLATES = {
 	'text-only': [ headingBlock ],
@@ -116,4 +118,6 @@ export const LAYOUT_TEMPLATES = {
 	quote: [ blockquoteBlock ],
 
 	callout: [ headingBlock, buttonBlock ],
+
+	divider: [ dividerBlock ],
 };

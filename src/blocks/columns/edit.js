@@ -7,6 +7,7 @@ import {
 	Button,
 	ButtonGroup,
 	TextControl,
+	ToggleControl,
 	TabPanel,
 } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
@@ -116,6 +117,7 @@ const ColumnsEdit = ({ attributes, setAttributes, clientId }) => {
 		columnsSpacingLg,
 		columnsSpacingXl,
 		columnsSpacingXxl,
+		columnsReverseOnMobile,
 	} = attributes;
 
 	const { replaceInnerBlocks, insertBlocks, updateBlockAttributes } =
@@ -305,6 +307,21 @@ const ColumnsEdit = ({ attributes, setAttributes, clientId }) => {
 										max={30}
 										step={1}
 										onChange={adjustColumns}
+									/>
+									<ToggleControl
+										label={__(
+											'Reverse on mobile',
+											'codeweber-gutenberg-blocks'
+										)}
+										checked={ !! columnsReverseOnMobile }
+										onChange={ ( value ) =>
+											setAttributes( { columnsReverseOnMobile: value } )
+										}
+										help={__(
+											'Stack columns in reverse order on mobile (xs–sm).',
+											'codeweber-gutenberg-blocks'
+										)}
+										__nextHasNoMarginBottom
 									/>
 
 									{/* Columns Grid - управление шириной на уровне контейнера */}

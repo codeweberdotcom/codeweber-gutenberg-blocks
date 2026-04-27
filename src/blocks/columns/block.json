@@ -45,6 +45,10 @@
 			"type": "string",
 			"default": ""
 		},
+		"columnsReverseOnMobile": {
+			"type": "boolean",
+			"default": false
+		},
 		"columnsClass": {
 			"type": "string",
 			"default": ""

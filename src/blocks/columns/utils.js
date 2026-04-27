@@ -40,6 +40,7 @@ export const getColumnsClassNames = (attrs = {}, mode = 'save') => {
 		columnsTextAlign,
 		columnsPosition,
 		columnsCount,
+		columnsReverseOnMobile,
 	} = attrs;
 
 	// Добавляем кастомный класс
@@ -74,6 +75,11 @@ export const getColumnsClassNames = (attrs = {}, mode = 'save') => {
 	}
 	if (columnsGutterY) {
 		classes.push(`gy-${columnsGutterY}`);
+	}
+
+	// Реверс на мобильном: flex-column-reverse (xs) + flex-md-row (md+)
+	if (columnsReverseOnMobile) {
+		classes.push('flex-column-reverse', 'flex-md-row');
 	}
 
 	// Позиционирование

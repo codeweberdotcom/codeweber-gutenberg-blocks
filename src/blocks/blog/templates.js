@@ -107,7 +107,7 @@ export const LAYOUT_TEMPLATES = {
 	'slider-right': [
 		[
 			'codeweber-blocks/columns',
-			columnsAttrs,
+			columnsAttrsReverse,
 			[
 				[ 'codeweber-blocks/column', colAttrs( 6 ), [ headingBlock ] ],
 				[ 'codeweber-blocks/column', colAttrs( 6 ), [ sliderBlock ] ],

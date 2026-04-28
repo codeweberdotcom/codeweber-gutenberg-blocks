@@ -10,6 +10,7 @@ import {
 	getRowColsClasses,
 	getGapClasses,
 } from '../../components/grid-control';
+import { buildLinkAttrs } from '../../utilities/buildLinkAttrs';
 
 export default function Save({ attributes }) {
 	const {
@@ -198,6 +199,10 @@ export default function Save({ attributes }) {
 		return null;
 	}
 
+	// LinkType: build link props once for the whole block (all images share the same link target)
+	const linkBuildResult = buildLinkAttrs( attributes );
+	const activeLinkProps = linkBuildResult ? linkBuildResult.linkProps : null;
+
 	// Для режима background убираем обертку на фронтенде для всех режимов
 	const shouldRemoveWrapper = imageRenderType === 'background';
 
@@ -221,7 +226,7 @@ export default function Save({ attributes }) {
 					borderRadius={borderRadius}
 					enableLightbox={enableLightbox}
 					lightboxGallery={lightboxGallery}
-								lightboxShowDesc={lightboxShowDesc}
+					lightboxShowDesc={lightboxShowDesc}
 					simpleEffect={simpleEffect}
 					effectType={effectType}
 					tooltipStyle={tooltipStyle}
@@ -231,6 +236,7 @@ export default function Save({ attributes }) {
 					cursorStyle={cursorStyle}
 					imageRenderType={imageRenderType}
 					isEditor={false}
+					linkProps={activeLinkProps}
 				/>
 			);
 		} else if (displayMode === 'grid') {
@@ -317,6 +323,7 @@ export default function Save({ attributes }) {
 													imageRenderType
 												}
 												isEditor={false}
+												linkProps={activeLinkProps}
 											/>
 										</div>
 									))}
@@ -441,7 +448,7 @@ export default function Save({ attributes }) {
 										borderRadius={borderRadius}
 										enableLightbox={enableLightbox}
 										lightboxGallery={lightboxGallery}
-								lightboxShowDesc={lightboxShowDesc}
+										lightboxShowDesc={lightboxShowDesc}
 										simpleEffect={simpleEffect}
 										effectType={effectType}
 										tooltipStyle={tooltipStyle}
@@ -451,6 +458,7 @@ export default function Save({ attributes }) {
 										cursorStyle={cursorStyle}
 										imageRenderType={imageRenderType}
 										isEditor={false}
+										linkProps={activeLinkProps}
 									/>
 								</div>
 							))}
@@ -490,6 +498,7 @@ export default function Save({ attributes }) {
 								cursorStyle={cursorStyle}
 								imageRenderType={imageRenderType}
 								isEditor={false}
+								linkProps={activeLinkProps}
 							/>
 						</SwiperSlide>
 					))}
@@ -501,11 +510,27 @@ export default function Save({ attributes }) {
 
 	const content = renderContent();
 
+	// Hidden iframe for video LinkType (YouTube, Vimeo, Rutube, VK)
+	const hiddenIframeEl = linkBuildResult?.videoFrameId ? (
+		<div id={ linkBuildResult.videoFrameId } style={ { display: 'none' } }>
+			<iframe
+				src={ linkBuildResult.videoFrameSrc }
+				allow="autoplay; encrypted-media; fullscreen; picture-in-picture; clipboard-write;"
+				frameBorder="0"
+				allowFullScreen
+				style={ { width: '100%', height: '100%', aspectRatio: '16/9' } }
+			/>
+		</div>
+	) : null;
+
 	// Если нужно убрать обертку (background режим), возвращаем контент напрямую
 	if (shouldRemoveWrapper) {
+		if ( hiddenIframeEl ) {
+			return <>{ hiddenIframeEl }{ content }</>;
+		}
 		return content;
 	}
 
 	// Иначе возвращаем с оберткой
-	return <div {...blockProps}>{content}</div>;
+	return <div {...blockProps}>{ hiddenIframeEl }{ content }</div>;
 }

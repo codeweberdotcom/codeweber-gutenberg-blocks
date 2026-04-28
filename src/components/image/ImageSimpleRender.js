@@ -28,6 +28,8 @@ export const ImageSimpleRender = ({
 	cursorStyle,
 	imageRenderType = 'img', // 'img' или 'background'
 	isEditor = false,
+	// LinkType override: when set, replaces lightbox <a> with these props
+	linkProps = null,
 }) => {
 	if (!image) {
 		return null;
@@ -74,6 +76,13 @@ export const ImageSimpleRender = ({
 	const href = isEditor ? '#' : image.linkUrl || lightboxUrl;
 	const onClickHandler = isEditor ? (e) => e.preventDefault() : undefined;
 
+	// LinkType override: when linkProps provided (and not in editor), use them instead of lightbox
+	const hasLinkOverride = ! isEditor && linkProps != null;
+	const shouldShowLink  = hasLinkOverride || enableLightbox;
+	const activeLinkProps = hasLinkOverride
+		? { ...linkProps }
+		: { href, onClick: onClickHandler, ...lightboxAttrs };
+
 	// Рендеринг как background
 	if (imageRenderType === 'background') {
 		const backgroundClasses =
@@ -103,8 +112,8 @@ export const ImageSimpleRender = ({
 		if (activeEffectType === 'overlay' && overlayStyle === 'overlay-7') {
 			return (
 				<figure {...figureProps}>
-					{!isEditor && enableLightbox && (
-						<a className="item-link" href={lightboxUrl} {...lightboxAttrs}>
+					{!isEditor && shouldShowLink && (
+						<a className="item-link" {...activeLinkProps}>
 							<i className="uil uil-plus"></i>
 						</a>
 					)}
@@ -124,15 +133,10 @@ export const ImageSimpleRender = ({
 			overlayIcon = <span className="hover-icon h-100 w-100 text-white">{plusSvg}</span>;
 		}
 
-		// Если включен lightbox, оборачиваем figure в a
-		if (enableLightbox) {
+		// Если включен lightbox или задан LinkType, оборачиваем figure в a
+		if (shouldShowLink) {
 			return (
-				<a
-					href={href}
-					onClick={onClickHandler}
-					className="h-100"
-					{...lightboxAttrs}
-				>
+				<a className="h-100" {...activeLinkProps}>
 					<figure {...figureProps}>{overlayIcon}</figure>
 				</a>
 			);
@@ -164,11 +168,7 @@ export const ImageSimpleRender = ({
 			if (overlayStyle === 'overlay-6') {
 				return (
 					<figure className={figureClasses}>
-						<a
-							href={href}
-							onClick={onClickHandler}
-							{...lightboxAttrs}
-						>
+						<a {...activeLinkProps}>
 							<img
 								src={imageUrl}
 								alt={image.alt || ''}
@@ -199,12 +199,8 @@ export const ImageSimpleRender = ({
 							alt={image.alt || ''}
 							decoding="async"
 						/>
-						{!isEditor && enableLightbox && (
-							<a
-								className="item-link"
-								href={lightboxUrl}
-								{...lightboxAttrs}
-							>
+						{!isEditor && shouldShowLink && (
+							<a className="item-link" {...activeLinkProps}>
 								<i className="uil uil-plus"></i>
 							</a>
 						)}
@@ -216,11 +212,7 @@ export const ImageSimpleRender = ({
 			if (overlayStyle === 'overlay-5') {
 				return (
 					<figure className={figureClasses}>
-						<a
-							href={href}
-							onClick={onClickHandler}
-							{...lightboxAttrs}
-						>
+						<a {...activeLinkProps}>
 							<img
 								src={imageUrl}
 								alt={image.alt || ''}
@@ -244,11 +236,7 @@ export const ImageSimpleRender = ({
 			if (overlayStyle === 'overlay-5-bottom') {
 				return (
 					<figure className={figureClasses}>
-						<a
-							href={href}
-							onClick={onClickHandler}
-							{...lightboxAttrs}
-						>
+						<a {...activeLinkProps}>
 							<img
 								src={imageUrl}
 								alt={image.alt || ''}
@@ -345,10 +333,10 @@ export const ImageSimpleRender = ({
 		return figureElement;
 	}
 
-	// Если включен lightbox, оборачиваем figure в a
-	if (enableLightbox) {
+	// Если включен lightbox или задан LinkType, оборачиваем figure в a
+	if (shouldShowLink) {
 		return (
-			<a href={href} onClick={onClickHandler} {...lightboxAttrs}>
+			<a {...activeLinkProps}>
 				{figureElement}
 			</a>
 		);

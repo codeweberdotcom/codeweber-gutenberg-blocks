@@ -12,6 +12,8 @@ export const LAYOUT_OPTIONS = [
 	{ value: 'quote',        label: 'Quote' },
 	{ value: 'callout',      label: 'Callout' },
 	{ value: 'divider',      label: 'Divider' },
+	{ value: 'spacer',       label: 'Spacer' },
+	{ value: 'post-grid',    label: 'Post Grid' },
 ];
 
 const colAttrs = ( colMd ) => ( { columnColMd: String( colMd ) } );
@@ -73,6 +75,17 @@ const blockquoteBlock = [
 	},
 ];
 const dividerBlock    = [ 'codeweber-blocks/divider', { enableTitle: false } ];
+const spacerBlock     = [ 'codeweber-blocks/spacer', {} ];
+const postGridBlock   = [
+	'codeweber-blocks/post-grid',
+	{
+		postType: 'product',
+		template: 'shop-list-sm',
+		gridType: 'classic',
+		gridColumns: '12',
+		gridColumnsMd: '6',
+	},
+];
 
 export const LAYOUT_TEMPLATES = {
 	'text-only': [ headingBlock ],
@@ -126,4 +139,8 @@ export const LAYOUT_TEMPLATES = {
 	callout: [ headingBlock, buttonBlock ],
 
 	divider: [ dividerBlock ],
+
+	spacer: [ spacerBlock ],
+
+	'post-grid': [ postGridBlock ],
 };

@@ -292,6 +292,7 @@ class Plugin {
 		'form-field',
 		'submit-button',
 		'divider',
+		'spacer',
 		'yandex-map',
 		'html-blocks',
 		'swiper',

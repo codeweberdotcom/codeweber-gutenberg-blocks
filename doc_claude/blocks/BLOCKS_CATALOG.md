@@ -29,6 +29,7 @@ Legend: `S` = static (JS save) | `D` = dynamic (PHP render.php)
 | `code` | S | Syntax-highlighted code block (Prism.js) |
 | `lists` | D | Styled unordered/ordered list |
 | `divider` | S | Horizontal divider with style options |
+| `spacer` | S | Responsive vertical spacer using Bootstrap py-* classes |
 | `icon` | S | Single icon from icon library |
 
 ---
@@ -145,9 +146,9 @@ Legend: `S` = static (JS save) | `D` = dynamic (PHP render.php)
 
 | Type | Count |
 |------|-------|
-| Static (S) | ~23 |
+| Static (S) | ~24 |
 | Dynamic (D) | ~25 |
-| **Total** | **48** |
+| **Total** | **49** |
 
 ---
 

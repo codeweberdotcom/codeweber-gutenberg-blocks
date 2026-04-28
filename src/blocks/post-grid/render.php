@@ -818,6 +818,38 @@ if (!function_exists('render_post_grid_item')) {
 				}
 				
 				// Если функция вернула пустую строку, продолжаем с fallback ниже
+			} elseif ($post_type === 'offices') {
+				$display_settings = [
+					'show_title'          => true,
+					'show_date'           => false,
+					'show_category'       => false,
+					'show_comments'       => false,
+					'title_length'        => 0,
+					'excerpt_length'      => 0,
+					'title_tag'           => $title_tag,
+					'title_class'         => $title_class,
+					'show_office_address' => array_key_exists('showOfficeAddress', $attributes) ? (bool) $attributes['showOfficeAddress'] : true,
+					'show_office_phone'   => array_key_exists('showOfficePhone', $attributes)   ? (bool) $attributes['showOfficePhone']   : true,
+					'show_office_email'   => array_key_exists('showOfficeEmail', $attributes)   ? (bool) $attributes['showOfficeEmail']   : true,
+					'show_office_hours'   => array_key_exists('showOfficeHours', $attributes)   ? (bool) $attributes['showOfficeHours']   : true,
+				];
+
+				$template_args = [
+					'image_size' => $image_size,
+				];
+
+				$html = cw_render_post_card($post, $template, $display_settings, $template_args);
+
+				if (!empty($html) && trim($html) !== '') {
+					if (!$is_swiper) {
+						if ($grid_type === 'classic' && !empty($col_classes)) {
+							$html = '<div class="' . esc_attr($col_classes) . '">' . $html . '</div>';
+						} elseif ($grid_type === 'columns-grid') {
+							$html = '<div class="col">' . $html . '</div>';
+						}
+					}
+					return $html;
+				}
 			} else {
 				// Настройки отображения для обычных постов — читаются из атрибутов блока
 				$display_settings = [

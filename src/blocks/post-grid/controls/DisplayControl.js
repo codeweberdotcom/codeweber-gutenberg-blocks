@@ -16,6 +16,11 @@ export const DisplayControl = ({ attributes, setAttributes }) => {
 		excerptLength,
 		showCardArrow,
 		cardReadMore,
+		postType,
+		showOfficeAddress,
+		showOfficePhone,
+		showOfficeEmail,
+		showOfficeHours,
 	} = attributes;
 
 	return (
@@ -91,6 +96,43 @@ export const DisplayControl = ({ attributes, setAttributes }) => {
 						'codeweber-gutenberg-blocks'
 					)}
 				/>
+
+				{postType === 'offices' && (
+					<>
+						<div
+							style={{
+								marginBottom: '8px',
+								fontSize: '11px',
+								fontWeight: '600',
+								textTransform: 'uppercase',
+								color: '#757575',
+								letterSpacing: '0.05em',
+							}}
+						>
+							{__('Office Fields', 'codeweber-gutenberg-blocks')}
+						</div>
+						<ToggleControl
+							label={__('Show Address', 'codeweber-gutenberg-blocks')}
+							checked={showOfficeAddress !== false}
+							onChange={(value) => setAttributes({ showOfficeAddress: value })}
+						/>
+						<ToggleControl
+							label={__('Show Phone', 'codeweber-gutenberg-blocks')}
+							checked={showOfficePhone !== false}
+							onChange={(value) => setAttributes({ showOfficePhone: value })}
+						/>
+						<ToggleControl
+							label={__('Show Email', 'codeweber-gutenberg-blocks')}
+							checked={showOfficeEmail !== false}
+							onChange={(value) => setAttributes({ showOfficeEmail: value })}
+						/>
+						<ToggleControl
+							label={__('Show Working Hours', 'codeweber-gutenberg-blocks')}
+							checked={showOfficeHours !== false}
+							onChange={(value) => setAttributes({ showOfficeHours: value })}
+						/>
+					</>
+				)}
 
 				<SelectControl
 					label={__(

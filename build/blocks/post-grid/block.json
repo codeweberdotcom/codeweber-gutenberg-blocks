@@ -309,6 +309,22 @@
       "type": "boolean",
       "default": false
     },
+    "showOfficeAddress": {
+      "type": "boolean",
+      "default": true
+    },
+    "showOfficePhone": {
+      "type": "boolean",
+      "default": true
+    },
+    "showOfficeEmail": {
+      "type": "boolean",
+      "default": true
+    },
+    "showOfficeHours": {
+      "type": "boolean",
+      "default": true
+    },
     "titleLength": {
       "type": "number",
       "default": 56

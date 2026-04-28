@@ -65,7 +65,13 @@ const headingBlock = [
 	},
 ];
 const buttonBlock     = [ 'codeweber-blocks/button', {} ];
-const blockquoteBlock = [ 'codeweber-blocks/blockquote', {} ];
+const blockquoteBlock = [
+	'codeweber-blocks/blockquote',
+	{
+		quote: LOREM_TEXT,
+		caption: 'Lorem Ipsum',
+	},
+];
 const dividerBlock    = [ 'codeweber-blocks/divider', { enableTitle: false } ];
 
 export const LAYOUT_TEMPLATES = {

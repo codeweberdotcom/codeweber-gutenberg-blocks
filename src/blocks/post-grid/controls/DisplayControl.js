@@ -23,6 +23,7 @@ export const DisplayControl = ({ attributes, setAttributes }) => {
 		showOfficeHours,
 		showOfficeDescription,
 		showOfficeMap,
+		officeMapStyle,
 	} = attributes;
 
 	return (
@@ -143,6 +144,17 @@ export const DisplayControl = ({ attributes, setAttributes }) => {
 							checked={showOfficeMap !== false}
 							onChange={(value) => setAttributes({ showOfficeMap: value })}
 						/>
+						{showOfficeMap !== false && (
+							<SelectControl
+								label={__('Map Link Style', 'codeweber-gutenberg-blocks')}
+								value={officeMapStyle || 'button'}
+								options={[
+									{ value: 'button', label: __('Button', 'codeweber-gutenberg-blocks') },
+									{ value: 'text',   label: __('Text link', 'codeweber-gutenberg-blocks') },
+								]}
+								onChange={(value) => setAttributes({ officeMapStyle: value })}
+							/>
+						)}
 					</>
 				)}
 

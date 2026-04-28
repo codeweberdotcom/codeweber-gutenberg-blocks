@@ -333,6 +333,10 @@
       "type": "boolean",
       "default": true
     },
+    "officeMapStyle": {
+      "type": "string",
+      "default": "button"
+    },
     "titleLength": {
       "type": "number",
       "default": 56

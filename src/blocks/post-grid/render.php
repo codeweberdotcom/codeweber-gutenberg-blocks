@@ -834,6 +834,7 @@ if (!function_exists('render_post_grid_item')) {
 					'show_office_hours'        => array_key_exists('showOfficeHours',        $attributes) ? (bool) $attributes['showOfficeHours']        : true,
 					'show_office_description'  => array_key_exists('showOfficeDescription',  $attributes) ? (bool) $attributes['showOfficeDescription']  : true,
 					'show_office_map'          => array_key_exists('showOfficeMap',          $attributes) ? (bool) $attributes['showOfficeMap']          : true,
+					'office_map_style'         => isset($attributes['officeMapStyle']) ? sanitize_key($attributes['officeMapStyle']) : 'button',
 				];
 
 				$template_args = [

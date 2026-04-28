@@ -820,11 +820,11 @@ if (!function_exists('render_post_grid_item')) {
 				// Если функция вернула пустую строку, продолжаем с fallback ниже
 			} elseif ($post_type === 'offices') {
 				$display_settings = [
-					'show_title'          => true,
+					'show_title'          => array_key_exists('showTitle', $attributes) ? (bool) $attributes['showTitle'] : true,
 					'show_date'           => false,
 					'show_category'       => false,
 					'show_comments'       => false,
-					'title_length'        => 0,
+					'title_length'        => isset($attributes['titleLength']) ? (int) $attributes['titleLength'] : 0,
 					'excerpt_length'      => 0,
 					'title_tag'           => $title_tag,
 					'title_class'         => $title_class,

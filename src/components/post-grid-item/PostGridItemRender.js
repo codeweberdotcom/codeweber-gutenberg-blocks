@@ -850,6 +850,36 @@ export const PostGridItemRender = ({
 			);
 		}
 
+		if (template === 'list-sm-text') {
+			return (
+				<div className={`card${cardRadiusClass}`}>
+					<div className="card-body p-5 d-flex flex-column">
+						<h4 className="post-title mb-2">
+							<a href={isEditor ? '#' : postLink} className="link-dark" onClick={isEditor ? (e) => e.preventDefault() : undefined}>
+								{titleLimited}
+							</a>
+						</h4>
+						<div className="d-flex align-items-center mb-1">
+							<i className="uil uil-map-marker fs-18 text-primary me-2 flex-shrink-0"></i>
+							<span className="text-body fs-sm">{__('Address', 'codeweber-gutenberg-blocks')}</span>
+						</div>
+						<div className="d-flex align-items-center mb-1">
+							<i className="uil uil-phone fs-18 text-primary me-2 flex-shrink-0"></i>
+							<span className="text-body fs-sm">{__('Phone', 'codeweber-gutenberg-blocks')}</span>
+						</div>
+						<div className="d-flex align-items-center mb-1">
+							<i className="uil uil-envelope fs-18 text-primary me-2 flex-shrink-0"></i>
+							<span className="text-body fs-sm">{__('Email', 'codeweber-gutenberg-blocks')}</span>
+						</div>
+						<div className="d-flex align-items-start mt-auto pt-3">
+							<i className="uil uil-clock fs-18 text-primary me-2 flex-shrink-0 mt-1"></i>
+							<span className="text-muted fs-sm">{__('Working hours', 'codeweber-gutenberg-blocks')}</span>
+						</div>
+					</div>
+				</div>
+			);
+		}
+
 		// offices card template
 		return (
 			<div className={`card shadow-lg h-100${cardRadiusClass}`}>

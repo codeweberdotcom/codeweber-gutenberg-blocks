@@ -1146,6 +1146,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 									[
 										'card',
 										'list-sm',
+										'list-sm-text',
 									].includes(template)) ? (
 									<PostGridItemRender
 										post={post}
@@ -1319,6 +1320,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 									[
 										'card',
 										'list-sm',
+										'list-sm-text',
 									].includes(template)) ? (
 									<PostGridItemRender
 										post={post}

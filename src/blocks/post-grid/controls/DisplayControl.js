@@ -21,6 +21,8 @@ export const DisplayControl = ({ attributes, setAttributes }) => {
 		showOfficePhone,
 		showOfficeEmail,
 		showOfficeHours,
+		showOfficeDescription,
+		showOfficeMap,
 	} = attributes;
 
 	return (
@@ -130,6 +132,16 @@ export const DisplayControl = ({ attributes, setAttributes }) => {
 							label={__('Show Working Hours', 'codeweber-gutenberg-blocks')}
 							checked={showOfficeHours !== false}
 							onChange={(value) => setAttributes({ showOfficeHours: value })}
+						/>
+						<ToggleControl
+							label={__('Show Description', 'codeweber-gutenberg-blocks')}
+							checked={showOfficeDescription !== false}
+							onChange={(value) => setAttributes({ showOfficeDescription: value })}
+						/>
+						<ToggleControl
+							label={__('Show on Map', 'codeweber-gutenberg-blocks')}
+							checked={showOfficeMap !== false}
+							onChange={(value) => setAttributes({ showOfficeMap: value })}
 						/>
 					</>
 				)}

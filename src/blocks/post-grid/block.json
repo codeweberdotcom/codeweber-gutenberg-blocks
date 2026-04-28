@@ -319,6 +319,14 @@
 			"type": "boolean",
 			"default": true
 		},
+		"showOfficeDescription": {
+			"type": "boolean",
+			"default": true
+		},
+		"showOfficeMap": {
+			"type": "boolean",
+			"default": true
+		},
 		"titleLength": {
 			"type": "number",
 			"default": 56

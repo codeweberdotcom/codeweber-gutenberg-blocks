@@ -828,10 +828,12 @@ if (!function_exists('render_post_grid_item')) {
 					'excerpt_length'      => 0,
 					'title_tag'           => $title_tag,
 					'title_class'         => $title_class,
-					'show_office_address' => array_key_exists('showOfficeAddress', $attributes) ? (bool) $attributes['showOfficeAddress'] : true,
-					'show_office_phone'   => array_key_exists('showOfficePhone', $attributes)   ? (bool) $attributes['showOfficePhone']   : true,
-					'show_office_email'   => array_key_exists('showOfficeEmail', $attributes)   ? (bool) $attributes['showOfficeEmail']   : true,
-					'show_office_hours'   => array_key_exists('showOfficeHours', $attributes)   ? (bool) $attributes['showOfficeHours']   : true,
+					'show_office_address'      => array_key_exists('showOfficeAddress',      $attributes) ? (bool) $attributes['showOfficeAddress']      : true,
+					'show_office_phone'        => array_key_exists('showOfficePhone',        $attributes) ? (bool) $attributes['showOfficePhone']        : true,
+					'show_office_email'        => array_key_exists('showOfficeEmail',        $attributes) ? (bool) $attributes['showOfficeEmail']        : true,
+					'show_office_hours'        => array_key_exists('showOfficeHours',        $attributes) ? (bool) $attributes['showOfficeHours']        : true,
+					'show_office_description'  => array_key_exists('showOfficeDescription',  $attributes) ? (bool) $attributes['showOfficeDescription']  : true,
+					'show_office_map'          => array_key_exists('showOfficeMap',          $attributes) ? (bool) $attributes['showOfficeMap']          : true,
 				];
 
 				$template_args = [

@@ -1141,6 +1141,11 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 										'circle',
 										'circle_center',
 										'circle_center_alt',
+									].includes(template)) ||
+								(postType === 'offices' &&
+									[
+										'card',
+										'list-sm',
 									].includes(template)) ? (
 									<PostGridItemRender
 										post={post}
@@ -1309,6 +1314,11 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 										'circle',
 										'circle_center',
 										'circle_center_alt',
+									].includes(template)) ||
+								(postType === 'offices' &&
+									[
+										'card',
+										'list-sm',
 									].includes(template)) ? (
 									<PostGridItemRender
 										post={post}

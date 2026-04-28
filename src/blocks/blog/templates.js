@@ -14,6 +14,7 @@ export const LAYOUT_OPTIONS = [
 	{ value: 'divider',      label: 'Divider' },
 	{ value: 'spacer',       label: 'Spacer' },
 	{ value: 'post-grid',    label: 'Post Grid' },
+	{ value: 'offices',      label: 'Offices' },
 ];
 
 const colAttrs = ( colMd ) => ( { columnColMd: String( colMd ) } );
@@ -86,6 +87,31 @@ const postGridBlock   = [
 		gridColumnsMd: '6',
 	},
 ];
+const officesBlock = [
+	'codeweber-blocks/post-grid',
+	{
+		postType: 'offices',
+		template: 'list-sm-text',
+		gridType: 'classic',
+		gridColumns: '1',
+		gridColumnsMd: '4',
+		gridGap: '1',
+		gridGapMd: '4',
+		showTitle: true,
+		showDate: true,
+		showCategory: true,
+		showComments: true,
+		showExcerpt: false,
+		showCardArrow: false,
+		showOfficeAddress: true,
+		showOfficePhone: true,
+		showOfficeEmail: false,
+		showOfficeHours: false,
+		showOfficeDescription: false,
+		showOfficeMap: true,
+		officeMapStyle: 'button',
+	},
+];
 
 export const LAYOUT_TEMPLATES = {
 	'text-only': [ headingBlock ],
@@ -143,4 +169,6 @@ export const LAYOUT_TEMPLATES = {
 	spacer: [ spacerBlock ],
 
 	'post-grid': [ postGridBlock ],
+
+	offices: [ officesBlock ],
 };

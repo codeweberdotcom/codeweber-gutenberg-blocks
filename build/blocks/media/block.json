@@ -159,6 +159,102 @@
       "type": "string",
       "default": ""
     },
+    "LinkType": {
+      "type": "string",
+      "default": ""
+    },
+    "LinkUrl": {
+      "type": "string",
+      "default": ""
+    },
+    "PostId": {
+      "type": "string",
+      "default": ""
+    },
+    "PostType": {
+      "type": "string",
+      "default": ""
+    },
+    "PageId": {
+      "type": "string",
+      "default": ""
+    },
+    "CF7ID": {
+      "type": "string",
+      "default": ""
+    },
+    "CodeweberFormID": {
+      "type": "string",
+      "default": ""
+    },
+    "ModalID": {
+      "type": "string",
+      "default": ""
+    },
+    "HtmlID": {
+      "type": "string",
+      "default": ""
+    },
+    "PhoneType": {
+      "type": "string",
+      "default": ""
+    },
+    "PhoneNumber": {
+      "type": "string",
+      "default": ""
+    },
+    "YoutubeID": {
+      "type": "string",
+      "default": ""
+    },
+    "VimeoID": {
+      "type": "string",
+      "default": ""
+    },
+    "RutubeID": {
+      "type": "string",
+      "default": ""
+    },
+    "DocumentID": {
+      "type": "string",
+      "default": ""
+    },
+    "DocumentAction": {
+      "type": "string",
+      "default": "download"
+    },
+    "VKID": {
+      "type": "string",
+      "default": ""
+    },
+    "DataGlightbox": {
+      "type": "string",
+      "default": ""
+    },
+    "DataGallery": {
+      "type": "string",
+      "default": ""
+    },
+    "DataBsToggle": {
+      "type": "string",
+      "default": ""
+    },
+    "DataBsTarget": {
+      "type": "string",
+      "default": ""
+    },
+    "DataValue": {
+      "type": "string",
+      "default": ""
+    },
+    "ArchiveId": {
+      "type": "string",
+      "default": ""
+    },
+    "ArchiveType": {
+      "type": "string",
+      "default": ""
+    },
     "blockClass": {
       "type": "string",
       "default": ""

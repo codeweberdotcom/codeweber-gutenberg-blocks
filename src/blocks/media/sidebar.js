@@ -2,11 +2,12 @@ import { InspectorControls } from '@wordpress/block-editor';
 import { TabPanel, PanelBody, ToggleControl } from '@wordpress/components';
 import { LightboxControl } from '../../components/lightbox/LightboxControl';
 import { __ } from '@wordpress/i18n';
-import { Icon, image, starFilled, search, cog } from '@wordpress/icons';
+import { Icon, image, starFilled, search, cog, link } from '@wordpress/icons';
 import { MediaControl } from './controls/MediaControl';
 import { ImageHoverControl } from '../../components/image-hover/ImageHoverControl';
 import { BorderRadiusControl } from '../../components/border-radius';
 import { BlockMetaFields } from '../../components/block-meta/BlockMetaFields';
+import { LinkTypeSelector } from '../../utilities/link_type';
 
 // Tab icon with native title tooltip
 const TabIcon = ({ icon, label }) => (
@@ -39,6 +40,15 @@ export const ImageSidebar = ({ attributes, setAttributes }) => {
 				<TabIcon
 					icon={starFilled}
 					label={__('Effects', 'codeweber-gutenberg-blocks')}
+				/>
+			),
+		},
+		{
+			name: 'link',
+			title: (
+				<TabIcon
+					icon={link}
+					label={__('Link', 'codeweber-gutenberg-blocks')}
 				/>
 			),
 		},
@@ -107,14 +117,20 @@ export const ImageSidebar = ({ attributes, setAttributes }) => {
 								{attributes.mediaType === 'image' &&
 								attributes.image.url ? (
 									<>
-										<LightboxControl
-											attributes={attributes}
-											setAttributes={setAttributes}
-										/>
+										{ ! attributes.LinkType ? (
+											<LightboxControl
+												attributes={attributes}
+												setAttributes={setAttributes}
+											/>
+										) : (
+											<p className="description" style={ { marginBottom: '1em' } }>
+												{ __( 'Lightbox is disabled — Link Type is set in the Link tab.', 'codeweber-gutenberg-blocks' ) }
+											</p>
+										) }
 										<ImageHoverControl
 											attributes={attributes}
 											setAttributes={setAttributes}
-											showAdvanced={attributes.enableLightbox}
+											showAdvanced={ ! attributes.LinkType && attributes.enableLightbox }
 										/>
 									</>
 								) : (
@@ -131,6 +147,14 @@ export const ImageSidebar = ({ attributes, setAttributes }) => {
 									</p>
 								)}
 							</PanelBody>
+						)}
+
+						{/* LINK TAB */}
+						{tab.name === 'link' && (
+							<LinkTypeSelector
+								attributes={attributes}
+								setAttributes={setAttributes}
+							/>
 						)}
 
 						{/* SETTINGS TAB */}

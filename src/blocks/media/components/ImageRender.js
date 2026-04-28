@@ -5,7 +5,7 @@ import {
 } from '../../../components/image-hover/ImageHoverControl';
 import { getImageUrl } from '../../../utilities/image-url';
 
-export const ImageRender = ({ attributes, isEditor = false }) => {
+export const ImageRender = ({ attributes, isEditor = false, linkProps = null }) => {
 	const {
 		image,
 		imageSize,
@@ -61,6 +61,13 @@ export const ImageRender = ({ attributes, isEditor = false }) => {
 		}
 	};
 
+	// LinkType override: when linkProps provided (and not in editor), use them instead of lightbox
+	const hasLinkOverride = ! isEditor && linkProps != null;
+	const shouldShowLink  = hasLinkOverride || enableLightbox;
+	const activeLinkProps = hasLinkOverride
+		? { ...linkProps }
+		: { href, onClick: onClickHandler, ...lightboxAttrs };
+
 	// Формируем классы figure
 	const figureClasses = [hoverClasses, borderRadius]
 		.filter(Boolean)
@@ -86,12 +93,7 @@ export const ImageRender = ({ attributes, isEditor = false }) => {
 	if (effectType === 'tooltip' && tooltipTitle) {
 		return (
 			<figure className={figureClasses} title={tooltipTitle}>
-				<a
-					href={href}
-					onClick={onClickHandler}
-					{...lightboxAttrs}
-					style={linkStyle}
-				>
+				<a {...activeLinkProps} style={linkStyle}>
 					{maskedImage}
 				</a>
 			</figure>
@@ -107,12 +109,7 @@ export const ImageRender = ({ attributes, isEditor = false }) => {
 		if (overlayStyle === 'overlay-6') {
 			return (
 				<figure className={figureClasses}>
-					<a
-						href={href}
-						onClick={onClickHandler}
-						{...lightboxAttrs}
-						style={linkStyle}
-					>
+					<a {...activeLinkProps} style={linkStyle}>
 						{maskedImage}
 						<span
 							className={`hover-icon h-100 w-100 ${overlayIconColor || 'bg-frost'} text-white`}
@@ -135,13 +132,8 @@ export const ImageRender = ({ attributes, isEditor = false }) => {
 			return (
 				<figure className={figureClasses}>
 					{maskedImage}
-					{!isEditor && enableLightbox && (
-						<a
-							className="item-link"
-							href={lightboxUrl}
-							{...lightboxAttrs}
-							style={linkStyle}
-						>
+					{!isEditor && shouldShowLink && (
+						<a className="item-link" {...activeLinkProps}>
 							<i className="uil uil-plus"></i>
 						</a>
 					)}
@@ -153,12 +145,7 @@ export const ImageRender = ({ attributes, isEditor = false }) => {
 		if (overlayStyle === 'overlay-5') {
 			return (
 				<figure className={figureClasses}>
-					<a
-						href={href}
-						onClick={onClickHandler}
-						{...lightboxAttrs}
-						style={linkStyle}
-					>
+					<a {...activeLinkProps} style={linkStyle}>
 						{maskedImage}
 						<span className="hover-icon h-100 w-100 text-white">
 							<svg
@@ -178,12 +165,7 @@ export const ImageRender = ({ attributes, isEditor = false }) => {
 		if (overlayStyle === 'overlay-4') {
 			return (
 				<figure className={figureClasses}>
-					<a
-						href={href}
-						onClick={onClickHandler}
-						{...lightboxAttrs}
-						style={linkStyle}
-					>
+					<a {...activeLinkProps} style={linkStyle}>
 						{maskedImage}
 					</a>
 					{overlayText && (
@@ -198,12 +180,7 @@ export const ImageRender = ({ attributes, isEditor = false }) => {
 		// Остальные overlay стили
 		return (
 			<figure className={figureClasses}>
-				<a
-					href={href}
-					onClick={onClickHandler}
-					{...lightboxAttrs}
-					style={linkStyle}
-				>
+				<a {...activeLinkProps} style={linkStyle}>
 					{maskedImage}
 				</a>
 				{overlayText && (
@@ -216,18 +193,13 @@ export const ImageRender = ({ attributes, isEditor = false }) => {
 	}
 
 	// Простой вариант (cursor, none или только simple эффекты)
-	if (!enableLightbox && !isEditor) {
+	if (!shouldShowLink && !isEditor) {
 		return <figure className={figureClasses}>{maskedImage}</figure>;
 	}
 
 	return (
 		<figure className={figureClasses}>
-			<a
-				href={href}
-				onClick={onClickHandler}
-				{...lightboxAttrs}
-				style={linkStyle}
-			>
+			<a {...activeLinkProps} style={linkStyle}>
 				{maskedImage}
 			</a>
 		</figure>

@@ -1144,7 +1144,6 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 									].includes(template)) ||
 								(postType === 'offices' &&
 									[
-										'card',
 										'list-sm',
 										'list-sm-text',
 									].includes(template)) ? (
@@ -1318,7 +1317,6 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 									].includes(template)) ||
 								(postType === 'offices' &&
 									[
-										'card',
 										'list-sm',
 										'list-sm-text',
 									].includes(template)) ? (

@@ -79,6 +79,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		manualMode = false,
 		manualPosts = [],
 		manualItems = [],
+		sourceType = 'post',
 	} = attributes;
 
 	const [posts, setPosts] = useState([]);
@@ -1057,7 +1058,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 						)}
 					</div>
 				)}
-				{postType === 'product' || ( manualMode && manualItems.length > 0 ) ? (
+				{postType === 'product' || ( manualMode && manualItems.length > 0 ) || sourceType === 'taxonomy' ? (
 					<ServerSideRender
 						block="codeweber-blocks/post-grid"
 						attributes={attributes}

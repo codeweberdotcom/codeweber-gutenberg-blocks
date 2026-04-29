@@ -31,17 +31,58 @@
 
 ---
 
+## Режим источника: Posts vs Taxonomy
+
+В начале таба **Main** — переключатель **Source**: `Posts` (default) / `Taxonomy`.
+
+### Taxonomy mode (`sourceType = 'taxonomy'`)
+
+Вместо постов блок рендерит карточки **таксономических термов** (`get_terms()`).
+
+**Контролы (Main tab, TaxonomySourceSection):**
+- **Taxonomy** — select из всех публичных таксономий сайта (REST `/wp/v2/taxonomies`). В скобках — связанный CPT: `product_cat (product)`.
+- **Posts Per Page** — `RangeControl` 1–50.
+- **Order By** — `name` / `count` / `slug` / `term_id`.
+- **Order** — `ASC` / `DESC`.
+- **Hide Empty** — toggle; если включён — `hide_empty=true` в `get_terms()`.
+- **Parent** — `RangeControl` (0 = все верхнеуровневые / -1 = любой глубины / >0 = конкретный parent_id).
+
+**Display tab (в taxonomy mode):**
+- **Show Title** — имя терма.
+- **Show Description** — описание терма (term->description), длина словами через `excerptLength`.
+- **Show Term Count** — количество постов в терме (`term->count`).
+- **Title Length** — максимальные символы имени (0 = без ограничения).
+- Toggles Date/Category/Comments/Excerpt из post-mode скрыты.
+
+**Filter tab** — скрыт в taxonomy mode.
+
+**Sidebar tabs порядок:**
+- Taxonomy mode: Main / Layout / Title / **Display** / Settings (Filter tab скрыт).
+- Post mode: Main / Layout / Title / Display (если не `clients`) / **Filter** / Settings.
+
+**Render (render.php):**
+- При `$source_type === 'taxonomy'` блок вызывает `get_terms([$taxonomy, ...])` и рендерит каждый терм через `cwgb_render_term_card()`.
+- Изображение: `thumbnail_id` из term meta (`wc_get_term_product_thumbnail_id()` pattern) → `wp_get_attachment_image_src()`. Если нет — placeholder.
+- Layout (grid/swiper), col-классы, border-radius — те же, что в post-mode.
+- `return;` в конце taxonomy-ветки предотвращает исполнение post-render кода.
+- Load More, manual mode, filter bar отключаются (`$load_more_enable = false`).
+
+**Editor preview:** в taxonomy mode используется `ServerSideRender` (так же, как для `product` и manual mode) — JS не умеет рендерить термы.
+
+---
+
 ## Inspector — 6 табов
 
 ### Main
 Базовая конфигурация выборки и внешнего вида.
 
-- **Post Type + Taxonomies** — компонент `PostTypeTaxonomyControl`. Выбор CPT и initial taxonomy restrictions (через `selectedTaxonomies`).
+- **Source** — `Posts` / `Taxonomy` switcher (см. выше).
+- **Post Type + Taxonomies** — компонент `PostTypeTaxonomyControl` (только в Posts mode). Выбор CPT и initial taxonomy restrictions (через `selectedTaxonomies`).
 - **Template** — `PostGridTemplateControl`, список из REST `/codeweber-gutenberg-blocks/v1/post-card-templates?post_type=…` (возвращает записи реестра темы).
 - **Enable Links** (условно для `clients`) — оборачивать клиентскую карточку в `<a href="…">` по `company_url`.
 - **Posts Per Page** — `RangeControl` 1–50.
 - **Image Size** — из опций темы.
-- **Sort** — `PostSortControl` (orderby + order).
+- **Sort** — `PostSortControl` (orderby + order); скрыт в taxonomy mode.
 - **Lift hover effect** — toggle; ставит `simpleEffect = 'lift'`. На фронте прокидывается в `template_args.enable_lift`.
 
 ### Layout
@@ -106,6 +147,9 @@ Runtime-фильтр **над** сеткой — AJAX-фильтрация по 
 ---
 
 ## Атрибуты — сгруппированная справка
+
+### Source mode
+`sourceType` (`post`/`taxonomy`), `sourceTaxonomy` (slug), `taxonomyParent` (int), `taxonomyHideEmpty` (bool), `taxonomyOrderBy` (`name`/`count`/`slug`/`term_id`), `taxonomyOrder` (`asc`/`desc`), `showTermCount` (bool).
 
 ### Query
 `postType`, `postsPerPage`, `orderBy`, `order`, `imageSize`, `selectedTaxonomies` (dict: `slug → [term_ids]`).
@@ -358,5 +402,6 @@ Theme's overlay effects требуют JS-инициализации (добав
 7. **services CPT** — собственная registry entry, `services/overlay-5` и `services/overlay-5-primary` без даты, категория в top-right, meta `_service_short_description` (отдельный metabox внизу edit-screen).
 8. **Filter bar** — новый таб, 4 стиля (default/btn-xs/btn-sm/badge), активный цвет (solid/soft/pale), text-reset toggle, AJAX через `render_block()`-reuse.
 9. **Theme fixes сопутствующие** — `.bottom-overlay > *` z-index 0→3, post/overlay-5 layout, помощники `helpers.php` для short_description.
+10. **Taxonomy source mode** — переключатель Posts/Taxonomy в Main tab; `get_terms()` ветка в render.php; term-карточки с `thumbnail_id` из term meta, описанием терма как excerpt, счётчиком постов. В редакторе — `ServerSideRender`.
 
 Полный журнал — в git log: `git log --oneline -- src/blocks/post-grid/` (плагин) и `git log --oneline -- templates/post-cards/post/ functions/post-cards-registry.php` (тема).

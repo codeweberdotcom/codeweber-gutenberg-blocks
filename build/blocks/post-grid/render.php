@@ -1068,6 +1068,7 @@ if ( $source_type === 'taxonomy' ) {
 		'title_length'   => isset( $attributes['titleLength'] ) ? (int) $attributes['titleLength'] : 0,
 		'title_tag'      => $title_tag,
 		'title_class'    => $title_class,
+		'use_alt_title'  => ! empty( $attributes['useAltTitle'] ),
 	];
 	$term_template_args = [
 		'image_size'      => $image_size,

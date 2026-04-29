@@ -1,6 +1,7 @@
 import { __ } from '@wordpress/i18n';
 import {
 	Button,
+	ButtonGroup,
 	RangeControl,
 	SelectControl,
 	Spinner,
@@ -445,6 +446,109 @@ const ProjectImageTagSection = ({
 	);
 };
 
+// Taxonomy source section: picks taxonomy and configures ordering.
+const TaxonomySourceSection = ( { attributes, setAttributes } ) => {
+	const {
+		sourceTaxonomy,
+		taxonomyParent,
+		taxonomyHideEmpty,
+		taxonomyOrderBy,
+		taxonomyOrder,
+		postsPerPage,
+	} = attributes;
+
+	const [ taxonomies, setTaxonomies ] = useState( [] );
+	const [ isLoading, setIsLoading ] = useState( true );
+
+	useEffect( () => {
+		let cancelled = false;
+		setIsLoading( true );
+		apiFetch( { path: '/wp/v2/taxonomies' } )
+			.then( ( data ) => {
+				if ( cancelled ) return;
+				const list = Object.values( data || {} )
+					.map( ( t ) => ( { value: t.slug, label: t.name || t.slug } ) )
+					.sort( ( a, b ) => a.label.localeCompare( b.label ) );
+				setTaxonomies( list );
+				setIsLoading( false );
+			} )
+			.catch( () => {
+				if ( cancelled ) return;
+				setIsLoading( false );
+			} );
+		return () => { cancelled = true; };
+	}, [] );
+
+	const taxOptions = [
+		{ value: '', label: __( '— Select taxonomy —', 'codeweber-gutenberg-blocks' ) },
+		...taxonomies,
+	];
+
+	return (
+		<div style={ { marginTop: '12px' } }>
+			{ isLoading ? (
+				<Spinner />
+			) : (
+				<SelectControl
+					label={ __( 'Taxonomy', 'codeweber-gutenberg-blocks' ) }
+					value={ sourceTaxonomy || '' }
+					options={ taxOptions }
+					onChange={ ( value ) => setAttributes( { sourceTaxonomy: value } ) }
+				/>
+			) }
+
+			<RangeControl
+				label={ __( 'Terms Per Page', 'codeweber-gutenberg-blocks' ) }
+				value={ postsPerPage }
+				onChange={ ( value ) => setAttributes( { postsPerPage: value } ) }
+				min={ 1 }
+				max={ 100 }
+				initialPosition={ 6 }
+			/>
+
+			<SelectControl
+				label={ __( 'Order By', 'codeweber-gutenberg-blocks' ) }
+				value={ taxonomyOrderBy || 'name' }
+				options={ [
+					{ value: 'name',    label: __( 'Name', 'codeweber-gutenberg-blocks' ) },
+					{ value: 'count',   label: __( 'Count', 'codeweber-gutenberg-blocks' ) },
+					{ value: 'term_id', label: __( 'ID', 'codeweber-gutenberg-blocks' ) },
+					{ value: 'slug',    label: __( 'Slug', 'codeweber-gutenberg-blocks' ) },
+				] }
+				onChange={ ( value ) => setAttributes( { taxonomyOrderBy: value } ) }
+			/>
+
+			<SelectControl
+				label={ __( 'Order', 'codeweber-gutenberg-blocks' ) }
+				value={ taxonomyOrder || 'asc' }
+				options={ [
+					{ value: 'asc',  label: __( 'ASC', 'codeweber-gutenberg-blocks' ) },
+					{ value: 'desc', label: __( 'DESC', 'codeweber-gutenberg-blocks' ) },
+				] }
+				onChange={ ( value ) => setAttributes( { taxonomyOrder: value } ) }
+			/>
+
+			<ToggleControl
+				label={ __( 'Hide Empty Terms', 'codeweber-gutenberg-blocks' ) }
+				checked={ taxonomyHideEmpty !== false }
+				onChange={ ( value ) => setAttributes( { taxonomyHideEmpty: value } ) }
+			/>
+
+			<div style={ { marginTop: '8px' } }>
+				<RangeControl
+					label={ __( 'Parent Term ID', 'codeweber-gutenberg-blocks' ) }
+					value={ taxonomyParent || 0 }
+					onChange={ ( value ) => setAttributes( { taxonomyParent: value } ) }
+					min={ 0 }
+					max={ 9999 }
+					initialPosition={ 0 }
+					help={ __( '0 = top-level terms only (for hierarchical taxonomies).', 'codeweber-gutenberg-blocks' ) }
+				/>
+			</div>
+		</div>
+	);
+};
+
 export const MainControl = ( { attributes, setAttributes } ) => {
 	const {
 		postType,
@@ -461,104 +565,137 @@ export const MainControl = ( { attributes, setAttributes } ) => {
 		manualMode = false,
 		manualPosts = [],
 		manualItems = [],
+		sourceType = 'post',
 	} = attributes;
+
+	const isTaxonomyMode = sourceType === 'taxonomy';
 
 	return (
 		<>
-			<ToggleControl
-				label={ __(
-					'Manual post selection',
-					'codeweber-gutenberg-blocks'
-				) }
-				checked={ !! manualMode }
-				onChange={ ( value ) =>
-					setAttributes( { manualMode: value } )
-				}
-				help={ __(
-					'Pick and order posts manually instead of a query.',
-					'codeweber-gutenberg-blocks'
-				) }
-				__nextHasNoMarginBottom
-			/>
+			{ /* Source type switcher */ }
+			<div style={ { marginBottom: '16px' } }>
+				<div style={ { marginBottom: '6px', fontSize: '11px', fontWeight: '600', textTransform: 'uppercase', color: '#757575' } }>
+					{ __( 'Source', 'codeweber-gutenberg-blocks' ) }
+				</div>
+				<ButtonGroup>
+					<Button
+						variant={ ! isTaxonomyMode ? 'primary' : 'secondary' }
+						onClick={ () => setAttributes( { sourceType: 'post' } ) }
+					>
+						{ __( 'Posts', 'codeweber-gutenberg-blocks' ) }
+					</Button>
+					<Button
+						variant={ isTaxonomyMode ? 'primary' : 'secondary' }
+						onClick={ () => setAttributes( { sourceType: 'taxonomy' } ) }
+					>
+						{ __( 'Taxonomy', 'codeweber-gutenberg-blocks' ) }
+					</Button>
+				</ButtonGroup>
+			</div>
 
-			{ ! manualMode && (
-				<PostTypeTaxonomyControl
-					postType={ postType }
-					selectedTaxonomies={ selectedTaxonomies }
-					onPostTypeChange={ ( value ) =>
-						setAttributes( { postType: value } )
-					}
-					onTaxonomyChange={ ( value ) =>
-						setAttributes( { selectedTaxonomies: value } )
-					}
-				/>
-			) }
-
-			{ manualMode && (
-				<ManualPostsSection
-					postType={ postType }
-					manualPosts={ manualPosts }
-					manualItems={ manualItems }
+			{ isTaxonomyMode ? (
+				<TaxonomySourceSection
+					attributes={ attributes }
 					setAttributes={ setAttributes }
 				/>
-			) }
+			) : (
+				<>
+					<ToggleControl
+						label={ __(
+							'Manual post selection',
+							'codeweber-gutenberg-blocks'
+						) }
+						checked={ !! manualMode }
+						onChange={ ( value ) =>
+							setAttributes( { manualMode: value } )
+						}
+						help={ __(
+							'Pick and order posts manually instead of a query.',
+							'codeweber-gutenberg-blocks'
+						) }
+						__nextHasNoMarginBottom
+					/>
 
-			<div style={ { marginTop: '16px' } }>
-				<PostGridTemplateControl
-					value={ template }
-					onChange={ ( value ) =>
-						setAttributes( { template: value } )
-					}
-					postType={ postType || 'post' }
-				/>
-				{ postType === 'clients' && (
+					{ ! manualMode && (
+						<PostTypeTaxonomyControl
+							postType={ postType }
+							selectedTaxonomies={ selectedTaxonomies }
+							onPostTypeChange={ ( value ) =>
+								setAttributes( { postType: value } )
+							}
+							onTaxonomyChange={ ( value ) =>
+								setAttributes( { selectedTaxonomies: value } )
+							}
+						/>
+					) }
+
+					{ manualMode && (
+						<ManualPostsSection
+							postType={ postType }
+							manualPosts={ manualPosts }
+							manualItems={ manualItems }
+							setAttributes={ setAttributes }
+						/>
+					) }
+
 					<div style={ { marginTop: '16px' } }>
-						<ToggleControl
+						<PostGridTemplateControl
+							value={ template }
+							onChange={ ( value ) =>
+								setAttributes( { template: value } )
+							}
+							postType={ postType || 'post' }
+						/>
+						{ postType === 'clients' && (
+							<div style={ { marginTop: '16px' } }>
+								<ToggleControl
+									label={ __(
+										'Enable Links',
+										'codeweber-gutenberg-blocks'
+									) }
+									checked={ enableLink || false }
+									onChange={ ( value ) =>
+										setAttributes( { enableLink: value } )
+									}
+									help={ __(
+										'Enable links to client posts (disabled by default)',
+										'codeweber-gutenberg-blocks'
+									) }
+								/>
+							</div>
+						) }
+					</div>
+
+					{ ! manualMode && postType === 'projects' && (
+						<ProjectImageTagSection
+							filterByImageTag={ filterByImageTag }
+							filterImageTagId={ filterImageTagId }
+							setAttributes={ setAttributes }
+						/>
+					) }
+
+					<SchemaTypeNotice mode="post" postType={ postType || '' } />
+
+					{ ! manualMode && (
+						<RangeControl
 							label={ __(
-								'Enable Links',
+								'Posts Per Page',
 								'codeweber-gutenberg-blocks'
 							) }
-							checked={ enableLink || false }
+							value={ postsPerPage }
 							onChange={ ( value ) =>
-								setAttributes( { enableLink: value } )
+								setAttributes( { postsPerPage: value } )
 							}
+							min={ 1 }
+							max={ 50 }
+							initialPosition={ 6 }
 							help={ __(
-								'Enable links to client posts (disabled by default)',
+								'Number of posts to display',
 								'codeweber-gutenberg-blocks'
 							) }
 						/>
-					</div>
-				) }
-			</div>
-
-			{ ! manualMode && postType === 'projects' && (
-				<ProjectImageTagSection
-					filterByImageTag={ filterByImageTag }
-					filterImageTagId={ filterImageTagId }
-					setAttributes={ setAttributes }
-				/>
-			) }
-
-			<SchemaTypeNotice mode="post" postType={ postType || '' } />
-
-			{ ! manualMode && (
-				<RangeControl
-					label={ __(
-						'Posts Per Page',
-						'codeweber-gutenberg-blocks'
 					) }
-					value={ postsPerPage }
-					onChange={ ( value ) =>
-						setAttributes( { postsPerPage: value } )
-					}
-					min={ 1 }
-					max={ 50 }
-					initialPosition={ 6 }
-					help={ __(
-						'Number of posts to display',
-						'codeweber-gutenberg-blocks'
-					) }
-				/>
+				</>
 			) }
 
 			<div style={ { marginTop: '16px' } }>
@@ -576,7 +713,7 @@ export const MainControl = ( { attributes, setAttributes } ) => {
 				/>
 			</div>
 
-			{ ! manualMode && (
+			{ ! isTaxonomyMode && ! manualMode && (
 				<div style={ { marginTop: '16px' } }>
 					<PostSortControl
 						orderBy={ orderBy || 'date' }

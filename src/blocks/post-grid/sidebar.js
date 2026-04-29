@@ -26,8 +26,11 @@ const TabIcon = ({ icon, label }) => (
 );
 
 export const PostGridSidebar = ({ attributes, setAttributes }) => {
-	// Display tab hidden for clients (logos only — no titles/dates).
-	const hasDisplayTab = attributes.postType !== 'clients';
+	const isTaxonomyMode = attributes.sourceType === 'taxonomy';
+	// Display tab: shown always in taxonomy mode; in post mode hidden only for clients.
+	const hasDisplayTab = isTaxonomyMode ? true : attributes.postType !== 'clients';
+	// Filter tab: not applicable for taxonomy source mode.
+	const hasFilterTab  = ! isTaxonomyMode;
 
 	const tabs = [
 		{
@@ -73,15 +76,22 @@ export const PostGridSidebar = ({ attributes, setAttributes }) => {
 					},
 				]
 			: []),
-		{
-			name: 'filter',
-			title: (
-				<TabIcon
-					icon={filter}
-					label={__('Filter', 'codeweber-gutenberg-blocks')}
-				/>
-			),
-		},
+		...(hasFilterTab
+			? [
+					{
+						name: 'filter',
+						title: (
+							<TabIcon
+								icon={filter}
+								label={__(
+									'Filter',
+									'codeweber-gutenberg-blocks'
+								)}
+							/>
+						),
+					},
+				]
+			: []),
 		{
 			name: 'settings',
 			title: (

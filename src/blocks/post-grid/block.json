@@ -522,6 +522,34 @@
 		"useAltTitle": {
 			"type": "boolean",
 			"default": false
+		},
+		"sourceType": {
+			"type": "string",
+			"default": "post"
+		},
+		"sourceTaxonomy": {
+			"type": "string",
+			"default": ""
+		},
+		"taxonomyParent": {
+			"type": "number",
+			"default": 0
+		},
+		"taxonomyHideEmpty": {
+			"type": "boolean",
+			"default": true
+		},
+		"showTermCount": {
+			"type": "boolean",
+			"default": false
+		},
+		"taxonomyOrderBy": {
+			"type": "string",
+			"default": "name"
+		},
+		"taxonomyOrder": {
+			"type": "string",
+			"default": "asc"
 		}
 	}
 }

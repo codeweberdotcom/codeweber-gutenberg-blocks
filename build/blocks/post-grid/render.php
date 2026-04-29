@@ -35,6 +35,7 @@ $block_id = isset($attributes['blockId']) ? $attributes['blockId'] : '';
 $block_data = isset($attributes['blockData']) ? $attributes['blockData'] : '';
 $template = isset($attributes['template']) ? $attributes['template'] : 'default';
 $selected_taxonomies = isset($attributes['selectedTaxonomies']) ? $attributes['selectedTaxonomies'] : [];
+$source_type = isset($attributes['sourceType']) ? $attributes['sourceType'] : 'post';
 
 // Title tag and classes from block (with allowed values)
 // display-* передаём в шаблон как title-size-класс (см. compose_title_class), а тегом ставим h2.
@@ -286,6 +287,8 @@ if (!function_exists('get_post_grid_col_classes')) {
 $grid_classes = get_post_grid_container_classes($attributes, $grid_type);
 $col_classes = get_post_grid_col_classes($attributes, $grid_type);
 
+if ( $source_type !== 'taxonomy' ) :
+
 	// Manual selection mode: query only the explicitly chosen posts in their saved order.
 	$manual_mode    = ! empty( $attributes['manualMode'] );
 	$manual_posts_raw = isset( $attributes['manualPosts'] ) && is_array( $attributes['manualPosts'] )
@@ -368,6 +371,14 @@ $col_classes = get_post_grid_col_classes($attributes, $grid_type);
 
 $query = $manual_items_mode ? null : new WP_Query($args);
 
+else :
+	$manual_mode       = false;
+	$manual_items_mode = false;
+	$load_more_enable  = false;
+	$enable_filter     = false;
+	$query             = null;
+endif;
+
 // Block wrapper attributes
 $text_inverse = !empty($attributes['textInverse']);
 $wrapper_classes = 'cwgb-post-grid-block ' . $block_class . ($text_inverse ? ' text-inverse' : '');
@@ -403,10 +414,10 @@ if ($block_data) {
 }
 
 // Determine which posts to show initially
-$posts_to_show = $manual_items_mode ? [] : $query->posts;
+$posts_to_show = $manual_items_mode ? [] : ( $query ? $query->posts : [] );
 
 // Проверяем, есть ли еще посты для загрузки
-$has_more = ! $manual_items_mode && $load_more_enable && $query->found_posts > $load_more_initial_count;
+$has_more = ! $manual_items_mode && $load_more_enable && $query && $query->found_posts > $load_more_initial_count;
 
 // Helper function to get image URL
 if (!function_exists('get_post_image_url')) {
@@ -954,6 +965,160 @@ if (!function_exists('render_post_grid_item')) {
 		return '';
 	}
 }
+
+// Term image URL — uses 'thumbnail_id' meta key (WooCommerce standard; same key for custom taxonomies).
+if ( ! function_exists( 'cwgb_get_term_image_url' ) ) {
+	function cwgb_get_term_image_url( $term_id, $image_size = 'full' ) {
+		$thumbnail_id = (int) get_term_meta( $term_id, 'thumbnail_id', true );
+		if ( $thumbnail_id > 0 ) {
+			$image = wp_get_attachment_image_src( $thumbnail_id, $image_size );
+			if ( $image ) return $image[0];
+		}
+		return GUTENBERG_BLOCKS_URL . 'placeholder.jpg';
+	}
+}
+
+// Term card renderer.
+if ( ! function_exists( 'cwgb_render_term_card' ) ) {
+	function cwgb_render_term_card( $term, $attributes, $image_size, $grid_type, $col_classes, $is_swiper, $title_tag, $title_class ) {
+		$term_link = get_term_link( $term );
+		if ( is_wp_error( $term_link ) ) return '';
+
+		$border_radius  = isset( $attributes['borderRadius'] ) ? $attributes['borderRadius'] : 'rounded';
+		$show_title     = array_key_exists( 'showTitle', $attributes ) ? (bool) $attributes['showTitle'] : true;
+		$show_excerpt   = ! empty( $attributes['showExcerpt'] );
+		$show_count     = ! empty( $attributes['showTermCount'] );
+		$excerpt_length = isset( $attributes['excerptLength'] ) ? (int) $attributes['excerptLength'] : 0;
+		$title_length   = isset( $attributes['titleLength'] ) ? (int) $attributes['titleLength'] : 0;
+
+		$image_url  = cwgb_get_term_image_url( $term->term_id, $image_size );
+		$term_name  = $term->name;
+		if ( $title_length > 0 && mb_strlen( $term_name ) > $title_length ) {
+			$term_name = mb_substr( $term_name, 0, $title_length ) . '…';
+		}
+
+		$figure_cls = trim( $border_radius . ' overlay overlay-1 mb-0' );
+		$tc_attr    = $title_class
+			? ' class="from-top mb-1 ' . esc_attr( $title_class ) . '"'
+			: ' class="from-top mb-1"';
+
+		$description = '';
+		if ( $show_excerpt && ! empty( $term->description ) ) {
+			$desc = strip_tags( $term->description );
+			if ( $excerpt_length > 0 ) {
+				$words = explode( ' ', $desc );
+				if ( count( $words ) > $excerpt_length ) {
+					$desc = implode( ' ', array_slice( $words, 0, $excerpt_length ) ) . '&hellip;';
+				}
+			}
+			$description = wp_kses_post( $desc );
+		}
+
+		$html  = '<figure class="' . esc_attr( $figure_cls ) . '">';
+		$html .= '<a href="' . esc_url( $term_link ) . '">';
+		$html .= '<img src="' . esc_url( $image_url ) . '" alt="' . esc_attr( $term_name ) . '" decoding="async" />';
+
+		$has_caption = $show_title || $description || $show_count;
+		if ( $has_caption ) {
+			$html .= '<figcaption>';
+			if ( $show_title ) {
+				$html .= '<' . esc_attr( $title_tag ) . $tc_attr . '>' . esc_html( $term_name ) . '</' . esc_attr( $title_tag ) . '>';
+			}
+			if ( $description ) {
+				$html .= '<p class="from-bottom mb-0">' . $description . '</p>';
+			}
+			if ( $show_count ) {
+				/* translators: %d: number of posts in taxonomy term */
+				$html .= '<p class="from-bottom mb-0 small">' . esc_html( sprintf( _n( '%d item', '%d items', $term->count, 'codeweber-gutenberg-blocks' ), $term->count ) ) . '</p>';
+			}
+			$html .= '</figcaption>';
+		}
+
+		$html .= '</a></figure>';
+
+		if ( ! $is_swiper ) {
+			if ( $grid_type === 'classic' && ! empty( $col_classes ) ) {
+				$html = '<div class="' . esc_attr( $col_classes ) . '">' . $html . '</div>';
+			} elseif ( $grid_type === 'columns-grid' ) {
+				$html = '<div class="col">' . $html . '</div>';
+			}
+		}
+
+		return $html;
+	}
+}
+
+// ============ TAXONOMY MODE RENDER ============
+if ( $source_type === 'taxonomy' ) {
+	$source_taxonomy     = isset( $attributes['sourceTaxonomy'] ) ? sanitize_key( $attributes['sourceTaxonomy'] ) : '';
+	$taxonomy_parent     = isset( $attributes['taxonomyParent'] ) ? (int) $attributes['taxonomyParent'] : 0;
+	$taxonomy_hide_empty = isset( $attributes['taxonomyHideEmpty'] ) ? (bool) $attributes['taxonomyHideEmpty'] : true;
+	$taxonomy_order_by   = isset( $attributes['taxonomyOrderBy'] ) ? sanitize_key( $attributes['taxonomyOrderBy'] ) : 'name';
+	$taxonomy_order_val  = isset( $attributes['taxonomyOrder'] ) ? strtoupper( sanitize_key( $attributes['taxonomyOrder'] ) ) : 'ASC';
+
+	echo '<div ' . $wrapper_attributes . '>';
+
+	if ( ! $source_taxonomy || ! taxonomy_exists( $source_taxonomy ) ) {
+		echo '<p>' . esc_html__( 'Please select a taxonomy in block settings.', 'codeweber-gutenberg-blocks' ) . '</p>';
+		echo '</div>';
+		return;
+	}
+
+	$term_args = [
+		'taxonomy'   => $source_taxonomy,
+		'number'     => $posts_per_page,
+		'hide_empty' => $taxonomy_hide_empty,
+		'orderby'    => $taxonomy_order_by,
+		'order'      => $taxonomy_order_val,
+	];
+	if ( $taxonomy_parent > 0 ) {
+		$term_args['parent'] = $taxonomy_parent;
+	}
+
+	$terms = get_terms( $term_args );
+
+	if ( is_wp_error( $terms ) || empty( $terms ) ) {
+		echo '<p>' . esc_html__( 'No terms found.', 'codeweber-gutenberg-blocks' ) . '</p>';
+		echo '</div>';
+		return;
+	}
+
+	if ( $display_mode === 'swiper' ) {
+		$swiper_container_classes = get_swiper_container_classes( $attributes );
+		$swiper_data_attrs        = get_swiper_data_attributes( $attributes );
+		$swiper_data_attrs_str    = '';
+		foreach ( $swiper_data_attrs as $key => $value ) {
+			$swiper_data_attrs_str .= ' ' . esc_attr( $key ) . '="' . esc_attr( $value ) . '"';
+		}
+		$items_auto        = ! empty( $attributes['swiperItemsAuto'] );
+		$wrapper_cls_sw    = $items_auto ? 'swiper-wrapper ticker' : 'swiper-wrapper';
+		$swiper_slide_cls  = isset( $attributes['swiperSlideClass'] ) ? $attributes['swiperSlideClass'] : '';
+
+		echo '<div class="' . esc_attr( trim( $swiper_container_classes ) ) . '"' . $swiper_data_attrs_str . '>';
+		echo '<div class="swiper"><div class="' . esc_attr( $wrapper_cls_sw ) . '">';
+		foreach ( $terms as $term ) {
+			$item_html = cwgb_render_term_card( $term, $attributes, $image_size, $grid_type, $col_classes, true, $title_tag, $title_class );
+			if ( ! empty( $item_html ) ) {
+				$sc = 'swiper-slide' . ( $swiper_slide_cls ? ' ' . esc_attr( $swiper_slide_cls ) : '' );
+				echo '<div class="' . esc_attr( $sc ) . '">' . $item_html . '</div>';
+			}
+		}
+		echo '</div></div></div>';
+	} else {
+		echo '<div class="cwgb-load-more-items ' . esc_attr( $grid_classes ) . '">';
+		foreach ( $terms as $term ) {
+			$item_html = cwgb_render_term_card( $term, $attributes, $image_size, $grid_type, $col_classes, false, $title_tag, $title_class );
+			if ( ! empty( $item_html ) ) {
+				echo $item_html;
+			}
+		}
+		echo '</div>';
+	}
+
+	echo '</div>'; // close wrapper
+	return;
+}
+// ============ END TAXONOMY MODE RENDER ============
 
 ?>
 

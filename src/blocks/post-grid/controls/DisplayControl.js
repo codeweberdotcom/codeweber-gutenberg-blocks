@@ -24,7 +24,54 @@ export const DisplayControl = ({ attributes, setAttributes }) => {
 		showOfficeDescription,
 		showOfficeMap,
 		officeMapStyle,
+		sourceType = 'post',
+		showTermCount,
 	} = attributes;
+
+	const isTaxonomyMode = sourceType === 'taxonomy';
+
+	if (isTaxonomyMode) {
+		return (
+			<>
+				<ToggleControl
+					label={__('Show Title', 'codeweber-gutenberg-blocks')}
+					checked={showTitle !== false}
+					onChange={(value) => setAttributes({ showTitle: value })}
+				/>
+				<ToggleControl
+					label={__('Show Description', 'codeweber-gutenberg-blocks')}
+					checked={!!showExcerpt}
+					onChange={(value) => setAttributes({ showExcerpt: value })}
+				/>
+				{showExcerpt && (
+					<RangeControl
+						label={__('Description Length (words)', 'codeweber-gutenberg-blocks')}
+						value={typeof excerptLength === 'number' ? excerptLength : 20}
+						onChange={(value) => setAttributes({ excerptLength: value })}
+						min={0}
+						max={100}
+						step={1}
+						help={__('0 = no limit.', 'codeweber-gutenberg-blocks')}
+					/>
+				)}
+				<ToggleControl
+					label={__('Show Term Count', 'codeweber-gutenberg-blocks')}
+					checked={!!showTermCount}
+					onChange={(value) => setAttributes({ showTermCount: value })}
+					help={__('Show number of posts in each term.', 'codeweber-gutenberg-blocks')}
+				/>
+				<RangeControl
+					label={__('Title Length', 'codeweber-gutenberg-blocks')}
+					value={typeof titleLength === 'number' ? titleLength : 56}
+					onChange={(value) => setAttributes({ titleLength: value })}
+					min={0}
+					max={200}
+					step={1}
+					help={__('Maximum title characters (0 = no limit).', 'codeweber-gutenberg-blocks')}
+				/>
+			</>
+		);
+	}
 
 	return (
 		<>

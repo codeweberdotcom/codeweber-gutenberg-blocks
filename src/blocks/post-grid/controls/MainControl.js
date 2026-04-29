@@ -467,7 +467,12 @@ const TaxonomySourceSection = ( { attributes, setAttributes } ) => {
 			.then( ( data ) => {
 				if ( cancelled ) return;
 				const list = Object.values( data || {} )
-					.map( ( t ) => ( { value: t.slug, label: t.name || t.slug } ) )
+					.map( ( t ) => {
+						const types = Array.isArray( t.types ) && t.types.length
+							? ` (${ t.types.join( ', ' ) })`
+							: '';
+						return { value: t.slug, label: ( t.name || t.slug ) + types };
+					} )
 					.sort( ( a, b ) => a.label.localeCompare( b.label ) );
 				setTaxonomies( list );
 				setIsLoading( false );

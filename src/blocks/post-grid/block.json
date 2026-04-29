@@ -550,6 +550,14 @@
 		"taxonomyOrder": {
 			"type": "string",
 			"default": "asc"
+		},
+		"manualTermMode": {
+			"type": "boolean",
+			"default": false
+		},
+		"manualTermItems": {
+			"type": "array",
+			"default": []
 		}
 	}
 }

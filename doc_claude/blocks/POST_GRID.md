@@ -37,15 +37,37 @@
 
 ### Taxonomy mode (`sourceType = 'taxonomy'`)
 
-Вместо постов блок рендерит карточки **таксономических термов** (`get_terms()`).
+Вместо постов блок рендерит карточки **таксономических термов**.
 
-**Контролы (Main tab, TaxonomySourceSection):**
+В начале таба — переключатель **Manual term selection**:
+
+#### Auto mode (default)
+`get_terms()` запрос. Контролы (`TaxonomySourceSection`):
 - **Taxonomy** — select из всех публичных таксономий сайта (REST `/wp/v2/taxonomies`). В скобках — связанный CPT: `product_cat (product)`.
 - **Posts Per Page** — `RangeControl` 1–50.
 - **Order By** — `name` / `count` / `slug` / `term_id`.
 - **Order** — `ASC` / `DESC`.
 - **Hide Empty** — toggle; если включён — `hide_empty=true` в `get_terms()`.
 - **Parent** — `RangeControl` (0 = все верхнеуровневые / -1 = любой глубины / >0 = конкретный parent_id).
+
+#### Manual term mode (`manualTermMode = true`)
+Ручной выбор и порядок термов. Аналог `ManualPostsSection` для постов.
+
+`ManualTermsSection` компонент:
+- **Taxonomy select** — из `/wp/v2/taxonomies` (с типами в скобках), запоминается только для picker'а (не сохраняется в атрибут).
+- **Term select** — загружает термы таксономии через `/wp/v2/{rest_base}` (`per_page=100`).
+- **Add** — добавляет `{ type: 'term', taxonomy: slug, id, name }` в `manualTermItems`.
+- **+ Add HTML Block** — picker HTML Blocks CPT (`/wp/v2/html_blocks`). Добавляет `{ type: 'html', id, name }`. Синий фон в списке, иконка `⟨/⟩`.
+- Список с chevronUp/chevronDown reorder и кнопкой удаления ✕.
+- Каждый item в списке показывает имя + `[taxonomy]` в скобках (для term).
+
+`manualTermItems` — массив объектов: `{ type: 'term'|'html', taxonomy?: string, id: number, name: string }`.
+
+**Render (render.php):**
+- `type=term`: `get_term($id, $taxonomy)` → `cw_render_term_card()` / `cwgb_render_term_card()` (fallback).
+- `type=html`: `get_post($id)` → `do_blocks($post->post_content)`.
+- `get_terms()` не вызывается.
+- Поддерживает оба `displayMode`: `grid` и `swiper`.
 
 **Display tab (в taxonomy mode):**
 - **Show Title** — имя терма.
@@ -67,11 +89,11 @@
 Шаблоны живут в теме: `templates/post-cards/taxonomy/<slug>.php`. Рендер через `cw_render_term_card($term, $template, $display_settings, $template_args)` (тема). Если функции нет — fallback на `cwgb_render_term_card()` (плагин, overlay-1).
 
 **Render (render.php):**
-- При `$source_type === 'taxonomy'` блок вызывает `get_terms([$taxonomy, ...])` и рендерит каждый терм через `cw_render_term_card()` (тема) или `cwgb_render_term_card()` (плагин, fallback).
-- Изображение: `thumbnail_id` из term meta → `wp_get_attachment_image_src()`. Если нет — шаблон ничего не выводит (нет placeholder).
+- При `$source_type === 'taxonomy'` блок проверяет `$manual_term_mode` (ручной выбор) или запускает `get_terms()`.
+- Изображение: `thumbnail_id` из term meta → `wp_get_attachment_image_src()`. Если нет — шаблон показывает **placeholder**: серый блок `min-height:220px` с иконкой `uil-image` и названием терма.
 - Layout (grid/swiper), col-классы, border-radius — те же, что в post-mode.
 - `return;` в конце taxonomy-ветки предотвращает исполнение post-render кода.
-- Load More, manual mode, filter bar отключаются (`$load_more_enable = false`).
+- Load More, filter bar отключаются (`$load_more_enable = false`).
 
 **Editor preview:** в taxonomy mode используется `ServerSideRender` (так же, как для `product` и manual mode) — JS не умеет рендерить термы.
 
@@ -155,7 +177,7 @@ Runtime-фильтр **над** сеткой — AJAX-фильтрация по 
 ## Атрибуты — сгруппированная справка
 
 ### Source mode
-`sourceType` (`post`/`taxonomy`), `sourceTaxonomy` (slug), `taxonomyParent` (int), `taxonomyHideEmpty` (bool), `taxonomyOrderBy` (`name`/`count`/`slug`/`term_id`), `taxonomyOrder` (`asc`/`desc`), `showTermCount` (bool).
+`sourceType` (`post`/`taxonomy`), `sourceTaxonomy` (slug), `taxonomyParent` (int), `taxonomyHideEmpty` (bool), `taxonomyOrderBy` (`name`/`count`/`slug`/`term_id`), `taxonomyOrder` (`asc`/`desc`), `showTermCount` (bool), `manualTermMode` (bool), `manualTermItems` (array of `{type, taxonomy?, id, name}`).
 
 ### Query
 `postType`, `postsPerPage`, `orderBy`, `order`, `imageSize`, `selectedTaxonomies` (dict: `slug → [term_ids]`).

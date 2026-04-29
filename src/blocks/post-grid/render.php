@@ -1055,33 +1055,8 @@ if ( $source_type === 'taxonomy' ) {
 	$taxonomy_hide_empty = isset( $attributes['taxonomyHideEmpty'] ) ? (bool) $attributes['taxonomyHideEmpty'] : true;
 	$taxonomy_order_by   = isset( $attributes['taxonomyOrderBy'] ) ? sanitize_key( $attributes['taxonomyOrderBy'] ) : 'name';
 	$taxonomy_order_val  = isset( $attributes['taxonomyOrder'] ) ? strtoupper( sanitize_key( $attributes['taxonomyOrder'] ) ) : 'ASC';
-
-	echo '<div ' . $wrapper_attributes . '>';
-
-	if ( ! $source_taxonomy || ! taxonomy_exists( $source_taxonomy ) ) {
-		echo '<p>' . esc_html__( 'Please select a taxonomy in block settings.', 'codeweber-gutenberg-blocks' ) . '</p>';
-		echo '</div>';
-		return;
-	}
-
-	$term_args = [
-		'taxonomy'   => $source_taxonomy,
-		'number'     => $posts_per_page,
-		'hide_empty' => $taxonomy_hide_empty,
-		'orderby'    => $taxonomy_order_by,
-		'order'      => $taxonomy_order_val,
-	];
-	if ( $taxonomy_parent > 0 ) {
-		$term_args['parent'] = $taxonomy_parent;
-	}
-
-	$terms = get_terms( $term_args );
-
-	if ( is_wp_error( $terms ) || empty( $terms ) ) {
-		echo '<p>' . esc_html__( 'No terms found.', 'codeweber-gutenberg-blocks' ) . '</p>';
-		echo '</div>';
-		return;
-	}
+	$manual_term_mode    = ! empty( $attributes['manualTermMode'] );
+	$manual_term_items   = isset( $attributes['manualTermItems'] ) ? (array) $attributes['manualTermItems'] : [];
 
 	$term_template    = isset( $attributes['template'] ) ? $attributes['template'] : 'overlay-5';
 	$use_theme_render = function_exists( 'cw_render_term_card' );
@@ -1126,6 +1101,95 @@ if ( $source_type === 'taxonomy' ) {
 		}
 		return $card_html;
 	};
+
+	echo '<div ' . $wrapper_attributes . '>';
+
+	// ── Manual term selection ──────────────────────────────────────────────
+	if ( $manual_term_mode ) {
+		if ( empty( $manual_term_items ) ) {
+			echo '<p>' . esc_html__( 'No terms selected. Add terms in block settings.', 'codeweber-gutenberg-blocks' ) . '</p>';
+			echo '</div>';
+			return;
+		}
+
+		if ( $display_mode === 'swiper' ) {
+			$swiper_container_classes = get_swiper_container_classes( $attributes );
+			$swiper_data_attrs        = get_swiper_data_attributes( $attributes );
+			$swiper_data_attrs_str    = '';
+			foreach ( $swiper_data_attrs as $key => $value ) {
+				$swiper_data_attrs_str .= ' ' . esc_attr( $key ) . '="' . esc_attr( $value ) . '"';
+			}
+			$items_auto       = ! empty( $attributes['swiperItemsAuto'] );
+			$wrapper_cls_sw   = $items_auto ? 'swiper-wrapper ticker' : 'swiper-wrapper';
+			$swiper_slide_cls = isset( $attributes['swiperSlideClass'] ) ? $attributes['swiperSlideClass'] : '';
+
+			echo '<div class="' . esc_attr( trim( $swiper_container_classes ) ) . '"' . $swiper_data_attrs_str . '>';
+			echo '<div class="swiper"><div class="' . esc_attr( $wrapper_cls_sw ) . '">';
+			foreach ( $manual_term_items as $item ) {
+				$item_type = isset( $item['type'] ) ? $item['type'] : 'term';
+				if ( $item_type === 'html' ) {
+					$html_post = get_post( (int) $item['id'] );
+					if ( $html_post && $html_post->post_status === 'publish' ) {
+						echo '<div class="swiper-slide">' . do_blocks( $html_post->post_content ) . '</div>';
+					}
+				} else {
+					$item_taxonomy = isset( $item['taxonomy'] ) ? sanitize_key( $item['taxonomy'] ) : '';
+					$term          = $item_taxonomy ? get_term( (int) $item['id'], $item_taxonomy ) : null;
+					if ( $term && ! is_wp_error( $term ) ) {
+						echo $wrap_term_card( $render_one_term( $term ), true, $swiper_slide_cls );
+					}
+				}
+			}
+			echo '</div></div></div>';
+		} else {
+			echo '<div class="cwgb-load-more-items ' . esc_attr( $grid_classes ) . '">';
+			foreach ( $manual_term_items as $item ) {
+				$item_type = isset( $item['type'] ) ? $item['type'] : 'term';
+				if ( $item_type === 'html' ) {
+					$html_post = get_post( (int) $item['id'] );
+					if ( $html_post && $html_post->post_status === 'publish' ) {
+						echo do_blocks( $html_post->post_content );
+					}
+				} else {
+					$item_taxonomy = isset( $item['taxonomy'] ) ? sanitize_key( $item['taxonomy'] ) : '';
+					$term          = $item_taxonomy ? get_term( (int) $item['id'], $item_taxonomy ) : null;
+					if ( $term && ! is_wp_error( $term ) ) {
+						echo $wrap_term_card( $render_one_term( $term ), false );
+					}
+				}
+			}
+			echo '</div>';
+		}
+
+		echo '</div>'; // close wrapper
+		return;
+	}
+
+	// ── Auto query mode ───────────────────────────────────────────────────
+	if ( ! $source_taxonomy || ! taxonomy_exists( $source_taxonomy ) ) {
+		echo '<p>' . esc_html__( 'Please select a taxonomy in block settings.', 'codeweber-gutenberg-blocks' ) . '</p>';
+		echo '</div>';
+		return;
+	}
+
+	$term_args = [
+		'taxonomy'   => $source_taxonomy,
+		'number'     => $posts_per_page,
+		'hide_empty' => $taxonomy_hide_empty,
+		'orderby'    => $taxonomy_order_by,
+		'order'      => $taxonomy_order_val,
+	];
+	if ( $taxonomy_parent > 0 ) {
+		$term_args['parent'] = $taxonomy_parent;
+	}
+
+	$terms = get_terms( $term_args );
+
+	if ( is_wp_error( $terms ) || empty( $terms ) ) {
+		echo '<p>' . esc_html__( 'No terms found.', 'codeweber-gutenberg-blocks' ) . '</p>';
+		echo '</div>';
+		return;
+	}
 
 	if ( $display_mode === 'swiper' ) {
 		$swiper_container_classes = get_swiper_container_classes( $attributes );

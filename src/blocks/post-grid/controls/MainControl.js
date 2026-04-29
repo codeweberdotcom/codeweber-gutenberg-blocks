@@ -599,10 +599,20 @@ export const MainControl = ( { attributes, setAttributes } ) => {
 			</div>
 
 			{ isTaxonomyMode ? (
-				<TaxonomySourceSection
-					attributes={ attributes }
-					setAttributes={ setAttributes }
-				/>
+				<>
+					<TaxonomySourceSection
+						attributes={ attributes }
+						setAttributes={ setAttributes }
+					/>
+					<div style={ { marginTop: '16px' } }>
+						<PostGridTemplateControl
+							postType="taxonomy"
+							sourceType="taxonomy"
+							value={ template || 'overlay-5' }
+							onChange={ ( value ) => setAttributes( { template: value } ) }
+						/>
+					</div>
+				</>
 			) : (
 				<>
 					<ToggleControl

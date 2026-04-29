@@ -23,19 +23,25 @@ export const PostGridTemplateControl = ({
 	value,
 	onChange,
 	postType = 'post',
+	sourceType = 'post',
 }) => {
 	const [templates, setTemplates] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 
-	// Fetch templates from registry whenever postType changes
+	// Fetch templates from registry whenever postType/sourceType changes
 	useEffect(() => {
 		let cancelled = false;
 		setIsLoading(true);
 
+		const params = { post_type: postType };
+		if ( sourceType && sourceType !== 'post' ) {
+			params.source_type = sourceType;
+		}
+
 		apiFetch({
 			path: addQueryArgs(
 				'/codeweber-gutenberg-blocks/v1/post-card-templates',
-				{ post_type: postType }
+				params
 			),
 		})
 			.then((data) => {
@@ -60,7 +66,7 @@ export const PostGridTemplateControl = ({
 			cancelled = true;
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [postType]);
+	}, [postType, sourceType]);
 
 	if (isLoading) {
 		return (

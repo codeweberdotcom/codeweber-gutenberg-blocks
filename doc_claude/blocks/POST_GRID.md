@@ -60,9 +60,15 @@
 - Taxonomy mode: Main / Layout / Title / **Display** / Settings (Filter tab скрыт).
 - Post mode: Main / Layout / Title / Display (если не `clients`) / **Filter** / Settings.
 
+**Template selector (Main tab):** `PostGridTemplateControl` fetches `?source_type=taxonomy` → REST возвращает записи реестра темы для ключа `taxonomy`:
+- `overlay-5` — тёмный оверлей, заголовок снизу, описание/счётчик на hover
+- `overlay-5-primary` — primary-цветной оверлей на hover
+
+Шаблоны живут в теме: `templates/post-cards/taxonomy/<slug>.php`. Рендер через `cw_render_term_card($term, $template, $display_settings, $template_args)` (тема). Если функции нет — fallback на `cwgb_render_term_card()` (плагин, overlay-1).
+
 **Render (render.php):**
-- При `$source_type === 'taxonomy'` блок вызывает `get_terms([$taxonomy, ...])` и рендерит каждый терм через `cwgb_render_term_card()`.
-- Изображение: `thumbnail_id` из term meta (`wc_get_term_product_thumbnail_id()` pattern) → `wp_get_attachment_image_src()`. Если нет — placeholder.
+- При `$source_type === 'taxonomy'` блок вызывает `get_terms([$taxonomy, ...])` и рендерит каждый терм через `cw_render_term_card()` (тема) или `cwgb_render_term_card()` (плагин, fallback).
+- Изображение: `thumbnail_id` из term meta → `wp_get_attachment_image_src()`. Если нет — шаблон ничего не выводит (нет placeholder).
 - Layout (grid/swiper), col-классы, border-radius — те же, что в post-mode.
 - `return;` в конце taxonomy-ветки предотвращает исполнение post-render кода.
 - Load More, manual mode, filter bar отключаются (`$load_more_enable = false`).

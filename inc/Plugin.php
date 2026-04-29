@@ -876,22 +876,30 @@ class Plugin {
 					'required' => false,
 					'sanitize_callback' => 'sanitize_key',
 				],
+				'source_type' => [
+					'required' => false,
+					'sanitize_callback' => 'sanitize_key',
+				],
 			],
 		]);
 	}
 
 	/**
-	 * REST callback: returns list of templates for a post_type.
+	 * REST callback: returns list of templates for a post_type or source_type=taxonomy.
 	 * Falls back to empty array if theme registry is not available.
 	 */
 	public static function get_post_card_templates_callback($request) {
-		$post_type = $request->get_param('post_type') ?: 'post';
+		$source_type = $request->get_param('source_type') ?: 'post';
+		$post_type   = $request->get_param('post_type') ?: 'post';
+
+		// Taxonomy mode uses the 'taxonomy' registry entry.
+		$lookup_key = ( $source_type === 'taxonomy' ) ? 'taxonomy' : $post_type;
 
 		if (!function_exists('codeweber_get_post_card_templates_for')) {
 			return new \WP_REST_Response([], 200);
 		}
 
-		$templates = codeweber_get_post_card_templates_for($post_type);
+		$templates = codeweber_get_post_card_templates_for($lookup_key);
 
 		return new \WP_REST_Response($templates, 200);
 	}

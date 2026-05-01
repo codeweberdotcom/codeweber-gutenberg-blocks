@@ -181,6 +181,8 @@
 			const buttonStyle = settings.hotspotButtonStyle || 'btn-primary';
 			const buttonSize = settings.hotspotButtonSize || 'btn-sm';
 			const buttonShape = settings.hotspotButtonShape || 'btn-circle';
+			const markerType = settings.hotspotMarkerType || 'button';
+			const dotSize = settings.hotspotDotSize || 'w-4 h-4';
 
 			// Разбиваем buttonShape на отдельные классы (может быть "btn-block rounded-0")
 			const shapeClasses = buttonShape ? buttonShape.split(' ') : [];
@@ -196,14 +198,17 @@
 			});
 
 			button.addClass('ripple');
-
-			// Добавляем стиль и размер
 			button.addClass(buttonStyle);
-			button.addClass(buttonSize);
 
-			// Добавляем иконку
-			const iconHtml = '<i class="uil uil-' + iconName + '"></i>';
-			button.html(iconHtml);
+			if (markerType === 'dot') {
+				// Dot: размер вместо btn-sm, без иконки
+				dotSize.split(' ').forEach(function (cls) {
+					if (cls) button.addClass(cls);
+				});
+			} else {
+				button.addClass(buttonSize);
+				button.html('<i class="uil uil-' + iconName + '"></i>');
+			}
 
 			const editorControls = $('<div>')
 				.attr('class', 'cw-hotspot-point-editor')

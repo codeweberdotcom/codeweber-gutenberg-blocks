@@ -469,6 +469,15 @@
 		});
 	}
 
+	// Close all popovers when clicking outside a hotspot point or popover
+	document.addEventListener('click', function (e) {
+		if (e.target.closest('.cw-hotspot-point') || e.target.closest('.popover')) return;
+		document.querySelectorAll('.cw-image-hotspot-container [data-bs-toggle="popover"]').forEach(function (el) {
+			const instance = bootstrap.Popover.getInstance(el);
+			if (instance) instance.hide();
+		});
+	});
+
 	// Инициализация
 	if (document.readyState === 'loading') {
 		document.addEventListener('DOMContentLoaded', initAllHotspots);

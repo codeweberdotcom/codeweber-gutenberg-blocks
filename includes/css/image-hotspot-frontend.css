@@ -87,8 +87,8 @@
 }
 
 /* Bootstrap Popover styles */
-.cw-hotspot-popover .popover {
-	max-width: 400px; /* Увеличиваем максимальную ширину для HTML контента */
+.popover.cw-hotspot-popover {
+	max-width: 400px;
 }
 
 /* Индивидуальная ширина popover для каждой точки */

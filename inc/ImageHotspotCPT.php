@@ -192,6 +192,8 @@ class ImageHotspotCPT {
 			'hotspotButtonStyle' => 'btn-primary',
 			'hotspotButtonSize' => 'btn-sm',
 			'hotspotButtonShape' => 'btn-circle',
+			'hotspotMarkerType' => 'button',
+			'hotspotDotSize' => 'w-4 h-4',
 			'popoverTrigger' => 'click',
 			'popoverPlacement' => 'auto',
 			'hotspotImageSize' => 'cw_landscape_hd',
@@ -365,6 +367,41 @@ class ImageHotspotCPT {
 								<option value="btn-block rounded-0" <?php selected($settings_data['hotspotButtonShape'] ?? '', 'btn-block rounded-0'); ?>><?php _e('Block Rounded', 'codeweber-gutenberg-blocks'); ?></option>
 							</select>
 							<p class="description"><?php _e('Global shape for all hotspot buttons', 'codeweber-gutenberg-blocks'); ?></p>
+						</td>
+					</tr>
+					<tr>
+						<th><label for="hotspot-marker-type"><?php _e('Marker Type', 'codeweber-gutenberg-blocks'); ?></label></th>
+						<td>
+							<select id="hotspot-marker-type" name="hotspot_marker_type" class="cw-hotspot-setting">
+								<option value="button" <?php selected($settings_data['hotspotMarkerType'] ?? 'button', 'button'); ?>><?php _e('Button (with icon)', 'codeweber-gutenberg-blocks'); ?></option>
+								<option value="dot" <?php selected($settings_data['hotspotMarkerType'] ?? 'button', 'dot'); ?>><?php _e('Dot (no icon)', 'codeweber-gutenberg-blocks'); ?></option>
+							</select>
+							<p class="description"><?php _e('Dot uses Button Style color and w-*/h-* size below', 'codeweber-gutenberg-blocks'); ?></p>
+						</td>
+					</tr>
+					<tr>
+						<th><label for="hotspot-dot-size"><?php _e('Dot Size', 'codeweber-gutenberg-blocks'); ?></label></th>
+						<td>
+							<select id="hotspot-dot-size" name="hotspot_dot_size" class="cw-hotspot-setting">
+								<?php
+								$current_dot_size = $settings_data['hotspotDotSize'] ?? 'w-4 h-4';
+								$dot_sizes = [
+									'w-2 h-2'   => 'w-2 h-2 (0.5rem)',
+									'w-3 h-3'   => 'w-3 h-3 (0.75rem)',
+									'w-4 h-4'   => 'w-4 h-4 (1rem)',
+									'w-5 h-5'   => 'w-5 h-5 (1.25rem)',
+									'w-6 h-6'   => 'w-6 h-6 (1.5rem)',
+									'w-8 h-8'   => 'w-8 h-8 (2rem)',
+									'w-10 h-10' => 'w-10 h-10 (2.5rem)',
+									'w-12 h-12' => 'w-12 h-12 (3rem)',
+									'w-15 h-15' => 'w-15 h-15 (3.75rem)',
+								];
+								foreach ( $dot_sizes as $value => $label ) :
+								?>
+									<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $current_dot_size, $value ); ?>><?php echo esc_html( $label ); ?></option>
+								<?php endforeach; ?>
+							</select>
+							<p class="description"><?php _e('Used only when Marker Type is Dot', 'codeweber-gutenberg-blocks'); ?></p>
 						</td>
 					</tr>
 					<tr>
@@ -574,6 +611,8 @@ class ImageHotspotCPT {
 			'hotspotButtonStyle' => 'btn-primary',
 			'hotspotButtonSize' => 'btn-sm',
 			'hotspotButtonShape' => 'btn-circle',
+			'hotspotMarkerType' => 'button',
+			'hotspotDotSize' => 'w-4 h-4',
 			'popoverTrigger' => 'click',
 			'popoverPlacement' => 'auto',
 			'hotspotImageSize' => 'cw_landscape_hd',
@@ -618,9 +657,11 @@ class ImageHotspotCPT {
 						<?php
 						// Используем глобальные настройки для всех кнопок
 						$point_icon = !empty($hotspot['iconName']) ? $hotspot['iconName'] : 'plus'; // Если иконка не задана, используем plus по умолчанию
-						$button_style = $settings_data['hotspotButtonStyle'] ?? 'btn-primary';
-						$button_size = $settings_data['hotspotButtonSize'] ?? 'btn-sm';
-						$button_shape = $settings_data['hotspotButtonShape'] ?? 'btn-circle';
+						$button_style   = $settings_data['hotspotButtonStyle'] ?? 'btn-primary';
+						$button_size    = $settings_data['hotspotButtonSize'] ?? 'btn-sm';
+						$button_shape   = $settings_data['hotspotButtonShape'] ?? 'btn-circle';
+						$marker_type    = $settings_data['hotspotMarkerType'] ?? 'button';
+						$dot_size       = $settings_data['hotspotDotSize'] ?? 'w-4 h-4';
 						?>
 						<div class="cw-hotspot-point"
 						     style="left: <?php echo esc_attr($hotspot['x']); ?>%; top: <?php echo esc_attr($hotspot['y']); ?>%;"
@@ -689,7 +730,15 @@ class ImageHotspotCPT {
 							<?php endif; ?>
 							<?php
 							?>
-							<span class="btn <?php echo esc_attr(implode(' ', array_merge($theme_classes, $shape_classes, [$button_style, $button_size]))); ?>"
+							<?php
+							if ( $marker_type === 'dot' ) {
+								// Dot: same btn structure, no icon, w-*/h-* size classes
+								$dot_classes = array_merge( $theme_classes, $shape_classes, [ $button_style ], explode( ' ', $dot_size ) );
+							} else {
+								$dot_classes = array_merge( $theme_classes, $shape_classes, [ $button_style, $button_size ] );
+							}
+							?>
+							<span class="btn <?php echo esc_attr( implode( ' ', $dot_classes ) ); ?>"
 							      tabindex="0"
 							      data-bs-toggle="popover"
 							      data-bs-trigger="<?php echo esc_attr($popover_trigger); ?>"
@@ -699,10 +748,12 @@ class ImageHotspotCPT {
 							      <?php if ($popover_title): ?>data-bs-title="<?php echo esc_attr($popover_title); ?>"<?php endif; ?>
 							      data-content-type="<?php echo esc_attr($content_type); ?>"
 							      <?php if (!empty($hotspot['popoverWidth'])): ?>data-bs-popover-width="<?php echo esc_attr($hotspot['popoverWidth']); ?>"<?php endif; ?>>
-								<?php if (!empty($point_icon)): ?>
-									<i class="uil uil-<?php echo esc_attr($point_icon); ?>"></i>
-								<?php else: ?>
-									<i class="uil uil-plus"></i>
+								<?php if ( $marker_type !== 'dot' ) : ?>
+									<?php if (!empty($point_icon)): ?>
+										<i class="uil uil-<?php echo esc_attr($point_icon); ?>"></i>
+									<?php else: ?>
+										<i class="uil uil-plus"></i>
+									<?php endif; ?>
 								<?php endif; ?>
 							</span>
 						</div>

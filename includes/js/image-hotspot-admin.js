@@ -1100,6 +1100,8 @@
 				hotspotButtonStyle: 'btn-primary',
 				hotspotButtonSize: 'btn-sm',
 				hotspotButtonShape: 'btn-circle',
+				hotspotMarkerType: 'button',
+				hotspotDotSize: 'w-4 h-4',
 				popoverTrigger: 'click',
 				popoverPlacement: 'auto',
 				hotspotImageSize: 'cw_landscape_hd',
@@ -1115,6 +1117,10 @@
 					$('#hotspot-button-shape').val() || 'btn-circle',
 				popoverTrigger: $('#popover-trigger').val() || 'click',
 				popoverPlacement: $('#popover-placement').val() || 'auto',
+				hotspotMarkerType:
+					$('#hotspot-marker-type').val() || 'button',
+				hotspotDotSize:
+					$('#hotspot-dot-size').val() || 'w-4 h-4',
 				hotspotImageSize:
 					$('#hotspot-image-size').val() || 'cw_landscape_hd',
 			};

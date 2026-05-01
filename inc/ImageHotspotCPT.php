@@ -242,19 +242,13 @@ class ImageHotspotCPT {
 							<select id="hotspot-image-size" name="hotspot_image_size" class="cw-hotspot-setting">
 								<?php
 								$current_img_size = $settings_data['hotspotImageSize'] ?? 'cw_landscape_hd';
-								$img_sizes = [
-									'full'             => __('Original (full)', 'codeweber-gutenberg-blocks'),
-									'cw_wide_2k'       => '2560×1440 (2K)',
-									'cw_wide_4x3_xl'   => '1600×1200 (4:3 XL)',
-									'cw_landscape_hd'  => '1600×900 (HD 16:9)',
-									'cw_landscape_xl'  => '1070×668',
-									'cw_landscape_lg'  => '960×600',
-									'cw_landscape_md'  => '560×350',
-									'large'            => __('WP Large (1024px)', 'codeweber-gutenberg-blocks'),
-								];
-								foreach ( $img_sizes as $value => $label ) :
+								$registered_sizes = wp_get_registered_image_subsizes();
 								?>
-									<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $current_img_size, $value ); ?>><?php echo esc_html( $label ); ?></option>
+								<option value="full" <?php selected( $current_img_size, 'full' ); ?>><?php _e( 'full — original', 'codeweber-gutenberg-blocks' ); ?></option>
+								<?php foreach ( $registered_sizes as $slug => $data ) :
+									$label = $slug . ' — ' . $data['width'] . '×' . $data['height'];
+								?>
+									<option value="<?php echo esc_attr( $slug ); ?>" <?php selected( $current_img_size, $slug ); ?>><?php echo esc_html( $label ); ?></option>
 								<?php endforeach; ?>
 							</select>
 							<p class="description"><?php _e('Image size used on the frontend', 'codeweber-gutenberg-blocks'); ?></p>

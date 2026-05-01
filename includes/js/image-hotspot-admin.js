@@ -194,6 +194,8 @@
 				if (cls) button.addClass(cls);
 			});
 
+			button.addClass('ripple');
+
 			// Добавляем стиль и размер
 			button.addClass(buttonStyle);
 			button.addClass(buttonSize);
@@ -611,6 +613,7 @@
 					post_type: postType,
 				})
 			);
+			formData.append('nonce', typeof fetch_vars !== 'undefined' ? fetch_vars.nonce : '');
 
 			return fetch(ajaxurl, {
 				method: 'POST',
@@ -827,6 +830,7 @@
 			formData.append('action', 'fetch_action');
 			formData.append('actionType', 'getPostsForHotspot');
 			formData.append('params', JSON.stringify({}));
+			formData.append('nonce', typeof fetch_vars !== 'undefined' ? fetch_vars.nonce : '');
 
 			return fetch(ajaxurl, {
 				method: 'POST',

@@ -239,9 +239,39 @@ class ImageHotspotCPT {
 						<th><label for="hotspot-button-style"><?php _e('Button Style', 'codeweber-gutenberg-blocks'); ?></label></th>
 						<td>
 							<select id="hotspot-button-style" name="hotspot_button_style" class="cw-hotspot-setting">
-								<option value="btn-primary" <?php selected($settings_data['hotspotButtonStyle'] ?? 'btn-primary', 'btn-primary'); ?>><?php _e('Primary', 'codeweber-gutenberg-blocks'); ?></option>
-								<option value="btn-outline-light" <?php selected($settings_data['hotspotButtonStyle'] ?? '', 'btn-outline-light'); ?>><?php _e('Outline Light', 'codeweber-gutenberg-blocks'); ?></option>
-								<option value="btn-white" <?php selected($settings_data['hotspotButtonStyle'] ?? '', 'btn-white'); ?>><?php _e('White', 'codeweber-gutenberg-blocks'); ?></option>
+								<?php
+								$current_style = $settings_data['hotspotButtonStyle'] ?? 'btn-primary';
+								$btn_colors = [
+									'btn-primary'   => 'Primary',
+									'btn-secondary' => 'Secondary',
+									'btn-white'     => 'White',
+									'btn-light'     => 'Light',
+									'btn-dark'      => 'Dark',
+									'btn-blue'      => 'Blue',
+									'btn-sky'       => 'Sky',
+									'btn-purple'    => 'Purple',
+									'btn-grape'     => 'Grape',
+									'btn-violet'    => 'Violet',
+									'btn-pink'      => 'Pink',
+									'btn-fuchsia'   => 'Fuchsia',
+									'btn-red'       => 'Red',
+									'btn-orange'    => 'Orange',
+									'btn-yellow'    => 'Yellow',
+									'btn-green'     => 'Green',
+									'btn-leaf'      => 'Leaf',
+									'btn-aqua'      => 'Aqua',
+									'btn-navy'      => 'Navy',
+									'btn-ash'       => 'Ash',
+									'btn-gray'      => 'Gray',
+									'btn-success'   => 'Success',
+									'btn-info'      => 'Info',
+									'btn-warning'   => 'Warning',
+									'btn-danger'    => 'Danger',
+								];
+								foreach ( $btn_colors as $value => $label ) :
+								?>
+									<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $current_style, $value ); ?>><?php echo esc_html( $label ); ?></option>
+								<?php endforeach; ?>
 							</select>
 							<p class="description"><?php _e('Global style for all hotspot buttons', 'codeweber-gutenberg-blocks'); ?></p>
 						</td>
@@ -343,6 +373,7 @@ class ImageHotspotCPT {
 			);
 			wp_localize_script('fetch-handler', 'fetch_vars', [
 				'ajaxurl' => admin_url('admin-ajax.php'),
+				'nonce'   => wp_create_nonce('fetch_action_nonce'),
 			]);
 		}
 
@@ -526,8 +557,7 @@ class ImageHotspotCPT {
 							<?php
 							// Разбиваем buttonShape на отдельные классы (может быть "btn-block rounded-0")
 							$shape_classes = $button_shape ? explode(' ', $button_shape) : [];
-							// Добавляем классы темы: hover-scale и lift
-							$theme_classes = ['hover-scale', 'lift'];
+							$theme_classes = ['ripple'];
 
 							// Определяем тип контента
 							$content_type = !empty($hotspot['contentType']) ? $hotspot['contentType'] : 'text';
@@ -592,7 +622,7 @@ class ImageHotspotCPT {
 							      data-bs-placement="<?php echo esc_attr($popover_placement); ?>"
 							      data-bs-html="true"
 							      data-bs-ajax-load="<?php echo $use_ajax ? 'true' : 'false'; ?>"
-							      data-bs-title="<?php echo esc_attr($popover_title); ?>"
+							      <?php if ($popover_title): ?>data-bs-title="<?php echo esc_attr($popover_title); ?>"<?php endif; ?>
 							      data-content-type="<?php echo esc_attr($content_type); ?>"
 							      <?php if (!empty($hotspot['popoverWidth'])): ?>data-bs-popover-width="<?php echo esc_attr($hotspot['popoverWidth']); ?>"<?php endif; ?>>
 								<?php if (!empty($point_icon)): ?>

@@ -30,6 +30,7 @@
 				point_id: pointId,
 			})
 		);
+		formData.append('nonce', typeof fetch_vars !== 'undefined' ? fetch_vars.nonce : '');
 
 		return fetch(ajaxurl, {
 			method: 'POST',
@@ -237,16 +238,15 @@
 			// Получаем ширину popover из data-атрибута
 			const popoverWidth = getDataAttr(pointElement, 'bs-popover-width');
 
-			// Используем getOrCreateInstance (рекомендуется Bootstrap 5 для динамического контента)
+			// Dispose auto-init instance (created without our options) and create fresh
 			let popover;
 			try {
-				popover = bootstrap.Popover.getOrCreateInstance(
-					pointElement,
-					popoverOptions
-				);
+				const existing = bootstrap.Popover.getInstance(pointElement);
+				if (existing) existing.dispose();
+				popover = new bootstrap.Popover(pointElement, popoverOptions);
 			} catch (e) {
 				console.error('Error creating popover:', e);
-				return; // Пропускаем этот элемент, если не удалось создать popover
+				return;
 			}
 
 			// Применяем индивидуальную ширину popover, если она задана
@@ -458,38 +458,39 @@
 				let contentLoaded = false;
 				let isLoading = false;
 
-				// Используем shown.bs.popover вместо show.bs.popover, чтобы popover был уже полностью показан
+				// Bootstrap 5.3 nullifies _tip after hide, so popover.setContent() is unreliable.
+				// We use aria-describedby to find the live popover element in the DOM directly.
+				const getPopoverParts = () => {
+					const popoverId = pointElement.getAttribute('aria-describedby');
+					const popoverEl = popoverId ? document.getElementById(popoverId) : null;
+					return {
+						body: popoverEl ? popoverEl.querySelector('.popover-body') : null,
+						header: popoverEl ? popoverEl.querySelector('.popover-header') : null,
+					};
+				};
+
 				pointElement.addEventListener(
 					'shown.bs.popover',
 					() => {
-						// Загружаем контент только один раз
 						if (!contentLoaded && !isLoading) {
 							isLoading = true;
 
-							// Проверяем, что popover все еще открыт
-							const isPopoverShown = popover._isShown();
-
-							if (!isPopoverShown) {
+							const { body } = getPopoverParts();
+							if (!body) {
 								isLoading = false;
 								return;
 							}
 
-							// Показываем индикатор загрузки (используем спиннер из темы, как в yandex map)
-							try {
-								popover.setContent({
-									'.popover-body':
-										'<div class="cw-hotspot-loading text-center p-3"><div class="spinner spinner-sm"></div></div>',
-								});
-							} catch (e) {}
+							// Показываем спиннер
+							body.innerHTML = '<div class="cw-hotspot-loading text-center p-3"><div class="spinner spinner-sm"></div></div>';
 
 							// Загружаем контент
 							loadHotspotContent(hotspotId, pointId)
 								.then((data) => {
-									// Проверяем, что popover все еще открыт перед обновлением контента
-									const isStillShown = popover._isShown();
+									const { body: bodyEl, header: headerEl } = getPopoverParts();
 
-									if (!isStillShown) {
-										contentLoaded = false; // Разрешаем повторную загрузку при следующем открытии
+									if (!bodyEl) {
+										contentLoaded = false;
 										isLoading = false;
 										return;
 									}
@@ -497,7 +498,6 @@
 									contentLoaded = true;
 									isLoading = false;
 
-									// Объединяем статический контент (для Hybrid) с AJAX контентом
 									let finalContent = '';
 									if (staticContent) {
 										finalContent = `${staticContent}<div class="cw-hotspot-post-content mt-3">${data.content || ''}</div>`;
@@ -505,43 +505,29 @@
 										finalContent = data.content || '';
 									}
 
-									// Обновляем контент popover
-									try {
-										popover.setContent({
-											'.popover-body': finalContent,
-										});
-									} catch (e) {}
+									bodyEl.innerHTML = finalContent;
 
-									// Обновляем title, если он изменился
-									if (data.title && data.title !== title) {
-										try {
-											popover.setContent({
-												'.popover-header': data.title,
-											});
-										} catch (e) {}
+									if (data.title && data.title !== title && headerEl) {
+										headerEl.textContent = data.title;
+									}
+
+									if (popover._popper) {
+										popover._popper.update();
 									}
 								})
 								.catch((error) => {
 									isLoading = false;
-									console.error(
-										'Error loading hotspot content:',
-										error
-									);
+									console.error('Error loading hotspot content:', error);
 
-									// Проверяем, что popover все еще открыт перед показом ошибки
-									if (popover._isShown()) {
-										try {
-											popover.setContent({
-												'.popover-body':
-													'<div class="alert alert-danger">Error loading content. Please try again.</div>',
-											});
-										} catch (e) {}
+									const { body: bodyEl } = getPopoverParts();
+									if (bodyEl) {
+										bodyEl.innerHTML = '<div class="alert alert-danger">Error loading content. Please try again.</div>';
 									}
 								});
 						}
 					},
 					{ once: true }
-				); // Используем { once: true } для однократного выполнения
+				);
 
 				// Отслеживаем закрытие popover во время загрузки
 				pointElement.addEventListener('hide.bs.popover', () => {});

@@ -147,8 +147,8 @@
 /* Pulse animation for dot markers */
 @keyframes cw-hotspot-pulse {
 	0%   { transform: scale(1); opacity: 0.6; }
-	70%  { transform: scale(3); opacity: 0; }
-	100% { transform: scale(3); opacity: 0; }
+	70%  { transform: scale(10); opacity: 0; }
+	100% { transform: scale(10); opacity: 0; }
 }
 
 .cw-hotspot-pulse {

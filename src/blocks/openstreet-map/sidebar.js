@@ -33,6 +33,13 @@ const tileLayerOptions = [
 	{ label: __('Satellite (ESRI)', 'codeweber-gutenberg-blocks'), value: 'esri-sat' },
 ];
 
+const sourceOptions = [
+	{ label: __('Custom Markers', 'codeweber-gutenberg-blocks'), value: 'custom' },
+	{ label: __('Offices', 'codeweber-gutenberg-blocks'), value: 'offices' },
+	{ label: __('Staff', 'codeweber-gutenberg-blocks'), value: 'staff' },
+	{ label: __('Any CPT', 'codeweber-gutenberg-blocks'), value: 'cpt' },
+];
+
 export const OpenStreetMapSidebar = ({ attributes, setAttributes }) => {
 	const {
 		dataSource,
@@ -46,10 +53,17 @@ export const OpenStreetMapSidebar = ({ attributes, setAttributes }) => {
 		autoFitBounds,
 		clustering,
 		markerColor,
+		markerType,
 		customMarkers,
 		cptQuery,
 		popupFields,
 	} = attributes;
+
+	const markerTypeOptions = [
+		{ label: __('Dot + Label', 'codeweber-gutenberg-blocks'), value: 'dot-label' },
+		{ label: __('Dot', 'codeweber-gutenberg-blocks'), value: 'dot' },
+		{ label: __('Pin', 'codeweber-gutenberg-blocks'), value: 'pin' },
+	];
 
 	const tabs = [
 		{
@@ -172,20 +186,20 @@ export const OpenStreetMapSidebar = ({ attributes, setAttributes }) => {
 								<SelectControl
 									label={__('Source', 'codeweber-gutenberg-blocks')}
 									value={dataSource}
-									options={[
-										{
-											label: __('Custom Markers', 'codeweber-gutenberg-blocks'),
-											value: 'custom',
-										},
-										{
-											label: __('CPT (any post type)', 'codeweber-gutenberg-blocks'),
-											value: 'cpt',
-										},
-									]}
+									options={sourceOptions}
 									onChange={(value) => setAttributes({ dataSource: value })}
+								/>
+
+								<SelectControl
+									label={__('Marker Type', 'codeweber-gutenberg-blocks')}
+									value={markerType}
+									options={markerTypeOptions}
+									onChange={(value) => setAttributes({ markerType: value })}
+									__nextHasNoMarginBottom
 								/>
 							</PanelBody>
 
+							{/* Custom markers */}
 							{dataSource === 'custom' && (
 								<PanelBody
 									title={__('Markers', 'codeweber-gutenberg-blocks')}
@@ -211,6 +225,87 @@ export const OpenStreetMapSidebar = ({ attributes, setAttributes }) => {
 								</PanelBody>
 							)}
 
+							{/* Offices preset */}
+							{dataSource === 'offices' && (
+								<PanelBody
+									title={__('Offices Settings', 'codeweber-gutenberg-blocks')}
+									initialOpen={true}
+								>
+									<p style={{ fontSize: '12px', color: '#757575', margin: '0 0 12px' }}>
+										{__(
+											'Reads offices CPT with towns taxonomy, address, phone and linked staff.',
+											'codeweber-gutenberg-blocks'
+										)}
+									</p>
+
+									<RangeControl
+										label={__('Offices Limit', 'codeweber-gutenberg-blocks')}
+										value={cptQuery?.postsPerPage > 0 ? cptQuery.postsPerPage : 100}
+										onChange={(value) =>
+											setAttributes({ cptQuery: { ...cptQuery, postsPerPage: value } })
+										}
+										min={1}
+										max={500}
+										step={1}
+										__nextHasNoMarginBottom
+									/>
+
+									<div style={{ marginTop: '12px' }}>
+										<BaseControl
+											label={__('Marker Color', 'codeweber-gutenberg-blocks')}
+											__nextHasNoMarginBottom
+										>
+											<ColorPicker
+												color={markerColor}
+												onChange={(value) => setAttributes({ markerColor: value })}
+												enableAlpha={false}
+											/>
+										</BaseControl>
+									</div>
+								</PanelBody>
+							)}
+
+							{/* Staff preset */}
+							{dataSource === 'staff' && (
+								<PanelBody
+									title={__('Staff Settings', 'codeweber-gutenberg-blocks')}
+									initialOpen={true}
+								>
+									<p style={{ fontSize: '12px', color: '#757575', margin: '0 0 12px' }}>
+										{__(
+											'Reads staff CPT. Each staff record needs _staff_latitude and _staff_longitude meta fields.',
+											'codeweber-gutenberg-blocks'
+										)}
+									</p>
+
+									<RangeControl
+										label={__('Staff Limit', 'codeweber-gutenberg-blocks')}
+										value={cptQuery?.postsPerPage > 0 ? cptQuery.postsPerPage : 100}
+										onChange={(value) =>
+											setAttributes({ cptQuery: { ...cptQuery, postsPerPage: value } })
+										}
+										min={1}
+										max={500}
+										step={1}
+										__nextHasNoMarginBottom
+									/>
+
+									<div style={{ marginTop: '12px' }}>
+										<BaseControl
+											label={__('Marker Color', 'codeweber-gutenberg-blocks')}
+											__nextHasNoMarginBottom
+										>
+											<ColorPicker
+												color={markerColor}
+												onChange={(value) => setAttributes({ markerColor: value })}
+												enableAlpha={false}
+											/>
+										</BaseControl>
+									</div>
+								</PanelBody>
+							)}
+
+							{/* Any CPT — manual config */}
 							{dataSource === 'cpt' && (
 								<PanelBody
 									title={__('CPT Settings', 'codeweber-gutenberg-blocks')}
@@ -290,7 +385,7 @@ export const OpenStreetMapSidebar = ({ attributes, setAttributes }) => {
 									/>
 
 									<BaseControl
-										label={__('Default Marker Color', 'codeweber-gutenberg-blocks')}
+										label={__('Marker Color', 'codeweber-gutenberg-blocks')}
 										__nextHasNoMarginBottom
 									>
 										<ColorPicker
@@ -354,6 +449,18 @@ export const OpenStreetMapSidebar = ({ attributes, setAttributes }) => {
 								}
 								__nextHasNoMarginBottom
 							/>
+
+							{dataSource === 'offices' && (
+								<ToggleControl
+									label={__('Show Staff', 'codeweber-gutenberg-blocks')}
+									checked={popupFields?.showStaff === true}
+									onChange={(value) =>
+										setAttributes({ popupFields: { ...popupFields, showStaff: value } })
+									}
+									help={__('Show staff members linked to each office', 'codeweber-gutenberg-blocks')}
+									__nextHasNoMarginBottom
+								/>
+							)}
 						</PanelBody>
 					)}
 

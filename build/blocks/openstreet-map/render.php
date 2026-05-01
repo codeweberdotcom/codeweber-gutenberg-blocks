@@ -24,12 +24,14 @@ $drag           = (bool) ( $attributes['enableDrag'] ?? true );
 $auto_fit       = (bool) ( $attributes['autoFitBounds'] ?? true );
 $clustering     = (bool) ( $attributes['clustering'] ?? false );
 $marker_color   = $attributes['markerColor'] ?? '#0d6efd';
+$marker_type    = sanitize_text_field( $attributes['markerType'] ?? 'dot-label' );
 $popup_fields   = $attributes['popupFields'] ?? [
 	'showTitle'       => true,
 	'showAddress'     => true,
 	'showPhone'       => true,
 	'showDescription' => false,
 	'showLink'        => true,
+	'showStaff'       => false,
 ];
 
 // Animation attributes.
@@ -57,10 +59,159 @@ if ( $animation_type ) {
 	}
 }
 
-// Build markers array.
 $markers = [];
 
-if ( $data_source === 'cpt' ) {
+// --- Offices preset ---
+if ( $data_source === 'offices' && post_type_exists( 'offices' ) ) {
+	$show_staff     = ! empty( $popup_fields['showStaff'] );
+	$cpt_query      = $attributes['cptQuery'] ?? [];
+	$posts_per_page = isset( $cpt_query['postsPerPage'] ) ? (int) $cpt_query['postsPerPage'] : -1;
+
+	$query = new WP_Query( [
+		'post_type'      => 'offices',
+		'posts_per_page' => $posts_per_page > 0 ? $posts_per_page : -1,
+		'post_status'    => 'publish',
+		'orderby'        => 'title',
+		'order'          => 'ASC',
+	] );
+
+	if ( $query->have_posts() ) {
+		while ( $query->have_posts() ) {
+			$query->the_post();
+			$post_id = get_the_ID();
+			$lat     = get_post_meta( $post_id, '_office_latitude', true );
+			$lng     = get_post_meta( $post_id, '_office_longitude', true );
+
+			if ( empty( $lat ) || empty( $lng ) ) {
+				continue;
+			}
+
+			// City label from towns taxonomy.
+			$city       = '';
+			$town_terms = wp_get_post_terms( $post_id, 'towns', [ 'fields' => 'names' ] );
+			if ( ! empty( $town_terms ) && ! is_wp_error( $town_terms ) ) {
+				$city = $town_terms[0];
+			}
+
+			// Address: prefer street, fallback to full address.
+			$address = get_post_meta( $post_id, '_office_street', true );
+			if ( ! $address ) {
+				$address = get_post_meta( $post_id, '_office_full_address', true );
+			}
+
+			// Staff members.
+			$staff = [];
+			if ( $show_staff ) {
+				$staff_ids = get_post_meta( $post_id, '_office_staff', true );
+				if ( is_array( $staff_ids ) ) {
+					foreach ( $staff_ids as $sid ) {
+						$sid = (int) $sid;
+						if ( ! $sid ) {
+							continue;
+						}
+						$s_name = trim(
+							get_post_meta( $sid, '_staff_name', true ) . ' ' .
+							get_post_meta( $sid, '_staff_surname', true )
+						);
+						if ( ! $s_name ) {
+							$s_name = get_the_title( $sid );
+						}
+						$s_pos   = esc_html( get_post_meta( $sid, '_staff_position', true ) );
+						$s_photo = '';
+						$thumb   = (int) get_post_thumbnail_id( $sid );
+						if ( $thumb ) {
+							$img = wp_get_attachment_image_src( $thumb, [ 48, 48 ] );
+							if ( $img ) {
+								$s_photo = esc_url( $img[0] );
+							}
+						}
+						$staff[] = [
+							'name'     => esc_html( $s_name ),
+							'position' => $s_pos,
+							'photo'    => $s_photo,
+						];
+					}
+				}
+			}
+
+			$markers[] = [
+				'id'          => $post_id,
+				'lat'         => floatval( $lat ),
+				'lng'         => floatval( $lng ),
+				'title'       => get_the_title(),
+				'label'       => $city,
+				'address'     => esc_html( $address ),
+				'phone'       => esc_html( get_post_meta( $post_id, '_office_phone', true ) ),
+				'description' => wp_kses_post( get_post_meta( $post_id, '_office_description', true ) ),
+				'link'        => get_permalink( $post_id ),
+				'color'       => $marker_color,
+				'staff'       => $staff,
+			];
+		}
+		wp_reset_postdata();
+	}
+
+// --- Staff preset ---
+} elseif ( $data_source === 'staff' && post_type_exists( 'staff' ) ) {
+	$cpt_query      = $attributes['cptQuery'] ?? [];
+	$posts_per_page = isset( $cpt_query['postsPerPage'] ) ? (int) $cpt_query['postsPerPage'] : -1;
+
+	$query = new WP_Query( [
+		'post_type'      => 'staff',
+		'posts_per_page' => $posts_per_page > 0 ? $posts_per_page : -1,
+		'post_status'    => 'publish',
+		'orderby'        => 'title',
+		'order'          => 'ASC',
+	] );
+
+	if ( $query->have_posts() ) {
+		while ( $query->have_posts() ) {
+			$query->the_post();
+			$post_id = get_the_ID();
+			$lat     = get_post_meta( $post_id, '_staff_latitude', true );
+			$lng     = get_post_meta( $post_id, '_staff_longitude', true );
+
+			if ( empty( $lat ) || empty( $lng ) ) {
+				continue;
+			}
+
+			$name = trim(
+				get_post_meta( $post_id, '_staff_name', true ) . ' ' .
+				get_post_meta( $post_id, '_staff_surname', true )
+			);
+			if ( ! $name ) {
+				$name = get_the_title();
+			}
+
+			$photo = '';
+			$thumb = (int) get_post_thumbnail_id( $post_id );
+			if ( $thumb ) {
+				$img = wp_get_attachment_image_src( $thumb, 'thumbnail' );
+				if ( $img ) {
+					$photo = esc_url( $img[0] );
+				}
+			}
+
+			$markers[] = [
+				'id'          => $post_id,
+				'lat'         => floatval( $lat ),
+				'lng'         => floatval( $lng ),
+				'title'       => esc_html( $name ),
+				'label'       => esc_html( $name ),
+				'address'     => '',
+				'phone'       => esc_html( get_post_meta( $post_id, '_staff_phone', true ) ),
+				'description' => esc_html( get_post_meta( $post_id, '_staff_position', true ) ),
+				'link'        => get_permalink( $post_id ),
+				'color'       => $marker_color,
+				'photo'       => $photo,
+				'staff'       => [],
+			];
+		}
+		wp_reset_postdata();
+	}
+
+// --- Any CPT (manual config) ---
+} elseif ( $data_source === 'cpt' ) {
 	$cpt_query      = $attributes['cptQuery'] ?? [];
 	$post_type      = sanitize_key( $cpt_query['postType'] ?? 'offices' );
 	$posts_per_page = isset( $cpt_query['postsPerPage'] ) ? (int) $cpt_query['postsPerPage'] : -1;
@@ -97,16 +248,20 @@ if ( $data_source === 'cpt' ) {
 					'lat'         => floatval( $lat ),
 					'lng'         => floatval( $lng ),
 					'title'       => get_the_title(),
+					'label'       => '',
 					'address'     => $address_field ? esc_html( get_post_meta( $post_id, $address_field, true ) ) : '',
 					'phone'       => $phone_field ? esc_html( get_post_meta( $post_id, $phone_field, true ) ) : '',
 					'description' => $desc_field ? wp_kses_post( get_post_meta( $post_id, $desc_field, true ) ) : '',
 					'link'        => get_permalink( $post_id ),
 					'color'       => $marker_color,
+					'staff'       => [],
 				];
 			}
 			wp_reset_postdata();
 		}
 	}
+
+// --- Custom markers ---
 } else {
 	$custom_markers = $attributes['customMarkers'] ?? [];
 	foreach ( $custom_markers as $marker ) {
@@ -120,11 +275,13 @@ if ( $data_source === 'cpt' ) {
 			'lat'         => $lat,
 			'lng'         => $lng,
 			'title'       => esc_html( $marker['title'] ?? '' ),
+			'label'       => '',
 			'address'     => esc_html( $marker['address'] ?? '' ),
 			'phone'       => esc_html( $marker['phone'] ?? '' ),
 			'description' => wp_kses_post( $marker['description'] ?? '' ),
 			'link'        => esc_url( $marker['link'] ?? '' ),
 			'color'       => esc_attr( $marker['color'] ?? $marker_color ),
+			'staff'       => [],
 		];
 	}
 }
@@ -142,6 +299,7 @@ $settings = [
 	'drag'        => $drag,
 	'autoFit'     => $auto_fit,
 	'clustering'  => $clustering,
+	'markerType'  => $marker_type,
 	'popupFields' => $popup_fields,
 	'markers'     => $markers,
 ];

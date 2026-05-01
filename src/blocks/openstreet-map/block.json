@@ -65,6 +65,10 @@
 			"type": "string",
 			"default": "#0d6efd"
 		},
+		"markerType": {
+			"type": "string",
+			"default": "dot-label"
+		},
 		"customMarkers": {
 			"type": "array",
 			"default": []
@@ -90,7 +94,8 @@
 				"showAddress": true,
 				"showPhone": true,
 				"showDescription": false,
-				"showLink": true
+				"showLink": true,
+				"showStaff": false
 			}
 		},
 		"animationType": {

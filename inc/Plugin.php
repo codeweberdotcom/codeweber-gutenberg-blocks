@@ -294,6 +294,7 @@ class Plugin {
 		'divider',
 		'spacer',
 		'yandex-map',
+		'openstreet-map',
 		'html-blocks',
 		'swiper',
 		'group-button',

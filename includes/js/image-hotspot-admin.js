@@ -83,6 +83,36 @@
 				self.saveSettings();
 			});
 
+			// Image size change → update admin preview
+			$('#hotspot-image-size').on('change', function () {
+				const imageId = $('#cw-hotspot-image-id').val();
+				const size = $(this).val();
+				if (!imageId || !size) return;
+
+				const restUrl = (window.wpApiSettings && window.wpApiSettings.root)
+					? window.wpApiSettings.root + 'wp/v2/media/' + imageId + '?_fields=media_details,source_url'
+					: '/wp-json/wp/v2/media/' + imageId + '?_fields=media_details,source_url';
+
+				fetch(restUrl, {
+					headers: { 'X-WP-Nonce': window.wpApiSettings ? window.wpApiSettings.nonce : '' },
+				})
+					.then(function (r) { return r.json(); })
+					.then(function (data) {
+						let url = '';
+						if (size === 'full') {
+							url = data.source_url || '';
+						} else if (data.media_details && data.media_details.sizes && data.media_details.sizes[size]) {
+							url = data.media_details.sizes[size].source_url;
+						} else {
+							url = data.source_url || '';
+						}
+						if (url && self.mainImage.length) {
+							self.mainImage.attr('src', url);
+						}
+					})
+					.catch(function (e) { console.error('Failed to load image size:', e); });
+			});
+
 			// Save form (update hidden fields before submit)
 			$('#post').on('submit', function () {
 				self.saveSettings();

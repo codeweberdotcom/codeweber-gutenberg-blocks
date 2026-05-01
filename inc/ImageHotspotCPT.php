@@ -565,17 +565,7 @@ class ImageHotspotCPT {
 			return '';
 		}
 
-		// Получаем URL изображения
-		$image_size = $settings_data['hotspotImageSize'] ?? 'cw_landscape_hd';
-		$image_url = wp_get_attachment_image_url($image_id, $image_size);
-		if (!$image_url) {
-			$image_url = wp_get_attachment_image_url($image_id, 'full');
-		}
-		if (!$image_url) {
-			return '';
-		}
-
-		// Парсим данные точек
+		// Парсим данные точек и настройки
 		$hotspots = !empty($hotspot_data) ? json_decode($hotspot_data, true) : [];
 		$settings_data = !empty($settings) ? json_decode($settings, true) : [];
 
@@ -589,6 +579,16 @@ class ImageHotspotCPT {
 			'hotspotImageSize' => 'cw_landscape_hd',
 		];
 		$settings_data = wp_parse_args($settings_data, $default_settings);
+
+		// Получаем URL изображения (после парсинга настроек)
+		$image_size = $settings_data['hotspotImageSize'];
+		$image_url = wp_get_attachment_image_url($image_id, $image_size);
+		if (!$image_url) {
+			$image_url = wp_get_attachment_image_url($image_id, 'full');
+		}
+		if (!$image_url) {
+			return '';
+		}
 
 		// Подключаем скрипт фронтенда
 		wp_enqueue_script(

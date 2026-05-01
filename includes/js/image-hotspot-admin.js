@@ -83,8 +83,9 @@
 				self.saveSettings();
 			});
 
-			// Save form (update hidden field before submit)
+			// Save form (update hidden fields before submit)
 			$('#post').on('submit', function () {
+				self.saveSettings();
 				self.saveHotspots();
 			});
 		},

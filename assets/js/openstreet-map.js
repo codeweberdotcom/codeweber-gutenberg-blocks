@@ -175,4 +175,12 @@
 	} else {
 		initAll();
 	}
+
+	const observer = new MutationObserver( () => {
+		document.querySelectorAll( '.cwgb-osm-map:not([data-osm-init])' ).forEach( ( el ) => {
+			el.dataset.osmInit = '1';
+			initMap( el );
+		} );
+	} );
+	observer.observe( document.body, { childList: true, subtree: true } );
 } )();

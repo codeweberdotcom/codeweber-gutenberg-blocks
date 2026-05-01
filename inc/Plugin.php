@@ -207,10 +207,21 @@ class Plugin {
 			'before'
 		);
 
-		// Leaflet for the openstreet-map block's marker picker in the editor
+		// Leaflet for the openstreet-map block (editor preview + marker picker)
 		$lv = '1.9.4';
-		wp_enqueue_style('leaflet', "https://unpkg.com/leaflet@{$lv}/dist/leaflet.css", [], $lv);
-		wp_enqueue_script('leaflet', "https://unpkg.com/leaflet@{$lv}/dist/leaflet.js", [], $lv, true);
+		$cv = '1.5.3';
+		wp_enqueue_style( 'leaflet', "https://unpkg.com/leaflet@{$lv}/dist/leaflet.css", [], $lv );
+		wp_enqueue_style( 'leaflet-markercluster', "https://unpkg.com/leaflet.markercluster@{$cv}/dist/MarkerCluster.css", [ 'leaflet' ], $cv );
+		wp_enqueue_style( 'leaflet-markercluster-default', "https://unpkg.com/leaflet.markercluster@{$cv}/dist/MarkerCluster.Default.css", [ 'leaflet-markercluster' ], $cv );
+		wp_enqueue_script( 'leaflet', "https://unpkg.com/leaflet@{$lv}/dist/leaflet.js", [], $lv, true );
+		wp_enqueue_script( 'leaflet-markercluster', "https://unpkg.com/leaflet.markercluster@{$cv}/dist/leaflet.markercluster.js", [ 'leaflet' ], $cv, true );
+		wp_enqueue_script(
+			'codeweber-osm-init',
+			GUTENBERG_BLOCKS_URL . 'assets/js/openstreet-map.js',
+			[ 'leaflet', 'leaflet-markercluster' ],
+			GUTENBERG_BLOCKS_VERSION,
+			true
+		);
 	}
 
 	/**

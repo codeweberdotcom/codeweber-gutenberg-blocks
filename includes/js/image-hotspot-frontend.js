@@ -302,156 +302,27 @@
 				);
 			}
 
-			// Для статического контента принудительно устанавливаем контент через setContent
-			if (!useAjax && staticContent) {
-				const contentUpdate = {
-					'.popover-body': staticContent,
-				};
-				// Если есть заголовок, устанавливаем его тоже, иначе скрываем header
-				if (title) {
-					contentUpdate['.popover-header'] = title;
-				} else {
-					// Если title пустой, скрываем header
-					contentUpdate['.popover-header'] = '';
-				}
-				popover.setContent(contentUpdate);
-			}
+			// Static content: re-inject on every shown event via aria-describedby
+			if (!useAjax) {
+				pointElement.addEventListener('shown.bs.popover', () => {
+					const popoverId = pointElement.getAttribute('aria-describedby');
+					const popoverEl = popoverId ? document.getElementById(popoverId) : null;
+					if (!popoverEl) return;
 
-			// Если title пустой, скрываем header после показа popover
-			if (!title) {
-				pointElement.addEventListener(
-					'shown.bs.popover',
-					() => {
-						const popoverElement = document.querySelector(
-							'.popover.cw-hotspot-popover'
-						);
-						if (popoverElement) {
-							const header =
-								popoverElement.querySelector('.popover-header');
-							if (header) {
-								header.style.display = 'none';
-							}
+					const body = popoverEl.querySelector('.popover-body');
+					const header = popoverEl.querySelector('.popover-header');
+
+					if (body) body.innerHTML = staticContent || '';
+					if (header) {
+						if (title) {
+							header.textContent = title;
+							header.style.display = '';
+						} else {
+							header.style.display = 'none';
 						}
-					},
-					{ once: true }
-				);
+					}
+				});
 			}
-
-			// Добавляем обработчик для однократного обновления контента при первом показе
-			if (!useAjax && staticContent) {
-				let contentUpdated = false; // Флаг для предотвращения повторных обновлений
-
-				// Используем shown.bs.popover для однократного обновления контента
-				pointElement.addEventListener(
-					'shown.bs.popover',
-					() => {
-						// Обновляем контент только один раз
-						if (!contentUpdated) {
-							contentUpdated = true;
-
-							// Используем setTimeout для небольшой задержки, чтобы DOM был готов
-							setTimeout(() => {
-								// Ищем popover элемент
-								const allPopovers =
-									document.querySelectorAll('.popover');
-								const popoverElement =
-									Array.from(allPopovers).find((pop) => {
-										return (
-											pop.classList.contains(
-												'cw-hotspot-popover'
-											) ||
-											pop.getAttribute(
-												'data-bs-popper'
-											) !== null
-										);
-									}) || allPopovers[allPopovers.length - 1];
-
-								if (popoverElement) {
-									// Проверяем наличие заголовка перед обновлением контента
-									const popoverHeader =
-										popoverElement.querySelector(
-											'.popover-header'
-										);
-									const hasHeader = !!popoverHeader;
-									const headerContent = popoverHeader
-										? popoverHeader.innerHTML
-										: '';
-
-									let popoverBody =
-										popoverElement.querySelector(
-											'.popover-body'
-										);
-
-									// Если .popover-body не существует, создаем его
-									if (!popoverBody) {
-										popoverBody =
-											document.createElement('div');
-										popoverBody.className = 'popover-body';
-										popoverElement.appendChild(popoverBody);
-									}
-
-									if (popoverBody) {
-										const currentContent =
-											popoverBody.innerHTML.trim();
-
-										// Обновляем только если контент пустой или значительно меньше ожидаемого
-										if (
-											!currentContent ||
-											currentContent.length <
-												staticContent.trim().length / 2
-										) {
-											popoverBody.innerHTML =
-												staticContent;
-										}
-
-										// Проверяем и обновляем заголовок
-										let headerAfter =
-											popoverElement.querySelector(
-												'.popover-header'
-											);
-
-										// Если заголовок должен быть, но его нет или он пустой
-										if (title) {
-											if (!headerAfter) {
-												// Создаем заголовок
-												headerAfter =
-													document.createElement(
-														'div'
-													);
-												headerAfter.className =
-													'popover-header';
-												// Вставляем перед body
-												popoverElement.insertBefore(
-													headerAfter,
-													popoverBody
-												);
-											}
-
-											// Устанавливаем содержимое заголовка, если оно пустое или не совпадает
-											if (
-												!headerAfter.innerHTML.trim() ||
-												headerAfter.innerHTML.trim() !==
-													title
-											) {
-												headerAfter.innerHTML = title;
-											}
-										}
-
-										// Финальная проверка структуры
-									}
-								}
-							}, 50); // Небольшая задержка для готовности DOM
-						}
-					},
-					{ once: true }
-				); // Используем { once: true } для однократного выполнения
-			}
-
-			// Добавляем обработчик клика для диагностики
-			pointElement.addEventListener('click', (e) => {});
-
-			// Добавляем обработчик для события show.bs.popover (до показа)
-			pointElement.addEventListener('show.bs.popover', (e) => {});
 
 			// Если используется AJAX, загружаем контент при показе
 			if (useAjax && hotspotId && pointId) {

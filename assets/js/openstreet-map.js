@@ -125,6 +125,13 @@
 			dragging: s.drag !== false,
 			zoomControl: true,
 		} );
+		map.attributionControl.setPrefix(
+			'<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8">' +
+			'<path fill="#fff" d="M0 0h12v3H0z"/>' +
+			'<path fill="#0039A6" d="M0 3h12v2H0z"/>' +
+			'<path fill="#D52B1E" d="M0 5h12v3H0z"/>' +
+			'</svg>'
+		);
 
 		L.tileLayer( tileConfig.url, {
 			attribution: tileConfig.attribution,

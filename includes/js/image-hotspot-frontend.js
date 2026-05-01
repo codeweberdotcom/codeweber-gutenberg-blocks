@@ -457,6 +457,8 @@
 			if (useAjax && hotspotId && pointId) {
 				let contentLoaded = false;
 				let isLoading = false;
+				let cachedContent = '';
+				let cachedTitle = '';
 
 				// Bootstrap 5.3 nullifies _tip after hide, so popover.setContent() is unreliable.
 				// We use aria-describedby to find the live popover element in the DOM directly.
@@ -469,68 +471,76 @@
 					};
 				};
 
-				pointElement.addEventListener(
-					'shown.bs.popover',
-					() => {
-						if (!contentLoaded && !isLoading) {
-							isLoading = true;
+				// Bootstrap removes popover DOM on hide and recreates on show —
+				// re-inject cached content on every shown event (no { once: true }).
+				pointElement.addEventListener('shown.bs.popover', () => {
+					if (contentLoaded) {
+						const { body, header } = getPopoverParts();
+						if (body) {
+							body.innerHTML = cachedContent;
+							if (popover._popper) popover._popper.update();
+						}
+						if (cachedTitle && header) header.textContent = cachedTitle;
+						return;
+					}
 
-							const { body } = getPopoverParts();
-							if (!body) {
+					if (isLoading) return;
+					isLoading = true;
+
+					const { body } = getPopoverParts();
+					if (!body) {
+						isLoading = false;
+						return;
+					}
+
+					// Показываем спиннер
+					body.innerHTML = '<div class="cw-hotspot-loading text-center p-3"><div class="spinner spinner-sm"></div></div>';
+
+					// Загружаем контент
+					loadHotspotContent(hotspotId, pointId)
+						.then((data) => {
+							const { body: bodyEl, header: headerEl } = getPopoverParts();
+
+							if (!bodyEl) {
 								isLoading = false;
 								return;
 							}
 
-							// Показываем спиннер
-							body.innerHTML = '<div class="cw-hotspot-loading text-center p-3"><div class="spinner spinner-sm"></div></div>';
+							let finalContent = '';
+							if (staticContent) {
+								finalContent = `${staticContent}<div class="cw-hotspot-post-content mt-3">${data.content || ''}</div>`;
+							} else {
+								finalContent = data.content || '';
+							}
 
-							// Загружаем контент
-							loadHotspotContent(hotspotId, pointId)
-								.then((data) => {
-									const { body: bodyEl, header: headerEl } = getPopoverParts();
+							cachedContent = finalContent;
+							if (data.title && data.title !== title) cachedTitle = data.title;
 
-									if (!bodyEl) {
-										contentLoaded = false;
-										isLoading = false;
-										return;
-									}
+							bodyEl.innerHTML = finalContent;
+							if (cachedTitle && headerEl) headerEl.textContent = cachedTitle;
 
-									contentLoaded = true;
-									isLoading = false;
+							contentLoaded = true;
+							isLoading = false;
 
-									let finalContent = '';
-									if (staticContent) {
-										finalContent = `${staticContent}<div class="cw-hotspot-post-content mt-3">${data.content || ''}</div>`;
-									} else {
-										finalContent = data.content || '';
-									}
+							if (popover._popper) {
+								popover._popper.update();
+							}
+						})
+						.catch((error) => {
+							isLoading = false;
+							console.error('Error loading hotspot content:', error);
 
-									bodyEl.innerHTML = finalContent;
+							const { body: bodyEl } = getPopoverParts();
+							if (bodyEl) {
+								bodyEl.innerHTML = '<div class="alert alert-danger">Error loading content. Please try again.</div>';
+							}
+						});
+				});
 
-									if (data.title && data.title !== title && headerEl) {
-										headerEl.textContent = data.title;
-									}
-
-									if (popover._popper) {
-										popover._popper.update();
-									}
-								})
-								.catch((error) => {
-									isLoading = false;
-									console.error('Error loading hotspot content:', error);
-
-									const { body: bodyEl } = getPopoverParts();
-									if (bodyEl) {
-										bodyEl.innerHTML = '<div class="alert alert-danger">Error loading content. Please try again.</div>';
-									}
-								});
-						}
-					},
-					{ once: true }
-				);
-
-				// Отслеживаем закрытие popover во время загрузки
-				pointElement.addEventListener('hide.bs.popover', () => {});
+				// Сбрасываем isLoading если поповер закрыли во время загрузки
+				pointElement.addEventListener('hide.bs.popover', () => {
+					if (isLoading) isLoading = false;
+				});
 			}
 
 			// Для hover триггера: закрываем при уходе мыши с popover

@@ -194,6 +194,7 @@ class ImageHotspotCPT {
 			'hotspotButtonShape' => 'btn-circle',
 			'popoverTrigger' => 'click',
 			'popoverPlacement' => 'auto',
+			'hotspotImageSize' => 'cw_landscape_hd',
 		];
 		$settings_data = wp_parse_args($settings_data, $default_settings);
 
@@ -235,6 +236,30 @@ class ImageHotspotCPT {
 			<div class="cw-hotspot-settings-panel" style="margin-top: 20px; padding: 15px; background: #fff; border: 1px solid #ddd;">
 				<h3><?php _e('Hotspot Settings', 'codeweber-gutenberg-blocks'); ?></h3>
 				<table class="form-table">
+					<tr>
+						<th><label for="hotspot-image-size"><?php _e('Image Size', 'codeweber-gutenberg-blocks'); ?></label></th>
+						<td>
+							<select id="hotspot-image-size" name="hotspot_image_size" class="cw-hotspot-setting">
+								<?php
+								$current_img_size = $settings_data['hotspotImageSize'] ?? 'cw_landscape_hd';
+								$img_sizes = [
+									'full'             => __('Original (full)', 'codeweber-gutenberg-blocks'),
+									'cw_wide_2k'       => '2560×1440 (2K)',
+									'cw_wide_4x3_xl'   => '1600×1200 (4:3 XL)',
+									'cw_landscape_hd'  => '1600×900 (HD 16:9)',
+									'cw_landscape_xl'  => '1070×668',
+									'cw_landscape_lg'  => '960×600',
+									'cw_landscape_md'  => '560×350',
+									'large'            => __('WP Large (1024px)', 'codeweber-gutenberg-blocks'),
+								];
+								foreach ( $img_sizes as $value => $label ) :
+								?>
+									<option value="<?php echo esc_attr( $value ); ?>" <?php selected( $current_img_size, $value ); ?>><?php echo esc_html( $label ); ?></option>
+								<?php endforeach; ?>
+							</select>
+							<p class="description"><?php _e('Image size used on the frontend', 'codeweber-gutenberg-blocks'); ?></p>
+						</td>
+					</tr>
 					<tr>
 						<th><label for="hotspot-button-style"><?php _e('Button Style', 'codeweber-gutenberg-blocks'); ?></label></th>
 						<td>
@@ -547,7 +572,11 @@ class ImageHotspotCPT {
 		}
 
 		// Получаем URL изображения
-		$image_url = wp_get_attachment_image_url($image_id, 'full');
+		$image_size = $settings_data['hotspotImageSize'] ?? 'cw_landscape_hd';
+		$image_url = wp_get_attachment_image_url($image_id, $image_size);
+		if (!$image_url) {
+			$image_url = wp_get_attachment_image_url($image_id, 'full');
+		}
 		if (!$image_url) {
 			return '';
 		}
@@ -563,6 +592,7 @@ class ImageHotspotCPT {
 			'hotspotButtonShape' => 'btn-circle',
 			'popoverTrigger' => 'click',
 			'popoverPlacement' => 'auto',
+			'hotspotImageSize' => 'cw_landscape_hd',
 		];
 		$settings_data = wp_parse_args($settings_data, $default_settings);
 

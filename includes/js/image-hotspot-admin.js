@@ -1101,6 +1101,7 @@
 				hotspotButtonShape: 'btn-circle',
 				popoverTrigger: 'click',
 				popoverPlacement: 'auto',
+				hotspotImageSize: 'cw_landscape_hd',
 			};
 		},
 
@@ -1113,6 +1114,8 @@
 					$('#hotspot-button-shape').val() || 'btn-circle',
 				popoverTrigger: $('#popover-trigger').val() || 'click',
 				popoverPlacement: $('#popover-placement').val() || 'auto',
+				hotspotImageSize:
+					$('#hotspot-image-size').val() || 'cw_landscape_hd',
 			};
 
 			$('#cw-hotspot-settings').val(JSON.stringify(settings));

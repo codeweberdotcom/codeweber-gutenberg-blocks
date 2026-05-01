@@ -4,7 +4,6 @@
 		position: relative;
 		z-index: 0;
 
-		// Leaflet popup overrides to match theme styles
 		.leaflet-popup-content-wrapper {
 			border-radius: 8px;
 			box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
@@ -15,10 +14,6 @@
 			margin: 0;
 			min-width: 200px;
 			max-width: 280px;
-		}
-
-		.leaflet-popup-tip-container {
-			margin-top: -1px;
 		}
 	}
 }
@@ -41,9 +36,8 @@
 		color: #555;
 		margin-bottom: 4px;
 
-		svg {
-			flex-shrink: 0;
-			margin-top: 2px;
+		a {
+			color: inherit;
 		}
 	}
 
@@ -53,7 +47,6 @@
 	}
 }
 
-// Custom SVG marker — no extra styles needed, all inline
 .cwgb-osm-marker {
 	background: transparent;
 	border: none;

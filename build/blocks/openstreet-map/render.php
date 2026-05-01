@@ -13,18 +13,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$data_source   = $attributes['dataSource'] ?? 'custom';
-$center        = $attributes['center'] ?? [ 'lat' => 55.76, 'lng' => 37.64 ];
-$zoom          = (int) ( $attributes['zoom'] ?? 12 );
-$height        = (int) ( $attributes['height'] ?? 450 );
-$tile_layer    = $attributes['tileLayer'] ?? 'osm';
-$border_radius = (int) ( $attributes['borderRadius'] ?? 8 );
-$scroll_zoom   = (bool) ( $attributes['enableScrollZoom'] ?? false );
-$drag          = (bool) ( $attributes['enableDrag'] ?? true );
-$auto_fit      = (bool) ( $attributes['autoFitBounds'] ?? true );
-$clustering    = (bool) ( $attributes['clustering'] ?? false );
-$marker_color  = $attributes['markerColor'] ?? '#0d6efd';
-$popup_fields  = $attributes['popupFields'] ?? [
+$data_source    = $attributes['dataSource'] ?? 'custom';
+$center         = $attributes['center'] ?? [ 'lat' => 55.76, 'lng' => 37.64 ];
+$zoom           = (int) ( $attributes['zoom'] ?? 12 );
+$height         = (int) ( $attributes['height'] ?? 450 );
+$tile_layer     = $attributes['tileLayer'] ?? 'osm';
+$border_radius  = sanitize_html_class( $attributes['borderRadius'] ?? '' );
+$scroll_zoom    = (bool) ( $attributes['enableScrollZoom'] ?? false );
+$drag           = (bool) ( $attributes['enableDrag'] ?? true );
+$auto_fit       = (bool) ( $attributes['autoFitBounds'] ?? true );
+$clustering     = (bool) ( $attributes['clustering'] ?? false );
+$marker_color   = $attributes['markerColor'] ?? '#0d6efd';
+$popup_fields   = $attributes['popupFields'] ?? [
 	'showTitle'       => true,
 	'showAddress'     => true,
 	'showPhone'       => true,
@@ -32,24 +32,45 @@ $popup_fields  = $attributes['popupFields'] ?? [
 	'showLink'        => true,
 ];
 
-$block_id  = ! empty( $attributes['blockId'] ) ? $attributes['blockId'] : 'osm-' . substr( md5( uniqid( '', true ) ), 0, 8 );
-$map_id    = 'osm-map-' . $block_id;
+// Animation attributes.
+$animation_type     = sanitize_html_class( $attributes['animationType'] ?? '' );
+$animation_duration = (int) ( $attributes['animationDuration'] ?? 700 );
+$animation_delay    = (int) ( $attributes['animationDelay'] ?? 0 );
+
+$block_id    = ! empty( $attributes['blockId'] ) ? $attributes['blockId'] : 'osm-' . substr( md5( uniqid( '', true ) ), 0, 8 );
+$map_id      = 'osm-map-' . $block_id;
 $block_class = ! empty( $attributes['blockClass'] ) ? ' ' . esc_attr( $attributes['blockClass'] ) : '';
+
+// Build wrapper class with Bootstrap border-radius.
+$wrapper_class = 'cwgb-osm-block' . $block_class;
+if ( $border_radius ) {
+	$wrapper_class .= ' overflow-hidden ' . $border_radius;
+}
+
+// Animation data attributes.
+$animation_attrs = '';
+if ( $animation_type ) {
+	$animation_attrs  = ' data-cue="' . esc_attr( $animation_type ) . '"';
+	$animation_attrs .= ' data-duration="' . esc_attr( $animation_duration ) . '"';
+	if ( $animation_delay > 0 ) {
+		$animation_attrs .= ' data-delay="' . esc_attr( $animation_delay ) . '"';
+	}
+}
 
 // Build markers array.
 $markers = [];
 
 if ( $data_source === 'cpt' ) {
-	$cpt_query       = $attributes['cptQuery'] ?? [];
-	$post_type       = sanitize_key( $cpt_query['postType'] ?? 'offices' );
-	$posts_per_page  = isset( $cpt_query['postsPerPage'] ) ? (int) $cpt_query['postsPerPage'] : -1;
-	$order_by        = sanitize_text_field( $cpt_query['orderBy'] ?? 'title' );
-	$order           = sanitize_text_field( $cpt_query['order'] ?? 'asc' );
-	$lat_field       = sanitize_text_field( $cpt_query['latField'] ?? '_office_latitude' );
-	$lng_field       = sanitize_text_field( $cpt_query['lngField'] ?? '_office_longitude' );
-	$address_field   = sanitize_text_field( $cpt_query['addressField'] ?? '' );
-	$phone_field     = sanitize_text_field( $cpt_query['phoneField'] ?? '' );
-	$desc_field      = sanitize_text_field( $cpt_query['descriptionField'] ?? '' );
+	$cpt_query      = $attributes['cptQuery'] ?? [];
+	$post_type      = sanitize_key( $cpt_query['postType'] ?? 'offices' );
+	$posts_per_page = isset( $cpt_query['postsPerPage'] ) ? (int) $cpt_query['postsPerPage'] : -1;
+	$order_by       = sanitize_text_field( $cpt_query['orderBy'] ?? 'title' );
+	$order          = sanitize_text_field( $cpt_query['order'] ?? 'asc' );
+	$lat_field      = sanitize_text_field( $cpt_query['latField'] ?? '_office_latitude' );
+	$lng_field      = sanitize_text_field( $cpt_query['lngField'] ?? '_office_longitude' );
+	$address_field  = sanitize_text_field( $cpt_query['addressField'] ?? '' );
+	$phone_field    = sanitize_text_field( $cpt_query['phoneField'] ?? '' );
+	$desc_field     = sanitize_text_field( $cpt_query['descriptionField'] ?? '' );
 
 	if ( $post_type && post_type_exists( $post_type ) ) {
 		$query = new WP_Query( [
@@ -87,7 +108,6 @@ if ( $data_source === 'cpt' ) {
 		}
 	}
 } else {
-	// Custom markers.
 	$custom_markers = $attributes['customMarkers'] ?? [];
 	foreach ( $custom_markers as $marker ) {
 		$lat = floatval( $marker['coords']['lat'] ?? 0 );
@@ -126,16 +146,34 @@ $settings = [
 	'markers'     => $markers,
 ];
 
-$wrapper_attributes = get_block_wrapper_attributes( [
-	'class' => 'cwgb-osm-block' . $block_class,
-] );
+// Enqueue Leaflet scripts (go to footer — safe after wp_head).
+static $leaflet_enqueued = false;
+if ( ! $leaflet_enqueued ) {
+	$leaflet_enqueued = true;
+	$lv = '1.9.4';
+	$cv = '1.5.3';
+	wp_enqueue_style( 'leaflet', "https://unpkg.com/leaflet@{$lv}/dist/leaflet.css", [], $lv );
+	wp_enqueue_style( 'leaflet-markercluster', "https://unpkg.com/leaflet.markercluster@{$cv}/dist/MarkerCluster.css", [ 'leaflet' ], $cv );
+	wp_enqueue_style( 'leaflet-markercluster-default', "https://unpkg.com/leaflet.markercluster@{$cv}/dist/MarkerCluster.Default.css", [ 'leaflet-markercluster' ], $cv );
+	wp_enqueue_script( 'leaflet', "https://unpkg.com/leaflet@{$lv}/dist/leaflet.js", [], $lv, true );
+	wp_enqueue_script( 'leaflet-markercluster', "https://unpkg.com/leaflet.markercluster@{$cv}/dist/leaflet.markercluster.js", [ 'leaflet' ], $cv, true );
+	wp_enqueue_script(
+		'codeweber-osm-init',
+		GUTENBERG_BLOCKS_URL . 'assets/js/openstreet-map.js',
+		[ 'leaflet', 'leaflet-markercluster' ],
+		GUTENBERG_BLOCKS_VERSION,
+		true
+	);
+}
+
+$wrapper_attributes = get_block_wrapper_attributes( [ 'class' => $wrapper_class ] );
 
 ?>
-<div <?php echo $wrapper_attributes; ?> data-block-id="<?php echo esc_attr( $block_id ); ?>">
+<div <?php echo $wrapper_attributes; ?> data-block-id="<?php echo esc_attr( $block_id ); ?>"<?php echo $animation_attrs; ?>>
 	<div
 		id="<?php echo esc_attr( $map_id ); ?>"
 		class="cwgb-osm-map"
 		data-osm-settings="<?php echo esc_attr( wp_json_encode( $settings ) ); ?>"
-		style="height:<?php echo esc_attr( $height ); ?>px;border-radius:<?php echo esc_attr( $border_radius ); ?>px;overflow:hidden;"
+		style="height:<?php echo esc_attr( $height ); ?>px;"
 	></div>
 </div>

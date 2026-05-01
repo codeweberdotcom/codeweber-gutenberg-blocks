@@ -42,8 +42,8 @@
 			"default": "osm"
 		},
 		"borderRadius": {
-			"type": "number",
-			"default": 8
+			"type": "string",
+			"default": ""
 		},
 		"enableScrollZoom": {
 			"type": "boolean",
@@ -92,6 +92,18 @@
 				"showDescription": false,
 				"showLink": true
 			}
+		},
+		"animationType": {
+			"type": "string",
+			"default": ""
+		},
+		"animationDuration": {
+			"type": "number",
+			"default": 700
+		},
+		"animationDelay": {
+			"type": "number",
+			"default": 0
 		},
 		"blockClass": {
 			"type": "string",

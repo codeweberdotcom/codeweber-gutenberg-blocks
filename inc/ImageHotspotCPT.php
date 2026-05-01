@@ -732,8 +732,8 @@ class ImageHotspotCPT {
 							?>
 							<?php
 							if ( $marker_type === 'dot' ) {
-								// Dot: same btn structure, no icon, w-*/h-* size classes
-								$dot_classes = array_merge( $theme_classes, $shape_classes, [ $button_style ], explode( ' ', $dot_size ) );
+								// Dot: same btn structure, no icon, w-*/h-* size classes + pulse animation
+								$dot_classes = array_merge( $theme_classes, $shape_classes, [ $button_style, 'cw-hotspot-pulse' ], explode( ' ', $dot_size ) );
 							} else {
 								$dot_classes = array_merge( $theme_classes, $shape_classes, [ $button_style, $button_size ] );
 							}

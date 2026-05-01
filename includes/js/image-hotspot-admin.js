@@ -231,10 +231,11 @@
 			button.addClass(buttonStyle);
 
 			if (markerType === 'dot') {
-				// Dot: размер вместо btn-sm, без иконки
+				// Dot: размер вместо btn-sm, без иконки + pulse
 				dotSize.split(' ').forEach(function (cls) {
 					if (cls) button.addClass(cls);
 				});
+				button.addClass('cw-hotspot-pulse');
 			} else {
 				button.addClass(buttonSize);
 				button.html('<i class="uil uil-' + iconName + '"></i>');

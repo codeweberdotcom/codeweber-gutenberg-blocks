@@ -28,6 +28,9 @@ class ImageHotspotCPT {
 		// Добавляем метабокс для редактирования hotspots
 		add_action('add_meta_boxes', [$this, 'add_meta_boxes']);
 
+		// Метабоксы для сторонних CPT через фильтр cw_hotspot_extra_post_types
+		add_action('add_meta_boxes', [$this, 'add_extra_meta_boxes']);
+
 		// Подключаем скрипт для копирования шорткода
 		add_action('admin_footer', [$this, 'enqueue_copy_shortcode_script']);
 
@@ -166,16 +169,88 @@ class ImageHotspotCPT {
 	}
 
 	/**
-	 * Рендеринг редактора hotspots
+	 * Метабоксы хотспот-редактора для сторонних CPT (через фильтр cw_hotspot_extra_post_types)
 	 */
-	public function render_hotspot_editor($post) {
+	public function add_extra_meta_boxes() {
+		/**
+		 * Filter: cw_hotspot_extra_post_types
+		 *
+		 * Позволяет сторонним CPT подключить hotspot-редактор к своей записи.
+		 *
+		 * @param array $post_types Массив вида [ post_type => config_array ].
+		 *   config_array может содержать:
+		 *     image_meta_key    — мета-ключ с ID картинки (обязательно)
+		 *     data_meta_key     — мета-ключ для хранения JSON точек
+		 *     settings_meta_key — мета-ключ для хранения JSON настроек
+		 *     show_image_upload — bool: показывать кнопку загрузки картинки
+		 *     nonce_action      — строка для wp_nonce_field / wp_verify_nonce
+		 *     nonce_field       — имя скрытого поля nonce
+		 *     metabox_title     — заголовок метабокса
+		 */
+		$extra = apply_filters('cw_hotspot_extra_post_types', []);
+		if (empty($extra) || !is_array($extra)) {
+			return;
+		}
+
+		foreach ($extra as $post_type => $config) {
+			$args = wp_parse_args($config, [
+				'image_meta_key'    => '',
+				'data_meta_key'     => '_hotspot_data',
+				'settings_meta_key' => '_hotspot_settings',
+				'show_image_upload' => false,
+				'nonce_action'      => 'save_extra_hotspot_' . $post_type,
+				'nonce_field'       => 'cw_extra_hotspot_nonce_' . $post_type,
+				'metabox_title'     => __('Hotspot Annotation', 'codeweber-gutenberg-blocks'),
+			]);
+
+			// Закрываем $args в замыкание чтобы передать в callback
+			$callback = function( $post, $metabox ) {
+				$this->render_hotspot_editor( $post, $metabox['args'] );
+			};
+
+			add_meta_box(
+				'cw_hotspot_extra_' . $post_type,
+				$args['metabox_title'],
+				$callback,
+				$post_type,
+				'normal',
+				'high',
+				$args
+			);
+		}
+	}
+
+	/**
+	 * Рендеринг редактора hotspots
+	 *
+	 * @param WP_Post $post
+	 * @param array   $args Конфигурация. Ключи: image_meta_key, data_meta_key,
+	 *                      settings_meta_key, show_image_upload, nonce_action, nonce_field.
+	 *                      Если передан второй аргумент как массив метабокса (WP callback),
+	 *                      используется $args['args'].
+	 */
+	public function render_hotspot_editor($post, $args = []) {
+		// WP передаёт метабокс-массив как второй аргумент — извлекаем наши args
+		if (isset($args['args']) && is_array($args['args'])) {
+			$args = $args['args'];
+		}
+
+		$args = wp_parse_args($args, [
+			'image_meta_key'    => '_hotspot_image',
+			'data_meta_key'     => '_hotspot_data',
+			'settings_meta_key' => '_hotspot_settings',
+			'show_image_upload' => true,
+			'nonce_action'      => 'save_hotspot_meta',
+			'nonce_field'       => 'cw_hotspot_meta_nonce',
+		]);
+
 		// Nonce для безопасности
-		wp_nonce_field('save_hotspot_meta', 'cw_hotspot_meta_nonce');
+		wp_nonce_field($args['nonce_action'], $args['nonce_field']);
 
 		// Получаем сохраненные данные
-		$image_id = get_post_meta($post->ID, '_hotspot_image', true);
-		$hotspot_data = get_post_meta($post->ID, '_hotspot_data', true);
-		$settings = get_post_meta($post->ID, '_hotspot_settings', true);
+		$image_id = get_post_meta($post->ID, $args['image_meta_key'], true);
+		$hotspot_data = get_post_meta($post->ID, $args['data_meta_key'], true);
+		$settings = get_post_meta($post->ID, $args['settings_meta_key'], true);
 
 		// Парсим JSON или используем пустой массив
 		$hotspots = !empty($hotspot_data) ? json_decode($hotspot_data, true) : [];
@@ -203,15 +278,21 @@ class ImageHotspotCPT {
 		?>
 		<div class="cw-hotspot-admin-container">
 			<!-- Скрытые поля для сохранения -->
-			<input type="hidden" name="_hotspot_image" id="cw-hotspot-image-id" value="<?php echo esc_attr($image_id); ?>" />
-			<input type="hidden" name="_hotspot_data" id="cw-hotspot-data" value="<?php echo esc_attr($hotspot_data ?: '[]'); ?>" />
-			<input type="hidden" name="_hotspot_settings" id="cw-hotspot-settings" value="<?php echo esc_attr(json_encode($settings_data)); ?>" />
+			<?php if ($args['show_image_upload']): ?>
+			<input type="hidden" name="<?php echo esc_attr($args['image_meta_key']); ?>" id="cw-hotspot-image-id" value="<?php echo esc_attr($image_id); ?>" />
+			<?php else: ?>
+			<input type="hidden" id="cw-hotspot-image-id" value="<?php echo esc_attr($image_id); ?>" />
+			<?php endif; ?>
+			<input type="hidden" name="<?php echo esc_attr($args['data_meta_key']); ?>" id="cw-hotspot-data" value="<?php echo esc_attr($hotspot_data ?: '[]'); ?>" />
+			<input type="hidden" name="<?php echo esc_attr($args['settings_meta_key']); ?>" id="cw-hotspot-settings" value="<?php echo esc_attr(json_encode($settings_data)); ?>" />
 
 			<!-- Кнопки управления -->
 			<div class="cw-hotspot-toolbar" style="margin-bottom: 20px;">
+				<?php if ($args['show_image_upload']): ?>
 				<button type="button" class="button button-primary" id="cw-hotspot-upload-image">
 					<?php _e('Upload Image', 'codeweber-gutenberg-blocks'); ?>
 				</button>
+				<?php endif; ?>
 				<button type="button" class="button" id="cw-hotspot-add-point" style="margin-left: 10px;">
 					<?php _e('Add Point', 'codeweber-gutenberg-blocks'); ?>
 				</button>
@@ -440,7 +521,14 @@ class ImageHotspotCPT {
 	 */
 	public function enqueue_admin_assets($hook) {
 		$screen = get_current_screen();
-		if (!$screen || $screen->post_type !== 'cw_image_hotspot') {
+		if (!$screen) {
+			return;
+		}
+
+		$extra_post_types = array_keys( (array) apply_filters('cw_hotspot_extra_post_types', []) );
+		$allowed_post_types = array_merge(['cw_image_hotspot'], $extra_post_types);
+
+		if (!in_array($screen->post_type, $allowed_post_types, true)) {
 			return;
 		}
 
@@ -815,7 +903,14 @@ class ImageHotspotCPT {
 	 */
 	public function enqueue_unicons_icons_css() {
 		$screen = get_current_screen();
-		if (!$screen || $screen->post_type !== 'cw_image_hotspot') {
+		if (!$screen) {
+			return;
+		}
+
+		$extra_post_types = array_keys( (array) apply_filters('cw_hotspot_extra_post_types', []) );
+		$allowed_post_types = array_merge(['cw_image_hotspot'], $extra_post_types);
+
+		if (!in_array($screen->post_type, $allowed_post_types, true)) {
 			return;
 		}
 

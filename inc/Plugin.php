@@ -38,6 +38,10 @@ class Plugin {
 		// Enqueue frontend scripts
 		add_action('wp_enqueue_scripts', __CLASS__ . '::gutenbergBlocksExternalLibraries');
 
+		// OpenStreetMap (Leaflet) — only on pages that use the block
+		add_action('wp_enqueue_scripts', __CLASS__ . '::enqueue_osm_assets', 20);
+		add_action('admin_enqueue_scripts', __CLASS__ . '::enqueue_osm_admin_assets');
+
 		// Фильтр для условного рендеринга аккордеона (перехватываем до рендеринга)
 		add_filter('pre_render_block', __CLASS__ . '::pre_render_accordion_block', 10, 2);
 
@@ -734,6 +738,66 @@ class Plugin {
 			'nonce' => wp_create_nonce('wp_rest'),
 			'loadingText' => esc_html__('Loading...', 'codeweber-gutenberg-blocks'),
 		]);
+	}
+
+	/**
+	 * Register and conditionally enqueue Leaflet + OSM init script on the frontend.
+	 * Only loads on pages that contain the openstreet-map block.
+	 */
+	public static function enqueue_osm_assets(): void {
+		global $post;
+		$has_block = (is_a($post, 'WP_Post') && has_block('codeweber-blocks/openstreet-map', $post))
+			|| has_block('codeweber-blocks/openstreet-map');
+
+		if (!$has_block) {
+			return;
+		}
+
+		self::register_leaflet_handles();
+
+		wp_enqueue_style('leaflet');
+		wp_enqueue_style('leaflet-markercluster');
+		wp_enqueue_style('leaflet-markercluster-default');
+		wp_enqueue_script('leaflet-markercluster');
+
+		wp_enqueue_script(
+			'codeweber-osm-init',
+			GUTENBERG_BLOCKS_URL . 'assets/js/openstreet-map.js',
+			['leaflet', 'leaflet-markercluster'],
+			GUTENBERG_BLOCKS_VERSION,
+			true
+		);
+	}
+
+	/**
+	 * Load Leaflet in the block editor so the marker picker mini-map works.
+	 */
+	public static function enqueue_osm_admin_assets(): void {
+		$screen = function_exists('get_current_screen') ? get_current_screen() : null;
+		if (!$screen || !method_exists($screen, 'is_block_editor') || !$screen->is_block_editor()) {
+			return;
+		}
+
+		self::register_leaflet_handles();
+		wp_enqueue_style('leaflet');
+		wp_enqueue_script('leaflet');
+	}
+
+	private static function register_leaflet_handles(): void {
+		$leaflet_ver = '1.9.4';
+		$cluster_ver = '1.5.3';
+		$leaflet     = "https://unpkg.com/leaflet@{$leaflet_ver}/dist";
+		$cluster     = "https://unpkg.com/leaflet.markercluster@{$cluster_ver}/dist";
+
+		if (wp_script_is('leaflet', 'registered')) {
+			return;
+		}
+
+		wp_register_style('leaflet', "{$leaflet}/leaflet.css", [], $leaflet_ver);
+		wp_register_script('leaflet', "{$leaflet}/leaflet.js", [], $leaflet_ver, true);
+		wp_register_style('leaflet-markercluster', "{$cluster}/MarkerCluster.css", ['leaflet'], $cluster_ver);
+		wp_register_style('leaflet-markercluster-default', "{$cluster}/MarkerCluster.Default.css", ['leaflet-markercluster'], $cluster_ver);
+		wp_register_script('leaflet-markercluster', "{$cluster}/leaflet.markercluster.js", ['leaflet'], $cluster_ver, true);
 	}
 
 	/**

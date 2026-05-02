@@ -1176,6 +1176,10 @@
 					$('#hotspot-image-size').val() || 'cw_landscape_hd',
 			};
 
+			// DEBUG — временно, удалить после диагностики
+			console.log('[HOTSPOT DEBUG] saveSettings called:', settings);
+			console.log('[HOTSPOT DEBUG] #hotspot-marker-type raw val:', $('#hotspot-marker-type').val());
+
 			$('#cw-hotspot-settings').val(JSON.stringify(settings));
 
 			// Re-render points with new settings

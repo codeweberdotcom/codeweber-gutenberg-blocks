@@ -727,7 +727,7 @@ class ImageHotspotCPT {
 			'cw-hotspot-admin',
 			GUTENBERG_BLOCKS_URL . 'includes/js/image-hotspot-admin.js',
 			['jquery', 'jquery-ui-draggable', 'jquery-ui-droppable'],
-			GUTENBERG_BLOCKS_VERSION,
+			filemtime( dirname( __DIR__ ) . '/includes/js/image-hotspot-admin.js' ),
 			true
 		);
 

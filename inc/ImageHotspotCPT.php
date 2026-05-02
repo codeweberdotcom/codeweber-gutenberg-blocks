@@ -557,7 +557,7 @@ class ImageHotspotCPT {
 	 * @param string $settings_json  JSON string of hotspot settings.
 	 * @return string  HTML output.
 	 */
-	public static function render_hotspot_html($image_id, $hotspot_data, $settings_json) {
+	public static function render_hotspot_html($image_id, $hotspot_data, $settings_json, $extra_class = '') {
 		if (!$image_id) {
 			return '';
 		}
@@ -605,7 +605,7 @@ class ImageHotspotCPT {
 
 		ob_start();
 		?>
-		<div class="cw-image-hotspot-container w-100" data-hotspot-id="<?php echo esc_attr($hotspot_id); ?>">
+		<div class="cw-image-hotspot-container w-100<?php echo $extra_class ? ' ' . esc_attr($extra_class) : ''; ?>" data-hotspot-id="<?php echo esc_attr($hotspot_id); ?>">
 			<div class="cw-hotspot-annotation-box w-100">
 				<img src="<?php echo esc_url($image_url); ?>" class="cw-hotspot-main-image w-100" alt="" />
 				<?php if (!empty($hotspots)): ?>

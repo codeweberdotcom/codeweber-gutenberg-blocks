@@ -557,7 +557,7 @@ class ImageHotspotCPT {
 	 * @param string $settings_json  JSON string of hotspot settings.
 	 * @return string  HTML output.
 	 */
-	public static function render_hotspot_html($image_id, $hotspot_data, $settings_json, $extra_class = '') {
+	public static function render_hotspot_html($image_id, $hotspot_data, $settings_json, $extra_class = '', $lightbox = []) {
 		if (!$image_id) {
 			return '';
 		}
@@ -681,6 +681,15 @@ class ImageHotspotCPT {
 					<?php endforeach; ?>
 				<?php endif; ?>
 			</div>
+			<?php if (!empty($lightbox['url'])): ?>
+			<a href="<?php echo esc_url($lightbox['url']); ?>"
+			   class="cw-hotspot-gallery-link"
+			   data-glightbox
+			   <?php if (!empty($lightbox['gallery'])): ?>data-gallery="<?php echo esc_attr($lightbox['gallery']); ?>"<?php endif; ?>
+			   aria-label="<?php esc_attr_e('View full image', 'codeweber-gutenberg-blocks'); ?>">
+				<svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg"><path d="M220,128a4.0002,4.0002,0,0,1-4,4H132v84a4,4,0,0,1-8,0V132H40a4,4,0,0,1,0-8h84V40a4,4,0,0,1,8,0v84h84A4.0002,4.0002,0,0,1,220,128Z"/></svg>
+			</a>
+			<?php endif; ?>
 		</div>
 		<?php
 		return ob_get_clean();

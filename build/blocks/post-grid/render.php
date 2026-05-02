@@ -880,11 +880,10 @@ if (!function_exists('render_post_grid_item')) {
 
 				// Hover-классы для фигуры (зависят только от шаблона)
 				$hover_classes = 'overlay overlay-1';
-				if ($template === 'overlay-5') {
-					$hover_classes = 'overlay overlay-5';
-				}
-				if ($template === 'overlay-5-primary') {
+				if ( strpos( $template, 'overlay-5-primary' ) !== false ) {
 					$hover_classes = 'overlay overlay-5 color';
+				} elseif ( strpos( $template, 'overlay-5' ) !== false ) {
+					$hover_classes = 'overlay overlay-5';
 				}
 				if ($template === 'slider' || $template === 'card-content') {
 					$hover_classes .= ' hover-scale';

@@ -31,7 +31,22 @@
 				}
 			}
 
+			// Populate settings form fields from saved JSON so saveSettings()
+			// doesn't overwrite with stale HTML defaults on next change.
+			this.applySettings(this.getSettings());
+
 			this.bindEvents();
+		},
+
+		applySettings: function (settings) {
+			$('#hotspot-button-style').val(settings.hotspotButtonStyle || 'btn-primary');
+			$('#hotspot-button-size').val(settings.hotspotButtonSize || 'btn-sm');
+			$('#hotspot-button-shape').val(settings.hotspotButtonShape || 'btn-circle');
+			$('#popover-trigger').val(settings.popoverTrigger || 'click');
+			$('#popover-placement').val(settings.popoverPlacement || 'auto');
+			$('#hotspot-marker-type').val(settings.hotspotMarkerType || 'button');
+			$('#hotspot-dot-size').val(settings.hotspotDotSize || 'w-4 h-4');
+			$('#hotspot-image-size').val(settings.hotspotImageSize || 'cw_landscape_hd');
 		},
 
 		bindEvents: function () {

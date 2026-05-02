@@ -242,6 +242,8 @@ class ImageHotspotCPT {
 			'show_image_upload' => true,
 			'nonce_action'      => 'save_hotspot_meta',
 			'nonce_field'       => 'cw_hotspot_meta_nonce',
+			'enable_toggle'     => false,
+			'enable_meta_key'   => '',
 		]);
 
 		// Nonce для безопасности
@@ -285,6 +287,22 @@ class ImageHotspotCPT {
 			<?php endif; ?>
 			<input type="hidden" name="<?php echo esc_attr($args['data_meta_key']); ?>" id="cw-hotspot-data" value="<?php echo esc_attr($hotspot_data ?: '[]'); ?>" />
 			<input type="hidden" name="<?php echo esc_attr($args['settings_meta_key']); ?>" id="cw-hotspot-settings" value="<?php echo esc_attr(json_encode($settings_data)); ?>" />
+
+			<?php if ($args['enable_toggle'] && $args['enable_meta_key']): ?>
+			<?php $enabled = (bool) get_post_meta($post->ID, $args['enable_meta_key'], true); ?>
+			<div style="margin-bottom: 16px; padding: 10px 14px; background: #f6f7f7; border: 1px solid #ddd; border-radius: 3px;">
+				<label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 600;">
+					<input type="checkbox"
+					       name="<?php echo esc_attr($args['enable_meta_key']); ?>"
+					       id="cw-hotspot-enabled-toggle"
+					       value="1"
+					       <?php checked($enabled, true); ?>
+					       style="width: 16px; height: 16px;" />
+					<?php _e('Enable Hotspot Annotation', 'codeweber-gutenberg-blocks'); ?>
+				</label>
+			</div>
+			<div id="cw-hotspot-editor-body" style="<?php echo $enabled ? '' : 'display:none;'; ?>">
+			<?php endif; ?>
 
 			<!-- Кнопки управления -->
 			<div class="cw-hotspot-toolbar" style="margin-bottom: 20px;">
@@ -511,9 +529,161 @@ class ImageHotspotCPT {
 					</tr>
 				</table>
 			</div>
+
+			<?php if ($args['enable_toggle'] && $args['enable_meta_key']): ?>
+			</div><!-- #cw-hotspot-editor-body -->
+			<script>
+			(function() {
+				var toggle = document.getElementById('cw-hotspot-enabled-toggle');
+				var body   = document.getElementById('cw-hotspot-editor-body');
+				if (toggle && body) {
+					toggle.addEventListener('change', function() {
+						body.style.display = this.checked ? '' : 'none';
+					});
+				}
+			})();
+			</script>
+			<?php endif; ?>
 		</div>
 
 		<?php
+	}
+
+	/**
+	 * Render hotspot HTML for use in frontend templates.
+	 *
+	 * @param int    $image_id       Attachment ID for the background image.
+	 * @param string $hotspot_data   JSON string of hotspot points.
+	 * @param string $settings_json  JSON string of hotspot settings.
+	 * @return string  HTML output.
+	 */
+	public static function render_hotspot_html($image_id, $hotspot_data, $settings_json) {
+		if (!$image_id) {
+			return '';
+		}
+
+		$hotspots      = !empty($hotspot_data) ? json_decode($hotspot_data, true) : [];
+		$settings_data = !empty($settings_json) ? json_decode($settings_json, true) : [];
+
+		$default_settings = [
+			'hotspotButtonStyle' => 'btn-primary',
+			'hotspotButtonSize'  => 'btn-sm',
+			'hotspotButtonShape' => 'btn-circle',
+			'hotspotMarkerType'  => 'button',
+			'hotspotDotSize'     => 'w-4 h-4',
+			'popoverTrigger'     => 'click',
+			'popoverPlacement'   => 'auto',
+			'hotspotImageSize'   => 'cw_landscape_hd',
+		];
+		$settings_data = wp_parse_args($settings_data, $default_settings);
+
+		$image_size = $settings_data['hotspotImageSize'];
+		$image_url  = wp_get_attachment_image_url($image_id, $image_size);
+		if (!$image_url) {
+			$image_url = wp_get_attachment_image_url($image_id, 'full');
+		}
+		if (!$image_url) {
+			return '';
+		}
+
+		wp_enqueue_style(
+			'cw-hotspot-frontend',
+			GUTENBERG_BLOCKS_URL . 'includes/css/image-hotspot-frontend.css',
+			[],
+			GUTENBERG_BLOCKS_VERSION
+		);
+		wp_enqueue_script(
+			'cw-hotspot-frontend',
+			GUTENBERG_BLOCKS_URL . 'includes/js/image-hotspot-frontend.js',
+			['jquery'],
+			GUTENBERG_BLOCKS_VERSION,
+			true
+		);
+
+		// Генерируем уникальный ID (используем ID изображения как суррогат)
+		$hotspot_id = 'project_' . $image_id;
+
+		ob_start();
+		?>
+		<div class="cw-image-hotspot-container w-100" data-hotspot-id="<?php echo esc_attr($hotspot_id); ?>">
+			<div class="cw-hotspot-annotation-box w-100">
+				<img src="<?php echo esc_url($image_url); ?>" class="cw-hotspot-main-image w-100" alt="" />
+				<?php if (!empty($hotspots)): ?>
+					<?php foreach ($hotspots as $hotspot): ?>
+						<?php
+						$point_icon      = !empty($hotspot['iconName']) ? $hotspot['iconName'] : 'plus';
+						$button_style    = $settings_data['hotspotButtonStyle'];
+						$button_size     = $settings_data['hotspotButtonSize'];
+						$button_shape    = $settings_data['hotspotButtonShape'];
+						$marker_type     = $settings_data['hotspotMarkerType'];
+						$dot_size        = $settings_data['hotspotDotSize'];
+						$content_type    = !empty($hotspot['contentType']) ? $hotspot['contentType'] : 'text';
+						$popover_title   = !empty($hotspot['title']) ? esc_html($hotspot['title']) : '';
+						$popover_trigger = $settings_data['popoverTrigger'];
+						$popover_placement = $settings_data['popoverPlacement'];
+						$wrapper_class   = !empty($hotspot['wrapperClass']) ? esc_attr($hotspot['wrapperClass']) : '';
+						$use_ajax        = ($content_type === 'post' || $content_type === 'hybrid');
+
+						$popover_content = '';
+						if ($content_type === 'text') {
+							if (!empty($hotspot['content'])) {
+								$popover_content = wp_kses_post($hotspot['content']);
+							}
+							if (!empty($hotspot['link'])) {
+								$popover_content .= '<br><a href="' . esc_url($hotspot['link']) . '" target="' . esc_attr($hotspot['linkTarget'] ?? '_self') . '">' . __('Learn more', 'codeweber-gutenberg-blocks') . '</a>';
+							}
+						} elseif ($content_type === 'hybrid' && !empty($hotspot['content'])) {
+							$popover_content = wp_kses_post($hotspot['content']);
+						}
+
+						$shape_classes = $button_shape ? explode(' ', $button_shape) : [];
+						$theme_classes = ['ripple'];
+						if ($marker_type === 'dot') {
+							$btn_classes = array_merge($theme_classes, $shape_classes, [$button_style, 'cw-hotspot-pulse'], explode(' ', $dot_size));
+						} else {
+							$btn_classes = array_merge($theme_classes, $shape_classes, [$button_style, $button_size]);
+						}
+						?>
+						<div class="cw-hotspot-point"
+						     style="left: <?php echo esc_attr($hotspot['x']); ?>%; top: <?php echo esc_attr($hotspot['y']); ?>%;"
+						     data-x="<?php echo esc_attr($hotspot['x']); ?>"
+						     data-y="<?php echo esc_attr($hotspot['y']); ?>"
+						     data-hotspot-id="<?php echo esc_attr($hotspot['id']); ?>"
+						     data-point-id="<?php echo esc_attr($hotspot['id']); ?>">
+							<?php if (!$use_ajax && !empty($popover_content)): ?>
+							<div class="cw-hotspot-popover-content" style="display:none;">
+								<?php if ($wrapper_class): ?><div class="<?php echo $wrapper_class; ?>"><?php endif; ?>
+								<?php echo $popover_content; ?>
+								<?php if ($wrapper_class): ?></div><?php endif; ?>
+							</div>
+							<?php elseif ($content_type === 'hybrid' && !empty($popover_content)): ?>
+							<div class="cw-hotspot-popover-content" style="display:none;">
+								<?php if ($wrapper_class): ?><div class="<?php echo $wrapper_class; ?>"><?php endif; ?>
+								<?php echo $popover_content; ?>
+								<?php if ($wrapper_class): ?></div><?php endif; ?>
+							</div>
+							<?php endif; ?>
+							<span class="btn <?php echo esc_attr(implode(' ', $btn_classes)); ?>"
+							      tabindex="0"
+							      data-bs-toggle="popover"
+							      data-bs-trigger="<?php echo esc_attr($popover_trigger); ?>"
+							      data-bs-placement="<?php echo esc_attr($popover_placement); ?>"
+							      data-bs-html="true"
+							      data-bs-ajax-load="<?php echo $use_ajax ? 'true' : 'false'; ?>"
+							      <?php if ($popover_title): ?>data-bs-title="<?php echo esc_attr($popover_title); ?>"<?php endif; ?>
+							      data-content-type="<?php echo esc_attr($content_type); ?>"
+							      <?php if (!empty($hotspot['popoverWidth'])): ?>data-bs-popover-width="<?php echo esc_attr($hotspot['popoverWidth']); ?>"<?php endif; ?>>
+								<?php if ($marker_type !== 'dot'): ?>
+									<i class="uil uil-<?php echo esc_attr($point_icon); ?>"></i>
+								<?php endif; ?>
+							</span>
+						</div>
+					<?php endforeach; ?>
+				<?php endif; ?>
+			</div>
+		</div>
+		<?php
+		return ob_get_clean();
 	}
 
 	/**

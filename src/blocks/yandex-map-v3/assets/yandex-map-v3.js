@@ -48,6 +48,11 @@
 			return;
 		}
 
+		if (typeof ymaps3 === 'undefined') {
+			container.innerHTML = '<div style="padding:16px;color:#888;font-size:14px;">Yandex Maps v3 API not loaded. Check API key domain restrictions.</div>';
+			return;
+		}
+
 		await ymaps3.ready;
 
 		var ymaps3Modules = ymaps3;

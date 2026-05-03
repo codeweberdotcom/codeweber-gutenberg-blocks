@@ -709,7 +709,7 @@ class Plugin {
 				$lang = defined( 'WPLANG' ) && WPLANG ? WPLANG : 'ru_RU';
 				wp_register_script(
 					'yandex-maps-api-v3',
-					'https://js.api.maps.yandex.ru/3.0/?apikey=' . urlencode( $yandex_maps->get_api_key() ) . '&lang=' . urlencode( $lang ),
+					'https://api-maps.yandex.ru/v3/?apikey=' . urlencode( $yandex_maps->get_api_key() ) . '&lang=' . urlencode( $lang ),
 					[],
 					null,
 					false

@@ -703,8 +703,8 @@ class Plugin {
 
 	public static function gutenbergBlocksExternalLibraries() {
 		// Register Yandex Maps v3 API and frontend script (enqueued conditionally in render.php)
-		if ( class_exists( 'Codeweber_Yandex_Maps' ) ) {
-			$yandex_maps = Codeweber_Yandex_Maps::get_instance();
+		if ( class_exists( '\Codeweber_Yandex_Maps' ) ) {
+			$yandex_maps = \Codeweber_Yandex_Maps::get_instance();
 			if ( $yandex_maps->has_api_key() ) {
 				$lang = defined( 'WPLANG' ) && WPLANG ? WPLANG : 'ru_RU';
 				wp_register_script(

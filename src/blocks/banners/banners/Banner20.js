@@ -9,7 +9,7 @@ export const Banner20 = ({ attributes, isEditor = false }) => {
 	const placeholderPosterUrl = isEditor
 		? window.location?.origin
 			? `${window.location.origin}/wp-content/themes/codeweber/dist/assets/img/photos/movie2.jpg`
-			: './assets/img/photos/movie2.jpg'
+			: '/wp-content/themes/codeweber/dist/assets/img/photos/movie2.jpg'
 		: '/wp-content/themes/codeweber/dist/assets/img/photos/movie2.jpg';
 
 	// Получаем URL видео и poster

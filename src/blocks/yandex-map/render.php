@@ -76,9 +76,28 @@ $sidebar_fields = isset($attributes['sidebarFields']) && is_array($attributes['s
 		'showDescription' => true,
 	);
 
+// Color scheme → style_json preset
+$map_color_scheme = isset($attributes['mapColorScheme']) ? $attributes['mapColorScheme'] : 'none';
+$color_scheme_presets = [
+	'none'      => '',
+	'grayscale' => '[{"stylers":[{"saturation":-1}]}]',
+	'pale'      => '[{"stylers":[{"saturation":-0.5},{"lightness":0.3}]}]',
+	'dark'      => '[{"stylers":[{"saturation":-0.5},{"lightness":-0.65}]}]',
+	'sepia'     => '[{"stylers":[{"hue":"#8B4513"},{"saturation":-0.6},{"lightness":0.1}]}]',
+];
+// Fallback to Redux global setting when block has no override
+if ( $map_color_scheme === 'none' ) {
+	global $opt_name;
+	$redux_scheme = class_exists( 'Redux' ) ? Redux::get_option( $opt_name, 'yandex_maps_color_scheme' ) : 'none';
+	if ( ! empty( $redux_scheme ) && $redux_scheme !== 'none' ) {
+		$map_color_scheme = $redux_scheme;
+	}
+}
+$map_style_json = isset($color_scheme_presets[$map_color_scheme]) ? $color_scheme_presets[$map_color_scheme] : '';
+
 // Генерируем уникальный ID для карты
-$block_id = isset($attributes['blockId']) && !empty($attributes['blockId']) 
-	? $attributes['blockId'] 
+$block_id = isset($attributes['blockId']) && !empty($attributes['blockId'])
+	? $attributes['blockId']
 	: 'gutenberg-map-' . uniqid();
 $map_id = 'yandex-map-' . $block_id;
 
@@ -232,6 +251,7 @@ $map_settings = array(
 	'balloon_fields' => $balloon_fields,
 	'sidebar_fields' => $sidebar_fields,
 	'auto_fit_bounds' => $auto_fit_bounds,
+	'style_json' => $map_style_json,
 );
 
 // Блок обертка

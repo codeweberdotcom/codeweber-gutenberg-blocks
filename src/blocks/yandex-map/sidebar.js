@@ -68,6 +68,7 @@ export const YandexMapSidebar = ({ attributes, setAttributes }) => {
 		balloonCloseButton,
 		balloonFields,
 		sidebarFields,
+		mapColorScheme,
 		blockClass,
 		blockId,
 		blockData,
@@ -272,6 +273,24 @@ export const YandexMapSidebar = ({ attributes, setAttributes }) => {
 									options={mapTypeOptions}
 									onChange={(value) =>
 										setAttributes({ mapType: value })
+									}
+								/>
+
+								<SelectControl
+									label={__(
+										'Color Scheme',
+										'codeweber-gutenberg-blocks'
+									)}
+									value={mapColorScheme}
+									options={[
+										{ label: __('Default', 'codeweber-gutenberg-blocks'), value: 'none' },
+										{ label: __('Grayscale', 'codeweber-gutenberg-blocks'), value: 'grayscale' },
+										{ label: __('Pale', 'codeweber-gutenberg-blocks'), value: 'pale' },
+										{ label: __('Dark', 'codeweber-gutenberg-blocks'), value: 'dark' },
+										{ label: __('Sepia', 'codeweber-gutenberg-blocks'), value: 'sepia' },
+									]}
+									onChange={(value) =>
+										setAttributes({ mapColorScheme: value })
 									}
 								/>
 

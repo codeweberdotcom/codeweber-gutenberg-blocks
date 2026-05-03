@@ -1,0 +1,113 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "codeweber-blocks/yandex-map-v3",
+  "version": "1.0.0",
+  "title": "Yandex Map v3",
+  "category": "codeweber-gutenberg-blocks",
+  "icon": "location",
+  "description": "Yandex Maps API v3 — native dark theme and custom color schemes",
+  "keywords": [
+    "map",
+    "yandex",
+    "v3",
+    "карта",
+    "dark",
+    "markers"
+  ],
+  "supports": {
+    "html": false,
+    "customClassName": false
+  },
+  "textdomain": "codeweber-gutenberg-blocks",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./editor.scss",
+  "style": "file:./style.scss",
+  "render": "file:./render.php",
+  "attributes": {
+    "dataSource": {
+      "type": "string",
+      "default": "offices"
+    },
+    "center": {
+      "type": "object",
+      "default": {
+        "lat": 55.76,
+        "lng": 37.64
+      }
+    },
+    "zoom": {
+      "type": "number",
+      "default": 10
+    },
+    "height": {
+      "type": "number",
+      "default": 500
+    },
+    "mapType": {
+      "type": "string",
+      "default": "normal"
+    },
+    "colorScheme": {
+      "type": "string",
+      "default": "light"
+    },
+    "customStyleJson": {
+      "type": "string",
+      "default": ""
+    },
+    "borderRadius": {
+      "type": "number",
+      "default": 8
+    },
+    "enableScrollZoom": {
+      "type": "boolean",
+      "default": true
+    },
+    "enableDrag": {
+      "type": "boolean",
+      "default": true
+    },
+    "autoFitBounds": {
+      "type": "boolean",
+      "default": true
+    },
+    "officesQuery": {
+      "type": "object",
+      "default": {
+        "postsPerPage": -1,
+        "orderBy": "title",
+        "order": "asc",
+        "selectedCities": [],
+        "selectedCategories": []
+      }
+    },
+    "customMarkers": {
+      "type": "array",
+      "default": []
+    },
+    "markerColor": {
+      "type": "string",
+      "default": "#FF0000"
+    },
+    "balloonFields": {
+      "type": "object",
+      "default": {
+        "showCity": true,
+        "showAddress": true,
+        "showPhone": true,
+        "showWorkingHours": true,
+        "showLink": true,
+        "showDescription": false
+      }
+    },
+    "blockClass": {
+      "type": "string",
+      "default": ""
+    },
+    "blockId": {
+      "type": "string",
+      "default": ""
+    }
+  }
+}

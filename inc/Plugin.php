@@ -295,6 +295,7 @@ class Plugin {
 		'divider',
 		'spacer',
 		'yandex-map',
+		'yandex-map-v3',
 		'html-blocks',
 		'swiper',
 		'group-button',
@@ -654,6 +655,7 @@ class Plugin {
 			'section',
 			'post-grid',
 			'yandex-map',
+			'yandex-map-v3',
 			'swiper',
 			'group-button',
 			'cta',
@@ -700,6 +702,28 @@ class Plugin {
 	}
 
 	public static function gutenbergBlocksExternalLibraries() {
+		// Register Yandex Maps v3 API and frontend script (enqueued conditionally in render.php)
+		if ( class_exists( 'Codeweber_Yandex_Maps' ) ) {
+			$yandex_maps = Codeweber_Yandex_Maps::get_instance();
+			if ( $yandex_maps->has_api_key() ) {
+				$lang = defined( 'WPLANG' ) && WPLANG ? WPLANG : 'ru_RU';
+				wp_register_script(
+					'yandex-maps-api-v3',
+					'https://js.api.maps.yandex.ru/3.0/?apikey=' . urlencode( $yandex_maps->get_api_key() ) . '&lang=' . urlencode( $lang ),
+					[],
+					null,
+					false
+				);
+				wp_register_script(
+					'cwgb-yandex-map-v3',
+					self::getBaseUrl() . '/build/blocks/yandex-map-v3/assets/yandex-map-v3.js',
+					[ 'yandex-maps-api-v3' ],
+					GUTENBERG_BLOCKS_VERSION,
+					true
+				);
+			}
+		}
+
 		wp_enqueue_script(
 			'gutenberg-blocks-lib',
 			GUTENBERG_BLOCKS_INC_URL . 'js/pluign.js',

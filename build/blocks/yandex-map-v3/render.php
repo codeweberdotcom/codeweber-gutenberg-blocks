@@ -178,10 +178,6 @@ $map_data = array(
 	'autoFitBounds'    => $auto_fit_bounds,
 );
 
-// Enqueue Yandex Maps v3 API (registered in Plugin.php) and frontend script
-wp_enqueue_script( 'yandex-maps-api-v3' );
-wp_enqueue_script( 'cwgb-yandex-map-v3' );
-
 // Wrapper
 $block_class      = isset( $attributes['blockClass'] ) ? $attributes['blockClass'] : '';
 $wrapper_classes  = 'cwgb-yandex-map-v3-block';
@@ -190,9 +186,37 @@ if ( ! empty( $block_class ) ) {
 }
 
 $wrapper_attributes = get_block_wrapper_attributes( array(
-	'class'        => $wrapper_classes,
+	'class'         => $wrapper_classes,
 	'data-block-id' => esc_attr( $block_id ),
 ) );
+
+// Editor placeholder (REST API context = ServerSideRender in Gutenberg)
+if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
+	$marker_count = count( $markers );
+	$scheme_label = esc_html( $color_scheme );
+	echo '<div ' . $wrapper_attributes . '>';
+	echo '<div style="'
+		. 'height:' . esc_attr( $height ) . 'px;'
+		. 'border-radius:' . esc_attr( $border_radius ) . 'px;'
+		. 'background:#e8eaed;'
+		. 'display:flex;flex-direction:column;align-items:center;justify-content:center;'
+		. 'color:#666;font-family:sans-serif;gap:8px;">'
+		. '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="1.5">'
+		. '<path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>'
+		. '<circle cx="12" cy="9" r="2.5"/>'
+		. '</svg>'
+		. '<span style="font-size:13px;font-weight:600;">Yandex Map v3</span>'
+		. '<span style="font-size:12px;color:#999;">'
+		. esc_html( sprintf( '%s · %dpx · %d markers', $scheme_label, $height, $marker_count ) )
+		. '</span>'
+		. '</div>';
+	echo '</div>';
+	return;
+}
+
+// Enqueue Yandex Maps v3 API (registered in Plugin.php) and frontend script
+wp_enqueue_script( 'yandex-maps-api-v3' );
+wp_enqueue_script( 'cwgb-yandex-map-v3' );
 
 echo '<div ' . $wrapper_attributes . '>';
 echo '<div id="' . esc_attr( $block_id ) . '" class="cwgb-yandex-map-v3-container"'

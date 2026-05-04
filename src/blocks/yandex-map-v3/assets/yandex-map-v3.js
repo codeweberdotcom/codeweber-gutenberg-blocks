@@ -20,9 +20,7 @@
 		if (config.colorScheme === 'custom' && config.customStyle) {
 			try {
 				return { customization: JSON.parse(config.customStyle) };
-			} catch (e) {
-				// fallback to light
-			}
+			} catch (e) {}
 		}
 		return COLOR_PRESETS[config.colorScheme] || { theme: 'light' };
 	}
@@ -49,25 +47,19 @@
 		}
 
 		if (typeof ymaps3 === 'undefined') {
-			container.innerHTML = '<div style="padding:16px;color:#888;font-size:14px;">Yandex Maps v3 API not loaded. Check API key domain restrictions.</div>';
+			container.innerHTML = '<div style="padding:16px;color:#888;font-size:14px;">Yandex Maps v3 API not loaded.</div>';
 			return;
 		}
 
 		await ymaps3.ready;
 
-		var ymaps3Modules = ymaps3;
-		var YMap = ymaps3Modules.YMap;
-		var YMapDefaultSchemeLayer = ymaps3Modules.YMapDefaultSchemeLayer;
-		var YMapDefaultFeaturesLayer = ymaps3Modules.YMapDefaultFeaturesLayer;
-		var YMapMarker = ymaps3Modules.YMapMarker;
-		var YMapControls = ymaps3Modules.YMapControls;
-
-		var zoomPkg = await ymaps3.import('@yandex/ymaps3-controls@0.0.1');
-		var YMapZoomControl = zoomPkg.YMapZoomControl;
+		var YMap                 = ymaps3.YMap;
+		var YMapDefaultSchemeLayer   = ymaps3.YMapDefaultSchemeLayer;
+		var YMapDefaultFeaturesLayer = ymaps3.YMapDefaultFeaturesLayer;
+		var YMapMarker           = ymaps3.YMapMarker;
+		var YMapControls         = ymaps3.YMapControls;
 
 		var mapCenter = config.center;
-
-		// Auto-fit: use first marker as center
 		if (config.autoFitBounds && config.markers && config.markers.length > 0) {
 			mapCenter = config.markers[0].coords;
 		}
@@ -77,11 +69,10 @@
 			behaviors: buildBehaviors(config),
 		});
 
-		// Map type layer
 		var schemeOptions = buildSchemeOptions(config);
 		if (config.mapType === 'satellite' || config.mapType === 'hybrid') {
-			var YMapTileDataSource = ymaps3Modules.YMapTileDataSource;
-			var YMapLayer = ymaps3Modules.YMapLayer;
+			var YMapTileDataSource = ymaps3.YMapTileDataSource;
+			var YMapLayer          = ymaps3.YMapLayer;
 			map.addChild(new YMapTileDataSource({ id: 'custom', raster: { type: 'ground' } }));
 			map.addChild(new YMapLayer({ source: 'custom', type: 'ground', options: { rasterType: config.mapType } }));
 		} else {
@@ -90,30 +81,42 @@
 
 		map.addChild(new YMapDefaultFeaturesLayer());
 
-		// Zoom control
-		var controls = new YMapControls({ position: 'right' });
-		controls.addChild(new YMapZoomControl());
-		map.addChild(controls);
+		// Zoom control — optional, don't let failures block markers
+		try {
+			var zoomPkg = await ymaps3.import('@yandex/ymaps3-controls@0.0.1');
+			if (zoomPkg && zoomPkg.YMapZoomControl && YMapControls) {
+				var controls = new YMapControls({ position: 'right' });
+				controls.addChild(new zoomPkg.YMapZoomControl());
+				map.addChild(controls);
+			}
+		} catch (e) {
+			console.warn('[yandex-map-v3] zoom control not loaded:', e.message);
+		}
 
 		// Markers
 		if (config.markers && config.markers.length > 0) {
 			config.markers.forEach(function (markerData) {
-				addMarker(map, markerData, config);
+				addMarker(map, markerData, config, YMapMarker);
 			});
 		}
 	}
 
-	function addMarker(map, markerData, config) {
-		var el = document.createElement('div');
-		el.className = 'cwgb-map-v3-marker';
-		el.style.background = config.markerColor || '#FF0000';
+	function addMarker(map, markerData, config, YMapMarker) {
+		var color = config.markerColor || '#FF0000';
+		var el    = document.createElement('div');
+		// Explicit inline styles so marker is visible even without CSS
+		el.style.cssText = [
+			'width:14px',
+			'height:14px',
+			'background:' + color,
+			'border:2px solid #fff',
+			'border-radius:50%',
+			'cursor:pointer',
+			'box-shadow:0 1px 3px rgba(0,0,0,.4)',
+		].join(';');
 
-		var marker = new ymaps3.YMapMarker(
-			{ coordinates: markerData.coords },
-			el
-		);
+		var marker = new YMapMarker({ coordinates: markerData.coords }, el);
 		map.addChild(marker);
-		// Phase 2: balloon on click
 	}
 
 	function init() {

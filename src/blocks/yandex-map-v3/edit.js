@@ -40,9 +40,9 @@ function loadYandexMapsV3Api() {
 	if ( apiLoadPromise ) {
 		return apiLoadPromise;
 	}
-	const data = window.cwgbYandexMapV3 || {};
+	const data = window.codeweberYandexMaps || {};
 	const apiKey = data.apiKey || '';
-	const lang   = data.lang   || 'ru_RU';
+	const lang   = data.language || 'ru_RU';
 	if ( ! apiKey ) {
 		return Promise.reject( new Error( 'No API key for Yandex Maps v3' ) );
 	}

@@ -38,6 +38,41 @@
 		return behaviors;
 	}
 
+	function calcBoundsCenter(markers) {
+		var lngs = markers.map(function (m) { return m.coords[0]; });
+		var lats = markers.map(function (m) { return m.coords[1]; });
+		var minLng = Math.min.apply(null, lngs);
+		var maxLng = Math.max.apply(null, lngs);
+		var minLat = Math.min.apply(null, lats);
+		var maxLat = Math.max.apply(null, lats);
+		return [ (minLng + maxLng) / 2, (minLat + maxLat) / 2 ];
+	}
+
+	function calcBoundsZoom(markers, containerW, containerH) {
+		if (markers.length < 2) { return null; }
+		var lngs = markers.map(function (m) { return m.coords[0]; });
+		var lats = markers.map(function (m) { return m.coords[1]; });
+		var minLng = Math.min.apply(null, lngs);
+		var maxLng = Math.max.apply(null, lngs);
+		var minLat = Math.min.apply(null, lats);
+		var maxLat = Math.max.apply(null, lats);
+		// 15% padding so markers aren't on the edge
+		var lngPad = (maxLng - minLng) * 0.15 || 0.02;
+		var latPad = (maxLat - minLat) * 0.15 || 0.02;
+		minLng -= lngPad; maxLng += lngPad;
+		minLat -= latPad; maxLat += latPad;
+		function latRad(lat) {
+			var sin = Math.sin(lat * Math.PI / 180);
+			var r   = Math.log((1 + sin) / (1 - sin)) / 2;
+			return Math.max(Math.min(r, Math.PI), -Math.PI) / 2;
+		}
+		var latFraction = (latRad(maxLat) - latRad(minLat)) / Math.PI;
+		var lngFraction = (maxLng - minLng) / 360;
+		var latZoom = Math.log(containerH / 256 / latFraction) / Math.LN2;
+		var lngZoom = Math.log(containerW / 256 / lngFraction) / Math.LN2;
+		return Math.floor(Math.min(latZoom, lngZoom, 17));
+	}
+
 	async function initMap(container) {
 		var config;
 		try {
@@ -60,12 +95,15 @@
 		var YMapControls         = ymaps3.YMapControls;
 
 		var mapCenter = config.center;
+		var mapZoom   = config.zoom;
 		if (config.autoFitBounds && config.markers && config.markers.length > 0) {
-			mapCenter = config.markers[0].coords;
+			mapCenter = calcBoundsCenter(config.markers);
+			var fittedZoom = calcBoundsZoom(config.markers, container.offsetWidth, container.offsetHeight);
+			if (fittedZoom !== null) { mapZoom = fittedZoom; }
 		}
 
 		var map = new YMap(container, {
-			location: { center: mapCenter, zoom: config.zoom },
+			location: { center: mapCenter, zoom: mapZoom },
 			behaviors: buildBehaviors(config),
 		});
 

@@ -13,35 +13,34 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-// API key via theme's Yandex Maps class
-if ( ! class_exists( 'Codeweber_Yandex_Maps' ) ) {
+if ( ! class_exists( '\Codeweber_Yandex_Maps' ) ) {
 	echo '<div class="alert alert-warning">' . esc_html__( 'Yandex Maps class is not available.', 'codeweber-gutenberg-blocks' ) . '</div>';
 	return;
 }
 
-$yandex_maps = Codeweber_Yandex_Maps::get_instance();
+$yandex_maps = \Codeweber_Yandex_Maps::get_instance();
 
 if ( ! $yandex_maps->has_api_key() ) {
 	echo '<div class="alert alert-warning">' . esc_html__( 'Yandex Maps API key is not configured.', 'codeweber-gutenberg-blocks' ) . '</div>';
 	return;
 }
 
-$api_key = $yandex_maps->get_api_key();
+// ── Attributes ──────────────────────────────────────────────────────────────
 
-// Attributes
-$data_source  = isset( $attributes['dataSource'] ) ? $attributes['dataSource'] : 'offices';
-$center       = isset( $attributes['center'] ) ? $attributes['center'] : array( 'lat' => 55.76, 'lng' => 37.64 );
-$zoom         = isset( $attributes['zoom'] ) ? (int) $attributes['zoom'] : 10;
-$height       = isset( $attributes['height'] ) ? (int) $attributes['height'] : 500;
-$map_type     = isset( $attributes['mapType'] ) ? $attributes['mapType'] : 'normal';
-$color_scheme = isset( $attributes['colorScheme'] ) ? $attributes['colorScheme'] : 'light';
-$custom_style = isset( $attributes['customStyleJson'] ) ? $attributes['customStyleJson'] : '';
-$border_radius    = isset( $attributes['borderRadius'] ) ? (int) $attributes['borderRadius'] : 8;
-$enable_scroll_zoom = isset( $attributes['enableScrollZoom'] ) ? (bool) $attributes['enableScrollZoom'] : true;
-$enable_drag      = isset( $attributes['enableDrag'] ) ? (bool) $attributes['enableDrag'] : true;
-$auto_fit_bounds  = isset( $attributes['autoFitBounds'] ) ? (bool) $attributes['autoFitBounds'] : true;
-$marker_color     = isset( $attributes['markerColor'] ) ? $attributes['markerColor'] : '#FF0000';
-$balloon_fields   = isset( $attributes['balloonFields'] ) && is_array( $attributes['balloonFields'] )
+$data_source    = isset( $attributes['dataSource'] ) ? $attributes['dataSource'] : 'offices';
+$center_attr    = isset( $attributes['center'] ) ? $attributes['center'] : array( 'lat' => 55.76, 'lng' => 37.64 );
+$zoom           = isset( $attributes['zoom'] ) ? (int) $attributes['zoom'] : 10;
+$height         = isset( $attributes['height'] ) ? (int) $attributes['height'] : 500;
+$map_type       = isset( $attributes['mapType'] ) ? $attributes['mapType'] : 'normal';
+$color_scheme   = isset( $attributes['colorScheme'] ) ? $attributes['colorScheme'] : 'light';
+$custom_style   = isset( $attributes['customStyleJson'] ) ? $attributes['customStyleJson'] : '';
+$border_radius  = isset( $attributes['borderRadius'] ) ? (int) $attributes['borderRadius'] : 8;
+$scroll_zoom    = isset( $attributes['enableScrollZoom'] ) ? (bool) $attributes['enableScrollZoom'] : true;
+$enable_drag    = isset( $attributes['enableDrag'] ) ? (bool) $attributes['enableDrag'] : true;
+$auto_fit       = isset( $attributes['autoFitBounds'] ) ? (bool) $attributes['autoFitBounds'] : true;
+$marker_color   = isset( $attributes['markerColor'] ) ? $attributes['markerColor'] : '#FF0000';
+
+$balloon_fields = isset( $attributes['balloonFields'] ) && is_array( $attributes['balloonFields'] )
 	? $attributes['balloonFields']
 	: array(
 		'showCity'         => true,
@@ -52,24 +51,40 @@ $balloon_fields   = isset( $attributes['balloonFields'] ) && is_array( $attribut
 		'showDescription'  => false,
 	);
 
-// Unique map ID
-$block_id = isset( $attributes['blockId'] ) && ! empty( $attributes['blockId'] )
+$show_sidebar     = isset( $attributes['showSidebar'] ) ? (bool) $attributes['showSidebar'] : false;
+$sidebar_position = isset( $attributes['sidebarPosition'] ) ? $attributes['sidebarPosition'] : 'left';
+$sidebar_title    = isset( $attributes['sidebarTitle'] ) ? $attributes['sidebarTitle'] : '';
+$show_filters     = isset( $attributes['showFilters'] ) ? (bool) $attributes['showFilters'] : false;
+$filter_by_city   = isset( $attributes['filterByCity'] ) ? (bool) $attributes['filterByCity'] : false;
+$filter_by_cat    = isset( $attributes['filterByCategory'] ) ? (bool) $attributes['filterByCategory'] : false;
+$sidebar_fields   = isset( $attributes['sidebarFields'] ) && is_array( $attributes['sidebarFields'] )
+	? $attributes['sidebarFields']
+	: array(
+		'showCity'         => true,
+		'showAddress'      => false,
+		'showPhone'        => false,
+		'showWorkingHours' => true,
+		'showDescription'  => true,
+	);
+
+$block_class = isset( $attributes['blockClass'] ) ? $attributes['blockClass'] : '';
+$block_id    = isset( $attributes['blockId'] ) && ! empty( $attributes['blockId'] )
 	? $attributes['blockId']
 	: 'cwgb-map-v3-' . uniqid();
 
-// Build markers
-// IMPORTANT: v3 API uses [longitude, latitude] — inverted vs v2!
+// ── Build markers ────────────────────────────────────────────────────────────
+
 $markers = array();
 
 if ( $data_source === 'offices' ) {
-	$offices_query    = isset( $attributes['officesQuery'] ) ? $attributes['officesQuery'] : array();
-	$posts_per_page   = isset( $offices_query['postsPerPage'] ) ? (int) $offices_query['postsPerPage'] : -1;
-	$order_by         = isset( $offices_query['orderBy'] ) ? $offices_query['orderBy'] : 'title';
-	$order            = isset( $offices_query['order'] ) ? $offices_query['order'] : 'asc';
-	$selected_cities  = isset( $offices_query['selectedCities'] ) && is_array( $offices_query['selectedCities'] )
+	$offices_query   = isset( $attributes['officesQuery'] ) ? $attributes['officesQuery'] : array();
+	$posts_per_page  = isset( $offices_query['postsPerPage'] ) ? (int) $offices_query['postsPerPage'] : -1;
+	$order_by        = isset( $offices_query['orderBy'] ) ? $offices_query['orderBy'] : 'title';
+	$order           = isset( $offices_query['order'] ) ? $offices_query['order'] : 'asc';
+	$selected_cities = isset( $offices_query['selectedCities'] ) && is_array( $offices_query['selectedCities'] )
 		? array_filter( array_map( 'sanitize_text_field', $offices_query['selectedCities'] ) )
 		: array();
-	$selected_cats    = isset( $offices_query['selectedCategories'] ) && is_array( $offices_query['selectedCategories'] )
+	$selected_cats   = isset( $offices_query['selectedCategories'] ) && is_array( $offices_query['selectedCategories'] )
 		? array_filter( array_map( 'absint', $offices_query['selectedCategories'] ) )
 		: array();
 
@@ -118,8 +133,8 @@ if ( $data_source === 'offices' ) {
 
 			$markers[] = array(
 				'id'           => $post_id,
-				// v3: [longitude, latitude]
-				'coords'       => array( floatval( $longitude ), floatval( $latitude ) ),
+				'latitude'     => floatval( $latitude ),
+				'longitude'    => floatval( $longitude ),
 				'title'        => get_the_title(),
 				'address'      => $display_address,
 				'phone'        => get_post_meta( $post_id, '_office_phone', true ),
@@ -142,8 +157,8 @@ if ( $data_source === 'offices' ) {
 		}
 		$markers[] = array(
 			'id'           => isset( $marker['id'] ) ? $marker['id'] : uniqid( 'marker-' ),
-			// v3: [longitude, latitude]
-			'coords'       => array( floatval( $marker['coords']['lng'] ), floatval( $marker['coords']['lat'] ) ),
+			'latitude'     => floatval( $marker['coords']['lat'] ),
+			'longitude'    => floatval( $marker['coords']['lng'] ),
 			'title'        => isset( $marker['title'] ) ? $marker['title'] : '',
 			'address'      => isset( $marker['address'] ) ? $marker['address'] : '',
 			'phone'        => isset( $marker['phone'] ) ? $marker['phone'] : '',
@@ -155,46 +170,13 @@ if ( $data_source === 'offices' ) {
 	}
 }
 
-// Map center — v3: [longitude, latitude]
-$map_center = array( floatval( $center['lng'] ), floatval( $center['lat'] ) );
+// ── Editor placeholder (REST context = ServerSideRender preview) ─────────────
 
-// Auto-fit: use first marker's coords as center
-if ( $auto_fit_bounds && ! empty( $markers ) ) {
-	$map_center = $markers[0]['coords'];
-}
-
-$map_data = array(
-	'id'              => $block_id,
-	'center'          => $map_center,
-	'zoom'            => $zoom,
-	'mapType'         => $map_type,
-	'colorScheme'     => $color_scheme,
-	'customStyle'     => $custom_style,
-	'markerColor'     => $marker_color,
-	'markers'         => $markers,
-	'balloon'         => $balloon_fields,
-	'enableScrollZoom' => $enable_scroll_zoom,
-	'enableDrag'       => $enable_drag,
-	'autoFitBounds'    => $auto_fit_bounds,
-);
-
-// Wrapper
-$block_class      = isset( $attributes['blockClass'] ) ? $attributes['blockClass'] : '';
-$wrapper_classes  = 'cwgb-yandex-map-v3-block';
-if ( ! empty( $block_class ) ) {
-	$wrapper_classes .= ' ' . esc_attr( $block_class );
-}
-
-$wrapper_attributes = get_block_wrapper_attributes( array(
-	'class'         => $wrapper_classes,
-	'data-block-id' => esc_attr( $block_id ),
-) );
-
-// Editor placeholder (REST API context = ServerSideRender in Gutenberg)
 if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
 	$marker_count = count( $markers );
 	$scheme_label = esc_html( $color_scheme );
-	echo '<div ' . $wrapper_attributes . '>';
+	$wrapper_attr = get_block_wrapper_attributes( array( 'class' => 'cwgb-yandex-map-v3-block' . ( $block_class ? ' ' . esc_attr( $block_class ) : '' ) ) );
+	echo '<div ' . $wrapper_attr . '>';
 	echo '<div style="'
 		. 'height:' . esc_attr( $height ) . 'px;'
 		. 'border-radius:' . esc_attr( $border_radius ) . 'px;'
@@ -214,13 +196,39 @@ if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
 	return;
 }
 
-// Enqueue Yandex Maps v3 API (registered in Plugin.php) and frontend script
-wp_enqueue_script( 'yandex-maps-api-v3' );
-wp_enqueue_script( 'cwgb-yandex-map-v3' );
+// ── Frontend render via theme's render_map() ─────────────────────────────────
+
+$map_args = array(
+	'api_version'         => 3,
+	'map_id'              => $block_id,
+	// center as [lat, lng] — render_map swaps to [lng, lat] for v3
+	'center'              => array( floatval( $center_attr['lat'] ), floatval( $center_attr['lng'] ) ),
+	'zoom'                => $zoom,
+	'height'              => $height,
+	'map_type'            => $map_type,
+	'border_radius'       => $border_radius,
+	'enable_scroll_zoom'  => $scroll_zoom,
+	'enable_drag'         => $enable_drag,
+	'auto_fit_bounds'     => $auto_fit,
+	'marker_type'         => 'custom',
+	'marker_color'        => $marker_color,
+	'balloon_fields'      => $balloon_fields,
+	'show_sidebar'        => $show_sidebar,
+	'sidebar_position'    => $sidebar_position,
+	'sidebar_title'       => $sidebar_title,
+	'show_filters'        => $show_filters,
+	'filter_by_city'      => $filter_by_city,
+	'filter_by_category'  => $filter_by_cat,
+	'sidebar_fields'      => $sidebar_fields,
+	'color_scheme'        => $color_scheme,
+	'color_scheme_custom' => $custom_style,
+);
+
+$wrapper_attributes = get_block_wrapper_attributes( array(
+	'class'         => 'cwgb-yandex-map-v3-block' . ( $block_class ? ' ' . esc_attr( $block_class ) : '' ),
+	'data-block-id' => esc_attr( $block_id ),
+) );
 
 echo '<div ' . $wrapper_attributes . '>';
-echo '<div id="' . esc_attr( $block_id ) . '" class="cwgb-yandex-map-v3-container"'
-	. ' data-map-v3="' . esc_attr( wp_json_encode( $map_data ) ) . '"'
-	. ' style="height:' . esc_attr( $height ) . 'px; border-radius:' . esc_attr( $border_radius ) . 'px;"'
-	. '></div>';
+echo $yandex_maps->render_map( $map_args, $markers );
 echo '</div>';

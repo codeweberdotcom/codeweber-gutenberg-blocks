@@ -572,17 +572,7 @@ class Plugin {
 					wp_localize_script($script_handle, 'cwgbSearchPostTypes', ['postTypes' => $search_post_types]);
 				}
 
-				// Yandex Map v3: pass API key and lang for editor map initialization
-				if ( $block_name === 'yandex-map-v3' && class_exists( '\Codeweber_Yandex_Maps' ) ) {
-					$ym = \Codeweber_Yandex_Maps::get_instance();
-					if ( $ym->has_api_key() ) {
-						$lang = defined( 'WPLANG' ) && WPLANG ? WPLANG : 'ru_RU';
-						wp_localize_script( $script_handle, 'cwgbYandexMapV3', [
-							'apiKey' => $ym->get_api_key(),
-							'lang'   => $lang,
-						] );
-					}
-				}
+				// Yandex Map v3 editor init handled by theme's Codeweber_Yandex_Maps class.
 
 				// Button block: форма Theme — класс из Codeweber_Options::style('button') для превью в редакторе
 				if ($block_name === 'button') {
@@ -714,27 +704,7 @@ class Plugin {
 	}
 
 	public static function gutenbergBlocksExternalLibraries() {
-		// Register Yandex Maps v3 API and frontend script (enqueued conditionally in render.php)
-		if ( class_exists( '\Codeweber_Yandex_Maps' ) ) {
-			$yandex_maps = \Codeweber_Yandex_Maps::get_instance();
-			if ( $yandex_maps->has_api_key() ) {
-				$lang = defined( 'WPLANG' ) && WPLANG ? WPLANG : 'ru_RU';
-				wp_register_script(
-					'yandex-maps-api-v3',
-					'https://api-maps.yandex.ru/v3/?apikey=' . urlencode( $yandex_maps->get_api_key() ) . '&lang=' . urlencode( $lang ),
-					[],
-					null,
-					false
-				);
-				wp_register_script(
-					'cwgb-yandex-map-v3',
-					self::getBaseUrl() . '/build/blocks/yandex-map-v3/assets/yandex-map-v3.js',
-					[ 'yandex-maps-api-v3' ],
-					GUTENBERG_BLOCKS_VERSION,
-					true
-				);
-			}
-		}
+		// Yandex Maps v3 scripts are registered and enqueued by the theme's Codeweber_Yandex_Maps class.
 
 		wp_enqueue_script(
 			'gutenberg-blocks-lib',

@@ -101,6 +101,40 @@
 		"blockId": {
 			"type": "string",
 			"default": ""
+		},
+		"showSidebar": {
+			"type": "boolean",
+			"default": false
+		},
+		"sidebarPosition": {
+			"type": "string",
+			"default": "left"
+		},
+		"sidebarTitle": {
+			"type": "string",
+			"default": ""
+		},
+		"showFilters": {
+			"type": "boolean",
+			"default": false
+		},
+		"filterByCity": {
+			"type": "boolean",
+			"default": false
+		},
+		"filterByCategory": {
+			"type": "boolean",
+			"default": false
+		},
+		"sidebarFields": {
+			"type": "object",
+			"default": {
+				"showCity": true,
+				"showAddress": false,
+				"showPhone": false,
+				"showWorkingHours": true,
+				"showDescription": true
+			}
 		}
 	}
 }

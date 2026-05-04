@@ -572,6 +572,18 @@ class Plugin {
 					wp_localize_script($script_handle, 'cwgbSearchPostTypes', ['postTypes' => $search_post_types]);
 				}
 
+				// Yandex Map v3: pass API key and lang for editor map initialization
+				if ( $block_name === 'yandex-map-v3' && class_exists( '\Codeweber_Yandex_Maps' ) ) {
+					$ym = \Codeweber_Yandex_Maps::get_instance();
+					if ( $ym->has_api_key() ) {
+						$lang = defined( 'WPLANG' ) && WPLANG ? WPLANG : 'ru_RU';
+						wp_localize_script( $script_handle, 'cwgbYandexMapV3', [
+							'apiKey' => $ym->get_api_key(),
+							'lang'   => $lang,
+						] );
+					}
+				}
+
 				// Button block: форма Theme — класс из Codeweber_Options::style('button') для превью в редакторе
 				if ($block_name === 'button') {
 					$theme_btn = class_exists('\Codeweber_Options') ? trim(\Codeweber_Options::style('button')) : '';

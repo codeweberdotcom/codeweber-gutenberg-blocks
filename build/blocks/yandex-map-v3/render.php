@@ -170,33 +170,7 @@ if ( $data_source === 'offices' ) {
 	}
 }
 
-// ── Editor placeholder (REST context = ServerSideRender preview) ─────────────
-
-if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
-	$marker_count = count( $markers );
-	$scheme_label = esc_html( $color_scheme );
-	$wrapper_attr = get_block_wrapper_attributes( array( 'class' => 'cwgb-yandex-map-v3-block' . ( $block_class ? ' ' . esc_attr( $block_class ) : '' ) ) );
-	echo '<div ' . $wrapper_attr . '>';
-	echo '<div style="'
-		. 'height:' . esc_attr( $height ) . 'px;'
-		. 'border-radius:' . esc_attr( $border_radius ) . 'px;'
-		. 'background:#e8eaed;'
-		. 'display:flex;flex-direction:column;align-items:center;justify-content:center;'
-		. 'color:#666;font-family:sans-serif;gap:8px;">'
-		. '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="1.5">'
-		. '<path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>'
-		. '<circle cx="12" cy="9" r="2.5"/>'
-		. '</svg>'
-		. '<span style="font-size:13px;font-weight:600;">Yandex Map v3</span>'
-		. '<span style="font-size:12px;color:#999;">'
-		. esc_html( sprintf( '%s · %dpx · %d markers', $scheme_label, $height, $marker_count ) )
-		. '</span>'
-		. '</div>';
-	echo '</div>';
-	return;
-}
-
-// ── Frontend render via theme's render_map() ─────────────────────────────────
+// ── Render via theme's render_map() (frontend and ServerSideRender preview) ──
 
 $map_args = array(
 	'api_version'         => 3,

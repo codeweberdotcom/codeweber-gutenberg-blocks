@@ -99,16 +99,15 @@ foreach ($offcanvas_element_ids as $key) {
 							$border_radius_px = 12;
 						}
 						$args = array(
-							'map_id'   => $map_id,
-							'center'   => $center,
-							'zoom'     => $zoom_val,
-							'height'   => 200,
-							'width'    => '100%',
-							'border_radius' => $border_radius_px,
-							'show_sidebar' => false,
-							'show_route'   => false,
+							'api_version'    => 3,
+							'map_id'         => $map_id,
+							'center'         => $center,
+							'zoom'           => $zoom_val,
+							'height'         => 200,
+							'width'          => '100%',
+							'border_radius'  => $border_radius_px,
+							'show_sidebar'   => false,
 							'auto_fit_bounds' => false,
-							'lazy_load'     => false,
 						);
 						$markers = array(array(
 							'latitude'  => $center[0],
@@ -118,14 +117,12 @@ foreach ($offcanvas_element_ids as $key) {
 						$out = $yandex_maps->render_map($args, $markers);
 					}
 				}
-				// Fallback: инлайн-карта, если класс темы недоступен
+				// Fallback: inline v3 map when theme class is unavailable
 				if ($out === '' && !empty($coordinates) && !empty($yandex_api_key)) {
 					$map_id = 'cwgb-offcanvas-map-simple-' . str_replace(array('.', ' '), '', uniqid('', true));
 					$zoom_val = (int) $zoom_level;
-					if ($zoom_val < 1) {
-						$zoom_val = 10;
-					}
-					$api_url = 'https://api-maps.yandex.ru/2.1/?apikey=' . esc_attr($yandex_api_key) . '&lang=ru_RU';
+					if ($zoom_val < 1) { $zoom_val = 10; }
+					$api_url = 'https://api-maps.yandex.ru/v3/?apikey=' . esc_attr($yandex_api_key) . '&lang=ru_RU';
 					$out = '<div id="' . esc_attr($map_id) . '" style="width: 100%; height: 200px;"></div>';
 					$out .= '<script>(function() {
 	var mapId = ' . wp_json_encode($map_id) . ';
@@ -133,66 +130,48 @@ foreach ($offcanvas_element_ids as $key) {
 	var zoom = ' . $zoom_val . ';
 	var apiUrl = ' . wp_json_encode($api_url) . ';
 	var initialized = false;
-	var mapInstance = null;
 	function initOne() {
 		if (initialized) return;
-		if (typeof ymaps === "undefined") return;
-		ymaps.ready(function() {
+		if (typeof ymaps3 === "undefined") return;
+		ymaps3.ready.then(function() {
 			if (initialized) return;
 			var el = document.getElementById(mapId);
 			if (!el) return;
 			try {
-				var coords = coordsStr.split(",").map(function(c) { return parseFloat(c.trim()); });
-				mapInstance = new ymaps.Map(mapId, { center: coords, zoom: zoom });
-				mapInstance.geoObjects.add(new ymaps.Placemark(coords));
+				var p = coordsStr.split(",").map(function(c) { return parseFloat(c.trim()); });
+				var lat = p[0] || 55.76, lng = p[1] || 37.64;
+				var map = new ymaps3.YMap(el, { location: { center: [lng, lat], zoom: zoom } });
+				map.addChild(new ymaps3.YMapDefaultSchemeLayer());
+				map.addChild(new ymaps3.YMapDefaultFeaturesLayer());
+				var markerEl = document.createElement("div");
+				markerEl.style.cssText = "width:14px;height:14px;border-radius:50%;background:#d63638;border:2px solid #fff;transform:translate(-50%,-50%)";
+				map.addChild(new ymaps3.YMapMarker({ coordinates: [lng, lat] }, markerEl));
 				initialized = true;
 			} catch (err) {}
 		});
 	}
-	function fitMapIfNeeded() {
-		if (mapInstance && mapInstance.container && mapInstance.container.fitToViewport) {
-			try { mapInstance.container.fitToViewport(); } catch (e) {}
-		}
-	}
 	function run() {
-		if (typeof ymaps !== "undefined") { initOne(); return; }
-		if (document.querySelector(\'script[src*="api-maps.yandex.ru"]\')) {
-			var t = setInterval(function() { if (typeof ymaps !== "undefined") { clearInterval(t); initOne(); } }, 50);
+		if (typeof ymaps3 !== "undefined") { initOne(); return; }
+		if (document.querySelector(\'script[src*="api-maps.yandex.ru/v3"]\')) {
+			var t = setInterval(function() { if (typeof ymaps3 !== "undefined") { clearInterval(t); initOne(); } }, 50);
 			return;
 		}
 		var s = document.createElement("script"); s.src = apiUrl;
-		s.onload = initOne;
+		s.onload = function() { if (typeof ymaps3 !== "undefined" && ymaps3.ready) { ymaps3.ready.then(initOne); } };
 		s.onerror = function() {};
 		document.head.appendChild(s);
 	}
 	function scheduleRun() {
 		var el = document.getElementById(mapId);
 		var offcanvas = el && el.closest ? el.closest(".offcanvas") : null;
-		function doRun() {
-			if (initialized) return;
-			setTimeout(function() { run(); }, 50);
-		}
 		if (offcanvas) {
-			function onOffcanvasShown() {
-				doRun();
-				setTimeout(fitMapIfNeeded, 100);
-			}
 			offcanvas.addEventListener("shown.bs.offcanvas", function onShown() {
 				offcanvas.removeEventListener("shown.bs.offcanvas", onShown);
-				onOffcanvasShown();
+				setTimeout(run, 50);
 			});
 			if (offcanvas.classList && offcanvas.classList.contains("show")) {
-				onOffcanvasShown();
-			} else if (typeof MutationObserver !== "undefined") {
-				var obs = new MutationObserver(function() {
-					if (offcanvas.classList && offcanvas.classList.contains("show")) {
-						obs.disconnect();
-						onOffcanvasShown();
-					}
-				});
-				obs.observe(offcanvas, { attributes: true, attributeFilter: ["class"] });
+				setTimeout(run, 50);
 			}
-			setTimeout(function() { doRun(); setTimeout(fitMapIfNeeded, 300); }, 150);
 		} else {
 			if (document.readyState === "loading") {
 				document.addEventListener("DOMContentLoaded", run);

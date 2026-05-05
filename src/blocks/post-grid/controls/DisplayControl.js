@@ -112,18 +112,20 @@ export const DisplayControl = ({ attributes, setAttributes }) => {
 					'codeweber-gutenberg-blocks'
 				)}
 			/>
-			<RangeControl
-				label={__('Excerpt Length', 'codeweber-gutenberg-blocks')}
-				value={typeof excerptLength === 'number' ? excerptLength : 20}
-				onChange={(value) => setAttributes({ excerptLength: value })}
-				min={0}
-				max={100}
-				step={1}
-				help={__(
-					'Maximum excerpt words (0 = no limit).',
-					'codeweber-gutenberg-blocks'
-				)}
-			/>
+			{!!showExcerpt && (
+				<RangeControl
+					label={__('Excerpt Length', 'codeweber-gutenberg-blocks')}
+					value={typeof excerptLength === 'number' ? excerptLength : 20}
+					onChange={(value) => setAttributes({ excerptLength: value })}
+					min={0}
+					max={100}
+					step={1}
+					help={__(
+						'Maximum excerpt words (0 = no limit).',
+						'codeweber-gutenberg-blocks'
+					)}
+				/>
+			)}
 
 			<div
 				style={{

@@ -1093,10 +1093,22 @@ class LoadMoreAPI {
 				];
 			}
 			
+			// For product+shop* templates the card already contains its own col wrapper
+			// via $GLOBALS['cw_shop_col_class'] — same pattern as render.php.
+			$is_wc_shop_template = ($post_type === 'product' && strpos($template, 'shop') === 0);
+			if ($is_wc_shop_template && !empty($col_classes)) {
+				$GLOBALS['cw_shop_col_class'] = $col_classes;
+			}
+
 			// В режиме Swiper (slider) НИКОГДА не добавляем обертку
 			$html = cw_render_post_card($post, $template, $display_settings, $template_args);
-			// Добавляем обертку для grid режима (не swiper)
-			if (!$is_swiper) {
+
+			if ($is_wc_shop_template) {
+				unset($GLOBALS['cw_shop_col_class']);
+			}
+
+			// Добавляем обертку для grid режима (не swiper, и не для WC-shop шаблонов)
+			if (!$is_swiper && !$is_wc_shop_template) {
 				// Для classic grid добавляем обертку с col-* классами
 				if ($grid_type === 'classic' && !empty($col_classes)) {
 					$html = '<div class="' . esc_attr($col_classes) . '">' . $html . '</div>';
@@ -1106,7 +1118,7 @@ class LoadMoreAPI {
 					$html = '<div class="col">' . $html . '</div>';
 				}
 			}
-			
+
 			return $html;
 		}
 		

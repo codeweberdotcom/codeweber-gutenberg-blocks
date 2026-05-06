@@ -72,10 +72,11 @@ const TabPanelEdit = ({ attributes, setAttributes, context, clientId }) => {
 	);
 
 	const isActive = ownIndex === activeTabIndex;
-	const blockProps = useBlockProps({
-		className: 'cwgb-tab-panel-editor',
-		style: isActive ? {} : { display: 'none' },
-	});
+
+	// Keep display:none off the useBlockProps wrapper — Gutenberg needs the
+	// wrapper always in the DOM to track inner blocks correctly.
+	// Hide the inner content instead so the block itself stays registered.
+	const blockProps = useBlockProps({ className: 'cwgb-tab-panel-editor' });
 
 	return (
 		<>
@@ -100,17 +101,22 @@ const TabPanelEdit = ({ attributes, setAttributes, context, clientId }) => {
 			</InspectorControls>
 
 			<div {...blockProps}>
-				<div className="cwgb-tab-panel-label">
-					{tabIcon && <i className={tabIcon} />}
-					<span className="cwgb-tab-panel-label-text">
-						{tabTitle || __('Tab', 'codeweber-gutenberg-blocks')}
-					</span>
+				<div
+					className="cwgb-tab-panel-content"
+					style={isActive ? undefined : { display: 'none' }}
+				>
+					<div className="cwgb-tab-panel-label">
+						{tabIcon && <i className={tabIcon} />}
+						<span className="cwgb-tab-panel-label-text">
+							{tabTitle || __('Tab', 'codeweber-gutenberg-blocks')}
+						</span>
+					</div>
+					<InnerBlocks
+						allowedBlocks={ALLOWED_BLOCKS}
+						templateLock={false}
+						renderAppender={InnerBlocks.ButtonBlockAppender}
+					/>
 				</div>
-				<InnerBlocks
-					allowedBlocks={ALLOWED_BLOCKS}
-					templateLock={false}
-					renderAppender={InnerBlocks.ButtonBlockAppender}
-				/>
 			</div>
 		</>
 	);

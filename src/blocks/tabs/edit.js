@@ -12,6 +12,15 @@ import { useSelect, useDispatch, select } from '@wordpress/data';
 import { createBlock, parse } from '@wordpress/blocks';
 import { TabsSidebar } from './sidebar';
 
+// Stable references — must be outside the component so the array identity
+// never changes between renders. A new array on every render tricks Gutenberg
+// into thinking the template changed and resets inner blocks to the template.
+const TABS_ALLOWED_BLOCKS = ['codeweber-blocks/tab-panel'];
+const TABS_TEMPLATE = [
+	['codeweber-blocks/tab-panel', { tabTitle: 'Tab 1' }],
+	['codeweber-blocks/tab-panel', { tabTitle: 'Tab 2' }],
+];
+
 const TabsEdit = ({ attributes, setAttributes, clientId }) => {
 	const {
 		tabStyle,
@@ -164,14 +173,11 @@ const TabsEdit = ({ attributes, setAttributes, clientId }) => {
 					</li>
 				</ul>
 
-				{/* Tab Content — all panels stacked for editing */}
+				{/* Tab Content — one panel visible at a time */}
 				<div className="tab-content">
 					<InnerBlocks
-						allowedBlocks={['codeweber-blocks/tab-panel']}
-						template={[
-							['codeweber-blocks/tab-panel', { tabTitle: 'Tab 1' }],
-							['codeweber-blocks/tab-panel', { tabTitle: 'Tab 2' }],
-						]}
+						allowedBlocks={TABS_ALLOWED_BLOCKS}
+						template={TABS_TEMPLATE}
 						templateLock={false}
 						renderAppender={false}
 					/>

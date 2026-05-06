@@ -15,4 +15,10 @@ registerBlockType(metadata, {
 	edit: Edit,
 	save: Save,
 	title: __('Tab Panel', 'codeweber-gutenberg-blocks'),
+	deprecated: [
+		{
+			// v0.0: save returned null — inner blocks were not stored in DB
+			save: () => null,
+		},
+	],
 });

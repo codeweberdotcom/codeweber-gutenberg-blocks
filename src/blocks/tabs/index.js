@@ -22,5 +22,10 @@ registerBlockType(metadata, {
 		__('navigation', 'codeweber-gutenberg-blocks'),
 		__('nav', 'codeweber-gutenberg-blocks'),
 	],
-	deprecated: [],
+	deprecated: [
+		{
+			// v0.1: save returned null — inner blocks were not stored in DB
+			save: () => null,
+		},
+	],
 });

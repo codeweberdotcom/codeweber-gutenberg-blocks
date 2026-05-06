@@ -218,9 +218,9 @@ foreach ($wrapperAttrs as $key => $value) {
 					<?php endif; ?>
 					<span>
 						<?php if ($enableLinks && !empty($item['url'])) : ?>
-							<a href="<?php echo esc_url($item['url']); ?>"><?php echo ($use_alt_title && $mode === 'post') ? wp_kses_post($item['text']) : esc_html($item['text']); ?></a>
+							<a href="<?php echo esc_url($item['url']); ?>"><?php echo wp_kses_post($item['text']); ?></a>
 						<?php else : ?>
-							<?php echo ($use_alt_title && $mode === 'post') ? wp_kses_post($item['text']) : esc_html($item['text']); ?>
+							<?php echo wp_kses_post($item['text']); ?>
 						<?php endif; ?>
 					</span>
 				</li>

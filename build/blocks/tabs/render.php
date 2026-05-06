@@ -84,19 +84,21 @@ $wrapper_attributes = get_block_wrapper_attributes( $wrapper_attrs_extra );
 	<ul class="<?php echo esc_attr( implode( ' ', $nav_classes ) ); ?>" role="tablist">
 		<?php foreach ( $items as $index => $item ) : ?>
 			<?php
-			$item_id    = isset( $item['id'] ) ? $item['id'] : '';
-			$item_title = isset( $item['title'] ) ? $item['title'] : '';
-			$item_icon  = isset( $item['icon'] ) ? $item['icon'] : '';
-			$is_active  = 0 === $index;
+			$item_id      = isset( $item['id'] ) ? $item['id'] : '';
+			$item_id_html = $tabs_id . '-' . $item_id;
+			$item_title   = isset( $item['title'] ) ? $item['title'] : '';
+			$item_icon    = isset( $item['icon'] ) ? $item['icon'] : '';
+			$is_active    = 0 === $index;
 			?>
-			<li class="nav-item">
+			<li class="nav-item" role="presentation">
 				<a
 					class="nav-link<?php echo $is_active ? ' active' : ''; ?>"
 					data-bs-toggle="tab"
-					href="#<?php echo esc_attr( $item_id ); ?>"
+					href="#<?php echo esc_attr( $item_id_html ); ?>"
 					role="tab"
 					aria-selected="<?php echo $is_active ? 'true' : 'false'; ?>"
-					aria-controls="<?php echo esc_attr( $item_id ); ?>"
+					aria-controls="<?php echo esc_attr( $item_id_html ); ?>"
+					<?php echo ! $is_active ? 'tabindex="-1"' : ''; ?>
 				>
 					<?php if ( $item_icon ) : ?>
 						<i class="<?php echo esc_attr( $item_icon ); ?>" style="margin-right:<?php echo $item_title ? '0.5rem' : '0'; ?>"></i>
@@ -110,8 +112,9 @@ $wrapper_attributes = get_block_wrapper_attributes( $wrapper_attrs_extra );
 	<div class="tab-content">
 		<?php foreach ( $items as $index => $item ) : ?>
 			<?php
-			$item_id   = isset( $item['id'] ) ? $item['id'] : '';
-			$is_active = 0 === $index;
+			$item_id      = isset( $item['id'] ) ? $item['id'] : '';
+			$item_id_html = $tabs_id . '-' . $item_id;
+			$is_active    = 0 === $index;
 
 			$pane_classes = array( 'tab-pane', 'fade' );
 			if ( $is_active ) {
@@ -152,9 +155,9 @@ $wrapper_attributes = get_block_wrapper_attributes( $wrapper_attrs_extra );
 			?>
 			<div
 				class="<?php echo esc_attr( implode( ' ', $pane_classes ) ); ?>"
-				id="<?php echo esc_attr( $item_id ); ?>"
+				id="<?php echo esc_attr( $item_id_html ); ?>"
 				role="tabpanel"
-				aria-labelledby="tab-<?php echo esc_attr( $item_id ); ?>"
+				aria-labelledby="tab-<?php echo esc_attr( $item_id_html ); ?>"
 			>
 				<?php
 				// $tab_html is either from do_blocks() or wp_kses_post() — both safe

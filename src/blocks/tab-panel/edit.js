@@ -6,6 +6,7 @@ import { useBlockProps, InnerBlocks, InspectorControls } from '@wordpress/block-
 import { PanelBody, TextControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { useEffect } from '@wordpress/element';
+import { useSelect } from '@wordpress/data';
 
 const ALLOWED_BLOCKS = [
 	'core/paragraph',
@@ -46,8 +47,9 @@ const ALLOWED_BLOCKS = [
 	'codeweber-blocks/tabs',
 ];
 
-const TabPanelEdit = ({ attributes, setAttributes }) => {
+const TabPanelEdit = ({ attributes, setAttributes, context, clientId }) => {
 	const { tabTitle, tabIcon, panelId } = attributes;
+	const activeTabIndex = context['codeweber/activeTabIndex'] ?? 0;
 
 	// Generate stable panelId once
 	useEffect(() => {
@@ -57,7 +59,23 @@ const TabPanelEdit = ({ attributes, setAttributes }) => {
 		}
 	}, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-	const blockProps = useBlockProps({ className: 'cwgb-tab-panel-editor' });
+	// Find own index among siblings
+	const ownIndex = useSelect(
+		(select) => {
+			const { getBlockRootClientId, getBlocks } = select('core/block-editor');
+			const parentId = getBlockRootClientId(clientId);
+			if (!parentId) return 0;
+			const siblings = getBlocks(parentId);
+			return siblings.findIndex((b) => b.clientId === clientId);
+		},
+		[clientId]
+	);
+
+	const isActive = ownIndex === activeTabIndex;
+	const blockProps = useBlockProps({
+		className: 'cwgb-tab-panel-editor',
+		style: isActive ? {} : { display: 'none' },
+	});
 
 	return (
 		<>

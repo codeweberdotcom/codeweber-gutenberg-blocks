@@ -35,7 +35,8 @@
     }
   },
   "usesContext": [
-    "codeweber/tabsId"
+    "codeweber/tabsId",
+    "codeweber/activeTabIndex"
   ],
   "textdomain": "codeweber-gutenberg-blocks",
   "render": "file:./render.php",

@@ -121,6 +121,8 @@ const TabsEdit = ({ attributes, setAttributes, clientId }) => {
 		id: tabsId,
 	});
 
+	const { activeTab } = attributes;
+
 	return (
 		<>
 			<InspectorControls>
@@ -131,13 +133,15 @@ const TabsEdit = ({ attributes, setAttributes, clientId }) => {
 				{...blockProps}
 				{...(tabsData ? { 'data-codeweber': tabsData } : {})}
 			>
-				{/* Tab Navigation — visual preview built from inner blocks */}
+				{/* Tab Navigation — clickable, switches active panel in editor */}
 				<ul className={getNavClasses()} role="tablist">
 					{innerBlocks.map((block, index) => (
 						<li key={block.clientId} className="nav-item" role="presentation">
-							<span
-								className={`nav-link ${index === 0 ? 'active' : ''}`}
-								style={{ cursor: 'default', userSelect: 'none' }}
+							<button
+								type="button"
+								className={`nav-link ${index === activeTab ? 'active' : ''}`}
+								onClick={() => setAttributes({ activeTab: index })}
+								style={{ border: 'none', background: 'none' }}
 							>
 								{block.attributes.tabIcon && (
 									<i
@@ -146,7 +150,7 @@ const TabsEdit = ({ attributes, setAttributes, clientId }) => {
 									/>
 								)}
 								{block.attributes.tabTitle || `Tab ${index + 1}`}
-							</span>
+							</button>
 						</li>
 					))}
 					<li className="nav-item" style={{ display: 'flex', alignItems: 'center', marginLeft: '8px' }}>

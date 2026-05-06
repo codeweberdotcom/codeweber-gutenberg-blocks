@@ -28,7 +28,7 @@
 			"default": ""
 		}
 	},
-	"usesContext": ["codeweber/tabsId"],
+	"usesContext": ["codeweber/tabsId", "codeweber/activeTabIndex"],
 	"textdomain": "codeweber-gutenberg-blocks",
 	"render": "file:./render.php",
 	"editorScript": "file:./index.js",

@@ -18,7 +18,8 @@
     "anchor": true
   },
   "providesContext": {
-    "codeweber/tabsId": "tabsId"
+    "codeweber/tabsId": "tabsId",
+    "codeweber/activeTabIndex": "activeTab"
   },
   "attributes": {
     "anchor": {

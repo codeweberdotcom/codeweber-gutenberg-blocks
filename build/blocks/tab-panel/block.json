@@ -1,0 +1,44 @@
+{
+  "apiVersion": 3,
+  "name": "codeweber-blocks/tab-panel",
+  "version": "0.1.0",
+  "title": "Tab Panel",
+  "category": "codeweber-gutenberg-elements",
+  "parent": [
+    "codeweber-blocks/tabs"
+  ],
+  "icon": "table-row-after",
+  "description": "A single tab panel inside a Tabs block.",
+  "keywords": [
+    "tab",
+    "panel",
+    "content"
+  ],
+  "supports": {
+    "html": false,
+    "customClassName": false,
+    "inserter": false,
+    "reusable": false
+  },
+  "attributes": {
+    "tabTitle": {
+      "type": "string",
+      "default": "Tab"
+    },
+    "tabIcon": {
+      "type": "string",
+      "default": ""
+    },
+    "panelId": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "usesContext": [
+    "codeweber/tabsId"
+  ],
+  "textdomain": "codeweber-gutenberg-blocks",
+  "render": "file:./render.php",
+  "editorScript": "file:./index.js",
+  "style": "file:./style-index.css"
+}

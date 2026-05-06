@@ -1,7 +1,7 @@
 {
 	"apiVersion": 3,
 	"name": "codeweber-blocks/tabs",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"title": "Tabs",
 	"category": "codeweber-gutenberg-elements",
 	"icon": "admin-page",
@@ -16,6 +16,9 @@
 		"html": false,
 		"customClassName": true,
 		"anchor": true
+	},
+	"providesContext": {
+		"codeweber/tabsId": "tabsId"
 	},
 	"attributes": {
 		"anchor": {
@@ -38,25 +41,6 @@
 			"type": "boolean",
 			"default": false
 		},
-		"activeTab": {
-			"type": "number",
-			"default": 0
-		},
-		"items": {
-			"type": "array",
-			"default": [
-				{
-					"id": "",
-					"title": "Tab 1",
-					"icon": ""
-				},
-				{
-					"id": "",
-					"title": "Tab 2",
-					"icon": ""
-				}
-			]
-		},
 		"tabsId": {
 			"type": "string",
 			"default": ""
@@ -69,9 +53,17 @@
 			"type": "string",
 			"default": ""
 		},
+		"items": {
+			"type": "array",
+			"default": []
+		},
 		"innerBlocksByTab": {
 			"type": "object",
 			"default": {}
+		},
+		"activeTab": {
+			"type": "number",
+			"default": 0
 		}
 	},
 	"textdomain": "codeweber-gutenberg-blocks",

@@ -286,6 +286,7 @@ class Plugin {
 		'image-simple',
 		'post-grid',
 		'tabs',
+		'tab-panel',
 		'tables',
 		'tabulator',
 		'label-plus',

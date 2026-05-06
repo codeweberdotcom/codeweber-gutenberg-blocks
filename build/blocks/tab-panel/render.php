@@ -21,10 +21,14 @@ $panel_id = isset( $attributes['panelId'] ) && $attributes['panelId']
 $panel_id_html = $tabs_id . '-' . $panel_id;
 
 // Determine if this is the first panel within this tabs block (active).
-static $panel_counters = [];
-$count                       = isset( $panel_counters[ $tabs_id ] ) ? $panel_counters[ $tabs_id ] : 0;
-$is_active                   = ( 0 === $count );
-$panel_counters[ $tabs_id ]  = $count + 1;
+// Uses a global (not static) because render.php is include'd each call — statics don't persist.
+global $cwgb_tab_panel_counters;
+if ( ! isset( $cwgb_tab_panel_counters ) ) {
+	$cwgb_tab_panel_counters = [];
+}
+$count                              = isset( $cwgb_tab_panel_counters[ $tabs_id ] ) ? $cwgb_tab_panel_counters[ $tabs_id ] : 0;
+$is_active                          = ( 0 === $count );
+$cwgb_tab_panel_counters[ $tabs_id ] = $count + 1;
 
 $classes = 'tab-pane fade' . ( $is_active ? ' active show' : '' );
 

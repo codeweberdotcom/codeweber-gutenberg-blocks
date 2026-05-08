@@ -77,6 +77,10 @@ export default function Save({ attributes }) {
 		loadMoreButtonSize,
 		loadMoreButtonStyle,
 		imageRenderType = 'img',
+		animationEnabled,
+		animationType,
+		animationDuration,
+		animationDelay,
 	} = attributes;
 
 	// Функция для получения классов контейнера
@@ -523,14 +527,27 @@ export default function Save({ attributes }) {
 		</div>
 	) : null;
 
+	const wrapAnimation = (el) => {
+		if (animationEnabled && animationType) {
+			return (
+				<span
+					data-cue={animationType}
+					{...(animationDuration && { 'data-duration': animationDuration })}
+					{...(animationDelay && { 'data-delay': animationDelay })}
+				>
+					{el}
+				</span>
+			);
+		}
+		return el;
+	};
+
 	// Если нужно убрать обертку (background режим), возвращаем контент напрямую
 	if (shouldRemoveWrapper) {
-		if ( hiddenIframeEl ) {
-			return <>{ hiddenIframeEl }{ content }</>;
-		}
-		return content;
+		const inner = hiddenIframeEl ? <>{ hiddenIframeEl }{ content }</> : content;
+		return wrapAnimation(inner);
 	}
 
 	// Иначе возвращаем с оберткой
-	return <div {...blockProps}>{ hiddenIframeEl }{ content }</div>;
+	return wrapAnimation(<div {...blockProps}>{ hiddenIframeEl }{ content }</div>);
 }

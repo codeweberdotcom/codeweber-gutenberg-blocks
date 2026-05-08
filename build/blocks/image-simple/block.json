@@ -487,6 +487,22 @@
     "imageRenderType": {
       "type": "string",
       "default": "img"
+    },
+    "animationEnabled": {
+      "type": "boolean",
+      "default": false
+    },
+    "animationType": {
+      "type": "string",
+      "default": ""
+    },
+    "animationDuration": {
+      "type": "number",
+      "default": 800
+    },
+    "animationDelay": {
+      "type": "number",
+      "default": 0
     }
   }
 }

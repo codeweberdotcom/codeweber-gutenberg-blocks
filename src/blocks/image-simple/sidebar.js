@@ -1,7 +1,7 @@
 import { InspectorControls } from '@wordpress/block-editor';
 import { TabPanel, PanelBody, ButtonGroup } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import { Icon, image, grid, cog, starFilled, link } from '@wordpress/icons';
+import { Icon, image, grid, cog, starFilled, link, update } from '@wordpress/icons';
 import { ImageControl } from '../../components/image/ImageControl';
 import { LayoutControl } from './controls/LayoutControl';
 import { LightboxControl } from '../../components/lightbox/LightboxControl';
@@ -10,6 +10,7 @@ import { BlockMetaFields } from '../../components/block-meta/BlockMetaFields';
 import { ImageHoverControl } from '../../components/image-hover/ImageHoverControl';
 import { LoadMoreControl } from '../../components/load-more';
 import { LinkTypeSelector } from '../../utilities/link_type';
+import { AnimationControl } from '../../components/animation/Animation';
 
 // Tab icon with native title tooltip
 const TabIcon = ({ icon, label }) => (
@@ -60,6 +61,15 @@ export const ImageSimpleSidebar = ({ attributes, setAttributes }) => {
 				<TabIcon
 					icon={link}
 					label={__('Link', 'codeweber-gutenberg-blocks')}
+				/>
+			),
+		},
+		{
+			name: 'animation',
+			title: (
+				<TabIcon
+					icon={update}
+					label={__('Animation', 'codeweber-gutenberg-blocks')}
 				/>
 			),
 		},
@@ -202,6 +212,16 @@ export const ImageSimpleSidebar = ({ attributes, setAttributes }) => {
 								attributes={attributes}
 								setAttributes={setAttributes}
 							/>
+						)}
+
+						{/* ANIMATION TAB */}
+						{tab.name === 'animation' && (
+							<PanelBody>
+								<AnimationControl
+									attributes={attributes}
+									setAttributes={setAttributes}
+								/>
+							</PanelBody>
 						)}
 
 						{/* SETTINGS TAB */}

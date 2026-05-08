@@ -337,7 +337,7 @@ export const IconControl = ({
 					label={__('Size (px)', 'codeweber-gutenberg-blocks')}
 					value={customSvgSize || 48}
 					min={16}
-					max={512}
+					max={2054}
 					step={2}
 					allowReset
 					resetFallbackValue={48}

@@ -530,13 +530,13 @@ export default function Save({ attributes }) {
 	const wrapAnimation = (el) => {
 		if (animationEnabled && animationType) {
 			return (
-				<span
+				<div
 					data-cue={animationType}
 					{...(animationDuration && { 'data-duration': animationDuration })}
 					{...(animationDelay && { 'data-delay': animationDelay })}
 				>
 					{el}
-				</span>
+				</div>
 			);
 		}
 		return el;

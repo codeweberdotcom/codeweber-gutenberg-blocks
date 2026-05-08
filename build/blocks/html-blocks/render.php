@@ -47,12 +47,11 @@ if (!$html_block_post || $html_block_post->post_type !== 'html_blocks' || $html_
     return;
 }
 
-// Получаем контент поста без обработки (выводим HTML как есть).
-// Raw output is intentional: html_blocks CPT is admin-controlled and designed
-// for embedding arbitrary HTML (tracking codes, custom scripts, embeds).
-// WordPress already filters post_content on save based on user capability
-// (users without unfiltered_html have scripts stripped automatically).
-$content = $html_block_post->post_content;
+// Run post_content through do_blocks() so dynamic blocks (form-selector,
+// section, columns, etc.) get their render callbacks invoked and block
+// comments are stripped from the output.
+// Plain HTML (tracking codes, scripts, embeds) passes through unchanged.
+$content = do_blocks( wp_unslash( $html_block_post->post_content ) );
 
 $html_id = $anchor ?: $block_id;
 if ( $html_id || $block_class ) {
@@ -65,8 +64,8 @@ if ( $html_id || $block_class ) {
 	}
 	$wrapper_open .= '>';
 	echo $wrapper_open; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- built from escaped parts
-	echo wp_unslash( $content );
+	echo $content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- processed by do_blocks
 	echo '</div>';
 } else {
-	echo wp_unslash( $content );
+	echo $content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- processed by do_blocks
 }

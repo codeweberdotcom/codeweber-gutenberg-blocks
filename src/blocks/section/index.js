@@ -75,11 +75,11 @@ registerBlockType( metadata, {
 	deprecated: [
 		{
 			// Hardcoded poster path instead of backgroundVideoPosterUrl attribute
-			attributes: {
-				...metadata.attributes,
-				backgroundVideoPosterId: undefined,
-				backgroundVideoPosterUrl: undefined,
-			},
+			attributes: Object.fromEntries(
+				Object.entries( metadata.attributes ).filter(
+					( [ key ] ) => key !== 'backgroundVideoPosterId' && key !== 'backgroundVideoPosterUrl'
+				)
+			),
 			save( { attributes } ) {
 				const {
 					backgroundType, backgroundImageUrl, backgroundPatternUrl,

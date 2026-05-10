@@ -53,6 +53,14 @@
 			"type": "string",
 			"default": ""
 		},
+		"backgroundVideoPosterId": {
+			"type": "number",
+			"default": 0
+		},
+		"backgroundVideoPosterUrl": {
+			"type": "string",
+			"default": ""
+		},
 		"textColor": {
 			"type": "string",
 			"default": "none"

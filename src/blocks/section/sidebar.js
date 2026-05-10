@@ -60,6 +60,8 @@ export const SectionSidebar = ({ attributes, setAttributes }) => {
 		backgroundSize,
 		backgroundVideoId,
 		backgroundVideoUrl,
+		backgroundVideoPosterId,
+		backgroundVideoPosterUrl,
 		textColor,
 		backgroundOverlay,
 		backgroundPatternUrl,
@@ -223,6 +225,27 @@ export const SectionSidebar = ({ attributes, setAttributes }) => {
 		}
 	}, [backgroundVideoId]);
 
+	const [posterSize, setPosterSize] = useState('');
+
+	useEffect(() => {
+		if (backgroundVideoPosterId && backgroundVideoPosterId > 0) {
+			wp.apiFetch({ path: `/wp/v2/media/${backgroundVideoPosterId}`, method: 'GET' })
+				.then((attachment) => {
+					if (attachment?.media_details?.filesize) {
+						const bytes = attachment.media_details.filesize;
+						setPosterSize(bytes < 1024 * 1024
+							? (bytes / 1024).toFixed(1) + ' KB'
+							: (bytes / (1024 * 1024)).toFixed(1) + ' MB');
+					} else {
+						setPosterSize('');
+					}
+				})
+				.catch(() => setPosterSize(''));
+		} else {
+			setPosterSize('');
+		}
+	}, [backgroundVideoPosterId]);
+
 	const handleContainerChange = (key, value) => {
 		setAttributes({ [key]: value });
 	};
@@ -269,157 +292,270 @@ export const SectionSidebar = ({ attributes, setAttributes }) => {
 		};
 
 		return (
-			<div className="mb-3">
-				<div className="component-sidebar-title">
-					<label>
-						{__('Background Video', 'codeweber-gutenberg-blocks')}
-					</label>
-				</div>
-				{!backgroundVideoUrl && (
-					<MediaUploadCheck>
-						<MediaUpload
-							onSelect={(media) => {
-								setAttributes({
-									backgroundVideoId: media.id,
-									backgroundVideoUrl: media.url,
-								});
-							}}
-							allowedTypes={['video']}
-							value={backgroundVideoId}
-							render={({ open }) => (
-								<div
-									className="video-placeholder"
-									onClick={open}
-									style={{
-										width: '100%',
-										height: '80px',
-										backgroundColor: '#f0f0f0',
-										border: '2px dashed #ccc',
-										borderRadius: '4px',
-										display: 'flex',
-										alignItems: 'center',
-										justifyContent: 'center',
-										cursor: 'pointer',
-										transition: 'all 0.2s ease',
-									}}
-								>
+			<>
+				<div className="mb-3">
+					<div className="component-sidebar-title">
+						<label>
+							{__('Background Video', 'codeweber-gutenberg-blocks')}
+						</label>
+					</div>
+					{!backgroundVideoUrl && (
+						<MediaUploadCheck>
+							<MediaUpload
+								onSelect={(media) => {
+									setAttributes({
+										backgroundVideoId: media.id,
+										backgroundVideoUrl: media.url,
+									});
+								}}
+								allowedTypes={['video']}
+								value={backgroundVideoId}
+								render={({ open }) => (
 									<div
+										className="video-placeholder"
+										onClick={open}
 										style={{
-											textAlign: 'center',
-											color: '#666',
+											width: '100%',
+											height: '80px',
+											backgroundColor: '#f0f0f0',
+											border: '2px dashed #ccc',
+											borderRadius: '4px',
+											display: 'flex',
+											alignItems: 'center',
+											justifyContent: 'center',
+											cursor: 'pointer',
+											transition: 'all 0.2s ease',
 										}}
 									>
 										<div
 											style={{
-												fontSize: '20px',
-												marginBottom: '4px',
+												textAlign: 'center',
+												color: '#666',
 											}}
 										>
-											🎥
-										</div>
-										<div
-											style={{
-												fontSize: '12px',
-												fontWeight: '500',
-											}}
-										>
-											{__(
-												'Select Video',
-												'codeweber-gutenberg-blocks'
-											)}
+											<div
+												style={{
+													fontSize: '20px',
+													marginBottom: '4px',
+												}}
+											>
+												🎥
+											</div>
+											<div
+												style={{
+													fontSize: '12px',
+													fontWeight: '500',
+												}}
+											>
+												{__(
+													'Select Video',
+													'codeweber-gutenberg-blocks'
+												)}
+											</div>
 										</div>
 									</div>
-								</div>
-							)}
-						/>
-					</MediaUploadCheck>
-				)}
-				{backgroundVideoUrl && (
-					<div
-						style={{
-							marginTop: '12px',
-							marginBottom: '12px',
-							display: 'flex',
-							alignItems: 'center',
-							justifyContent: 'center',
-							minHeight: '80px',
-							backgroundColor: '#000',
-							border: '1px solid #ddd',
-							borderRadius: '4px',
-							overflow: 'hidden',
-							position: 'relative',
-							cursor: 'pointer',
-						}}
-						onClick={openMediaLibrary}
-					>
+								)}
+							/>
+						</MediaUploadCheck>
+					)}
+					{backgroundVideoUrl && (
 						<div
 							style={{
-								color: '#fff',
-								fontSize: '14px',
-								fontWeight: '500',
-								textAlign: 'center',
-								padding: '10px',
-							}}
-						>
-							🎥{' '}
-							{__(
-								'Video loaded',
-								'codeweber-gutenberg-blocks'
-							)}
-						</div>
-						{videoSize && (
-							<div
-								style={{
-									position: 'absolute',
-									bottom: '4px',
-									right: '4px',
-									backgroundColor: 'rgba(0, 0, 0, 0.7)',
-									color: '#fff',
-									padding: '2px 6px',
-									borderRadius: '3px',
-									fontSize: '10px',
-									fontWeight: '500',
-								}}
-							>
-								{videoSize}
-							</div>
-						)}
-						<div
-							style={{
-								position: 'absolute',
-								top: '4px',
-								right: '4px',
-								backgroundColor: 'rgba(220, 53, 69, 0.8)',
-								color: '#fff',
-								width: '20px',
-								height: '20px',
-								borderRadius: '50%',
+								marginTop: '12px',
+								marginBottom: '12px',
 								display: 'flex',
 								alignItems: 'center',
 								justifyContent: 'center',
+								minHeight: '80px',
+								backgroundColor: '#000',
+								border: '1px solid #ddd',
+								borderRadius: '4px',
+								overflow: 'hidden',
+								position: 'relative',
 								cursor: 'pointer',
-								fontSize: '12px',
 							}}
-							onClick={(e) => {
-								e.stopPropagation();
-								setAttributes({
-									backgroundVideoId: 0,
-									backgroundVideoUrl: '',
-								});
-							}}
-							title={__(
-								'Remove Video',
-								'codeweber-gutenberg-blocks'
-							)}
+							onClick={openMediaLibrary}
 						>
-							<i
-								className="uil uil-times"
-								style={{ margin: 0 }}
-							></i>
+							<div
+								style={{
+									color: '#fff',
+									fontSize: '14px',
+									fontWeight: '500',
+									textAlign: 'center',
+									padding: '10px',
+								}}
+							>
+								🎥{' '}
+								{__(
+									'Video loaded',
+									'codeweber-gutenberg-blocks'
+								)}
+							</div>
+							{videoSize && (
+								<div
+									style={{
+										position: 'absolute',
+										bottom: '4px',
+										right: '4px',
+										backgroundColor: 'rgba(0, 0, 0, 0.7)',
+										color: '#fff',
+										padding: '2px 6px',
+										borderRadius: '3px',
+										fontSize: '10px',
+										fontWeight: '500',
+									}}
+								>
+									{videoSize}
+								</div>
+							)}
+							<div
+								style={{
+									position: 'absolute',
+									top: '4px',
+									right: '4px',
+									backgroundColor: 'rgba(220, 53, 69, 0.8)',
+									color: '#fff',
+									width: '20px',
+									height: '20px',
+									borderRadius: '50%',
+									display: 'flex',
+									alignItems: 'center',
+									justifyContent: 'center',
+									cursor: 'pointer',
+									fontSize: '12px',
+								}}
+								onClick={(e) => {
+									e.stopPropagation();
+									setAttributes({
+										backgroundVideoId: 0,
+										backgroundVideoUrl: '',
+									});
+								}}
+								title={__(
+									'Remove Video',
+									'codeweber-gutenberg-blocks'
+								)}
+							>
+								<i
+									className="uil uil-times"
+									style={{ margin: 0 }}
+								></i>
+							</div>
 						</div>
+					)}
+				</div>
+
+				{/* Poster image picker — shown only when a video is selected */}
+				{backgroundVideoUrl && (
+					<div className="mb-3">
+						<div className="component-sidebar-title">
+							<label>
+								{__('Video Poster Image', 'codeweber-gutenberg-blocks')}
+							</label>
+						</div>
+						<MediaUploadCheck>
+							<MediaUpload
+								onSelect={(media) =>
+									setAttributes({
+										backgroundVideoPosterId: media.id,
+										backgroundVideoPosterUrl: media.url,
+									})
+								}
+								allowedTypes={['image']}
+								value={backgroundVideoPosterId}
+								render={({ open }) => (
+									<>
+										{!backgroundVideoPosterUrl && (
+											<div
+												onClick={open}
+												style={{
+													width: '100%',
+													height: '80px',
+													backgroundColor: '#f0f0f0',
+													border: '2px dashed #ccc',
+													borderRadius: '4px',
+													display: 'flex',
+													alignItems: 'center',
+													justifyContent: 'center',
+													cursor: 'pointer',
+												}}
+											>
+												<div style={{ textAlign: 'center', color: '#666' }}>
+													<div style={{ fontSize: '20px', marginBottom: '4px' }}>🖼️</div>
+													<div style={{ fontSize: '12px', fontWeight: '500' }}>
+														{__('Select Poster', 'codeweber-gutenberg-blocks')}
+													</div>
+												</div>
+											</div>
+										)}
+										{backgroundVideoPosterUrl && (
+											<div
+												onClick={open}
+												style={{
+													position: 'relative',
+													cursor: 'pointer',
+													borderRadius: '4px',
+													overflow: 'hidden',
+													border: '1px solid #ddd',
+												}}
+											>
+												<img
+													src={backgroundVideoPosterUrl}
+													alt=""
+													style={{ width: '100%', height: 'auto', display: 'block' }}
+												/>
+												{posterSize && (
+													<div
+														style={{
+															position: 'absolute',
+															bottom: '4px',
+															right: '4px',
+															backgroundColor: 'rgba(0,0,0,0.7)',
+															color: '#fff',
+															padding: '2px 6px',
+															borderRadius: '3px',
+															fontSize: '10px',
+														}}
+													>
+														{posterSize}
+													</div>
+												)}
+												<div
+													style={{
+														position: 'absolute',
+														top: '4px',
+														right: '4px',
+														backgroundColor: 'rgba(220,53,69,0.8)',
+														color: '#fff',
+														width: '20px',
+														height: '20px',
+														borderRadius: '50%',
+														display: 'flex',
+														alignItems: 'center',
+														justifyContent: 'center',
+														cursor: 'pointer',
+														fontSize: '12px',
+													}}
+													onClick={(e) => {
+														e.stopPropagation();
+														setAttributes({
+															backgroundVideoPosterId: 0,
+															backgroundVideoPosterUrl: '',
+														});
+													}}
+													title={__('Remove Poster', 'codeweber-gutenberg-blocks')}
+												>
+													<i className="uil uil-times" style={{ margin: 0 }}></i>
+												</div>
+											</div>
+										)}
+									</>
+								)}
+							/>
+						</MediaUploadCheck>
 					</div>
 				)}
-			</div>
+			</>
 		);
 	};
 

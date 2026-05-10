@@ -109,6 +109,7 @@ const SectionSave = ({ attributes }) => {
 		backgroundImageSize,
 		backgroundSize,
 		backgroundVideoUrl,
+		backgroundVideoPosterUrl,
 		backgroundPatternUrl,
 		backgroundOverlay,
 		textColor,
@@ -233,11 +234,7 @@ const SectionSave = ({ attributes }) => {
 			{backgroundType === 'video' ? (
 				<>
 					<video
-						poster={
-							backgroundVideoUrl
-								? `/wp-content/themes/codeweber/dist/assets/img/photos/movie2.jpg`
-								: undefined
-						}
+						poster={backgroundVideoPosterUrl || undefined}
 						src={backgroundVideoUrl}
 						autoPlay
 						loop

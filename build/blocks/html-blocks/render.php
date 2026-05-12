@@ -51,7 +51,7 @@ if (!$html_block_post || $html_block_post->post_type !== 'html_blocks' || $html_
 // section, columns, etc.) get their render callbacks invoked and block
 // comments are stripped from the output.
 // Plain HTML (tracking codes, scripts, embeds) passes through unchanged.
-$content = do_blocks( wp_unslash( $html_block_post->post_content ) );
+$content = do_blocks( $html_block_post->post_content );
 
 $html_id = $anchor ?: $block_id;
 if ( $html_id || $block_class ) {

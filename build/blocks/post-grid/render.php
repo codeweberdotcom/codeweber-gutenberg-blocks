@@ -308,7 +308,6 @@ if ( $source_type !== 'taxonomy' ) :
 
 	if ( $manual_items_mode ) {
 		$load_more_enable = false;
-		$enable_filter    = false;
 	} elseif ( $manual_mode && ! empty( $manual_post_ids ) ) {
 		$args = array(
 			'post_type'           => $post_type,
@@ -318,9 +317,16 @@ if ( $source_type !== 'taxonomy' ) :
 			'orderby'             => 'post__in',
 			'ignore_sticky_posts' => 1,
 		);
-		// Disable load-more and filter-bar in manual mode — not applicable.
 		$load_more_enable = false;
-		$enable_filter    = false;
+		// Apply active filter term on top of post__in — returns intersection.
+		if ( $enable_filter && $filter_taxonomy && $filter_active_term > 0 ) {
+			$args['tax_query'] = [ [
+				'taxonomy' => $filter_taxonomy,
+				'field'    => 'term_id',
+				'terms'    => [ $filter_active_term ],
+				'operator' => 'IN',
+			] ];
+		}
 	} else {
 		// Query posts
 		// Если Load More включен, запрашиваем только initialCount постов для начальной загрузки
@@ -370,6 +376,26 @@ if ( $source_type !== 'taxonomy' ) :
 	}
 
 $query = $manual_items_mode ? null : new WP_Query($args);
+
+// In manual mode, restrict filter terms to only those present in the selected posts.
+if ( $manual_mode && $enable_filter && $filter_taxonomy && taxonomy_exists( $filter_taxonomy ) ) {
+	$restrict_ids = $manual_items_mode
+		? array_values( array_filter(
+			array_map( function ( $i ) {
+				return ( isset( $i['type'] ) && $i['type'] === 'post' && isset( $i['id'] ) ) ? (int) $i['id'] : 0;
+			}, $manual_items ),
+			function ( $id ) { return $id > 0; }
+		) )
+		: $manual_post_ids;
+	if ( ! empty( $restrict_ids ) ) {
+		$manual_filter_terms = get_terms( [
+			'taxonomy'   => $filter_taxonomy,
+			'hide_empty' => false,
+			'object_ids' => $restrict_ids,
+		] );
+		$filter_terms = is_wp_error( $manual_filter_terms ) ? [] : $manual_filter_terms;
+	}
+}
 
 else :
 	$manual_mode       = false;
@@ -1294,6 +1320,8 @@ if ( $source_type === 'taxonomy' ) {
 				else :
 					$item_post_id = isset($item['id']) ? (int) $item['id'] : 0;
 					if ($item_post_id <= 0) continue;
+					// Skip post if active filter term doesn't match.
+					if ( $filter_active_term > 0 && $filter_taxonomy && ! has_term( $filter_active_term, $filter_taxonomy, $item_post_id ) ) continue;
 					$item_post = get_post($item_post_id);
 					if (!$item_post || $item_post->post_status !== 'publish') continue;
 					setup_postdata($item_post);

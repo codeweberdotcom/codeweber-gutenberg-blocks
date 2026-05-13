@@ -93,7 +93,7 @@
 - Изображение: `thumbnail_id` из term meta → `wp_get_attachment_image_src()`. Если нет — шаблон показывает **placeholder**: серый блок `min-height:220px` с иконкой `uil-image` и названием терма.
 - Layout (grid/swiper), col-классы, border-radius — те же, что в post-mode.
 - `return;` в конце taxonomy-ветки предотвращает исполнение post-render кода.
-- Load More, filter bar отключаются (`$load_more_enable = false`).
+- Load More отключается (`$load_more_enable = false`). Filter bar в taxonomy mode также отключён.
 
 **Editor preview:** в taxonomy mode используется `ServerSideRender` (так же, как для `product` и manual mode) — JS не умеет рендерить термы.
 
@@ -152,6 +152,8 @@ Display tab скрыт для `clients`.
 
 ### Filter
 Runtime-фильтр **над** сеткой — AJAX-фильтрация по таксономии.
+
+> **Manual mode**: filter bar поддерживается. Показываются только термины постов из ручного набора (`object_ids`). Для `manualItems`: `has_term()` проверяется per-item, html-блоки всегда рендерятся. Для legacy `post__in`: добавляется `tax_query` к WP_Query при активном фильтре.
 
 - **Enable Filter Bar** — основной toggle.
 - **Filter Taxonomy** — select из таксономий CPT (REST `/taxonomies/{post_type}`).

@@ -49,7 +49,7 @@ export const DisplayControl = ({ attributes, setAttributes }) => {
 						value={typeof excerptLength === 'number' ? excerptLength : 20}
 						onChange={(value) => setAttributes({ excerptLength: value })}
 						min={0}
-						max={100}
+						max={1000}
 						step={1}
 						help={__('0 = no limit.', 'codeweber-gutenberg-blocks')}
 					/>
@@ -118,7 +118,7 @@ export const DisplayControl = ({ attributes, setAttributes }) => {
 					value={typeof excerptLength === 'number' ? excerptLength : 20}
 					onChange={(value) => setAttributes({ excerptLength: value })}
 					min={0}
-					max={100}
+					max={1000}
 					step={1}
 					help={__(
 						'Maximum excerpt words (0 = no limit).',

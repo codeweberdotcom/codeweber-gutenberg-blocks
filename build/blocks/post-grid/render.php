@@ -871,11 +871,12 @@ if (!function_exists('render_post_grid_item')) {
 					'show_date'      => array_key_exists('showDate', $attributes)     ? (bool) $attributes['showDate']     : true,
 					'show_category'  => array_key_exists('showCategory', $attributes) ? (bool) $attributes['showCategory'] : true,
 					'show_comments'  => array_key_exists('showComments', $attributes) ? (bool) $attributes['showComments'] : true,
-					'show_excerpt'   => array_key_exists('showExcerpt', $attributes)  ? (bool) $attributes['showExcerpt']  : false,
-					'title_length'   => isset($attributes['titleLength'])   ? (int) $attributes['titleLength']   : 56,
-					'excerpt_length' => isset($attributes['excerptLength']) ? (int) $attributes['excerptLength'] : 20,
-					'title_tag'      => $title_tag,
-					'title_class'    => $title_class,
+					'show_excerpt'        => array_key_exists('showExcerpt', $attributes)  ? (bool) $attributes['showExcerpt']  : false,
+					'excerpt_hide_mobile' => ! empty( $attributes['excerptHideMobile'] ),
+					'title_length'        => isset($attributes['titleLength'])   ? (int) $attributes['titleLength']   : 56,
+					'excerpt_length'      => isset($attributes['excerptLength']) ? (int) $attributes['excerptLength'] : 20,
+					'title_tag'           => $title_tag,
+					'title_class'         => $title_class,
 				];
 
 				// Hover-классы для фигуры (зависят только от шаблона)
@@ -1061,13 +1062,14 @@ if ( $source_type === 'taxonomy' ) {
 	$use_theme_render = function_exists( 'cw_render_term_card' );
 
 	$term_display_settings = [
-		'show_title'     => array_key_exists( 'showTitle', $attributes ) ? (bool) $attributes['showTitle'] : true,
-		'show_excerpt'   => ! empty( $attributes['showExcerpt'] ),
-		'excerpt_length' => isset( $attributes['excerptLength'] ) ? (int) $attributes['excerptLength'] : 0,
-		'title_length'   => isset( $attributes['titleLength'] ) ? (int) $attributes['titleLength'] : 0,
-		'title_tag'      => $title_tag,
-		'title_class'    => $title_class,
-		'use_alt_title'  => ! empty( $attributes['useAltTitle'] ),
+		'show_title'          => array_key_exists( 'showTitle', $attributes ) ? (bool) $attributes['showTitle'] : true,
+		'show_excerpt'        => ! empty( $attributes['showExcerpt'] ),
+		'excerpt_hide_mobile' => ! empty( $attributes['excerptHideMobile'] ),
+		'excerpt_length'      => isset( $attributes['excerptLength'] ) ? (int) $attributes['excerptLength'] : 0,
+		'title_length'        => isset( $attributes['titleLength'] ) ? (int) $attributes['titleLength'] : 0,
+		'title_tag'           => $title_tag,
+		'title_class'         => $title_class,
+		'use_alt_title'       => ! empty( $attributes['useAltTitle'] ),
 	];
 	$term_template_args = [
 		'image_size'      => $image_size,

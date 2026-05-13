@@ -345,6 +345,10 @@
       "type": "number",
       "default": 20
     },
+    "excerptHideMobile": {
+      "type": "boolean",
+      "default": false
+    },
     "showCardArrow": {
       "type": "boolean",
       "default": true

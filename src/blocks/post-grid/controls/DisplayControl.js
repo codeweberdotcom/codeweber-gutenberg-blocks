@@ -12,6 +12,7 @@ export const DisplayControl = ({ attributes, setAttributes }) => {
 		showCategory,
 		showComments,
 		showExcerpt,
+		excerptHideMobile,
 		titleLength,
 		excerptLength,
 		showCardArrow,
@@ -113,18 +114,25 @@ export const DisplayControl = ({ attributes, setAttributes }) => {
 				)}
 			/>
 			{!!showExcerpt && (
-				<RangeControl
-					label={__('Excerpt Length', 'codeweber-gutenberg-blocks')}
-					value={typeof excerptLength === 'number' ? excerptLength : 20}
-					onChange={(value) => setAttributes({ excerptLength: value })}
-					min={0}
-					max={1000}
-					step={1}
-					help={__(
-						'Maximum excerpt words (0 = no limit).',
-						'codeweber-gutenberg-blocks'
-					)}
-				/>
+				<>
+					<RangeControl
+						label={__('Excerpt Length', 'codeweber-gutenberg-blocks')}
+						value={typeof excerptLength === 'number' ? excerptLength : 20}
+						onChange={(value) => setAttributes({ excerptLength: value })}
+						min={0}
+						max={1000}
+						step={1}
+						help={__(
+							'Maximum excerpt words (0 = no limit).',
+							'codeweber-gutenberg-blocks'
+						)}
+					/>
+					<ToggleControl
+						label={__('Hide excerpt on mobile', 'codeweber-gutenberg-blocks')}
+						checked={!!excerptHideMobile}
+						onChange={(value) => setAttributes({ excerptHideMobile: value })}
+					/>
+				</>
 			)}
 
 			<div

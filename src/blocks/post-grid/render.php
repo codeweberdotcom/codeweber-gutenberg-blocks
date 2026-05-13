@@ -306,6 +306,26 @@ if ( $source_type !== 'taxonomy' ) :
 		: [];
 	$manual_items_mode = $manual_mode && ! empty( $manual_items );
 
+	// In manual mode, restrict filter terms to only those present in the selected posts.
+	if ( $manual_mode && $enable_filter && $filter_taxonomy && taxonomy_exists( $filter_taxonomy ) ) {
+		$restrict_ids = $manual_items_mode
+			? array_values( array_filter(
+				array_map( function ( $i ) {
+					return ( isset( $i['type'] ) && $i['type'] === 'post' && isset( $i['id'] ) ) ? (int) $i['id'] : 0;
+				}, $manual_items ),
+				function ( $id ) { return $id > 0; }
+			) )
+			: $manual_post_ids;
+		if ( ! empty( $restrict_ids ) ) {
+			$manual_filter_terms = get_terms( [
+				'taxonomy'   => $filter_taxonomy,
+				'hide_empty' => false,
+				'object_ids' => $restrict_ids,
+			] );
+			$filter_terms = is_wp_error( $manual_filter_terms ) ? [] : $manual_filter_terms;
+		}
+	}
+
 	if ( $manual_items_mode ) {
 		$load_more_enable = false;
 	} elseif ( $manual_mode && ! empty( $manual_post_ids ) ) {
@@ -376,26 +396,6 @@ if ( $source_type !== 'taxonomy' ) :
 	}
 
 $query = $manual_items_mode ? null : new WP_Query($args);
-
-// In manual mode, restrict filter terms to only those present in the selected posts.
-if ( $manual_mode && $enable_filter && $filter_taxonomy && taxonomy_exists( $filter_taxonomy ) ) {
-	$restrict_ids = $manual_items_mode
-		? array_values( array_filter(
-			array_map( function ( $i ) {
-				return ( isset( $i['type'] ) && $i['type'] === 'post' && isset( $i['id'] ) ) ? (int) $i['id'] : 0;
-			}, $manual_items ),
-			function ( $id ) { return $id > 0; }
-		) )
-		: $manual_post_ids;
-	if ( ! empty( $restrict_ids ) ) {
-		$manual_filter_terms = get_terms( [
-			'taxonomy'   => $filter_taxonomy,
-			'hide_empty' => false,
-			'object_ids' => $restrict_ids,
-		] );
-		$filter_terms = is_wp_error( $manual_filter_terms ) ? [] : $manual_filter_terms;
-	}
-}
 
 else :
 	$manual_mode       = false;

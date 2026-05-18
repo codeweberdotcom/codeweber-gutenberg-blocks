@@ -935,18 +935,30 @@
 	window.initFilePond = initFilePond;
 
 	// --- DIAGNOSTIC (temporary) ---
-	function diagnosePonds() {
-		var inputs = document.querySelectorAll('input[type="file"][data-filepond="true"]');
-		console.log('[FP-DIAG] inputs found:', inputs.length);
-		inputs.forEach(function(inp, i) {
+	function diagnosePonds(label) {
+		label = label || 'auto';
+		var roots = document.querySelectorAll('.filepond--root');
+		var allFpInputs = document.querySelectorAll('input[data-filepond]');
+		var fileInputs = document.querySelectorAll('input[type="file"][data-filepond="true"]');
+		console.log('[FP-DIAG:' + label + '] .filepond--root:', roots.length, '| input[data-filepond]:', allFpInputs.length, '| input[type=file][data-filepond=true]:', fileInputs.length);
+		allFpInputs.forEach(function(inp, i) {
 			var pond = inp.filepondInstance;
-			if (!pond) { console.log('[FP-DIAG] Pond', i, ': no instance, id=', inp.id); return; }
-			var files = pond.getFiles();
-			console.log('[FP-DIAG] Pond', i, '| id:', inp.id, '| allowMultiple:', inp.multiple, '| data-max-files:', inp.dataset.maxFiles, '| items:', files.length);
-			files.forEach(function(f, j) { console.log('  item', j, f.filename, 'status:', f.status); });
+			console.log('[FP-DIAG] input', i, '| type:', inp.type, '| id:', inp.id, '| data-filepond:', inp.getAttribute('data-filepond'), '| initialized:', inp.getAttribute('data-filepond-initialized'), '| hasPond:', !!pond);
+			if (pond) {
+				var files = pond.getFiles();
+				console.log('  pond items:', files.length, '| allowMultiple:', pond.allowMultiple, '| maxFiles:', pond.maxFiles);
+				files.forEach(function(f, j) { console.log('  item', j, f.filename, 'status:', f.status); });
+			}
 		});
+		if (typeof FilePond !== 'undefined' && FilePond.find) {
+			try {
+				var all = FilePond.find(document.body);
+				console.log('[FP-DIAG] FilePond.find(body):', all ? (Array.isArray(all) ? all.length : 1) : 0);
+			} catch(e) {}
+		}
 	}
-	setTimeout(diagnosePonds, 1000);
-	document.addEventListener('shown.bs.modal', function() { setTimeout(diagnosePonds, 300); });
+	setTimeout(function(){ diagnosePonds('load'); }, 1500);
+	document.addEventListener('shown.bs.modal', function() { setTimeout(function(){ diagnosePonds('modal'); }, 500); });
+	document.addEventListener('warning', function(e) { console.log('[FP-DIAG] warning event on document:', e); }, true);
 	// --- END DIAGNOSTIC ---
 })();

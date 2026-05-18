@@ -569,14 +569,15 @@
 							? filepondSettings.translations
 							: {};
 					if (error && error.body) {
+						var effectiveMaxFiles = config.maxFiles || (!config.allowMultiple ? 1 : 5);
 						if (error.body === 'Max files') {
 							message = translations.maxFiles
 								? translations.maxFiles.replace(
 										'%s',
-										config.maxFiles || 5
+										effectiveMaxFiles
 									)
 								: 'Максимальное количество файлов: ' +
-									(config.maxFiles || 5) +
+									effectiveMaxFiles +
 									'. Пожалуйста, удалите лишние файлы.';
 						} else if (error.body === 'File is too large') {
 							message = translations.fileTooLarge
@@ -690,14 +691,15 @@
 								filepondSettings.translations
 									? filepondSettings.translations
 									: {};
+							var effectiveMaxFiles2 = config.maxFiles || (!config.allowMultiple ? 1 : 5);
 							if (error.body === 'Max files') {
 								errorMessage = translations.maxFiles
 									? translations.maxFiles.replace(
 											'%s',
-											config.maxFiles || 5
+											effectiveMaxFiles2
 										)
 									: 'Максимальное количество файлов: ' +
-										(config.maxFiles || 5);
+										effectiveMaxFiles2;
 							} else if (
 								error.body === 'File is too large' ||
 								error.body === 'File too large'
@@ -929,6 +931,19 @@
 	// Also listen for modal events (Bootstrap)
 	document.addEventListener('shown.bs.modal', function () {
 		initFilePond();
+	});
+
+	// Clear FilePond files when modal closes (so reopened modal starts with empty ponds)
+	document.addEventListener('hidden.bs.modal', function (e) {
+		var modal = e.target;
+		if (!modal) return;
+		modal.querySelectorAll('input[type="file"][data-filepond="true"]').forEach(function (input) {
+			try {
+				if (input.filepondInstance && typeof input.filepondInstance.removeFiles === 'function') {
+					input.filepondInstance.removeFiles();
+				}
+			} catch (err) { /* ignore */ }
+		});
 	});
 
 	// Export initFilePond globally for re-initialization after form submission

@@ -938,43 +938,27 @@
 	function diagnosePonds(label) {
 		label = label || 'auto';
 		var roots = document.querySelectorAll('.filepond--root');
-		var allInputs = document.querySelectorAll('input[type="file"]');
-		console.log('[FP-DIAG:' + label + '] .filepond--root:', roots.length, '| input[type=file] total:', allInputs.length);
-
-		// Check each filepond root
-		roots.forEach(function(root, i) {
-			console.log('[FP-DIAG] root', i, 'id:', root.id);
-			// Find input inside root
-			var inp = root.querySelector('input[type="file"]') || root.querySelector('input');
-			if (inp) {
-				console.log('  inner input: type=' + inp.type + ' id=' + inp.id + ' data-filepond=' + inp.getAttribute('data-filepond'));
-			}
-			// Try FilePond.find on the root
-			if (typeof FilePond !== 'undefined' && FilePond.find) {
-				try {
-					var pond = FilePond.find(root);
-					console.log('  FilePond.find(root):', pond ? 'found' : 'null');
-					if (pond) {
-						var files = pond.getFiles ? pond.getFiles() : [];
-						console.log('  pond: allowMultiple=' + pond.allowMultiple + ' maxFiles=' + pond.maxFiles + ' items=' + files.length);
-					}
-				} catch(e) { console.log('  FilePond.find error:', e); }
-			}
-			// Check for filepondInstance on root or its input
-			if (root.filepondInstance) console.log('  root.filepondInstance found');
-			if (inp && inp.filepondInstance) {
-				var p2 = inp.filepondInstance;
-				var f2 = p2.getFiles ? p2.getFiles() : [];
-				console.log('  inp.filepondInstance: allowMultiple=' + p2.allowMultiple + ' maxFiles=' + p2.maxFiles + ' items=' + f2.length);
+		var allFpInputs = document.querySelectorAll('input[data-filepond]');
+		var fileInputs = document.querySelectorAll('input[type="file"][data-filepond="true"]');
+		console.log('[FP-DIAG:' + label + '] .filepond--root:', roots.length, '| input[data-filepond]:', allFpInputs.length, '| input[type=file][data-filepond=true]:', fileInputs.length);
+		allFpInputs.forEach(function(inp, i) {
+			var pond = inp.filepondInstance;
+			console.log('[FP-DIAG] input', i, '| type:', inp.type, '| id:', inp.id, '| data-filepond:', inp.getAttribute('data-filepond'), '| initialized:', inp.getAttribute('data-filepond-initialized'), '| hasPond:', !!pond);
+			if (pond) {
+				var files = pond.getFiles();
+				console.log('  pond items:', files.length, '| allowMultiple:', pond.allowMultiple, '| maxFiles:', pond.maxFiles);
+				files.forEach(function(f, j) { console.log('  item', j, f.filename, 'status:', f.status); });
 			}
 		});
-
-		// Also log all file inputs
-		allInputs.forEach(function(inp, i) {
-			console.log('[FP-DIAG] file-input', i, 'id=' + inp.id + ' class=' + inp.className + ' data-filepond=' + inp.getAttribute('data-filepond') + ' data-max-files=' + inp.getAttribute('data-max-files') + ' multiple=' + inp.multiple);
-		});
+		if (typeof FilePond !== 'undefined' && FilePond.find) {
+			try {
+				var all = FilePond.find(document.body);
+				console.log('[FP-DIAG] FilePond.find(body):', all ? (Array.isArray(all) ? all.length : 1) : 0);
+			} catch(e) {}
+		}
 	}
 	setTimeout(function(){ diagnosePonds('load'); }, 1500);
 	document.addEventListener('shown.bs.modal', function() { setTimeout(function(){ diagnosePonds('modal'); }, 500); });
+	document.addEventListener('warning', function(e) { console.log('[FP-DIAG] warning event on document:', e); }, true);
 	// --- END DIAGNOSTIC ---
 })();

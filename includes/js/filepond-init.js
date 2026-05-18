@@ -933,4 +933,20 @@
 
 	// Export initFilePond globally for re-initialization after form submission
 	window.initFilePond = initFilePond;
+
+	// --- DIAGNOSTIC (temporary) ---
+	function diagnosePonds() {
+		var inputs = document.querySelectorAll('input[type="file"][data-filepond="true"]');
+		console.log('[FP-DIAG] inputs found:', inputs.length);
+		inputs.forEach(function(inp, i) {
+			var pond = inp.filepondInstance;
+			if (!pond) { console.log('[FP-DIAG] Pond', i, ': no instance, id=', inp.id); return; }
+			var files = pond.getFiles();
+			console.log('[FP-DIAG] Pond', i, '| id:', inp.id, '| allowMultiple:', inp.multiple, '| data-max-files:', inp.dataset.maxFiles, '| items:', files.length);
+			files.forEach(function(f, j) { console.log('  item', j, f.filename, 'status:', f.status); });
+		});
+	}
+	setTimeout(diagnosePonds, 1000);
+	document.addEventListener('shown.bs.modal', function() { setTimeout(diagnosePonds, 300); });
+	// --- END DIAGNOSTIC ---
 })();

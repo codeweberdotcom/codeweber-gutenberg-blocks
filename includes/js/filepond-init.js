@@ -19,17 +19,6 @@
 			return;
 		}
 
-		// Destroy ponds created by FilePond auto-init (triggered by class="filepond")
-		// Auto-init reads data-max-files="" as 0, blocking all uploads.
-		// After destroy(), FilePond calls restoreElement() — the original input returns to the DOM
-		// so our init can pick it up and configure it correctly (server URL, maxFiles, etc.)
-		document.querySelectorAll('.filepond--root:not([data-cwfp-ok])').forEach(function (root) {
-			try {
-				var existingPond = FilePond.find(root);
-				if (existingPond) existingPond.destroy();
-			} catch (e) {}
-		});
-
 		// Find all file inputs with data-filepond="true"
 		const fileInputs = document.querySelectorAll(
 			'input[type="file"][data-filepond="true"]'
@@ -288,11 +277,6 @@
 			// Create FilePond instance
 			try {
 				const pond = FilePond.create(input, config);
-
-				// Mark the root so we don't destroy it on re-init
-				if (pond && pond.root) {
-					pond.root.setAttribute('data-cwfp-ok', '1');
-				}
 
 				// Явно устанавливаем атрибут accept на внутреннем input элементе FilePond
 				// Это нужно для фильтрации файлов в диалоге выбора браузера

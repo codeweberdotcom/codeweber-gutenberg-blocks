@@ -1670,14 +1670,17 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 														'codeweber-gutenberg-blocks'
 													)}
 													type="number"
-													value={maxFiles || ''}
+													min={1}
+													value={maxFiles || 1}
 													onChange={(value) =>
 														setAttributes({
-															maxFiles: value
-																? parseInt(
-																		value
-																	)
-																: 0,
+															maxFiles: Math.max(
+																1,
+																parseInt(
+																	value,
+																	10
+																) || 1
+															),
 														})
 													}
 													help={__(

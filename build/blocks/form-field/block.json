@@ -7,7 +7,8 @@
   "icon": "edit",
   "description": "Add form field (text, email, textarea, etc.)",
   "parent": [
-    "codeweber-blocks/form"
+    "codeweber-blocks/form",
+    "codeweber-blocks/form-page"
   ],
   "supports": {
     "html": false,

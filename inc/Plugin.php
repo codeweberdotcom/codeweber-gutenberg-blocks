@@ -292,6 +292,7 @@ class Plugin {
 		'label-plus',
 		'form',
 		'form-field',
+		'form-page',
 		'submit-button',
 		'divider',
 		'spacer',

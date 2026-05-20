@@ -216,6 +216,7 @@
 	},
 	"allowedBlocks": [
 		"codeweber-blocks/form-field",
+		"codeweber-blocks/form-page",
 		"codeweber-blocks/submit-button",
 		"codeweber-gutenberg-blocks/heading-subtitle"
 	],

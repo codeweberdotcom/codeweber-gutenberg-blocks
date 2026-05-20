@@ -1,0 +1,28 @@
+// Form Page block — frontend styles
+// Step visibility is managed by form-multipage.js
+
+.cwgb-form-step {
+	display: none;
+
+	&.cwgb-form-step--active {
+		display: block;
+	}
+}
+
+.cwgb-form-step-nav {
+	display: flex;
+	gap: 0.5rem;
+	margin-top: 1.5rem;
+	flex-wrap: wrap;
+}
+
+.cwgb-form-progress {
+	margin-bottom: 1.5rem;
+
+	.cwgb-form-progress-text {
+		display: block;
+		font-size: 0.875rem;
+		color: #6c757d;
+		margin-bottom: 0.5rem;
+	}
+}

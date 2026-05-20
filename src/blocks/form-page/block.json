@@ -1,0 +1,51 @@
+{
+	"apiVersion": 3,
+	"name": "codeweber-blocks/form-page",
+	"version": "0.1.0",
+	"title": "Form Page",
+	"category": "codeweber-gutenberg-elements",
+	"icon": "list-view",
+	"description": "A step/page within a multi-page form",
+	"parent": ["codeweber-blocks/form"],
+	"supports": {
+		"html": false,
+		"customClassName": false,
+		"reusable": false
+	},
+	"attributes": {
+		"pageTitle": {
+			"type": "string",
+			"default": ""
+		},
+		"nextButtonText": {
+			"type": "string",
+			"default": "Next"
+		},
+		"nextButtonClass": {
+			"type": "string",
+			"default": "btn btn-primary"
+		},
+		"showBackButton": {
+			"type": "boolean",
+			"default": true
+		},
+		"backButtonText": {
+			"type": "string",
+			"default": "Back"
+		},
+		"backButtonClass": {
+			"type": "string",
+			"default": "btn btn-outline-secondary"
+		}
+	},
+	"allowedBlocks": [
+		"codeweber-blocks/form-field",
+		"codeweber-blocks/submit-button",
+		"codeweber-gutenberg-blocks/heading-subtitle"
+	],
+	"textdomain": "codeweber-gutenberg-blocks",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"render": "file:./render.php"
+}

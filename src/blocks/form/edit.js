@@ -57,8 +57,7 @@ const FormEdit = ({ attributes, setAttributes, clientId }) => {
 		enableRateLimit,
 		rateLimitCount,
 		rateLimitPeriod,
-		formFields,
-		blockClass,
+blockClass,
 		blockData,
 		blockId,
 		formGapType,
@@ -294,26 +293,6 @@ const FormEdit = ({ attributes, setAttributes, clientId }) => {
 		];
 	};
 
-
-	// Сохраняем структуру полей в атрибуты при изменении innerBlocks
-	useEffect(() => {
-		if (!innerBlocks || innerBlocks.length === 0) {
-			if (formFields && formFields.length > 0) {
-				// Не очищаем, если поля уже есть (при первой загрузке)
-				return;
-			}
-		}
-
-		// Извлекаем атрибуты из innerBlocks
-		const fields = innerBlocks
-			.filter((block) => block.name === 'codeweber-blocks/form-field')
-			.map((block) => block.attributes || {});
-
-		// Обновляем только если изменилось
-		if (JSON.stringify(fields) !== JSON.stringify(formFields || [])) {
-			setAttributes({ formFields: fields });
-		}
-	}, [innerBlocks, clientId, setAttributes]);
 
 	const blockProps = useBlockProps({
 		className: 'codeweber-form-block',

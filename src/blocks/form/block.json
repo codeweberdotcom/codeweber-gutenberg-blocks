@@ -61,11 +61,7 @@
 			"type": "number",
 			"default": 60
 		},
-		"formFields": {
-			"type": "array",
-			"default": []
-		},
-		"blockClass": {
+"blockClass": {
 			"type": "string",
 			"default": ""
 		},

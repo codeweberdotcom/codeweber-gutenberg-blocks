@@ -68,6 +68,7 @@ Task-oriented documentation in `doc_claude/`.
 | Add a new block | `doc_claude/development/NEW_BLOCK_GUIDE.md` |
 | Shared Inspector components (35) | `doc_claude/development/INSPECTOR_COMPONENTS.md` |
 | Utility functions (class-generators, colors, icons...) | `doc_claude/development/UTILITIES_REFERENCE.md` |
+| Alternative HTML Title meta field + block toggles | `doc_claude/development/ALT_TITLE.md` |
 | Catalog of all 47 blocks | `doc_claude/blocks/BLOCKS_CATALOG.md` |
 | Dynamic blocks (render.php) | `doc_claude/blocks/DYNAMIC_BLOCKS.md` |
 | Button block: all LinkTypes, data-attributes, modal/video/download | `doc_claude/blocks/BUTTON_LINK_TYPES.md` |

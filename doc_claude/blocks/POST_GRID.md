@@ -127,6 +127,8 @@
 ### Title
 Управление тегом/размером/весом/цветом/трансформацией заголовка карточки через compose-класс.
 
+**Use Alternative Title** — toggle в конце таба. Если включён, вместо штатного заголовка берётся мета `_alt_title` записи (поддерживает `<br>`, `<strong>`, `<em>`, `<span>`). Подробнее — `doc_claude/development/ALT_TITLE.md`.
+
 - **Title Tag** — `h1`–`h6`, `p`, `div`, `span`, `display-1`…`display-6` (последние рендерятся как `<h2 class="display-N">`).
 - **Title Color** + **Color Type** (`solid` / `soft` / `pale`) → `text-{color}` / `text-soft-{color}` / `text-pale-{color}`.
 - **Title Size** — из `createSizeOptions()` темы: display-1..6, h1..6, fs-1..6, fs-13..200.
@@ -201,6 +203,9 @@ Runtime-фильтр **над** сеткой — AJAX-фильтрация по 
 
 ### Display toggles
 `showTitle`, `showDate`, `showCategory`, `showComments`, `showExcerpt`, `titleLength`, `excerptLength`, `showCardArrow`, `cardReadMore` (`none`/`view`/`more`/`read`).
+
+### Alt Title
+`useAltTitle` (bool, default `false`) — использовать мета `_alt_title` вместо штатного заголовка. Применяется только в post-mode (не в taxonomy/manual). При `true`: форсирует `title_length=0` и `use_html_title=true` в display_settings, вешает временный `the_title` фильтр на конкретный `post->ID` перед `cw_render_post_card()`. Подробнее — `doc_claude/development/ALT_TITLE.md`.
 
 ### Filter bar
 `enableFilter`, `filterTaxonomy`, `filterStyle`, `filterActiveColor`, `filterActiveColorType`, `filterTextReset`, `filterAllLabel`.
@@ -433,5 +438,7 @@ Theme's overlay effects требуют JS-инициализации (добав
 8. **Filter bar** — новый таб, 4 стиля (default/btn-xs/btn-sm/badge), активный цвет (solid/soft/pale), text-reset toggle, AJAX через `render_block()`-reuse.
 9. **Theme fixes сопутствующие** — `.bottom-overlay > *` z-index 0→3, post/overlay-5 layout, помощники `helpers.php` для short_description.
 10. **Taxonomy source mode** — переключатель Posts/Taxonomy в Main tab; `get_terms()` ветка в render.php; term-карточки с `thumbnail_id` из term meta, описанием терма как excerpt, счётчиком постов. В редакторе — `ServerSideRender`.
+
+11. **Alternative Title** — атрибут `useAltTitle` (Title tab). Мета `_alt_title` с `wp_kses_post` санитизацией регистрируется для всех post types и taxonomies (`inc/AltTitleMeta.php`). Шаблоны карточек переключаются между `esc_html()` и `wp_kses_post()` через флаг `use_html_title` в display_settings. Post Grid использует временный `the_title` фильтр (scope: один post ID) — единственный способ переопределить заголовок, т.к. `cw_get_post_card_data()` вызывает `get_the_title()` внутри.
 
 Полный журнал — в git log: `git log --oneline -- src/blocks/post-grid/` (плагин) и `git log --oneline -- templates/post-cards/post/ functions/post-cards-registry.php` (тема).

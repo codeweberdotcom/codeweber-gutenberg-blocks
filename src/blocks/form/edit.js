@@ -2,9 +2,7 @@ import {
 	useBlockProps,
 	InspectorControls,
 	InnerBlocks,
-	store as blockEditorStore,
 } from '@wordpress/block-editor';
-import { createBlocksFromInnerBlocksTemplate } from '@wordpress/blocks';
 import {
 	PanelBody,
 	TextControl,
@@ -14,8 +12,8 @@ import {
 	TabPanel,
 } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import { useEffect, useRef, createElement } from '@wordpress/element';
-import { useSelect, useDispatch } from '@wordpress/data';
+import { useEffect } from '@wordpress/element';
+import { useSelect } from '@wordpress/data';
 import {
 	Icon,
 	cog,
@@ -136,9 +134,6 @@ const FormEdit = ({ attributes, setAttributes, clientId }) => {
 		},
 		[clientId]
 	);
-
-	// Для замены innerBlocks при применении шаблона
-	const { replaceInnerBlocks } = useDispatch(blockEditorStore);
 
 	// Функция для получения шаблона блоков
 	const getTemplateBlocks = () => {
@@ -299,17 +294,6 @@ const FormEdit = ({ attributes, setAttributes, clientId }) => {
 		];
 	};
 
-	// Применяем шаблон при первом создании блока, если блоки пусты
-	const hasAppliedTemplateRef = useRef(false);
-	useEffect(() => {
-		if (innerBlocks.length === 0 && !hasAppliedTemplateRef.current) {
-			const template = getTemplateBlocks();
-			const templateBlocks =
-				createBlocksFromInnerBlocksTemplate(template);
-			replaceInnerBlocks(clientId, templateBlocks, false);
-			hasAppliedTemplateRef.current = true;
-		}
-	}, [innerBlocks.length, clientId, replaceInnerBlocks]);
 
 	// Сохраняем структуру полей в атрибуты при изменении innerBlocks
 	useEffect(() => {
@@ -860,6 +844,7 @@ const FormEdit = ({ attributes, setAttributes, clientId }) => {
 								<InnerBlocks
 									allowedBlocks={[
 										'codeweber-blocks/form-field',
+										'codeweber-blocks/form-page',
 										'codeweber-blocks/submit-button',
 										'codeweber-gutenberg-blocks/heading-subtitle',
 									]}

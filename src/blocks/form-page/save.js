@@ -1,4 +1,5 @@
-// Dynamic block — rendered server-side by parent form/render.php
+import { InnerBlocks } from '@wordpress/block-editor';
+
 export default function save() {
-	return null;
+	return <InnerBlocks.Content />;
 }

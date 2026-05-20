@@ -12,7 +12,7 @@ import {
 	TabPanel,
 } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import { useEffect } from '@wordpress/element';
+import { useEffect, useMemo } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
 import {
 	Icon,
@@ -126,13 +126,28 @@ blockClass,
 		}
 	}, []); // Выполняется только при монтировании компонента
 
-	// Получаем innerBlocks для сохранения в атрибуты
-	const innerBlocks = useSelect(
-		(select) => {
-			return select('core/block-editor').getBlocks(clientId) || [];
-		},
-		[clientId]
+	const isSavingPost = useSelect(
+		(select) => select('core/editor')?.isSavingPost?.() || false,
+		[]
 	);
+
+	useEffect(() => {
+		if (!isSavingPost) return;
+		const storeBlocks =
+			window.wp?.data?.select('core/block-editor')?.getBlocks(clientId);
+		// eslint-disable-next-line no-console
+		console.log(
+			'[FormDebug] SAVING clientId=' +
+				clientId +
+				' innerBlocks.length=' +
+				(storeBlocks?.length ?? 'N/A')
+		);
+		// eslint-disable-next-line no-console
+		console.log(
+			'[FormDebug] Blocks:',
+			JSON.stringify(storeBlocks?.map((b) => b.name))
+		);
+	}, [isSavingPost, clientId]);
 
 	// Функция для получения шаблона блоков
 	const getTemplateBlocks = () => {
@@ -293,6 +308,8 @@ blockClass,
 		];
 	};
 
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	const templateBlocks = useMemo(() => getTemplateBlocks(), [formType]);
 
 	const blockProps = useBlockProps({
 		className: 'codeweber-form-block',
@@ -827,7 +844,7 @@ blockClass,
 										'codeweber-blocks/submit-button',
 										'codeweber-gutenberg-blocks/heading-subtitle',
 									]}
-									template={getTemplateBlocks()}
+									template={templateBlocks}
 									templateLock={false}
 								/>
 							</div>

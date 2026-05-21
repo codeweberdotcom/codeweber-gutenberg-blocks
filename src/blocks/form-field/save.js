@@ -47,6 +47,10 @@ export default function Save({ attributes }) {
 		maxFiles,
 		maxFileSize,
 		maxTotalFileSize,
+		conditionalLogic,
+		conditionalAction,
+		conditionalMatch,
+		conditionalRules,
 	} = attributes;
 
 	// For consents_block, return null to use server-side render.php
@@ -108,8 +112,16 @@ export default function Save({ attributes }) {
 		return width || 'col-12';
 	};
 
+	const condProps = {};
+	if ( conditionalLogic && conditionalRules && conditionalRules.length > 0 ) {
+		condProps[ 'data-cond-action' ] = conditionalAction || 'show';
+		condProps[ 'data-cond-match' ]  = conditionalMatch  || 'all';
+		condProps[ 'data-cond-rules' ]  = JSON.stringify( conditionalRules );
+	}
+
 	const blockProps = useBlockProps.save({
 		className: `form-field-wrapper ${getColClasses()}`,
+		...condProps,
 	});
 
 	const fieldId = `field-${fieldName}`;

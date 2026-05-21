@@ -19,8 +19,9 @@ import {
 } from '../../components/responsive-control';
 import { BlockMetaFields } from '../../components/block-meta/BlockMetaFields';
 import apiFetch from '@wordpress/api-fetch';
+import { useSelect } from '@wordpress/data';
 
-const FormFieldEdit = ({ attributes, setAttributes }) => {
+const FormFieldEdit = ({ attributes, setAttributes, clientId }) => {
 	const {
 		fieldType,
 		fieldName,
@@ -59,11 +60,41 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 		maxFiles,
 		maxFileSize,
 		maxTotalFileSize,
+		conditionalLogic,
+		conditionalAction,
+		conditionalMatch,
+		conditionalRules,
 	} = attributes;
 
 	const [legalDocuments, setLegalDocuments] = useState([]);
 	const [loadingDocuments, setLoadingDocuments] = useState(false);
 	const [loadingLabels, setLoadingLabels] = useState({}); // Track loading state for each consent label
+
+	const siblingFieldNames = useSelect(
+		(select) => {
+			const { getBlockParents, getBlock } =
+				select('core/block-editor');
+			const parents = getBlockParents(clientId);
+			if (!parents || parents.length === 0) return [];
+			const parentId = parents[parents.length - 1];
+			const parent = getBlock(parentId);
+			if (!parent || !parent.innerBlocks) return [];
+			return parent.innerBlocks
+				.filter(
+					(block) =>
+						block.name === 'codeweber-blocks/form-field' &&
+						block.clientId !== clientId &&
+						block.attributes.fieldName
+				)
+				.map((block) => ({
+					label:
+						block.attributes.fieldLabel ||
+						block.attributes.fieldName,
+					value: block.attributes.fieldName,
+				}));
+		},
+		[clientId]
+	);
 
 	/**
 	 * Get default label for field type
@@ -1764,6 +1795,316 @@ const FormFieldEdit = ({ attributes, setAttributes }) => {
 													'codeweber-gutenberg-blocks'
 												)}
 											/>
+										</PanelBody>
+
+										<PanelBody
+											title={__(
+												'Conditional Logic',
+												'codeweber-gutenberg-blocks'
+											)}
+											initialOpen={false}
+										>
+											<ToggleControl
+												label={__(
+													'Enable Conditional Logic',
+													'codeweber-gutenberg-blocks'
+												)}
+												checked={!!conditionalLogic}
+												onChange={(value) =>
+													setAttributes({
+														conditionalLogic: value,
+													})
+												}
+											/>
+											{conditionalLogic && (
+												<>
+													<SelectControl
+														label={__(
+															'Action',
+															'codeweber-gutenberg-blocks'
+														)}
+														value={
+															conditionalAction ||
+															'show'
+														}
+														options={[
+															{
+																label: __(
+																	'Show this field',
+																	'codeweber-gutenberg-blocks'
+																),
+																value: 'show',
+															},
+															{
+																label: __(
+																	'Hide this field',
+																	'codeweber-gutenberg-blocks'
+																),
+																value: 'hide',
+															},
+														]}
+														onChange={(value) =>
+															setAttributes({
+																conditionalAction:
+																	value,
+															})
+														}
+													/>
+													<SelectControl
+														label={__(
+															'Match',
+															'codeweber-gutenberg-blocks'
+														)}
+														value={
+															conditionalMatch ||
+															'all'
+														}
+														options={[
+															{
+																label: __(
+																	'All rules',
+																	'codeweber-gutenberg-blocks'
+																),
+																value: 'all',
+															},
+															{
+																label: __(
+																	'Any rule',
+																	'codeweber-gutenberg-blocks'
+																),
+																value: 'any',
+															},
+														]}
+														onChange={(value) =>
+															setAttributes({
+																conditionalMatch:
+																	value,
+															})
+														}
+													/>
+													{(
+														conditionalRules || []
+													).map((rule, idx) => (
+														<div
+															key={idx}
+															style={{
+																marginBottom:
+																	'12px',
+																padding: '8px',
+																border: '1px solid #ddd',
+																borderRadius:
+																	'4px',
+															}}
+														>
+															<SelectControl
+																label={__(
+																	'Field',
+																	'codeweber-gutenberg-blocks'
+																)}
+																value={
+																	rule.field ||
+																	''
+																}
+																options={[
+																	{
+																		label: __(
+																			'Select field...',
+																			'codeweber-gutenberg-blocks'
+																		),
+																		value: '',
+																	},
+																	...siblingFieldNames,
+																]}
+																onChange={(
+																	value
+																) => {
+																	const newRules =
+																		[
+																			...conditionalRules,
+																		];
+																	newRules[
+																		idx
+																	] = {
+																		...newRules[
+																			idx
+																		],
+																		field: value,
+																	};
+																	setAttributes(
+																		{
+																			conditionalRules:
+																				newRules,
+																		}
+																	);
+																}}
+															/>
+															<SelectControl
+																label={__(
+																	'Operator',
+																	'codeweber-gutenberg-blocks'
+																)}
+																value={
+																	rule.operator ||
+																	'is'
+																}
+																options={[
+																	{
+																		label: __(
+																			'Is',
+																			'codeweber-gutenberg-blocks'
+																		),
+																		value: 'is',
+																	},
+																	{
+																		label: __(
+																			'Is not',
+																			'codeweber-gutenberg-blocks'
+																		),
+																		value: 'is_not',
+																	},
+																	{
+																		label: __(
+																			'Contains',
+																			'codeweber-gutenberg-blocks'
+																		),
+																		value: 'contains',
+																	},
+																	{
+																		label: __(
+																			'Does not contain',
+																			'codeweber-gutenberg-blocks'
+																		),
+																		value: 'not_contains',
+																	},
+																	{
+																		label: __(
+																			'Is empty',
+																			'codeweber-gutenberg-blocks'
+																		),
+																		value: 'is_empty',
+																	},
+																	{
+																		label: __(
+																			'Is not empty',
+																			'codeweber-gutenberg-blocks'
+																		),
+																		value: 'is_not_empty',
+																	},
+																]}
+																onChange={(
+																	value
+																) => {
+																	const newRules =
+																		[
+																			...conditionalRules,
+																		];
+																	newRules[
+																		idx
+																	] = {
+																		...newRules[
+																			idx
+																		],
+																		operator:
+																			value,
+																	};
+																	setAttributes(
+																		{
+																			conditionalRules:
+																				newRules,
+																		}
+																	);
+																}}
+															/>
+															{![
+																'is_empty',
+																'is_not_empty',
+															].includes(
+																rule.operator
+															) && (
+																<TextControl
+																	label={__(
+																		'Value',
+																		'codeweber-gutenberg-blocks'
+																	)}
+																	value={
+																		rule.value ||
+																		''
+																	}
+																	onChange={(
+																		value
+																	) => {
+																		const newRules =
+																			[
+																				...conditionalRules,
+																			];
+																		newRules[
+																			idx
+																		] = {
+																			...newRules[
+																				idx
+																			],
+																			value,
+																		};
+																		setAttributes(
+																			{
+																				conditionalRules:
+																					newRules,
+																			}
+																		);
+																	}}
+																/>
+															)}
+															<Button
+																isDestructive
+																variant="link"
+																onClick={() =>
+																	setAttributes(
+																		{
+																			conditionalRules:
+																				conditionalRules.filter(
+																					(
+																						_,
+																						i
+																					) =>
+																						i !==
+																						idx
+																				),
+																		}
+																	)
+																}
+															>
+																{__(
+																	'Remove rule',
+																	'codeweber-gutenberg-blocks'
+																)}
+															</Button>
+														</div>
+													))}
+													<Button
+														variant="secondary"
+														onClick={() =>
+															setAttributes({
+																conditionalRules:
+																	[
+																		...(conditionalRules ||
+																			[]),
+																		{
+																			field: '',
+																			operator:
+																				'is',
+																			value: '',
+																		},
+																	],
+															})
+														}
+													>
+														{__(
+															'Add rule',
+															'codeweber-gutenberg-blocks'
+														)}
+													</Button>
+												</>
+											)}
 										</PanelBody>
 									</>
 								)}

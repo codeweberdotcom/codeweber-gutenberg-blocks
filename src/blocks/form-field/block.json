@@ -172,6 +172,22 @@
 		"maxTotalFileSize": {
 			"type": "string",
 			"default": "100MB"
+		},
+		"conditionalLogic": {
+			"type": "boolean",
+			"default": false
+		},
+		"conditionalAction": {
+			"type": "string",
+			"default": "show"
+		},
+		"conditionalMatch": {
+			"type": "string",
+			"default": "all"
+		},
+		"conditionalRules": {
+			"type": "array",
+			"default": []
 		}
 	},
 	"textdomain": "codeweber-gutenberg-blocks",

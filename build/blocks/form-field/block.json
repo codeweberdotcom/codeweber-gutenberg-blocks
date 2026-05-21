@@ -176,6 +176,10 @@
       "type": "string",
       "default": "100MB"
     },
+    "optionsColumns": {
+      "type": "string",
+      "default": ""
+    },
     "conditionalLogic": {
       "type": "boolean",
       "default": false

@@ -60,6 +60,7 @@ const FormFieldEdit = ({ attributes, setAttributes, clientId }) => {
 		maxFiles,
 		maxFileSize,
 		maxTotalFileSize,
+		optionsColumns,
 		conditionalLogic,
 		conditionalAction,
 		conditionalMatch,
@@ -1657,6 +1658,48 @@ const FormFieldEdit = ({ attributes, setAttributes, clientId }) => {
 														'codeweber-gutenberg-blocks'
 													)}
 												/>
+												{(fieldType === 'radio' ||
+													fieldType ===
+														'checkbox') && (
+													<SelectControl
+														label={__(
+															'Columns on desktop',
+															'codeweber-gutenberg-blocks'
+														)}
+														value={
+															optionsColumns || ''
+														}
+														options={[
+															{
+																label: __(
+																	'Single column',
+																	'codeweber-gutenberg-blocks'
+																),
+																value: '',
+															},
+															{
+																label: __(
+																	'2 columns (col-md-6)',
+																	'codeweber-gutenberg-blocks'
+																),
+																value: 'col-12 col-md-6',
+															},
+															{
+																label: __(
+																	'3 columns (col-md-4)',
+																	'codeweber-gutenberg-blocks'
+																),
+																value: 'col-12 col-md-4',
+															},
+														]}
+														onChange={(value) =>
+															setAttributes({
+																optionsColumns:
+																	value,
+															})
+														}
+													/>
+												)}
 											</PanelBody>
 										)}
 

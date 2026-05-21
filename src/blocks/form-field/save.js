@@ -47,6 +47,7 @@ export default function Save({ attributes }) {
 		maxFiles,
 		maxFileSize,
 		maxTotalFileSize,
+		optionsColumns,
 		conditionalLogic,
 		conditionalAction,
 		conditionalMatch,
@@ -221,28 +222,66 @@ export default function Save({ attributes }) {
 						<label className="form-label">
 							<RawHTML>{labelContent}</RawHTML>
 						</label>
-						{options &&
-							options.map((opt, idx) => (
-								<div key={idx} className="form-check">
-									<input
-										className={classNames(
-											'form-check-input',
-											fieldClass
-										)}
-										type="radio"
-										id={`${fieldId}-${idx}`}
-										name={fieldName}
-										value={opt.value || opt.label}
-										{...(isRequired && { required: true })}
-									/>
-									<label
-										className="form-check-label"
-										htmlFor={`${fieldId}-${idx}`}
-									>
-										{opt.label}
-									</label>
-								</div>
-							))}
+						<div className={optionsColumns ? 'row' : undefined}>
+							{options &&
+								options.map((opt, idx) =>
+									optionsColumns ? (
+										<div
+											key={idx}
+											className={optionsColumns}
+										>
+											<div className="form-check">
+												<input
+													className={classNames(
+														'form-check-input',
+														fieldClass
+													)}
+													type="radio"
+													id={`${fieldId}-${idx}`}
+													name={fieldName}
+													value={
+														opt.value || opt.label
+													}
+													{...(isRequired && {
+														required: true,
+													})}
+												/>
+												<label
+													className="form-check-label"
+													htmlFor={`${fieldId}-${idx}`}
+												>
+													{opt.label}
+												</label>
+											</div>
+										</div>
+									) : (
+										<div
+											key={idx}
+											className="form-check"
+										>
+											<input
+												className={classNames(
+													'form-check-input',
+													fieldClass
+												)}
+												type="radio"
+												id={`${fieldId}-${idx}`}
+												name={fieldName}
+												value={opt.value || opt.label}
+												{...(isRequired && {
+													required: true,
+												})}
+											/>
+											<label
+												className="form-check-label"
+												htmlFor={`${fieldId}-${idx}`}
+											>
+												{opt.label}
+											</label>
+										</div>
+									)
+								)}
+						</div>
 					</div>
 				);
 
@@ -256,26 +295,61 @@ export default function Save({ attributes }) {
 									__html: fieldLabel + requiredMark,
 								}}
 							/>
-							{options.map((opt, idx) => (
-								<div key={idx} className="form-check">
-									<input
-										className={classNames(
-											'form-check-input small-checkbox',
-											fieldClass
-										)}
-										type="checkbox"
-										id={`${fieldId}-${idx}`}
-										name={`${fieldName}[]`}
-										value={opt.value || opt.label}
-									/>
-									<label
-										className="form-check-label"
-										htmlFor={`${fieldId}-${idx}`}
-									>
-										{opt.label}
-									</label>
-								</div>
-							))}
+							<div
+								className={optionsColumns ? 'row' : undefined}
+							>
+								{options.map((opt, idx) =>
+									optionsColumns ? (
+										<div
+											key={idx}
+											className={optionsColumns}
+										>
+											<div className="form-check">
+												<input
+													className={classNames(
+														'form-check-input small-checkbox',
+														fieldClass
+													)}
+													type="checkbox"
+													id={`${fieldId}-${idx}`}
+													name={`${fieldName}[]`}
+													value={
+														opt.value || opt.label
+													}
+												/>
+												<label
+													className="form-check-label"
+													htmlFor={`${fieldId}-${idx}`}
+												>
+													{opt.label}
+												</label>
+											</div>
+										</div>
+									) : (
+										<div
+											key={idx}
+											className="form-check"
+										>
+											<input
+												className={classNames(
+													'form-check-input small-checkbox',
+													fieldClass
+												)}
+												type="checkbox"
+												id={`${fieldId}-${idx}`}
+												name={`${fieldName}[]`}
+												value={opt.value || opt.label}
+											/>
+											<label
+												className="form-check-label"
+												htmlFor={`${fieldId}-${idx}`}
+											>
+												{opt.label}
+											</label>
+										</div>
+									)
+								)}
+							</div>
 						</div>
 					);
 				}

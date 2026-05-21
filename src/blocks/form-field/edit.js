@@ -70,7 +70,7 @@ const FormFieldEdit = ({ attributes, setAttributes, clientId }) => {
 	const [loadingDocuments, setLoadingDocuments] = useState(false);
 	const [loadingLabels, setLoadingLabels] = useState({}); // Track loading state for each consent label
 
-	const siblingFieldNames = useSelect(
+	const siblingFields = useSelect(
 		(select) => {
 			const { getBlockParents, getBlock } =
 				select('core/block-editor');
@@ -91,6 +91,8 @@ const FormFieldEdit = ({ attributes, setAttributes, clientId }) => {
 						block.attributes.fieldLabel ||
 						block.attributes.fieldName,
 					value: block.attributes.fieldName,
+					fieldType: block.attributes.fieldType || 'text',
+					options: block.attributes.options || [],
 				}));
 		},
 		[clientId]
@@ -1913,7 +1915,12 @@ const FormFieldEdit = ({ attributes, setAttributes, clientId }) => {
 																		),
 																		value: '',
 																	},
-																	...siblingFieldNames,
+																	...siblingFields.map(
+																		(f) => ({
+																			label: f.label,
+																			value: f.value,
+																		})
+																	),
 																]}
 																onChange={(
 																	value
@@ -1929,6 +1936,7 @@ const FormFieldEdit = ({ attributes, setAttributes, clientId }) => {
 																			idx
 																		],
 																		field: value,
+																		value: '',
 																	};
 																	setAttributes(
 																		{
@@ -2020,40 +2028,60 @@ const FormFieldEdit = ({ attributes, setAttributes, clientId }) => {
 																'is_not_empty',
 															].includes(
 																rule.operator
-															) && (
-																<TextControl
-																	label={__(
-																		'Value',
-																		'codeweber-gutenberg-blocks'
-																	)}
-																	value={
-																		rule.value ||
-																		''
-																	}
-																	onChange={(
-																		value
-																	) => {
-																		const newRules =
-																			[
-																				...conditionalRules,
-																			];
-																		newRules[
-																			idx
-																		] = {
-																			...newRules[
-																				idx
-																			],
-																			value,
-																		};
-																		setAttributes(
-																			{
-																				conditionalRules:
-																					newRules,
-																			}
-																		);
-																	}}
-																/>
-															)}
+															) && (() => {
+																const sf = siblingFields.find(
+																	(f) => f.value === rule.field
+																);
+																const useDropdown =
+																	sf &&
+																	['select', 'radio', 'checkbox'].includes(
+																		sf.fieldType
+																	) &&
+																	sf.options.length > 0 &&
+																	['is', 'is_not'].includes(rule.operator);
+																const updateValue = (value) => {
+																	const newRules = [...conditionalRules];
+																	newRules[idx] = { ...newRules[idx], value };
+																	setAttributes({ conditionalRules: newRules });
+																};
+																if (useDropdown) {
+																	return (
+																		<SelectControl
+																			label={__(
+																				'Value',
+																				'codeweber-gutenberg-blocks'
+																			)}
+																			value={rule.value || ''}
+																			options={[
+																				{
+																					label: __(
+																						'Select...',
+																						'codeweber-gutenberg-blocks'
+																					),
+																					value: '',
+																				},
+																				...sf.options.map(
+																					(o) => ({
+																						label: o.label,
+																						value: o.value || o.label,
+																					})
+																				),
+																			]}
+																			onChange={updateValue}
+																		/>
+																	);
+																}
+																return (
+																	<TextControl
+																		label={__(
+																			'Value',
+																			'codeweber-gutenberg-blocks'
+																		)}
+																		value={rule.value || ''}
+																		onChange={updateValue}
+																	/>
+																);
+															})()}
 															<Button
 																isDestructive
 																variant="link"

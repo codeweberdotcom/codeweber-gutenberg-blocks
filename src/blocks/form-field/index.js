@@ -16,4 +16,11 @@ import Save from './save';
 registerBlockType(metadata, {
 	edit: Edit,
 	save: Save,
+	deprecated: [
+		{
+			// Blocks created programmatically (without static save HTML)
+			attributes: metadata.attributes,
+			save: () => null,
+		},
+	],
 });

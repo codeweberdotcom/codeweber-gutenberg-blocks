@@ -141,19 +141,21 @@ const FormPageEdit = ({ attributes, setAttributes, clientId }) => {
 						{__('of', 'codeweber-gutenberg-blocks')} {totalSteps}
 					</span>
 				</div>
-				<InnerBlocks
-					allowedBlocks={ALLOWED_BLOCKS}
-					template={[
-						[
-							'codeweber-blocks/form-field',
-							{
-								fieldType: 'text',
-								fieldLabel: __('Field', 'codeweber-gutenberg-blocks'),
-							},
-						],
-					]}
-					templateLock={false}
-				/>
+				<div className="form-fields-preview row">
+					<InnerBlocks
+						allowedBlocks={ALLOWED_BLOCKS}
+						template={[
+							[
+								'codeweber-blocks/form-field',
+								{
+									fieldType: 'text',
+									fieldLabel: __('Field', 'codeweber-gutenberg-blocks'),
+								},
+							],
+						]}
+						templateLock={false}
+					/>
+				</div>
 			</div>
 		</>
 	);

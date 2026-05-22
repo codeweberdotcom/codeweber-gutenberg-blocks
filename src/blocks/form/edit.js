@@ -452,6 +452,20 @@ blockClass,
 												),
 												value: 'event-registration',
 											},
+											{
+												label: __(
+													'Questionnaire',
+													'codeweber-gutenberg-blocks'
+												),
+												value: 'questionnaire',
+											},
+											{
+												label: __(
+													'Brief',
+													'codeweber-gutenberg-blocks'
+												),
+												value: 'brief',
+											},
 										]}
 										onChange={(value) =>
 											setAttributes({ formType: value })

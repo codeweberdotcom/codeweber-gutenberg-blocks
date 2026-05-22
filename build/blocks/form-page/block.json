@@ -38,6 +38,22 @@
     "backButtonClass": {
       "type": "string",
       "default": "btn btn-outline-secondary"
+    },
+    "pageConditionalLogic": {
+      "type": "boolean",
+      "default": false
+    },
+    "pageConditionalAction": {
+      "type": "string",
+      "default": "show"
+    },
+    "pageConditionalMatch": {
+      "type": "string",
+      "default": "all"
+    },
+    "pageConditionalRules": {
+      "type": "array",
+      "default": []
     }
   },
   "allowedBlocks": [

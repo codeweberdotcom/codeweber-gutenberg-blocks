@@ -50,7 +50,7 @@ Legend: `S` = static (JS save) | `D` = dynamic (PHP render.php)
 | Block | Type | Description |
 |-------|------|-------------|
 | `card` | S | Bootstrap card with image, text, buttons |
-| `feature` | S | Single feature item with icon and text |
+| `feature` | S | Single feature item. 4 layouts: Feature 1 (vertical), Feature 2 (horizontal, `imageMobileLayout`/`imageDesktopLayout` controls), Feature 3 (icon+title inline), Feature 4 (image InnerBlock + text, `imageMobileLayout`/`imageDesktopLayout` controls) |
 | `features` | S | Features grid container |
 | `cta` | S | Call-to-action block |
 | `label-plus` | S | Label/badge with optional plus icon |

@@ -573,8 +573,9 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 
 	// Layout classes применяются к card-body или card, не к основному контейнеру
 	// Для feature-3 не нужны классы на основном контейнере
-	const layoutClasses =
-		featureLayout === 'horizontal' ? 'd-flex flex-row' : '';
+	const layoutClasses = featureLayout === 'horizontal'
+		? `d-flex ${imageMobileLayout === 'horizontal' ? 'flex-row' : 'flex-column'} ${imageDesktopLayout === 'horizontal' ? 'flex-md-row' : 'flex-md-column'}`
+		: '';
 
 	// Wrap title+paragraph+button in a div (class added when contentWrapperClass is set)
 	const wrapContent = (content) =>
@@ -757,6 +758,8 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 													iconWrapperClass: 'me-5',
 													titleClass: '',
 													buttonColor: '',
+													imageMobileLayout: 'horizontal',
+													imageDesktopLayout: 'horizontal',
 												});
 											}}
 										>
@@ -811,7 +814,7 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 										</Button>
 									</ButtonGroup>
 
-									{featureLayout === 'image-feature' && (
+									{(featureLayout === 'image-feature' || featureLayout === 'horizontal') && (
 										<div style={{ marginTop: '16px' }}>
 											<SelectControl
 												label={__(

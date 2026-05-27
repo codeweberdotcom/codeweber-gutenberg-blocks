@@ -1,23 +1,19 @@
 /**
- * Feature Block - Save Component
+ * Feature Block - Deprecated Save v2
  *
- * @package CodeWeber Gutenberg Blocks
+ * layoutClasses for horizontal was hardcoded to 'd-flex flex-row'.
  */
 
 import { RichText, useBlockProps, InnerBlocks } from '@wordpress/block-editor';
 import { IconRenderSave } from '../../components/icon';
 import { ParagraphRenderSave } from '../../components/paragraph';
-import { getTitleClasses, getTextClasses } from '../heading-subtitle/utils';
+import { getTitleClasses } from '../heading-subtitle/utils';
 import { generateBackgroundClasses } from '../../utilities/class-generators';
 import { getSpacingClasses } from '../section/utils';
 
-/**
- * Save Component
- */
-const Save = ({ attributes }) => {
+const SaveDeprecatedV2 = ({ attributes }) => {
 	const {
 		featureLayout,
-		// Icon
 		iconType,
 		iconName,
 		svgIcon,
@@ -36,11 +32,9 @@ const Save = ({ attributes }) => {
 		customSvgUrl,
 		customSvgId,
 		customSvgSize,
-		// Title
 		enableTitle,
 		title,
 		titleTag,
-		// Paragraph
 		enableParagraph,
 		paragraph,
 		paragraphTag,
@@ -50,13 +44,11 @@ const Save = ({ attributes }) => {
 		paragraphWeight,
 		paragraphTransform,
 		paragraphClass,
-		// Button
 		enableButton,
 		buttonText,
 		buttonUrl,
 		buttonColor,
 		buttonClass,
-		// Card
 		enableCard,
 		enableCardBody,
 		cardBodyClass,
@@ -98,7 +90,6 @@ const Save = ({ attributes }) => {
 		contentWrapperClass,
 	} = attributes;
 
-	// Generate classes for card wrapper
 	const getCardClasses = () => {
 		const classes = [];
 
@@ -126,7 +117,6 @@ const Save = ({ attributes }) => {
 			classes.push(cardBorder || borderPosition);
 		}
 
-		// Если выбраны цвет или ширина, но нет позиции - применяем обычный border
 		if ((borderColor || borderWidth) && !cardBorder && !borderPosition) {
 			classes.push('border');
 		}
@@ -148,7 +138,6 @@ const Save = ({ attributes }) => {
 			classes.push(borderAccent);
 		}
 
-		// Background classes
 		classes.push(
 			...generateBackgroundClasses({
 				backgroundType,
@@ -162,7 +151,6 @@ const Save = ({ attributes }) => {
 			})
 		);
 
-		// Spacing classes
 		classes.push(
 			...getSpacingClasses({
 				spacingType,
@@ -176,7 +164,6 @@ const Save = ({ attributes }) => {
 			})
 		);
 
-		// Custom class
 		if (blockClass) {
 			classes.push(blockClass);
 		}
@@ -184,7 +171,6 @@ const Save = ({ attributes }) => {
 		return classes.filter(Boolean).join(' ');
 	};
 
-	// Parse data attributes
 	const getDataAttributes = () => {
 		const dataAttrs = {};
 		if (blockData) {
@@ -198,7 +184,6 @@ const Save = ({ attributes }) => {
 		return dataAttrs;
 	};
 
-	// Generate button classes
 	const getButtonClasses = () => {
 		const classes = buttonClass ? buttonClass.split(' ') : [];
 		if (buttonColor) {
@@ -210,7 +195,6 @@ const Save = ({ attributes }) => {
 	const cardClasses = getCardClasses();
 	const dataAttributes = getDataAttributes();
 
-	// Icon
 	const iconElement = (
 		<IconRenderSave
 			iconType={iconType}
@@ -234,7 +218,6 @@ const Save = ({ attributes }) => {
 		/>
 	);
 
-	// Title
 	const titleElement = enableTitle ? (
 		<RichText.Content
 			tagName={titleTag || 'h4'}
@@ -243,12 +226,10 @@ const Save = ({ attributes }) => {
 		/>
 	) : null;
 
-	// Paragraph
 	const paragraphElement = enableParagraph ? (
 		<ParagraphRenderSave
 			attributes={{
 				...attributes,
-				// Map all paragraph attributes to text for ParagraphRenderSave
 				text: paragraph,
 				textColor: paragraphColor,
 				textColorType: paragraphColorType,
@@ -262,20 +243,16 @@ const Save = ({ attributes }) => {
 		/>
 	) : null;
 
-	// Button
 	const buttonElement = enableButton ? (
 		<a href={buttonUrl} className={getButtonClasses()}>
 			{buttonText}
 		</a>
 	) : null;
 
-	// Wrap title+paragraph+button in a div (class added when contentWrapperClass is set)
 	const wrapContent = (content) =>
 		<div className={contentWrapperClass || undefined}>{content}</div>;
 
-	// Render content based on layout
 	const renderContent = () => {
-		// Layout 4: Image Feature
 		if (featureLayout === 'image-feature') {
 			const mobileClass = imageMobileLayout === 'horizontal' ? 'flex-row' : 'flex-column';
 			const desktopClass = imageDesktopLayout === 'horizontal' ? 'flex-md-row' : 'flex-md-column';
@@ -290,7 +267,6 @@ const Save = ({ attributes }) => {
 			);
 		}
 
-		// Layout 1: Vertical
 		if (featureLayout === 'vertical') {
 			return (
 				<>
@@ -300,7 +276,6 @@ const Save = ({ attributes }) => {
 			);
 		}
 
-		// Layout 2: Horizontal
 		if (featureLayout === 'horizontal') {
 			return (
 				<>
@@ -310,7 +285,6 @@ const Save = ({ attributes }) => {
 			);
 		}
 
-		// Layout 3: Feature 3 (Icon + Title в одной строке)
 		return (
 			<>
 				<div className="d-flex flex-row align-items-center mb-4">
@@ -322,7 +296,6 @@ const Save = ({ attributes }) => {
 		);
 	};
 
-	// Main wrapper with useBlockProps.save
 	const blockProps = useBlockProps.save({
 		className: cardClasses,
 		id: blockId,
@@ -341,12 +314,9 @@ const Save = ({ attributes }) => {
 			}),
 	});
 
-	// Layout classes применяются к card-body или card, не к основному контейнеру
-	const layoutClasses = featureLayout === 'horizontal'
-		? `d-flex ${imageMobileLayout === 'horizontal' ? 'flex-row' : 'flex-column'} ${imageDesktopLayout === 'horizontal' ? 'flex-md-row' : 'flex-md-column'}`
-		: '';
+	const layoutClasses =
+		featureLayout === 'horizontal' ? 'd-flex flex-row' : '';
 
-	// If card is disabled, just output content with layout
 	if (!enableCard) {
 		return (
 			<div {...blockProps}>
@@ -368,4 +338,4 @@ const Save = ({ attributes }) => {
 	);
 };
 
-export default Save;
+export default SaveDeprecatedV2;

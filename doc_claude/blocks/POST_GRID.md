@@ -222,6 +222,12 @@ Runtime-фильтр **над** сеткой — AJAX-фильтрация по 
 - Две подмоды: `classic` (col-*-* на каждой карточке) и `columns-grid` (row-cols-*-* на контейнере + `<div class="col">` на карточках).
 - Load More: добавочные посты грузит `LoadMoreAPI.php` (`?action=...` REST endpoint) — независимо от filter bar.
 
+**Classic Grid — полный набор брейкпоинтов (render.php):**
+`get_post_grid_col_classes()` генерирует: `col-{n}` (base), `col-{n}` (xs, без префикса), `col-sm-{n}`, `col-md-{n}`, `col-lg-{n}`, `col-xl-{n}`, `col-xxl-{n}` из атрибутов `gridColumns`, `gridColumnsXs`, `gridColumnsSm`, `gridColumnsMd`, `gridColumnsLg`, `gridColumnsXl`, `gridColumnsXxl`.
+
+**Columns Grid — полный набор брейкпоинтов (render.php):**
+`get_post_grid_container_classes()` генерирует: `row-cols-{n}`, `row-cols-sm-{n}`, `row-cols-md-{n}`, `row-cols-lg-{n}`, `row-cols-xl-{n}`, `row-cols-xxl-{n}` из атрибутов `gridRowCols`, `gridRowColsSm`, `gridRowColsMd`, `gridRowColsLg`, `gridRowColsXl`, `gridRowColsXxl`.
+
 ### Swiper
 - Contenu: `<div class="swiper-container … [data-…]"><div class="swiper"><div class="swiper-wrapper">`.
 - Тема сама вешает Swiper.js через `window.theme.swiperSlider()` на все `.swiper-container`.

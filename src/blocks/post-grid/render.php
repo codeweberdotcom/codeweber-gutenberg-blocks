@@ -256,10 +256,19 @@ if (!function_exists('get_post_grid_container_classes')) {
 		
 		// Row-cols classes for columns-grid
 		if ($grid_type === 'columns-grid') {
-			$rowCols = $attributes['gridRowCols'] ?? '';
-			if ($rowCols) $classes[] = "row-cols-{$rowCols}";
-			$rowColsMd = $attributes['gridRowColsMd'] ?? '';
-			if ($rowColsMd) $classes[] = "row-cols-md-{$rowColsMd}";
+			$rowCols    = $attributes['gridRowCols'] ?? '';
+			$rowColsSm  = $attributes['gridRowColsSm'] ?? '';
+			$rowColsMd  = $attributes['gridRowColsMd'] ?? '';
+			$rowColsLg  = $attributes['gridRowColsLg'] ?? '';
+			$rowColsXl  = $attributes['gridRowColsXl'] ?? '';
+			$rowColsXxl = $attributes['gridRowColsXxl'] ?? '';
+
+			if ($rowCols)    $classes[] = "row-cols-{$rowCols}";
+			if ($rowColsSm)  $classes[] = "row-cols-sm-{$rowColsSm}";
+			if ($rowColsMd)  $classes[] = "row-cols-md-{$rowColsMd}";
+			if ($rowColsLg)  $classes[] = "row-cols-lg-{$rowColsLg}";
+			if ($rowColsXl)  $classes[] = "row-cols-xl-{$rowColsXl}";
+			if ($rowColsXxl) $classes[] = "row-cols-xxl-{$rowColsXxl}";
 		}
 		
 		return implode(' ', array_filter($classes));
@@ -272,14 +281,24 @@ if (!function_exists('get_post_grid_col_classes')) {
 		if ($grid_type !== 'classic') {
 			return '';
 		}
-		
+
 		$classes = [];
 		$colsDefault = $attributes['gridColumns'] ?? '';
-		$colsMd = $attributes['gridColumnsMd'] ?? '';
-		
+		$colsXs     = $attributes['gridColumnsXs'] ?? '';
+		$colsSm     = $attributes['gridColumnsSm'] ?? '';
+		$colsMd     = $attributes['gridColumnsMd'] ?? '';
+		$colsLg     = $attributes['gridColumnsLg'] ?? '';
+		$colsXl     = $attributes['gridColumnsXl'] ?? '';
+		$colsXxl    = $attributes['gridColumnsXxl'] ?? '';
+
 		if ($colsDefault) $classes[] = "col-{$colsDefault}";
-		if ($colsMd) $classes[] = "col-md-{$colsMd}";
-		
+		if ($colsXs)      $classes[] = "col-{$colsXs}";
+		if ($colsSm)      $classes[] = "col-sm-{$colsSm}";
+		if ($colsMd)      $classes[] = "col-md-{$colsMd}";
+		if ($colsLg)      $classes[] = "col-lg-{$colsLg}";
+		if ($colsXl)      $classes[] = "col-xl-{$colsXl}";
+		if ($colsXxl)     $classes[] = "col-xxl-{$colsXxl}";
+
 		return implode(' ', $classes);
 	}
 }

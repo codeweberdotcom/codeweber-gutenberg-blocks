@@ -49,6 +49,10 @@
       "type": "boolean",
       "default": false
     },
+    "columnsReverseOnMd": {
+      "type": "boolean",
+      "default": false
+    },
     "columnsClass": {
       "type": "string",
       "default": ""

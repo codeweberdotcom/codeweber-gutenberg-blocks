@@ -118,6 +118,7 @@ const ColumnsEdit = ({ attributes, setAttributes, clientId }) => {
 		columnsSpacingXl,
 		columnsSpacingXxl,
 		columnsReverseOnMobile,
+		columnsReverseOnMd,
 	} = attributes;
 
 	const { replaceInnerBlocks, insertBlocks, updateBlockAttributes } =
@@ -319,6 +320,21 @@ const ColumnsEdit = ({ attributes, setAttributes, clientId }) => {
 										}
 										help={__(
 											'Stack columns in reverse order on mobile (xs–sm).',
+											'codeweber-gutenberg-blocks'
+										)}
+										__nextHasNoMarginBottom
+									/>
+									<ToggleControl
+										label={__(
+											'Reverse on MD',
+											'codeweber-gutenberg-blocks'
+										)}
+										checked={ !! columnsReverseOnMd }
+										onChange={ ( value ) =>
+											setAttributes( { columnsReverseOnMd: value } )
+										}
+										help={__(
+											'Reverse column order on MD and above (flex-md-row-reverse).',
 											'codeweber-gutenberg-blocks'
 										)}
 										__nextHasNoMarginBottom

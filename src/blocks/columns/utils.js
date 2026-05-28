@@ -82,13 +82,13 @@ export const getColumnsClassNames = (attrs = {}, mode = 'save') => {
 	if (columnsReverseOnMobile && columnsFlexMd === 'row-reverse') {
 		classes.push('flex-column-reverse', 'flex-md-row-reverse', 'flex-lg-row');
 	} else if (columnsReverseOnMobile && columnsFlexMd === 'column-reverse') {
-		classes.push('flex-column-reverse', 'flex-md-column-reverse');
+		classes.push('flex-column-reverse', 'flex-md-column-reverse', 'flex-lg-row');
 	} else if (columnsReverseOnMobile) {
 		classes.push('flex-column-reverse', 'flex-md-row');
 	} else if (columnsFlexMd === 'row-reverse') {
 		classes.push('flex-md-row-reverse', 'flex-lg-row');
 	} else if (columnsFlexMd === 'column-reverse') {
-		classes.push('flex-md-column-reverse');
+		classes.push('flex-md-column-reverse', 'flex-lg-row');
 	}
 
 	// Позиционирование

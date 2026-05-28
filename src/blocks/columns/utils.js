@@ -83,9 +83,9 @@ export const getColumnsClassNames = (attrs = {}, mode = 'save') => {
 		classes.push('flex-column-reverse', 'flex-md-row');
 	}
 
-	// Реверс на MD+: flex-md-row-reverse
+	// Реверс только на MD: flex-md-row-reverse + flex-lg-row (сброс на LG+)
 	if (columnsReverseOnMd) {
-		classes.push('flex-md-row-reverse');
+		classes.push('flex-md-row-reverse', 'flex-lg-row');
 	}
 
 	// Позиционирование

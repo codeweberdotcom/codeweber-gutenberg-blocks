@@ -78,13 +78,15 @@ export const getColumnsClassNames = (attrs = {}, mode = 'save') => {
 		classes.push(`gy-${columnsGutterY}`);
 	}
 
-	// Реверс на мобильном: flex-column-reverse (xs) + flex-md-row (md+)
-	if (columnsReverseOnMobile) {
+	// Реверс колонок — обрабатываем совместно чтобы избежать конфликта flex-md-row / flex-md-row-reverse
+	if (columnsReverseOnMobile && columnsReverseOnMd) {
+		// xs–sm: стек в обратном порядке; md: ряд в обратном порядке; lg+: обычный ряд
+		classes.push('flex-column-reverse', 'flex-md-row-reverse', 'flex-lg-row');
+	} else if (columnsReverseOnMobile) {
+		// xs–sm: стек в обратном порядке; md+: обычный ряд
 		classes.push('flex-column-reverse', 'flex-md-row');
-	}
-
-	// Реверс только на MD: flex-md-row-reverse + flex-lg-row (сброс на LG+)
-	if (columnsReverseOnMd) {
+	} else if (columnsReverseOnMd) {
+		// md: ряд в обратном порядке; lg+: обычный ряд
 		classes.push('flex-md-row-reverse', 'flex-lg-row');
 	}
 

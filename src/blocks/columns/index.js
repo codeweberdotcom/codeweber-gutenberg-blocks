@@ -13,14 +13,17 @@ import {
 	normalizeColumnsData,
 } from './utils';
 
+// Атрибуты без columnsFlexMd + с columnsReverseOnMd (boolean)
+const { columnsFlexMd: _removed, ...baseAttrs } = metadata.attributes;
+const deprecatedV1Attributes = {
+	...baseAttrs,
+	columnsReverseOnMd: { type: 'boolean', default: false },
+};
+
 const deprecated = [
 	{
 		// columnsReverseOnMd (boolean) → columnsFlexMd (string)
-		attributes: {
-			...metadata.attributes,
-			columnsReverseOnMd: { type: 'boolean', default: false },
-			columnsFlexMd: undefined,
-		},
+		attributes: deprecatedV1Attributes,
 		migrate( attributes ) {
 			const { columnsReverseOnMd, ...rest } = attributes;
 			return {

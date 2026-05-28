@@ -49,9 +49,9 @@
       "type": "boolean",
       "default": false
     },
-    "columnsReverseOnMd": {
-      "type": "boolean",
-      "default": false
+    "columnsFlexMd": {
+      "type": "string",
+      "default": ""
     },
     "columnsClass": {
       "type": "string",

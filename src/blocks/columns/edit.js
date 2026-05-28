@@ -118,7 +118,7 @@ const ColumnsEdit = ({ attributes, setAttributes, clientId }) => {
 		columnsSpacingXl,
 		columnsSpacingXxl,
 		columnsReverseOnMobile,
-		columnsReverseOnMd,
+		columnsFlexMd,
 	} = attributes;
 
 	const { replaceInnerBlocks, insertBlocks, updateBlockAttributes } =
@@ -324,21 +324,26 @@ const ColumnsEdit = ({ attributes, setAttributes, clientId }) => {
 										)}
 										__nextHasNoMarginBottom
 									/>
-									<ToggleControl
-										label={__(
-											'Reverse on MD',
-											'codeweber-gutenberg-blocks'
-										)}
-										checked={ !! columnsReverseOnMd }
-										onChange={ ( value ) =>
-											setAttributes( { columnsReverseOnMd: value } )
-										}
-										help={__(
-											'Reverse column order on MD and above (flex-md-row-reverse).',
-											'codeweber-gutenberg-blocks'
-										)}
-										__nextHasNoMarginBottom
-									/>
+									<div className="mb-3">
+										<div className="component-sidebar-title">
+											<div>{ __( 'Reverse on MD', 'codeweber-gutenberg-blocks' ) }</div>
+										</div>
+										<ButtonGroup>
+											{ [
+												{ value: '', label: __( 'None', 'codeweber-gutenberg-blocks' ) },
+												{ value: 'row-reverse', label: __( 'Row ↔', 'codeweber-gutenberg-blocks' ) },
+												{ value: 'column-reverse', label: __( 'Col ↕', 'codeweber-gutenberg-blocks' ) },
+											].map( ( option ) => (
+												<Button
+													key={ option.value }
+													isPrimary={ columnsFlexMd === option.value }
+													onClick={ () => setAttributes( { columnsFlexMd: option.value } ) }
+												>
+													{ option.label }
+												</Button>
+											) ) }
+										</ButtonGroup>
+									</div>
 
 									{/* Columns Grid - управление шириной на уровне контейнера */}
 									{columnsType === 'columns-grid' && (

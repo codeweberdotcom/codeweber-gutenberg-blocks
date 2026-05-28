@@ -41,7 +41,7 @@ export const getColumnsClassNames = (attrs = {}, mode = 'save') => {
 		columnsPosition,
 		columnsCount,
 		columnsReverseOnMobile,
-		columnsReverseOnMd,
+		columnsFlexMd,
 	} = attrs;
 
 	// Добавляем кастомный класс
@@ -78,16 +78,17 @@ export const getColumnsClassNames = (attrs = {}, mode = 'save') => {
 		classes.push(`gy-${columnsGutterY}`);
 	}
 
-	// Реверс колонок — обрабатываем совместно чтобы избежать конфликта flex-md-row / flex-md-row-reverse
-	if (columnsReverseOnMobile && columnsReverseOnMd) {
-		// xs–sm: стек в обратном порядке; md: ряд в обратном порядке; lg+: обычный ряд
+	// Реверс колонок — обрабатываем совместно чтобы избежать конфликтов на MD
+	if (columnsReverseOnMobile && columnsFlexMd === 'row-reverse') {
 		classes.push('flex-column-reverse', 'flex-md-row-reverse', 'flex-lg-row');
+	} else if (columnsReverseOnMobile && columnsFlexMd === 'column-reverse') {
+		classes.push('flex-column-reverse', 'flex-md-column-reverse');
 	} else if (columnsReverseOnMobile) {
-		// xs–sm: стек в обратном порядке; md+: обычный ряд
 		classes.push('flex-column-reverse', 'flex-md-row');
-	} else if (columnsReverseOnMd) {
-		// md: ряд в обратном порядке; lg+: обычный ряд
+	} else if (columnsFlexMd === 'row-reverse') {
 		classes.push('flex-md-row-reverse', 'flex-lg-row');
+	} else if (columnsFlexMd === 'column-reverse') {
+		classes.push('flex-md-column-reverse');
 	}
 
 	// Позиционирование

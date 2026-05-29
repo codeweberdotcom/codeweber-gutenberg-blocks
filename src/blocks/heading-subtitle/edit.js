@@ -8,6 +8,7 @@ import {
 	PanelBody,
 	ButtonGroup,
 	Button,
+	TextControl,
 } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { useState, useEffect } from '@wordpress/element';
@@ -19,6 +20,7 @@ import {
 	resizeCornerNE,
 	cog,
 	update,
+	group,
 } from '@wordpress/icons';
 
 // Tab icon with native title tooltip
@@ -76,6 +78,8 @@ const HeadingSubtitleEdit = ({ attributes, setAttributes }) => {
 		animationType,
 		animationDuration,
 		animationDelay,
+		wrapperClass,
+		wrapperId,
 	} = attributes;
 
 	const [activeElement, setActiveElement] = useState('title');
@@ -213,6 +217,15 @@ const HeadingSubtitleEdit = ({ attributes, setAttributes }) => {
 				<TabIcon
 					icon={cog}
 					label={__('Settings', 'codeweber-gutenberg-blocks')}
+				/>
+			),
+		},
+		{
+			name: 'wrapper',
+			title: (
+				<TabIcon
+					icon={group}
+					label={__('Wrapper', 'codeweber-gutenberg-blocks')}
 				/>
 			),
 		},
@@ -416,6 +429,48 @@ const HeadingSubtitleEdit = ({ attributes, setAttributes }) => {
 									)}
 								</div>
 							)}
+							{tab.name === 'wrapper' && (
+								<div style={{ padding: '16px' }}>
+									<TextControl
+										label={__(
+											'Wrapper CSS Class',
+											'codeweber-gutenberg-blocks'
+										)}
+										value={wrapperClass || ''}
+										placeholder={__(
+											'custom-wrapper classes',
+											'codeweber-gutenberg-blocks'
+										)}
+										help={__(
+											'Added to the wrapper around all elements.',
+											'codeweber-gutenberg-blocks'
+										)}
+										onChange={(value) =>
+											setAttributes({
+												wrapperClass: value,
+											})
+										}
+									/>
+									<TextControl
+										label={__(
+											'Wrapper ID',
+											'codeweber-gutenberg-blocks'
+										)}
+										value={wrapperId || ''}
+										placeholder={__(
+											'custom-id',
+											'codeweber-gutenberg-blocks'
+										)}
+										onChange={(value) =>
+											setAttributes({
+												wrapperId: value
+													.replace(/^#/, '')
+													.trim(),
+											})
+										}
+									/>
+								</div>
+							)}
 						</>
 					)}
 				</TabPanel>
@@ -423,7 +478,10 @@ const HeadingSubtitleEdit = ({ attributes, setAttributes }) => {
 			<div {...blockProps}>
 				{elements.length > 0 ? (
 					<div
-					className="d-flex flex-column"
+					className={['d-flex', 'flex-column', wrapperClass]
+						.filter(Boolean)
+						.join(' ')}
+					{...(wrapperId && { id: wrapperId })}
 					{...(animationEnabled && animationType && {
 						'data-cue': animationType,
 						...(animationDuration && {

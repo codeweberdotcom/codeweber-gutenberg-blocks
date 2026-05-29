@@ -149,6 +149,14 @@
 			"type": "string",
 			"default": ""
 		},
+		"wrapperClass": {
+			"type": "string",
+			"default": ""
+		},
+		"wrapperId": {
+			"type": "string",
+			"default": ""
+		},
 		"titleClass": {
 			"type": "string",
 			"default": ""

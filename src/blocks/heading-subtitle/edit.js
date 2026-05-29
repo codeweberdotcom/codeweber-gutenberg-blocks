@@ -208,15 +208,6 @@ const HeadingSubtitleEdit = ({ attributes, setAttributes }) => {
 			),
 		},
 		{
-			name: 'animation',
-			title: (
-				<TabIcon
-					icon={update}
-					label={__('Animation', 'codeweber-gutenberg-blocks')}
-				/>
-			),
-		},
-		{
 			name: 'settings',
 			title: (
 				<TabIcon

@@ -140,6 +140,17 @@ if ($use_alt_title) {
 
 ---
 
+## Заголовок страницы (`universal_title`)
+
+Функция `universal_title()` (тема: `functions/global.php`) автоматически отдаёт приоритет `_alt_title`:
+
+- **Singular** (записи, страницы, CPT, **товары** WooCommerce): если у записи задан `_alt_title` — выводится он вместо `get_the_title()`.
+- **Архивы терминов** (`is_category` / `is_tag` / `is_tax`, включая `product_cat`/`product_tag`): если у термина задан `_alt_title` (`get_term_meta`) — выводится он вместо `single_*_title()`.
+
+Срабатывает без отдельного тогла — достаточно заполнить поле. HTML (`<br>`, `<strong>` …) сохраняется: `universal_title()` пропускает значение через `wp_kses_post()`, а шаблоны page-header (`templates/pageheader/pageheader-*.php`) выводят его через `wp_kses_post(universal_title(false, false))`.
+
+---
+
 ## Потенциальные расширения
 
 - Taxonomy mode в Post Grid (`sourceType === 'taxonomy'`) — alt title для термов читается из `register_term_meta`, но блок **не реализует** это пока. Шаблоны карточек термов (`cw_render_term_card()`) не проверяют `use_html_title`.

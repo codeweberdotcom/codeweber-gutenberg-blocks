@@ -7,7 +7,7 @@
  */
 
 import { useBlockProps } from '@wordpress/block-editor';
-import { RawHTML } from '@wordpress/element';
+import { RawHTML, Fragment } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 
 export default function Save({ attributes }) {
@@ -33,6 +33,7 @@ export default function Save({ attributes }) {
 		multiple,
 		options,
 		defaultValue,
+		defaultValues,
 		helpText,
 		useThemeMask,
 		phoneMask,
@@ -48,6 +49,8 @@ export default function Save({ attributes }) {
 		maxFileSize,
 		maxTotalFileSize,
 		optionsColumns,
+		optionsAsButtons,
+		optionButtonClass,
 		conditionalLogic,
 		conditionalAction,
 		conditionalMatch,
@@ -216,49 +219,54 @@ export default function Save({ attributes }) {
 					</div>
 				);
 
-			case 'radio':
+			case 'radio': {
+				const radioBtnClass =
+					optionButtonClass || 'btn btn-outline-primary';
+				let radioWrapClass;
+				if (optionsColumns) {
+					radioWrapClass = 'row';
+				} else if (optionsAsButtons) {
+					radioWrapClass = 'd-flex flex-wrap gap-2';
+				}
 				return (
 					<div>
 						<label className="form-label">
 							<RawHTML>{labelContent}</RawHTML>
 						</label>
-						<div className={optionsColumns ? 'row' : undefined}>
+						<div className={radioWrapClass}>
 							{options &&
-								options.map((opt, idx) =>
-									optionsColumns ? (
-										<div
-											key={idx}
-											className={optionsColumns}
-										>
-											<div className="form-check">
-												<input
-													className={classNames(
-														'form-check-input',
-														fieldClass
-													)}
-													type="radio"
-													id={`${fieldId}-${idx}`}
-													name={fieldName}
-													value={
-														opt.value || opt.label
-													}
-													{...(isRequired && {
-														required: true,
-													})}
-												/>
-												<label
-													className="form-check-label"
-													htmlFor={`${fieldId}-${idx}`}
-												>
-													{opt.label}
-												</label>
-											</div>
-										</div>
+								options.map((opt, idx) => {
+									const optChecked =
+										(opt.value || opt.label) ===
+										defaultValue;
+									const optionInput = optionsAsButtons ? (
+										<>
+											<input
+												className={classNames(
+													'btn-check',
+													fieldClass
+												)}
+												type="radio"
+												id={`${fieldId}-${idx}`}
+												name={fieldName}
+												value={opt.value || opt.label}
+												autoComplete="off"
+												{...(optChecked && {
+													checked: true,
+												})}
+												{...(isRequired && {
+													required: true,
+												})}
+											/>
+											<label
+												className={radioBtnClass}
+												htmlFor={`${fieldId}-${idx}`}
+											>
+												{opt.label}
+											</label>
+										</>
 									) : (
-										<div
-											key={idx}
-											className="form-check"
-										>
+										<div className="form-check">
 											<input
 												className={classNames(
 													'form-check-input',
@@ -268,6 +276,9 @@ export default function Save({ attributes }) {
 												id={`${fieldId}-${idx}`}
 												name={fieldName}
 												value={opt.value || opt.label}
+												{...(optChecked && {
+													checked: true,
+												})}
 												{...(isRequired && {
 													required: true,
 												})}
@@ -279,14 +290,36 @@ export default function Save({ attributes }) {
 												{opt.label}
 											</label>
 										</div>
-									)
-								)}
+									);
+
+									return optionsColumns ? (
+										<div
+											key={idx}
+											className={optionsColumns}
+										>
+											{optionInput}
+										</div>
+									) : (
+										<Fragment key={idx}>
+											{optionInput}
+										</Fragment>
+									);
+								})}
 						</div>
 					</div>
 				);
+			}
 
 			case 'checkbox':
 				if (options && options.length > 0) {
+					const checkboxBtnClass =
+						optionButtonClass || 'btn btn-outline-primary';
+					let checkboxWrapClass;
+					if (optionsColumns) {
+						checkboxWrapClass = 'row';
+					} else if (optionsAsButtons) {
+						checkboxWrapClass = 'd-flex flex-wrap gap-2';
+					}
 					return (
 						<div>
 							<label
@@ -295,41 +328,36 @@ export default function Save({ attributes }) {
 									__html: fieldLabel + requiredMark,
 								}}
 							/>
-							<div
-								className={optionsColumns ? 'row' : undefined}
-							>
-								{options.map((opt, idx) =>
-									optionsColumns ? (
-										<div
-											key={idx}
-											className={optionsColumns}
-										>
-											<div className="form-check">
-												<input
-													className={classNames(
-														'form-check-input small-checkbox',
-														fieldClass
-													)}
-													type="checkbox"
-													id={`${fieldId}-${idx}`}
-													name={`${fieldName}[]`}
-													value={
-														opt.value || opt.label
-													}
-												/>
-												<label
-													className="form-check-label"
-													htmlFor={`${fieldId}-${idx}`}
-												>
-													{opt.label}
-												</label>
-											</div>
-										</div>
+							<div className={checkboxWrapClass}>
+								{options.map((opt, idx) => {
+									const optChecked = (
+										defaultValues || []
+									).includes(opt.value || opt.label);
+									const optionInput = optionsAsButtons ? (
+										<>
+											<input
+												className={classNames(
+													'btn-check',
+													fieldClass
+												)}
+												type="checkbox"
+												id={`${fieldId}-${idx}`}
+												name={`${fieldName}[]`}
+												value={opt.value || opt.label}
+												autoComplete="off"
+												{...(optChecked && {
+													checked: true,
+												})}
+											/>
+											<label
+												className={checkboxBtnClass}
+												htmlFor={`${fieldId}-${idx}`}
+											>
+												{opt.label}
+											</label>
+										</>
 									) : (
-										<div
-											key={idx}
-											className="form-check"
-										>
+										<div className="form-check">
 											<input
 												className={classNames(
 													'form-check-input small-checkbox',
@@ -339,6 +367,9 @@ export default function Save({ attributes }) {
 												id={`${fieldId}-${idx}`}
 												name={`${fieldName}[]`}
 												value={opt.value || opt.label}
+												{...(optChecked && {
+													checked: true,
+												})}
 											/>
 											<label
 												className="form-check-label"
@@ -347,8 +378,21 @@ export default function Save({ attributes }) {
 												{opt.label}
 											</label>
 										</div>
-									)
-								)}
+									);
+
+									return optionsColumns ? (
+										<div
+											key={idx}
+											className={optionsColumns}
+										>
+											{optionInput}
+										</div>
+									) : (
+										<Fragment key={idx}>
+											{optionInput}
+										</Fragment>
+									);
+								})}
 							</div>
 						</div>
 					);

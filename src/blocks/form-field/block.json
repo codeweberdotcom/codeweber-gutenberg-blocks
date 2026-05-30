@@ -113,6 +113,10 @@
 			"type": "string",
 			"default": ""
 		},
+		"defaultValues": {
+			"type": "array",
+			"default": []
+		},
 		"helpText": {
 			"type": "string",
 			"default": ""
@@ -176,6 +180,14 @@
 		"optionsColumns": {
 			"type": "string",
 			"default": ""
+		},
+		"optionsAsButtons": {
+			"type": "boolean",
+			"default": false
+		},
+		"optionButtonClass": {
+			"type": "string",
+			"default": "btn btn-outline-primary"
 		},
 		"conditionalLogic": {
 			"type": "boolean",

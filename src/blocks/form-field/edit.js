@@ -5,6 +5,8 @@ import {
 	TextareaControl,
 	ToggleControl,
 	SelectControl,
+	CheckboxControl,
+	BaseControl,
 	Button,
 	TabPanel,
 	Spinner,
@@ -46,6 +48,7 @@ const FormFieldEdit = ({ attributes, setAttributes, clientId }) => {
 		multiple,
 		options,
 		defaultValue,
+		defaultValues,
 		helpText,
 		useThemeMask,
 		phoneMask,
@@ -61,6 +64,8 @@ const FormFieldEdit = ({ attributes, setAttributes, clientId }) => {
 		maxFileSize,
 		maxTotalFileSize,
 		optionsColumns,
+		optionsAsButtons,
+		optionButtonClass,
 		conditionalLogic,
 		conditionalAction,
 		conditionalMatch,
@@ -581,33 +586,59 @@ const FormFieldEdit = ({ attributes, setAttributes, clientId }) => {
 							)}
 						</label>
 						{options && options.length > 0 ? (
-							<div>
-								{options.map((opt, idx) => (
-									<div
-										key={idx}
-										className={`form-check ${fieldType === 'radio' ? '' : 'form-check-inline'}`}
-									>
-										<input
-											className={controlClass(
-												`form-check-input ${fieldType === 'checkbox' ? 'small-checkbox' : ''}`
-											)}
-											type={fieldType}
-											name={
-												fieldType === 'radio'
-													? fieldName
-													: `${fieldName}[]`
-											}
-											id={`${fieldId}-${idx}`}
-											disabled
-										/>
+							<div
+								className={
+									optionsAsButtons
+										? 'd-flex flex-wrap gap-2'
+										: undefined
+								}
+							>
+								{options.map((opt, idx) => {
+									const optVal = opt.value || opt.label;
+									const isOptDefault =
+										fieldType === 'radio'
+											? defaultValue === optVal
+											: (defaultValues || []).includes(
+													optVal
+												);
+									return optionsAsButtons ? (
 										<label
-											className="form-check-label"
-											htmlFor={`${fieldId}-${idx}`}
+											key={idx}
+											className={`${
+												optionButtonClass ||
+												'btn btn-outline-primary'
+											}${isOptDefault ? ' active' : ''}`}
 										>
 											{opt.label}
 										</label>
-									</div>
-								))}
+									) : (
+										<div
+											key={idx}
+											className={`form-check ${fieldType === 'radio' ? '' : 'form-check-inline'}`}
+										>
+											<input
+												className={controlClass(
+													`form-check-input ${fieldType === 'checkbox' ? 'small-checkbox' : ''}`
+												)}
+												type={fieldType}
+												name={
+													fieldType === 'radio'
+														? fieldName
+														: `${fieldName}[]`
+												}
+												id={`${fieldId}-${idx}`}
+												defaultChecked={isOptDefault}
+												disabled
+											/>
+											<label
+												className="form-check-label"
+												htmlFor={`${fieldId}-${idx}`}
+											>
+												{opt.label}
+											</label>
+										</div>
+									);
+								})}
 							</div>
 						) : (
 							<div className="form-check">
@@ -1700,6 +1731,157 @@ const FormFieldEdit = ({ attributes, setAttributes, clientId }) => {
 														}
 													/>
 												)}
+												{(fieldType === 'radio' ||
+													fieldType ===
+														'checkbox') && (
+													<ToggleControl
+														label={__(
+															'Display as buttons',
+															'codeweber-gutenberg-blocks'
+														)}
+														checked={
+															!!optionsAsButtons
+														}
+														onChange={(value) =>
+															setAttributes({
+																optionsAsButtons:
+																	value,
+															})
+														}
+														help={__(
+															'Render options as Bootstrap toggle buttons instead of checkboxes/radios.',
+															'codeweber-gutenberg-blocks'
+														)}
+													/>
+												)}
+												{(fieldType === 'radio' ||
+													fieldType ===
+														'checkbox') &&
+													optionsAsButtons && (
+														<TextControl
+															label={__(
+																'Button class',
+																'codeweber-gutenberg-blocks'
+															)}
+															value={
+																optionButtonClass ||
+																''
+															}
+															onChange={(value) =>
+																setAttributes({
+																	optionButtonClass:
+																		value,
+																})
+															}
+															placeholder="btn btn-outline-primary"
+															help={__(
+																'Bootstrap button classes applied to each option label.',
+																'codeweber-gutenberg-blocks'
+															)}
+														/>
+													)}
+												{fieldType === 'radio' &&
+													options &&
+													options.length > 0 && (
+														<SelectControl
+															label={__(
+																'Default selected option',
+																'codeweber-gutenberg-blocks'
+															)}
+															value={
+																defaultValue ||
+																''
+															}
+															options={[
+																{
+																	label: __(
+																		'None',
+																		'codeweber-gutenberg-blocks'
+																	),
+																	value: '',
+																},
+																...options.map(
+																	(opt) => ({
+																		label:
+																			opt.label ||
+																			opt.value,
+																		value:
+																			opt.value ||
+																			opt.label,
+																	})
+																),
+															]}
+															onChange={(value) =>
+																setAttributes({
+																	defaultValue:
+																		value,
+																})
+															}
+														/>
+													)}
+												{fieldType === 'checkbox' &&
+													options &&
+													options.length > 0 && (
+														<BaseControl __nextHasNoMarginBottom>
+															<BaseControl.VisualLabel>
+																{__(
+																	'Default checked options',
+																	'codeweber-gutenberg-blocks'
+																)}
+															</BaseControl.VisualLabel>
+															{options.map(
+																(opt, idx) => {
+																	const optVal =
+																		opt.value ||
+																		opt.label;
+																	const current =
+																		defaultValues ||
+																		[];
+																	return (
+																		<CheckboxControl
+																			key={
+																				idx
+																			}
+																			label={
+																				opt.label ||
+																				opt.value
+																			}
+																			checked={current.includes(
+																				optVal
+																			)}
+																			onChange={(
+																				isChecked
+																			) => {
+																				const next =
+																					new Set(
+																						current
+																					);
+																				if (
+																					isChecked
+																				) {
+																					next.add(
+																						optVal
+																					);
+																				} else {
+																					next.delete(
+																						optVal
+																					);
+																				}
+																				setAttributes(
+																					{
+																						defaultValues:
+																							Array.from(
+																								next
+																							),
+																					}
+																				);
+																			}}
+																		/>
+																	);
+																}
+															)}
+														</BaseControl>
+													)}
 											</PanelBody>
 										)}
 
@@ -1812,18 +1994,22 @@ const FormFieldEdit = ({ attributes, setAttributes, clientId }) => {
 											)}
 											initialOpen={false}
 										>
-											<TextControl
-												label={__(
-													'Default Value',
-													'codeweber-gutenberg-blocks'
+											{fieldType !== 'radio' &&
+												fieldType !== 'checkbox' && (
+													<TextControl
+														label={__(
+															'Default Value',
+															'codeweber-gutenberg-blocks'
+														)}
+														value={defaultValue}
+														onChange={(value) =>
+															setAttributes({
+																defaultValue:
+																	value,
+															})
+														}
+													/>
 												)}
-												value={defaultValue}
-												onChange={(value) =>
-													setAttributes({
-														defaultValue: value,
-													})
-												}
-											/>
 											<TextControl
 												label={__(
 													'Help Text',

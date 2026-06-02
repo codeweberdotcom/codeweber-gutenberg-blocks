@@ -2,6 +2,7 @@ import { __ } from '@wordpress/i18n';
 import {
 	SelectControl,
 	TextControl,
+	ToggleControl,
 	Button,
 	PanelBody,
 	Spinner,
@@ -35,6 +36,8 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 		LeftIcon,
 		DataGlightbox,
 		DataGallery,
+		PdfWidth,
+		PdfHideToolbar,
 		DataBsToggle,
 		DataBsTarget,
 		DataGlightboxTitle,
@@ -488,6 +491,17 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 		}
 	};
 
+	// Default width of the PDF lightbox (matches Bootstrap container-xl).
+	// Overridable per button via the "PDF width" field. An empty field falls back to this default.
+	const PDF_DEFAULT_WIDTH = '1140px';
+	const buildPdfGlightbox = (width, hideToolbar) => {
+		const w = (width || '').trim() || PDF_DEFAULT_WIDTH;
+		const config = `height: 100vh; width: ${w}`;
+		// A "#toolbar=0" hash on the URL would make GLightbox misdetect the slide
+		// as "inline"; forcing type: external keeps the PDF rendered in an iframe.
+		return hideToolbar ? `type: external; ${config}` : config;
+	};
+
 	const handleLinkTypeChange = (newLinkType) => {
 		setAttributes({ LinkType: newLinkType });
 		if (newLinkType === 'external') {
@@ -730,7 +744,9 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 				RutubeID: '',
 				VKID: '',
 				DocumentID: '',
-				DataGlightbox: 'height: 100vh',
+				PdfWidth: '',
+				PdfHideToolbar: false,
+				DataGlightbox: buildPdfGlightbox('', false),
 				DataGallery: 'pdf',
 				DataBsToggle: '',
 				DataBsTarget: '',
@@ -1162,8 +1178,22 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 	const handlePdfChange = (newPDFlink) => {
 		setAttributes({
 			LinkUrl: newPDFlink,
-			DataGlightbox: 'height: 100vh',
+			DataGlightbox: buildPdfGlightbox(PdfWidth, PdfHideToolbar),
 			DataGallery: 'pdf',
+		});
+	};
+
+	const handlePdfWidth = (newWidth) => {
+		setAttributes({
+			PdfWidth: newWidth,
+			DataGlightbox: buildPdfGlightbox(newWidth, PdfHideToolbar),
+		});
+	};
+
+	const handlePdfHideToolbar = (newValue) => {
+		setAttributes({
+			PdfHideToolbar: newValue,
+			DataGlightbox: buildPdfGlightbox(PdfWidth, newValue),
 		});
 	};
 
@@ -1361,6 +1391,34 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 							<Button onClick={open} className="is-primary">
 								Select file
 							</Button> // Кнопка для открытия медиатека
+						)}
+					/>
+				)}
+
+				{LinkType === 'pdf' && (
+					<TextControl
+						label={__('PDF width', 'codeweber-gutenberg-blocks')}
+						value={PdfWidth}
+						onChange={handlePdfWidth}
+						placeholder={PDF_DEFAULT_WIDTH}
+						help={__(
+							'Lightbox width for the PDF (e.g. 1140px, 90vw, 80%). Leave empty for the default.',
+							'codeweber-gutenberg-blocks'
+						)}
+					/>
+				)}
+
+				{LinkType === 'pdf' && (
+					<ToggleControl
+						label={__(
+							'Hide PDF toolbar',
+							'codeweber-gutenberg-blocks'
+						)}
+						checked={!!PdfHideToolbar}
+						onChange={handlePdfHideToolbar}
+						help={__(
+							'Adds #toolbar=0 to the URL. Works in Chromium-based browsers; Firefox/pdf.js ignores it.',
+							'codeweber-gutenberg-blocks'
 						)}
 					/>
 				)}

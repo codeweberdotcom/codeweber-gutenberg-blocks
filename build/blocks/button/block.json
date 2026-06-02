@@ -165,6 +165,14 @@
       "type": "string",
       "default": ""
     },
+    "PdfWidth": {
+      "type": "string",
+      "default": ""
+    },
+    "PdfHideToolbar": {
+      "type": "boolean",
+      "default": false
+    },
     "DataBsToggle": {
       "type": "string",
       "default": ""

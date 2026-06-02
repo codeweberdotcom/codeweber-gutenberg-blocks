@@ -48,6 +48,7 @@ const ButtonSave = ({ attributes }) => {
 		RightIcon,
 		DataGlightbox,
 		DataGallery,
+		PdfHideToolbar,
 		DataBsToggle,
 		DataBsTarget,
 		blockClass,
@@ -105,6 +106,12 @@ const ButtonSave = ({ attributes }) => {
 		} else {
 			finalHref = `?p=${PostId}`;
 		}
+	}
+
+	// Hide the browser PDF viewer toolbar via the #toolbar=0 open parameter.
+	// Chromium-based viewers (PDFium) honor it; Firefox/pdf.js ignores it.
+	if (LinkType === 'pdf' && PdfHideToolbar && LinkUrl && !LinkUrl.includes('#')) {
+		finalHref = `${LinkUrl}#toolbar=0`;
 	}
 
 	if (isVideoLink && LinkUrl) {

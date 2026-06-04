@@ -47,6 +47,13 @@ const SwiperEdit = ({ attributes, setAttributes, clientId }) => {
 		swiperAutoplay,
 		swiperAutoplayTime,
 		swiperContainerType,
+		swiperItemsAuto,
+		swiperAutoHeight,
+		swiperCentered,
+		swiperDrag,
+		swiperWatchOverflow,
+		swiperUpdateResize,
+		swiperReverse,
 		swiperNavStyle,
 		swiperNavPosition,
 		swiperDotsStyle,
@@ -101,6 +108,14 @@ const SwiperEdit = ({ attributes, setAttributes, clientId }) => {
 		swiperDots,
 		swiperLoop,
 		swiperAutoplay,
+		swiperContainerType,
+		swiperItemsAuto,
+		swiperAutoHeight,
+		swiperCentered,
+		swiperDrag,
+		swiperWatchOverflow,
+		swiperUpdateResize,
+		swiperReverse,
 		innerBlocks.length,
 	]);
 
@@ -133,11 +148,130 @@ const SwiperEdit = ({ attributes, setAttributes, clientId }) => {
 					title={__('Swiper Settings', 'codeweber-gutenberg-blocks')}
 					initialOpen={true}
 				>
+					<SelectControl
+						label={__(
+							'Container Type',
+							'codeweber-gutenberg-blocks'
+						)}
+						value={swiperContainerType}
+						options={[
+							{
+								label: __(
+									'Default',
+									'codeweber-gutenberg-blocks'
+								),
+								value: '',
+							},
+							{
+								label: __(
+									'Hero Slider',
+									'codeweber-gutenberg-blocks'
+								),
+								value: 'swiper-hero',
+							},
+							{
+								label: __(
+									'Fullscreen Slider',
+									'codeweber-gutenberg-blocks'
+								),
+								value: 'swiper-fullscreen',
+							},
+						]}
+						onChange={(value) =>
+							setAttributes({ swiperContainerType: value })
+						}
+						help={__(
+							'Special slider types for hero sections or fullscreen layouts',
+							'codeweber-gutenberg-blocks'
+						)}
+					/>
+
 					<TextControl
 						label={__('Margin (px)', 'codeweber-gutenberg-blocks')}
 						value={swiperMargin}
 						onChange={(value) =>
 							setAttributes({ swiperMargin: value })
+						}
+					/>
+
+					<ToggleControl
+						label={__('Auto Width', 'codeweber-gutenberg-blocks')}
+						help={__(
+							'Slides take width from their content. Overrides items per view.',
+							'codeweber-gutenberg-blocks'
+						)}
+						checked={swiperItemsAuto}
+						onChange={(value) =>
+							setAttributes({ swiperItemsAuto: value })
+						}
+					/>
+
+					<ToggleControl
+						label={__('Auto Height', 'codeweber-gutenberg-blocks')}
+						help={__(
+							'Wrapper adapts its height to the active slide.',
+							'codeweber-gutenberg-blocks'
+						)}
+						checked={swiperAutoHeight}
+						onChange={(value) =>
+							setAttributes({ swiperAutoHeight: value })
+						}
+					/>
+
+					<ToggleControl
+						label={__(
+							'Centered Slides',
+							'codeweber-gutenberg-blocks'
+						)}
+						help={__(
+							'Active slide is centered instead of left-aligned.',
+							'codeweber-gutenberg-blocks'
+						)}
+						checked={swiperCentered}
+						onChange={(value) =>
+							setAttributes({ swiperCentered: value })
+						}
+					/>
+
+					<ToggleControl
+						label={__('Touch Drag', 'codeweber-gutenberg-blocks')}
+						help={__(
+							'Allow changing slides by dragging with mouse/touch.',
+							'codeweber-gutenberg-blocks'
+						)}
+						checked={swiperDrag}
+						onChange={(value) =>
+							setAttributes({ swiperDrag: value })
+						}
+					/>
+
+					<ToggleControl
+						label={__(
+							'Watch Overflow',
+							'codeweber-gutenberg-blocks'
+						)}
+						help={__(
+							'Disable slider and hide controls when there are not enough slides.',
+							'codeweber-gutenberg-blocks'
+						)}
+						checked={swiperWatchOverflow}
+						onChange={(value) =>
+							setAttributes({ swiperWatchOverflow: value })
+						}
+					/>
+
+					<ToggleControl
+						label={__(
+							'Update on Resize',
+							'codeweber-gutenberg-blocks'
+						)}
+						help={__(
+							'Recalculate slide positions on window resize.',
+							'codeweber-gutenberg-blocks'
+						)}
+						checked={swiperUpdateResize}
+						onChange={(value) =>
+							setAttributes({ swiperUpdateResize: value })
 						}
 					/>
 
@@ -268,19 +402,33 @@ const SwiperEdit = ({ attributes, setAttributes, clientId }) => {
 					/>
 
 					{swiperAutoplay && (
-						<TextControl
-							label={__(
-								'Autoplay Time (ms)',
-								'codeweber-gutenberg-blocks'
-							)}
-							type="number"
-							value={swiperAutoplayTime}
-							onChange={(value) =>
-								setAttributes({
-									swiperAutoplayTime: parseInt(value) || 5000,
-								})
-							}
-						/>
+						<>
+							<TextControl
+								label={__(
+									'Autoplay Time (ms)',
+									'codeweber-gutenberg-blocks'
+								)}
+								type="number"
+								value={swiperAutoplayTime}
+								onChange={(value) =>
+									setAttributes({
+										swiperAutoplayTime:
+											parseInt(value) || 5000,
+									})
+								}
+							/>
+
+							<ToggleControl
+								label={__(
+									'Reverse Direction',
+									'codeweber-gutenberg-blocks'
+								)}
+								checked={swiperReverse}
+								onChange={(value) =>
+									setAttributes({ swiperReverse: value })
+								}
+							/>
+						</>
 					)}
 
 					<SelectControl

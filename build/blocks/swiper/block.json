@@ -90,6 +90,34 @@
       "type": "string",
       "default": ""
     },
+    "swiperItemsAuto": {
+      "type": "boolean",
+      "default": false
+    },
+    "swiperAutoHeight": {
+      "type": "boolean",
+      "default": false
+    },
+    "swiperCentered": {
+      "type": "boolean",
+      "default": false
+    },
+    "swiperDrag": {
+      "type": "boolean",
+      "default": true
+    },
+    "swiperWatchOverflow": {
+      "type": "boolean",
+      "default": false
+    },
+    "swiperUpdateResize": {
+      "type": "boolean",
+      "default": true
+    },
+    "swiperReverse": {
+      "type": "boolean",
+      "default": false
+    },
     "swiperNavStyle": {
       "type": "string",
       "default": "nav-dark"

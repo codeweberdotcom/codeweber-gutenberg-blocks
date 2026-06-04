@@ -31,6 +31,13 @@ $swiperLoop = isset($attributes['swiperLoop']) ? (bool) $attributes['swiperLoop'
 $swiperAutoplay = isset($attributes['swiperAutoplay']) ? (bool) $attributes['swiperAutoplay'] : false;
 $swiperAutoplayTime = isset($attributes['swiperAutoplayTime']) ? (int) $attributes['swiperAutoplayTime'] : 5000;
 $swiperContainerType = isset($attributes['swiperContainerType']) ? $attributes['swiperContainerType'] : '';
+$swiperItemsAuto = isset($attributes['swiperItemsAuto']) ? (bool) $attributes['swiperItemsAuto'] : false;
+$swiperAutoHeight = isset($attributes['swiperAutoHeight']) ? (bool) $attributes['swiperAutoHeight'] : false;
+$swiperCentered = isset($attributes['swiperCentered']) ? (bool) $attributes['swiperCentered'] : false;
+$swiperDrag = isset($attributes['swiperDrag']) ? (bool) $attributes['swiperDrag'] : true;
+$swiperWatchOverflow = isset($attributes['swiperWatchOverflow']) ? (bool) $attributes['swiperWatchOverflow'] : false;
+$swiperUpdateResize = isset($attributes['swiperUpdateResize']) ? (bool) $attributes['swiperUpdateResize'] : true;
+$swiperReverse = isset($attributes['swiperReverse']) ? (bool) $attributes['swiperReverse'] : false;
 $swiperNavStyle = isset($attributes['swiperNavStyle']) ? $attributes['swiperNavStyle'] : 'nav-dark';
 $swiperNavPosition = isset($attributes['swiperNavPosition']) ? $attributes['swiperNavPosition'] : '';
 $swiperDotsStyle = isset($attributes['swiperDotsStyle']) ? $attributes['swiperDotsStyle'] : 'dots-over';
@@ -62,27 +69,37 @@ $dataAttrs = [];
 $dataAttrs['data-margin'] = esc_attr($swiperMargin);
 $dataAttrs['data-nav'] = $swiperNav ? 'true' : 'false';
 $dataAttrs['data-dots'] = $swiperDots ? 'true' : 'false';
-$dataAttrs['data-items-xl'] = esc_attr($swiperItemsXl);
-$dataAttrs['data-items-md'] = esc_attr($swiperItemsMd);
-$dataAttrs['data-items-xs'] = esc_attr($swiperItemsXs);
-$dataAttrs['data-items'] = esc_attr($swiperItems);
-if ($swiperItemsSm) {
-	$dataAttrs['data-items-sm'] = esc_attr($swiperItemsSm);
-}
-if ($swiperItemsLg) {
-	$dataAttrs['data-items-lg'] = esc_attr($swiperItemsLg);
-}
-if ($swiperItemsXxl) {
-	$dataAttrs['data-items-xxl'] = esc_attr($swiperItemsXxl);
-}
-if ($swiperItemsXxxl) {
-	$dataAttrs['data-items-xxxl'] = esc_attr($swiperItemsXxxl);
+$dataAttrs['data-items-auto'] = $swiperItemsAuto ? 'true' : 'false';
+// Items per view are ignored when Auto Width is enabled.
+if (!$swiperItemsAuto) {
+	$dataAttrs['data-items-xl'] = esc_attr($swiperItemsXl);
+	$dataAttrs['data-items-md'] = esc_attr($swiperItemsMd);
+	$dataAttrs['data-items-xs'] = esc_attr($swiperItemsXs);
+	$dataAttrs['data-items'] = esc_attr($swiperItems);
+	if ($swiperItemsSm) {
+		$dataAttrs['data-items-sm'] = esc_attr($swiperItemsSm);
+	}
+	if ($swiperItemsLg) {
+		$dataAttrs['data-items-lg'] = esc_attr($swiperItemsLg);
+	}
+	if ($swiperItemsXxl) {
+		$dataAttrs['data-items-xxl'] = esc_attr($swiperItemsXxl);
+	}
+	if ($swiperItemsXxxl) {
+		$dataAttrs['data-items-xxxl'] = esc_attr($swiperItemsXxxl);
+	}
 }
 if ($swiperEffect) {
 	$dataAttrs['data-effect'] = esc_attr($swiperEffect);
 }
 $dataAttrs['data-speed'] = esc_attr($swiperSpeed);
 $dataAttrs['data-loop'] = $swiperLoop ? 'true' : 'false';
+$dataAttrs['data-centered'] = $swiperCentered ? 'true' : 'false';
+$dataAttrs['data-autoheight'] = $swiperAutoHeight ? 'true' : 'false';
+$dataAttrs['data-watchoverflow'] = $swiperWatchOverflow ? 'true' : 'false';
+$dataAttrs['data-resizeupdate'] = $swiperUpdateResize ? 'true' : 'false';
+$dataAttrs['data-drag'] = $swiperDrag ? 'true' : 'false';
+$dataAttrs['data-reverse'] = $swiperReverse ? 'true' : 'false';
 $dataAttrs['data-autoplay'] = $swiperAutoplay ? 'true' : 'false';
 if ($swiperAutoplay) {
 	$dataAttrs['data-autoplaytime'] = esc_attr($swiperAutoplayTime);

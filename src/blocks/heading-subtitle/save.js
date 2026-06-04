@@ -1,5 +1,9 @@
 import { RichText } from '@wordpress/block-editor';
-import { getTitleClasses, getSubtitleClasses } from './utils';
+import {
+	getTitleClasses,
+	getSubtitleClasses,
+	getSubtitleAlignWrapperClass,
+} from './utils';
 import { ParagraphRenderSave } from '../../components/paragraph';
 
 // Функция для очистки тегов strong из HTML
@@ -52,13 +56,23 @@ const HeadingSubtitleSave = ({ attributes }) => {
 		);
 	}
 	if (enableSubtitle) {
-		elements.push(
+		const subtitleEl = (
 			<RichText.Content
 				key="subtitle"
 				tagName={subtitleTag}
 				value={subtitle}
 				className={getSubtitleClasses(attributes)}
 			/>
+		);
+		const subtitleWrapClass = getSubtitleAlignWrapperClass(attributes);
+		elements.push(
+			subtitleWrapClass ? (
+				<div key="subtitle-wrap" className={subtitleWrapClass}>
+					{subtitleEl}
+				</div>
+			) : (
+				subtitleEl
+			)
 		);
 	}
 

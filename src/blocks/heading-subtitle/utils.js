@@ -82,8 +82,12 @@ export const getSubtitleClasses = (attrs) => {
 	// Color classes
 	classes.push(generateColorClass(subtitleColor, subtitleColorType, 'text'));
 
-	// Text align class
-	classes.push(generateTextAlignClass(align));
+	// Text align class — для типов line/primary выравнивание выносится на flex-обёртку
+	// (getSubtitleAlignWrapperClass), а не на сам элемент, иначе text-line (inline-flex)
+	// и text-line-primary (с абсолютной линией) не сдвигаются.
+	if (subtitleLineType !== 'line' && subtitleLineType !== 'primary') {
+		classes.push(generateTextAlignClass(align));
+	}
 
 	// Align items class
 	classes.push(generateAlignItemsClass(alignItems));
@@ -103,6 +107,28 @@ export const getSubtitleClasses = (attrs) => {
 	}
 
 	return classes.filter(Boolean).join(' ');
+};
+
+// Для подзаголовков типов line/primary возвращает класс flex-обёртки,
+// которая выравнивает декоративный элемент через justify-content-*.
+// Для start/left/empty обёртка не нужна (элемент и так слева).
+export const getSubtitleAlignWrapperClass = (attrs) => {
+	const { align, subtitleLineType = 'default' } = attrs;
+
+	if (subtitleLineType !== 'line' && subtitleLineType !== 'primary') {
+		return '';
+	}
+
+	const alignClass = generateTextAlignClass(align);
+
+	if (alignClass === 'text-center') {
+		return 'd-flex justify-content-center';
+	}
+	if (alignClass === 'text-end' || alignClass === 'text-right') {
+		return 'd-flex justify-content-end';
+	}
+
+	return '';
 };
 
 export const createHeadingTagOptions = () => [

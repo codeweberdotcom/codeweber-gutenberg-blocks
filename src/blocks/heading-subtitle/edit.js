@@ -38,7 +38,11 @@ import { PositioningControl } from '../../components/layout/PositioningControl';
 import { SpacingControl } from '../../components/spacing/SpacingControl';
 import { BlockMetaFields } from '../../components/block-meta/BlockMetaFields';
 import { AnimationControl } from '../../components/animation/Animation';
-import { getTitleClasses, getSubtitleClasses } from './utils';
+import {
+	getTitleClasses,
+	getSubtitleClasses,
+	getSubtitleAlignWrapperClass,
+} from './utils';
 import { getParagraphClasses } from '../../components/paragraph';
 
 const HeadingSubtitleEdit = ({ attributes, setAttributes }) => {
@@ -123,14 +127,22 @@ const HeadingSubtitleEdit = ({ attributes, setAttributes }) => {
 		);
 	}
 	if (enableSubtitle) {
+		const subtitlePreview = renderPreview(
+			subtitleTag,
+			subtitle,
+			getSubtitleClasses(attributes),
+			'subtitle',
+			__('Enter subtitle…', 'codeweber-gutenberg-blocks')
+		);
+		const subtitleWrapClass = getSubtitleAlignWrapperClass(attributes);
 		elements.push(
-			renderPreview(
-				subtitleTag,
-				subtitle,
-				getSubtitleClasses(attributes),
-				'subtitle',
-				__('Enter subtitle…', 'codeweber-gutenberg-blocks')
-			)
+			subtitleWrapClass
+				? createElement(
+						'div',
+						{ key: 'subtitle-wrap', className: subtitleWrapClass },
+						subtitlePreview
+				  )
+				: subtitlePreview
 		);
 	}
 	if (order === 'subtitle-first') {

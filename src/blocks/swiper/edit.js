@@ -6,6 +6,7 @@
 
 import {
 	useBlockProps,
+	useInnerBlocksProps,
 	InnerBlocks,
 	InspectorControls,
 } from '@wordpress/block-editor';
@@ -18,9 +19,9 @@ import {
 	SelectControl,
 } from '@wordpress/components';
 import {
-	SwiperSlider,
-	SwiperSlide,
 	getSwiperConfigFromAttributes,
+	getSwiperContainerClasses,
+	getSwiperDataAttributes,
 	initSwiper,
 	destroySwiper,
 } from '../../components/swiper';
@@ -70,6 +71,16 @@ const SwiperEdit = ({ attributes, setAttributes, clientId }) => {
 		destroySwiper(`.swiper-block-${clientId} .swiper`);
 
 		const timer = setTimeout(() => {
+			// Wrap each inner block (direct child of .swiper-wrapper) as a slide,
+			// so the real Swiper init gets the structure it expects in the editor.
+			const wrapper = document.querySelector(
+				`.swiper-block-${clientId} .swiper .swiper-wrapper`
+			);
+			if (wrapper) {
+				Array.from(wrapper.children).forEach((child) => {
+					child.classList.add('swiper-slide');
+				});
+			}
 			initSwiper(`.swiper-block-${clientId} .swiper`);
 		}, 300);
 
@@ -99,6 +110,21 @@ const SwiperEdit = ({ attributes, setAttributes, clientId }) => {
 		id: swiperId || undefined,
 		...(swiperData ? { 'data-codeweber': swiperData } : {}),
 	});
+
+	// The InnerBlocks layout element itself becomes `.swiper-wrapper`, so its
+	// direct children are the slide nodes the post-processing tags as swiper-slide.
+	const innerBlocksProps = useInnerBlocksProps(
+		{ className: 'swiper-wrapper' },
+		{
+			templateLock: false,
+			orientation: 'horizontal',
+			renderAppender: InnerBlocks.ButtonBlockAppender,
+		}
+	);
+
+	const containerClasses =
+		`${getSwiperContainerClasses(swiperConfig)} mb-10`.trim();
+	const dataAttrs = getSwiperDataAttributes(swiperConfig);
 
 	return (
 		<>
@@ -335,17 +361,11 @@ const SwiperEdit = ({ attributes, setAttributes, clientId }) => {
 			</InspectorControls>
 
 			<div {...blockProps}>
-				<SwiperSlider
-					config={swiperConfig}
-					className="mb-10"
-					uniqueKey={`swiper-${clientId}`}
-				>
-					<InnerBlocks
-						allowedBlocks={undefined}
-						templateLock={false}
-						renderAppender={InnerBlocks.ButtonBlockAppender}
-					/>
-				</SwiperSlider>
+				<div className={containerClasses} {...dataAttrs}>
+					<div className="swiper">
+						<div {...innerBlocksProps} />
+					</div>
+				</div>
 			</div>
 		</>
 	);

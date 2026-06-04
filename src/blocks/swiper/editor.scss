@@ -5,37 +5,11 @@
  */
 
 .wp-block-codeweber-blocks-swiper {
-	/* Стили из style.scss (визуализация в редакторе) */
+	// Live Swiper runs in the editor (see edit.js): the InnerBlocks layout
+	// element itself is `.swiper-wrapper` and its direct children are tagged
+	// `.swiper-slide` before init. Let Swiper own the layout — only keep
+	// minimal slide styling and avoid forcing flex/widths that fight Swiper.
 	.swiper-slide {
-		display: flex;
-		flex-direction: column;
 		height: auto;
-	}
-
-	.swiper-wrapper {
-		// Style for editor
-		display: flex;
-	}
-
-	// Wrap each inner block in swiper-slide for editor preview
-	// Each direct child of swiper-wrapper should act as a slide
-	.swiper-wrapper > .wp-block {
-		// Add swiper-slide styling to inner blocks
-		flex: 0 0 auto;
-		min-width: 300px;
-		margin-right: 20px;
-	}
-
-	// Ensure inner blocks are displayed as slides in editor
-	.block-editor-block-list__layout {
-		display: flex;
-		flex-wrap: nowrap;
-		overflow-x: auto;
-	}
-
-	.block-editor-block-list__block {
-		flex: 0 0 auto;
-		min-width: 300px;
-		margin-right: 20px;
 	}
 }

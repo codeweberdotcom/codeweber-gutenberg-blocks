@@ -317,6 +317,50 @@ export const BannersSidebar = ({ attributes, setAttributes }) => {
 									setAttributes({ bannerType: value })
 								}
 							/>
+							<div className="mb-3">
+								<label>
+									{__(
+										'Min Height',
+										'codeweber-gutenberg-blocks'
+									)}
+								</label>
+								<ButtonGroup
+									style={{
+										display: 'flex',
+										flexWrap: 'wrap',
+										gap: '4px',
+									}}
+								>
+									{BANNER_MIN_HEIGHT_OPTIONS.map((opt) => (
+										<Button
+											key={opt.value}
+											isPrimary={
+												(minHeight || '') === opt.value
+											}
+											onClick={() =>
+												setAttributes({
+													minHeight: opt.value,
+												})
+											}
+										>
+											{opt.label}
+										</Button>
+									))}
+								</ButtonGroup>
+								<p
+									className="components-base-control__help"
+									style={{
+										fontSize: '12px',
+										marginTop: '4px',
+										color: '#757575',
+									}}
+								>
+									{__(
+										'Default keeps the banner built-in height; None removes it. Useful inside a Swiper.',
+										'codeweber-gutenberg-blocks'
+									)}
+								</p>
+							</div>
 							{bannerType === "banner-15" && (
 								<div className="mb-2">
 									<label
@@ -761,50 +805,6 @@ export const BannersSidebar = ({ attributes, setAttributes }) => {
 										'codeweber-gutenberg-blocks'
 									)}
 								/>
-							</div>
-							<div className="mb-3">
-								<label>
-									{__(
-										'Min Height',
-										'codeweber-gutenberg-blocks'
-									)}
-								</label>
-								<ButtonGroup
-									style={{
-										display: 'flex',
-										flexWrap: 'wrap',
-										gap: '4px',
-									}}
-								>
-									{BANNER_MIN_HEIGHT_OPTIONS.map((opt) => (
-										<Button
-											key={opt.value}
-											isPrimary={
-												(minHeight || '') === opt.value
-											}
-											onClick={() =>
-												setAttributes({
-													minHeight: opt.value,
-												})
-											}
-										>
-											{opt.label}
-										</Button>
-									))}
-								</ButtonGroup>
-								<p
-									className="components-base-control__help"
-									style={{
-										fontSize: '12px',
-										marginTop: '4px',
-										color: '#757575',
-									}}
-								>
-									{__(
-										'Default keeps the banner built-in height; None removes it. Useful inside a Swiper.',
-										'codeweber-gutenberg-blocks'
-									)}
-								</p>
 							</div>
 							{bannerType === 'banner-15' && (
 								<div className="mb-3">

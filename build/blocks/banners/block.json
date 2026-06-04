@@ -160,6 +160,10 @@
       "type": "string",
       "default": ""
     },
+    "minHeight": {
+      "type": "string",
+      "default": ""
+    },
     "columnClass": {
       "type": "string",
       "default": ""

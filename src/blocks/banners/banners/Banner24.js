@@ -1,4 +1,5 @@
 import { getImageUrl } from '../../../utilities/image-url';
+import { resolveMinHeightClass } from '../utils/minHeight';
 import {
 	SwiperSlider,
 	SwiperSlide,
@@ -34,6 +35,7 @@ export const Banner24 = ({ attributes, isEditor = false, clientId = '' }) => {
 			classes.push(sectionClass);
 		}
 
+		classes.push(resolveMinHeightClass(attributes.minHeight, ''));
 		return classes.filter(Boolean).join(' ');
 	};
 

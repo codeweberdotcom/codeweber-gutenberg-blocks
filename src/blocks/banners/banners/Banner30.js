@@ -1,4 +1,5 @@
 import { InnerBlocks } from '@wordpress/block-editor';
+import { resolveMinHeightClass } from '../utils/minHeight';
 
 export const Banner30 = ({ attributes, isEditor = false }) => {
 	const { backgroundImageUrl } = attributes;
@@ -17,7 +18,7 @@ export const Banner30 = ({ attributes, isEditor = false }) => {
 
 	if (isEditor) {
 		return (
-			<section className="wrapper overflow-hidden">
+			<section className={`wrapper overflow-hidden ${resolveMinHeightClass(attributes.minHeight, '')}`.trim()}>
 				<div className="container pt-19 pt-md-21 text-center position-relative">
 					<div
 						className="position-absolute"
@@ -88,7 +89,7 @@ export const Banner30 = ({ attributes, isEditor = false }) => {
 	}
 
 	return (
-		<section className="wrapper overflow-hidden">
+		<section className={`wrapper overflow-hidden ${resolveMinHeightClass(attributes.minHeight, '')}`.trim()}>
 			<div className="container pt-19 pt-md-21 text-center position-relative">
 				<div
 					className="position-absolute"

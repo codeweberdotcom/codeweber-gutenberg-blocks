@@ -1,4 +1,5 @@
 import { generateBackgroundClasses } from '../../../utilities/class-generators';
+import { resolveMinHeightClass } from '../utils/minHeight';
 import { getImageUrl } from '../../../utilities/image-url';
 import {
 	SwiperSlider,
@@ -37,6 +38,7 @@ export const Banner25 = ({ attributes, isEditor = false, clientId = '' }) => {
 			}
 		}
 
+		classes.push(resolveMinHeightClass(attributes.minHeight, ''));
 		return classes.filter(Boolean).join(' ');
 	};
 

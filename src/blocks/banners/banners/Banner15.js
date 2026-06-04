@@ -1,4 +1,5 @@
 import { InnerBlocks } from '@wordpress/block-editor';
+import { resolveMinHeightClass } from '../utils/minHeight';
 import { generateBackgroundClasses } from '../../../utilities/class-generators';
 
 export const Banner15 = ({ attributes, isEditor = false, clientId = '' }) => {
@@ -26,7 +27,6 @@ export const Banner15 = ({ attributes, isEditor = false, clientId = '' }) => {
 			'wrapper',
 			'px-0',
 			'mt-0',
-			'min-vh-80',
 			// Vertically center the content within the min-height section
 			// (h-100 chain alone doesn't work because min-height isn't a definite height).
 			'd-flex',
@@ -43,6 +43,7 @@ export const Banner15 = ({ attributes, isEditor = false, clientId = '' }) => {
 			classes.push(sectionClass);
 		}
 
+		classes.push(resolveMinHeightClass(attributes.minHeight, 'min-vh-80'));
 		return classes.filter(Boolean).join(' ');
 	};
 

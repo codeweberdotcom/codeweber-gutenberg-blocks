@@ -1,4 +1,5 @@
 import { InnerBlocks } from '@wordpress/block-editor';
+import { resolveMinHeightClass } from '../utils/minHeight';
 import { generateBackgroundClasses } from '../../../utilities/class-generators';
 import { ImageSimpleRender } from '../../../components/image/ImageSimpleRender';
 import { getImageUrl } from '../../../utilities/image-url';
@@ -79,6 +80,7 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 		if (sectionClass) {
 			classes.push(sectionClass);
 		}
+		classes.push(resolveMinHeightClass(attributes.minHeight, 'min-vh-60'));
 		return classes.filter(Boolean).join(' ');
 	};
 
@@ -571,7 +573,7 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 	if (isEditor) {
 		return (
 			<section
-				className={`${getSectionClasses()} position-relative min-vh-60 d-lg-flex align-items-center`}
+				className={`${getSectionClasses()} position-relative d-lg-flex align-items-center`}
 				style={getSectionStyles()}
 			>
 				{renderImageColumn()}
@@ -608,7 +610,7 @@ export const Banner34 = ({ attributes, isEditor = false, clientId = '' }) => {
 
 	return (
 		<section
-			className={`${getSectionClasses()} position-relative min-vh-60 d-lg-flex align-items-center`}
+			className={`${getSectionClasses()} position-relative d-lg-flex align-items-center`}
 			style={getSectionStyles()}
 			{...(backgroundType === 'image' &&
 				backgroundImageUrl && { 'data-image-src': backgroundImageUrl })}

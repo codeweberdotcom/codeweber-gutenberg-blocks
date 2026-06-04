@@ -1,4 +1,5 @@
 import { InnerBlocks } from '@wordpress/block-editor';
+import { resolveMinHeightClass } from '../utils/minHeight';
 import { generateBackgroundClasses } from '../../../utilities/class-generators';
 import { getImageUrl } from '../../../utilities/image-url';
 
@@ -17,7 +18,6 @@ export const Banner4 = ({ attributes, isEditor = false }) => {
 		const classes = [
 			'wrapper',
 			'position-relative',
-			'min-vh-70',
 			'd-lg-flex',
 			'align-items-center',
 		];
@@ -34,6 +34,7 @@ export const Banner4 = ({ attributes, isEditor = false }) => {
 			}
 		}
 
+		classes.push(resolveMinHeightClass(attributes.minHeight, 'min-vh-70'));
 		return classes.filter(Boolean).join(' ');
 	};
 

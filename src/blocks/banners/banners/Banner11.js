@@ -1,4 +1,5 @@
 import { InnerBlocks } from '@wordpress/block-editor';
+import { resolveMinHeightClass } from '../utils/minHeight';
 import { generateBackgroundClasses } from '../../../utilities/class-generators';
 import { getImageUrl } from '../../../utilities/image-url';
 import {
@@ -42,6 +43,7 @@ export const Banner11 = ({ attributes, isEditor = false, clientId = '' }) => {
 			classes.push(sectionClass);
 		}
 
+		classes.push(resolveMinHeightClass(attributes.minHeight, ''));
 		return classes.filter(Boolean).join(' ');
 	};
 

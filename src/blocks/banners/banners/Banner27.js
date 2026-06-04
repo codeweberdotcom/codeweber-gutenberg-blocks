@@ -1,4 +1,5 @@
 import { InnerBlocks } from '@wordpress/block-editor';
+import { resolveMinHeightClass } from '../utils/minHeight';
 import { generateBackgroundClasses } from '../../../utilities/class-generators';
 
 export const Banner27 = ({ attributes, isEditor = false }) => {
@@ -27,6 +28,7 @@ export const Banner27 = ({ attributes, isEditor = false }) => {
 			classes.push(sectionClass);
 		}
 
+		classes.push(resolveMinHeightClass(attributes.minHeight, ''));
 		return classes.filter(Boolean).join(' ');
 	};
 

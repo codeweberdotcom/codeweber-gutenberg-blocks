@@ -15,6 +15,7 @@ import { ImageHoverControl } from '../../components/image-hover/ImageHoverContro
 import { LightboxControl } from '../../components/lightbox/LightboxControl';
 import { BorderRadiusControl } from '../../components/border-radius';
 import { LayoutControl } from '../image-simple/controls/LayoutControl';
+import { BANNER_MIN_HEIGHT_OPTIONS } from './utils/minHeight';
 import { useState, useEffect } from '@wordpress/element';
 import apiFetch from '@wordpress/api-fetch';
 
@@ -115,6 +116,7 @@ export const BannersSidebar = ({ attributes, setAttributes }) => {
 		backgroundGradient,
 		backgroundSize,
 		sectionClass,
+		minHeight,
 		columnClass,
 		contentAlign,
 		videoUrl,
@@ -759,6 +761,50 @@ export const BannersSidebar = ({ attributes, setAttributes }) => {
 										'codeweber-gutenberg-blocks'
 									)}
 								/>
+							</div>
+							<div className="mb-3">
+								<label>
+									{__(
+										'Min Height',
+										'codeweber-gutenberg-blocks'
+									)}
+								</label>
+								<ButtonGroup
+									style={{
+										display: 'flex',
+										flexWrap: 'wrap',
+										gap: '4px',
+									}}
+								>
+									{BANNER_MIN_HEIGHT_OPTIONS.map((opt) => (
+										<Button
+											key={opt.value}
+											isPrimary={
+												(minHeight || '') === opt.value
+											}
+											onClick={() =>
+												setAttributes({
+													minHeight: opt.value,
+												})
+											}
+										>
+											{opt.label}
+										</Button>
+									))}
+								</ButtonGroup>
+								<p
+									className="components-base-control__help"
+									style={{
+										fontSize: '12px',
+										marginTop: '4px',
+										color: '#757575',
+									}}
+								>
+									{__(
+										'Default keeps the banner built-in height; None removes it. Useful inside a Swiper.',
+										'codeweber-gutenberg-blocks'
+									)}
+								</p>
 							</div>
 							{bannerType === 'banner-15' && (
 								<div className="mb-3">

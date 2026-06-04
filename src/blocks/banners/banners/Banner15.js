@@ -12,6 +12,7 @@ export const Banner15 = ({ attributes, isEditor = false, clientId = '' }) => {
 		contentAlign = 'left',
 		videoUrl,
 		backgroundVideoUrl,
+		backgroundVideoPosterUrl,
 	} = attributes;
 
 	// Placeholder фоновое изображение
@@ -141,9 +142,10 @@ export const Banner15 = ({ attributes, isEditor = false, clientId = '' }) => {
 					<>
 						<video
 							poster={
-								backgroundVideoUrl
+								backgroundVideoPosterUrl ||
+								(backgroundVideoUrl
 									? `${window.location?.origin || ''}/wp-content/themes/codeweber/dist/assets/img/photos/movie2.jpg`
-									: undefined
+									: undefined)
 							}
 							src={backgroundVideoUrl}
 							autoPlay
@@ -174,9 +176,10 @@ export const Banner15 = ({ attributes, isEditor = false, clientId = '' }) => {
 				<>
 					<video
 						poster={
-							backgroundVideoUrl
+							backgroundVideoPosterUrl ||
+							(backgroundVideoUrl
 								? '/wp-content/themes/codeweber/dist/assets/img/photos/movie2.jpg'
-								: undefined
+								: undefined)
 						}
 						src={backgroundVideoUrl}
 						autoPlay

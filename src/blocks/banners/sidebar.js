@@ -574,6 +574,7 @@ export const BannersSidebar = ({ attributes, setAttributes }) => {
 								attributes={attributes}
 								setAttributes={setAttributes}
 								allowVideo={bannerType === 'banner-34' || bannerType === 'banner-15'}
+								enableVideoPoster={bannerType === 'banner-15'}
 								backgroundImageSize={backgroundImageSize}
 								imageSizeLabel={backgroundImageSizeLabel}
 								availableImageSizes={availableImageSizes}

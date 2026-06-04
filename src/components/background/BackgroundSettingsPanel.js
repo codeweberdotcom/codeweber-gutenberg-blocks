@@ -47,6 +47,7 @@ export const BackgroundSettingsPanel = ({
 	attributes,
 	setAttributes,
 	allowVideo = false,
+	enableVideoPoster = false,
 	backgroundImageSize,
 	renderImagePicker,
 	renderPatternPicker,
@@ -67,6 +68,8 @@ export const BackgroundSettingsPanel = ({
 		backgroundOverlay,
 		backgroundVideoId,
 		backgroundVideoUrl,
+		backgroundVideoPosterId,
+		backgroundVideoPosterUrl,
 	} = attributes;
 
 	const typeOptions = useMemo(() => {
@@ -530,6 +533,131 @@ export const BackgroundSettingsPanel = ({
 		);
 	};
 
+	// Poster (preview) image picker for the background video.
+	const renderVideoPoster = () => (
+		<div className="mb-3">
+			<div className="component-sidebar-title">
+				<label>
+					{__('Video Poster', 'codeweber-gutenberg-blocks')}
+				</label>
+			</div>
+			<MediaUploadCheck>
+				<MediaUpload
+					onSelect={(media) =>
+						setAttributes({
+							backgroundVideoPosterId: media?.id || 0,
+							backgroundVideoPosterUrl: media?.url || '',
+						})
+					}
+					allowedTypes={['image']}
+					value={backgroundVideoPosterId}
+					render={({ open }) => (
+						<>
+							{!backgroundVideoPosterUrl && (
+								<div
+									onClick={open}
+									style={{
+										width: '100%',
+										height: '100px',
+										backgroundColor: '#f0f0f0',
+										border: '2px dashed #ccc',
+										borderRadius: '4px',
+										display: 'flex',
+										alignItems: 'center',
+										justifyContent: 'center',
+										cursor: 'pointer',
+									}}
+								>
+									<div
+										style={{
+											textAlign: 'center',
+											color: '#666',
+										}}
+									>
+										<div
+											style={{
+												fontSize: '20px',
+												marginBottom: '4px',
+											}}
+										>
+											🖼️
+										</div>
+										<div
+											style={{
+												fontSize: '12px',
+												fontWeight: '500',
+											}}
+										>
+											{__(
+												'Select Poster',
+												'codeweber-gutenberg-blocks'
+											)}
+										</div>
+									</div>
+								</div>
+							)}
+							{backgroundVideoPosterUrl && (
+								<div
+									onClick={open}
+									style={{
+										position: 'relative',
+										cursor: 'pointer',
+										borderRadius: '4px',
+										overflow: 'hidden',
+										border: '1px solid #ddd',
+									}}
+								>
+									<img
+										src={backgroundVideoPosterUrl}
+										alt=""
+										style={{
+											width: '100%',
+											height: 'auto',
+											display: 'block',
+										}}
+									/>
+									<Button
+										isLink
+										onClick={(event) => {
+											event.stopPropagation();
+											setAttributes({
+												backgroundVideoPosterId: 0,
+												backgroundVideoPosterUrl: '',
+											});
+										}}
+										style={{
+											position: 'absolute',
+											top: '6px',
+											right: '6px',
+											backgroundColor:
+												'rgba(220, 53, 69, 0.8)',
+											borderRadius: '50%',
+											width: '20px',
+											height: '20px',
+											display: 'flex',
+											alignItems: 'center',
+											justifyContent: 'center',
+											color: '#fff',
+											textDecoration: 'none',
+										}}
+									>
+										<i
+											className="uil uil-times"
+											style={{
+												margin: 0,
+												fontSize: '12px',
+											}}
+										></i>
+									</Button>
+								</div>
+							)}
+						</>
+					)}
+				/>
+			</MediaUploadCheck>
+		</div>
+	);
+
 	return (
 		<>
 			<div className="component-sidebar-title">
@@ -615,6 +743,7 @@ export const BackgroundSettingsPanel = ({
 					{renderVideoPicker
 						? renderVideoPicker()
 						: renderDefaultVideoPicker()}
+					{enableVideoPoster && renderVideoPoster()}
 					{overlayControl}
 				</>
 			)}

@@ -4,6 +4,7 @@ import {
 	BaseControl,
 	ButtonGroup,
 	Button,
+	TextareaControl,
 } from '@wordpress/components';
 import { RichText } from '@wordpress/block-editor';
 import {
@@ -17,6 +18,7 @@ export const HeadingContentControl = ({
 	hideSubtitle = false,
 	hideText = false,
 	hideTitle = false,
+	htmlSource = false,
 }) => {
 	const {
 		enableTitle,
@@ -129,98 +131,138 @@ export const HeadingContentControl = ({
 					)}
 				</>
 			)}
-			{enableTitle && (
-				<BaseControl
-					label={__('Title Text', 'codeweber-gutenberg-blocks')}
-					className="mb-3"
-				>
-					<div
-						style={{
-							border: '1px solid #ccc',
-							borderRadius: '4px',
-							padding: '8px',
-							minHeight: '40px',
-							backgroundColor: '#fff',
-							fontSize: '13px',
-						}}
+			{enableTitle &&
+				(htmlSource ? (
+					<TextareaControl
+						label={__(
+							'Title Text (HTML)',
+							'codeweber-gutenberg-blocks'
+						)}
+						help={__(
+							'Raw HTML is allowed and rendered on the front end.',
+							'codeweber-gutenberg-blocks'
+						)}
+						value={title}
+						onChange={(value) => setAttributes({ title: value })}
+						rows={2}
+					/>
+				) : (
+					<BaseControl
+						label={__('Title Text', 'codeweber-gutenberg-blocks')}
+						className="mb-3"
 					>
-						<RichText
-							tagName="div"
-							value={title}
-							onChange={(value) =>
-								setAttributes({ title: value })
-							}
-							placeholder={__(
-								'Enter title...',
-								'codeweber-gutenberg-blocks'
-							)}
-							allowedFormats={[]}
-							__unstableAllowHtml={true}
-							withoutInteractiveFormatting
-						/>
-					</div>
-				</BaseControl>
-			)}
-			{!hideSubtitle && enableSubtitle && (
-				<BaseControl
-					label={__('Subtitle Text', 'codeweber-gutenberg-blocks')}
-					className="mb-3"
-				>
-					<div
-						style={{
-							border: '1px solid #ccc',
-							borderRadius: '4px',
-							padding: '8px',
-							minHeight: '40px',
-							backgroundColor: '#fff',
-							fontSize: '13px',
-						}}
+						<div
+							style={{
+								border: '1px solid #ccc',
+								borderRadius: '4px',
+								padding: '8px',
+								minHeight: '40px',
+								backgroundColor: '#fff',
+								fontSize: '13px',
+							}}
+						>
+							<RichText
+								tagName="div"
+								value={title}
+								onChange={(value) =>
+									setAttributes({ title: value })
+								}
+								placeholder={__(
+									'Enter title...',
+									'codeweber-gutenberg-blocks'
+								)}
+								allowedFormats={[]}
+								__unstableAllowHtml={true}
+								withoutInteractiveFormatting
+							/>
+						</div>
+					</BaseControl>
+				))}
+			{!hideSubtitle &&
+				enableSubtitle &&
+				(htmlSource ? (
+					<TextareaControl
+						label={__(
+							'Subtitle Text (HTML)',
+							'codeweber-gutenberg-blocks'
+						)}
+						value={subtitle}
+						onChange={(value) => setAttributes({ subtitle: value })}
+						rows={2}
+					/>
+				) : (
+					<BaseControl
+						label={__('Subtitle Text', 'codeweber-gutenberg-blocks')}
+						className="mb-3"
 					>
-						<RichText
-							tagName="div"
-							value={subtitle}
-							onChange={(value) =>
-								setAttributes({ subtitle: value })
-							}
-							placeholder={__(
-								'Enter subtitle...',
-								'codeweber-gutenberg-blocks'
-							)}
-							allowedFormats={[]}
-							__unstableAllowHtml={true}
-						/>
-					</div>
-				</BaseControl>
-			)}
-			{enableText && (
-				<BaseControl
-					label={__('Paragraph Text', 'codeweber-gutenberg-blocks')}
-					className="mb-3"
-				>
-					<div
-						style={{
-							border: '1px solid #ccc',
-							borderRadius: '4px',
-							padding: '8px',
-							minHeight: '80px',
-							backgroundColor: '#fff',
-							fontSize: '13px',
-						}}
+						<div
+							style={{
+								border: '1px solid #ccc',
+								borderRadius: '4px',
+								padding: '8px',
+								minHeight: '40px',
+								backgroundColor: '#fff',
+								fontSize: '13px',
+							}}
+						>
+							<RichText
+								tagName="div"
+								value={subtitle}
+								onChange={(value) =>
+									setAttributes({ subtitle: value })
+								}
+								placeholder={__(
+									'Enter subtitle...',
+									'codeweber-gutenberg-blocks'
+								)}
+								allowedFormats={[]}
+								__unstableAllowHtml={true}
+							/>
+						</div>
+					</BaseControl>
+				))}
+			{enableText &&
+				(htmlSource ? (
+					<TextareaControl
+						label={__(
+							'Paragraph Text (HTML)',
+							'codeweber-gutenberg-blocks'
+						)}
+						value={text}
+						onChange={(value) => setAttributes({ text: value })}
+						rows={4}
+					/>
+				) : (
+					<BaseControl
+						label={__('Paragraph Text', 'codeweber-gutenberg-blocks')}
+						className="mb-3"
 					>
-						<RichText
-							tagName="div"
-							value={text}
-							onChange={(value) => setAttributes({ text: value })}
-							placeholder={__(
-								'Enter paragraph...',
-								'codeweber-gutenberg-blocks'
-							)}
-							allowedFormats={[]}
-							__unstableAllowHtml={true}
-						/>
-					</div>
-				</BaseControl>
-			)}
+						<div
+							style={{
+								border: '1px solid #ccc',
+								borderRadius: '4px',
+								padding: '8px',
+								minHeight: '80px',
+								backgroundColor: '#fff',
+								fontSize: '13px',
+							}}
+						>
+							<RichText
+								tagName="div"
+								value={text}
+								onChange={(value) =>
+									setAttributes({ text: value })
+								}
+								placeholder={__(
+									'Enter paragraph...',
+									'codeweber-gutenberg-blocks'
+								)}
+								allowedFormats={[]}
+								__unstableAllowHtml={true}
+							/>
+						</div>
+					</BaseControl>
+				))}
 		</>
 	);
 };

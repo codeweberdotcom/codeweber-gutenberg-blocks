@@ -1,8 +1,4 @@
-import {
-	useBlockProps,
-	InspectorControls,
-	RichText,
-} from '@wordpress/block-editor';
+import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
 import {
 	TabPanel,
 	PanelBody,
@@ -11,7 +7,7 @@ import {
 	TextControl,
 } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import { useState, useEffect } from '@wordpress/element';
+import { useState, createElement } from '@wordpress/element';
 import {
 	Icon,
 	edit,
@@ -43,7 +39,7 @@ import { SpacingControl } from '../../components/spacing/SpacingControl';
 import { BlockMetaFields } from '../../components/block-meta/BlockMetaFields';
 import { AnimationControl } from '../../components/animation/Animation';
 import { getTitleClasses, getSubtitleClasses } from './utils';
-import { ParagraphRender } from '../../components/paragraph';
+import { getParagraphClasses } from '../../components/paragraph';
 
 const HeadingSubtitleEdit = ({ attributes, setAttributes }) => {
 	const {
@@ -86,13 +82,12 @@ const HeadingSubtitleEdit = ({ attributes, setAttributes }) => {
 
 	const blockProps = useBlockProps();
 
-	// Функция для очистки тегов strong из HTML
+	// Strip <strong> on the title preview to mirror save.js output (which keeps
+	// cleanStrongTags). Editing happens in the Content tab as raw HTML source.
 	const cleanStrongTags = (html) => {
 		if (!html) return html;
-		// Удаляем все вложенные теги strong, сохраняя содержимое
 		let cleaned = html;
 		let previous = '';
-		// Повторяем до тех пор, пока есть изменения
 		while (cleaned !== previous) {
 			previous = cleaned;
 			cleaned = cleaned
@@ -102,50 +97,40 @@ const HeadingSubtitleEdit = ({ attributes, setAttributes }) => {
 		return cleaned;
 	};
 
-	// Очищаем title от strong тегов при загрузке блока
-	useEffect(() => {
-		if (title && title.includes('<strong')) {
-			const cleaned = cleanStrongTags(title);
-			if (cleaned !== title) {
-				setAttributes({ title: cleaned });
-			}
-		}
-	}, []); // Только при монтировании компонента
+	// Render a non-editable HTML preview of a field (raw HTML on the canvas,
+	// matching the front end). Content is edited in the Content tab textarea.
+	const renderPreview = (tag, html, className, key, placeholder) => {
+		const hasContent = html && html.trim() !== '';
+		return createElement(tag || 'div', {
+			key,
+			className,
+			...(hasContent
+				? { dangerouslySetInnerHTML: { __html: html } }
+				: { children: placeholder, style: { opacity: 0.5 } }),
+		});
+	};
 
 	const elements = [];
 	if (enableTitle) {
 		elements.push(
-			<RichText
-				key="title"
-				tagName={titleTag}
-				value={title}
-				onChange={(value) => {
-					// Очищаем strong теги при изменении
-					const cleaned = cleanStrongTags(value);
-					setAttributes({ title: cleaned });
-				}}
-				className={getTitleClasses(attributes)}
-				placeholder={__('Enter title...', 'codeweber-gutenberg-blocks')}
-				allowedFormats={[]}
-				withoutInteractiveFormatting
-			/>
+			renderPreview(
+				titleTag,
+				cleanStrongTags(title),
+				getTitleClasses(attributes),
+				'title',
+				__('Enter title…', 'codeweber-gutenberg-blocks')
+			)
 		);
 	}
 	if (enableSubtitle) {
 		elements.push(
-			<RichText
-				key="subtitle"
-				tagName={subtitleTag}
-				value={subtitle}
-				onChange={(value) => setAttributes({ subtitle: value })}
-				className={getSubtitleClasses(attributes)}
-				placeholder={__(
-					'Enter subtitle...',
-					'codeweber-gutenberg-blocks'
-				)}
-				allowedFormats={[]}
-				withoutInteractiveFormatting
-			/>
+			renderPreview(
+				subtitleTag,
+				subtitle,
+				getSubtitleClasses(attributes),
+				'subtitle',
+				__('Enter subtitle…', 'codeweber-gutenberg-blocks')
+			)
 		);
 	}
 	if (order === 'subtitle-first') {
@@ -155,13 +140,13 @@ const HeadingSubtitleEdit = ({ attributes, setAttributes }) => {
 	// Paragraph всегда после title и subtitle
 	if (enableText) {
 		elements.push(
-			<ParagraphRender
-				key="text"
-				attributes={attributes}
-				setAttributes={setAttributes}
-				prefix=""
-				tag={textTag}
-			/>
+			renderPreview(
+				textTag,
+				text,
+				getParagraphClasses(attributes, ''),
+				'text',
+				__('Enter paragraph…', 'codeweber-gutenberg-blocks')
+			)
 		);
 	}
 
@@ -242,6 +227,7 @@ const HeadingSubtitleEdit = ({ attributes, setAttributes }) => {
 									<HeadingContentControl
 										attributes={attributes}
 										setAttributes={setAttributes}
+										htmlSource={true}
 									/>
 								</div>
 							)}

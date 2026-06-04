@@ -120,6 +120,7 @@ export const BannersSidebar = ({ attributes, setAttributes }) => {
 		backgroundSize,
 		sectionClass,
 		columnClass,
+		contentAlign,
 		videoUrl,
 		videoId,
 		modalVideoId,
@@ -711,28 +712,97 @@ export const BannersSidebar = ({ attributes, setAttributes }) => {
 								/>
 							</div>
 							{bannerType === 'banner-15' && (
-								<div className="mb-3">
-									<label>
-										{__(
-											'Column Class',
-											'codeweber-gutenberg-blocks'
-										)}
-									</label>
-									<input
-										type="text"
-										className="components-text-control__input"
-										value={columnClass || ''}
-										onChange={(e) =>
-											setAttributes({
-												columnClass: e.target.value,
-											})
-										}
-										placeholder={__(
-											'CSS classes for column',
-											'codeweber-gutenberg-blocks'
-										)}
-									/>
-								</div>
+								<>
+									<div className="mb-3">
+										<label
+											style={{
+												display: 'block',
+												marginBottom: '8px',
+											}}
+										>
+											{__(
+												'Content Position',
+												'codeweber-gutenberg-blocks'
+											)}
+										</label>
+										<ButtonGroup>
+											<Button
+												variant={
+													(contentAlign ||
+														'left') === 'left'
+														? 'primary'
+														: 'secondary'
+												}
+												onClick={() =>
+													setAttributes({
+														contentAlign: 'left',
+													})
+												}
+											>
+												{__(
+													'Left',
+													'codeweber-gutenberg-blocks'
+												)}
+											</Button>
+											<Button
+												variant={
+													contentAlign === 'center'
+														? 'primary'
+														: 'secondary'
+												}
+												onClick={() =>
+													setAttributes({
+														contentAlign: 'center',
+													})
+												}
+											>
+												{__(
+													'Center',
+													'codeweber-gutenberg-blocks'
+												)}
+											</Button>
+											<Button
+												variant={
+													contentAlign === 'right'
+														? 'primary'
+														: 'secondary'
+												}
+												onClick={() =>
+													setAttributes({
+														contentAlign: 'right',
+													})
+												}
+											>
+												{__(
+													'Right',
+													'codeweber-gutenberg-blocks'
+												)}
+											</Button>
+										</ButtonGroup>
+									</div>
+									<div className="mb-3">
+										<label>
+											{__(
+												'Column Class (override)',
+												'codeweber-gutenberg-blocks'
+											)}
+										</label>
+										<input
+											type="text"
+											className="components-text-control__input"
+											value={columnClass || ''}
+											onChange={(e) =>
+												setAttributes({
+													columnClass: e.target.value,
+												})
+											}
+											placeholder={__(
+												'CSS classes for column',
+												'codeweber-gutenberg-blocks'
+											)}
+										/>
+									</div>
+								</>
 							)}
 							{bannerType === 'banner-34' && (
 								<>

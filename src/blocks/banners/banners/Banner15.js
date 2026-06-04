@@ -8,6 +8,7 @@ export const Banner15 = ({ attributes, isEditor = false, clientId = '' }) => {
 		backgroundSize,
 		sectionClass,
 		columnClass,
+		contentAlign = 'left',
 		videoUrl,
 		backgroundVideoUrl,
 	} = attributes;
@@ -82,9 +83,19 @@ export const Banner15 = ({ attributes, isEditor = false, clientId = '' }) => {
 		return Object.keys(styles).length > 0 ? styles : undefined;
 	};
 
-	// Классы для контента
-	const contentClasses = columnClass || 
-		'col-md-10 offset-md-1 col-lg-7 offset-lg-0 col-xl-6 col-xxl-5 text-center text-lg-start justify-content-center align-self-center align-items-start';
+	// Пресеты классов колонки по позиции контента (слева / по центру / справа)
+	const contentAlignPresets = {
+		left: 'col-md-10 offset-md-1 col-lg-7 offset-lg-0 col-xl-6 col-xxl-5 text-center text-lg-start justify-content-center align-self-center align-items-start',
+		center:
+			'col-md-11 col-lg-8 col-xl-7 col-xxl-6 mx-auto text-center justify-content-center align-self-center',
+		right: 'col-md-10 offset-md-1 col-lg-7 offset-lg-5 col-xl-6 offset-xl-6 col-xxl-5 offset-xxl-6 text-center text-lg-start justify-content-center align-self-center align-items-start',
+	};
+
+	// Классы для контента: ручной columnClass имеет приоритет, иначе пресет по contentAlign
+	const contentClasses =
+		columnClass ||
+		contentAlignPresets[contentAlign] ||
+		contentAlignPresets.left;
 
 	const renderContent = () => (
 		<div className="container h-100">

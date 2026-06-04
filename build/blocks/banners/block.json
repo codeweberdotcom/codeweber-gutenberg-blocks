@@ -164,6 +164,10 @@
       "type": "string",
       "default": ""
     },
+    "contentAlign": {
+      "type": "string",
+      "default": "left"
+    },
     "containerClass": {
       "type": "string",
       "default": ""

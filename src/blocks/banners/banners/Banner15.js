@@ -27,6 +27,11 @@ export const Banner15 = ({ attributes, isEditor = false, clientId = '' }) => {
 			'px-0',
 			'mt-0',
 			'min-vh-80',
+			// Vertically center the content within the min-height section
+			// (h-100 chain alone doesn't work because min-height isn't a definite height).
+			'd-flex',
+			'flex-column',
+			'justify-content-center',
 		];
 
 		// Добавляем классы фона из атрибутов (включая bg-image, bg-overlay и т.д.)

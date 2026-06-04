@@ -27,7 +27,6 @@ import {
 	Banner15,
 	Banner16,
 	Banner18,
-	Banner20,
 	Banner27,
 	Banner29,
 	Banner30,
@@ -732,8 +731,6 @@ const BannersEdit = ({ attributes, setAttributes, clientId }) => {
 				return <Banner16 attributes={attributes} isEditor={true} />;
 			case 'banner-18':
 				return <Banner18 attributes={attributes} isEditor={true} />;
-			case 'banner-20':
-				return <Banner20 attributes={attributes} isEditor={true} />;
 			case 'banner-24':
 				return (
 					<Banner24

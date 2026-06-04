@@ -15,7 +15,6 @@ export { Banner11 } from './Banner11';
 export { Banner15 } from './Banner15';
 export { Banner16 } from './Banner16';
 export { Banner18 } from './Banner18';
-export { Banner20 } from './Banner20';
 export { Banner27 } from './Banner27';
 export { Banner29 } from './Banner29';
 export { Banner30 } from './Banner30';

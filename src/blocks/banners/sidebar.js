@@ -65,10 +65,6 @@ const BANNER_TYPES = [
 		value: 'banner-18',
 	},
 	{
-		label: __('Banner 20', 'codeweber-gutenberg-blocks'),
-		value: 'banner-20',
-	},
-	{
 		label: __('Banner 23', 'codeweber-gutenberg-blocks'),
 		value: 'banner-23',
 	},

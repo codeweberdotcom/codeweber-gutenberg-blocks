@@ -247,6 +247,58 @@ const HeadingSubtitleEdit = ({ attributes, setAttributes }) => {
 							)}
 							{tab.name === 'typography' && (
 								<div style={{ padding: '16px' }}>
+									<ButtonGroup
+										style={{ marginBottom: '16px' }}
+									>
+										<Button
+											isPressed={
+												attributes.titleColor === '' &&
+												attributes.subtitleColor ===
+													'' &&
+												attributes.textColor === ''
+											}
+											onClick={() =>
+												setAttributes({
+													titleColor: '',
+													titleColorType: 'solid',
+													subtitleColor: '',
+													subtitleColorType: 'solid',
+													textColor: '',
+													textColorType: 'solid',
+												})
+											}
+										>
+											{__(
+												'Default',
+												'codeweber-gutenberg-blocks'
+											)}
+										</Button>
+										<Button
+											isPressed={
+												attributes.titleColor ===
+													'white' &&
+												attributes.subtitleColor ===
+													'white' &&
+												attributes.textColor ===
+													'white'
+											}
+											onClick={() =>
+												setAttributes({
+													titleColor: 'white',
+													titleColorType: 'solid',
+													subtitleColor: 'white',
+													subtitleColorType: 'solid',
+													textColor: 'white',
+													textColorType: 'solid',
+												})
+											}
+										>
+											{__(
+												'Light',
+												'codeweber-gutenberg-blocks'
+											)}
+										</Button>
+									</ButtonGroup>
 									<HeadingTypographyControl
 										attributes={attributes}
 										setAttributes={setAttributes}

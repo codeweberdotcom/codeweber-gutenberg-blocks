@@ -54,6 +54,9 @@ const ButtonSave = ({ attributes }) => {
 		blockClass,
 		blockId,
 		blockData,
+		AnchorId,
+		AnchorScroll,
+		AnchorTargetBlank,
 	} = attributes;
 
 	// Генерация класса кнопки (forSave: Theme всегда даёт rounded-pill — контент не зависит от настроек темы, нет «Восстановить блок»)
@@ -110,8 +113,18 @@ const ButtonSave = ({ attributes }) => {
 
 	// Hide the browser PDF viewer toolbar via the #toolbar=0 open parameter.
 	// Chromium-based viewers (PDFium) honor it; Firefox/pdf.js ignores it.
-	if (LinkType === 'pdf' && PdfHideToolbar && LinkUrl && !LinkUrl.includes('#')) {
+	if (
+		LinkType === 'pdf' &&
+		PdfHideToolbar &&
+		LinkUrl &&
+		!LinkUrl.includes('#')
+	) {
 		finalHref = `${LinkUrl}#toolbar=0`;
+	}
+
+	// Anchor link type: href = #id
+	if (LinkType === 'anchor') {
+		finalHref = AnchorId ? `#${AnchorId.replace(/^#/, '')}` : '#';
 	}
 
 	if (isVideoLink && LinkUrl) {
@@ -161,11 +174,18 @@ const ButtonSave = ({ attributes }) => {
 	// Build link props manually to have full control
 	const linkProps = {
 		href: finalHref, // Use anchor link for videos
-		className: buttonClass,
+		className: [
+			buttonClass,
+			LinkType === 'anchor' && AnchorScroll ? 'scroll' : '',
+		]
+			.filter(Boolean)
+			.join(' '),
 		...(buttonId && { id: buttonId }),
 		'data-value': DataValue || undefined,
 		...dataAttributes,
-		...(attributes.ButtonShape === 'theme' && { 'data-button-shape': 'theme' }),
+		...(attributes.ButtonShape === 'theme' && {
+			'data-button-shape': 'theme',
+		}),
 	};
 
 	// Add GLightbox attrs (use finalGlightbox for videos)
@@ -190,23 +210,40 @@ const ButtonSave = ({ attributes }) => {
 		linkProps.rel = 'noopener noreferrer';
 	}
 
+	// Anchor link type: optional target="_blank"
+	if (LinkType === 'anchor' && AnchorTargetBlank) {
+		linkProps.target = '_blank';
+		linkProps.rel = 'noopener noreferrer';
+	}
+
 	return (
 		<>
 			{hiddenIframe}
 			{attributes.ButtonType === 'social' ? (
 				<a
 					href={LinkUrl}
-					className={[
-						attributes.SocialIconStyle === 'style_1' && [
-							'btn',
-							'btn-circle',
-							'has-ripple',
-							attributes.ButtonSize,
-							attributes.SocialIconClass && `btn-${attributes.SocialIconClass}`,
-							blockClass,
-						].filter(Boolean).join(' '),
-						attributes.SocialIconStyle !== 'style_1' && [blockClass, 'has-ripple'].filter(Boolean).join(' '),
-					].filter(Boolean).join(' ') || undefined}
+					className={
+						[
+							attributes.SocialIconStyle === 'style_1' &&
+								[
+									'btn',
+									'btn-circle',
+									'has-ripple',
+									attributes.ButtonSize,
+									attributes.SocialIconClass &&
+										`btn-${attributes.SocialIconClass}`,
+									blockClass,
+								]
+									.filter(Boolean)
+									.join(' '),
+							attributes.SocialIconStyle !== 'style_1' &&
+								[blockClass, 'has-ripple']
+									.filter(Boolean)
+									.join(' '),
+						]
+							.filter(Boolean)
+							.join(' ') || undefined
+					}
 					{...(buttonId && { id: buttonId })}
 					data-value={DataValue || undefined}
 					{...(hasGlightbox && {
@@ -230,7 +267,11 @@ const ButtonSave = ({ attributes }) => {
 						style={
 							attributes.SocialIconStyle === 'style_2' ||
 							attributes.SocialIconStyle === 'style_3'
-								? { fontSize: getSocialIconSizeRem(attributes.ButtonSize) }
+								? {
+										fontSize: getSocialIconSizeRem(
+											attributes.ButtonSize
+										),
+									}
 								: undefined
 						}
 					></i>
@@ -241,7 +282,9 @@ const ButtonSave = ({ attributes }) => {
 					className={linkProps.className || undefined}
 					{...(linkProps.id && { id: linkProps.id })}
 					data-value={linkProps['data-value'] || undefined}
-					data-button-shape={linkProps['data-button-shape'] || undefined}
+					data-button-shape={
+						linkProps['data-button-shape'] || undefined
+					}
 					data-glightbox={linkProps['data-glightbox'] || undefined}
 					data-gallery={linkProps['data-gallery'] || undefined}
 					data-bs-toggle={linkProps['data-bs-toggle'] || undefined}
@@ -251,19 +294,22 @@ const ButtonSave = ({ attributes }) => {
 				>
 					{/* Иконка слева: тип icon (с обёрткой для gradient) */}
 					{ButtonType === 'icon' &&
-					((attributes.ButtonStyle === 'gradient' ||
-						attributes.ButtonStyle === 'outline-gradient')
-						? LeftIcon && <span>{getIconComponent(LeftIcon)}</span>
-						: getIconComponent(LeftIcon))}
+						(attributes.ButtonStyle === 'gradient' ||
+						attributes.ButtonStyle === 'outline-gradient'
+							? LeftIcon && (
+									<span>{getIconComponent(LeftIcon)}</span>
+								)
+							: getIconComponent(LeftIcon))}
 					{/* Иконка для expand/play */}
-					{(ButtonType === 'expand' || ButtonType === 'play') && getIconComponent(LeftIcon)}
+					{(ButtonType === 'expand' || ButtonType === 'play') &&
+						getIconComponent(LeftIcon)}
 					{ButtonType === 'circle' &&
-					((attributes.ButtonStyle === 'gradient' ||
-						attributes.ButtonStyle === 'outline-gradient') ? (
-						<span>{getIconComponent(CircleIcon)}</span>
-					) : (
-						getIconComponent(CircleIcon)
-					))}
+						(attributes.ButtonStyle === 'gradient' ||
+						attributes.ButtonStyle === 'outline-gradient' ? (
+							<span>{getIconComponent(CircleIcon)}</span>
+						) : (
+							getIconComponent(CircleIcon)
+						))}
 					{getIconComponent(SocialIcon)}
 
 					{!shouldHideText && ButtonType === 'expand' && (
@@ -285,10 +331,12 @@ const ButtonSave = ({ attributes }) => {
 						)}
 
 					{ButtonType === 'icon' &&
-					((attributes.ButtonStyle === 'gradient' ||
-						attributes.ButtonStyle === 'outline-gradient')
-						? RightIcon && <span>{getIconComponent(RightIcon)}</span>
-						: getIconComponent(RightIcon))}
+						(attributes.ButtonStyle === 'gradient' ||
+						attributes.ButtonStyle === 'outline-gradient'
+							? RightIcon && (
+									<span>{getIconComponent(RightIcon)}</span>
+								)
+							: getIconComponent(RightIcon))}
 				</a>
 			)}
 		</>

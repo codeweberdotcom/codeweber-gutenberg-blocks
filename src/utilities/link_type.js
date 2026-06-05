@@ -43,6 +43,9 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 		DataGlightboxTitle,
 		ArchiveId,
 		ArchiveType,
+		AnchorId,
+		AnchorScroll,
+		AnchorTargetBlank,
 	} = attributes;
 
 	// Состояния для хранения списка постов, страниц, модальных окон, HTML и форм CF7 и телефонов
@@ -78,7 +81,9 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 	const fetchPhoneNumbers = async () => {
 		setIsLoadingPhones(true);
 		try {
-			const response = await fetch(`${wpApiSettings.root}codeweber/v1/phones`);
+			const response = await fetch(
+				`${wpApiSettings.root}codeweber/v1/phones`
+			);
 			if (!response.ok) {
 				throw new Error(
 					`Failed to fetch phones: ${response.status} ${response.statusText}`
@@ -816,6 +821,29 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 				DataBsToggle: '',
 				DataBsTarget: '',
 			});
+		} else if (newLinkType === 'anchor') {
+			setAttributes({
+				LinkUrl: '',
+				PostId: '',
+				PageId: '',
+				CF7ID: '',
+				CodeweberFormID: '',
+				ModalID: '',
+				HtmlID: '',
+				PhoneType: '',
+				DataValue: '',
+				YoutubeID: '',
+				VimeoID: '',
+				RutubeID: '',
+				VKID: '',
+				DocumentID: '',
+				ArchiveId: '',
+				ArchiveType: '',
+				DataGlightbox: '',
+				DataGallery: '',
+				DataBsToggle: '',
+				DataBsTarget: '',
+			});
 		}
 	};
 
@@ -1302,6 +1330,10 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 							label: __('Document', 'codeweber-gutenberg-blocks'),
 							value: 'document',
 						},
+						{
+							label: __('Anchor', 'codeweber-gutenberg-blocks'),
+							value: 'anchor',
+						},
 					]}
 					onChange={handleLinkTypeChange}
 				/>
@@ -1371,6 +1403,44 @@ export const LinkTypeSelector = ({ attributes, setAttributes }) => {
 						onChange={handleLinkUrlChange}
 						placeholder="https://example.com"
 					/>
+				)}
+
+				{LinkType === 'anchor' && (
+					<>
+						<TextControl
+							label={__(
+								'Anchor ID',
+								'codeweber-gutenberg-blocks'
+							)}
+							value={AnchorId}
+							onChange={(value) =>
+								setAttributes({
+									AnchorId: value.replace(/^#/, '').trim(),
+								})
+							}
+							placeholder="section-id"
+						/>
+						<ToggleControl
+							label={__(
+								'Smooth scroll (scroll class)',
+								'codeweber-gutenberg-blocks'
+							)}
+							checked={!!AnchorScroll}
+							onChange={(value) =>
+								setAttributes({ AnchorScroll: value })
+							}
+						/>
+						<ToggleControl
+							label={__(
+								'Open in new tab (target=_blank)',
+								'codeweber-gutenberg-blocks'
+							)}
+							checked={!!AnchorTargetBlank}
+							onChange={(value) =>
+								setAttributes({ AnchorTargetBlank: value })
+							}
+						/>
+					</>
 				)}
 
 				{LinkType === 'pdf' && (

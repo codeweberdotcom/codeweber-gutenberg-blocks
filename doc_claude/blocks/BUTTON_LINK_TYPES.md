@@ -23,6 +23,7 @@
 | `LinkType` | Описание | Механизм |
 |-----------|----------|----------|
 | `external` | Внешняя ссылка | `href` + `target="_blank"` |
+| `anchor` | Якорь на этой же странице | `href="#id"` + опц. класс `scroll` + опц. `target="_blank"` |
 | `post` | Запись / страница / CPT | `href` → URL записи |
 | `archive` | Архив CPT или таксономии | `href` → URL архива |
 | `phone` | Телефон | `href="tel:..."` |
@@ -324,6 +325,24 @@
 ```
 
 **В редакторе:** выбрать источник — «Custom» (ввести вручную) или «Contacts» (из Redux-настроек темы).
+
+---
+
+### Anchor (Якорь)
+
+Ссылка-якорь на элемент текущей страницы. В Inspector → «Type link» → **Anchor**:
+
+- **Anchor ID** (`AnchorId`) — ID целевого элемента (ведущий `#` срезается автоматически).
+- **Smooth scroll** (`AnchorScroll`) — добавляет класс `scroll` (плавный скролл темы).
+- **Open in new tab** (`AnchorTargetBlank`) — добавляет `target="_blank"` + `rel="noopener noreferrer"`.
+
+```html
+<a href="#section-id" class="btn btn-primary scroll" target="_blank" rel="noopener noreferrer">
+  Текст кнопки
+</a>
+```
+
+Если `AnchorId` пуст — `href="#"`. Класс `scroll` и `target` добавляются только при включённых тогглах.
 
 ---
 

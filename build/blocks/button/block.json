@@ -85,6 +85,18 @@
       "default": "#",
       "format": "uri"
     },
+    "AnchorId": {
+      "type": "string",
+      "default": ""
+    },
+    "AnchorScroll": {
+      "type": "boolean",
+      "default": false
+    },
+    "AnchorTargetBlank": {
+      "type": "boolean",
+      "default": false
+    },
     "PageId": {
       "type": "string",
       "default": ""

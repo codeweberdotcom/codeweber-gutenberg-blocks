@@ -136,7 +136,7 @@ export const Banner15 = ({ attributes, isEditor = false, clientId = '' }) => {
 			.split(/\s+/)
 			.filter((c) => c && !colTokenRe.test(c))
 			.join(' ');
-		contentClasses = [getAdaptiveClasses(attributes), nonColPreset]
+		contentClasses = [...getAdaptiveClasses(attributes), nonColPreset]
 			.filter(Boolean)
 			.join(' ');
 	} else {

@@ -7,7 +7,14 @@ import {
 	Button,
 } from '@wordpress/components';
 import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
-import { Icon, layout as layoutIcon, image, cog, video } from '@wordpress/icons';
+import {
+	Icon,
+	layout as layoutIcon,
+	image,
+	cog,
+	video,
+	mobile,
+} from '@wordpress/icons';
 import BackgroundSettingsPanel from '../../components/background/BackgroundSettingsPanel';
 import { VideoURLControl } from '../../components/video-url/VideoURLControl';
 import { ImageControl } from '../../components/image/ImageControl';
@@ -258,7 +265,10 @@ export const BannersSidebar = ({ attributes, setAttributes }) => {
 						title: (
 							<TabIcon
 								icon={image}
-								label={__('Images', 'codeweber-gutenberg-blocks')}
+								label={__(
+									'Images',
+									'codeweber-gutenberg-blocks'
+								)}
 							/>
 						),
 					},
@@ -281,7 +291,26 @@ export const BannersSidebar = ({ attributes, setAttributes }) => {
 						title: (
 							<TabIcon
 								icon={video}
-								label={__('Video', 'codeweber-gutenberg-blocks')}
+								label={__(
+									'Video',
+									'codeweber-gutenberg-blocks'
+								)}
+							/>
+						),
+					},
+				]
+			: []),
+		...(bannerType === 'banner-15'
+			? [
+					{
+						name: 'adaptive',
+						title: (
+							<TabIcon
+								icon={mobile}
+								label={__(
+									'Adaptive',
+									'codeweber-gutenberg-blocks'
+								)}
 							/>
 						),
 					},
@@ -365,55 +394,71 @@ export const BannersSidebar = ({ attributes, setAttributes }) => {
 									)}
 								</p>
 							</div>
-							{bannerType === "banner-15" && (
+							{bannerType === 'banner-15' && (
 								<div className="mb-2">
 									<label
 										style={{
-											display: "block",
-											marginBottom: "8px",
+											display: 'block',
+											marginBottom: '8px',
 										}}
 									>
 										{__(
-											"Content Position",
-											"codeweber-gutenberg-blocks"
+											'Content Position',
+											'codeweber-gutenberg-blocks'
 										)}
 									</label>
 									<ButtonGroup>
 										<Button
 											variant={
-												(contentAlign || "left") === "left"
-													? "primary"
-													: "secondary"
+												(contentAlign || 'left') ===
+												'left'
+													? 'primary'
+													: 'secondary'
 											}
 											onClick={() =>
-												setAttributes({ contentAlign: "left" })
+												setAttributes({
+													contentAlign: 'left',
+												})
 											}
 										>
-											{__("Left", "codeweber-gutenberg-blocks")}
+											{__(
+												'Left',
+												'codeweber-gutenberg-blocks'
+											)}
 										</Button>
 										<Button
 											variant={
-												contentAlign === "center"
-													? "primary"
-													: "secondary"
+												contentAlign === 'center'
+													? 'primary'
+													: 'secondary'
 											}
 											onClick={() =>
-												setAttributes({ contentAlign: "center" })
+												setAttributes({
+													contentAlign: 'center',
+												})
 											}
 										>
-											{__("Center", "codeweber-gutenberg-blocks")}
+											{__(
+												'Center',
+												'codeweber-gutenberg-blocks'
+											)}
 										</Button>
 										<Button
 											variant={
-												contentAlign === "right"
-													? "primary"
-													: "secondary"
+												contentAlign === 'right'
+													? 'primary'
+													: 'secondary'
 											}
 											onClick={() =>
-												setAttributes({ contentAlign: "right" })
+												setAttributes({
+													contentAlign: 'right',
+												})
 											}
 										>
-											{__("Right", "codeweber-gutenberg-blocks")}
+											{__(
+												'Right',
+												'codeweber-gutenberg-blocks'
+											)}
 										</Button>
 									</ButtonGroup>
 								</div>
@@ -577,7 +622,10 @@ export const BannersSidebar = ({ attributes, setAttributes }) => {
 							<BackgroundSettingsPanel
 								attributes={attributes}
 								setAttributes={setAttributes}
-								allowVideo={bannerType === 'banner-34' || bannerType === 'banner-15'}
+								allowVideo={
+									bannerType === 'banner-34' ||
+									bannerType === 'banner-15'
+								}
 								enableVideoPoster={bannerType === 'banner-15'}
 								backgroundImageSize={backgroundImageSize}
 								imageSizeLabel={backgroundImageSizeLabel}
@@ -636,35 +684,45 @@ export const BannersSidebar = ({ attributes, setAttributes }) => {
 														style={{
 															width: '100%',
 															height: '100px',
-															backgroundColor: '#f0f0f0',
+															backgroundColor:
+																'#f0f0f0',
 															border: '2px dashed #ccc',
 															borderRadius: '4px',
 															display: 'flex',
-															alignItems: 'center',
-															justifyContent: 'center',
+															alignItems:
+																'center',
+															justifyContent:
+																'center',
 															cursor: 'pointer',
-															transition: 'all 0.2s ease',
-															marginBottom: '15px',
+															transition:
+																'all 0.2s ease',
+															marginBottom:
+																'15px',
 														}}
 													>
 														<div
 															style={{
-																textAlign: 'center',
+																textAlign:
+																	'center',
 																color: '#666',
 															}}
 														>
 															<div
 																style={{
-																	fontSize: '20px',
-																	marginBottom: '4px',
+																	fontSize:
+																		'20px',
+																	marginBottom:
+																		'4px',
 																}}
 															>
 																🎥
 															</div>
 															<div
 																style={{
-																	fontSize: '12px',
-																	fontWeight: '500',
+																	fontSize:
+																		'12px',
+																	fontWeight:
+																		'500',
 																}}
 															>
 																{__(
@@ -683,17 +741,22 @@ export const BannersSidebar = ({ attributes, setAttributes }) => {
 														}}
 														style={{
 															marginTop: '12px',
-															marginBottom: '12px',
+															marginBottom:
+																'12px',
 															display: 'flex',
-															alignItems: 'center',
-															justifyContent: 'center',
+															alignItems:
+																'center',
+															justifyContent:
+																'center',
 															minHeight: '140px',
-															backgroundColor: '#000',
+															backgroundColor:
+																'#000',
 															border: '1px solid #ddd',
 															borderRadius: '4px',
 															overflow: 'hidden',
 															cursor: 'pointer',
-															position: 'relative',
+															position:
+																'relative',
 														}}
 													>
 														<video
@@ -701,7 +764,8 @@ export const BannersSidebar = ({ attributes, setAttributes }) => {
 															style={{
 																width: '100%',
 																height: 'auto',
-																display: 'block',
+																display:
+																	'block',
 															}}
 															muted
 															disablePictureInPicture
@@ -711,34 +775,43 @@ export const BannersSidebar = ({ attributes, setAttributes }) => {
 														/>
 														<Button
 															isLink
-															onClick={(event) => {
+															onClick={(
+																event
+															) => {
 																event.stopPropagation();
 																setAttributes({
 																	modalVideoId: 0,
-																	modalVideoUrl: '',
+																	modalVideoUrl:
+																		'',
 																});
 															}}
 															style={{
-																position: 'absolute',
+																position:
+																	'absolute',
 																top: '6px',
 																right: '6px',
 																backgroundColor:
 																	'rgba(220, 53, 69, 0.8)',
-																borderRadius: '50%',
+																borderRadius:
+																	'50%',
 																width: '20px',
 																height: '20px',
 																display: 'flex',
-																alignItems: 'center',
-																justifyContent: 'center',
+																alignItems:
+																	'center',
+																justifyContent:
+																	'center',
 																color: '#fff',
-																textDecoration: 'none',
+																textDecoration:
+																	'none',
 															}}
 														>
 															<i
 																className="uil uil-times"
 																style={{
 																	margin: 0,
-																	fontSize: '12px',
+																	fontSize:
+																		'12px',
 																}}
 															></i>
 														</Button>
@@ -757,23 +830,38 @@ export const BannersSidebar = ({ attributes, setAttributes }) => {
 								value={playButtonColor || 'primary'}
 								options={[
 									{
-										label: __('Primary', 'codeweber-gutenberg-blocks'),
+										label: __(
+											'Primary',
+											'codeweber-gutenberg-blocks'
+										),
 										value: 'primary',
 									},
 									{
-										label: __('Secondary', 'codeweber-gutenberg-blocks'),
+										label: __(
+											'Secondary',
+											'codeweber-gutenberg-blocks'
+										),
 										value: 'secondary',
 									},
 									{
-										label: __('White', 'codeweber-gutenberg-blocks'),
+										label: __(
+											'White',
+											'codeweber-gutenberg-blocks'
+										),
 										value: 'white',
 									},
 									{
-										label: __('Light', 'codeweber-gutenberg-blocks'),
+										label: __(
+											'Light',
+											'codeweber-gutenberg-blocks'
+										),
 										value: 'light',
 									},
 									{
-										label: __('Dark', 'codeweber-gutenberg-blocks'),
+										label: __(
+											'Dark',
+											'codeweber-gutenberg-blocks'
+										),
 										value: 'dark',
 									},
 								]}
@@ -784,33 +872,11 @@ export const BannersSidebar = ({ attributes, setAttributes }) => {
 						</PanelBody>
 					)}
 
-					{tab.name === 'settings' && (
+					{tab.name === 'adaptive' && (
 						<PanelBody
-							title={__('Settings', 'codeweber-gutenberg-blocks')}
-							initialOpen={false}
+							title={__('Adaptive', 'codeweber-gutenberg-blocks')}
+							initialOpen={true}
 						>
-							<div className="mb-3">
-								<label>
-									{__(
-										'Section Classes',
-										'codeweber-gutenberg-blocks'
-									)}
-								</label>
-								<input
-									type="text"
-									className="components-text-control__input"
-									value={sectionClass}
-									onChange={(e) =>
-										setAttributes({
-											sectionClass: e.target.value,
-										})
-									}
-									placeholder={__(
-										'Additional CSS classes',
-										'codeweber-gutenberg-blocks'
-									)}
-								/>
-							</div>
 							{bannerType === 'banner-15' && (
 								<div className="mb-3">
 									<label>
@@ -872,6 +938,35 @@ export const BannersSidebar = ({ attributes, setAttributes }) => {
 									</p>
 								</div>
 							)}
+						</PanelBody>
+					)}
+					{tab.name === 'settings' && (
+						<PanelBody
+							title={__('Settings', 'codeweber-gutenberg-blocks')}
+							initialOpen={false}
+						>
+							<div className="mb-3">
+								<label>
+									{__(
+										'Section Classes',
+										'codeweber-gutenberg-blocks'
+									)}
+								</label>
+								<input
+									type="text"
+									className="components-text-control__input"
+									value={sectionClass}
+									onChange={(e) =>
+										setAttributes({
+											sectionClass: e.target.value,
+										})
+									}
+									placeholder={__(
+										'Additional CSS classes',
+										'codeweber-gutenberg-blocks'
+									)}
+								/>
+							</div>
 							{bannerType === 'banner-34' && (
 								<>
 									<div className="mb-3">

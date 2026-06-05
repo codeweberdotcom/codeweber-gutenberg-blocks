@@ -1,6 +1,7 @@
 import { InnerBlocks } from '@wordpress/block-editor';
 import { resolveMinHeightClass } from '../utils/minHeight';
 import { generateBackgroundClasses } from '../../../utilities/class-generators';
+import { getAdaptiveClasses } from '../../column/utils';
 
 export const Banner15 = ({ attributes, isEditor = false, clientId = '' }) => {
 	const {
@@ -9,6 +10,14 @@ export const Banner15 = ({ attributes, isEditor = false, clientId = '' }) => {
 		backgroundSize,
 		sectionClass,
 		columnClass,
+		columnCol,
+		columnColXs,
+		columnColSm,
+		columnColMd,
+		columnColLg,
+		columnColXl,
+		columnColXxl,
+		columnColXxxl,
 		contentAlign = 'left',
 		videoUrl,
 		backgroundVideoUrl,
@@ -98,11 +107,41 @@ export const Banner15 = ({ attributes, isEditor = false, clientId = '' }) => {
 		right: 'col-md-10 offset-md-1 col-lg-7 offset-lg-5 col-xl-6 offset-xl-6 col-xxl-5 offset-xxl-6 text-center text-lg-start justify-content-center align-self-center align-items-start',
 	};
 
-	// Классы для контента: ручной columnClass имеет приоритет, иначе пресет по contentAlign
-	const contentClasses =
-		columnClass ||
-		contentAlignPresets[contentAlign] ||
-		contentAlignPresets.left;
+	// Классы для контента (Вариант B):
+	// 1) ручной columnClass — высший приоритет (полный override);
+	// 2) адаптивные columnCol* (если задан хотя бы один) — заменяют col-токены пресета,
+	//    утилиты выравнивания (mx-auto, text-center, justify-content-*, align-self-*, offset-*) сохраняются;
+	// 3) иначе — пресет по contentAlign, как раньше.
+	const presetClasses =
+		contentAlignPresets[contentAlign] || contentAlignPresets.left;
+
+	const hasAdaptive = [
+		columnCol,
+		columnColXs,
+		columnColSm,
+		columnColMd,
+		columnColLg,
+		columnColXl,
+		columnColXxl,
+		columnColXxxl,
+	].some((v) => v && v !== '');
+
+	let contentClasses;
+	if (columnClass) {
+		contentClasses = columnClass;
+	} else if (hasAdaptive) {
+		const colTokenRe =
+			/^col(-(sm|md|lg|xl|xxl|xxxl))?(-(\d+|auto))?$/;
+		const nonColPreset = presetClasses
+			.split(/\s+/)
+			.filter((c) => c && !colTokenRe.test(c))
+			.join(' ');
+		contentClasses = [getAdaptiveClasses(attributes), nonColPreset]
+			.filter(Boolean)
+			.join(' ');
+	} else {
+		contentClasses = presetClasses;
+	}
 
 	const renderContent = () => (
 		<div className="container h-100">

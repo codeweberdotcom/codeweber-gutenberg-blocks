@@ -176,6 +176,38 @@
 			"type": "string",
 			"default": ""
 		},
+		"columnCol": {
+			"type": "string",
+			"default": ""
+		},
+		"columnColXs": {
+			"type": "string",
+			"default": ""
+		},
+		"columnColSm": {
+			"type": "string",
+			"default": ""
+		},
+		"columnColMd": {
+			"type": "string",
+			"default": ""
+		},
+		"columnColLg": {
+			"type": "string",
+			"default": ""
+		},
+		"columnColXl": {
+			"type": "string",
+			"default": ""
+		},
+		"columnColXxl": {
+			"type": "string",
+			"default": ""
+		},
+		"columnColXxxl": {
+			"type": "string",
+			"default": ""
+		},
 		"contentAlign": {
 			"type": "string",
 			"default": "left"

@@ -14,6 +14,10 @@ import { ImageControl } from '../../components/image/ImageControl';
 import { ImageHoverControl } from '../../components/image-hover/ImageHoverControl';
 import { LightboxControl } from '../../components/lightbox/LightboxControl';
 import { BorderRadiusControl } from '../../components/border-radius';
+import {
+	ResponsiveControl,
+	createColumnWidthConfig,
+} from '../../components/responsive-control';
 import { LayoutControl } from '../image-simple/controls/LayoutControl';
 import { BANNER_MIN_HEIGHT_OPTIONS } from './utils/minHeight';
 import { useState, useEffect } from '@wordpress/element';
@@ -829,6 +833,43 @@ export const BannersSidebar = ({ attributes, setAttributes }) => {
 											'codeweber-gutenberg-blocks'
 										)}
 									/>
+									<p
+										className="components-base-control__help"
+										style={{
+											fontSize: '12px',
+											marginTop: '4px',
+											color: '#757575',
+										}}
+									>
+										{__(
+											'If set, fully overrides the column classes (Column Width below is ignored).',
+											'codeweber-gutenberg-blocks'
+										)}
+									</p>
+								</div>
+							)}
+							{bannerType === 'banner-15' && !columnClass && (
+								<div className="mb-3">
+									<ResponsiveControl
+										{...createColumnWidthConfig(
+											attributes,
+											setAttributes,
+											'dropdown'
+										)}
+									/>
+									<p
+										className="components-base-control__help"
+										style={{
+											fontSize: '12px',
+											marginTop: '4px',
+											color: '#757575',
+										}}
+									>
+										{__(
+											'Overrides only the column width of the Content Position preset. Leave empty to keep the preset.',
+											'codeweber-gutenberg-blocks'
+										)}
+									</p>
 								</div>
 							)}
 							{bannerType === 'banner-34' && (

@@ -751,7 +751,7 @@ if ($block_data) {
             if (null !== $schedule_everyday_text) {
                 $schedule_list_html = '<span class="cwgb-oh-everyday">' . esc_html($schedule_everyday_text) . '</span>';
             } else {
-                $schedule_list_html = $schedule_list_html;
+                $schedule_list_html = $render_schedule_lines($schedule_display);
             }
             ?>
             <?php if ($format === 'icon'): ?>

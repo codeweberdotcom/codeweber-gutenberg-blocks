@@ -9,6 +9,7 @@ import {
 	TextControl,
 } from '@wordpress/components';
 import { Icon, info } from '@wordpress/icons';
+import { SWIPER_EFFECT_OPTIONS } from '../../../components/swiper';
 import { useState } from '@wordpress/element';
 import {
 	ResponsiveControl,
@@ -461,10 +462,7 @@ export const LayoutControl = ({ attributes, setAttributes }) => {
 					<SelectControl
 						label={__('Effect', 'codeweber-gutenberg-blocks')}
 						value={swiperEffect}
-						options={[
-							{ label: 'Slide', value: 'slide' },
-							{ label: 'Fade', value: 'fade' },
-						]}
+						options={SWIPER_EFFECT_OPTIONS}
 						onChange={(value) =>
 							setAttributes({ swiperEffect: value })
 						}

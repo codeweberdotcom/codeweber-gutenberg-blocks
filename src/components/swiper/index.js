@@ -12,4 +12,5 @@ export {
 	getSwiperConfigFromAttributes,
 	initSwiper,
 	destroySwiper,
+	SWIPER_EFFECT_OPTIONS,
 } from './SwiperSlider';

@@ -24,6 +24,7 @@ import {
 	getSwiperDataAttributes,
 	initSwiper,
 	destroySwiper,
+	SWIPER_EFFECT_OPTIONS,
 } from '../../components/swiper';
 import { BlockMetaFields } from '../../components/block-meta/BlockMetaFields';
 import { useSelect } from '@wordpress/data';
@@ -341,34 +342,7 @@ const SwiperEdit = ({ attributes, setAttributes, clientId }) => {
 					<SelectControl
 						label={__('Effect', 'codeweber-gutenberg-blocks')}
 						value={swiperEffect}
-						options={[
-							{
-								label: __(
-									'Slide',
-									'codeweber-gutenberg-blocks'
-								),
-								value: 'slide',
-							},
-							{
-								label: __('Fade', 'codeweber-gutenberg-blocks'),
-								value: 'fade',
-							},
-							{
-								label: __('Cube', 'codeweber-gutenberg-blocks'),
-								value: 'cube',
-							},
-							{
-								label: __(
-									'Coverflow',
-									'codeweber-gutenberg-blocks'
-								),
-								value: 'coverflow',
-							},
-							{
-								label: __('Flip', 'codeweber-gutenberg-blocks'),
-								value: 'flip',
-							},
-						]}
+						options={SWIPER_EFFECT_OPTIONS}
 						onChange={(value) =>
 							setAttributes({ swiperEffect: value })
 						}

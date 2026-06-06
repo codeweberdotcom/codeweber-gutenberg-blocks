@@ -7,6 +7,20 @@
  * @package CodeWeber Gutenberg Blocks
  */
 
+import { __ } from '@wordpress/i18n';
+
+// Single source of truth for Swiper transition effects (Swiper block + consumers).
+export const SWIPER_EFFECT_OPTIONS = [
+	{ label: __('Slide', 'codeweber-gutenberg-blocks'), value: 'slide' },
+	{ label: __('Fade', 'codeweber-gutenberg-blocks'), value: 'fade' },
+	{ label: __('Cube', 'codeweber-gutenberg-blocks'), value: 'cube' },
+	{
+		label: __('Coverflow', 'codeweber-gutenberg-blocks'),
+		value: 'coverflow',
+	},
+	{ label: __('Flip', 'codeweber-gutenberg-blocks'), value: 'flip' },
+];
+
 /**
  * Get Swiper container classes
  *

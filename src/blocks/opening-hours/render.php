@@ -35,9 +35,13 @@ $separator_key = isset( $attributes['timeSeparator'] ) ? (string) $attributes['t
 $layout        = isset( $attributes['layout'] ) ? (string) $attributes['layout'] : 'list';
 $align_end     = ! empty( $attributes['alignTimeEnd'] );
 $text_size     = isset( $attributes['textSize'] ) ? (string) $attributes['textSize'] : '';
+$open_color    = isset( $attributes['statusOpenColor'] ) ? (string) $attributes['statusOpenColor'] : 'green';
+$closed_color  = isset( $attributes['statusClosedColor'] ) ? (string) $attributes['statusClosedColor'] : 'red';
+$everyday_same = ! empty( $attributes['everydayWhenSame'] );
 
 $rows    = OpeningHours::rows();
 $is_open = OpeningHours::isOpenNow( $rows );
+$everyday_text = $everyday_same ? OpeningHours::everydayText( $rows ) : null;
 $display = OpeningHours::buildDisplay(
 	$rows,
 	array(
@@ -73,7 +77,7 @@ $render_lines = static function ( $lines ) {
 			<?php endif; ?>
 			<?php
 			if ( $show_status ) :
-				$status_class = $is_open ? 'text-success' : 'text-danger';
+				$status_class = 'text-' . ( $is_open ? $open_color : $closed_color );
 				$status_text  = $is_open ? $open_label : $closed_label;
 				?>
 				<span class="cwgb-oh-status d-inline-flex align-items-center gap-1 <?php echo esc_attr( $status_class ); ?>">
@@ -83,7 +87,9 @@ $render_lines = static function ( $lines ) {
 		</div>
 	<?php endif; ?>
 
-	<?php if ( 'table' === $layout ) : ?>
+	<?php if ( null !== $everyday_text ) : ?>
+		<div class="cwgb-oh-everyday"><?php echo esc_html( $everyday_text ); ?></div>
+	<?php elseif ( 'table' === $layout ) : ?>
 		<table class="cwgb-oh-table table table-sm mb-0">
 			<tbody>
 				<?php foreach ( $display as $row ) : ?>

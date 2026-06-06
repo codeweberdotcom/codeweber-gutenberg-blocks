@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-06-06T11:24:17+00:00\n"
+"POT-Creation-Date: 2026-06-06T12:43:20+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: codeweber-gutenberg-blocks\n"
@@ -841,6 +841,13 @@ msgstr ""
 msgid "to"
 msgstr ""
 
+#. translators: 1: opening time, 2: closing time.
+#: inc/OpeningHours.php:326
+#: build/blocks/contacts/index.js:1
+#, php-format,js-format
+msgid "Daily from %1$s to %2$s"
+msgstr ""
+
 #: inc/Plugin.php:1452
 msgid "Drag & drop your files or <span class=\"filepond--label-action\">browse</span>"
 msgstr ""
@@ -1006,7 +1013,7 @@ msgid "Error reading JSON: "
 msgstr ""
 
 #: settings/options_page/pages/page_2.php:31
-#: build/blocks/contacts/index.js:1
+#: build/blocks/contacts/index.js:3
 msgid "Contacts"
 msgstr ""
 
@@ -6160,6 +6167,15 @@ msgstr ""
 
 #: build/blocks/contacts/index.js:1
 #: build/blocks/opening-hours/index.js:1
+msgid "Everyday when all days are the same"
+msgstr ""
+
+#: build/blocks/contacts/index.js:1
+msgid "Show one line, e.g. Daily from 9:00 to 21:00"
+msgstr ""
+
+#: build/blocks/contacts/index.js:1
+#: build/blocks/opening-hours/index.js:1
 msgid "Highlight current day"
 msgstr ""
 
@@ -6183,6 +6199,16 @@ msgstr ""
 
 #: build/blocks/contacts/index.js:1
 msgid "Closed label"
+msgstr ""
+
+#: build/blocks/contacts/index.js:1
+#: build/blocks/opening-hours/index.js:1
+msgid "Open status color"
+msgstr ""
+
+#: build/blocks/contacts/index.js:1
+#: build/blocks/opening-hours/index.js:1
+msgid "Closed status color"
 msgstr ""
 
 #: build/blocks/contacts/index.js:1
@@ -6240,31 +6266,31 @@ msgstr ""
 msgid "Opening hours will be displayed here"
 msgstr ""
 
-#: build/blocks/contacts/index.js:1
+#: build/blocks/contacts/index.js:3
 msgid "Loading contacts data..."
 msgstr ""
 
-#: build/blocks/contacts/index.js:1
+#: build/blocks/contacts/index.js:3
 msgid "Display contact information from Codeweber theme Redux settings."
 msgstr ""
 
-#: build/blocks/contacts/index.js:1
+#: build/blocks/contacts/index.js:3
 msgid "contacts"
 msgstr ""
 
-#: build/blocks/contacts/index.js:1
+#: build/blocks/contacts/index.js:3
 msgid "address"
 msgstr ""
 
-#: build/blocks/contacts/index.js:1
+#: build/blocks/contacts/index.js:3
 msgid "email"
 msgstr ""
 
-#: build/blocks/contacts/index.js:1
+#: build/blocks/contacts/index.js:3
 msgid "phone"
 msgstr ""
 
-#: build/blocks/contacts/index.js:1
+#: build/blocks/contacts/index.js:3
 msgid "contact"
 msgstr ""
 
@@ -9171,6 +9197,10 @@ msgstr ""
 
 #: build/blocks/opening-hours/index.js:1
 msgid "e.g. \"Mon–Thu 10:00 – 21:00\""
+msgstr ""
+
+#: build/blocks/opening-hours/index.js:1
+msgid "Show one line, e.g. \"Daily from 9:00 to 21:00\""
 msgstr ""
 
 #: build/blocks/opening-hours/index.js:1

@@ -3743,6 +3743,24 @@
       ],
       "Opening hours will be displayed here": [
         "Здесь будут показаны часы работы"
+      ],
+      "Daily from %1$s to %2$s": [
+        "Ежедневно с %1$s до %2$s"
+      ],
+      "Everyday when all days are the same": [
+        "Ежедневно, если все дни одинаковы"
+      ],
+      "Show one line, e.g. \"Daily from 9:00 to 21:00\"": [
+        "Показать одной строкой, напр. «Ежедневно с 9:00 до 21:00»"
+      ],
+      "Show one line, e.g. Daily from 9:00 to 21:00": [
+        "Показать одной строкой, напр. «Ежедневно с 9:00 до 21:00»"
+      ],
+      "Open status color": [
+        "Цвет статуса «Открыто»"
+      ],
+      "Closed status color": [
+        "Цвет статуса «Закрыто»"
       ]
     }
   }

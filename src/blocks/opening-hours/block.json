@@ -42,6 +42,18 @@
 			"type": "string",
 			"default": "Closed"
 		},
+		"statusOpenColor": {
+			"type": "string",
+			"default": "green"
+		},
+		"statusClosedColor": {
+			"type": "string",
+			"default": "red"
+		},
+		"everydayWhenSame": {
+			"type": "boolean",
+			"default": false
+		},
 		"highlightToday": {
 			"type": "boolean",
 			"default": true

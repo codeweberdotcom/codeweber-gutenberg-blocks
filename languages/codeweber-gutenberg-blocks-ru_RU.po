@@ -8912,6 +8912,24 @@ msgstr "Подпись «Закрыто»"
 msgid "Opening hours will be displayed here"
 msgstr "Здесь будут показаны часы работы"
 
+msgid "Daily from %1$s to %2$s"
+msgstr "Ежедневно с %1$s до %2$s"
+
+msgid "Everyday when all days are the same"
+msgstr "Ежедневно, если все дни одинаковы"
+
+msgid "Show one line, e.g. \"Daily from 9:00 to 21:00\""
+msgstr "Показать одной строкой, напр. «Ежедневно с 9:00 до 21:00»"
+
+msgid "Show one line, e.g. Daily from 9:00 to 21:00"
+msgstr "Показать одной строкой, напр. «Ежедневно с 9:00 до 21:00»"
+
+msgid "Open status color"
+msgstr "Цвет статуса «Открыто»"
+
+msgid "Closed status color"
+msgstr "Цвет статуса «Закрыто»"
+
 #: build/blocks/divider/block.json
 #, fuzzy
 msgctxt "block description"

@@ -694,6 +694,10 @@ if ($block_data) {
             $sch_show_status = !empty($item['showStatus']);
             $sch_open = isset($item['openLabel']) ? (string) $item['openLabel'] : __('Open now', 'codeweber-gutenberg-blocks');
             $sch_closed = isset($item['closedLabel']) ? (string) $item['closedLabel'] : __('Closed', 'codeweber-gutenberg-blocks');
+            $sch_open_color = isset($item['openColor']) ? (string) $item['openColor'] : 'green';
+            $sch_closed_color = isset($item['closedColor']) ? (string) $item['closedColor'] : 'red';
+            $sch_everyday = !empty($item['everydayWhenSame']);
+            $schedule_everyday_text = $sch_everyday ? \Codeweber\Blocks\OpeningHours::everydayText() : null;
 
             $schedule_display = \Codeweber\Blocks\OpeningHours::buildDisplay(null, [
                 'dayFormat'     => isset($item['dayFormat']) ? (string) $item['dayFormat'] : 'short',
@@ -729,7 +733,7 @@ if ($block_data) {
             // Open/closed status — shown after the title via an em dash.
             $schedule_status_html = '';
             if ($sch_show_status) {
-                $status_class = $schedule_is_open ? 'text-success' : 'text-danger';
+                $status_class = 'text-' . ($schedule_is_open ? $sch_open_color : $sch_closed_color);
                 $status_text = $schedule_is_open ? $sch_open : $sch_closed;
                 $schedule_status_html = ' <span class="cwgb-oh-status ' . esc_attr($status_class) . '">&mdash; '
                     . esc_html($status_text) . '</span>';
@@ -742,6 +746,13 @@ if ($block_data) {
                     . esc_html($sch_title) . $schedule_status_html
                     . '</' . esc_attr($titleTag) . '>';
             }
+
+            // Body: a single "Daily from X to Y" line, or the day list.
+            if (null !== $schedule_everyday_text) {
+                $schedule_list_html = '<span class="cwgb-oh-everyday">' . esc_html($schedule_everyday_text) . '</span>';
+            } else {
+                $schedule_list_html = $schedule_list_html;
+            }
             ?>
             <?php if ($format === 'icon'): ?>
                 <div class="d-flex flex-row <?php echo esc_attr($iconWrapperClass ? $iconWrapperClass : ''); ?>">
@@ -750,7 +761,7 @@ if ($block_data) {
                     </div>
                     <div>
                         <?php echo $schedule_title_html; ?>
-                        <div class="cwgb-oh-list <?php echo esc_attr($textClasses); ?>"><?php echo $render_schedule_lines($schedule_display); ?></div>
+                        <div class="cwgb-oh-list <?php echo esc_attr($textClasses); ?>"><?php echo $schedule_list_html; ?></div>
                     </div>
                 </div>
             <?php elseif ($format === 'icon-simple'): ?>
@@ -759,12 +770,12 @@ if ($block_data) {
                         <?php echo render_contacts_simple_icon('clock', $iconType, $iconName, $svgIcon, $svgStyle, $iconSize, $iconFontSize, $iconColor, $iconColor2, $iconClass, $customSvgUrl, $customSvgSize); ?>
                         <span><?php echo esc_html($sch_title); ?><?php echo $schedule_status_html; ?></span>
                     </div>
-                    <div class="cwgb-oh-list <?php echo esc_attr($textClasses); ?>"><?php echo $render_schedule_lines($schedule_display); ?></div>
+                    <div class="cwgb-oh-list <?php echo esc_attr($textClasses); ?>"><?php echo $schedule_list_html; ?></div>
                 </div>
             <?php else: ?>
                 <div>
                     <?php echo $schedule_title_html; ?>
-                    <div class="cwgb-oh-list <?php echo esc_attr($textClasses); ?>"><?php echo $render_schedule_lines($schedule_display); ?></div>
+                    <div class="cwgb-oh-list <?php echo esc_attr($textClasses); ?>"><?php echo $schedule_list_html; ?></div>
                 </div>
             <?php endif; ?>
         <?php endif; ?>

@@ -19,6 +19,7 @@ import { Icon, trash, starFilled, typography, cog } from '@wordpress/icons';
 import { HeadingTypographyControl } from '../../components/heading/HeadingTypographyControl';
 import { IconControl } from '../../components/icon/IconControl';
 import { BlockMetaFields } from '../../components/block-meta/BlockMetaFields';
+import { colors } from '../../utilities/colors';
 
 // Tab icon with native title tooltip
 const TabIcon = ({ icon, label }) => (
@@ -474,6 +475,14 @@ export const ContactsSidebar = ({ attributes, setAttributes }) => {
 												}
 											/>
 											<ToggleControl
+												label={__('Everyday when all days are the same', 'codeweber-gutenberg-blocks')}
+												help={__('Show one line, e.g. Daily from 9:00 to 21:00', 'codeweber-gutenberg-blocks')}
+												checked={!!item.everydayWhenSame}
+												onChange={(value) =>
+													updateItem(index, { everydayWhenSame: value })
+												}
+											/>
+											<ToggleControl
 												label={__('Highlight current day', 'codeweber-gutenberg-blocks')}
 												checked={item.highlightToday !== false}
 												onChange={(value) =>
@@ -511,6 +520,22 @@ export const ContactsSidebar = ({ attributes, setAttributes }) => {
 														value={item.closedLabel ?? 'Closed'}
 														onChange={(value) =>
 															updateItem(index, { closedLabel: value })
+														}
+													/>
+													<ComboboxControl
+														label={__('Open status color', 'codeweber-gutenberg-blocks')}
+														value={item.openColor ?? 'green'}
+														options={colors}
+														onChange={(value) =>
+															updateItem(index, { openColor: value || 'green' })
+														}
+													/>
+													<ComboboxControl
+														label={__('Closed status color', 'codeweber-gutenberg-blocks')}
+														value={item.closedColor ?? 'red'}
+														options={colors}
+														onChange={(value) =>
+															updateItem(index, { closedColor: value || 'red' })
 														}
 													/>
 												</>

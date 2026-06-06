@@ -26,6 +26,40 @@ const SCHED_ORDER = [
 	'sunday',
 ];
 
+// Editor-side port of OpeningHours::everydayText (preview only).
+const everydayScheduleText = (rows) => {
+	if (!rows) {
+		return null;
+	}
+	let first = null;
+	let fr = null;
+	for (let i = 0; i < SCHED_ORDER.length; i += 1) {
+		const r = rows[SCHED_ORDER[i]];
+		if (!r || r.closed) {
+			return null;
+		}
+		const sig = `${r.o1}|${r.c1}|${r.o2}|${r.c2}`;
+		if (first === null) {
+			first = sig;
+			fr = r;
+		} else if (sig !== first) {
+			return null;
+		}
+	}
+	if (!fr) {
+		return null;
+	}
+	const open = fr.o1;
+	const close = fr.c2 !== '' ? fr.c2 : fr.c1;
+	if (open === '' || close === '') {
+		return null;
+	}
+	// translators: 1: opening time, 2: closing time.
+		return __('Daily from %1$s to %2$s', 'codeweber-gutenberg-blocks')
+		.replace('%1$s', open)
+		.replace('%2$s', close);
+};
+
 // Editor-side port of OpeningHours::buildDisplay (preview only).
 const buildScheduleDisplay = (rows, dayNames, today, opts) => {
 	if (!rows) {
@@ -839,12 +873,15 @@ const ContactsPreview = ({
 							const statusText = isOpen
 								? item.openLabel ?? __('Open now', 'codeweber-gutenberg-blocks')
 								: item.closedLabel ?? __('Closed', 'codeweber-gutenberg-blocks');
+							const statusColor = isOpen
+								? item.openColor ?? 'green'
+								: item.closedColor ?? 'red';
 							const statusBadge = showStatus ? (
-								<span className={isOpen ? 'text-success' : 'text-danger'}>
+								<span className={`text-${statusColor}`}>
 									{` \u2014 ${statusText}`}
 								</span>
 							) : null;
-							const list = (
+							const dayList = (
 								<div className={`cwgb-oh-list ${textClasses}`}>
 									{display.map((row, i) => {
 										const rowToday = highlight && row.is_today;
@@ -879,6 +916,14 @@ const ContactsPreview = ({
 									</div>
 								);
 							}
+							const everydayLine = item.everydayWhenSame
+								? everydayScheduleText(sched?.rows)
+								: null;
+							const list = everydayLine ? (
+								<div className={`cwgb-oh-list ${textClasses}`}>
+									<span className="cwgb-oh-everyday">{everydayLine}</span>
+								</div>
+							) : dayList;
 							const titleEl =
 								titleText || statusBadge
 									? React.createElement(

@@ -287,6 +287,46 @@ class OpeningHours {
 	}
 
 	/**
+	 * Single-line "Daily from X to Y" text when every day is open with the
+	 * exact same hours; null otherwise (a day off or any difference).
+	 *
+	 * @param array|null $rows Optional pre-fetched rows.
+	 * @return string|null
+	 */
+	public static function everydayText( ?array $rows = null ): ?string {
+		$rows  = null === $rows ? self::rows() : $rows;
+		$first = null;
+		$fr    = null;
+
+		foreach ( array_keys( self::DAY_INDEX ) as $day ) {
+			$r = $rows[ $day ];
+			if ( ! empty( $r['closed'] ) ) {
+				return null;
+			}
+			$sig = $r['o1'] . '|' . $r['c1'] . '|' . $r['o2'] . '|' . $r['c2'];
+			if ( null === $first ) {
+				$first = $sig;
+				$fr    = $r;
+			} elseif ( $sig !== $first ) {
+				return null;
+			}
+		}
+
+		if ( null === $fr ) {
+			return null;
+		}
+
+		$open  = $fr['o1'];
+		$close = ( '' !== $fr['c2'] ) ? $fr['c2'] : $fr['c1'];
+		if ( '' === $open || '' === $close ) {
+			return null;
+		}
+
+		/* translators: 1: opening time, 2: closing time. */
+		return sprintf( __( 'Daily from %1$s to %2$s', 'codeweber-gutenberg-blocks' ), $open, $close );
+	}
+
+	/**
 	 * Raw payload for client-side (editor) formatting.
 	 *
 	 * The Contacts editor preview formats the schedule in JS according to each

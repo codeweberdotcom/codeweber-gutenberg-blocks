@@ -8,7 +8,9 @@ import {
 	TextControl,
 	ToggleControl,
 	SelectControl,
+	ComboboxControl,
 } from '@wordpress/components';
+import { colors } from '../../utilities/colors';
 
 const DAY_FORMAT_OPTIONS = [
 	{ label: __( 'Short (Mon)', 'codeweber-gutenberg-blocks' ), value: 'short' },
@@ -64,6 +66,9 @@ export default function Edit( { attributes, setAttributes } ) {
 		layout,
 		alignTimeEnd,
 		textSize,
+		statusOpenColor,
+		statusClosedColor,
+		everydayWhenSame,
 	} = attributes;
 
 	const blockProps = useBlockProps();
@@ -104,6 +109,22 @@ export default function Edit( { attributes, setAttributes } ) {
 								value={ closedLabel }
 								onChange={ ( val ) => setAttributes( { closedLabel: val } ) }
 							/>
+							<ComboboxControl
+								label={ __( 'Open status color', 'codeweber-gutenberg-blocks' ) }
+								value={ statusOpenColor }
+								options={ colors }
+								onChange={ ( val ) =>
+									setAttributes( { statusOpenColor: val || 'green' } )
+								}
+							/>
+							<ComboboxControl
+								label={ __( 'Closed status color', 'codeweber-gutenberg-blocks' ) }
+								value={ statusClosedColor }
+								options={ colors }
+								onChange={ ( val ) =>
+									setAttributes( { statusClosedColor: val || 'red' } )
+								}
+							/>
 						</>
 					) }
 				</PanelBody>
@@ -140,6 +161,12 @@ export default function Edit( { attributes, setAttributes } ) {
 						help={ __( 'e.g. "Mon–Thu 10:00 – 21:00"', 'codeweber-gutenberg-blocks' ) }
 						checked={ groupSameDays }
 						onChange={ ( val ) => setAttributes( { groupSameDays: val } ) }
+					/>
+					<ToggleControl
+						label={ __( 'Everyday when all days are the same', 'codeweber-gutenberg-blocks' ) }
+						help={ __( 'Show one line, e.g. "Daily from 9:00 to 21:00"', 'codeweber-gutenberg-blocks' ) }
+						checked={ everydayWhenSame }
+						onChange={ ( val ) => setAttributes( { everydayWhenSame: val } ) }
 					/>
 				</PanelBody>
 

@@ -23,7 +23,14 @@ import {
 } from './banners';
 
 const BannersSave = ({ attributes }) => {
-	const { bannerType, anchor, bouncerEnabled, bouncerTheme } = attributes;
+	const {
+		bannerType,
+		anchor,
+		bouncerEnabled,
+		bouncerTheme,
+		bouncerIcon,
+		bouncerSize,
+	} = attributes;
 
 	const renderBanner = () => {
 		switch (bannerType) {
@@ -102,10 +109,10 @@ const BannersSave = ({ attributes }) => {
 		<span
 			className={`cwgb-scroll-down cwgb-scroll-down--${
 				bouncerTheme === 'dark' ? 'dark' : 'light'
-			}`}
+			} cwgb-scroll-down--${bouncerSize || 'md'}`}
 			aria-hidden="true"
 		>
-			<i className="uil uil-angle-down"></i>
+			<i className={`uil ${bouncerIcon || 'uil-angle-down'}`}></i>
 		</span>
 	) : null;
 

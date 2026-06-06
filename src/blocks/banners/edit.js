@@ -34,7 +34,13 @@ import {
 } from './banners';
 
 const BannersEdit = ({ attributes, setAttributes, clientId }) => {
-	const { bannerType, bouncerEnabled, bouncerTheme } = attributes;
+	const {
+		bannerType,
+		bouncerEnabled,
+		bouncerTheme,
+		bouncerIcon,
+		bouncerSize,
+	} = attributes;
 
 	const blockProps = useBlockProps({
 		className: `banners-block banner-${bannerType}${
@@ -782,10 +788,12 @@ const BannersEdit = ({ attributes, setAttributes, clientId }) => {
 					<span
 						className={`cwgb-scroll-down cwgb-scroll-down--${
 							bouncerTheme === 'dark' ? 'dark' : 'light'
-						}`}
+						} cwgb-scroll-down--${bouncerSize || 'md'}`}
 						aria-hidden="true"
 					>
-						<i className="uil uil-angle-down"></i>
+						<i
+							className={`uil ${bouncerIcon || 'uil-angle-down'}`}
+						></i>
 					</span>
 				)}
 			</div>

@@ -32,6 +32,18 @@
 	&--dark {
 		color: #1f2937;
 	}
+
+	&--sm {
+		font-size: 1.5rem;
+	}
+
+	&--md {
+		font-size: 2.25rem;
+	}
+
+	&--lg {
+		font-size: 3rem;
+	}
 }
 
 @keyframes cwgb-scroll-bounce {

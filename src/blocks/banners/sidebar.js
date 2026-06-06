@@ -111,6 +111,29 @@ const BANNER_TYPES = [
 	},
 ];
 
+const BOUNCER_ICONS = [
+	{
+		label: __('Chevron', 'codeweber-gutenberg-blocks'),
+		value: 'uil-angle-down',
+	},
+	{
+		label: __('Double Chevron', 'codeweber-gutenberg-blocks'),
+		value: 'uil-angle-double-down',
+	},
+	{ label: __('Arrow', 'codeweber-gutenberg-blocks'), value: 'uil-arrow-down' },
+	{
+		label: __('Arrow Circle', 'codeweber-gutenberg-blocks'),
+		value: 'uil-arrow-circle-down',
+	},
+	{ label: __('Mouse', 'codeweber-gutenberg-blocks'), value: 'uil-mouse-alt' },
+];
+
+const BOUNCER_SIZES = [
+	{ label: __('S', 'codeweber-gutenberg-blocks'), value: 'sm' },
+	{ label: __('M', 'codeweber-gutenberg-blocks'), value: 'md' },
+	{ label: __('L', 'codeweber-gutenberg-blocks'), value: 'lg' },
+];
+
 export const BannersSidebar = ({ attributes, setAttributes }) => {
 	const {
 		bannerType,
@@ -150,6 +173,8 @@ export const BannersSidebar = ({ attributes, setAttributes }) => {
 		cursorStyle,
 		bouncerEnabled,
 		bouncerTheme,
+		bouncerIcon,
+		bouncerSize,
 	} = attributes;
 
 	const [availableImageSizes, setAvailableImageSizes] = useState([]);
@@ -464,6 +489,59 @@ export const BannersSidebar = ({ attributes, setAttributes }) => {
 												)}
 											</Button>
 										</ButtonGroup>
+										<div style={{ marginTop: '12px' }}>
+											<SelectControl
+												label={__(
+													'Arrow Style',
+													'codeweber-gutenberg-blocks'
+												)}
+												value={
+													bouncerIcon ||
+													'uil-angle-down'
+												}
+												options={BOUNCER_ICONS}
+												onChange={(value) =>
+													setAttributes({
+														bouncerIcon: value,
+													})
+												}
+											/>
+										</div>
+										<div style={{ marginTop: '4px' }}>
+											<label
+												style={{
+													display: 'block',
+													marginBottom: '8px',
+												}}
+											>
+												{__(
+													'Arrow Size',
+													'codeweber-gutenberg-blocks'
+												)}
+											</label>
+											<ButtonGroup>
+												{BOUNCER_SIZES.map((opt) => (
+													<Button
+														key={opt.value}
+														variant={
+															(bouncerSize ||
+																'md') ===
+															opt.value
+																? 'primary'
+																: 'secondary'
+														}
+														onClick={() =>
+															setAttributes({
+																bouncerSize:
+																	opt.value,
+															})
+														}
+													>
+														{opt.label}
+													</Button>
+												))}
+											</ButtonGroup>
+										</div>
 									</div>
 								)}
 							</div>

@@ -523,6 +523,14 @@
 		"bouncerTheme": {
 			"type": "string",
 			"default": "light"
+		},
+		"bouncerIcon": {
+			"type": "string",
+			"default": "uil-angle-down"
+		},
+		"bouncerSize": {
+			"type": "string",
+			"default": "md"
 		}
 	},
 	"textdomain": "codeweber-gutenberg-blocks",

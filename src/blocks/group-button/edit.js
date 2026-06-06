@@ -6,7 +6,7 @@
 
 import {
 	useBlockProps,
-	InnerBlocks,
+	useInnerBlocksProps,
 	InspectorControls,
 } from '@wordpress/block-editor';
 import { TabPanel } from '@wordpress/components';
@@ -129,6 +129,12 @@ const GroupButtonEdit = ({ attributes, setAttributes, clientId }) => {
 	const blockProps = useBlockProps({
 		className: getGroupButtonClassNames(attributes, 'edit'),
 		id: normalizeGroupButtonId(blockId) || undefined,
+	});
+
+	const innerBlocksProps = useInnerBlocksProps(blockProps, {
+		allowedBlocks: ['codeweber-blocks/button'],
+		template: TEMPLATE,
+		templateLock: false,
 	});
 
 	// Анимация в редакторе (аналогично Card)
@@ -301,13 +307,7 @@ const GroupButtonEdit = ({ attributes, setAttributes, clientId }) => {
 					)}
 				</TabPanel>
 			</InspectorControls>
-			<div {...blockProps}>
-				<InnerBlocks
-					allowedBlocks={['codeweber-blocks/button']}
-					template={TEMPLATE}
-					templateLock={false}
-				/>
-			</div>
+			<div {...innerBlocksProps} />
 		</>
 	);
 };

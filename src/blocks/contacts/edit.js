@@ -725,6 +725,83 @@ const ContactsPreview = ({
 								</div>
 							);
 						})()}
+					{item.type === 'schedule' &&
+						(() => {
+							const display = contactsData?.schedule?.display || [];
+							const isOpen = !!contactsData?.schedule?.isOpen;
+							const statusBadge = item.showStatus ? (
+								<span
+									className={`cwgb-oh-status d-inline-flex align-items-center gap-1 ms-2 ${isOpen ? 'text-success' : 'text-danger'}`}
+								>
+									<span className="cwgb-oh-dot d-inline-block rounded-circle"></span>
+									{isOpen
+										? __('Open now', 'codeweber-gutenberg-blocks')
+										: __('Closed', 'codeweber-gutenberg-blocks')}
+								</span>
+							) : null;
+							const list = (
+								<div className={`cwgb-oh-list ${textClasses}`}>
+									{display.map((row, i) => (
+										<div
+											key={i}
+											className={`d-flex justify-content-between${row.is_today ? ' fw-bold' : ''}`}
+										>
+											<span className="cwgb-oh-day pe-3">{row.label}</span>
+											<span className={`cwgb-oh-time${row.closed ? ' text-muted' : ''}`}>
+												{(row.lines || []).map((ln, k) => (
+													<React.Fragment key={k}>
+														{k > 0 && <br />}
+														{ln}
+													</React.Fragment>
+												))}
+											</span>
+										</div>
+									))}
+								</div>
+							);
+							if (display.length === 0) {
+								return (
+									<div className={textClasses}>
+										{__('Opening hours will be displayed here', 'codeweber-gutenberg-blocks')}
+									</div>
+								);
+							}
+							let body;
+							if (format === 'icon') {
+								body = (
+									<div className={`d-flex flex-row ${iconWrapperClass || ''}`}>
+											<div>{renderContactIcon('clock')}</div>
+											<div>
+												{React.createElement(
+													titleTag || 'div',
+													{ className: titleClasses },
+													<>
+														{__('Opening hours', 'codeweber-gutenberg-blocks')}
+														{statusBadge}
+													</>
+												)}
+												{list}
+											</div>
+										</div>
+								);
+							} else if (format === 'icon-simple') {
+								body = (
+									<div>
+											<div className={`d-flex align-items-center ${textClasses}`}>
+												{renderSimpleIcon('clock')}
+												<span>
+													{__('Opening hours', 'codeweber-gutenberg-blocks')}
+													{statusBadge}
+												</span>
+											</div>
+											{list}
+										</div>
+								);
+							} else {
+								body = <div>{list}</div>;
+							}
+							return <div>{body}</div>;
+						})()}
 				</div>
 			))}
 		</div>

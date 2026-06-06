@@ -685,6 +685,71 @@ if ($block_data) {
                 </div>
             <?php endif; ?>
 
+        <?php elseif ($type === 'schedule'): ?>
+            <?php
+            $schedule_display = \Codeweber\Blocks\OpeningHours::buildDisplay(null, [
+                'dayFormat'     => 'short',
+                'breakMode'     => 'both',
+                'groupSameDays' => false,
+                'separator'     => 'ndash',
+                'dayoffLabel'   => __('Day off', 'codeweber-gutenberg-blocks'),
+            ]);
+            if (empty($schedule_display)) continue;
+
+            $schedule_show_status = !empty($item['showStatus']);
+            $schedule_is_open = \Codeweber\Blocks\OpeningHours::isOpenNow();
+
+            // Compact rows list (day + time).
+            $render_schedule_lines = function ($display) {
+                $html = '';
+                foreach ($display as $row) {
+                    $time = implode('<br>', array_map('esc_html', (array) $row['lines']));
+                    $row_class = 'd-flex justify-content-between' . (!empty($row['is_today']) ? ' fw-bold' : '');
+                    $time_class = 'cwgb-oh-time' . (!empty($row['closed']) ? ' text-muted' : '');
+                    $html .= '<div class="' . esc_attr($row_class) . '">'
+                        . '<span class="cwgb-oh-day pe-3">' . esc_html($row['label']) . '</span>'
+                        . '<span class="' . esc_attr($time_class) . '">' . $time . '</span>'
+                        . '</div>';
+                }
+                return $html;
+            };
+
+            // Open/closed status badge (optional).
+            $schedule_status_html = '';
+            if ($schedule_show_status) {
+                $status_class = $schedule_is_open ? 'text-success' : 'text-danger';
+                $status_text = $schedule_is_open
+                    ? __('Open now', 'codeweber-gutenberg-blocks')
+                    : __('Closed', 'codeweber-gutenberg-blocks');
+                $schedule_status_html = '<span class="cwgb-oh-status d-inline-flex align-items-center gap-1 ms-2 ' . esc_attr($status_class) . '">'
+                    . '<span class="cwgb-oh-dot d-inline-block rounded-circle"></span>'
+                    . esc_html($status_text) . '</span>';
+            }
+            ?>
+            <?php if ($format === 'icon'): ?>
+                <div class="d-flex flex-row <?php echo esc_attr($iconWrapperClass ? $iconWrapperClass : ''); ?>">
+                    <div>
+                        <?php echo render_contacts_icon('clock', $iconType, $iconName, $svgIcon, $svgStyle, $iconSize, $iconFontSize, $iconColor, $iconColor2, $iconClass, $iconWrapper, $iconWrapperStyle, $iconBtnSize, $iconBtnVariant, '', $iconGradientColor, $customSvgUrl, $customSvgSize); ?>
+                    </div>
+                    <div>
+                        <<?php echo esc_attr($titleTag); ?> class="<?php echo esc_attr($titleClasses); ?>"><?php echo esc_html__('Opening hours', 'codeweber-gutenberg-blocks'); ?><?php echo $schedule_status_html; ?></<?php echo esc_attr($titleTag); ?>>
+                        <div class="cwgb-oh-list <?php echo esc_attr($textClasses); ?>"><?php echo $render_schedule_lines($schedule_display); ?></div>
+                    </div>
+                </div>
+            <?php elseif ($format === 'icon-simple'): ?>
+                <div>
+                    <div class="d-flex align-items-center <?php echo esc_attr($textClasses); ?>">
+                        <?php echo render_contacts_simple_icon('clock', $iconType, $iconName, $svgIcon, $svgStyle, $iconSize, $iconFontSize, $iconColor, $iconColor2, $iconClass, $customSvgUrl, $customSvgSize); ?>
+                        <span><?php echo esc_html__('Opening hours', 'codeweber-gutenberg-blocks'); ?><?php echo $schedule_status_html; ?></span>
+                    </div>
+                    <div class="cwgb-oh-list <?php echo esc_attr($textClasses); ?>"><?php echo $render_schedule_lines($schedule_display); ?></div>
+                </div>
+            <?php else: ?>
+                <div>
+                    <div class="cwgb-oh-list <?php echo esc_attr($textClasses); ?>"><?php echo $render_schedule_lines($schedule_display); ?></div>
+                </div>
+            <?php endif; ?>
+
         <?php endif; ?>
         <?php if ($item_class): ?></div><?php endif; ?>
     <?php endforeach; ?>

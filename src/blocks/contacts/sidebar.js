@@ -56,6 +56,7 @@ export const ContactsSidebar = ({ attributes, setAttributes }) => {
 			enabled: true,
 			...(type === 'address' ? { addressType: 'legal' } : {}),
 			...(type === 'phone' ? { phones: ['phone_01'] } : {}),
+			...(type === 'schedule' ? { showStatus: false } : {}),
 		};
 		setAttributes({ items: [...items, newItem] });
 	};
@@ -412,6 +413,21 @@ export const ContactsSidebar = ({ attributes, setAttributes }) => {
 											))}
 										</div>
 									)}
+
+									{item.type === 'schedule' && (
+										<ToggleControl
+											label={__(
+												'Show open/closed status',
+												'codeweber-gutenberg-blocks'
+											)}
+											checked={!!item.showStatus}
+											onChange={(value) =>
+												updateItem(index, {
+													showStatus: value,
+												})
+											}
+										/>
+									)}
 								</div>
 							))}
 
@@ -467,6 +483,16 @@ export const ContactsSidebar = ({ attributes, setAttributes }) => {
 									>
 										{__(
 											'Phone',
+											'codeweber-gutenberg-blocks'
+										)}
+									</Button>
+									<Button
+										isSmall
+										variant="secondary"
+										onClick={() => addItem('schedule')}
+									>
+										{__(
+											'Opening hours',
 											'codeweber-gutenberg-blocks'
 										)}
 									</Button>

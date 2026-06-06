@@ -3,7 +3,7 @@
  * Opening Hours Block — Server-Side Render
  *
  * Data source: theme Redux options (Company Details → Opening Hours).
- * Keys: opening_hours_{day}_opens_1 / _closes_1 / _opens_2 / _closes_2.
+ * All hours logic lives in the shared \Codeweber\Blocks\OpeningHours helper.
  *
  * @package CodeWeber Gutenberg Blocks
  *
@@ -17,6 +17,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 if ( ! isset( $attributes ) || ! is_array( $attributes ) ) {
 	$attributes = array();
 }
+
+use Codeweber\Blocks\OpeningHours;
 
 $show_title    = ! empty( $attributes['showTitle'] );
 $title         = isset( $attributes['title'] ) ? (string) $attributes['title'] : '';
@@ -34,175 +36,18 @@ $layout        = isset( $attributes['layout'] ) ? (string) $attributes['layout']
 $align_end     = ! empty( $attributes['alignTimeEnd'] );
 $text_size     = isset( $attributes['textSize'] ) ? (string) $attributes['textSize'] : '';
 
-// Time-range separator string.
-switch ( $separator_key ) {
-	case 'mdash':
-		$sep = ' — ';
-		break;
-	case 'to':
-		$sep = ' ' . __( 'to', 'codeweber-gutenberg-blocks' ) . ' ';
-		break;
-	default:
-		$sep = ' – '; // en dash.
-}
-
-// Read a Redux option (theme), with a safe fallback.
-$get_opt = static function ( $key ) {
-	if ( class_exists( 'Codeweber_Options' ) ) {
-		return (string) Codeweber_Options::get( $key, '' );
-	}
-	$opts = get_option( 'redux_demo', array() );
-	return isset( $opts[ $key ] ) ? (string) $opts[ $key ] : '';
-};
-
-// Monday-first day order, mapped to PHP weekday index (0 = Sunday).
-$day_keys = array( 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday' );
-$w_index  = array(
-	'monday'    => 1,
-	'tuesday'   => 2,
-	'wednesday' => 3,
-	'thursday'  => 4,
-	'friday'    => 5,
-	'saturday'  => 6,
-	'sunday'    => 0,
+$rows    = OpeningHours::rows();
+$is_open = OpeningHours::isOpenNow( $rows );
+$display = OpeningHours::buildDisplay(
+	$rows,
+	array(
+		'dayFormat'     => $day_format,
+		'breakMode'     => $break_mode,
+		'groupSameDays' => $group_days,
+		'separator'     => $separator_key,
+		'dayoffLabel'   => $dayoff_label,
+	)
 );
-
-// Localized day name (uses WP locale, so it follows the site language).
-global $wp_locale;
-$name_of = static function ( $day ) use ( $wp_locale, $w_index, $day_format ) {
-	$full = $wp_locale->get_weekday( $w_index[ $day ] );
-	return ( 'full' === $day_format ) ? $full : $wp_locale->get_weekday_abbrev( $full );
-};
-
-// Read raw hours for every day.
-$rows = array();
-foreach ( $day_keys as $day ) {
-	$o1 = trim( $get_opt( 'opening_hours_' . $day . '_opens_1' ) );
-	$c1 = trim( $get_opt( 'opening_hours_' . $day . '_closes_1' ) );
-	$o2 = trim( $get_opt( 'opening_hours_' . $day . '_opens_2' ) );
-	$c2 = trim( $get_opt( 'opening_hours_' . $day . '_closes_2' ) );
-
-	$rows[ $day ] = array(
-		'o1'     => $o1,
-		'c1'     => $c1,
-		'o2'     => $o2,
-		'c2'     => $c2,
-		'closed' => ( '' === $o1 ),
-	);
-}
-
-// Build the display time line(s) for a day, honoring the break mode.
-$format_day = static function ( $r ) use ( $break_mode, $sep, $dayoff_label ) {
-	if ( $r['closed'] ) {
-		return array(
-			'closed' => true,
-			'lines'  => array( $dayoff_label ),
-		);
-	}
-
-	$end1 = ( '' !== $r['c1'] ) ? $r['c1'] : $r['c2'];
-
-	if ( 'range' === $break_mode ) {
-		$end = ( '' !== $r['c2'] ) ? $r['c2'] : $r['c1'];
-		return array(
-			'closed' => false,
-			'lines'  => array( $r['o1'] . $sep . $end ),
-		);
-	}
-
-	$first       = $r['o1'] . $sep . $end1;
-	$has_second  = ( '' !== $r['o2'] && '' !== $r['c2'] );
-
-	if ( ! $has_second ) {
-		return array(
-			'closed' => false,
-			'lines'  => array( $first ),
-		);
-	}
-
-	$second = $r['o2'] . $sep . $r['c2'];
-
-	if ( 'second-line' === $break_mode ) {
-		return array(
-			'closed' => false,
-			'lines'  => array( $first, $second ),
-		);
-	}
-
-	// both.
-	return array(
-		'closed' => false,
-		'lines'  => array( $first . ', ' . $second ),
-	);
-};
-
-$formatted = array();
-foreach ( $day_keys as $day ) {
-	$formatted[ $day ] = $format_day( $rows[ $day ] );
-}
-
-// Current day / open-now status (site timezone).
-$now       = current_datetime();
-$today_w   = (int) $now->format( 'w' );
-$now_hm    = $now->format( 'H:i' );
-$today_key = array_search( $today_w, $w_index, true );
-
-$is_open = false;
-if ( isset( $rows[ $today_key ] ) && ! $rows[ $today_key ]['closed'] ) {
-	$tr      = $rows[ $today_key ];
-	$within  = static function ( $a, $b ) use ( $now_hm ) {
-		return ( '' !== $a && '' !== $b && $now_hm >= $a && $now_hm <= $b );
-	};
-	$end1    = ( '' !== $tr['c1'] ) ? $tr['c1'] : $tr['c2'];
-	if ( $within( $tr['o1'], $end1 ) || $within( $tr['o2'], $tr['c2'] ) ) {
-		$is_open = true;
-	}
-}
-
-// Build the display list, grouping consecutive identical days when requested.
-$display = array();
-$n       = count( $day_keys );
-$i       = 0;
-while ( $i < $n ) {
-	$day = $day_keys[ $i ];
-	$sig = implode( '|', $formatted[ $day ]['lines'] ) . ( $formatted[ $day ]['closed'] ? 'C' : 'O' );
-	$j   = $i;
-
-	if ( $group_days ) {
-		while ( $j + 1 < $n ) {
-			$next  = $day_keys[ $j + 1 ];
-			$nsig  = implode( '|', $formatted[ $next ]['lines'] ) . ( $formatted[ $next ]['closed'] ? 'C' : 'O' );
-			if ( $nsig === $sig ) {
-				$j++;
-			} else {
-				break;
-			}
-		}
-	}
-
-	$label = $name_of( $day_keys[ $i ] );
-	if ( $j > $i ) {
-		$label .= '–' . $name_of( $day_keys[ $j ] );
-	}
-
-	$is_today = false;
-	for ( $k = $i; $k <= $j; $k++ ) {
-		if ( $day_keys[ $k ] === $today_key ) {
-			$is_today = true;
-			break;
-		}
-	}
-
-	$display[] = array(
-		'label'    => $label,
-		'lines'    => $formatted[ $day_keys[ $i ] ]['lines'],
-		'closed'   => $formatted[ $day_keys[ $i ] ]['closed'],
-		'is_today' => $is_today,
-		'single'   => ( $j === $i ),
-	);
-
-	$i = $j + 1;
-}
 
 // Root element (no structural wrapper — only the block node itself).
 $anchor        = isset( $attributes['anchor'] ) ? trim( (string) $attributes['anchor'] ) : '';

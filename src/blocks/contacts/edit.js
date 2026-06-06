@@ -16,6 +16,97 @@ import {
 } from '../../utilities/class-generators';
 import { IconRender } from '../../components/icon/IconRender';
 
+const SCHED_ORDER = [
+	'monday',
+	'tuesday',
+	'wednesday',
+	'thursday',
+	'friday',
+	'saturday',
+	'sunday',
+];
+
+// Editor-side port of OpeningHours::buildDisplay (preview only).
+const buildScheduleDisplay = (rows, dayNames, today, opts) => {
+	if (!rows) {
+		return [];
+	}
+	const dayFormat = opts.dayFormat || 'short';
+	const breakMode = opts.breakMode || 'both';
+	const group = !!opts.groupSameDays;
+	const sepKey = opts.separator || 'ndash';
+	const sepMap = {
+		mdash: ' \u2014 ',
+		to: ` ${__('to', 'codeweber-gutenberg-blocks')} `,
+		ndash: ' \u2013 ',
+	};
+	const sep = sepMap[sepKey] || sepMap.ndash;
+	const dayoff = opts.dayoffLabel ?? __('Day off', 'codeweber-gutenberg-blocks');
+	const names = (dayNames && dayNames[dayFormat]) || {};
+	const fmt = (r) => {
+		if (!r || r.closed) {
+			return { closed: true, lines: [dayoff] };
+		}
+		const end1 = r.c1 !== '' ? r.c1 : r.c2;
+		if (breakMode === 'range') {
+			const end = r.c2 !== '' ? r.c2 : r.c1;
+			return { closed: false, lines: [`${r.o1}${sep}${end}`] };
+		}
+		const first = `${r.o1}${sep}${end1}`;
+		const hasSecond = r.o2 !== '' && r.c2 !== '';
+		if (!hasSecond) {
+			return { closed: false, lines: [first] };
+		}
+		const second = `${r.o2}${sep}${r.c2}`;
+		if (breakMode === 'second-line') {
+			return { closed: false, lines: [first, second] };
+		}
+		return { closed: false, lines: [`${first}, ${second}`] };
+	};
+	const formatted = {};
+	SCHED_ORDER.forEach((d) => {
+		formatted[d] = fmt(rows[d]);
+	});
+	const display = [];
+	let i = 0;
+	while (i < SCHED_ORDER.length) {
+		const d = SCHED_ORDER[i];
+		const sig = formatted[d].lines.join('|') + (formatted[d].closed ? 'C' : 'O');
+		let j = i;
+		if (group) {
+			while (j + 1 < SCHED_ORDER.length) {
+				const nd = SCHED_ORDER[j + 1];
+				const nsig = formatted[nd].lines.join('|') + (formatted[nd].closed ? 'C' : 'O');
+				if (nsig === sig) {
+					j += 1;
+				} else {
+					break;
+				}
+			}
+		}
+		let label = names[SCHED_ORDER[i]] || SCHED_ORDER[i];
+		if (j > i) {
+			label += `\u2013${names[SCHED_ORDER[j]] || SCHED_ORDER[j]}`;
+		}
+		let isToday = false;
+		for (let k = i; k <= j; k += 1) {
+			if (SCHED_ORDER[k] === today) {
+				isToday = true;
+				break;
+			}
+		}
+		display.push({
+			label,
+			lines: formatted[SCHED_ORDER[i]].lines,
+			closed: formatted[SCHED_ORDER[i]].closed,
+			is_today: isToday,
+			single: j === i,
+		});
+		i = j + 1;
+	}
+	return display;
+};
+
 const ContactsPreview = ({
 	items,
 	contactsData,
@@ -727,78 +818,109 @@ const ContactsPreview = ({
 						})()}
 					{item.type === 'schedule' &&
 						(() => {
-							const display = contactsData?.schedule?.display || [];
-							const isOpen = !!contactsData?.schedule?.isOpen;
-							const statusBadge = item.showStatus ? (
-								<span
-									className={`cwgb-oh-status d-inline-flex align-items-center gap-1 ms-2 ${isOpen ? 'text-success' : 'text-danger'}`}
-								>
-									<span className="cwgb-oh-dot d-inline-block rounded-circle"></span>
-									{isOpen
-										? __('Open now', 'codeweber-gutenberg-blocks')
-										: __('Closed', 'codeweber-gutenberg-blocks')}
+							const sched = contactsData?.schedule;
+							const display = buildScheduleDisplay(
+								sched?.rows,
+								sched?.dayNames,
+								sched?.today,
+								{
+									dayFormat: item.dayFormat,
+									breakMode: item.breakMode,
+									groupSameDays: item.groupSameDays,
+									separator: item.timeSeparator,
+									dayoffLabel: item.dayoffLabel ?? __('Day off', 'codeweber-gutenberg-blocks'),
+								}
+							);
+							const isOpen = !!sched?.isOpen;
+							const highlight = item.highlightToday !== false;
+							const todayLabel = item.todayLabel ?? '';
+							const showStatus = !!item.showStatus;
+							const titleText = item.title ?? __('Opening hours', 'codeweber-gutenberg-blocks');
+							const statusText = isOpen
+								? item.openLabel ?? __('Open now', 'codeweber-gutenberg-blocks')
+								: item.closedLabel ?? __('Closed', 'codeweber-gutenberg-blocks');
+							const statusBadge = showStatus ? (
+								<span className={isOpen ? 'text-success' : 'text-danger'}>
+									{` \u2014 ${statusText}`}
 								</span>
 							) : null;
 							const list = (
 								<div className={`cwgb-oh-list ${textClasses}`}>
-									{display.map((row, i) => (
-										<div
-											key={i}
-											className={`d-flex justify-content-between${row.is_today ? ' fw-bold' : ''}`}
-										>
-											<span className="cwgb-oh-day pe-3">{row.label}</span>
-											<span className={`cwgb-oh-time${row.closed ? ' text-muted' : ''}`}>
-												{(row.lines || []).map((ln, k) => (
-													<React.Fragment key={k}>
-														{k > 0 && <br />}
-														{ln}
-													</React.Fragment>
-												))}
-											</span>
-										</div>
-									))}
+									{display.map((row, i) => {
+										const rowToday = highlight && row.is_today;
+										return (
+											<div
+												key={i}
+												className={`d-flex justify-content-between${rowToday ? ' fw-bold' : ''}`}
+											>
+												<span className="cwgb-oh-day pe-3">
+													{row.label}
+													{rowToday && row.single && todayLabel
+														? ` ${todayLabel}`
+														: ''}
+												</span>
+												<span className={`cwgb-oh-time${row.closed ? ' text-muted' : ''}`}>
+													{(row.lines || []).map((ln, k) => (
+														<React.Fragment key={k}>
+															{k > 0 && <br />}
+															{ln}
+														</React.Fragment>
+													))}
+												</span>
+											</div>
+										);
+									})}
 								</div>
 							);
-							if (display.length === 0) {
+							if (!display.length) {
 								return (
 									<div className={textClasses}>
 										{__('Opening hours will be displayed here', 'codeweber-gutenberg-blocks')}
 									</div>
 								);
 							}
+							const titleEl =
+								titleText || statusBadge
+									? React.createElement(
+										titleTag || 'div',
+										{ className: titleClasses },
+										<>
+											{titleText}
+											{statusBadge}
+										</>
+									)
+									: null;
 							let body;
 							if (format === 'icon') {
 								body = (
 									<div className={`d-flex flex-row ${iconWrapperClass || ''}`}>
-											<div>{renderContactIcon('clock')}</div>
-											<div>
-												{React.createElement(
-													titleTag || 'div',
-													{ className: titleClasses },
-													<>
-														{__('Opening hours', 'codeweber-gutenberg-blocks')}
-														{statusBadge}
-													</>
-												)}
-												{list}
-											</div>
+										<div>{renderContactIcon('clock')}</div>
+										<div>
+											{titleEl}
+											{list}
 										</div>
+									</div>
 								);
 							} else if (format === 'icon-simple') {
 								body = (
 									<div>
-											<div className={`d-flex align-items-center ${textClasses}`}>
-												{renderSimpleIcon('clock')}
-												<span>
-													{__('Opening hours', 'codeweber-gutenberg-blocks')}
-													{statusBadge}
-												</span>
-											</div>
-											{list}
+										<div className={`d-flex align-items-center ${textClasses}`}>
+											{renderSimpleIcon('clock')}
+											<span>
+												{titleText}
+												{statusBadge}
+											</span>
 										</div>
+										{list}
+									</div>
 								);
 							} else {
-								body = <div>{list}</div>;
+								body = (
+									<div>
+										{titleEl}
+										{list}
+									</div>
+								);
 							}
 							return <div>{body}</div>;
 						})()}

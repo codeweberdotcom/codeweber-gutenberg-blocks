@@ -415,18 +415,107 @@ export const ContactsSidebar = ({ attributes, setAttributes }) => {
 									)}
 
 									{item.type === 'schedule' && (
-										<ToggleControl
-											label={__(
-												'Show open/closed status',
-												'codeweber-gutenberg-blocks'
+										<>
+											<TextControl
+												label={__('Title', 'codeweber-gutenberg-blocks')}
+												help={__('Leave empty to hide the heading.', 'codeweber-gutenberg-blocks')}
+												value={item.title ?? 'Opening hours'}
+												onChange={(value) =>
+													updateItem(index, { title: value })
+												}
+											/>
+											<SelectControl
+												label={__('Day name format', 'codeweber-gutenberg-blocks')}
+												value={item.dayFormat || 'short'}
+												options={[
+													{ label: __('Short (Mon)', 'codeweber-gutenberg-blocks'), value: 'short' },
+													{ label: __('Full (Monday)', 'codeweber-gutenberg-blocks'), value: 'full' },
+												]}
+												onChange={(value) =>
+													updateItem(index, { dayFormat: value })
+												}
+											/>
+											<SelectControl
+												label={__('Lunch break', 'codeweber-gutenberg-blocks')}
+												value={item.breakMode || 'both'}
+												options={[
+													{ label: __('Both intervals', 'codeweber-gutenberg-blocks'), value: 'both' },
+													{ label: __('Single range', 'codeweber-gutenberg-blocks'), value: 'range' },
+													{ label: __('Second line', 'codeweber-gutenberg-blocks'), value: 'second-line' },
+												]}
+												onChange={(value) =>
+													updateItem(index, { breakMode: value })
+												}
+											/>
+											<SelectControl
+												label={__('Time separator', 'codeweber-gutenberg-blocks')}
+												value={item.timeSeparator || 'ndash'}
+												options={[
+													{ label: __('En dash (–)', 'codeweber-gutenberg-blocks'), value: 'ndash' },
+													{ label: __('Em dash (—)', 'codeweber-gutenberg-blocks'), value: 'mdash' },
+													{ label: __('Word to', 'codeweber-gutenberg-blocks'), value: 'to' },
+												]}
+												onChange={(value) =>
+													updateItem(index, { timeSeparator: value })
+												}
+											/>
+											<TextControl
+												label={__('Day off label', 'codeweber-gutenberg-blocks')}
+												value={item.dayoffLabel ?? 'Day off'}
+												onChange={(value) =>
+													updateItem(index, { dayoffLabel: value })
+												}
+											/>
+											<ToggleControl
+												label={__('Group days with identical hours', 'codeweber-gutenberg-blocks')}
+												checked={!!item.groupSameDays}
+												onChange={(value) =>
+													updateItem(index, { groupSameDays: value })
+												}
+											/>
+											<ToggleControl
+												label={__('Highlight current day', 'codeweber-gutenberg-blocks')}
+												checked={item.highlightToday !== false}
+												onChange={(value) =>
+													updateItem(index, { highlightToday: value })
+												}
+											/>
+											{item.highlightToday !== false && (
+												<TextControl
+													label={__('Today label', 'codeweber-gutenberg-blocks')}
+													help={__('Shown next to the current day, e.g. · today', 'codeweber-gutenberg-blocks')}
+													value={item.todayLabel ?? ''}
+													onChange={(value) =>
+														updateItem(index, { todayLabel: value })
+													}
+												/>
 											)}
-											checked={!!item.showStatus}
-											onChange={(value) =>
-												updateItem(index, {
-													showStatus: value,
-												})
-											}
-										/>
+											<ToggleControl
+												label={__('Show open/closed status', 'codeweber-gutenberg-blocks')}
+												checked={!!item.showStatus}
+												onChange={(value) =>
+													updateItem(index, { showStatus: value })
+												}
+											/>
+											{!!item.showStatus && (
+												<>
+													<TextControl
+														label={__('Open label', 'codeweber-gutenberg-blocks')}
+														value={item.openLabel ?? 'Open now'}
+														onChange={(value) =>
+															updateItem(index, { openLabel: value })
+														}
+													/>
+													<TextControl
+														label={__('Closed label', 'codeweber-gutenberg-blocks')}
+														value={item.closedLabel ?? 'Closed'}
+														onChange={(value) =>
+															updateItem(index, { closedLabel: value })
+														}
+													/>
+												</>
+											)}
+										</>
 									)}
 								</div>
 							))}

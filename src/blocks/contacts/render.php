@@ -687,43 +687,60 @@ if ($block_data) {
 
         <?php elseif ($type === 'schedule'): ?>
             <?php
+            $sch_title = array_key_exists('title', $item) ? (string) $item['title'] : __('Opening hours', 'codeweber-gutenberg-blocks');
+            $sch_dayoff = array_key_exists('dayoffLabel', $item) ? (string) $item['dayoffLabel'] : __('Day off', 'codeweber-gutenberg-blocks');
+            $sch_today_label = isset($item['todayLabel']) ? (string) $item['todayLabel'] : '';
+            $sch_highlight = !array_key_exists('highlightToday', $item) || $item['highlightToday'] !== false;
+            $sch_show_status = !empty($item['showStatus']);
+            $sch_open = isset($item['openLabel']) ? (string) $item['openLabel'] : __('Open now', 'codeweber-gutenberg-blocks');
+            $sch_closed = isset($item['closedLabel']) ? (string) $item['closedLabel'] : __('Closed', 'codeweber-gutenberg-blocks');
+
             $schedule_display = \Codeweber\Blocks\OpeningHours::buildDisplay(null, [
-                'dayFormat'     => 'short',
-                'breakMode'     => 'both',
-                'groupSameDays' => false,
-                'separator'     => 'ndash',
-                'dayoffLabel'   => __('Day off', 'codeweber-gutenberg-blocks'),
+                'dayFormat'     => isset($item['dayFormat']) ? (string) $item['dayFormat'] : 'short',
+                'breakMode'     => isset($item['breakMode']) ? (string) $item['breakMode'] : 'both',
+                'groupSameDays' => !empty($item['groupSameDays']),
+                'separator'     => isset($item['timeSeparator']) ? (string) $item['timeSeparator'] : 'ndash',
+                'dayoffLabel'   => $sch_dayoff,
             ]);
             if (empty($schedule_display)) continue;
 
-            $schedule_show_status = !empty($item['showStatus']);
             $schedule_is_open = \Codeweber\Blocks\OpeningHours::isOpenNow();
 
             // Compact rows list (day + time).
-            $render_schedule_lines = function ($display) {
+            $render_schedule_lines = function ($display) use ($sch_highlight, $sch_today_label) {
                 $html = '';
                 foreach ($display as $row) {
                     $time = implode('<br>', array_map('esc_html', (array) $row['lines']));
-                    $row_class = 'd-flex justify-content-between' . (!empty($row['is_today']) ? ' fw-bold' : '');
+                    $is_today = $sch_highlight && !empty($row['is_today']);
+                    $row_class = 'd-flex justify-content-between' . ($is_today ? ' fw-bold' : '');
                     $time_class = 'cwgb-oh-time' . (!empty($row['closed']) ? ' text-muted' : '');
+                    $label = esc_html($row['label']);
+                    if ($is_today && !empty($row['single']) && '' !== $sch_today_label) {
+                        $label .= ' ' . esc_html($sch_today_label);
+                    }
                     $html .= '<div class="' . esc_attr($row_class) . '">'
-                        . '<span class="cwgb-oh-day pe-3">' . esc_html($row['label']) . '</span>'
+                        . '<span class="cwgb-oh-day pe-3">' . $label . '</span>'
                         . '<span class="' . esc_attr($time_class) . '">' . $time . '</span>'
                         . '</div>';
                 }
                 return $html;
             };
 
-            // Open/closed status badge (optional).
+            // Open/closed status — shown after the title via an em dash.
             $schedule_status_html = '';
-            if ($schedule_show_status) {
+            if ($sch_show_status) {
                 $status_class = $schedule_is_open ? 'text-success' : 'text-danger';
-                $status_text = $schedule_is_open
-                    ? __('Open now', 'codeweber-gutenberg-blocks')
-                    : __('Closed', 'codeweber-gutenberg-blocks');
-                $schedule_status_html = '<span class="cwgb-oh-status d-inline-flex align-items-center gap-1 ms-2 ' . esc_attr($status_class) . '">'
-                    . '<span class="cwgb-oh-dot d-inline-block rounded-circle"></span>'
+                $status_text = $schedule_is_open ? $sch_open : $sch_closed;
+                $schedule_status_html = ' <span class="cwgb-oh-status ' . esc_attr($status_class) . '">&mdash; '
                     . esc_html($status_text) . '</span>';
+            }
+
+            // Title markup (skipped when empty unless a status badge needs a host).
+            $schedule_title_html = '';
+            if ('' !== trim($sch_title) || '' !== $schedule_status_html) {
+                $schedule_title_html = '<' . esc_attr($titleTag) . ' class="' . esc_attr($titleClasses) . '">'
+                    . esc_html($sch_title) . $schedule_status_html
+                    . '</' . esc_attr($titleTag) . '>';
             }
             ?>
             <?php if ($format === 'icon'): ?>
@@ -732,7 +749,7 @@ if ($block_data) {
                         <?php echo render_contacts_icon('clock', $iconType, $iconName, $svgIcon, $svgStyle, $iconSize, $iconFontSize, $iconColor, $iconColor2, $iconClass, $iconWrapper, $iconWrapperStyle, $iconBtnSize, $iconBtnVariant, '', $iconGradientColor, $customSvgUrl, $customSvgSize); ?>
                     </div>
                     <div>
-                        <<?php echo esc_attr($titleTag); ?> class="<?php echo esc_attr($titleClasses); ?>"><?php echo esc_html__('Opening hours', 'codeweber-gutenberg-blocks'); ?><?php echo $schedule_status_html; ?></<?php echo esc_attr($titleTag); ?>>
+                        <?php echo $schedule_title_html; ?>
                         <div class="cwgb-oh-list <?php echo esc_attr($textClasses); ?>"><?php echo $render_schedule_lines($schedule_display); ?></div>
                     </div>
                 </div>
@@ -740,16 +757,16 @@ if ($block_data) {
                 <div>
                     <div class="d-flex align-items-center <?php echo esc_attr($textClasses); ?>">
                         <?php echo render_contacts_simple_icon('clock', $iconType, $iconName, $svgIcon, $svgStyle, $iconSize, $iconFontSize, $iconColor, $iconColor2, $iconClass, $customSvgUrl, $customSvgSize); ?>
-                        <span><?php echo esc_html__('Opening hours', 'codeweber-gutenberg-blocks'); ?><?php echo $schedule_status_html; ?></span>
+                        <span><?php echo esc_html($sch_title); ?><?php echo $schedule_status_html; ?></span>
                     </div>
                     <div class="cwgb-oh-list <?php echo esc_attr($textClasses); ?>"><?php echo $render_schedule_lines($schedule_display); ?></div>
                 </div>
             <?php else: ?>
                 <div>
+                    <?php echo $schedule_title_html; ?>
                     <div class="cwgb-oh-list <?php echo esc_attr($textClasses); ?>"><?php echo $render_schedule_lines($schedule_display); ?></div>
                 </div>
             <?php endif; ?>
-
         <?php endif; ?>
         <?php if ($item_class): ?></div><?php endif; ?>
     <?php endforeach; ?>

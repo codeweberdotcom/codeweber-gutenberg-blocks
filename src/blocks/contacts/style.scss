@@ -7,12 +7,3 @@
 .codeweber-contacts-block {
 	// Блок использует стили темы, дополнительные стили можно добавить здесь
 }
-
-// Opening hours "schedule" entity — open/closed status dot.
-.codeweber-contacts-block .cwgb-oh-dot {
-	width: 0.5rem;
-	height: 0.5rem;
-
-	// Inherits the status color (text-success / text-danger).
-	background-color: currentcolor;
-}

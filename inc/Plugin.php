@@ -1905,7 +1905,7 @@ class Plugin {
 					],
 					'email' => '',
 					'phones' => [],
-					'schedule' => ['display' => [], 'isOpen' => false],
+					'schedule' => ['rows' => [], 'dayNames' => ['short' => [], 'full' => []], 'today' => '', 'isOpen' => false],
 				], 200);
 			}
 
@@ -1972,16 +1972,7 @@ class Plugin {
 				],
 				'email' => $email ? $email : '',
 				'phones' => $phones,
-				'schedule' => [
-					'display' => OpeningHours::buildDisplay(null, [
-						'dayFormat' => 'short',
-						'breakMode' => 'both',
-						'groupSameDays' => false,
-						'separator' => 'ndash',
-						'dayoffLabel' => __('Day off', 'codeweber-gutenberg-blocks'),
-					]),
-					'isOpen' => OpeningHours::isOpenNow(),
-				],
+				'schedule' => OpeningHours::restPayload(),
 			], 200);
 		} catch (\Exception $e) {
 			error_log('Contacts API Error: ' . $e->getMessage());

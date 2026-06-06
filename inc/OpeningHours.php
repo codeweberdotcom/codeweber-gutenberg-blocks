@@ -285,4 +285,37 @@ class OpeningHours {
 
 		return $display;
 	}
+
+	/**
+	 * Raw payload for client-side (editor) formatting.
+	 *
+	 * The Contacts editor preview formats the schedule in JS according to each
+	 * entity's own options, so it needs the raw hours plus localized day names.
+	 *
+	 * @return array{
+	 *     rows: array,
+	 *     dayNames: array{short:array<string,string>,full:array<string,string>},
+	 *     today: string,
+	 *     isOpen: bool
+	 * }
+	 */
+	public static function restPayload(): array {
+		$rows  = self::rows();
+		$short = array();
+		$full  = array();
+		foreach ( array_keys( self::DAY_INDEX ) as $day ) {
+			$short[ $day ] = self::dayName( $day, 'short' );
+			$full[ $day ]  = self::dayName( $day, 'full' );
+		}
+
+		return array(
+			'rows'     => $rows,
+			'dayNames' => array(
+				'short' => $short,
+				'full'  => $full,
+			),
+			'today'    => self::todayKey(),
+			'isOpen'   => self::isOpenNow( $rows ),
+		);
+	}
 }

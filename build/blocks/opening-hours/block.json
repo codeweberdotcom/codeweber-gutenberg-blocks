@@ -1,0 +1,91 @@
+{
+  "apiVersion": 3,
+  "name": "codeweber-blocks/opening-hours",
+  "version": "0.1.0",
+  "title": "Opening Hours",
+  "category": "codeweber-gutenberg-elements",
+  "icon": "clock",
+  "description": "Company opening hours table. Data comes from theme settings (Redux → Company Details). Renders without a structural wrapper.",
+  "keywords": [
+    "opening hours",
+    "schedule",
+    "working hours",
+    "open now"
+  ],
+  "supports": {
+    "html": false,
+    "customClassName": true,
+    "anchor": true
+  },
+  "attributes": {
+    "anchor": {
+      "type": "string",
+      "default": ""
+    },
+    "showTitle": {
+      "type": "boolean",
+      "default": true
+    },
+    "title": {
+      "type": "string",
+      "default": "Opening hours"
+    },
+    "showStatus": {
+      "type": "boolean",
+      "default": true
+    },
+    "openLabel": {
+      "type": "string",
+      "default": "Open now"
+    },
+    "closedLabel": {
+      "type": "string",
+      "default": "Closed"
+    },
+    "highlightToday": {
+      "type": "boolean",
+      "default": true
+    },
+    "todayLabel": {
+      "type": "string",
+      "default": "· today"
+    },
+    "dayFormat": {
+      "type": "string",
+      "default": "short"
+    },
+    "dayoffLabel": {
+      "type": "string",
+      "default": "Day off"
+    },
+    "breakMode": {
+      "type": "string",
+      "default": "both"
+    },
+    "groupSameDays": {
+      "type": "boolean",
+      "default": false
+    },
+    "timeSeparator": {
+      "type": "string",
+      "default": "ndash"
+    },
+    "layout": {
+      "type": "string",
+      "default": "list"
+    },
+    "alignTimeEnd": {
+      "type": "boolean",
+      "default": true
+    },
+    "textSize": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "textdomain": "codeweber-gutenberg-blocks",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "render": "file:./render.php"
+}

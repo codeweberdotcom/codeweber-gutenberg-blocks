@@ -313,6 +313,7 @@ class Plugin {
 		'wc-filter-panel',
 		'copyright',
 		'floating-navigator',
+		'opening-hours',
 	];
 	}
 

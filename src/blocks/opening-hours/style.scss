@@ -1,0 +1,14 @@
+// Opening Hours Block — frontend styles.
+// Frontend relies on Bootstrap utilities; only the status dot is specific.
+
+.cwgb-opening-hours .cwgb-oh-dot {
+	width: 0.5rem;
+	height: 0.5rem;
+
+	// Inherits the status color (text-success / text-danger).
+	background-color: currentcolor;
+}
+
+.cwgb-opening-hours .cwgb-oh-table td {
+	border: 0;
+}

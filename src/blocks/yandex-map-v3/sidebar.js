@@ -11,8 +11,11 @@ import {
 	SelectControl,
 	TextControl,
 	TextareaControl,
+	BaseControl,
+	Button,
 } from '@wordpress/components';
 import { Icon, cog, mapMarker, settings, layout } from '@wordpress/icons';
+import { useInstanceId } from '@wordpress/compose';
 import { BlockMetaFields } from '../../components/block-meta/BlockMetaFields';
 import { MarkerRepeaterControl } from '../yandex-map/controls/MarkerRepeaterControl';
 import { OfficesQueryControl } from '../yandex-map/controls/OfficesQueryControl';
@@ -28,6 +31,7 @@ const TabIcon = ( { icon, label } ) => (
 );
 
 export const YandexMapV3Sidebar = ( { attributes, setAttributes } ) => {
+	const schemeControlId = useInstanceId( YandexMapV3Sidebar, 'cwgb-map-scheme' );
 	const {
 		dataSource,
 		center,
@@ -88,13 +92,29 @@ export const YandexMapV3Sidebar = ( { attributes, setAttributes } ) => {
 		{ label: __( 'Hybrid', 'codeweber-gutenberg-blocks' ), value: 'hybrid' },
 	];
 
-	const colorSchemeOptions = [
-		{ label: __( 'Light', 'codeweber-gutenberg-blocks' ), value: 'light' },
-		{ label: __( 'Dark', 'codeweber-gutenberg-blocks' ), value: 'dark' },
-		{ label: __( 'Grayscale', 'codeweber-gutenberg-blocks' ), value: 'grayscale' },
-		{ label: __( 'Pale', 'codeweber-gutenberg-blocks' ), value: 'pale' },
-		{ label: __( 'Sepia', 'codeweber-gutenberg-blocks' ), value: 'sepia' },
-		{ label: __( 'Custom JSON', 'codeweber-gutenberg-blocks' ), value: 'custom' },
+	// Built-in schemes + named presets from the theme (window.codeweberYandexMaps.stylePresets)
+	// + manual JSON. Selecting a chip sets colorScheme; a non-empty Custom JSON overrides it.
+	const baseSchemes = [
+		{ value: 'inherit', label: __( 'Theme default', 'codeweber-gutenberg-blocks' ), swatch: '' },
+		{ value: 'light', label: __( 'Light', 'codeweber-gutenberg-blocks' ), swatch: '#ffffff' },
+		{ value: 'dark', label: __( 'Dark', 'codeweber-gutenberg-blocks' ), swatch: '#2b2b2b' },
+		{ value: 'grayscale', label: __( 'Grayscale', 'codeweber-gutenberg-blocks' ), swatch: '#9aa0a6' },
+		{ value: 'pale', label: __( 'Pale', 'codeweber-gutenberg-blocks' ), swatch: '#cfd8dc' },
+		{ value: 'sepia', label: __( 'Sepia', 'codeweber-gutenberg-blocks' ), swatch: '#d4b896' },
+	];
+
+	const themePresets = Object.entries(
+		( window.codeweberYandexMaps && window.codeweberYandexMaps.stylePresets ) || {}
+	).map( ( [ value, preset ] ) => ( {
+		value,
+		label: preset.label,
+		swatch: preset.swatch || '',
+	} ) );
+
+	const schemeChoices = [
+		...baseSchemes,
+		...themePresets,
+		{ value: 'custom', label: __( 'Custom JSON', 'codeweber-gutenberg-blocks' ), swatch: '' },
 	];
 
 	return (
@@ -154,22 +174,38 @@ export const YandexMapV3Sidebar = ( { attributes, setAttributes } ) => {
 									onChange={ ( value ) => setAttributes( { mapType: value } ) }
 								/>
 
-								<SelectControl
+								<BaseControl
+									id={ schemeControlId }
 									label={ __( 'Color Scheme', 'codeweber-gutenberg-blocks' ) }
-									value={ colorScheme }
-									options={ colorSchemeOptions }
-									onChange={ ( value ) => setAttributes( { colorScheme: value } ) }
-								/>
+									__nextHasNoMarginBottom
+								>
+									<div className="cwgb-map-scheme-grid">
+										{ schemeChoices.map( ( scheme ) => (
+											<Button
+												key={ scheme.value }
+												className="cwgb-map-scheme-chip"
+												variant={ colorScheme === scheme.value ? 'primary' : 'secondary' }
+												onClick={ () => setAttributes( { colorScheme: scheme.value } ) }
+											>
+												{ scheme.swatch ? (
+													<span
+														className="cwgb-map-scheme-swatch"
+														style={ { background: scheme.swatch } }
+													/>
+												) : null }
+												{ scheme.label }
+											</Button>
+										) ) }
+									</div>
+								</BaseControl>
 
-								{ colorScheme === 'custom' && (
-									<TextareaControl
-										label={ __( 'Custom Style JSON', 'codeweber-gutenberg-blocks' ) }
-										value={ customStyleJson }
-										onChange={ ( value ) => setAttributes( { customStyleJson: value } ) }
-										rows={ 6 }
-										help={ __( 'Yandex Maps v3 customization JSON array', 'codeweber-gutenberg-blocks' ) }
-									/>
-								) }
+								<TextareaControl
+									label={ __( 'Custom Style JSON', 'codeweber-gutenberg-blocks' ) }
+									value={ customStyleJson }
+									onChange={ ( value ) => setAttributes( { customStyleJson: value } ) }
+									rows={ 6 }
+									help={ __( 'Optional. If filled, this JSON overrides the selected scheme/preset.', 'codeweber-gutenberg-blocks' ) }
+								/>
 
 								<RangeControl
 									label={ __( 'Border Radius', 'codeweber-gutenberg-blocks' ) }

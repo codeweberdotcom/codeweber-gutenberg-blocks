@@ -194,9 +194,18 @@ $map_args = array(
 	'filter_by_city'      => $filter_by_city,
 	'filter_by_category'  => $filter_by_cat,
 	'sidebar_fields'      => $sidebar_fields,
-	'color_scheme'        => $color_scheme,
-	'color_scheme_custom' => $custom_style,
 );
+
+// Color scheme priority: manual JSON > block preset/scheme > theme default (Redux).
+// 'inherit' leaves both keys unset so render_map() falls back to the global
+// Redux color scheme; registry preset slugs are resolved inside render_map().
+if ( ! empty( $custom_style ) ) {
+	$map_args['color_scheme']        = 'custom';
+	$map_args['color_scheme_custom'] = $custom_style;
+} elseif ( 'inherit' !== $color_scheme ) {
+	$map_args['color_scheme']        = $color_scheme;
+	$map_args['color_scheme_custom'] = '';
+}
 
 $wrapper_attributes = get_block_wrapper_attributes( array(
 	'class'         => 'cwgb-yandex-map-v3-block' . ( $block_class ? ' ' . esc_attr( $block_class ) : '' ),

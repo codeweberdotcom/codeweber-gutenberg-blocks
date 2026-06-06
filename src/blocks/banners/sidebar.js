@@ -5,6 +5,7 @@ import {
 	TabPanel,
 	ButtonGroup,
 	Button,
+	ToggleControl,
 } from '@wordpress/components';
 import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
 import {
@@ -147,6 +148,8 @@ export const BannersSidebar = ({ attributes, setAttributes }) => {
 		overlayGradient,
 		overlayColor,
 		cursorStyle,
+		bouncerEnabled,
+		bouncerTheme,
 	} = attributes;
 
 	const [availableImageSizes, setAvailableImageSizes] = useState([]);
@@ -393,6 +396,76 @@ export const BannersSidebar = ({ attributes, setAttributes }) => {
 										'codeweber-gutenberg-blocks'
 									)}
 								</p>
+							</div>
+							<div className="mb-3" style={{ marginTop: '16px' }}>
+								<ToggleControl
+									label={__(
+										'Scroll Down Arrow',
+										'codeweber-gutenberg-blocks'
+									)}
+									checked={!!bouncerEnabled}
+									onChange={(value) =>
+										setAttributes({
+											bouncerEnabled: value,
+										})
+									}
+									help={__(
+										'Show an animated bouncing arrow at the bottom of the banner.',
+										'codeweber-gutenberg-blocks'
+									)}
+								/>
+								{bouncerEnabled && (
+									<div style={{ marginTop: '8px' }}>
+										<label
+											style={{
+												display: 'block',
+												marginBottom: '8px',
+											}}
+										>
+											{__(
+												'Arrow Color',
+												'codeweber-gutenberg-blocks'
+											)}
+										</label>
+										<ButtonGroup>
+											<Button
+												variant={
+													(bouncerTheme ||
+														'light') === 'light'
+														? 'primary'
+														: 'secondary'
+												}
+												onClick={() =>
+													setAttributes({
+														bouncerTheme: 'light',
+													})
+												}
+											>
+												{__(
+													'Light',
+													'codeweber-gutenberg-blocks'
+												)}
+											</Button>
+											<Button
+												variant={
+													bouncerTheme === 'dark'
+														? 'primary'
+														: 'secondary'
+												}
+												onClick={() =>
+													setAttributes({
+														bouncerTheme: 'dark',
+													})
+												}
+											>
+												{__(
+													'Dark',
+													'codeweber-gutenberg-blocks'
+												)}
+											</Button>
+										</ButtonGroup>
+									</div>
+								)}
 							</div>
 							{bannerType === 'banner-15' && (
 								<div className="mb-2">

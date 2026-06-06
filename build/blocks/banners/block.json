@@ -515,6 +515,14 @@
     "contentColumnRightWrapperClass": {
       "type": "string",
       "default": ""
+    },
+    "bouncerEnabled": {
+      "type": "boolean",
+      "default": false
+    },
+    "bouncerTheme": {
+      "type": "string",
+      "default": "light"
     }
   },
   "textdomain": "codeweber-gutenberg-blocks",

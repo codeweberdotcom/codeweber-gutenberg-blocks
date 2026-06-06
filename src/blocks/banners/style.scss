@@ -6,6 +6,50 @@
 	// Styles for frontend
 }
 
+/* Scroll Down Arrow (bouncer) */
+.cwgb-scroll-down {
+	position: absolute;
+	left: 50%;
+	bottom: 1.5rem;
+	z-index: 5;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	line-height: 1;
+	font-size: 2.25rem;
+	pointer-events: none;
+	transform: translateX(-50%);
+	animation: cwgb-scroll-bounce 2s ease-in-out infinite;
+
+	i {
+		display: block;
+	}
+
+	&--light {
+		color: #fff;
+	}
+
+	&--dark {
+		color: #1f2937;
+	}
+}
+
+@keyframes cwgb-scroll-bounce {
+	0%,
+	20%,
+	50%,
+	80%,
+	100% {
+		transform: translateX(-50%) translateY(0);
+	}
+	40% {
+		transform: translateX(-50%) translateY(-12px);
+	}
+	60% {
+		transform: translateX(-50%) translateY(-6px);
+	}
+}
+
 
 
 

@@ -34,10 +34,12 @@ import {
 } from './banners';
 
 const BannersEdit = ({ attributes, setAttributes, clientId }) => {
-	const { bannerType } = attributes;
+	const { bannerType, bouncerEnabled, bouncerTheme } = attributes;
 
 	const blockProps = useBlockProps({
-		className: `banners-block banner-${bannerType}`,
+		className: `banners-block banner-${bannerType}${
+			bouncerEnabled ? ' position-relative' : ''
+		}`,
 	});
 
 	const { replaceInnerBlocks } = useDispatch(blockEditorStore);
@@ -774,7 +776,19 @@ const BannersEdit = ({ attributes, setAttributes, clientId }) => {
 					setAttributes={setAttributes}
 				/>
 			</InspectorControls>
-			<div {...blockProps}>{renderBanner()}</div>
+			<div {...blockProps}>
+				{renderBanner()}
+				{bouncerEnabled && (
+					<span
+						className={`cwgb-scroll-down cwgb-scroll-down--${
+							bouncerTheme === 'dark' ? 'dark' : 'light'
+						}`}
+						aria-hidden="true"
+					>
+						<i className="uil uil-angle-down"></i>
+					</span>
+				)}
+			</div>
 		</>
 	);
 };

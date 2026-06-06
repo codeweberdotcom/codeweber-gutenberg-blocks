@@ -23,7 +23,7 @@ import {
 } from './banners';
 
 const BannersSave = ({ attributes }) => {
-	const { bannerType, anchor } = attributes;
+	const { bannerType, anchor, bouncerEnabled, bouncerTheme } = attributes;
 
 	const renderBanner = () => {
 		switch (bannerType) {
@@ -97,6 +97,27 @@ const BannersSave = ({ attributes }) => {
 				return <Banner34 attributes={attributes} isEditor={false} />;
 		}
 	};
+
+	const bouncer = bouncerEnabled ? (
+		<span
+			className={`cwgb-scroll-down cwgb-scroll-down--${
+				bouncerTheme === 'dark' ? 'dark' : 'light'
+			}`}
+			aria-hidden="true"
+		>
+			<i className="uil uil-angle-down"></i>
+		</span>
+	) : null;
+
+	if ( bouncerEnabled ) {
+		return (
+			<div className="cwgb-banner-bouncer position-relative">
+				{ anchor && <span id={ anchor } /> }
+				{ renderBanner() }
+				{ bouncer }
+			</div>
+		);
+	}
 
 	if ( anchor ) {
 		return (

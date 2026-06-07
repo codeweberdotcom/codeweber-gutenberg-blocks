@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-06-07T19:09:19+00:00\n"
+"POT-Creation-Date: 2026-06-07T19:25:15+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: codeweber-gutenberg-blocks\n"
@@ -192,7 +192,7 @@ msgid "No terms found."
 msgstr ""
 
 #: build/blocks/post-grid/render.php:1517
-#: inc/Plugin.php:748
+#: inc/Plugin.php:798
 #: build/blocks/accordion/index.js:1
 #: build/blocks/avatar/index.js:1
 #: build/blocks/banners/index.js:1
@@ -773,87 +773,87 @@ msgstr ""
 msgid "Daily from %1$s to %2$s"
 msgstr ""
 
-#: inc/Plugin.php:1238
+#: inc/Plugin.php:1288
 #: build/blocks/accordion/index.js:1
 msgid "No content available"
 msgstr ""
 
-#: inc/Plugin.php:1456
+#: inc/Plugin.php:1506
 msgid "Drag & drop your files or <span class=\"filepond--label-action\">browse</span>"
 msgstr ""
 
-#: inc/Plugin.php:1457
+#: inc/Plugin.php:1507
 #, php-format
 msgid "Maximum number of files: %s. Please remove excess files."
 msgstr ""
 
-#: inc/Plugin.php:1458
+#: inc/Plugin.php:1508
 #, php-format
 msgid "File is too large. Maximum size: %s"
 msgstr ""
 
-#: inc/Plugin.php:1459
+#: inc/Plugin.php:1509
 #, php-format
 msgid "Total file size is too large. Maximum: %s"
 msgstr ""
 
-#: inc/Plugin.php:1460
+#: inc/Plugin.php:1510
 msgid "Error uploading file"
 msgstr ""
 
-#: inc/Plugin.php:1461
+#: inc/Plugin.php:1511
 msgid "Error adding file"
 msgstr ""
 
-#: inc/Plugin.php:1462
+#: inc/Plugin.php:1512
 #, php-format
 msgid "Maximum number of files: %s. Files removed: %s"
 msgstr ""
 
-#: inc/Plugin.php:1463
+#: inc/Plugin.php:1513
 #, php-format
 msgid "Total file size exceeded. Maximum: %s"
 msgstr ""
 
-#: inc/Plugin.php:1464
+#: inc/Plugin.php:1514
 msgid "Upload complete"
 msgstr ""
 
-#: inc/Plugin.php:1465
+#: inc/Plugin.php:1515
 msgid "Tap to undo"
 msgstr ""
 
-#: inc/Plugin.php:1466
+#: inc/Plugin.php:1516
 msgid "Uploading"
 msgstr ""
 
-#: inc/Plugin.php:1467
+#: inc/Plugin.php:1517
 msgid "tap to cancel"
 msgstr ""
 
-#: inc/Plugin.php:1655
+#: inc/Plugin.php:1705
 msgid "— None —"
 msgstr ""
 
-#: inc/Plugin.php:2399
-#: inc/Plugin.php:2437
+#: inc/Plugin.php:2449
+#: inc/Plugin.php:2487
 msgid "Document not found."
 msgstr ""
 
-#: inc/Plugin.php:2403
-#: inc/Plugin.php:2407
+#: inc/Plugin.php:2453
+#: inc/Plugin.php:2457
 msgid "No file attached to this document."
 msgstr ""
 
-#: inc/Plugin.php:2411
+#: inc/Plugin.php:2461
 msgid "Document file must be CSV, XLS or XLSX."
 msgstr ""
 
-#: inc/Plugin.php:2440
+#: inc/Plugin.php:2490
 msgid "You do not have permission to edit this document."
 msgstr ""
 
-#: inc/Plugin.php:2444
+#: inc/Plugin.php:2494
 msgid "Invalid rows data."
 msgstr ""
 
@@ -6559,6 +6559,14 @@ msgid "Subtitle…"
 msgstr ""
 
 #: build/blocks/counter/index.js:1
+msgid "Number (HTML)"
+msgstr ""
+
+#: build/blocks/counter/index.js:1
+msgid "HTML is allowed (e.g. 99.7<sup>%</sup>)."
+msgstr ""
+
+#: build/blocks/counter/index.js:1
 msgid "Large (counter-lg)"
 msgstr ""
 
@@ -6568,6 +6576,14 @@ msgstr ""
 
 #: build/blocks/counter/index.js:1
 msgid "Enable Subtitle (h6)"
+msgstr ""
+
+#: build/blocks/counter/index.js:1
+msgid "Subtitle (HTML)"
+msgstr ""
+
+#: build/blocks/counter/index.js:1
+msgid "HTML is allowed."
 msgstr ""
 
 #: build/blocks/counter/index.js:1
@@ -6585,6 +6601,10 @@ msgstr ""
 
 #: build/blocks/counter/index.js:1
 msgid "Enable Label"
+msgstr ""
+
+#: build/blocks/counter/index.js:1
+msgid "Label (HTML)"
 msgstr ""
 
 #: build/blocks/counter/index.js:1

@@ -22,7 +22,8 @@ export const getCounterClasses = (attributes) => {
 		classes.push('counter-lg');
 	}
 
-	if (attributes.textWhite) {
+	// Only force white when no explicit color is set, so a chosen color wins.
+	if (attributes.textWhite && !attributes.titleColor) {
 		classes.push('text-white');
 	}
 

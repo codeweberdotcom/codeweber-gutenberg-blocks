@@ -73,9 +73,11 @@ const CountersEdit = ({ attributes, setAttributes, clientId }) => {
 		const useMasonry = masonry && !!template.supportsMasonry;
 		const colConfig = getColumnColConfig(columns);
 
+		// Color is applied per-counter (textWhite), NOT on the row: text-white on
+		// the columns row inherits to everything and overrides per-counter colors.
 		let columnsClass = template.columnsConfig.columnsClass;
 		columnsClass = toggleClass(columnsClass, 'isotope', useMasonry);
-		columnsClass = toggleClass(columnsClass, 'text-white', scheme === 'dark');
+		columnsClass = toggleClass(columnsClass, 'text-white', false);
 
 		const columnsAttrs = {
 			...template.columnsConfig,
@@ -171,12 +173,17 @@ const CountersEdit = ({ attributes, setAttributes, clientId }) => {
 		setAttributes({ colorScheme: scheme });
 		if (!columnsBlock) return;
 
-		const newClass = toggleClass(
+		// Make sure no stray text-white lingers on the row (older grids).
+		const cleaned = toggleClass(
 			columnsBlock.attributes.columnsClass,
 			'text-white',
-			scheme === 'dark'
+			false
 		);
-		updateBlockAttributes(columnsBlock.clientId, { columnsClass: newClass });
+		if (cleaned !== columnsBlock.attributes.columnsClass) {
+			updateBlockAttributes(columnsBlock.clientId, {
+				columnsClass: cleaned,
+			});
+		}
 
 		columnsBlock.innerBlocks.forEach((col) => {
 			const counter = col.innerBlocks[0];

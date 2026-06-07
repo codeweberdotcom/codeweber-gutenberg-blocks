@@ -12,6 +12,7 @@ import {
 	ButtonGroup,
 	Button,
 	TextControl,
+	TextareaControl,
 	ToggleControl,
 	SelectControl,
 	ComboboxControl,
@@ -451,6 +452,12 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 							{/* NUMBER TAB */}
 							{tab.name === 'number' && (
 								<PanelBody>
+									<TextareaControl
+										label={__('Number (HTML)', 'codeweber-gutenberg-blocks')}
+										value={title}
+										onChange={(value) => setAttributes({ title: value })}
+										help={__('HTML is allowed (e.g. 99.7<sup>%</sup>).', 'codeweber-gutenberg-blocks')}
+									/>
 									<SelectControl
 										label={__('Tag', 'codeweber-gutenberg-blocks')}
 										value={titleTag}
@@ -502,11 +509,19 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 												onChange={(value) => setAttributes({ enableSubtitle: value })}
 											/>
 											{enableSubtitle && (
-												<TextControl
-													label={__('Subtitle Classes', 'codeweber-gutenberg-blocks')}
-													value={subtitleClass}
-													onChange={(value) => setAttributes({ subtitleClass: value })}
-												/>
+												<>
+													<TextareaControl
+														label={__('Subtitle (HTML)', 'codeweber-gutenberg-blocks')}
+														value={subtitle}
+														onChange={(value) => setAttributes({ subtitle: value })}
+														help={__('HTML is allowed.', 'codeweber-gutenberg-blocks')}
+													/>
+													<TextControl
+														label={__('Subtitle Classes', 'codeweber-gutenberg-blocks')}
+														value={subtitleClass}
+														onChange={(value) => setAttributes({ subtitleClass: value })}
+													/>
+												</>
 											)}
 											<ToggleControl
 												label={__('Enable Ratings', 'codeweber-gutenberg-blocks')}
@@ -535,6 +550,13 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 										onChange={(value) => setAttributes({ enableParagraph: value })}
 									/>
 									{enableParagraph && (
+										<>
+										<TextareaControl
+											label={__('Label (HTML)', 'codeweber-gutenberg-blocks')}
+											value={paragraph}
+											onChange={(value) => setAttributes({ paragraph: value })}
+											help={__('HTML is allowed.', 'codeweber-gutenberg-blocks')}
+										/>
 										<ParagraphControl
 											attributes={{
 												...attributes,
@@ -563,6 +585,7 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 											prefix=""
 											label={__('Label', 'codeweber-gutenberg-blocks')}
 										/>
+										</>
 									)}
 								</PanelBody>
 							)}

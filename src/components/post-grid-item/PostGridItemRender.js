@@ -206,9 +206,22 @@ export const PostGridItemRender = ({
 			testimonialText ||
 			__('Testimonial text', 'codeweber-gutenberg-blocks');
 
+		// Shared author info block (name + role + company)
+		const renderInfo = (infoClass) => (
+			<div className={infoClass}>
+				{authorName && (
+					<TitleTag className={titleClassNameTestimonial}>
+						{authorName}
+					</TitleTag>
+				)}
+				{authorRole && <p className="mb-0">{authorRole}</p>}
+				{company && <p className="mb-0 text-muted">{company}</p>}
+			</div>
+		);
+
 		// Shared author block (avatar + info), matches card/quote templates
-		const renderDetails = (infoClass) => (
-			<div className="blockquote-details">
+		const renderDetails = (infoClass, detailsClass = 'blockquote-details') => (
+			<div className={detailsClass}>
 				{avatarUrl && (
 					<img
 						className="rounded-circle w-12"
@@ -216,17 +229,7 @@ export const PostGridItemRender = ({
 						alt={authorName || postTitle}
 					/>
 				)}
-				<div className={avatarUrl ? infoClass : `${infoClass} p-0`}>
-					{authorName && (
-						<TitleTag className={titleClassNameTestimonial}>
-							{authorName}
-						</TitleTag>
-					)}
-					{authorRole && <p className="mb-0">{authorRole}</p>}
-					{company && (
-						<p className="mb-0 text-muted">{company}</p>
-					)}
-				</div>
+				{renderInfo(avatarUrl ? infoClass : `${infoClass} p-0`)}
 			</div>
 		);
 
@@ -236,19 +239,7 @@ export const PostGridItemRender = ({
 				<blockquote className="icon icon-top fs-lg text-center">
 					<p>{quoteText}</p>
 					<div className="blockquote-details justify-content-center text-center">
-						<div className="info ps-0">
-							{authorName && (
-								<TitleTag className={titleClassNameTestimonial}>
-									{authorName}
-								</TitleTag>
-							)}
-							{authorRole && (
-								<p className="mb-0">{authorRole}</p>
-							)}
-							{company && (
-								<p className="mb-0 text-muted">{company}</p>
-							)}
-						</div>
+						{renderInfo('info ps-0')}
 					</div>
 				</blockquote>
 			);
@@ -288,24 +279,133 @@ export const PostGridItemRender = ({
 										<blockquote className="border-0 fs-lg mb-0">
 											<p>{quoteText}</p>
 											<div className="blockquote-details justify-content-center text-center">
-												<div className="info p-0">
-													{authorName && (
-														<TitleTag className={titleClassNameTestimonial}>
-															{authorName}
-														</TitleTag>
-													)}
-													{authorRole && (
-														<p className="mb-0">
-															{authorRole}
-														</p>
-													)}
-												</div>
+												{renderInfo('info p-0')}
 											</div>
 										</blockquote>
 									</div>
 								</div>
 							</div>
 						</div>
+					</div>
+				</div>
+			);
+		} else if (template === 'quote-avatar') {
+			// Quote with Avatar: borderless quote + avatar, no card, no icon (variant 5)
+			return (
+				<blockquote className="border-0 fs-lg">
+					<p>{quoteText}</p>
+					{renderDetails(
+						'info',
+						'blockquote-details justify-content-center'
+					)}
+				</blockquote>
+			);
+		} else if (template === 'card-pale') {
+			// Card Pale: colored pale card, icon, no avatar, no rating
+			const paleColors = [
+				'bg-pale-yellow',
+				'bg-pale-red',
+				'bg-pale-leaf',
+				'bg-pale-blue',
+			];
+			const paleBg =
+				paleColors[(post.id || 0) % paleColors.length];
+			return (
+				<div className={`card ${paleBg}`}>
+					<div className="card-body">
+						<blockquote className="icon mb-0">
+							<p>{quoteText}</p>
+							<div className="blockquote-details">
+								{renderInfo('info p-0')}
+							</div>
+						</blockquote>
+					</div>
+				</div>
+			);
+		} else if (template === 'card-border-bottom') {
+			// Card Border Bottom: shadow + colored bottom border, no avatar
+			return (
+				<div className="card shadow-lg card-border-bottom border-soft-primary">
+					<div className="card-body">
+						<blockquote className="icon mb-0">
+							<p>{quoteText}</p>
+							<div className="blockquote-details">
+								{renderInfo('info ps-0')}
+							</div>
+						</blockquote>
+					</div>
+				</div>
+			);
+		} else if (template === 'card-light-rating') {
+			// Card Light Rating: translucent light card with rating (dark bg)
+			return (
+				<div className="card border-0 bg-white-900">
+					<div className="card-body">
+						{rating > 0 && (
+							<span
+								className={`ratings ${ratingClass} mb-3`}
+							></span>
+						)}
+						<blockquote className="border-0 mb-0">
+							<p>{quoteText}</p>
+							<div className="blockquote-details">
+								{renderInfo('info p-0')}
+							</div>
+						</blockquote>
+					</div>
+				</div>
+			);
+		} else if (template === 'quote-name') {
+			// Quote Name: extra-large centered quote, name only
+			return (
+				<blockquote className="border-0 fs-24 mb-0 text-center">
+					<p>{quoteText}</p>
+					<div className="blockquote-details justify-content-center">
+						<div className="info p-0">
+							{authorName && (
+								<TitleTag className={titleClassNameTestimonial}>
+									{authorName}
+								</TitleTag>
+							)}
+						</div>
+					</div>
+				</blockquote>
+			);
+		} else if (template === 'featured-bgimage') {
+			// Featured Background Image: card over photo, white text
+			const bgStyle = imageUrl
+				? {
+						backgroundImage: `url(${imageUrl})`,
+						backgroundSize: 'cover',
+						backgroundPosition: 'center',
+				  }
+				: undefined;
+			const bgClasses = imageUrl
+				? 'card image-wrapper bg-full bg-image bg-overlay bg-overlay-400 text-white text-center'
+				: 'card bg-dark text-white text-center';
+			return (
+				<div className={bgClasses} style={bgStyle}>
+					<div className="card-body p-9 p-xl-12">
+						{rating > 0 && (
+							<span
+								className={`ratings ${ratingClass} mb-3`}
+							></span>
+						)}
+						<blockquote className="border-0 fs-lg mb-2">
+							<p>{quoteText}</p>
+							<div className="blockquote-details justify-content-center text-center">
+								<div className="info ps-0">
+									{authorName && (
+										<TitleTag className={titleClassNameTestimonial}>
+											{authorName}
+										</TitleTag>
+									)}
+									{authorRole && (
+										<p className="mb-0">{authorRole}</p>
+									)}
+								</div>
+							</div>
+						</blockquote>
 					</div>
 				</div>
 			);

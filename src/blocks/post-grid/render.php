@@ -687,7 +687,7 @@ if (!function_exists('render_post_grid_item')) {
 				$testimonial_template = 'card';
 				if (strpos($template, 'testimonial-') === 0) {
 					$testimonial_template = str_replace('testimonial-', '', $template);
-				} elseif (in_array($template, ['card', 'quote', 'centered', 'featured'])) {
+				} elseif (in_array($template, ['card', 'quote', 'centered', 'featured', 'quote-avatar', 'card-pale', 'card-border-bottom', 'card-light-rating', 'quote-name', 'featured-bgimage'])) {
 					// Если указан один из стандартных шаблонов testimonials, используем его
 					$testimonial_template = $template;
 				}

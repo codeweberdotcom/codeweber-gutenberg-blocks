@@ -243,6 +243,17 @@ export const PostGridItemRender = ({
 					</div>
 				</blockquote>
 			);
+		} else if (template === 'centered-avatar') {
+			// Centered with avatar: borderless icon-top quote + centered avatar
+			return (
+				<blockquote className="icon icon-top fs-lg text-center">
+					<p>{quoteText}</p>
+					{renderDetails(
+						'info',
+						'blockquote-details justify-content-center text-center'
+					)}
+				</blockquote>
+			);
 		} else if (template === 'featured') {
 			// Featured: gray card with rating and side photo (variant 1)
 			return (

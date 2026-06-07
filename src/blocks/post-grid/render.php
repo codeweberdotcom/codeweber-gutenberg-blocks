@@ -683,11 +683,11 @@ if (!function_exists('render_post_grid_item')) {
 				
 				// Определяем шаблон для testimonials
 				// Если шаблон начинается с "testimonial-", используем его
-				// Иначе используем default для testimonials
-				$testimonial_template = 'default';
+				// Иначе используем card как дефолт для testimonials
+				$testimonial_template = 'card';
 				if (strpos($template, 'testimonial-') === 0) {
 					$testimonial_template = str_replace('testimonial-', '', $template);
-				} elseif (in_array($template, ['default', 'card', 'blockquote', 'icon'])) {
+				} elseif (in_array($template, ['card', 'quote', 'centered', 'featured'])) {
 					// Если указан один из стандартных шаблонов testimonials, используем его
 					$testimonial_template = $template;
 				}

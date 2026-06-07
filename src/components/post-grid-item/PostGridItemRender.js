@@ -200,54 +200,119 @@ export const PostGridItemRender = ({
 			textLimited = textLimited.substring(0, 150) + '...';
 		}
 
-		if (template === 'card') {
-			// Testimonial Card template (Sandbox style with colored backgrounds)
-			const bgColors = [
-				'bg-pale-yellow',
-				'bg-pale-red',
-				'bg-pale-leaf',
-				'bg-pale-blue',
-			];
-			const colorIndex = (post.id || 0) % bgColors.length;
-			const bgColor = bgColors[colorIndex];
+		// Shared testimonial quote text
+		const quoteText =
+			textLimited ||
+			testimonialText ||
+			__('Testimonial text', 'codeweber-gutenberg-blocks');
 
+		// Shared author block (avatar + info), matches card/quote templates
+		const renderDetails = (infoClass) => (
+			<div className="blockquote-details">
+				{avatarUrl && (
+					<img
+						className="rounded-circle w-12"
+						src={avatarUrl}
+						alt={authorName || postTitle}
+					/>
+				)}
+				<div className={avatarUrl ? infoClass : `${infoClass} p-0`}>
+					{authorName && (
+						<TitleTag className={titleClassNameTestimonial}>
+							{authorName}
+						</TitleTag>
+					)}
+					{authorRole && <p className="mb-0">{authorRole}</p>}
+					{company && (
+						<p className="mb-0 text-muted">{company}</p>
+					)}
+				</div>
+			</div>
+		);
+
+		if (template === 'centered') {
+			// Centered: borderless icon-top quote, no card, no avatar (variant 3)
 			return (
-				<div className={`card ${bgColor}`}>
-					<div className="card-body">
-						<blockquote className="icon mb-0">
-							<p>
-								{textLimited ||
-									testimonialText ||
-									__(
-										'Testimonial text',
-										'codeweber-gutenberg-blocks'
-									)}
-							</p>
-							<div className="blockquote-details">
-								<div className="info p-0">
-									{authorName && (
-										<TitleTag className={titleClassNameTestimonial}>
-											{authorName}
-										</TitleTag>
-									)}
-									{authorRole && (
-										<p className="mb-0">{authorRole}</p>
-									)}
-									{company && (
-										<p className="mb-0 text-muted small">
-											{company}
-										</p>
-									)}
+				<blockquote className="icon icon-top fs-lg text-center">
+					<p>{quoteText}</p>
+					<div className="blockquote-details justify-content-center text-center">
+						<div className="info ps-0">
+							{authorName && (
+								<TitleTag className={titleClassNameTestimonial}>
+									{authorName}
+								</TitleTag>
+							)}
+							{authorRole && (
+								<p className="mb-0">{authorRole}</p>
+							)}
+							{company && (
+								<p className="mb-0 text-muted">{company}</p>
+							)}
+						</div>
+					</div>
+				</blockquote>
+			);
+		} else if (template === 'featured') {
+			// Featured: gray card with rating and side photo (variant 1)
+			return (
+				<div className="row position-relative">
+					{imageUrl && (
+						<figure
+							className="rounded position-absolute d-none d-lg-block"
+							style={{
+								top: '50%',
+								right: 0,
+								width: '45%',
+								height: 'auto',
+								transform: 'translateY(-50%)',
+								zIndex: 2,
+							}}
+						>
+							<img src={imageUrl} alt={authorName || postTitle} />
+						</figure>
+					)}
+					<div
+						className={`${
+							imageUrl ? 'col-lg-9' : 'col-lg-12'
+						} text-center`}
+					>
+						<div className="card bg-gray">
+							<div className="card-body p-md-10 py-xxl-16">
+								<div className="row gx-0">
+									<div className="col-lg-8 ps-xl-10">
+										{rating > 0 && (
+											<span
+												className={`ratings ${ratingClass} fs-20 mb-3`}
+											></span>
+										)}
+										<blockquote className="border-0 fs-lg mb-0">
+											<p>{quoteText}</p>
+											<div className="blockquote-details justify-content-center text-center">
+												<div className="info p-0">
+													{authorName && (
+														<TitleTag className={titleClassNameTestimonial}>
+															{authorName}
+														</TitleTag>
+													)}
+													{authorRole && (
+														<p className="mb-0">
+															{authorRole}
+														</p>
+													)}
+												</div>
+											</div>
+										</blockquote>
+									</div>
 								</div>
 							</div>
-						</blockquote>
+						</div>
 					</div>
 				</div>
 			);
-		} else if (template === 'blockquote') {
-			// Testimonial Blockquote template
+		} else if (template === 'quote') {
+			// Quote: card with rating, icon and avatar (variant 4)
 			return (
-				<div className="card shadow-lg">
+				<div className="card">
 					<div className="card-body">
 						{rating > 0 && (
 							<span
@@ -255,193 +320,20 @@ export const PostGridItemRender = ({
 							></span>
 						)}
 						<blockquote className="icon mb-0">
-							<p>
-								{textLimited ||
-									testimonialText ||
-									__(
-										'Testimonial text',
-										'codeweber-gutenberg-blocks'
-									)}
-							</p>
-							<div className="blockquote-details">
-								{avatarUrl ? (
-									<div className="d-flex align-items-center">
-										<figure className="user-avatar">
-											<img
-												className="rounded-circle"
-												src={avatarUrl}
-												alt={authorName || postTitle}
-											/>
-										</figure>
-										<div>
-											{authorName && (
-												<TitleTag className={titleClassNameTestimonial}>
-													{authorName}
-												</TitleTag>
-											)}
-											{authorRole && (
-												<span className="post-meta fs-15">
-													{authorRole}
-												</span>
-											)}
-											{company && (
-												<span className="post-meta fs-15 text-muted">
-													{company}
-												</span>
-											)}
-										</div>
-									</div>
-								) : (
-									<div className="info p-0">
-										{authorName && (
-											<TitleTag className={titleClassNameTestimonial}>
-												{authorName}
-											</TitleTag>
-										)}
-										{authorRole && (
-											<p className="mb-0">{authorRole}</p>
-										)}
-										{company && (
-											<p className="mb-0 text-muted small">
-												{company}
-											</p>
-										)}
-									</div>
-								)}
-							</div>
-						</blockquote>
-					</div>
-				</div>
-			);
-		} else if (template === 'icon') {
-			// Testimonial Icon template (simple blockquote with icon, without rating)
-			return (
-				<div className="card">
-					<div className="card-body">
-						<blockquote className="icon mb-0">
-							<p>
-								{textLimited ||
-									testimonialText ||
-									__(
-										'Testimonial text',
-										'codeweber-gutenberg-blocks'
-									)}
-							</p>
-							<div className="blockquote-details">
-								{avatarUrl ? (
-									<div className="d-flex align-items-center">
-										<figure className="user-avatar">
-											<img
-												className="rounded-circle"
-												src={avatarUrl}
-												alt={authorName || postTitle}
-											/>
-										</figure>
-										<div>
-											{authorName && (
-												<TitleTag className={titleClassNameTestimonial}>
-													{authorName}
-												</TitleTag>
-											)}
-											{authorRole && (
-												<span className="post-meta fs-15">
-													{authorRole}
-												</span>
-											)}
-											{company && (
-												<span className="post-meta fs-15 text-muted">
-													{company}
-												</span>
-											)}
-										</div>
-									</div>
-								) : (
-									<div className="info">
-										{authorName && (
-											<TitleTag className={titleClassNameTestimonial}>
-												{authorName}
-											</TitleTag>
-										)}
-										{authorRole && (
-											<p className="mb-0">{authorRole}</p>
-										)}
-										{company && (
-											<p className="mb-0 text-muted small">
-												{company}
-											</p>
-										)}
-									</div>
-								)}
-							</div>
+							<p>{quoteText}</p>
+							{renderDetails('info')}
 						</blockquote>
 					</div>
 				</div>
 			);
 		} else {
-			// Testimonial Default template
+			// Card: card with icon and avatar, no rating (variant 2, default)
 			return (
-				<div className="card h-100">
+				<div className="card">
 					<div className="card-body">
-						{rating > 0 && (
-							<span
-								className={`ratings ${ratingClass} mb-3`}
-							></span>
-						)}
 						<blockquote className="icon mb-0">
-							<p>
-								{textLimited ||
-									testimonialText ||
-									__(
-										'Testimonial text',
-										'codeweber-gutenberg-blocks'
-									)}
-							</p>
-							<div className="blockquote-details">
-								{avatarUrl ? (
-									<div className="d-flex align-items-center">
-										<figure className="user-avatar">
-											<img
-												className="rounded-circle"
-												src={avatarUrl}
-												alt={authorName || postTitle}
-											/>
-										</figure>
-										<div>
-											{authorName && (
-												<TitleTag className={titleClassNameTestimonial}>
-													{authorName}
-												</TitleTag>
-											)}
-											{authorRole && (
-												<span className="post-meta fs-15">
-													{authorRole}
-												</span>
-											)}
-											{company && (
-												<span className="post-meta fs-15 text-muted">
-													{company}
-												</span>
-											)}
-										</div>
-									</div>
-								) : (
-									<div className="info">
-										{authorName && (
-											<TitleTag className={titleClassNameTestimonial}>
-												{authorName}
-											</TitleTag>
-										)}
-										{authorRole && (
-											<p className="mb-0">{authorRole}</p>
-										)}
-										{company && (
-											<p className="mb-0 text-muted small">
-												{company}
-											</p>
-										)}
-									</div>
-								)}
-							</div>
+							<p>{quoteText}</p>
+							{renderDetails('info')}
 						</blockquote>
 					</div>
 				</div>

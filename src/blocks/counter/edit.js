@@ -417,11 +417,23 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 											options={alignOptions}
 											onChange={(value) => setAttributes({ align: value })}
 										/>
-										<ToggleControl
-											label={__('Text White', 'codeweber-gutenberg-blocks')}
-											checked={textWhite}
-											onChange={(value) => setAttributes({ textWhite: value })}
-										/>
+										<p className="components-base-control__label" style={{ marginBottom: '8px' }}>
+											{__('Color', 'codeweber-gutenberg-blocks')}
+										</p>
+										<ButtonGroup>
+											<Button
+												variant={!textWhite ? 'primary' : 'secondary'}
+												onClick={() => setAttributes({ textWhite: false })}
+											>
+												{__('Light', 'codeweber-gutenberg-blocks')}
+											</Button>
+											<Button
+												variant={textWhite ? 'primary' : 'secondary'}
+												onClick={() => setAttributes({ textWhite: true })}
+											>
+												{__('Dark', 'codeweber-gutenberg-blocks')}
+											</Button>
+										</ButtonGroup>
 									</div>
 
 									{showIcon && (

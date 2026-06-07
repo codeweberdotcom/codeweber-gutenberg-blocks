@@ -15,6 +15,8 @@ import {
 	SelectControl,
 	ToggleControl,
 	RangeControl,
+	ButtonGroup,
+	Button,
 } from '@wordpress/components';
 import { useEffect, useRef } from '@wordpress/element';
 import { useSelect, useDispatch } from '@wordpress/data';
@@ -258,20 +260,26 @@ const CountersEdit = ({ attributes, setAttributes, clientId }) => {
 					/>
 
 					<div style={{ marginTop: '16px' }}>
-						<SelectControl
-							label={__('Color Scheme', 'codeweber-gutenberg-blocks')}
-							value={colorScheme}
-							options={[
-								{ label: __('Light', 'codeweber-gutenberg-blocks'), value: 'light' },
-								{ label: __('Dark', 'codeweber-gutenberg-blocks'), value: 'dark' },
-							]}
-							onChange={handleColorSchemeChange}
-							help={__(
-								'Dark = white text for dark backgrounds.',
-								'codeweber-gutenberg-blocks'
-							)}
-							__nextHasNoMarginBottom
-						/>
+						<p className="components-base-control__label" style={{ marginBottom: '8px' }}>
+							{__('Color Scheme', 'codeweber-gutenberg-blocks')}
+						</p>
+						<ButtonGroup>
+							<Button
+								variant={colorScheme !== 'dark' ? 'primary' : 'secondary'}
+								onClick={() => handleColorSchemeChange('light')}
+							>
+								{__('Light', 'codeweber-gutenberg-blocks')}
+							</Button>
+							<Button
+								variant={colorScheme === 'dark' ? 'primary' : 'secondary'}
+								onClick={() => handleColorSchemeChange('dark')}
+							>
+								{__('Dark', 'codeweber-gutenberg-blocks')}
+							</Button>
+						</ButtonGroup>
+						<p className="components-base-control__help" style={{ marginTop: '8px' }}>
+							{__('Dark = white text for dark backgrounds.', 'codeweber-gutenberg-blocks')}
+						</p>
 					</div>
 
 					<div style={{ marginTop: '16px' }}>

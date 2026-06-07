@@ -137,6 +137,56 @@ class Plugin {
 
 		// Load JavaScript translations after scripts are enqueued
 		add_action('enqueue_block_editor_assets', __CLASS__ . '::loadJSTranslations', 100);
+
+		// Bake the theme button-radius class into the static Image Simple Load More
+		// button at server render time (matches post-grid render.php). Without this
+		// the class is only added by a late JS fetch, causing a radius flash (FOUC).
+		add_filter('render_block', __CLASS__ . '::inject_load_more_button_radius', 10, 2);
+	}
+
+	/**
+	 * Append the theme's button-radius class (Codeweber_Options::style('button'),
+	 * e.g. "rounded-pill") to the Image Simple Load More button/link in the rendered
+	 * block HTML, so the correct radius is present on first paint — no JS flash.
+	 *
+	 * Static block, so it cannot bake the class at save time; we post-process the
+	 * rendered content instead. Idempotent: only missing radius tokens are added.
+	 *
+	 * @param string $content Rendered block HTML.
+	 * @param array  $block   Parsed block.
+	 * @return string
+	 */
+	public static function inject_load_more_button_radius($content, $block) {
+		if (($block['blockName'] ?? '') !== 'codeweber-blocks/image-simple') {
+			return $content;
+		}
+		if (strpos($content, 'cwgb-load-more-btn') === false) {
+			return $content;
+		}
+		if (!class_exists('Codeweber_Options')) {
+			return $content;
+		}
+
+		$radius = trim((string) \Codeweber_Options::style('button'));
+		if ($radius === '') {
+			return $content;
+		}
+
+		$radius_tokens = preg_split('/\s+/', $radius, -1, PREG_SPLIT_NO_EMPTY);
+
+		return preg_replace_callback(
+			'/class="([^"]*\bcwgb-load-more-btn\b[^"]*)"/',
+			function ($m) use ($radius_tokens) {
+				$classes = $m[1];
+				foreach ($radius_tokens as $token) {
+					if (!preg_match('/(^|\s)' . preg_quote($token, '/') . '(\s|$)/', $classes)) {
+						$classes .= ' ' . $token;
+					}
+				}
+				return 'class="' . $classes . '"';
+			},
+			$content
+		);
 	}
 
 	public static function initVideoThumbnailAPI(): void {

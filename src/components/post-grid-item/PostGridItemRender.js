@@ -250,7 +250,7 @@ export const PostGridItemRender = ({
 					<p>{quoteText}</p>
 					{renderDetails(
 						'info',
-						'blockquote-details justify-content-center text-center'
+						'blockquote-details justify-content-center'
 					)}
 				</blockquote>
 			);

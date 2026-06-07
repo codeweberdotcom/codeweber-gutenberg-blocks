@@ -1,0 +1,32 @@
+{
+  "apiVersion": 3,
+  "name": "codeweber-blocks/counters",
+  "version": "0.1.0",
+  "title": "Counters",
+  "category": "codeweber-gutenberg-elements",
+  "icon": "chart-bar",
+  "description": "Counters grid container. Builds a counter-wrapper row of counter blocks from a chosen template.",
+  "keywords": [
+    "counters",
+    "facts",
+    "stats",
+    "numbers",
+    "grid"
+  ],
+  "supports": {
+    "html": false,
+    "className": false,
+    "customClassName": false,
+    "anchor": true
+  },
+  "attributes": {
+    "selectedTemplate": {
+      "type": "string",
+      "default": "cards"
+    }
+  },
+  "textdomain": "codeweber-gutenberg-blocks",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

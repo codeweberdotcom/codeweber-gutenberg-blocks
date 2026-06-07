@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-06-07T14:10:26+00:00\n"
+"POT-Creation-Date: 2026-06-07T15:44:24+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: codeweber-gutenberg-blocks\n"
@@ -192,7 +192,7 @@ msgid "No terms found."
 msgstr ""
 
 #: build/blocks/post-grid/render.php:1517
-#: inc/Plugin.php:746
+#: inc/Plugin.php:748
 #: build/blocks/accordion/index.js:1
 #: build/blocks/avatar/index.js:1
 #: build/blocks/banners/index.js:1
@@ -773,87 +773,87 @@ msgstr ""
 msgid "Daily from %1$s to %2$s"
 msgstr ""
 
-#: inc/Plugin.php:1236
+#: inc/Plugin.php:1238
 #: build/blocks/accordion/index.js:1
 msgid "No content available"
 msgstr ""
 
-#: inc/Plugin.php:1454
-msgid "Drag & drop your files or <span class=\"filepond--label-action\">browse</span>"
-msgstr ""
-
-#: inc/Plugin.php:1455
-#, php-format
-msgid "Maximum number of files: %s. Please remove excess files."
-msgstr ""
-
 #: inc/Plugin.php:1456
-#, php-format
-msgid "File is too large. Maximum size: %s"
+msgid "Drag & drop your files or <span class=\"filepond--label-action\">browse</span>"
 msgstr ""
 
 #: inc/Plugin.php:1457
 #, php-format
-msgid "Total file size is too large. Maximum: %s"
+msgid "Maximum number of files: %s. Please remove excess files."
 msgstr ""
 
 #: inc/Plugin.php:1458
-msgid "Error uploading file"
+#, php-format
+msgid "File is too large. Maximum size: %s"
 msgstr ""
 
 #: inc/Plugin.php:1459
-msgid "Error adding file"
+#, php-format
+msgid "Total file size is too large. Maximum: %s"
 msgstr ""
 
 #: inc/Plugin.php:1460
+msgid "Error uploading file"
+msgstr ""
+
+#: inc/Plugin.php:1461
+msgid "Error adding file"
+msgstr ""
+
+#: inc/Plugin.php:1462
 #, php-format
 msgid "Maximum number of files: %s. Files removed: %s"
 msgstr ""
 
-#: inc/Plugin.php:1461
+#: inc/Plugin.php:1463
 #, php-format
 msgid "Total file size exceeded. Maximum: %s"
 msgstr ""
 
-#: inc/Plugin.php:1462
+#: inc/Plugin.php:1464
 msgid "Upload complete"
 msgstr ""
 
-#: inc/Plugin.php:1463
+#: inc/Plugin.php:1465
 msgid "Tap to undo"
 msgstr ""
 
-#: inc/Plugin.php:1464
+#: inc/Plugin.php:1466
 msgid "Uploading"
 msgstr ""
 
-#: inc/Plugin.php:1465
+#: inc/Plugin.php:1467
 msgid "tap to cancel"
 msgstr ""
 
-#: inc/Plugin.php:1653
+#: inc/Plugin.php:1655
 msgid "— None —"
 msgstr ""
 
-#: inc/Plugin.php:2397
-#: inc/Plugin.php:2435
+#: inc/Plugin.php:2399
+#: inc/Plugin.php:2437
 msgid "Document not found."
 msgstr ""
 
-#: inc/Plugin.php:2401
-#: inc/Plugin.php:2405
+#: inc/Plugin.php:2403
+#: inc/Plugin.php:2407
 msgid "No file attached to this document."
 msgstr ""
 
-#: inc/Plugin.php:2409
+#: inc/Plugin.php:2411
 msgid "Document file must be CSV, XLS or XLSX."
 msgstr ""
 
-#: inc/Plugin.php:2438
+#: inc/Plugin.php:2440
 msgid "You do not have permission to edit this document."
 msgstr ""
 
-#: inc/Plugin.php:2442
+#: inc/Plugin.php:2444
 msgid "Invalid rows data."
 msgstr ""
 
@@ -6578,6 +6578,7 @@ msgid "Enable Ratings"
 msgstr ""
 
 #: build/blocks/counter/index.js:1
+#: build/blocks/counters/index.js:1
 msgid "Ratings"
 msgstr ""
 
@@ -6610,6 +6611,60 @@ msgstr ""
 
 #: build/blocks/counter/index.js:1
 msgid "Z-Index"
+msgstr ""
+
+#: build/blocks/counters/index.js:1
+msgid "Cards (icon left)"
+msgstr ""
+
+#: build/blocks/counters/index.js:1
+msgid "Projects Done"
+msgstr ""
+
+#: build/blocks/counters/index.js:1
+msgid "Happy Customers"
+msgstr ""
+
+#: build/blocks/counters/index.js:1
+msgid "Expert Employees"
+msgstr ""
+
+#: build/blocks/counters/index.js:1
+msgid "Awards Won"
+msgstr ""
+
+#: build/blocks/counters/index.js:1
+msgid "SVG icons (centered)"
+msgstr ""
+
+#: build/blocks/counters/index.js:1
+msgid "Completed Projects"
+msgstr ""
+
+#: build/blocks/counters/index.js:1
+msgid "Plain (large, dark bg)"
+msgstr ""
+
+#: build/blocks/counters/index.js:1
+msgid "Customer Satisfaction"
+msgstr ""
+
+#: build/blocks/counters/index.js:1
+msgid "New Visitors"
+msgstr ""
+
+#: build/blocks/counters/index.js:1
+msgid "Counters"
+msgstr ""
+
+#: build/blocks/counters/index.js:1
+#: build/blocks/features/index.js:1
+#: build/blocks/post-grid/index.js:1
+msgid "Template"
+msgstr ""
+
+#: build/blocks/counters/index.js:1
+msgid "Switching template rebuilds the counters grid."
 msgstr ""
 
 #: build/blocks/cta/index.js:1
@@ -7049,11 +7104,6 @@ msgstr ""
 
 #: build/blocks/features/index.js:1
 msgid "Feature Settings"
-msgstr ""
-
-#: build/blocks/features/index.js:1
-#: build/blocks/post-grid/index.js:1
-msgid "Template"
 msgstr ""
 
 #: build/blocks/floating-navigator/index.js:1
@@ -11856,6 +11906,7 @@ msgid "number"
 msgstr ""
 
 #: build/blocks/counter/block.json
+#: build/blocks/counters/block.json
 msgctxt "block keyword"
 msgid "stats"
 msgstr ""
@@ -11863,6 +11914,37 @@ msgstr ""
 #: build/blocks/counter/block.json
 msgctxt "block keyword"
 msgid "countup"
+msgstr ""
+
+#: build/blocks/counters/block.json
+msgctxt "block title"
+msgid "Counters"
+msgstr ""
+
+#: build/blocks/counters/block.json
+msgctxt "block description"
+msgid "Counters grid container. Builds a counter-wrapper row of counter blocks from a chosen template."
+msgstr ""
+
+#: build/blocks/counters/block.json
+msgctxt "block keyword"
+msgid "counters"
+msgstr ""
+
+#: build/blocks/counters/block.json
+msgctxt "block keyword"
+msgid "facts"
+msgstr ""
+
+#: build/blocks/counters/block.json
+msgctxt "block keyword"
+msgid "numbers"
+msgstr ""
+
+#: build/blocks/counters/block.json
+#: build/blocks/post-grid/block.json
+msgctxt "block keyword"
+msgid "grid"
 msgstr ""
 
 #: build/blocks/divider/block.json
@@ -12374,11 +12456,6 @@ msgstr ""
 #: build/blocks/post-grid/block.json
 msgctxt "block keyword"
 msgid "post"
-msgstr ""
-
-#: build/blocks/post-grid/block.json
-msgctxt "block keyword"
-msgid "grid"
 msgstr ""
 
 #: build/blocks/search/block.json

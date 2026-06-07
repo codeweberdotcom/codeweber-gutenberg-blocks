@@ -10,19 +10,46 @@ import {
 	InnerBlocks,
 	InspectorControls,
 } from '@wordpress/block-editor';
-import { PanelBody, SelectControl, ToggleControl } from '@wordpress/components';
+import {
+	PanelBody,
+	SelectControl,
+	ToggleControl,
+	RangeControl,
+} from '@wordpress/components';
 import { useEffect, useRef } from '@wordpress/element';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { createBlock } from '@wordpress/blocks';
 
-import { getCountersTemplates } from './templates';
+import { getCountersTemplates, getColumnColConfig } from './templates';
 
 const ALLOWED_BLOCKS = ['codeweber-blocks/columns'];
 
-const CountersEdit = ({ attributes, setAttributes, clientId }) => {
-	const { selectedTemplate, enableMasonry } = attributes;
+const COLUMN_OPTIONS = [
+	{ label: '1', value: 1 },
+	{ label: '2', value: 2 },
+	{ label: '3', value: 3 },
+	{ label: '4', value: 4 },
+	{ label: '6', value: 6 },
+];
 
-	const { replaceInnerBlocks } = useDispatch('core/block-editor');
+// Add/remove a single class from a space-separated class string.
+const toggleClass = (classStr, cls, on) => {
+	const set = (classStr || '')
+		.split(/\s+/)
+		.filter(Boolean)
+		.filter((c) => c !== cls);
+	if (on) {
+		set.push(cls);
+	}
+	return set.join(' ');
+};
+
+const CountersEdit = ({ attributes, setAttributes, clientId }) => {
+	const { selectedTemplate, enableMasonry, colorScheme, columnsCount, itemsCount } =
+		attributes;
+
+	const { replaceInnerBlocks, updateBlockAttributes, insertBlocks, removeBlocks } =
+		useDispatch('core/block-editor');
 	const innerBlocks = useSelect(
 		(select) => select('core/block-editor').getBlocks(clientId) || [],
 		[clientId]
@@ -34,64 +61,175 @@ const CountersEdit = ({ attributes, setAttributes, clientId }) => {
 	const currentTemplate = templates.find((t) => t.id === selectedTemplate);
 	const supportsMasonry = !!currentTemplate?.supportsMasonry;
 
+	// The single columns block that holds all column -> counter children.
+	const columnsBlock = innerBlocks[0] || null;
+
 	// Build the columns -> column -> counter structure from a template.
-	const applyTemplate = (template, masonry = false) => {
+	const buildGrid = (template, { masonry, scheme, columns, items }) => {
 		if (!template) return;
 
-		const { columnsConfig, columnConfig, counters } = template;
 		const useMasonry = masonry && !!template.supportsMasonry;
+		const colConfig = getColumnColConfig(columns);
 
-		// Masonry: row gets .isotope, each column gets .item
-		const columnsAttrs = useMasonry
-			? {
-					...columnsConfig,
-					columnsClass: `${columnsConfig.columnsClass} isotope`,
-				}
-			: columnsConfig;
-		const columnAttrs = useMasonry
-			? { ...columnConfig, columnClass: 'item' }
-			: columnConfig;
+		let columnsClass = template.columnsConfig.columnsClass;
+		columnsClass = toggleClass(columnsClass, 'isotope', useMasonry);
+		columnsClass = toggleClass(columnsClass, 'text-white', scheme === 'dark');
 
-		const columnBlocks = counters.map((counterAttrs) =>
-			createBlock('codeweber-blocks/column', { ...columnAttrs }, [
-				createBlock('codeweber-blocks/counter', counterAttrs),
-			])
-		);
+		const columnsAttrs = {
+			...template.columnsConfig,
+			columnsClass,
+			columnsCount: columns,
+		};
 
-		const columnsBlock = createBlock(
+		const src = template.counters;
+		const columnBlocks = [];
+		for (let i = 0; i < items; i++) {
+			const base = src[i % src.length];
+			columnBlocks.push(
+				createBlock(
+					'codeweber-blocks/column',
+					{ ...colConfig, columnClass: useMasonry ? 'item' : '' },
+					[
+						createBlock('codeweber-blocks/counter', {
+							...base,
+							textWhite: scheme === 'dark',
+						}),
+					]
+				)
+			);
+		}
+
+		const block = createBlock(
 			'codeweber-blocks/columns',
 			columnsAttrs,
 			columnBlocks
 		);
 
-		replaceInnerBlocks(clientId, [columnsBlock], false);
+		replaceInnerBlocks(clientId, [block], false);
 	};
 
-	// Initialize with the default template once.
+	// Initialize once with the current template's own defaults.
 	useEffect(() => {
 		if (hasInitialized.current || innerBlocks.length > 0) {
 			return;
 		}
-		if (currentTemplate) {
-			applyTemplate(currentTemplate, enableMasonry);
-		}
 		hasInitialized.current = true;
+		if (!currentTemplate) return;
+
+		const scheme = currentTemplate.defaultColorScheme || 'light';
+		const columns = currentTemplate.defaultColumns;
+		const items = currentTemplate.counters.length;
+		const masonry = enableMasonry && supportsMasonry;
+
+		setAttributes({
+			colorScheme: scheme,
+			columnsCount: columns,
+			itemsCount: items,
+			enableMasonry: masonry,
+		});
+		buildGrid(currentTemplate, { masonry, scheme, columns, items });
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [clientId, innerBlocks.length]);
 
 	const handleTemplateChange = (templateId) => {
 		const template = templates.find((t) => t.id === templateId);
-		const masonry = enableMasonry && !!template?.supportsMasonry;
-		setAttributes({ selectedTemplate: templateId, enableMasonry: masonry });
-		if (template) {
-			applyTemplate(template, masonry);
-		}
+		if (!template) return;
+
+		const masonry = enableMasonry && !!template.supportsMasonry;
+		const scheme = template.defaultColorScheme || 'light';
+		const columns = template.defaultColumns;
+		const items = template.counters.length;
+
+		setAttributes({
+			selectedTemplate: templateId,
+			enableMasonry: masonry,
+			colorScheme: scheme,
+			columnsCount: columns,
+			itemsCount: items,
+		});
+		buildGrid(template, { masonry, scheme, columns, items });
 	};
 
 	const handleMasonryChange = (value) => {
-		setAttributes({ enableMasonry: value });
+		const masonry = value && supportsMasonry;
+		setAttributes({ enableMasonry: masonry });
 		if (currentTemplate) {
-			applyTemplate(currentTemplate, value);
+			buildGrid(currentTemplate, {
+				masonry,
+				scheme: colorScheme,
+				columns: columnsCount,
+				items: itemsCount,
+			});
+		}
+	};
+
+	// --- Incremental updates (preserve user edits) ---
+
+	const handleColorSchemeChange = (scheme) => {
+		setAttributes({ colorScheme: scheme });
+		if (!columnsBlock) return;
+
+		const newClass = toggleClass(
+			columnsBlock.attributes.columnsClass,
+			'text-white',
+			scheme === 'dark'
+		);
+		updateBlockAttributes(columnsBlock.clientId, { columnsClass: newClass });
+
+		columnsBlock.innerBlocks.forEach((col) => {
+			const counter = col.innerBlocks[0];
+			if (counter) {
+				updateBlockAttributes(counter.clientId, {
+					textWhite: scheme === 'dark',
+				});
+			}
+		});
+	};
+
+	const handleColumnsCountChange = (count) => {
+		setAttributes({ columnsCount: count });
+		if (!columnsBlock) return;
+
+		updateBlockAttributes(columnsBlock.clientId, { columnsCount: count });
+		const colConfig = getColumnColConfig(count);
+		columnsBlock.innerBlocks.forEach((col) => {
+			updateBlockAttributes(col.clientId, colConfig);
+		});
+	};
+
+	const handleItemsCountChange = (count) => {
+		setAttributes({ itemsCount: count });
+		if (!columnsBlock || !currentTemplate) return;
+
+		const current = columnsBlock.innerBlocks.length;
+		if (count === current) return;
+
+		if (count > current) {
+			const useMasonry = enableMasonry && supportsMasonry;
+			const colConfig = getColumnColConfig(columnsCount);
+			const src = currentTemplate.counters;
+			const toAdd = [];
+			for (let i = current; i < count; i++) {
+				const base = src[i % src.length];
+				toAdd.push(
+					createBlock(
+						'codeweber-blocks/column',
+						{ ...colConfig, columnClass: useMasonry ? 'item' : '' },
+						[
+							createBlock('codeweber-blocks/counter', {
+								...base,
+								textWhite: colorScheme === 'dark',
+							}),
+						]
+					)
+				);
+			}
+			insertBlocks(toAdd, current, columnsBlock.clientId, false);
+		} else {
+			const toRemove = columnsBlock.innerBlocks
+				.slice(count)
+				.map((c) => c.clientId);
+			removeBlocks(toRemove, false);
 		}
 	};
 
@@ -118,6 +256,47 @@ const CountersEdit = ({ attributes, setAttributes, clientId }) => {
 						)}
 						__nextHasNoMarginBottom
 					/>
+
+					<div style={{ marginTop: '16px' }}>
+						<SelectControl
+							label={__('Color Scheme', 'codeweber-gutenberg-blocks')}
+							value={colorScheme}
+							options={[
+								{ label: __('Light', 'codeweber-gutenberg-blocks'), value: 'light' },
+								{ label: __('Dark', 'codeweber-gutenberg-blocks'), value: 'dark' },
+							]}
+							onChange={handleColorSchemeChange}
+							help={__(
+								'Dark = white text for dark backgrounds.',
+								'codeweber-gutenberg-blocks'
+							)}
+							__nextHasNoMarginBottom
+						/>
+					</div>
+
+					<div style={{ marginTop: '16px' }}>
+						<SelectControl
+							label={__('Columns', 'codeweber-gutenberg-blocks')}
+							value={columnsCount}
+							options={COLUMN_OPTIONS}
+							onChange={(value) =>
+								handleColumnsCountChange(Number(value))
+							}
+							__nextHasNoMarginBottom
+						/>
+					</div>
+
+					<div style={{ marginTop: '16px' }}>
+						<RangeControl
+							label={__('Items', 'codeweber-gutenberg-blocks')}
+							value={itemsCount}
+							min={1}
+							max={12}
+							onChange={(value) => handleItemsCountChange(value)}
+							__nextHasNoMarginBottom
+						/>
+					</div>
+
 					{supportsMasonry && (
 						<div style={{ marginTop: '16px' }}>
 							<ToggleControl

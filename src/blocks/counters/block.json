@@ -21,6 +21,18 @@
 		"enableMasonry": {
 			"type": "boolean",
 			"default": false
+		},
+		"colorScheme": {
+			"type": "string",
+			"default": "light"
+		},
+		"columnsCount": {
+			"type": "number",
+			"default": 2
+		},
+		"itemsCount": {
+			"type": "number",
+			"default": 4
 		}
 	},
 	"textdomain": "codeweber-gutenberg-blocks",

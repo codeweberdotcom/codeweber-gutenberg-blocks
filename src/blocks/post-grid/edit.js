@@ -548,6 +548,15 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 								}
 							}
 
+							// Аватар: используем напрямую разрешённый URL из REST-поля,
+							// т.к. вложение-аватар не дочернее и недоступно через _embed.
+							if (!avatarUrl) {
+								avatarUrl =
+									post._testimonial_avatar_url ||
+									post.meta?._testimonial_avatar_url ||
+									'';
+							}
+
 							// Рейтинг
 							const rating = parseInt(
 								post._testimonial_rating ||
@@ -1121,13 +1130,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 									'circle_center',
 									'circle_center_alt',
 								].includes(template) ||
-								(postType === 'testimonials' &&
-									[
-										'default',
-										'card',
-										'blockquote',
-										'icon',
-									].includes(template)) ||
+								postType === 'testimonials' ||
 								(postType === 'documents' &&
 									[
 										'document-card',
@@ -1294,13 +1297,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 									'circle_center',
 									'circle_center_alt',
 								].includes(template) ||
-								(postType === 'testimonials' &&
-									[
-										'default',
-										'card',
-										'blockquote',
-										'icon',
-									].includes(template)) ||
+								postType === 'testimonials' ||
 								(postType === 'documents' &&
 									[
 										'document-card',

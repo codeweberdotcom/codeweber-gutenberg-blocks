@@ -17,6 +17,10 @@
 		"selectedTemplate": {
 			"type": "string",
 			"default": "cards"
+		},
+		"enableMasonry": {
+			"type": "boolean",
+			"default": false
 		}
 	},
 	"textdomain": "codeweber-gutenberg-blocks",

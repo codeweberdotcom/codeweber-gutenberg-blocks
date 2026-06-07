@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-06-07T15:44:24+00:00\n"
+"POT-Creation-Date: 2026-06-07T16:19:55+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: codeweber-gutenberg-blocks\n"
@@ -6665,6 +6665,14 @@ msgstr ""
 
 #: build/blocks/counters/index.js:1
 msgid "Switching template rebuilds the counters grid."
+msgstr ""
+
+#: build/blocks/counters/index.js:1
+msgid "Masonry (isotope)"
+msgstr ""
+
+#: build/blocks/counters/index.js:1
+msgid "Staggered masonry layout on the frontend. The editor shows a regular grid."
 msgstr ""
 
 #: build/blocks/cta/index.js:1

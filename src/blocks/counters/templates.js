@@ -30,6 +30,7 @@ export const getCountersTemplates = () => [
 	{
 		id: 'cards',
 		label: __('Cards (icon left)', 'codeweber-gutenberg-blocks'),
+		supportsMasonry: true,
 		columnsConfig: {
 			columnsType: 'classic',
 			columnsCount: 2,

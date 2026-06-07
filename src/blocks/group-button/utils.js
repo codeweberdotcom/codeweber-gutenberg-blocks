@@ -36,8 +36,8 @@ export const getGroupButtonClassNames = (attrs = {}, mode = 'save') => {
 		classes.push(blockClass.trim());
 	}
 
-	// Базовые классы обертки - всегда d-flex
-	classes.push('d-flex');
+	// Базовые классы обертки - всегда d-flex с переносом элементов
+	classes.push('d-flex', 'flex-wrap');
 
 	// Justify Content - добавляем только если задан
 	if (groupJustifyContent) {

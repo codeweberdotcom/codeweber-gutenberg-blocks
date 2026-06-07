@@ -325,75 +325,165 @@ class LoadMoreAPI {
 			return '';
 		}
 
-		$image_size = $attributes['imageSize'] ?? 'full';
-		$image_url = $this->get_image_url($image, $image_size);
-		$image_alt = esc_attr($image['alt'] ?? '');
-		
-		$border_radius = $attributes['borderRadius'] ?? 'rounded';
-		$enable_lightbox = $attributes['enableLightbox'] ?? true;
+		// Зеркало компонента src/components/image/ImageSimpleRender.js.
+		// При изменении JS-разметки карточки обновлять и здесь, иначе догруженные
+		// через Load More карточки будут отличаться от первичного рендера (save.js).
+		$image_size       = $attributes['imageSize']       ?? 'full';
+		$image_url        = $this->get_image_url($image, $image_size);
+		$image_alt        = esc_attr($image['alt'] ?? '');
+		$border_radius    = $attributes['borderRadius']    ?? 'rounded';
+		$enable_lightbox  = $attributes['enableLightbox']  ?? true;
 		$lightbox_gallery = $attributes['lightboxGallery'] ?? 'gallery-1';
-		$effect_type = $attributes['effectType'] ?? 'none';
-		
-		// Получаем классы hover эффектов
-		$hover_classes = $this->get_image_hover_classes($attributes);
+		$lightbox_show_desc = !empty($attributes['lightboxShowDesc']);
+		$effect_type      = $attributes['effectType']      ?? 'none';
+		$overlay_style    = $attributes['overlayStyle']    ?? 'overlay-1';
+		$overlay_icon_color = $attributes['overlayIconColor'] ?? 'bg-frost';
+		$image_render_type  = $attributes['imageRenderType']  ?? 'img';
+
+		// Overlay отключается, если лайтбокс выключен (activeEffectType в JS).
+		$active_effect_type = (!$enable_lightbox && $effect_type === 'overlay') ? 'none' : $effect_type;
+
+		$hover_classes  = $this->get_image_hover_classes(array_merge($attributes, ['effectType' => $active_effect_type]));
 		$figure_classes = trim($hover_classes . ' ' . $border_radius);
-		
-		// Lightbox атрибуты согласно документации Sandbox
-		// Правильный формат: <a href="#" data-glightbox data-gallery="g1">
-		$lightbox_attrs = '';
+
+		// href: linkUrl при наличии, иначе полный URL изображения (для GLightbox).
+		$link_url = (!empty($image['linkUrl']) && trim($image['linkUrl']) !== '') ? $image['linkUrl'] : '';
+		$href = $link_url ? $link_url : $image['url'];
+
+		// data-glightbox с опциональными title/description (как getLightboxAttributes()).
+		$glightbox_value = '';
 		if ($enable_lightbox) {
-			$lightbox_attrs = ' data-glightbox';
-			if ($lightbox_gallery) {
-				$lightbox_attrs .= ' data-gallery="' . esc_attr($lightbox_gallery) . '"';
+			$parts = [];
+			$lb_title = $lightbox_show_desc ? ($image['title'] ?? '') : '';
+			$lb_desc  = $lightbox_show_desc ? ($image['description'] ?? '') : '';
+			if ($lb_title && trim($lb_title) !== '') {
+				$parts[] = 'title: ' . trim($lb_title);
+			}
+			if ($lb_desc && trim($lb_desc) !== '') {
+				$parts[] = 'description: ' . trim($lb_desc);
+			}
+			$glightbox_value = implode('; ', $parts);
+		}
+
+		// Атрибуты ссылки lightbox. LinkType (buildLinkAttrs) серверно не поддержан —
+		// данные о нём не сохраняются в data-block-attributes; используем лайтбокс/href.
+		$a_attrs = 'href="' . esc_url($href) . '"';
+		if ($enable_lightbox) {
+			$a_attrs .= ' data-glightbox="' . esc_attr($glightbox_value) . '"';
+			if ($lightbox_gallery && trim($lightbox_gallery) !== '') {
+				$a_attrs .= ' data-gallery="' . esc_attr($lightbox_gallery) . '"';
 			}
 		}
-		
-		// href должен всегда содержать URL изображения для GLightbox
-		// Если linkUrl не указан или пустой, используем полный URL изображения (full size)
-		$link_url = !empty($image['linkUrl']) && trim($image['linkUrl']) !== '' ? $image['linkUrl'] : '';
-		$href = $link_url ? $link_url : $image['url']; // Используем полный URL изображения для lightbox
-		
-		$html = '<figure class="' . esc_attr($figure_classes) . '">';
-		$html .= '<a href="' . esc_url($href) . '"' . $lightbox_attrs . '>';
-		$html .= '<img src="' . esc_url($image_url) . '" alt="' . $image_alt . '" />';
-		$html .= '</a>';
-		
-		// Overlay варианты
-		if ($effect_type === 'overlay') {
-			$overlay_style = $attributes['overlayStyle'] ?? 'overlay-1';
-			
-			if ($overlay_style === 'overlay-4') {
-				$html .= '<figcaption><div class="from-top mb-0 h2"><span class="mt-5">+</span></div></figcaption>';
-			} elseif ($overlay_style === 'overlay-2' || $overlay_style === 'overlay-3') {
-				$title = $image['title'] ?? $image['caption'] ?? '';
-				$description = $image['description'] ?? '';
-				if ($title || $description) {
-					$from_class = $overlay_style === 'overlay-2' ? 'from-top' : 'from-left';
-					$html .= '<figcaption>';
-					if ($title) {
-						$html .= '<h5 class="' . $from_class . ' mb-1">' . esc_html($title) . '</h5>';
-					}
-					if ($description) {
-						$html .= '<p class="' . ($overlay_style === 'overlay-2' ? 'from-bottom' : 'from-left') . ' mb-0">' . esc_html($description) . '</p>';
-					}
-					$html .= '</figcaption>';
+		$should_show_link = (bool) $enable_lightbox;
+
+		$plus_svg = '<svg fill="currentColor" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg"><path d="M220,128a4.0002,4.0002,0,0,1-4,4H132v84a4,4,0,0,1-8,0V132H40a4,4,0,0,1,0-8h84V40a4,4,0,0,1,8,0v84h84A4.0002,4.0002,0,0,1,220,128Z"></path></svg>';
+
+		// ── Background-режим ───────────────────────────────────────────────
+		if ($image_render_type === 'background') {
+			$bg_classes = trim('wrapper image-wrapper bg-image bg-cover h-100 ' . $border_radius . ' ' . $hover_classes);
+			$fig_open = '<figure class="' . esc_attr($bg_classes) . '" data-image-src="' . esc_url($image_url) . '">';
+
+			// Overlay-7: item-link внутри figure, без внешнего <a>.
+			if ($active_effect_type === 'overlay' && $overlay_style === 'overlay-7') {
+				$inner = $should_show_link ? '<a class="item-link" ' . $a_attrs . '><i class="uil uil-plus"></i></a>' : '';
+				return $fig_open . $inner . '</figure>';
+			}
+
+			// Overlay-5/6: hover-icon внутри figure.
+			$overlay_icon = '';
+			if ($active_effect_type === 'overlay' && $overlay_style === 'overlay-6') {
+				$overlay_icon = '<span class="hover-icon h-100 w-100 ' . esc_attr($overlay_icon_color ?: 'bg-frost') . ' text-white">' . $plus_svg . '</span>';
+			} elseif ($active_effect_type === 'overlay' && $overlay_style === 'overlay-5') {
+				$overlay_icon = '<span class="hover-icon h-100 w-100 text-white">' . $plus_svg . '</span>';
+			}
+
+			$fig_full = $fig_open . $overlay_icon . '</figure>';
+			if ($should_show_link) {
+				return '<a class="h-100" ' . $a_attrs . '>' . $fig_full . '</a>';
+			}
+			return $fig_full;
+		}
+
+		// ── Режим <img> ────────────────────────────────────────────────────
+		$img = '<img src="' . esc_url($image_url) . '" alt="' . $image_alt . '" decoding="async" />';
+		$title = $image['title'] ?? $image['caption'] ?? '';
+		$desc  = $image['description'] ?? '';
+
+		if ($effect_type === 'tooltip' && ($tooltip_title = $this->get_image_tooltip_title_html($image)) !== '') {
+			$figure_element = '<figure class="' . esc_attr($figure_classes) . '" title="' . esc_attr($tooltip_title) . '">' . $img . '</figure>';
+		} elseif ($active_effect_type === 'overlay' && $overlay_style === 'overlay-6') {
+			$figure_element = '<figure class="' . esc_attr($figure_classes) . '">'
+				. '<a ' . $a_attrs . '>' . $img
+				. '<span class="hover-icon h-100 w-100 ' . esc_attr($overlay_icon_color ?: 'bg-frost') . ' text-white">' . $plus_svg . '</span>'
+				. '</a></figure>';
+		} elseif ($active_effect_type === 'overlay' && $overlay_style === 'overlay-7') {
+			$item_link = $should_show_link ? '<a class="item-link" ' . $a_attrs . '><i class="uil uil-plus"></i></a>' : '';
+			$figure_element = '<figure class="' . esc_attr($figure_classes) . '">' . $img . $item_link . '</figure>';
+		} elseif ($active_effect_type === 'overlay' && $overlay_style === 'overlay-5') {
+			$figure_element = '<figure class="' . esc_attr($figure_classes) . '">'
+				. '<a ' . $a_attrs . '>' . $img
+				. '<span class="hover-icon h-100 w-100 text-white">' . $plus_svg . '</span>'
+				. '</a></figure>';
+		} elseif ($active_effect_type === 'overlay' && $overlay_style === 'overlay-5-bottom') {
+			$caption = '';
+			if ($title || $desc) {
+				$caption = '<figcaption class="position-absolute bottom-0 start-0 end-0 p-4 text-white">';
+				if ($title) {
+					$caption .= '<h5 class="text-white mb-0">' . esc_html($title) . '</h5>';
 				}
-			} elseif ($image['title'] || $image['caption']) {
-				$html .= '<figcaption><h5 class="from-top mb-0">' . esc_html($image['title'] ?? $image['caption']) . '</h5></figcaption>';
+				if ($desc) {
+					$caption .= '<p class="mb-0">' . esc_html($desc) . '</p>';
+				}
+				$caption .= '</figcaption>';
 			}
-		}
-		
-		// Tooltip
-		if ($effect_type === 'tooltip') {
-			$tooltip_title = $this->get_tooltip_title($image, $effect_type);
-			if ($tooltip_title) {
-				$html = str_replace('<figure', '<figure title="' . esc_attr($tooltip_title) . '"', $html);
+			$figure_element = '<figure class="' . esc_attr($figure_classes) . '">'
+				. '<a ' . $a_attrs . '>' . $img
+				. '<span class="hover-icon text-white">' . $plus_svg . '</span>'
+				. '</a>' . $caption . '</figure>';
+		} elseif ($active_effect_type === 'overlay') {
+			// overlay-1 / overlay-2 / overlay-3 / overlay-4 и прочие.
+			$cap = '';
+			if ($overlay_style === 'overlay-4') {
+				$cap = '<figcaption><div class="from-top mb-0 h2"><span class="mt-5">+</span></div></figcaption>';
+			} elseif ($overlay_style === 'overlay-2') {
+				if ($title || $desc) {
+					$cap = '<figcaption><h5 class="from-top mb-1">' . esc_html($title) . '</h5>';
+					if ($desc) {
+						$cap .= '<p class="from-bottom mb-0">' . esc_html($desc) . '</p>';
+					}
+					$cap .= '</figcaption>';
+				}
+			} elseif ($overlay_style === 'overlay-3') {
+				if ($title || $desc) {
+					$cap = '<figcaption><h5 class="from-left mb-1">' . esc_html($title) . '</h5>';
+					if ($desc) {
+						$cap .= '<p class="from-left mb-0">' . esc_html($desc) . '</p>';
+					}
+					$cap .= '</figcaption>';
+				}
+			} else {
+				if ($title) {
+					$cap = '<figcaption><h5 class="from-top mb-0">' . esc_html($title) . '</h5></figcaption>';
+				}
 			}
+			$figure_element = '<figure class="' . esc_attr($figure_classes) . '">' . $img . $cap . '</figure>';
+		} else {
+			// Простой вариант (cursor / none / только simple-эффекты).
+			$figure_element = '<figure class="' . esc_attr($figure_classes) . '">' . $img . '</figure>';
 		}
-		
-		$html .= '</figure>';
-		
-		return $html;
+
+		// overlay-5/5-bottom/6/7 обрабатывают ссылку внутри figure — без внешней обёртки.
+		// Проверка по исходному effectType (как в JS), а не active.
+		if ($effect_type === 'overlay' && in_array($overlay_style, ['overlay-5', 'overlay-5-bottom', 'overlay-6', 'overlay-7'], true)) {
+			return $figure_element;
+		}
+
+		// Иначе оборачиваем в <a> при включённом лайтбоксе.
+		if ($should_show_link) {
+			return '<a ' . $a_attrs . '>' . $figure_element . '</a>';
+		}
+
+		return $figure_element;
 	}
 
 	/**
@@ -407,12 +497,19 @@ class LoadMoreAPI {
 		if ($size === 'full' || empty($image['sizes'])) {
 			return $image['url'];
 		}
-		
-		// Проверяем наличие нужного размера
-		if (isset($image['sizes'][$size]['url'])) {
-			return $image['sizes'][$size]['url'];
+
+		// Проверяем наличие нужного размера.
+		// Поддерживаем оба формата как в JS getImageUrl(): REST API (source_url) и MediaUpload (url).
+		if (isset($image['sizes'][$size])) {
+			$s = $image['sizes'][$size];
+			if (!empty($s['source_url'])) {
+				return $s['source_url'];
+			}
+			if (!empty($s['url'])) {
+				return $s['url'];
+			}
 		}
-		
+
 		// Fallback на оригинальный URL
 		return $image['url'];
 	}
@@ -424,48 +521,99 @@ class LoadMoreAPI {
 	 * @return string Classes string
 	 */
 	private function get_image_hover_classes($attributes) {
+		// Зеркало getImageHoverClasses() из src/components/image-hover/ImageHoverControl.js.
+		// ВАЖНО: при изменении JS-логики обновлять и здесь — иначе догруженные
+		// через Load More карточки рассинхронизируются с первичным рендером (save.js).
+		$simple_effect    = $attributes['simpleEffect']    ?? 'none';
+		$effect_type      = $attributes['effectType']      ?? 'none';
+		$tooltip_style    = $attributes['tooltipStyle']    ?? 'itooltip-dark';
+		$overlay_style    = $attributes['overlayStyle']    ?? 'overlay-1';
+		$overlay_gradient = $attributes['overlayGradient'] ?? 'gradient-1';
+		$overlay_color    = $attributes['overlayColor']    ?? false;
+		$cursor_style     = $attributes['cursorStyle']     ?? 'cursor-dark';
+
 		$classes = [];
-		
-		$simple_effect = $attributes['simpleEffect'] ?? 'none';
-		$effect_type = $attributes['effectType'] ?? 'none';
-		$tooltip_style = $attributes['tooltipStyle'] ?? '';
-		$overlay_style = $attributes['overlayStyle'] ?? '';
-		$overlay_gradient = $attributes['overlayGradient'] ?? '';
-		$overlay_color = $attributes['overlayColor'] ?? false;
-		$cursor_style = $attributes['cursorStyle'] ?? '';
-		
-		if ($simple_effect !== 'none') {
+
+		// Simple эффект (только один)
+		if ($simple_effect && $simple_effect !== 'none') {
 			$classes[] = $simple_effect;
 		}
-		
-		if ($effect_type === 'tooltip' && $tooltip_style) {
-			$classes[] = $tooltip_style;
+
+		// Advanced эффект (только один)
+		switch ($effect_type) {
+			case 'tooltip':
+				$classes[] = 'itooltip';
+				$classes[] = $tooltip_style;
+				break;
+
+			case 'overlay':
+				// overlay-5-bottom использует CSS-класс overlay-5 (bottom-overlay добавляется отдельно)
+				$classes[] = 'overlay';
+				$classes[] = ($overlay_style === 'overlay-5-bottom') ? 'overlay-5' : $overlay_style;
+
+				// Overlay-2 with color
+				if ($overlay_style === 'overlay-2' && $overlay_color) {
+					$classes[] = 'color';
+				}
+
+				// Overlay-3 with gradient
+				if ($overlay_style === 'overlay-3' && $overlay_gradient) {
+					$classes[] = 'overlay-' . $overlay_gradient;
+				}
+
+				// Overlay-5: plus icon with hover-scale
+				if ($overlay_style === 'overlay-5') {
+					$classes[] = 'hover-scale';
+					$classes[] = 'hover-plus';
+				}
+
+				// Overlay-5-bottom: plus icon + always-visible bottom caption
+				if ($overlay_style === 'overlay-5-bottom') {
+					$classes[] = 'hover-scale';
+					$classes[] = 'hover-plus';
+					$classes[] = 'bottom-overlay';
+				}
+
+				// Overlay-6: hover-overlay with icon (без базового класса overlay)
+				if ($overlay_style === 'overlay-6') {
+					$classes = array_values(array_diff($classes, ['overlay', 'overlay-6']));
+					$classes[] = 'hover-scale';
+					$classes[] = 'hover-overlay';
+				}
+
+				// Overlay-7: item-link (только position-relative, без overlay-классов)
+				if ($overlay_style === 'overlay-7') {
+					$classes = array_values(array_diff($classes, ['overlay', 'overlay-7']));
+					$classes[] = 'position-relative';
+				}
+				break;
+
+			case 'cursor':
+				$classes[] = $cursor_style;
+				break;
+
+			case 'none':
+			default:
+				break;
 		}
-		
-		if ($effect_type === 'overlay') {
-			// Добавляем базовый класс overlay (как в JavaScript версии)
-			$classes[] = 'overlay';
-			
-			if ($overlay_style) {
-				$classes[] = $overlay_style;
-			}
-			
-			// Overlay-2 with color
-			if ($overlay_style === 'overlay-2' && $overlay_color) {
-				$classes[] = 'color';
-			}
-			
-			// Overlay-3 with gradient
-			if ($overlay_style === 'overlay-3' && $overlay_gradient) {
-				$classes[] = 'overlay-' . $overlay_gradient;
-			}
+
+		return implode(' ', array_filter($classes));
+	}
+
+	/**
+	 * Build the GLightbox / tooltip title HTML for an image.
+	 * Mirror of getTooltipTitle() in ImageHoverControl.js.
+	 */
+	private function get_image_tooltip_title_html($image) {
+		$html = '';
+		$title_text = $image['title'] ?? $image['caption'] ?? '';
+		if ($title_text) {
+			$html .= '<h5 class="mb-1">' . $title_text . '</h5>';
 		}
-		
-		if ($effect_type === 'cursor' && $cursor_style) {
-			$classes[] = $cursor_style;
+		if (!empty($image['description'])) {
+			$html .= '<p class="mb-0">' . $image['description'] . '</p>';
 		}
-		
-		return implode(' ', $classes);
+		return $html;
 	}
 
 	/**

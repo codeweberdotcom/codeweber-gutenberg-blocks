@@ -52,6 +52,7 @@ Legend: `S` = static (JS save) | `D` = dynamic (PHP render.php)
 | `card` | S | Bootstrap card with image, text, buttons |
 | `feature` | S | Single feature item. 4 layouts: Feature 1 (vertical), Feature 2 (horizontal, `imageMobileLayout`/`imageDesktopLayout` controls), Feature 3 (icon+title inline), Feature 4 (image InnerBlock + text, `imageMobileLayout`/`imageDesktopLayout` controls) |
 | `features` | S | Features grid container |
+| `counter` | S | Single animated counter (`.counter` / counterUp). 4 layouts: Counter 1 (icon-left card), Counter 2 (svg icon on top, centered), Counter 3 (number + label, centered), Counter 4 (number + h6 subtitle + ratings). Optional icon, card wrapper, and absolute positioning (`positionType` + top/bottom/left/right offsets + z-index) for floating banner cards |
 | `cta` | S | Call-to-action block |
 | `label-plus` | S | Label/badge with optional plus icon |
 

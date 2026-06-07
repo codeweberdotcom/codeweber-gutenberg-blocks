@@ -1,0 +1,388 @@
+{
+  "apiVersion": 3,
+  "name": "codeweber-blocks/counter",
+  "version": "0.1.0",
+  "title": "Counter",
+  "category": "codeweber-gutenberg-elements",
+  "icon": "chart-bar",
+  "description": "Animated counter (fact) with optional icon, label, subtitle and ratings. Four layout presets plus absolute positioning for floating cards.",
+  "keywords": [
+    "counter",
+    "fact",
+    "number",
+    "stats",
+    "countup"
+  ],
+  "supports": {
+    "html": false,
+    "className": false,
+    "customClassName": false,
+    "anchor": true
+  },
+  "attributes": {
+    "counterLayout": {
+      "type": "string",
+      "default": "counter-1"
+    },
+    "iconType": {
+      "type": "string",
+      "default": "font"
+    },
+    "iconName": {
+      "type": "string",
+      "default": "presentation-check"
+    },
+    "svgIcon": {
+      "type": "string",
+      "default": "check"
+    },
+    "svgStyle": {
+      "type": "string",
+      "default": "lineal"
+    },
+    "iconSize": {
+      "type": "string",
+      "default": "lg"
+    },
+    "iconFontSize": {
+      "type": "string",
+      "default": ""
+    },
+    "iconColor": {
+      "type": "string",
+      "default": "purple"
+    },
+    "iconColor2": {
+      "type": "string",
+      "default": "11"
+    },
+    "iconClass": {
+      "type": "string",
+      "default": ""
+    },
+    "iconWrapper": {
+      "type": "boolean",
+      "default": true
+    },
+    "iconWrapperStyle": {
+      "type": "string",
+      "default": "btn-circle"
+    },
+    "iconBtnSize": {
+      "type": "string",
+      "default": "btn-lg"
+    },
+    "iconBtnVariant": {
+      "type": "string",
+      "default": "soft"
+    },
+    "iconWrapperClass": {
+      "type": "string",
+      "default": "pe-none mx-auto me-4 mb-lg-3 mb-xl-0"
+    },
+    "iconGradientColor": {
+      "type": "string",
+      "default": "gradient-1"
+    },
+    "customSvgUrl": {
+      "type": "string",
+      "default": ""
+    },
+    "customSvgId": {
+      "type": "number",
+      "default": 0
+    },
+    "customSvgSize": {
+      "type": "number",
+      "default": 0
+    },
+    "enableCounter": {
+      "type": "boolean",
+      "default": true
+    },
+    "title": {
+      "type": "string",
+      "default": "7518"
+    },
+    "titleTag": {
+      "type": "string",
+      "default": "h3"
+    },
+    "titleColor": {
+      "type": "string",
+      "default": ""
+    },
+    "titleColorType": {
+      "type": "string",
+      "default": "solid"
+    },
+    "titleSize": {
+      "type": "string",
+      "default": ""
+    },
+    "titleWeight": {
+      "type": "string",
+      "default": ""
+    },
+    "titleTransform": {
+      "type": "string",
+      "default": ""
+    },
+    "titleClass": {
+      "type": "string",
+      "default": "mb-1"
+    },
+    "counterLg": {
+      "type": "boolean",
+      "default": false
+    },
+    "enableParagraph": {
+      "type": "boolean",
+      "default": true
+    },
+    "paragraph": {
+      "type": "string",
+      "default": "Projects Done"
+    },
+    "paragraphTag": {
+      "type": "string",
+      "default": "p"
+    },
+    "paragraphColor": {
+      "type": "string",
+      "default": ""
+    },
+    "paragraphColorType": {
+      "type": "string",
+      "default": "solid"
+    },
+    "paragraphSize": {
+      "type": "string",
+      "default": ""
+    },
+    "paragraphWeight": {
+      "type": "string",
+      "default": ""
+    },
+    "paragraphTransform": {
+      "type": "string",
+      "default": ""
+    },
+    "paragraphClass": {
+      "type": "string",
+      "default": "mb-0"
+    },
+    "enableSubtitle": {
+      "type": "boolean",
+      "default": false
+    },
+    "subtitle": {
+      "type": "string",
+      "default": "Customer Satisfaction"
+    },
+    "subtitleTag": {
+      "type": "string",
+      "default": "h6"
+    },
+    "subtitleClass": {
+      "type": "string",
+      "default": "fs-17 mb-1"
+    },
+    "enableRatings": {
+      "type": "boolean",
+      "default": false
+    },
+    "ratingsValue": {
+      "type": "string",
+      "default": "five"
+    },
+    "align": {
+      "type": "string",
+      "default": ""
+    },
+    "textWhite": {
+      "type": "boolean",
+      "default": false
+    },
+    "enableCard": {
+      "type": "boolean",
+      "default": true
+    },
+    "enableCardBody": {
+      "type": "boolean",
+      "default": true
+    },
+    "cardBodyClass": {
+      "type": "string",
+      "default": ""
+    },
+    "overflowHidden": {
+      "type": "boolean",
+      "default": false
+    },
+    "h100": {
+      "type": "boolean",
+      "default": false
+    },
+    "borderRadius": {
+      "type": "string",
+      "default": ""
+    },
+    "shadow": {
+      "type": "string",
+      "default": "shadow-lg"
+    },
+    "cardBorder": {
+      "type": "string",
+      "default": ""
+    },
+    "borderColor": {
+      "type": "string",
+      "default": ""
+    },
+    "borderColorType": {
+      "type": "string",
+      "default": "solid"
+    },
+    "borderWidth": {
+      "type": "string",
+      "default": ""
+    },
+    "borderPosition": {
+      "type": "string",
+      "default": ""
+    },
+    "borderAccent": {
+      "type": "string",
+      "default": ""
+    },
+    "backgroundType": {
+      "type": "string",
+      "default": "none"
+    },
+    "backgroundColor": {
+      "type": "string",
+      "default": ""
+    },
+    "backgroundColorType": {
+      "type": "string",
+      "default": "solid"
+    },
+    "backgroundGradient": {
+      "type": "string",
+      "default": ""
+    },
+    "backgroundImageId": {
+      "type": "number",
+      "default": 0
+    },
+    "backgroundImageUrl": {
+      "type": "string",
+      "default": ""
+    },
+    "backgroundImageSize": {
+      "type": "string",
+      "default": "full"
+    },
+    "backgroundSize": {
+      "type": "string",
+      "default": ""
+    },
+    "backgroundOverlay": {
+      "type": "string",
+      "default": ""
+    },
+    "backgroundPatternUrl": {
+      "type": "string",
+      "default": ""
+    },
+    "spacingType": {
+      "type": "string",
+      "default": "padding"
+    },
+    "spacingXs": {
+      "type": "string",
+      "default": ""
+    },
+    "spacingSm": {
+      "type": "string",
+      "default": ""
+    },
+    "spacingMd": {
+      "type": "string",
+      "default": ""
+    },
+    "spacingLg": {
+      "type": "string",
+      "default": ""
+    },
+    "spacingXl": {
+      "type": "string",
+      "default": ""
+    },
+    "spacingXxl": {
+      "type": "string",
+      "default": ""
+    },
+    "spacingXxxl": {
+      "type": "string",
+      "default": ""
+    },
+    "positionType": {
+      "type": "string",
+      "default": ""
+    },
+    "offsetTop": {
+      "type": "string",
+      "default": ""
+    },
+    "offsetBottom": {
+      "type": "string",
+      "default": ""
+    },
+    "offsetLeft": {
+      "type": "string",
+      "default": ""
+    },
+    "offsetRight": {
+      "type": "string",
+      "default": ""
+    },
+    "zIndex": {
+      "type": "string",
+      "default": ""
+    },
+    "blockClass": {
+      "type": "string",
+      "default": ""
+    },
+    "blockData": {
+      "type": "string",
+      "default": ""
+    },
+    "blockId": {
+      "type": "string",
+      "default": ""
+    },
+    "animationEnabled": {
+      "type": "boolean",
+      "default": false
+    },
+    "animationType": {
+      "type": "string",
+      "default": ""
+    },
+    "animationDuration": {
+      "type": "number",
+      "default": 1000
+    },
+    "animationDelay": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "textdomain": "codeweber-gutenberg-blocks",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-06-06T12:43:20+00:00\n"
+"POT-Creation-Date: 2026-06-07T14:10:26+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: codeweber-gutenberg-blocks\n"
@@ -35,32 +35,7 @@ msgstr ""
 msgid "Codeweber"
 msgstr ""
 
-#: build/blocks/accordion/render.php:160
-#: inc/Plugin.php:1234
-#: build/blocks/accordion/index.js:1
-msgid "No content available"
-msgstr ""
-
-#: build/blocks/accordion/render.php:292
-#: build/blocks/blog-post-widget/render.php:80
-#: build/blocks/post-grid/render.php:1558
-msgid "No posts found."
-msgstr ""
-
-#: build/blocks/blog-category-widget/render.php:40
-msgid "No categories found."
-msgstr ""
-
-#: build/blocks/blog-tag-widget/render.php:47
-msgid "No tags found."
-msgstr ""
-
-#: build/blocks/blog-year-widget/render.php:32
-msgid "No archives found."
-msgstr ""
-
 #: build/blocks/contacts/render.php:588
-#: build/blocks/navbar/templates/offcanvas-info-panel.php:70
 #: build/blocks/contacts/index.js:1
 #: build/blocks/header-widgets/index.js:1
 #: build/blocks/navbar/index.js:1
@@ -151,69 +126,9 @@ msgstr ""
 msgid "Toggle info"
 msgstr ""
 
-#: build/blocks/lists/render.php:207
-msgid "No items found."
-msgstr ""
-
-#: build/blocks/menu/render.php:508
-#: build/blocks/menu/index.js:1
-msgid "Expand submenu"
-msgstr ""
-
-#: build/blocks/menu/render.php:556
-#: build/blocks/menu/render.php:595
-#: build/blocks/menu/render.php:628
-#: build/blocks/menu/render.php:650
-#: build/blocks/menu/render.php:681
-#: build/blocks/menu/render.php:724
-msgid "No menu items found."
-msgstr ""
-
-#: build/blocks/navbar/render.php:297
-#: build/blocks/navbar/templates/extended-center-logo.php:47
-#: build/blocks/navbar/templates/extended.php:60
-#: build/blocks/navbar/templates/fancy-center-logo.php:51
-#: build/blocks/accordion/index.js:1
-#: build/blocks/button/index.js:1
-#: build/blocks/contacts/index.js:1
-#: build/blocks/divider/index.js:1
-#: build/blocks/feature/index.js:1
-#: build/blocks/features/index.js:1
-#: build/blocks/floating-navigator/index.js:1
-#: build/blocks/header-widgets/index.js:1
-#: build/blocks/icon/index.js:1
-#: build/blocks/label-plus/index.js:1
-#: build/blocks/lists/index.js:1
-#: build/blocks/menu/index.js:1
-msgid "Close"
-msgstr ""
-
-#: build/blocks/navbar/templates/center-logo.php:36
-#: build/blocks/navbar/templates/classic.php:89
-#: build/blocks/navbar/templates/extended-center-logo.php:96
-#: build/blocks/navbar/templates/extended.php:48
-#: build/blocks/navbar/templates/fancy-center-logo.php:40
-#: build/blocks/navbar/templates/fancy.php:89
-#: build/blocks/header-widgets/index.js:1
-#: build/blocks/menu/index.js:1
-#: build/blocks/navbar/index.js:1
-msgid "Menu"
-msgstr ""
-
-#: build/blocks/navbar/templates/offcanvas-info-panel.php:74
-#: build/blocks/header-widgets/index.js:1
-#: build/blocks/navbar/index.js:1
-msgid "Legal address"
-msgstr ""
-
-#: build/blocks/navbar/templates/offcanvas-info-panel.php:77
-#: build/blocks/header-widgets/index.js:1
-#: build/blocks/navbar/index.js:1
-msgid "Requisites"
-msgstr ""
-
 #: build/blocks/post-grid/render.php:124
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/section/index.js:1
@@ -277,13 +192,14 @@ msgid "No terms found."
 msgstr ""
 
 #: build/blocks/post-grid/render.php:1517
-#: inc/Plugin.php:744
+#: inc/Plugin.php:746
 #: build/blocks/accordion/index.js:1
 #: build/blocks/avatar/index.js:1
 #: build/blocks/banners/index.js:1
 #: build/blocks/button/index.js:1
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -297,13 +213,8 @@ msgstr ""
 msgid "Loading..."
 msgstr ""
 
-#: build/blocks/shortcode-render/render.php:38
-msgid "Enter a shortcode in the block settings."
-msgstr ""
-
-#: build/blocks/tables/render.php:159
-#: build/blocks/tabulator/render.php:85
-msgid "No data"
+#: build/blocks/post-grid/render.php:1558
+msgid "No posts found."
 msgstr ""
 
 #: build/blocks/tabulator/render.php:40
@@ -312,6 +223,10 @@ msgstr ""
 
 #: build/blocks/tabulator/render.php:44
 msgid "Select a document in block settings."
+msgstr ""
+
+#: build/blocks/tabulator/render.php:85
+msgid "No data"
 msgstr ""
 
 #: build/blocks/tabulator/render.php:86
@@ -449,6 +364,7 @@ msgstr ""
 #: build/blocks/banners/index.js:1
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -481,6 +397,7 @@ msgstr ""
 #: inc/ImageHotspotCPT.php:450
 #: build/blocks/button/index.js:1
 #: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/icon/index.js:1
@@ -595,6 +512,7 @@ msgstr ""
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
 #: build/blocks/columns/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -610,6 +528,7 @@ msgstr ""
 
 #: inc/ImageHotspotCPT.php:522
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/section/index.js:1
@@ -621,6 +540,7 @@ msgstr ""
 #: build/blocks/banners/index.js:1
 #: build/blocks/button/index.js:1
 #: build/blocks/copyright/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/cta/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/label-plus/index.js:1
@@ -633,6 +553,7 @@ msgstr ""
 
 #: inc/ImageHotspotCPT.php:524
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/label-plus/index.js:1
@@ -645,6 +566,7 @@ msgstr ""
 #: build/blocks/banners/index.js:1
 #: build/blocks/button/index.js:1
 #: build/blocks/copyright/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/cta/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/image-simple/index.js:1
@@ -695,6 +617,7 @@ msgstr ""
 #: build/blocks/accordion/index.js:1
 #: build/blocks/button/index.js:1
 #: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -711,6 +634,7 @@ msgstr ""
 #: build/blocks/accordion/index.js:1
 #: build/blocks/button/index.js:1
 #: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -733,6 +657,7 @@ msgstr ""
 #: build/blocks/accordion/index.js:1
 #: build/blocks/button/index.js:1
 #: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -848,82 +773,87 @@ msgstr ""
 msgid "Daily from %1$s to %2$s"
 msgstr ""
 
-#: inc/Plugin.php:1452
-msgid "Drag & drop your files or <span class=\"filepond--label-action\">browse</span>"
-msgstr ""
-
-#: inc/Plugin.php:1453
-#, php-format
-msgid "Maximum number of files: %s. Please remove excess files."
+#: inc/Plugin.php:1236
+#: build/blocks/accordion/index.js:1
+msgid "No content available"
 msgstr ""
 
 #: inc/Plugin.php:1454
-#, php-format
-msgid "File is too large. Maximum size: %s"
+msgid "Drag & drop your files or <span class=\"filepond--label-action\">browse</span>"
 msgstr ""
 
 #: inc/Plugin.php:1455
 #, php-format
-msgid "Total file size is too large. Maximum: %s"
+msgid "Maximum number of files: %s. Please remove excess files."
 msgstr ""
 
 #: inc/Plugin.php:1456
-msgid "Error uploading file"
+#, php-format
+msgid "File is too large. Maximum size: %s"
 msgstr ""
 
 #: inc/Plugin.php:1457
-msgid "Error adding file"
+#, php-format
+msgid "Total file size is too large. Maximum: %s"
 msgstr ""
 
 #: inc/Plugin.php:1458
+msgid "Error uploading file"
+msgstr ""
+
+#: inc/Plugin.php:1459
+msgid "Error adding file"
+msgstr ""
+
+#: inc/Plugin.php:1460
 #, php-format
 msgid "Maximum number of files: %s. Files removed: %s"
 msgstr ""
 
-#: inc/Plugin.php:1459
+#: inc/Plugin.php:1461
 #, php-format
 msgid "Total file size exceeded. Maximum: %s"
 msgstr ""
 
-#: inc/Plugin.php:1460
+#: inc/Plugin.php:1462
 msgid "Upload complete"
 msgstr ""
 
-#: inc/Plugin.php:1461
+#: inc/Plugin.php:1463
 msgid "Tap to undo"
 msgstr ""
 
-#: inc/Plugin.php:1462
+#: inc/Plugin.php:1464
 msgid "Uploading"
 msgstr ""
 
-#: inc/Plugin.php:1463
+#: inc/Plugin.php:1465
 msgid "tap to cancel"
 msgstr ""
 
-#: inc/Plugin.php:1651
+#: inc/Plugin.php:1653
 msgid "— None —"
 msgstr ""
 
-#: inc/Plugin.php:2395
-#: inc/Plugin.php:2433
+#: inc/Plugin.php:2397
+#: inc/Plugin.php:2435
 msgid "Document not found."
 msgstr ""
 
-#: inc/Plugin.php:2399
-#: inc/Plugin.php:2403
+#: inc/Plugin.php:2401
+#: inc/Plugin.php:2405
 msgid "No file attached to this document."
 msgstr ""
 
-#: inc/Plugin.php:2407
+#: inc/Plugin.php:2409
 msgid "Document file must be CSV, XLS or XLSX."
 msgstr ""
 
-#: inc/Plugin.php:2436
+#: inc/Plugin.php:2438
 msgid "You do not have permission to edit this document."
 msgstr ""
 
-#: inc/Plugin.php:2440
+#: inc/Plugin.php:2442
 msgid "Invalid rows data."
 msgstr ""
 
@@ -1189,6 +1119,7 @@ msgstr ""
 #: build/blocks/columns/index.js:1
 #: build/blocks/contacts/index.js:1
 #: build/blocks/copyright/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -1264,6 +1195,7 @@ msgstr ""
 #: build/blocks/accordion/index.js:1
 #: build/blocks/blockquote/index.js:1
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 msgid "Card"
@@ -1271,6 +1203,7 @@ msgstr ""
 
 #: build/blocks/accordion/index.js:1
 #: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -1289,6 +1222,7 @@ msgstr ""
 
 #: build/blocks/accordion/index.js:1
 #: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/icon/index.js:1
@@ -1417,6 +1351,7 @@ msgstr ""
 #: build/blocks/accordion/index.js:1
 #: build/blocks/button/index.js:1
 #: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -1432,6 +1367,7 @@ msgstr ""
 #: build/blocks/accordion/index.js:1
 #: build/blocks/button/index.js:1
 #: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -1447,6 +1383,7 @@ msgstr ""
 #: build/blocks/accordion/index.js:1
 #: build/blocks/button/index.js:1
 #: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -1462,6 +1399,7 @@ msgstr ""
 #: build/blocks/accordion/index.js:1
 #: build/blocks/button/index.js:1
 #: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -1477,6 +1415,23 @@ msgstr ""
 #: build/blocks/accordion/index.js:1
 #: build/blocks/button/index.js:1
 #: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
+#: build/blocks/divider/index.js:1
+#: build/blocks/feature/index.js:1
+#: build/blocks/features/index.js:1
+#: build/blocks/floating-navigator/index.js:1
+#: build/blocks/header-widgets/index.js:1
+#: build/blocks/icon/index.js:1
+#: build/blocks/label-plus/index.js:1
+#: build/blocks/lists/index.js:1
+#: build/blocks/menu/index.js:1
+msgid "Close"
+msgstr ""
+
+#: build/blocks/accordion/index.js:1
+#: build/blocks/button/index.js:1
+#: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -1492,6 +1447,7 @@ msgstr ""
 #: build/blocks/accordion/index.js:1
 #: build/blocks/button/index.js:1
 #: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -1507,6 +1463,7 @@ msgstr ""
 #: build/blocks/accordion/index.js:1
 #: build/blocks/button/index.js:1
 #: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -1579,6 +1536,7 @@ msgstr ""
 #: build/blocks/accordion/index.js:1
 #: build/blocks/banners/index.js:1
 #: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/floating-navigator/index.js:1
@@ -1640,6 +1598,7 @@ msgstr ""
 #: build/blocks/column/index.js:1
 #: build/blocks/columns/index.js:1
 #: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/cta/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/form-field/index.js:1
@@ -1680,6 +1639,7 @@ msgstr ""
 #: build/blocks/column/index.js:1
 #: build/blocks/columns/index.js:1
 #: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/cta/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/form-field/index.js:1
@@ -1717,6 +1677,7 @@ msgstr ""
 #: build/blocks/column/index.js:1
 #: build/blocks/columns/index.js:1
 #: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/cta/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
@@ -1758,6 +1719,7 @@ msgstr ""
 #: build/blocks/column/index.js:1
 #: build/blocks/columns/index.js:1
 #: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/cta/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/form-field/index.js:1
@@ -1793,6 +1755,7 @@ msgstr ""
 #: build/blocks/column/index.js:1
 #: build/blocks/columns/index.js:1
 #: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/cta/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/form-field/index.js:1
@@ -1827,6 +1790,7 @@ msgstr ""
 #: build/blocks/column/index.js:1
 #: build/blocks/columns/index.js:1
 #: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/cta/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/form-field/index.js:1
@@ -1862,6 +1826,7 @@ msgstr ""
 #: build/blocks/column/index.js:1
 #: build/blocks/columns/index.js:1
 #: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/cta/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/form-field/index.js:1
@@ -1895,6 +1860,7 @@ msgstr ""
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
 #: build/blocks/columns/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/form/index.js:1
@@ -1912,6 +1878,7 @@ msgstr ""
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
 #: build/blocks/columns/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/form/index.js:1
@@ -1929,6 +1896,7 @@ msgstr ""
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
 #: build/blocks/columns/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -1955,6 +1923,7 @@ msgstr ""
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
 #: build/blocks/columns/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/form/index.js:1
@@ -1970,6 +1939,7 @@ msgstr ""
 #: build/blocks/avatar/index.js:1
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/group-button/index.js:1
@@ -1981,6 +1951,7 @@ msgstr ""
 #: build/blocks/avatar/index.js:1
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/group-button/index.js:1
@@ -1992,6 +1963,7 @@ msgstr ""
 #: build/blocks/avatar/index.js:1
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/group-button/index.js:1
@@ -2003,6 +1975,7 @@ msgstr ""
 #: build/blocks/avatar/index.js:1
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/group-button/index.js:1
@@ -2014,6 +1987,7 @@ msgstr ""
 #: build/blocks/avatar/index.js:1
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/group-button/index.js:1
@@ -2025,6 +1999,7 @@ msgstr ""
 #: build/blocks/avatar/index.js:1
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/group-button/index.js:1
@@ -2036,6 +2011,7 @@ msgstr ""
 #: build/blocks/avatar/index.js:1
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/group-button/index.js:1
@@ -2059,6 +2035,7 @@ msgstr ""
 #: build/blocks/column/index.js:1
 #: build/blocks/columns/index.js:1
 #: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/cta/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
@@ -2106,6 +2083,7 @@ msgstr ""
 #: build/blocks/banners/index.js:1
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -2118,6 +2096,7 @@ msgstr ""
 #: build/blocks/banners/index.js:1
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -2177,6 +2156,7 @@ msgstr ""
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
 #: build/blocks/columns/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/floating-navigator/index.js:1
 #: build/blocks/form/index.js:1
 #: build/blocks/group-button/index.js:1
@@ -2202,6 +2182,7 @@ msgstr ""
 
 #: build/blocks/avatar/index.js:1
 #: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/icon/index.js:1
@@ -2278,6 +2259,7 @@ msgstr ""
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
 #: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/dropcap/index.js:1
 #: build/blocks/feature/index.js:1
@@ -2302,6 +2284,7 @@ msgstr ""
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
 #: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/dropcap/index.js:1
 #: build/blocks/feature/index.js:1
@@ -2324,6 +2307,7 @@ msgstr ""
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
 #: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/dropcap/index.js:1
 #: build/blocks/feature/index.js:1
@@ -2345,6 +2329,7 @@ msgstr ""
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
 #: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -2363,6 +2348,7 @@ msgstr ""
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
 #: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -2380,6 +2366,7 @@ msgstr ""
 #: build/blocks/banners/index.js:1
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -2395,6 +2382,7 @@ msgstr ""
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
 #: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -2409,6 +2397,7 @@ msgstr ""
 #: build/blocks/button/index.js:1
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -2421,6 +2410,7 @@ msgstr ""
 #: build/blocks/banners/index.js:1
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -2431,6 +2421,7 @@ msgstr ""
 #: build/blocks/banners/index.js:1
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -2441,6 +2432,7 @@ msgstr ""
 #: build/blocks/banners/index.js:1
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -2451,6 +2443,7 @@ msgstr ""
 #: build/blocks/banners/index.js:1
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -2461,6 +2454,7 @@ msgstr ""
 #: build/blocks/banners/index.js:1
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -2471,6 +2465,7 @@ msgstr ""
 #: build/blocks/banners/index.js:1
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -2481,6 +2476,7 @@ msgstr ""
 #: build/blocks/banners/index.js:1
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -2491,6 +2487,7 @@ msgstr ""
 #: build/blocks/banners/index.js:1
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -2501,6 +2498,7 @@ msgstr ""
 #: build/blocks/banners/index.js:1
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -2511,6 +2509,7 @@ msgstr ""
 #: build/blocks/banners/index.js:1
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -2521,6 +2520,7 @@ msgstr ""
 #: build/blocks/banners/index.js:1
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -2531,6 +2531,7 @@ msgstr ""
 #: build/blocks/banners/index.js:1
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -2541,6 +2542,7 @@ msgstr ""
 #: build/blocks/banners/index.js:1
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -2551,6 +2553,7 @@ msgstr ""
 #: build/blocks/banners/index.js:1
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -2561,6 +2564,7 @@ msgstr ""
 #: build/blocks/banners/index.js:1
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -2571,6 +2575,7 @@ msgstr ""
 #: build/blocks/banners/index.js:1
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -2582,6 +2587,7 @@ msgstr ""
 #: build/blocks/banners/index.js:1
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -2592,6 +2598,7 @@ msgstr ""
 #: build/blocks/banners/index.js:1
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -2602,6 +2609,7 @@ msgstr ""
 #: build/blocks/banners/index.js:1
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -2612,6 +2620,7 @@ msgstr ""
 #: build/blocks/banners/index.js:1
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -2623,6 +2632,7 @@ msgstr ""
 #: build/blocks/banners/index.js:1
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -2633,6 +2643,7 @@ msgstr ""
 #: build/blocks/banners/index.js:1
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -2643,6 +2654,7 @@ msgstr ""
 #: build/blocks/banners/index.js:1
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -2653,6 +2665,7 @@ msgstr ""
 #: build/blocks/banners/index.js:1
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -2663,6 +2676,7 @@ msgstr ""
 #: build/blocks/banners/index.js:1
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -2673,6 +2687,7 @@ msgstr ""
 #: build/blocks/banners/index.js:1
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -2683,6 +2698,7 @@ msgstr ""
 #: build/blocks/banners/index.js:1
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -2693,6 +2709,7 @@ msgstr ""
 #: build/blocks/banners/index.js:1
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -2704,6 +2721,7 @@ msgstr ""
 #: build/blocks/banners/index.js:1
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -2714,6 +2732,7 @@ msgstr ""
 #: build/blocks/banners/index.js:1
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -2725,6 +2744,7 @@ msgstr ""
 #: build/blocks/banners/index.js:1
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -2985,6 +3005,7 @@ msgstr ""
 
 #: build/blocks/banners/index.js:1
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/image-simple/index.js:1
@@ -2996,6 +3017,7 @@ msgstr ""
 
 #: build/blocks/banners/index.js:1
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/image-simple/index.js:1
@@ -3007,6 +3029,7 @@ msgstr ""
 
 #: build/blocks/banners/index.js:1
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/image-simple/index.js:1
@@ -3018,6 +3041,7 @@ msgstr ""
 
 #: build/blocks/banners/index.js:1
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/image-simple/index.js:1
@@ -3029,6 +3053,7 @@ msgstr ""
 
 #: build/blocks/banners/index.js:1
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/image-simple/index.js:1
@@ -3040,6 +3065,7 @@ msgstr ""
 
 #: build/blocks/banners/index.js:1
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/image-simple/index.js:1
@@ -3051,6 +3077,7 @@ msgstr ""
 
 #: build/blocks/banners/index.js:1
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/image-simple/index.js:1
@@ -3062,6 +3089,7 @@ msgstr ""
 
 #: build/blocks/banners/index.js:1
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/image-simple/index.js:1
@@ -3073,6 +3101,7 @@ msgstr ""
 
 #: build/blocks/banners/index.js:1
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/image-simple/index.js:1
@@ -3084,6 +3113,7 @@ msgstr ""
 
 #: build/blocks/banners/index.js:1
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/image-simple/index.js:1
@@ -3095,6 +3125,7 @@ msgstr ""
 
 #: build/blocks/banners/index.js:1
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/image-simple/index.js:1
@@ -3106,6 +3137,7 @@ msgstr ""
 
 #: build/blocks/banners/index.js:1
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/image-simple/index.js:1
@@ -3117,6 +3149,7 @@ msgstr ""
 
 #: build/blocks/banners/index.js:1
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/image-simple/index.js:1
@@ -3128,6 +3161,7 @@ msgstr ""
 
 #: build/blocks/banners/index.js:1
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/image-simple/index.js:1
@@ -3139,6 +3173,7 @@ msgstr ""
 
 #: build/blocks/banners/index.js:1
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/image-simple/index.js:1
@@ -3150,6 +3185,7 @@ msgstr ""
 
 #: build/blocks/banners/index.js:1
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/image-simple/index.js:1
@@ -3972,6 +4008,7 @@ msgstr ""
 
 #: build/blocks/banners/index.js:1
 #: build/blocks/copyright/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/cta/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/image-simple/index.js:1
@@ -3995,6 +4032,7 @@ msgstr ""
 
 #: build/blocks/banners/index.js:1
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/image-simple/index.js:1
@@ -4430,6 +4468,7 @@ msgstr ""
 #: build/blocks/blog-post-widget/index.js:1
 #: build/blocks/header-widgets/index.js:1
 #: build/blocks/navbar/index.js:1
+#: build/blocks/yandex-map-v3/index.js:1
 msgid "Theme default"
 msgstr ""
 
@@ -4482,6 +4521,7 @@ msgstr ""
 
 #: build/blocks/blog-post-widget/index.js:1
 #: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -4935,6 +4975,7 @@ msgstr ""
 
 #: build/blocks/button/index.js:1
 #: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/icon/index.js:1
@@ -4994,6 +5035,7 @@ msgid "Enter button text..."
 msgstr ""
 
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/section/index.js:1
@@ -5001,6 +5043,7 @@ msgid "—"
 msgstr ""
 
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/section/index.js:1
@@ -5008,6 +5051,7 @@ msgid "Shadow"
 msgstr ""
 
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/section/index.js:1
@@ -5015,6 +5059,7 @@ msgid "Start (left)"
 msgstr ""
 
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/section/index.js:1
@@ -5022,6 +5067,7 @@ msgid "End (right)"
 msgstr ""
 
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/section/index.js:1
@@ -5029,6 +5075,7 @@ msgid "End"
 msgstr ""
 
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/section/index.js:1
@@ -5036,6 +5083,7 @@ msgid "1px"
 msgstr ""
 
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/section/index.js:1
@@ -5043,6 +5091,7 @@ msgid "2px"
 msgstr ""
 
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/section/index.js:1
@@ -5050,6 +5099,7 @@ msgid "3px"
 msgstr ""
 
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/section/index.js:1
@@ -5057,6 +5107,7 @@ msgid "4px"
 msgstr ""
 
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/section/index.js:1
@@ -5064,6 +5115,7 @@ msgid "5px"
 msgstr ""
 
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/section/index.js:1
@@ -5071,6 +5123,7 @@ msgid "Border Position"
 msgstr ""
 
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/section/index.js:1
@@ -5078,6 +5131,7 @@ msgid "Border Width"
 msgstr ""
 
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/section/index.js:1
@@ -5085,6 +5139,7 @@ msgid "Border Color Type"
 msgstr ""
 
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/section/index.js:1
@@ -5092,6 +5147,7 @@ msgid "Border Color"
 msgstr ""
 
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/section/index.js:1
@@ -5147,6 +5203,7 @@ msgstr ""
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
 #: build/blocks/columns/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/form/index.js:1
 #: build/blocks/group-button/index.js:1
 #: build/blocks/heading-subtitle/index.js:1
@@ -5179,6 +5236,7 @@ msgid "Justify Content"
 msgstr ""
 
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/group-button/index.js:1
 #: build/blocks/heading-subtitle/index.js:1
@@ -5189,6 +5247,7 @@ msgid "Fade In"
 msgstr ""
 
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/group-button/index.js:1
 #: build/blocks/heading-subtitle/index.js:1
@@ -5199,6 +5258,7 @@ msgid "Slide In Left"
 msgstr ""
 
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/group-button/index.js:1
 #: build/blocks/heading-subtitle/index.js:1
@@ -5209,6 +5269,7 @@ msgid "Slide In Right"
 msgstr ""
 
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/group-button/index.js:1
 #: build/blocks/heading-subtitle/index.js:1
@@ -5219,6 +5280,7 @@ msgid "Slide In Down"
 msgstr ""
 
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/group-button/index.js:1
 #: build/blocks/heading-subtitle/index.js:1
@@ -5229,6 +5291,7 @@ msgid "Slide In Up"
 msgstr ""
 
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/group-button/index.js:1
 #: build/blocks/heading-subtitle/index.js:1
@@ -5239,6 +5302,7 @@ msgid "Zoom In"
 msgstr ""
 
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/group-button/index.js:1
 #: build/blocks/heading-subtitle/index.js:1
@@ -5249,6 +5313,7 @@ msgid "Zoom Out"
 msgstr ""
 
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/group-button/index.js:1
 #: build/blocks/heading-subtitle/index.js:1
@@ -5259,6 +5324,7 @@ msgid "Rotate In"
 msgstr ""
 
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/group-button/index.js:1
 #: build/blocks/heading-subtitle/index.js:1
@@ -5269,6 +5335,7 @@ msgid "Bounce In"
 msgstr ""
 
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/group-button/index.js:1
 #: build/blocks/heading-subtitle/index.js:1
@@ -5279,6 +5346,7 @@ msgid "Bounce In Left"
 msgstr ""
 
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/group-button/index.js:1
 #: build/blocks/heading-subtitle/index.js:1
@@ -5289,6 +5357,7 @@ msgid "Bounce In Right"
 msgstr ""
 
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/group-button/index.js:1
 #: build/blocks/heading-subtitle/index.js:1
@@ -5299,6 +5368,7 @@ msgid "Bounce In Down"
 msgstr ""
 
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/group-button/index.js:1
 #: build/blocks/heading-subtitle/index.js:1
@@ -5309,6 +5379,7 @@ msgid "Bounce In Up"
 msgstr ""
 
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/group-button/index.js:1
 #: build/blocks/heading-subtitle/index.js:1
@@ -5319,6 +5390,7 @@ msgid "Flip In X"
 msgstr ""
 
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/group-button/index.js:1
 #: build/blocks/heading-subtitle/index.js:1
@@ -5329,6 +5401,7 @@ msgid "Flip In Y"
 msgstr ""
 
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/group-button/index.js:1
 #: build/blocks/heading-subtitle/index.js:1
@@ -5339,6 +5412,7 @@ msgid "Enable Animation"
 msgstr ""
 
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/group-button/index.js:1
 #: build/blocks/heading-subtitle/index.js:1
@@ -5349,6 +5423,7 @@ msgid "Scroll in editor to preview animation"
 msgstr ""
 
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/group-button/index.js:1
 #: build/blocks/heading-subtitle/index.js:1
@@ -5360,6 +5435,7 @@ msgid "Animation Type"
 msgstr ""
 
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/group-button/index.js:1
 #: build/blocks/heading-subtitle/index.js:1
@@ -5370,6 +5446,7 @@ msgid "Duration (ms)"
 msgstr ""
 
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/group-button/index.js:1
 #: build/blocks/heading-subtitle/index.js:1
@@ -5380,6 +5457,7 @@ msgid "Delay (ms)"
 msgstr ""
 
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/group-button/index.js:1
 #: build/blocks/heading-subtitle/index.js:1
@@ -5390,6 +5468,7 @@ msgid "Interval (ms)"
 msgstr ""
 
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/group-button/index.js:1
 #: build/blocks/heading-subtitle/index.js:1
@@ -5404,6 +5483,7 @@ msgid "General"
 msgstr ""
 
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/section/index.js:1
@@ -5420,6 +5500,7 @@ msgid "Spacing"
 msgstr ""
 
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/group-button/index.js:1
 #: build/blocks/heading-subtitle/index.js:1
@@ -5454,6 +5535,7 @@ msgid "Скрыть переполнение"
 msgstr ""
 
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 msgid "H-100"
@@ -5508,6 +5590,7 @@ msgid "Card ID"
 msgstr ""
 
 #: build/blocks/card/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 msgid "Card Body Class"
 msgstr ""
@@ -5632,6 +5715,7 @@ msgid "Subtitle"
 msgstr ""
 
 #: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
@@ -5878,6 +5962,7 @@ msgid "Paragraph Class"
 msgstr ""
 
 #: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/icon/index.js:1
@@ -5886,6 +5971,7 @@ msgid "Selected Icon"
 msgstr ""
 
 #: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/icon/index.js:1
@@ -5894,6 +5980,7 @@ msgid "Change Icon"
 msgstr ""
 
 #: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/icon/index.js:1
@@ -5902,6 +5989,7 @@ msgid "Custom SVG"
 msgstr ""
 
 #: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/icon/index.js:1
@@ -5910,6 +5998,7 @@ msgid "Upload SVG"
 msgstr ""
 
 #: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/icon/index.js:1
@@ -5918,6 +6007,7 @@ msgid "SVG Style"
 msgstr ""
 
 #: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/icon/index.js:1
@@ -5926,6 +6016,7 @@ msgid "For Lineal icons, only outline style is available"
 msgstr ""
 
 #: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/icon/index.js:1
@@ -5934,6 +6025,7 @@ msgid "For Solid icons, filled styles are available"
 msgstr ""
 
 #: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/icon/index.js:1
@@ -5942,6 +6034,7 @@ msgid "Font Size"
 msgstr ""
 
 #: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/icon/index.js:1
@@ -5950,6 +6043,7 @@ msgid "Size (px)"
 msgstr ""
 
 #: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/icon/index.js:1
@@ -5958,6 +6052,7 @@ msgid "Color Combination"
 msgstr ""
 
 #: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/icon/index.js:1
@@ -5966,6 +6061,7 @@ msgid "Select combination"
 msgstr ""
 
 #: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/icon/index.js:1
@@ -5974,6 +6070,7 @@ msgid "Additional icon class"
 msgstr ""
 
 #: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/icon/index.js:1
@@ -5982,6 +6079,7 @@ msgid "For example: me-4, mb-3, etc."
 msgstr ""
 
 #: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/icon/index.js:1
@@ -5990,6 +6088,7 @@ msgid "Wrap in div.icon"
 msgstr ""
 
 #: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/icon/index.js:1
@@ -5998,6 +6097,7 @@ msgid "Adds wrapper for positioning or styling"
 msgstr ""
 
 #: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/icon/index.js:1
@@ -6006,6 +6106,7 @@ msgid "Wrapper Style"
 msgstr ""
 
 #: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/icon/index.js:1
@@ -6014,6 +6115,7 @@ msgid "Button Variant"
 msgstr ""
 
 #: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/icon/index.js:1
@@ -6022,6 +6124,7 @@ msgid "Additional wrapper classes"
 msgstr ""
 
 #: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/icon/index.js:1
@@ -6356,6 +6459,7 @@ msgid "Show developer credit"
 msgstr ""
 
 #: build/blocks/copyright/index.js:1
+#: build/blocks/counter/index.js:1
 #: build/blocks/floating-navigator/index.js:1
 #: build/blocks/label-plus/index.js:1
 #: build/blocks/social-icons/index.js:1
@@ -6404,6 +6508,108 @@ msgstr ""
 
 #: build/blocks/copyright/index.js:1
 msgid "(both sections disabled)"
+msgstr ""
+
+#: build/blocks/counter/index.js:1
+#: build/blocks/divider/index.js:1
+#: build/blocks/feature/index.js:1
+#: build/blocks/features/index.js:1
+#: build/blocks/heading-subtitle/index.js:1
+#: build/blocks/menu/index.js:1
+#: build/blocks/widget/index.js:1
+msgid "Enter paragraph..."
+msgstr ""
+
+#: build/blocks/counter/index.js:1
+#: build/blocks/paragraph/index.js:1
+msgid "Weight"
+msgstr ""
+
+#: build/blocks/counter/index.js:1
+#: build/blocks/paragraph/index.js:1
+msgid "Transform"
+msgstr ""
+
+#: build/blocks/counter/index.js:1
+msgid "Static"
+msgstr ""
+
+#: build/blocks/counter/index.js:1
+msgid "Counter"
+msgstr ""
+
+#. translators: Default label for number input field
+#: build/blocks/counter/index.js:1
+#: build/blocks/form-field/index.js:25
+#: build/blocks/form-field/index.js:35
+msgid "Number"
+msgstr ""
+
+#: build/blocks/counter/index.js:1
+msgid "7518"
+msgstr ""
+
+#: build/blocks/counter/index.js:1
+msgid "Subtitle…"
+msgstr ""
+
+#: build/blocks/counter/index.js:1
+msgid "Text White"
+msgstr ""
+
+#: build/blocks/counter/index.js:1
+msgid "Large (counter-lg)"
+msgstr ""
+
+#: build/blocks/counter/index.js:1
+msgid "Number Classes"
+msgstr ""
+
+#: build/blocks/counter/index.js:1
+msgid "Enable Subtitle (h6)"
+msgstr ""
+
+#: build/blocks/counter/index.js:1
+msgid "Subtitle Classes"
+msgstr ""
+
+#: build/blocks/counter/index.js:1
+msgid "Enable Ratings"
+msgstr ""
+
+#: build/blocks/counter/index.js:1
+msgid "Ratings"
+msgstr ""
+
+#: build/blocks/counter/index.js:1
+msgid "Enable Label"
+msgstr ""
+
+#: build/blocks/counter/index.js:1
+#: build/blocks/feature/index.js:1
+#: build/blocks/features/index.js:1
+msgid "Enable Card Wrapper"
+msgstr ""
+
+#: build/blocks/counter/index.js:1
+#: build/blocks/feature/index.js:1
+#: build/blocks/features/index.js:1
+msgid "Enable Card Body"
+msgstr ""
+
+#: build/blocks/counter/index.js:1
+#: build/blocks/feature/index.js:1
+#: build/blocks/features/index.js:1
+#: build/blocks/section/index.js:1
+msgid "Overflow Hidden"
+msgstr ""
+
+#: build/blocks/counter/index.js:1
+msgid "Use position-absolute for floating cards over a banner."
+msgstr ""
+
+#: build/blocks/counter/index.js:1
+msgid "Z-Index"
 msgstr ""
 
 #: build/blocks/cta/index.js:1
@@ -6545,15 +6751,6 @@ msgstr ""
 #: build/blocks/menu/index.js:1
 #: build/blocks/widget/index.js:1
 msgid "Paragraph Text"
-msgstr ""
-
-#: build/blocks/divider/index.js:1
-#: build/blocks/feature/index.js:1
-#: build/blocks/features/index.js:1
-#: build/blocks/heading-subtitle/index.js:1
-#: build/blocks/menu/index.js:1
-#: build/blocks/widget/index.js:1
-msgid "Enter paragraph..."
 msgstr ""
 
 #: build/blocks/divider/index.js:1
@@ -6783,22 +6980,6 @@ msgstr ""
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 msgid "Default: more hover"
-msgstr ""
-
-#: build/blocks/feature/index.js:1
-#: build/blocks/features/index.js:1
-msgid "Enable Card Wrapper"
-msgstr ""
-
-#: build/blocks/feature/index.js:1
-#: build/blocks/features/index.js:1
-msgid "Enable Card Body"
-msgstr ""
-
-#: build/blocks/feature/index.js:1
-#: build/blocks/features/index.js:1
-#: build/blocks/section/index.js:1
-msgid "Overflow Hidden"
 msgstr ""
 
 #: build/blocks/features/index.js:1
@@ -7064,12 +7245,6 @@ msgstr ""
 #: build/blocks/form-field/index.js:23
 #: build/blocks/form-field/index.js:35
 msgid "Time"
-msgstr ""
-
-#. translators: Default label for number input field
-#: build/blocks/form-field/index.js:25
-#: build/blocks/form-field/index.js:35
-msgid "Number"
 msgstr ""
 
 #. translators: Default label for hidden field
@@ -7824,7 +7999,23 @@ msgid "Socials"
 msgstr ""
 
 #: build/blocks/header-widgets/index.js:1
+#: build/blocks/menu/index.js:1
+#: build/blocks/navbar/index.js:1
+msgid "Menu"
+msgstr ""
+
+#: build/blocks/header-widgets/index.js:1
 msgid "Сотрудник"
+msgstr ""
+
+#: build/blocks/header-widgets/index.js:1
+#: build/blocks/navbar/index.js:1
+msgid "Legal address"
+msgstr ""
+
+#: build/blocks/header-widgets/index.js:1
+#: build/blocks/navbar/index.js:1
+msgid "Requisites"
 msgstr ""
 
 #: build/blocks/header-widgets/index.js:1
@@ -8792,6 +8983,10 @@ msgid "Classes for <a> links"
 msgstr ""
 
 #: build/blocks/menu/index.js:1
+msgid "Expand submenu"
+msgstr ""
+
+#: build/blocks/menu/index.js:1
 msgid "Loading menu..."
 msgstr ""
 
@@ -9209,14 +9404,6 @@ msgstr ""
 
 #: build/blocks/opening-hours/index.js:1
 msgid "Align time to the right"
-msgstr ""
-
-#: build/blocks/paragraph/index.js:1
-msgid "Weight"
-msgstr ""
-
-#: build/blocks/paragraph/index.js:1
-msgid "Transform"
 msgstr ""
 
 #: build/blocks/paragraph/index.js:1
@@ -11053,7 +11240,7 @@ msgid "Custom Style JSON"
 msgstr ""
 
 #: build/blocks/yandex-map-v3/index.js:1
-msgid "Yandex Maps v3 customization JSON array"
+msgid "Optional. If filled, this JSON overrides the selected scheme/preset."
 msgstr ""
 
 #: build/blocks/yandex-map-v3/index.js:1
@@ -11641,6 +11828,41 @@ msgstr ""
 #: build/blocks/copyright/block.json
 msgctxt "block keyword"
 msgid "developer"
+msgstr ""
+
+#: build/blocks/counter/block.json
+msgctxt "block title"
+msgid "Counter"
+msgstr ""
+
+#: build/blocks/counter/block.json
+msgctxt "block description"
+msgid "Animated counter (fact) with optional icon, label, subtitle and ratings. Four layout presets plus absolute positioning for floating cards."
+msgstr ""
+
+#: build/blocks/counter/block.json
+msgctxt "block keyword"
+msgid "counter"
+msgstr ""
+
+#: build/blocks/counter/block.json
+msgctxt "block keyword"
+msgid "fact"
+msgstr ""
+
+#: build/blocks/counter/block.json
+msgctxt "block keyword"
+msgid "number"
+msgstr ""
+
+#: build/blocks/counter/block.json
+msgctxt "block keyword"
+msgid "stats"
+msgstr ""
+
+#: build/blocks/counter/block.json
+msgctxt "block keyword"
+msgid "countup"
 msgstr ""
 
 #: build/blocks/divider/block.json

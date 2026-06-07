@@ -72,7 +72,10 @@ export const getRootClasses = (attributes) => {
 		blockClass,
 	} = attributes;
 
-	const classes = [];
+	// counter-wrapper carries the theme's counter font sizes (.counter 2rem,
+	// .counter-lg 2.2rem, label .8rem, card-body padding). Required for the
+	// block to match the facts.html reference when used standalone.
+	const classes = ['counter-wrapper'];
 
 	if (enableCard) {
 		classes.push('card');

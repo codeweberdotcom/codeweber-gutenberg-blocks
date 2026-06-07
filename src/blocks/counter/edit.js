@@ -207,6 +207,7 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 				iconBtnSize: 'btn-lg',
 				iconBtnVariant: 'soft',
 				iconColor: 'purple',
+				iconClass: '',
 				iconWrapperClass: 'pe-none mx-auto me-4 mb-lg-3 mb-xl-0',
 				counterLg: false,
 				titleClass: 'mb-1',

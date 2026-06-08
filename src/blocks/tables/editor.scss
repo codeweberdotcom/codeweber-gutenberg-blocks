@@ -29,6 +29,15 @@
 		}
 	}
 
+	/* Индикатор: шапка скрыта на фронте (showHeader = false) */
+	thead.tables-thead-hidden {
+		opacity: 0.4;
+
+		th {
+			position: relative;
+		}
+	}
+
 	/* Светлый header — только когда НЕТ table-dark */
 	table:not(.table-dark) thead th {
 		background-color: #f8f9fa !important;

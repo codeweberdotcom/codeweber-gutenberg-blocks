@@ -14,10 +14,15 @@ export const TablesSidebar = ({ attributes, setAttributes }) => {
 		sourceMode,
 		csvDocumentId,
 		tableDark,
+		tableSm,
 		tableStriped,
+		tableStripedColumns,
 		tableBordered,
 		tableBorderless,
 		tableHover,
+		tableVariant,
+		theadVariant,
+		showHeader,
 		responsive,
 	} = attributes;
 
@@ -79,9 +84,19 @@ export const TablesSidebar = ({ attributes, setAttributes }) => {
 					onChange={(v) => setAttributes({ tableDark: v })}
 				/>
 				<ToggleControl
+					label={__('table-sm', 'codeweber-gutenberg-blocks')}
+					checked={tableSm === true}
+					onChange={(v) => setAttributes({ tableSm: v })}
+				/>
+				<ToggleControl
 					label={__('table-striped', 'codeweber-gutenberg-blocks')}
 					checked={tableStriped === true}
 					onChange={(v) => setAttributes({ tableStriped: v })}
+				/>
+				<ToggleControl
+					label={__('table-striped-columns', 'codeweber-gutenberg-blocks')}
+					checked={tableStripedColumns === true}
+					onChange={(v) => setAttributes({ tableStripedColumns: v })}
 				/>
 				<ToggleControl
 					label={__('table-bordered', 'codeweber-gutenberg-blocks')}
@@ -97,6 +112,55 @@ export const TablesSidebar = ({ attributes, setAttributes }) => {
 					label={__('table-hover', 'codeweber-gutenberg-blocks')}
 					checked={tableHover === true}
 					onChange={(v) => setAttributes({ tableHover: v })}
+				/>
+
+				{/* Contextual table color */}
+				<div className="component-sidebar-title" style={{ marginTop: '16px' }}>
+					<label>
+						{__('Table color', 'codeweber-gutenberg-blocks')}
+					</label>
+				</div>
+				<SelectControl
+					value={tableVariant || ''}
+					options={[
+						{ value: '', label: __('— None —', 'codeweber-gutenberg-blocks') },
+						{ value: 'primary', label: 'table-primary' },
+						{ value: 'secondary', label: 'table-secondary' },
+						{ value: 'success', label: 'table-success' },
+						{ value: 'danger', label: 'table-danger' },
+						{ value: 'warning', label: 'table-warning' },
+						{ value: 'info', label: 'table-info' },
+						{ value: 'light', label: 'table-light' },
+						{ value: 'dark', label: 'table-dark' },
+					]}
+					onChange={(v) => setAttributes({ tableVariant: v })}
+				/>
+
+				{/* Header style + visibility */}
+				<div className="component-sidebar-title" style={{ marginTop: '16px' }}>
+					<label>
+						{__('Header', 'codeweber-gutenberg-blocks')}
+					</label>
+				</div>
+				<ToggleControl
+					label={__('Show table header', 'codeweber-gutenberg-blocks')}
+					help={__(
+						'Hide the <thead> row on the frontend.',
+						'codeweber-gutenberg-blocks'
+					)}
+					checked={showHeader !== false}
+					onChange={(v) => setAttributes({ showHeader: v })}
+				/>
+				<SelectControl
+					label={__('Header style', 'codeweber-gutenberg-blocks')}
+					value={theadVariant || ''}
+					options={[
+						{ value: '', label: __('— Default —', 'codeweber-gutenberg-blocks') },
+						{ value: 'table-light', label: 'table-light' },
+						{ value: 'table-dark', label: 'table-dark' },
+					]}
+					disabled={showHeader === false}
+					onChange={(v) => setAttributes({ theadVariant: v })}
 				/>
 
 				{/* Responsive Toggle */}

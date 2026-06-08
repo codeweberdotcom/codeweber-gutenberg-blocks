@@ -21,10 +21,15 @@ const TablesSave = ({ attributes }) => {
 	const {
 		sourceMode,
 		tableDark,
+		tableSm,
 		tableStriped,
+		tableStripedColumns,
 		tableBordered,
 		tableBorderless,
 		tableHover,
+		tableVariant,
+		theadVariant,
+		showHeader,
 		responsive,
 		headerCells,
 		rows,
@@ -72,10 +77,13 @@ const TablesSave = ({ attributes }) => {
 	const getTableClasses = () => {
 		const classes = ['table'];
 		if (tableDark) classes.push('table-dark');
+		if (tableSm) classes.push('table-sm');
 		if (tableStriped) classes.push('table-striped');
+		if (tableStripedColumns) classes.push('table-striped-columns');
 		if (tableBordered) classes.push('table-bordered');
 		if (tableBorderless) classes.push('table-borderless');
 		if (tableHover) classes.push('table-hover');
+		if (tableVariant) classes.push(`table-${tableVariant}`);
 		return classes.join(' ');
 	};
 
@@ -85,7 +93,8 @@ const TablesSave = ({ attributes }) => {
 
 	const tableContent = (
 		<table className={getTableClasses()}>
-			<thead>
+			{showHeader !== false && (
+			<thead className={theadVariant || undefined}>
 				<tr>
 					{headerCellsNorm.map((cell, colIndex) => (
 						<th
@@ -98,6 +107,7 @@ const TablesSave = ({ attributes }) => {
 					))}
 				</tr>
 			</thead>
+			)}
 			<tbody>
 				{rows.map((row, rowIndex) => {
 					const rowCells = getRowCells(row);

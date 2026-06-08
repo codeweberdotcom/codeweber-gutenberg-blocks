@@ -16,19 +16,32 @@ if (!defined('ABSPATH')) {
 $source_mode = $attributes['sourceMode'] ?? 'manual';
 $csv_document_id = isset($attributes['csvDocumentId']) ? (int) $attributes['csvDocumentId'] : 0;
 $table_dark = !empty($attributes['tableDark']);
+$table_sm = !empty($attributes['tableSm']);
 $table_striped = !empty($attributes['tableStriped']);
+$table_striped_columns = !empty($attributes['tableStripedColumns']);
 $table_bordered = !empty($attributes['tableBordered']);
 $table_borderless = !empty($attributes['tableBorderless']);
 $table_hover = !empty($attributes['tableHover']);
+$table_variant = isset($attributes['tableVariant']) ? trim((string) $attributes['tableVariant']) : '';
+$thead_variant = isset($attributes['theadVariant']) ? trim((string) $attributes['theadVariant']) : '';
+$show_header = isset($attributes['showHeader']) ? (bool) $attributes['showHeader'] : true;
 $responsive = isset($attributes['responsive']) ? (bool) $attributes['responsive'] : true;
+
+$allowed_variants = ['primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark'];
+$allowed_thead = ['table-light', 'table-dark'];
 
 $table_classes = ['table'];
 if ($table_dark) $table_classes[] = 'table-dark';
+if ($table_sm) $table_classes[] = 'table-sm';
 if ($table_striped) $table_classes[] = 'table-striped';
+if ($table_striped_columns) $table_classes[] = 'table-striped-columns';
 if ($table_bordered) $table_classes[] = 'table-bordered';
 if ($table_borderless) $table_classes[] = 'table-borderless';
 if ($table_hover) $table_classes[] = 'table-hover';
+if ($table_variant && in_array($table_variant, $allowed_variants, true)) $table_classes[] = 'table-' . $table_variant;
 $table_class_str = implode(' ', $table_classes);
+
+$thead_class = ($thead_variant && in_array($thead_variant, $allowed_thead, true)) ? $thead_variant : '';
 
 $header_cells = [];
 $rows_data = [];
@@ -79,7 +92,8 @@ $anchor = isset($attributes['anchor']) ? trim((string) $attributes['anchor']) : 
 	<?php endif; ?>
 	<table class="<?php echo esc_attr($table_class_str); ?>">
 		<?php if (!empty($header_cells) || !empty($rows_data)) : ?>
-			<thead>
+			<?php if ($show_header && !empty($header_cells)) : ?>
+			<thead<?php echo $thead_class ? ' class="' . esc_attr($thead_class) . '"' : ''; ?>>
 				<tr>
 					<?php
 					if ($source_mode === 'csv' && !empty($header_cells)) {
@@ -98,6 +112,7 @@ $anchor = isset($attributes['anchor']) ? trim((string) $attributes['anchor']) : 
 					?>
 				</tr>
 			</thead>
+			<?php endif; ?>
 			<tbody>
 				<?php
 				if ($source_mode === 'csv' && !empty($rows_data)) {

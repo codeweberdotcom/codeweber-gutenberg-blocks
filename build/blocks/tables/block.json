@@ -34,9 +34,29 @@
       "type": "boolean",
       "default": false
     },
+    "tableSm": {
+      "type": "boolean",
+      "default": false
+    },
     "tableStriped": {
       "type": "boolean",
       "default": false
+    },
+    "tableStripedColumns": {
+      "type": "boolean",
+      "default": false
+    },
+    "tableVariant": {
+      "type": "string",
+      "default": ""
+    },
+    "theadVariant": {
+      "type": "string",
+      "default": ""
+    },
+    "showHeader": {
+      "type": "boolean",
+      "default": true
     },
     "tableBordered": {
       "type": "boolean",

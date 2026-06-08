@@ -31,10 +31,15 @@ const TablesEdit = ({ attributes, setAttributes }) => {
 		sourceMode,
 		csvDocumentId,
 		tableDark,
+		tableSm,
 		tableStriped,
+		tableStripedColumns,
 		tableBordered,
 		tableBorderless,
 		tableHover,
+		tableVariant,
+		theadVariant,
+		showHeader,
 		responsive,
 		headerCells,
 		rows,
@@ -66,12 +71,19 @@ const TablesEdit = ({ attributes, setAttributes }) => {
 	const getTableClasses = () => {
 		const classes = ['table'];
 		if (tableDark) classes.push('table-dark');
+		if (tableSm) classes.push('table-sm');
 		if (tableStriped) classes.push('table-striped');
+		if (tableStripedColumns) classes.push('table-striped-columns');
 		if (tableBordered) classes.push('table-bordered');
 		if (tableBorderless) classes.push('table-borderless');
 		if (tableHover) classes.push('table-hover');
+		if (tableVariant) classes.push(`table-${tableVariant}`);
 		return classes.join(' ');
 	};
+
+	const theadClassName =
+		(theadVariant ? theadVariant : '') +
+		(showHeader === false ? ' tables-thead-hidden' : '');
 
 	const updateHeaderCell = (index, value) => {
 		const newHeader = headerCellsNorm.map((c, i) =>
@@ -341,7 +353,7 @@ const TablesEdit = ({ attributes, setAttributes }) => {
 
 	const tableContent = (
 		<table className={getTableClasses()}>
-			<thead>
+			<thead className={theadClassName.trim() || undefined}>
 				<tr>
 					{headerCellsNorm.map((cell, colIndex) => (
 						<th
@@ -553,7 +565,7 @@ const TablesEdit = ({ attributes, setAttributes }) => {
 	const isCsvMode = sourceMode === 'csv';
 	const csvTableContent = (
 		<table className={getTableClasses()}>
-			<thead>
+			<thead className={theadClassName.trim() || undefined}>
 				<tr>
 					{csvPreview.header.map((cell, i) => (
 						<th key={i} scope="col">

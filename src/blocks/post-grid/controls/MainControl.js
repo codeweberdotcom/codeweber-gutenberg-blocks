@@ -904,6 +904,7 @@ export const MainControl = ( { attributes, setAttributes } ) => {
 		order,
 		template,
 		enableLink,
+		disableLink,
 		selectedTaxonomies,
 		simpleEffect,
 		filterByImageTag,
@@ -1025,6 +1026,31 @@ export const MainControl = ( { attributes, setAttributes } ) => {
 							}
 							postType={ postType || 'post' }
 						/>
+						{ postType &&
+							! [
+								'clients',
+								'testimonials',
+								'staff',
+								'documents',
+								'product',
+							].includes( postType ) && (
+							<div style={ { marginTop: '16px' } }>
+								<ToggleControl
+									label={ __(
+										'Disable Links',
+										'codeweber-gutenberg-blocks'
+									) }
+									checked={ disableLink || false }
+									onChange={ ( value ) =>
+										setAttributes( { disableLink: value } )
+									}
+									help={ __(
+										'Make cards non-clickable (remove all links in the card)',
+										'codeweber-gutenberg-blocks'
+									) }
+								/>
+							</div>
+						) }
 						{ ( postType === 'clients' ||
 							postType === 'testimonials' ) && (
 							<div style={ { marginTop: '16px' } }>

@@ -983,6 +983,19 @@ if (!function_exists('render_post_grid_item')) {
 			// В режиме Swiper (slider) НИКОГДА не добавляем col-* классы
 			$html = cw_render_post_card($post, $template, $display_settings, $template_args);
 
+			// Disable Links: делаем карточку некликабельной — все <a> в карточке
+			// превращаем в <span> (классы сохраняем, переход убираем). WC-shop
+			// пропускаем — там функциональные ссылки (add-to-cart, quick view).
+			$disable_link = isset($attributes['disableLink']) ? (bool) $attributes['disableLink'] : false;
+			if ($disable_link && !$is_wc_shop_template && !empty($html)) {
+				$html = preg_replace_callback('/<a\b([^>]*)>/i', function ($m) {
+					return preg_match('/\bclass\s*=\s*"([^"]*)"/i', $m[1], $c)
+						? '<span class="' . $c[1] . '">'
+						: '<span>';
+				}, $html);
+				$html = preg_replace('#</a\s*>#i', '</span>', $html);
+			}
+
 			if ( $alt_title_filter ) {
 				remove_filter( 'the_title', $alt_title_filter, 99 );
 			}

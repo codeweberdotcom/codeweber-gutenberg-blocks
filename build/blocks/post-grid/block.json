@@ -389,6 +389,10 @@
       "type": "boolean",
       "default": false
     },
+    "disableLink": {
+      "type": "boolean",
+      "default": false
+    },
     "filterByImageTag": {
       "type": "boolean",
       "default": false

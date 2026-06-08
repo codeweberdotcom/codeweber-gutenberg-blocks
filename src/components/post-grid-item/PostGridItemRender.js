@@ -303,7 +303,7 @@ export const PostGridItemRender = ({
 		} else if (template === 'quote-avatar') {
 			// Quote with Avatar: borderless quote + avatar, no card, no icon (variant 5)
 			return (
-				<blockquote className="border-0 fs-lg">
+				<blockquote className="border-0 fs-lg text-center">
 					<p>{quoteText}</p>
 					{renderDetails(
 						'info',

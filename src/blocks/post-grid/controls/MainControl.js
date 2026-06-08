@@ -1030,9 +1030,9 @@ export const MainControl = ( { attributes, setAttributes } ) => {
 							! [
 								'clients',
 								'testimonials',
-								'staff',
 								'documents',
 								'product',
+								'offices',
 							].includes( postType ) && (
 							<div style={ { marginTop: '16px' } }>
 								<ToggleControl

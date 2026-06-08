@@ -1267,6 +1267,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 								? `clients ${blockClass || ''}`.trim()
 								: blockClass || ''
 						}
+						swiperClassName="py-4 my-n4"
 						wrapperClassName={swiperWrapperClass || ''}
 						uniqueKey={`${swiperUniqueKey}-${imageSize}-${template}`}
 					>

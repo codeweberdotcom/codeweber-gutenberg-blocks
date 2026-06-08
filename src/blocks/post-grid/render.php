@@ -1173,7 +1173,7 @@ if ( $source_type === 'taxonomy' ) {
 			$swiper_slide_cls = isset( $attributes['swiperSlideClass'] ) ? $attributes['swiperSlideClass'] : '';
 
 			echo '<div class="' . esc_attr( trim( $swiper_container_classes ) ) . '"' . $swiper_data_attrs_str . '>';
-			echo '<div class="swiper"><div class="' . esc_attr( $wrapper_cls_sw ) . '">';
+			echo '<div class="swiper py-4 my-n4"><div class="' . esc_attr( $wrapper_cls_sw ) . '">';
 			foreach ( $manual_term_items as $item ) {
 				$item_type = isset( $item['type'] ) ? $item['type'] : 'term';
 				if ( $item_type === 'html' ) {
@@ -1252,7 +1252,7 @@ if ( $source_type === 'taxonomy' ) {
 		$swiper_slide_cls = isset( $attributes['swiperSlideClass'] ) ? $attributes['swiperSlideClass'] : '';
 
 		echo '<div class="' . esc_attr( trim( $swiper_container_classes ) ) . '"' . $swiper_data_attrs_str . '>';
-		echo '<div class="swiper"><div class="' . esc_attr( $wrapper_cls_sw ) . '">';
+		echo '<div class="swiper py-4 my-n4"><div class="' . esc_attr( $wrapper_cls_sw ) . '">';
 		foreach ( $terms as $term ) {
 			echo $wrap_term_card( $render_one_term( $term ), true, $swiper_slide_cls );
 		}
@@ -1427,7 +1427,7 @@ if ( $source_type === 'taxonomy' ) {
 			$swiper_slide_class = isset($attributes['swiperSlideClass']) ? $attributes['swiperSlideClass'] : '';
 			?>
 			<div class="<?php echo esc_attr(trim($swiper_container_classes)); ?>"<?php echo $swiper_data_attrs_str . $swiper_settings_str; ?>>
-				<div class="swiper">
+				<div class="swiper py-4 my-n4">
 					<div class="<?php echo esc_attr($wrapper_classes); ?>">
 						<?php foreach ($query->posts as $post) : setup_postdata($post); ?>
 							<?php

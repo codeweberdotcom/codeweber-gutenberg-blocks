@@ -721,12 +721,16 @@ if (!function_exists('render_post_grid_item')) {
 					'bg_color' => isset($attributes['bgColor']) ? $attributes['bgColor'] : '', // Для card шаблона
 					'shadow' => isset($attributes['shadow']) ? (bool) $attributes['shadow'] : true, // Для blockquote шаблона
 					'enable_lift' => $enable_lift, // Передаем enable_lift для добавления класса lift
-					// Кликабельность карточки управляется тумблером Enable Links (по умолчанию выкл)
-					'enable_link' => isset($attributes['enableLink']) ? (bool) $attributes['enableLink'] : false,
+					// По умолчанию карточка кликабельна; снимается тумблером Disable Links ниже
+					'enable_link' => true,
 				];
-				
+
 				// Используем шаблон testimonials
 				$html = cw_render_post_card($post, $testimonial_template, $display_settings, $template_args);
+
+				if ($disable_link) {
+					$html = $cwgb_strip_links($html);
+				}
 			} elseif ($post_type === 'documents') {
 				// Специальная обработка для documents
 				// Поддерживаем оба шаблона: document-card и document-card-download
@@ -848,13 +852,8 @@ if (!function_exists('render_post_grid_item')) {
 					$avatar_size = $attributes['avatarSize'];
 				}
 				
-				// Для staff по умолчанию enable_link = true (если явно не установлено false)
-				// Для circle и circle_center шаблонов всегда включаем ссылку на всей карточке
-				// Для circle_center_alt ссылка на изображении
+				// Карточка staff кликабельна по умолчанию; снимается тумблером Disable Links
 				$enable_link_staff = true;
-				if (!in_array($staff_template, ['circle', 'circle_center', 'circle_center_alt']) && isset($attributes['enableLink'])) {
-					$enable_link_staff = (bool) $attributes['enableLink'];
-				}
 				
 				// Для circle_center_alt по умолчанию показываем социальные иконки
 				$show_social_staff = false;

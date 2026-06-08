@@ -1029,7 +1029,6 @@ export const MainControl = ( { attributes, setAttributes } ) => {
 						{ postType &&
 							! [
 								'clients',
-								'testimonials',
 								'documents',
 								'product',
 								'offices',
@@ -1051,29 +1050,21 @@ export const MainControl = ( { attributes, setAttributes } ) => {
 								/>
 							</div>
 						) }
-						{ ( postType === 'clients' ||
-							postType === 'testimonials' ) && (
+						{ postType === 'clients' && (
 							<div style={ { marginTop: '16px' } }>
 								<ToggleControl
 									label={ __(
-										'Enable Links',
+										'Link to company website',
 										'codeweber-gutenberg-blocks'
 									) }
 									checked={ enableLink || false }
 									onChange={ ( value ) =>
 										setAttributes( { enableLink: value } )
 									}
-									help={
-										postType === 'testimonials'
-											? __(
-													'Make testimonial cards clickable (disabled by default)',
-													'codeweber-gutenberg-blocks'
-											  )
-											: __(
-													'Enable links to client posts (disabled by default)',
-													'codeweber-gutenberg-blocks'
-											  )
-									}
+									help={ __(
+										'Link client cards to the company URL instead of the client post',
+										'codeweber-gutenberg-blocks'
+									) }
 								/>
 							</div>
 						) }

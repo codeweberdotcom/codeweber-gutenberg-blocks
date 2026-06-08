@@ -13,33 +13,124 @@
 		margin-bottom: 1rem;
 	}
 
+	/* Базовый вид таблицы — приближённо к Bootstrap .table
+	   (в канвасе редактора Bootstrap-утилит нет, поэтому повторяем тут) */
 	table {
 		width: 100%;
 		border-collapse: collapse;
+		color: #212529;
 
 		th,
 		td {
 			padding: 0.5rem 0.75rem;
-			border: 1px solid #dee2e6;
+			border-bottom: 1px solid #dee2e6;
 			vertical-align: top;
 		}
 
 		thead th {
 			font-weight: 600;
+			background-color: #f8f9fa;
+			border-bottom-width: 2px;
 		}
+	}
+
+	/* table-sm — компактные отступы */
+	table.table-sm th,
+	table.table-sm td {
+		padding: 0.25rem 0.35rem;
+	}
+
+	/* table-bordered — полная сетка */
+	table.table-bordered th,
+	table.table-bordered td {
+		border: 1px solid #dee2e6;
+	}
+
+	/* table-borderless — без рамок */
+	table.table-borderless th,
+	table.table-borderless td {
+		border: 0;
+	}
+
+	/* table-striped — зебра по строкам */
+	table.table-striped tbody tr:nth-of-type(odd) th,
+	table.table-striped tbody tr:nth-of-type(odd) td {
+		background-color: rgba(0, 0, 0, 0.05);
+	}
+
+	/* table-striped-columns — зебра по столбцам */
+	table.table-striped-columns tbody tr > :nth-child(even) {
+		background-color: rgba(0, 0, 0, 0.05);
+	}
+
+	/* table-hover — подсветка строки при наведении */
+	table.table-hover tbody tr:hover th,
+	table.table-hover tbody tr:hover td {
+		background-color: rgba(0, 0, 0, 0.075);
+	}
+
+	/* Контекстные цвета таблицы (table-primary…light) */
+	@each $name, $bg in ('primary': #cfe2ff, 'secondary': #e2e3e5, 'success': #d1e7dd, 'danger': #f8d7da, 'warning': #fff3cd, 'info': #cff4fc, 'light': #f8f9fa) {
+		table.table-#{$name} th,
+		table.table-#{$name} td {
+			background-color: $bg;
+		}
+	}
+
+	/* table-dark — тёмная таблица целиком */
+	table.table-dark {
+		color: #fff;
+
+		th,
+		td {
+			background-color: #212529;
+			border-color: #373b3e;
+		}
+
+		thead th {
+			background-color: #1c1f23;
+		}
+	}
+
+	/* Вариант шапки (theadVariant) */
+	thead.table-light th {
+		background-color: #f8f9fa;
+		color: #212529;
+	}
+
+	thead.table-dark th {
+		background-color: #212529;
+		color: #fff;
+		border-color: #373b3e;
 	}
 
 	/* Индикатор: шапка скрыта на фронте (showHeader = false) */
 	thead.tables-thead-hidden {
-		opacity: 0.4;
+		opacity: 0.55;
+		outline: 1px dashed #d63638;
+		outline-offset: -1px;
 
 		th {
 			position: relative;
 		}
+
+		th:first-child::before {
+			content: "Hidden on frontend";
+			position: absolute;
+			top: -0.9rem;
+			left: 0;
+			padding: 0 4px;
+			font-size: 10px;
+			font-weight: 600;
+			line-height: 1.4;
+			white-space: nowrap;
+			color: #d63638;
+			background: #fff;
+			pointer-events: none;
+		}
 	}
 
-	/* Выравнивание текста по колонке — превью в редакторе
-	   (Bootstrap-утилит в канвасе редактора может не быть) */
+	/* Выравнивание текста по колонке — превью в редакторе */
 	th.text-start,
 	td.text-start {
 		text-align: left;
@@ -58,18 +149,6 @@
 	/* Кнопка переключения выравнивания колонки */
 	.tables-align-btn {
 		font-weight: 700;
-	}
-
-	/* Светлый header — только когда НЕТ table-dark */
-	table:not(.table-dark) thead th {
-		background-color: #f8f9fa !important;
-	}
-
-	/* Тёмный header — когда включён table-dark */
-	table.table-dark thead th {
-		background-color: #212529 !important;
-		color: #fff !important;
-		border-color: #32383e !important;
 	}
 
 	// Cell controls (remove column) - in header

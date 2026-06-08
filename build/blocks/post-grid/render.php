@@ -843,10 +843,10 @@ if (!function_exists('render_post_grid_item')) {
 				$simple_effect = isset($attributes['simpleEffect']) ? $attributes['simpleEffect'] : 'none';
 				$enable_lift = ($simple_effect === 'lift');
 				
-				// Для circle шаблона всегда используем w-15, для circle_center и circle_center_alt - w-20
+				// Для circle шаблона всегда используем w-15, для circle_center и circle_center_alt - w-20 h-20
 				$avatar_size = 'w-15';
 				if (in_array($staff_template, ['circle_center', 'circle_center_alt'])) {
-					$avatar_size = 'w-20';
+					$avatar_size = 'w-20 h-20';
 				}
 				if (isset($attributes['avatarSize']) && !empty($attributes['avatarSize'])) {
 					$avatar_size = $attributes['avatarSize'];

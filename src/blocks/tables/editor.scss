@@ -70,7 +70,7 @@
 	}
 
 	/* Контекстные цвета таблицы (table-primary…light) */
-	@each $name, $bg in ('primary': #cfe2ff, 'secondary': #e2e3e5, 'success': #d1e7dd, 'danger': #f8d7da, 'warning': #fff3cd, 'info': #cff4fc, 'light': #f8f9fa) {
+	@each $name, $bg in ("primary": #cfe2ff, "secondary": #e2e3e5, "success": #d1e7dd, "danger": #f8d7da, "warning": #fff3cd, "info": #cff4fc, "light": #f8f9fa) {
 		table.table-#{$name} th,
 		table.table-#{$name} td {
 			background-color: $bg;
@@ -104,29 +104,61 @@
 		border-color: #373b3e;
 	}
 
-	/* Индикатор: шапка скрыта на фронте (showHeader = false) */
-	thead.tables-thead-hidden {
-		opacity: 0.55;
-		outline: 1px dashed #d63638;
-		outline-offset: -1px;
+	/* Скрытие верхней/нижней линии — превью в редакторе
+	   (на фронте это Bootstrap-утилиты, в канвасе их нет) */
+	th.border-top-0,
+	td.border-top-0 {
+		border-top: 0 !important;
+	}
 
-		th {
-			position: relative;
-		}
+	th.border-bottom-0,
+	td.border-bottom-0 {
+		border-bottom: 0 !important;
+	}
 
-		th:first-child::before {
-			content: "Hidden on frontend";
-			position: absolute;
-			top: -0.9rem;
-			left: 0;
-			padding: 0 4px;
-			font-size: 10px;
+	/* Панель управления колонками, когда шапка скрыта */
+	.tables-columns-panel {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 6px;
+		margin-bottom: 8px;
+		padding: 6px 8px;
+		background: #f0f6fc;
+		border: 1px dashed #c3d4e6;
+		border-radius: 4px;
+
+		.tables-columns-panel-label {
+			font-size: 11px;
 			font-weight: 600;
+			color: #50575e;
+			margin-right: 4px;
+		}
+	}
+
+	.tables-column-chip {
+		display: inline-flex;
+		align-items: center;
+		gap: 2px;
+		padding: 2px 4px;
+		background: #fff;
+		border: 1px solid #dcdcde;
+		border-radius: 3px;
+
+		.tables-column-chip-name {
+			max-width: 120px;
+			overflow: hidden;
+			font-size: 11px;
 			line-height: 1.4;
 			white-space: nowrap;
-			color: #d63638;
-			background: #fff;
-			pointer-events: none;
+			text-overflow: ellipsis;
+		}
+
+		button {
+			padding: 0 5px;
+			min-width: auto;
+			height: 20px;
+			font-size: 11px;
 		}
 	}
 

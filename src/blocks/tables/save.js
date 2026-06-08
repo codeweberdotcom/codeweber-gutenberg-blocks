@@ -30,6 +30,8 @@ const TablesSave = ({ attributes }) => {
 		tableVariant,
 		theadVariant,
 		showHeader,
+		hideTopBorder,
+		hideBottomBorder,
 		responsive,
 		headerCells,
 		rows,
@@ -37,7 +39,7 @@ const TablesSave = ({ attributes }) => {
 	} = attributes;
 
 	const aligns = Array.isArray(columnAligns) ? columnAligns : [];
-	const alignClass = (i) => (aligns[i] ? `text-${aligns[i]}` : undefined);
+	const alignClass = (i) => (aligns[i] ? `text-${aligns[i]}` : '');
 
 	// CSV mode: server-side render only, no saved content
 	if (sourceMode === 'csv') {
@@ -47,6 +49,27 @@ const TablesSave = ({ attributes }) => {
 	const headerCellsNorm = (headerCells || []).map(normalizeCell);
 	const getRowCells = (row) => (row?.cells || []).map(normalizeCell);
 	const totalHeaderCols = headerCellsNorm.reduce((s, c) => s + c.colspan, 0);
+
+	// Bootstrap-классы скрытия верхней/нижней линии на крайних строках.
+	const headerVisible = showHeader !== false;
+	const bodyHasNoHeader = !headerVisible || headerCellsNorm.length === 0;
+	const headerCellClass = (i) => {
+		const c = [alignClass(i)];
+		if (hideTopBorder) c.push('border-top-0');
+		return c.filter(Boolean).join(' ') || undefined;
+	};
+	const bodyCellClass = (rowIndex, i) => {
+		const c = [alignClass(i)];
+		if (hideTopBorder && bodyHasNoHeader && rowIndex === 0) c.push('border-top-0');
+		if (hideBottomBorder && rowIndex === rows.length - 1) c.push('border-bottom-0');
+		return c.filter(Boolean).join(' ') || undefined;
+	};
+	const padCellClass = (rowIndex) => {
+		const c = [];
+		if (hideTopBorder && bodyHasNoHeader && rowIndex === 0) c.push('border-top-0');
+		if (hideBottomBorder && rowIndex === rows.length - 1) c.push('border-bottom-0');
+		return c.filter(Boolean).join(' ') || undefined;
+	};
 
 	const getCoveredColsForRow = (rowIndex) => {
 		const covered = new Set();
@@ -104,7 +127,7 @@ const TablesSave = ({ attributes }) => {
 						<th
 							key={colIndex}
 							scope="col"
-							className={alignClass(colIndex)}
+							className={headerCellClass(colIndex)}
 							colSpan={cell.colspan > 1 ? cell.colspan : undefined}
 						>
 							<RichText.Content value={cell.content} />
@@ -129,7 +152,7 @@ const TablesSave = ({ attributes }) => {
 									<CellTag
 										key={colIndex}
 										{...cellProps}
-										className={alignClass(colIndex)}
+										className={bodyCellClass(rowIndex, colIndex)}
 										colSpan={cell.colspan > 1 ? cell.colspan : undefined}
 										rowSpan={
 											(cell.rowspan ?? 1) > 1 ? cell.rowspan : undefined
@@ -140,7 +163,7 @@ const TablesSave = ({ attributes }) => {
 								);
 							})}
 							{padColspan > 0 && (
-								<td key="pad" colSpan={padColspan}></td>
+								<td key="pad" colSpan={padColspan} className={padCellClass(rowIndex)}></td>
 							)}
 						</tr>
 					);

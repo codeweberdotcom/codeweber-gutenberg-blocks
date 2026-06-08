@@ -58,6 +58,14 @@
 			"type": "boolean",
 			"default": true
 		},
+		"hideTopBorder": {
+			"type": "boolean",
+			"default": false
+		},
+		"hideBottomBorder": {
+			"type": "boolean",
+			"default": false
+		},
 		"columnAligns": {
 			"type": "array",
 			"default": []

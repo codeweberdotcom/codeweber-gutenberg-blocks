@@ -25,6 +25,8 @@ $table_hover = !empty($attributes['tableHover']);
 $table_variant = isset($attributes['tableVariant']) ? trim((string) $attributes['tableVariant']) : '';
 $thead_variant = isset($attributes['theadVariant']) ? trim((string) $attributes['theadVariant']) : '';
 $show_header = isset($attributes['showHeader']) ? (bool) $attributes['showHeader'] : true;
+$hide_top_border = !empty($attributes['hideTopBorder']);
+$hide_bottom_border = !empty($attributes['hideBottomBorder']);
 $responsive = isset($attributes['responsive']) ? (bool) $attributes['responsive'] : true;
 
 $allowed_variants = ['primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark'];
@@ -45,9 +47,20 @@ $thead_class = ($thead_variant && in_array($thead_variant, $allowed_thead, true)
 
 $allowed_aligns = ['center', 'end'];
 $column_aligns = (isset($attributes['columnAligns']) && is_array($attributes['columnAligns'])) ? $attributes['columnAligns'] : [];
-$align_attr = function ($i) use ($column_aligns, $allowed_aligns) {
+
+// Строит атрибут class для ячейки: выравнивание колонки (text-*) + доп. Bootstrap-классы.
+$cell_attr = function ($i, array $extra = []) use ($column_aligns, $allowed_aligns) {
+	$classes = [];
 	$a = isset($column_aligns[$i]) ? (string) $column_aligns[$i] : '';
-	return in_array($a, $allowed_aligns, true) ? ' class="text-' . $a . '"' : '';
+	if (in_array($a, $allowed_aligns, true)) {
+		$classes[] = 'text-' . $a;
+	}
+	foreach ($extra as $cls) {
+		if ($cls) {
+			$classes[] = $cls;
+		}
+	}
+	return $classes ? ' class="' . esc_attr(implode(' ', $classes)) . '"' : '';
 };
 
 $header_cells = [];
@@ -90,6 +103,10 @@ if ($source_mode === 'csv' && $csv_document_id > 0 && post_type_exists('document
 	}
 }
 
+// Когда шапка скрыта (или её нет) — верхняя линия относится к первой строке тела.
+$body_has_no_header = !$show_header || empty($header_cells);
+$last_row_index = count($rows_data) - 1;
+
 $wrapper_class = 'wp-block-codeweber-blocks-tables';
 $anchor = isset($attributes['anchor']) ? trim((string) $attributes['anchor']) : '';
 ?>
@@ -103,17 +120,18 @@ $anchor = isset($attributes['anchor']) ? trim((string) $attributes['anchor']) : 
 			<thead<?php echo $thead_class ? ' class="' . esc_attr($thead_class) . '"' : ''; ?>>
 				<tr>
 					<?php
+					$head_extra = $hide_top_border ? ['border-top-0'] : [];
 					if ($source_mode === 'csv' && !empty($header_cells)) {
 						foreach ($header_cells as $h_idx => $cell) {
 							$val = is_array($cell) ? ($cell['content'] ?? $cell) : $cell;
-							echo '<th scope="col"' . $align_attr($h_idx) . '>' . esc_html($val) . '</th>';
+							echo '<th scope="col"' . $cell_attr($h_idx, $head_extra) . '>' . esc_html($val) . '</th>';
 						}
 					} elseif ($source_mode === 'manual' && !empty($header_cells)) {
 						foreach ($header_cells as $h_idx => $cell) {
 							$colspan = $cell['colspan'] ?? 1;
 							$content = $cell['content'] ?? '';
 							$col_attr = $colspan > 1 ? ' colSpan="' . (int) $colspan . '"' : '';
-							echo '<th scope="col"' . $align_attr($h_idx) . $col_attr . '>' . wp_kses_post($content) . '</th>';
+							echo '<th scope="col"' . $cell_attr($h_idx, $head_extra) . $col_attr . '>' . wp_kses_post($content) . '</th>';
 						}
 					}
 					?>
@@ -123,11 +141,14 @@ $anchor = isset($attributes['anchor']) ? trim((string) $attributes['anchor']) : 
 			<tbody>
 				<?php
 				if ($source_mode === 'csv' && !empty($rows_data)) {
-					foreach ($rows_data as $row) {
+					foreach ($rows_data as $r_idx => $row) {
 						echo '<tr>';
 						foreach ($row as $c_idx => $cell) {
 							$val = is_array($cell) ? ($cell['content'] ?? reset($cell)) : $cell;
-							echo '<td' . $align_attr($c_idx) . '>' . esc_html($val) . '</td>';
+							$extra = [];
+							if ($hide_top_border && $body_has_no_header && $r_idx === 0) $extra[] = 'border-top-0';
+							if ($hide_bottom_border && $r_idx === $last_row_index) $extra[] = 'border-bottom-0';
+							echo '<td' . $cell_attr($c_idx, $extra) . '>' . esc_html($val) . '</td>';
 						}
 						echo '</tr>';
 					}
@@ -139,6 +160,8 @@ $anchor = isset($attributes['anchor']) ? trim((string) $attributes['anchor']) : 
 						$row_cells = $row;
 						$col = 0;
 						$cell_idx = 0;
+						$top_for_row = ($hide_top_border && $body_has_no_header && $r_idx === 0);
+						$bottom_for_row = ($hide_bottom_border && $r_idx === $last_row_index);
 						while ($col < $total_cols && $cell_idx < count($row_cells)) {
 							$key = $r_idx . ':' . $col;
 							if (isset($covered[$key])) {
@@ -153,7 +176,10 @@ $anchor = isset($attributes['anchor']) ? trim((string) $attributes['anchor']) : 
 							$scope = $cell_idx === 0 ? ' scope="row"' : '';
 							$row_attr = $rowspan > 1 ? ' rowSpan="' . $rowspan . '"' : '';
 							$col_attr = $colspan > 1 ? ' colSpan="' . $colspan . '"' : '';
-							echo '<' . $tag . $scope . $align_attr($cell_idx) . $row_attr . $col_attr . '>' . wp_kses_post($content) . '</' . $tag . '>';
+							$extra = [];
+							if ($top_for_row) $extra[] = 'border-top-0';
+							if ($bottom_for_row) $extra[] = 'border-bottom-0';
+							echo '<' . $tag . $scope . $cell_attr($cell_idx, $extra) . $row_attr . $col_attr . '>' . wp_kses_post($content) . '</' . $tag . '>';
 							for ($i = 1; $i < $rowspan; $i++) {
 								for ($j = 0; $j < $colspan; $j++) {
 									$covered[($r_idx + $i) . ':' . ($col + $j)] = true;
@@ -170,7 +196,11 @@ $anchor = isset($attributes['anchor']) ? trim((string) $attributes['anchor']) : 
 						$row_span = array_sum(array_map(function ($c) { return $c['colspan'] ?? 1; }, $row_cells));
 						$pad = max(0, $free_cols - $row_span);
 						if ($pad > 0) {
-							echo '<td colSpan="' . $pad . '"></td>';
+							$pad_classes = [];
+							if ($top_for_row) $pad_classes[] = 'border-top-0';
+							if ($bottom_for_row) $pad_classes[] = 'border-bottom-0';
+							$pad_class_attr = $pad_classes ? ' class="' . esc_attr(implode(' ', $pad_classes)) . '"' : '';
+							echo '<td colSpan="' . $pad . '"' . $pad_class_attr . '></td>';
 						}
 						echo '</tr>';
 					}

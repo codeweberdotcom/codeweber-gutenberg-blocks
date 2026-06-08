@@ -23,6 +23,8 @@ export const TablesSidebar = ({ attributes, setAttributes }) => {
 		tableVariant,
 		theadVariant,
 		showHeader,
+		hideTopBorder,
+		hideBottomBorder,
 		responsive,
 	} = attributes;
 
@@ -107,6 +109,24 @@ export const TablesSidebar = ({ attributes, setAttributes }) => {
 					label={__('table-borderless', 'codeweber-gutenberg-blocks')}
 					checked={tableBorderless === true}
 					onChange={(v) => setAttributes({ tableBorderless: v })}
+				/>
+				<ToggleControl
+					label={__('Hide top border line', 'codeweber-gutenberg-blocks')}
+					help={__(
+						'Remove the border above the first row (border-top-0).',
+						'codeweber-gutenberg-blocks'
+					)}
+					checked={hideTopBorder === true}
+					onChange={(v) => setAttributes({ hideTopBorder: v })}
+				/>
+				<ToggleControl
+					label={__('Hide bottom border line', 'codeweber-gutenberg-blocks')}
+					help={__(
+						'Remove the border below the last row (border-bottom-0).',
+						'codeweber-gutenberg-blocks'
+					)}
+					checked={hideBottomBorder === true}
+					onChange={(v) => setAttributes({ hideBottomBorder: v })}
 				/>
 				<ToggleControl
 					label={__('table-hover', 'codeweber-gutenberg-blocks')}

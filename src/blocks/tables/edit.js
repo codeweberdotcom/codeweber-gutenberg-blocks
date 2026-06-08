@@ -40,6 +40,8 @@ const TablesEdit = ({ attributes, setAttributes }) => {
 		tableVariant,
 		theadVariant,
 		showHeader,
+		hideTopBorder,
+		hideBottomBorder,
 		responsive,
 		headerCells,
 		rows,
@@ -82,12 +84,32 @@ const TablesEdit = ({ attributes, setAttributes }) => {
 		return classes.join(' ');
 	};
 
-	const theadClassName =
-		(theadVariant ? theadVariant : '') +
-		(showHeader === false ? ' tables-thead-hidden' : '');
+	const headerVisible = showHeader !== false;
+	const theadClassName = theadVariant || undefined;
 
 	const aligns = Array.isArray(columnAligns) ? columnAligns : [];
-	const alignClass = (i) => (aligns[i] ? `text-${aligns[i]}` : undefined);
+	const alignClass = (i) => (aligns[i] ? `text-${aligns[i]}` : '');
+
+	// Bootstrap-классы скрытия верхней/нижней линии (только на крайних строках).
+	// Когда шапка скрыта — первая строка = первая строка тела.
+	const bodyHasNoHeader = !headerVisible || headerCellsNorm.length === 0;
+	const headerCellClass = (i) => {
+		const c = [alignClass(i)];
+		if (hideTopBorder) c.push('border-top-0');
+		return c.filter(Boolean).join(' ') || undefined;
+	};
+	const bodyCellClass = (rowIndex, i) => {
+		const c = [alignClass(i)];
+		if (hideTopBorder && bodyHasNoHeader && rowIndex === 0) c.push('border-top-0');
+		if (hideBottomBorder && rowIndex === rows.length - 1) c.push('border-bottom-0');
+		return c.filter(Boolean).join(' ') || undefined;
+	};
+	const padCellClass = (rowIndex) => {
+		const c = [];
+		if (hideTopBorder && bodyHasNoHeader && rowIndex === 0) c.push('border-top-0');
+		if (hideBottomBorder && rowIndex === rows.length - 1) c.push('border-bottom-0');
+		return c.filter(Boolean).join(' ') || undefined;
+	};
 
 	// Цикл выравнивания колонки: '' (left) → center → end → ''
 	const cycleColumnAlign = (i) => {
@@ -377,13 +399,14 @@ const TablesEdit = ({ attributes, setAttributes }) => {
 
 	const tableContent = (
 		<table className={getTableClasses()}>
-			<thead className={theadClassName.trim() || undefined}>
+			{headerVisible && (
+			<thead className={theadClassName}>
 				<tr>
 					{headerCellsNorm.map((cell, colIndex) => (
 						<th
 							key={colIndex}
 							scope="col"
-							className={alignClass(colIndex)}
+							className={headerCellClass(colIndex)}
 							colSpan={cell.colspan > 1 ? cell.colspan : undefined}
 						>
 							<div className="tables-cell-controls">
@@ -455,6 +478,7 @@ const TablesEdit = ({ attributes, setAttributes }) => {
 					))}
 				</tr>
 			</thead>
+			)}
 			<tbody>
 				{rows.map((row, rowIndex) => {
 					const rowCells = getRowCells(row);
@@ -483,7 +507,7 @@ const TablesEdit = ({ attributes, setAttributes }) => {
 									<CellTag
 										key={colIndex}
 										{...cellProps}
-										className={alignClass(colIndex)}
+										className={bodyCellClass(rowIndex, colIndex)}
 										colSpan={cell.colspan > 1 ? cell.colspan : undefined}
 										rowSpan={
 											(cell.rowspan ?? 1) > 1 ? cell.rowspan : undefined
@@ -584,7 +608,7 @@ const TablesEdit = ({ attributes, setAttributes }) => {
 								);
 							})}
 							{padColspan > 0 && (
-								<td colSpan={padColspan}>
+								<td colSpan={padColspan} className={padCellClass(rowIndex)}>
 									<RichText
 										tagName="span"
 										value=""
@@ -604,27 +628,80 @@ const TablesEdit = ({ attributes, setAttributes }) => {
 	);
 
 	const isCsvMode = sourceMode === 'csv';
+	const csvLast = csvPreview.rows.length - 1;
+	const csvNoHeader = !headerVisible || csvPreview.header.length === 0;
+	const csvHeadClass = (i) =>
+		[alignClass(i), hideTopBorder ? 'border-top-0' : '']
+			.filter(Boolean)
+			.join(' ') || undefined;
+	const csvBodyClass = (ri, ci) => {
+		const c = [alignClass(ci)];
+		if (hideTopBorder && csvNoHeader && ri === 0) c.push('border-top-0');
+		if (hideBottomBorder && ri === csvLast) c.push('border-bottom-0');
+		return c.filter(Boolean).join(' ') || undefined;
+	};
 	const csvTableContent = (
 		<table className={getTableClasses()}>
-			<thead className={theadClassName.trim() || undefined}>
+			{headerVisible && (
+			<thead className={theadClassName}>
 				<tr>
 					{csvPreview.header.map((cell, i) => (
-						<th key={i} scope="col" className={alignClass(i)}>
+						<th key={i} scope="col" className={csvHeadClass(i)}>
 							{String(cell)}
 						</th>
 					))}
 				</tr>
 			</thead>
+			)}
 			<tbody>
 				{csvPreview.rows.map((row, ri) => (
 					<tr key={ri}>
 						{row.map((cell, ci) => (
-							<td key={ci} className={alignClass(ci)}>{String(cell)}</td>
+							<td key={ci} className={csvBodyClass(ri, ci)}>{String(cell)}</td>
 						))}
 					</tr>
 				))}
 			</tbody>
 		</table>
+	);
+
+	// Управление колонками, когда шапка скрыта (в таблице её нет).
+	const columnsPanel = (
+		<div className="tables-columns-panel">
+			<span className="tables-columns-panel-label">
+				{__('Columns (header hidden):', 'codeweber-gutenberg-blocks')}
+			</span>
+			{headerCellsNorm.map((cell, colIndex) => (
+				<span key={colIndex} className="tables-column-chip">
+					<span className="tables-column-chip-name">
+						{cell.content
+							? cell.content
+							: `${__('Col', 'codeweber-gutenberg-blocks')} ${colIndex + 1}`}
+					</span>
+					<Button
+						isSmall
+						isSecondary
+						className="tables-align-btn"
+						onClick={() => cycleColumnAlign(colIndex)}
+						title={__(
+							'Column text alignment (Left / Center / Right)',
+							'codeweber-gutenberg-blocks'
+						)}
+					>
+						{alignGlyph(colIndex)}
+					</Button>
+					<Button
+						isSmall
+						isDestructive
+						onClick={() => removeColumn(colIndex)}
+						disabled={headerCellsNorm.length <= 1}
+						title={__('Remove column', 'codeweber-gutenberg-blocks')}
+					>
+						×
+					</Button>
+				</span>
+			))}
+		</div>
 	);
 
 	return (
@@ -655,6 +732,7 @@ const TablesEdit = ({ attributes, setAttributes }) => {
 					</>
 				) : (
 					<>
+						{!headerVisible && columnsPanel}
 						{responsive ? (
 							<div className="table-responsive">{tableContent}</div>
 						) : (

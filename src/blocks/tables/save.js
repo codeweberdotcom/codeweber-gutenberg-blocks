@@ -36,10 +36,15 @@ const TablesSave = ({ attributes }) => {
 		headerCells,
 		rows,
 		columnAligns,
+		columnShrink,
 	} = attributes;
 
 	const aligns = Array.isArray(columnAligns) ? columnAligns : [];
 	const alignClass = (i) => (aligns[i] ? `text-${aligns[i]}` : '');
+
+	const shrink = Array.isArray(columnShrink) ? columnShrink : [];
+	const shrinkStyle = (i) =>
+		shrink[i] ? { width: '1%', whiteSpace: 'nowrap' } : undefined;
 
 	// CSV mode: server-side render only, no saved content
 	if (sourceMode === 'csv') {
@@ -128,6 +133,7 @@ const TablesSave = ({ attributes }) => {
 							key={colIndex}
 							scope="col"
 							className={headerCellClass(colIndex)}
+							style={shrinkStyle(colIndex)}
 							colSpan={cell.colspan > 1 ? cell.colspan : undefined}
 						>
 							<RichText.Content value={cell.content} />
@@ -153,6 +159,7 @@ const TablesSave = ({ attributes }) => {
 										key={colIndex}
 										{...cellProps}
 										className={bodyCellClass(rowIndex, colIndex)}
+										style={shrinkStyle(colIndex)}
 										colSpan={cell.colspan > 1 ? cell.colspan : undefined}
 										rowSpan={
 											(cell.rowspan ?? 1) > 1 ? cell.rowspan : undefined

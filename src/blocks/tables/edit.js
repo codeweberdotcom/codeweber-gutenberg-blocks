@@ -46,6 +46,7 @@ const TablesEdit = ({ attributes, setAttributes }) => {
 		headerCells,
 		rows,
 		columnAligns,
+		columnShrink,
 	} = attributes;
 
 	const [csvPreview, setCsvPreview] = useState({ header: [], rows: [] });
@@ -127,6 +128,17 @@ const TablesEdit = ({ attributes, setAttributes }) => {
 		if (a === 'center') return 'C';
 		if (a === 'end') return 'R';
 		return 'L';
+	};
+
+	// Шринк колонки по содержимому — инлайн-стиль (Bootstrap-утилиты нет).
+	const shrink = Array.isArray(columnShrink) ? columnShrink : [];
+	const shrinkStyle = (i) =>
+		shrink[i] ? { width: '1%', whiteSpace: 'nowrap' } : undefined;
+	const toggleColumnShrink = (i) => {
+		const next = [...shrink];
+		while (next.length <= i) next.push(false);
+		next[i] = !next[i];
+		setAttributes({ columnShrink: next });
 	};
 
 	const updateHeaderCell = (index, value) => {
@@ -342,6 +354,7 @@ const TablesEdit = ({ attributes, setAttributes }) => {
 				cells: [...getRowCells(row), { content: '', colspan: 1 }],
 			})),
 			columnAligns: [...aligns, ''],
+			columnShrink: [...shrink, false],
 		});
 	};
 
@@ -354,6 +367,7 @@ const TablesEdit = ({ attributes, setAttributes }) => {
 				cells: getRowCells(row).filter((_, i) => i !== colIndex),
 			})),
 			columnAligns: aligns.filter((_, i) => i !== colIndex),
+			columnShrink: shrink.filter((_, i) => i !== colIndex),
 		});
 	};
 
@@ -407,6 +421,7 @@ const TablesEdit = ({ attributes, setAttributes }) => {
 							key={colIndex}
 							scope="col"
 							className={headerCellClass(colIndex)}
+							style={shrinkStyle(colIndex)}
 							colSpan={cell.colspan > 1 ? cell.colspan : undefined}
 						>
 							<div className="tables-cell-controls">
@@ -436,6 +451,21 @@ const TablesEdit = ({ attributes, setAttributes }) => {
 									)}
 								>
 									{alignGlyph(colIndex)}
+								</Button>
+								<Button
+									isSmall
+									isSecondary
+									isPressed={shrink[colIndex] === true}
+									onClick={(e) => {
+										e.stopPropagation();
+										toggleColumnShrink(colIndex);
+									}}
+									title={__(
+										'Shrink column to content',
+										'codeweber-gutenberg-blocks'
+									)}
+								>
+									⇔
 								</Button>
 								{colIndex < headerCellsNorm.length - 1 && (
 									<Button
@@ -508,6 +538,7 @@ const TablesEdit = ({ attributes, setAttributes }) => {
 										key={colIndex}
 										{...cellProps}
 										className={bodyCellClass(rowIndex, colIndex)}
+										style={shrinkStyle(colIndex)}
 										colSpan={cell.colspan > 1 ? cell.colspan : undefined}
 										rowSpan={
 											(cell.rowspan ?? 1) > 1 ? cell.rowspan : undefined
@@ -646,7 +677,7 @@ const TablesEdit = ({ attributes, setAttributes }) => {
 			<thead className={theadClassName}>
 				<tr>
 					{csvPreview.header.map((cell, i) => (
-						<th key={i} scope="col" className={csvHeadClass(i)}>
+						<th key={i} scope="col" className={csvHeadClass(i)} style={shrinkStyle(i)}>
 							{String(cell)}
 						</th>
 					))}
@@ -657,7 +688,7 @@ const TablesEdit = ({ attributes, setAttributes }) => {
 				{csvPreview.rows.map((row, ri) => (
 					<tr key={ri}>
 						{row.map((cell, ci) => (
-							<td key={ci} className={csvBodyClass(ri, ci)}>{String(cell)}</td>
+							<td key={ci} className={csvBodyClass(ri, ci)} style={shrinkStyle(ci)}>{String(cell)}</td>
 						))}
 					</tr>
 				))}
@@ -689,6 +720,18 @@ const TablesEdit = ({ attributes, setAttributes }) => {
 						)}
 					>
 						{alignGlyph(colIndex)}
+					</Button>
+					<Button
+						isSmall
+						isSecondary
+						isPressed={shrink[colIndex] === true}
+						onClick={() => toggleColumnShrink(colIndex)}
+						title={__(
+							'Shrink column to content',
+							'codeweber-gutenberg-blocks'
+						)}
+					>
+						⇔
 					</Button>
 					<Button
 						isSmall

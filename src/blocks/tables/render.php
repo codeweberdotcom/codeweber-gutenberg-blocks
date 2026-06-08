@@ -63,6 +63,12 @@ $cell_attr = function ($i, array $extra = []) use ($column_aligns, $allowed_alig
 	return $classes ? ' class="' . esc_attr(implode(' ', $classes)) . '"' : '';
 };
 
+// Шринк колонки по содержимому — инлайн-стиль (готовой Bootstrap-утилиты нет).
+$column_shrink = (isset($attributes['columnShrink']) && is_array($attributes['columnShrink'])) ? $attributes['columnShrink'] : [];
+$shrink_style = function ($i) use ($column_shrink) {
+	return !empty($column_shrink[$i]) ? ' style="width:1%;white-space:nowrap"' : '';
+};
+
 $header_cells = [];
 $rows_data = [];
 
@@ -124,14 +130,14 @@ $anchor = isset($attributes['anchor']) ? trim((string) $attributes['anchor']) : 
 					if ($source_mode === 'csv' && !empty($header_cells)) {
 						foreach ($header_cells as $h_idx => $cell) {
 							$val = is_array($cell) ? ($cell['content'] ?? $cell) : $cell;
-							echo '<th scope="col"' . $cell_attr($h_idx, $head_extra) . '>' . esc_html($val) . '</th>';
+							echo '<th scope="col"' . $cell_attr($h_idx, $head_extra) . $shrink_style($h_idx) . '>' . esc_html($val) . '</th>';
 						}
 					} elseif ($source_mode === 'manual' && !empty($header_cells)) {
 						foreach ($header_cells as $h_idx => $cell) {
 							$colspan = $cell['colspan'] ?? 1;
 							$content = $cell['content'] ?? '';
 							$col_attr = $colspan > 1 ? ' colSpan="' . (int) $colspan . '"' : '';
-							echo '<th scope="col"' . $cell_attr($h_idx, $head_extra) . $col_attr . '>' . wp_kses_post($content) . '</th>';
+							echo '<th scope="col"' . $cell_attr($h_idx, $head_extra) . $shrink_style($h_idx) . $col_attr . '>' . wp_kses_post($content) . '</th>';
 						}
 					}
 					?>
@@ -148,7 +154,7 @@ $anchor = isset($attributes['anchor']) ? trim((string) $attributes['anchor']) : 
 							$extra = [];
 							if ($hide_top_border && $body_has_no_header && $r_idx === 0) $extra[] = 'border-top-0';
 							if ($hide_bottom_border && $r_idx === $last_row_index) $extra[] = 'border-bottom-0';
-							echo '<td' . $cell_attr($c_idx, $extra) . '>' . esc_html($val) . '</td>';
+							echo '<td' . $cell_attr($c_idx, $extra) . $shrink_style($c_idx) . '>' . esc_html($val) . '</td>';
 						}
 						echo '</tr>';
 					}
@@ -179,7 +185,7 @@ $anchor = isset($attributes['anchor']) ? trim((string) $attributes['anchor']) : 
 							$extra = [];
 							if ($top_for_row) $extra[] = 'border-top-0';
 							if ($bottom_for_row) $extra[] = 'border-bottom-0';
-							echo '<' . $tag . $scope . $cell_attr($cell_idx, $extra) . $row_attr . $col_attr . '>' . wp_kses_post($content) . '</' . $tag . '>';
+							echo '<' . $tag . $scope . $cell_attr($cell_idx, $extra) . $shrink_style($cell_idx) . $row_attr . $col_attr . '>' . wp_kses_post($content) . '</' . $tag . '>';
 							for ($i = 1; $i < $rowspan; $i++) {
 								for ($j = 0; $j < $colspan; $j++) {
 									$covered[($r_idx + $i) . ':' . ($col + $j)] = true;

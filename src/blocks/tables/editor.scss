@@ -32,6 +32,12 @@
 			background-color: #f8f9fa;
 			border-bottom-width: 2px;
 		}
+
+		/* Тема добавляет border-top на сам tbody — повторяем для превью,
+		   чтобы тумблер «Hide top border line» давал видимый эффект */
+		&:not(.table-borderless) tbody {
+			border-top: 1px solid #dee2e6;
+		}
 	}
 
 	/* table-sm — компактные отступы */

@@ -509,7 +509,11 @@ const TablesEdit = ({ attributes, setAttributes }) => {
 				</tr>
 			</thead>
 			)}
-			<tbody>
+			<tbody
+				style={
+					hideTopBorder && bodyHasNoHeader ? { borderTop: 0 } : undefined
+				}
+			>
 				{rows.map((row, rowIndex) => {
 					const rowCells = getRowCells(row);
 					const totalRowCols = rowCells.reduce((s, c) => s + c.colspan, 0);
@@ -684,7 +688,11 @@ const TablesEdit = ({ attributes, setAttributes }) => {
 				</tr>
 			</thead>
 			)}
-			<tbody>
+			<tbody
+				style={
+					hideTopBorder && csvNoHeader ? { borderTop: 0 } : undefined
+				}
+			>
 				{csvPreview.rows.map((row, ri) => (
 					<tr key={ri}>
 						{row.map((cell, ci) => (

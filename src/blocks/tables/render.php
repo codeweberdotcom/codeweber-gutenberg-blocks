@@ -144,7 +144,12 @@ $anchor = isset($attributes['anchor']) ? trim((string) $attributes['anchor']) : 
 				</tr>
 			</thead>
 			<?php endif; ?>
-			<tbody>
+			<?php
+			// Тема добавляет border-top на сам <tbody> (.table tbody, !important).
+			// Когда шапка скрыта — это верхняя линия таблицы; гасим её инлайном с !important.
+			$tbody_style = ($hide_top_border && $body_has_no_header) ? ' style="border-top:0 !important"' : '';
+			?>
+			<tbody<?php echo $tbody_style; ?>>
 				<?php
 				if ($source_mode === 'csv' && !empty($rows_data)) {
 					foreach ($rows_data as $r_idx => $row) {

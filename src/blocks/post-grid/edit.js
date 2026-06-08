@@ -103,15 +103,27 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 			}
 		} else if (postType === 'testimonials') {
 			const updates = {};
-			// Если template не является testimonial шаблоном, меняем на default
+			// Допустимые шаблоны testimonials (имена из реестра темы).
+			// Если текущий шаблон не из этого набора — сбрасываем на card.
+			const validTestimonialTemplates = [
+				'card',
+				'quote',
+				'centered',
+				'centered-avatar',
+				'featured',
+				'quote-avatar',
+				'card-pale',
+				'card-border-bottom',
+				'card-light-rating',
+				'quote-name',
+				'featured-bgimage',
+			];
 			if (
 				!template ||
 				(!template.startsWith('testimonial-') &&
-					!['default', 'card', 'blockquote', 'icon'].includes(
-						template
-					))
+					!validTestimonialTemplates.includes(template))
 			) {
-				updates.template = 'default';
+				updates.template = 'card';
 			}
 			if (Object.keys(updates).length > 0) {
 				setAttributes(updates);

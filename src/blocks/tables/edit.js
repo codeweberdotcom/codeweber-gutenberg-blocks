@@ -43,6 +43,7 @@ const TablesEdit = ({ attributes, setAttributes }) => {
 		responsive,
 		headerCells,
 		rows,
+		columnAligns,
 	} = attributes;
 
 	const [csvPreview, setCsvPreview] = useState({ header: [], rows: [] });
@@ -84,6 +85,27 @@ const TablesEdit = ({ attributes, setAttributes }) => {
 	const theadClassName =
 		(theadVariant ? theadVariant : '') +
 		(showHeader === false ? ' tables-thead-hidden' : '');
+
+	const aligns = Array.isArray(columnAligns) ? columnAligns : [];
+	const alignClass = (i) => (aligns[i] ? `text-${aligns[i]}` : undefined);
+
+	// Цикл выравнивания колонки: '' (left) → center → end → ''
+	const cycleColumnAlign = (i) => {
+		const order = ['', 'center', 'end'];
+		const current = aligns[i] || '';
+		const next = order[(order.indexOf(current) + 1) % order.length];
+		const newAligns = [...aligns];
+		while (newAligns.length <= i) newAligns.push('');
+		newAligns[i] = next;
+		setAttributes({ columnAligns: newAligns });
+	};
+
+	const alignGlyph = (i) => {
+		const a = aligns[i] || '';
+		if (a === 'center') return 'C';
+		if (a === 'end') return 'R';
+		return 'L';
+	};
 
 	const updateHeaderCell = (index, value) => {
 		const newHeader = headerCellsNorm.map((c, i) =>
@@ -297,6 +319,7 @@ const TablesEdit = ({ attributes, setAttributes }) => {
 				...row,
 				cells: [...getRowCells(row), { content: '', colspan: 1 }],
 			})),
+			columnAligns: [...aligns, ''],
 		});
 	};
 
@@ -308,6 +331,7 @@ const TablesEdit = ({ attributes, setAttributes }) => {
 				...row,
 				cells: getRowCells(row).filter((_, i) => i !== colIndex),
 			})),
+			columnAligns: aligns.filter((_, i) => i !== colIndex),
 		});
 	};
 
@@ -359,6 +383,7 @@ const TablesEdit = ({ attributes, setAttributes }) => {
 						<th
 							key={colIndex}
 							scope="col"
+							className={alignClass(colIndex)}
 							colSpan={cell.colspan > 1 ? cell.colspan : undefined}
 						>
 							<div className="tables-cell-controls">
@@ -373,6 +398,21 @@ const TablesEdit = ({ attributes, setAttributes }) => {
 									title={__('Remove column', 'codeweber-gutenberg-blocks')}
 								>
 									×
+								</Button>
+								<Button
+									isSmall
+									isSecondary
+									className="tables-align-btn"
+									onClick={(e) => {
+										e.stopPropagation();
+										cycleColumnAlign(colIndex);
+									}}
+									title={__(
+										'Column text alignment (Left / Center / Right)',
+										'codeweber-gutenberg-blocks'
+									)}
+								>
+									{alignGlyph(colIndex)}
 								</Button>
 								{colIndex < headerCellsNorm.length - 1 && (
 									<Button
@@ -443,6 +483,7 @@ const TablesEdit = ({ attributes, setAttributes }) => {
 									<CellTag
 										key={colIndex}
 										{...cellProps}
+										className={alignClass(colIndex)}
 										colSpan={cell.colspan > 1 ? cell.colspan : undefined}
 										rowSpan={
 											(cell.rowspan ?? 1) > 1 ? cell.rowspan : undefined
@@ -568,7 +609,7 @@ const TablesEdit = ({ attributes, setAttributes }) => {
 			<thead className={theadClassName.trim() || undefined}>
 				<tr>
 					{csvPreview.header.map((cell, i) => (
-						<th key={i} scope="col">
+						<th key={i} scope="col" className={alignClass(i)}>
 							{String(cell)}
 						</th>
 					))}
@@ -578,7 +619,7 @@ const TablesEdit = ({ attributes, setAttributes }) => {
 				{csvPreview.rows.map((row, ri) => (
 					<tr key={ri}>
 						{row.map((cell, ci) => (
-							<td key={ci}>{String(cell)}</td>
+							<td key={ci} className={alignClass(ci)}>{String(cell)}</td>
 						))}
 					</tr>
 				))}

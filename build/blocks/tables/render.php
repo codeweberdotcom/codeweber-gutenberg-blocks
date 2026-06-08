@@ -43,6 +43,13 @@ $table_class_str = implode(' ', $table_classes);
 
 $thead_class = ($thead_variant && in_array($thead_variant, $allowed_thead, true)) ? $thead_variant : '';
 
+$allowed_aligns = ['center', 'end'];
+$column_aligns = (isset($attributes['columnAligns']) && is_array($attributes['columnAligns'])) ? $attributes['columnAligns'] : [];
+$align_attr = function ($i) use ($column_aligns, $allowed_aligns) {
+	$a = isset($column_aligns[$i]) ? (string) $column_aligns[$i] : '';
+	return in_array($a, $allowed_aligns, true) ? ' class="text-' . $a . '"' : '';
+};
+
 $header_cells = [];
 $rows_data = [];
 
@@ -97,16 +104,16 @@ $anchor = isset($attributes['anchor']) ? trim((string) $attributes['anchor']) : 
 				<tr>
 					<?php
 					if ($source_mode === 'csv' && !empty($header_cells)) {
-						foreach ($header_cells as $cell) {
+						foreach ($header_cells as $h_idx => $cell) {
 							$val = is_array($cell) ? ($cell['content'] ?? $cell) : $cell;
-							echo '<th scope="col">' . esc_html($val) . '</th>';
+							echo '<th scope="col"' . $align_attr($h_idx) . '>' . esc_html($val) . '</th>';
 						}
 					} elseif ($source_mode === 'manual' && !empty($header_cells)) {
-						foreach ($header_cells as $cell) {
+						foreach ($header_cells as $h_idx => $cell) {
 							$colspan = $cell['colspan'] ?? 1;
 							$content = $cell['content'] ?? '';
 							$col_attr = $colspan > 1 ? ' colSpan="' . (int) $colspan . '"' : '';
-							echo '<th scope="col"' . $col_attr . '>' . wp_kses_post($content) . '</th>';
+							echo '<th scope="col"' . $align_attr($h_idx) . $col_attr . '>' . wp_kses_post($content) . '</th>';
 						}
 					}
 					?>
@@ -118,9 +125,9 @@ $anchor = isset($attributes['anchor']) ? trim((string) $attributes['anchor']) : 
 				if ($source_mode === 'csv' && !empty($rows_data)) {
 					foreach ($rows_data as $row) {
 						echo '<tr>';
-						foreach ($row as $cell) {
+						foreach ($row as $c_idx => $cell) {
 							$val = is_array($cell) ? ($cell['content'] ?? reset($cell)) : $cell;
-							echo '<td>' . esc_html($val) . '</td>';
+							echo '<td' . $align_attr($c_idx) . '>' . esc_html($val) . '</td>';
 						}
 						echo '</tr>';
 					}
@@ -146,7 +153,7 @@ $anchor = isset($attributes['anchor']) ? trim((string) $attributes['anchor']) : 
 							$scope = $cell_idx === 0 ? ' scope="row"' : '';
 							$row_attr = $rowspan > 1 ? ' rowSpan="' . $rowspan . '"' : '';
 							$col_attr = $colspan > 1 ? ' colSpan="' . $colspan . '"' : '';
-							echo '<' . $tag . $scope . $row_attr . $col_attr . '>' . wp_kses_post($content) . '</' . $tag . '>';
+							echo '<' . $tag . $scope . $align_attr($cell_idx) . $row_attr . $col_attr . '>' . wp_kses_post($content) . '</' . $tag . '>';
 							for ($i = 1; $i < $rowspan; $i++) {
 								for ($j = 0; $j < $colspan; $j++) {
 									$covered[($r_idx + $i) . ':' . ($col + $j)] = true;

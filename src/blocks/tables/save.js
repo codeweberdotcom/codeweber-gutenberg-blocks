@@ -33,7 +33,11 @@ const TablesSave = ({ attributes }) => {
 		responsive,
 		headerCells,
 		rows,
+		columnAligns,
 	} = attributes;
+
+	const aligns = Array.isArray(columnAligns) ? columnAligns : [];
+	const alignClass = (i) => (aligns[i] ? `text-${aligns[i]}` : undefined);
 
 	// CSV mode: server-side render only, no saved content
 	if (sourceMode === 'csv') {
@@ -100,6 +104,7 @@ const TablesSave = ({ attributes }) => {
 						<th
 							key={colIndex}
 							scope="col"
+							className={alignClass(colIndex)}
 							colSpan={cell.colspan > 1 ? cell.colspan : undefined}
 						>
 							<RichText.Content value={cell.content} />
@@ -124,6 +129,7 @@ const TablesSave = ({ attributes }) => {
 									<CellTag
 										key={colIndex}
 										{...cellProps}
+										className={alignClass(colIndex)}
 										colSpan={cell.colspan > 1 ? cell.colspan : undefined}
 										rowSpan={
 											(cell.rowspan ?? 1) > 1 ? cell.rowspan : undefined

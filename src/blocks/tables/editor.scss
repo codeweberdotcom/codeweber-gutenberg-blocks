@@ -38,6 +38,28 @@
 		}
 	}
 
+	/* Выравнивание текста по колонке — превью в редакторе
+	   (Bootstrap-утилит в канвасе редактора может не быть) */
+	th.text-start,
+	td.text-start {
+		text-align: left;
+	}
+
+	th.text-center,
+	td.text-center {
+		text-align: center;
+	}
+
+	th.text-end,
+	td.text-end {
+		text-align: right;
+	}
+
+	/* Кнопка переключения выравнивания колонки */
+	.tables-align-btn {
+		font-weight: 700;
+	}
+
 	/* Светлый header — только когда НЕТ table-dark */
 	table:not(.table-dark) thead th {
 		background-color: #f8f9fa !important;

@@ -1025,7 +1025,8 @@ export const MainControl = ( { attributes, setAttributes } ) => {
 							}
 							postType={ postType || 'post' }
 						/>
-						{ postType === 'clients' && (
+						{ ( postType === 'clients' ||
+							postType === 'testimonials' ) && (
 							<div style={ { marginTop: '16px' } }>
 								<ToggleControl
 									label={ __(
@@ -1036,10 +1037,17 @@ export const MainControl = ( { attributes, setAttributes } ) => {
 									onChange={ ( value ) =>
 										setAttributes( { enableLink: value } )
 									}
-									help={ __(
-										'Enable links to client posts (disabled by default)',
-										'codeweber-gutenberg-blocks'
-									) }
+									help={
+										postType === 'testimonials'
+											? __(
+													'Make testimonial cards clickable (disabled by default)',
+													'codeweber-gutenberg-blocks'
+											  )
+											: __(
+													'Enable links to client posts (disabled by default)',
+													'codeweber-gutenberg-blocks'
+											  )
+									}
 								/>
 							</div>
 						) }

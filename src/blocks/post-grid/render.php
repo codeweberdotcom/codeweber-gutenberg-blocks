@@ -703,6 +703,8 @@ if (!function_exists('render_post_grid_item')) {
 					'bg_color' => isset($attributes['bgColor']) ? $attributes['bgColor'] : '', // Для card шаблона
 					'shadow' => isset($attributes['shadow']) ? (bool) $attributes['shadow'] : true, // Для blockquote шаблона
 					'enable_lift' => $enable_lift, // Передаем enable_lift для добавления класса lift
+					// Кликабельность карточки управляется тумблером Enable Links (по умолчанию выкл)
+					'enable_link' => isset($attributes['enableLink']) ? (bool) $attributes['enableLink'] : false,
 				];
 				
 				// Используем шаблон testimonials

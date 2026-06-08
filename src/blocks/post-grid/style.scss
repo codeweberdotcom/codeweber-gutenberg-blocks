@@ -9,4 +9,13 @@
 	.cwgb-title-color a {
 		color: inherit !important;
 	}
+
+	// Swiper задаёт `.swiper { overflow: hidden }`, из-за чего тень карточки
+	// внутри слайда обрезается. В демо темы карточку оборачивают в `.item-inner`
+	// (padding: 1rem 0.75rem). Воспроизводим этот отступ для карточек в слайдах
+	// блока через margin (padding слайда `.p-1` стоит с !important и перебить его
+	// нельзя), чтобы тень помещалась внутри слайда и не обрезалась.
+	.swiper-slide .card {
+		margin: 1rem 0.75rem;
+	}
 }

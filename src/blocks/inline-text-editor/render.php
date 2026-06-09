@@ -51,6 +51,7 @@ $cw_config = [
 		tabindex="-1"
 		id="cwgbInlineEditorDrawer"
 		aria-labelledby="cwgbInlineEditorDrawerLabel"
+		style="--bs-offcanvas-width: min(800px, 100vw);"
 	>
 		<div class="offcanvas-header border-bottom">
 			<h5 class="offcanvas-title" id="cwgbInlineEditorDrawerLabel">

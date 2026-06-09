@@ -224,10 +224,29 @@ class InlineTextEditor {
 				}
 
 				if ($fields) {
+					// Human-friendly name: first non-empty field value (e.g. the
+					// heading text) so editors can tell blocks apart. Falls back
+					// to the registry label.
+					$display = '';
+					foreach ($fields as $f) {
+						$text = trim(wp_strip_all_tags($f['value']));
+						if ($text !== '') {
+							$display = $text;
+							break;
+						}
+					}
+					if ($display === '') {
+						$display = $registry[$name]['label'];
+					}
+					if (function_exists('mb_strlen') && mb_strlen($display) > 60) {
+						$display = mb_substr($display, 0, 60) . '…';
+					}
+
 					$collected[] = [
 						'index'     => $index,
 						'blockName' => $name,
 						'label'     => $registry[$name]['label'],
+						'name'      => $display,
 						'fields'    => $fields,
 					];
 				}

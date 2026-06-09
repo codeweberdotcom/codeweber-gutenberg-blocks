@@ -190,10 +190,39 @@ class InlineTextEditor {
 		$registry  = self::registry();
 		$collected = [];
 		$counter   = 0;
+		$section_counter = 0;
 
-		self::collect($blocks, $registry, $collected, $counter);
+		self::collect($blocks, $registry, $collected, $counter, $section_counter, '');
 
 		return new \WP_REST_Response($collected, 200);
+	}
+
+	/**
+	 * Display name of a section block (parent label shown in the drawer).
+	 *
+	 * Priority: Gutenberg "Rename" name (attrs.metadata.name) → anchor (#id) →
+	 * sequential "Section N" for unnamed sections.
+	 *
+	 * @param array $block
+	 * @param int   $counter
+	 * @return string
+	 */
+	private static function section_label(array $block, int &$counter): string {
+		$attrs = $block['attrs'] ?? [];
+
+		$meta = $attrs['metadata']['name'] ?? '';
+		if (is_string($meta) && trim($meta) !== '') {
+			return trim($meta);
+		}
+
+		$anchor = $attrs['anchor'] ?? '';
+		if (is_string($anchor) && trim($anchor) !== '') {
+			return '#' . trim($anchor);
+		}
+
+		$counter++;
+		/* translators: %d: sequential number of an unnamed section. */
+		return sprintf(__('Section %d', 'codeweber-gutenberg-blocks'), $counter);
 	}
 
 	/**
@@ -204,9 +233,16 @@ class InlineTextEditor {
 	 * @param array $collected
 	 * @param int   $counter
 	 */
-	private static function collect(array $blocks, array $registry, array &$collected, int &$counter): void {
+	private static function collect(array $blocks, array $registry, array &$collected, int &$counter, int &$section_counter, string $section_label): void {
 		foreach ($blocks as $block) {
 			$name = $block['blockName'] ?? '';
+
+			// Track the nearest ancestor section to label children by.
+			$child_section_label = $section_label;
+			if ($name === 'codeweber-blocks/section') {
+				$child_section_label = self::section_label($block, $section_counter);
+			}
+
 			if ($name !== '' && isset($registry[$name])) {
 				$index = $counter++;
 				$attrs = $block['attrs'] ?? [];
@@ -247,13 +283,14 @@ class InlineTextEditor {
 						'blockName' => $name,
 						'label'     => $registry[$name]['label'],
 						'name'      => $display,
+						'section'   => $section_label,
 						'fields'    => $fields,
 					];
 				}
 			}
 
 			if (!empty($block['innerBlocks'])) {
-				self::collect($block['innerBlocks'], $registry, $collected, $counter);
+				self::collect($block['innerBlocks'], $registry, $collected, $counter, $section_counter, $child_section_label);
 			}
 		}
 	}

@@ -76,14 +76,13 @@ function init() {
 			card.setAttribute( 'data-cw-block', String( block.index ) );
 
 			const blockName = block.name || block.label;
+			const subLabel = block.section
+				? block.section
+				: block.label + ' #' + block.index;
 			let html = '<div class="card-body">';
 			html += '<h6 class="card-title mb-1">' + esc( blockName ) + '</h6>';
 			html +=
-				'<div class="small text-muted mb-3">' +
-				esc( block.label ) +
-				' #' +
-				esc( block.index ) +
-				'</div>';
+				'<div class="small text-muted mb-3">' + esc( subLabel ) + '</div>';
 			block.fields.forEach( ( field ) => {
 				const fid = 'cw-field-' + block.index + '-' + field.key;
 				html += '<div class="mb-3">';

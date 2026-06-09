@@ -36,8 +36,8 @@ $cw_config = [
 >
 	<button
 		type="button"
-		class="btn btn-primary btn-icon rounded-circle shadow position-fixed bottom-0 end-0 m-4"
-		style="z-index: 1045;"
+		class="btn btn-primary btn-icon rounded-circle shadow position-fixed end-0 me-4"
+		style="top: 48px; z-index: 1045;"
 		data-bs-toggle="offcanvas"
 		data-bs-target="#cwgbInlineEditorDrawer"
 		aria-controls="cwgbInlineEditorDrawer"

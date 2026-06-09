@@ -190,24 +190,22 @@ class InlineTextEditor {
 		$registry  = self::registry();
 		$collected = [];
 		$counter   = 0;
-		$section_counter = 0;
 
-		self::collect($blocks, $registry, $collected, $counter, $section_counter, '');
+		self::collect($blocks, $registry, $collected, $counter, 0, ['id' => -1, 'name' => '']);
 
 		return new \WP_REST_Response($collected, 200);
 	}
 
 	/**
-	 * Display name of a section block (parent label shown in the drawer).
+	 * Display name of a container block, matching the editor List View.
 	 *
-	 * Priority: Gutenberg "Rename" name (attrs.metadata.name) → anchor (#id) →
-	 * sequential "Section N" for unnamed sections.
+	 * Priority: Gutenberg "Rename" name (attrs.metadata.name) → registered block
+	 * title (e.g. "Section", "CTA", "Banners"). Anchors are intentionally ignored.
 	 *
 	 * @param array $block
-	 * @param int   $counter
 	 * @return string
 	 */
-	private static function section_label(array $block, int &$counter): string {
+	private static function container_name(array $block): string {
 		$attrs = $block['attrs'] ?? [];
 
 		$meta = $attrs['metadata']['name'] ?? '';
@@ -215,32 +213,41 @@ class InlineTextEditor {
 			return trim($meta);
 		}
 
-		$anchor = $attrs['anchor'] ?? '';
-		if (is_string($anchor) && trim($anchor) !== '') {
-			return '#' . trim($anchor);
+		$name = $block['blockName'] ?? '';
+		if ($name !== '') {
+			$type = \WP_Block_Type_Registry::get_instance()->get_registered($name);
+			if ($type && !empty($type->title)) {
+				return $type->title;
+			}
+			$parts = explode('/', $name);
+			return ucfirst((string) end($parts));
 		}
 
-		$counter++;
-		/* translators: %d: sequential number of an unnamed section. */
-		return sprintf(__('Section %d', 'codeweber-gutenberg-blocks'), $counter);
+		return __('Block', 'codeweber-gutenberg-blocks');
 	}
 
 	/**
-	 * Recursively collect editable blocks in document order.
+	 * Recursively collect editable blocks in document order, grouped by their
+	 * top-level container block (matching the editor List View).
 	 *
 	 * @param array $blocks
 	 * @param array $registry
 	 * @param array $collected
 	 * @param int   $counter
+	 * @param int   $depth     Current nesting depth (0 = top level).
+	 * @param array $container Current top-level container: ['id' => int, 'name' => string].
 	 */
-	private static function collect(array $blocks, array $registry, array &$collected, int &$counter, int &$section_counter, string $section_label): void {
-		foreach ($blocks as $block) {
+	private static function collect(array $blocks, array $registry, array &$collected, int &$counter, int $depth, array $container): void {
+		foreach ($blocks as $i => $block) {
 			$name = $block['blockName'] ?? '';
 
-			// Track the nearest ancestor section to label children by.
-			$child_section_label = $section_label;
-			if ($name === 'codeweber-blocks/section') {
-				$child_section_label = self::section_label($block, $section_counter);
+			// The top-level block is the container shown as a group header.
+			$this_container = $container;
+			if ($depth === 0) {
+				$this_container = [
+					'id'   => $i,
+					'name' => self::container_name($block),
+				];
 			}
 
 			if ($name !== '' && isset($registry[$name])) {
@@ -260,32 +267,39 @@ class InlineTextEditor {
 				}
 
 				if ($fields) {
-					// Block's own Gutenberg name: the "Rename block" value
-					// (attrs.metadata.name) if set, else the registered block
-					// title (e.g. "Title"), else the registry label.
-					$attrs   = $block['attrs'] ?? [];
+					// Card label: the heading text, so multiple blocks in the
+					// same container are distinguishable. Falls back to the
+					// block title.
 					$display = '';
-					if (!empty($attrs['metadata']['name']) && is_string($attrs['metadata']['name'])) {
-						$display = trim($attrs['metadata']['name']);
+					foreach ($fields as $f) {
+						$text = trim(wp_strip_all_tags($f['value']));
+						if ($text !== '') {
+							$display = $text;
+							break;
+						}
 					}
 					if ($display === '') {
 						$type = \WP_Block_Type_Registry::get_instance()->get_registered($name);
 						$display = ($type && !empty($type->title)) ? $type->title : $registry[$name]['label'];
 					}
+					if (function_exists('mb_strlen') && mb_strlen($display) > 80) {
+						$display = mb_substr($display, 0, 80) . '…';
+					}
 
 					$collected[] = [
-						'index'     => $index,
-						'blockName' => $name,
-						'label'     => $registry[$name]['label'],
-						'name'      => $display,
-						'section'   => $section_label,
-						'fields'    => $fields,
+						'index'       => $index,
+						'blockName'   => $name,
+						'label'       => $registry[$name]['label'],
+						'name'        => $display,
+						'container'   => $this_container['name'] ?? '',
+						'containerId' => $this_container['id'] ?? -1,
+						'fields'      => $fields,
 					];
 				}
 			}
 
 			if (!empty($block['innerBlocks'])) {
-				self::collect($block['innerBlocks'], $registry, $collected, $counter, $section_counter, $child_section_label);
+				self::collect($block['innerBlocks'], $registry, $collected, $counter, $depth + 1, $this_container);
 			}
 		}
 	}

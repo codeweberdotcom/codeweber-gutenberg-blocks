@@ -70,19 +70,24 @@ function init() {
 			return;
 		}
 
+		let lastContainer = null;
 		blocks.forEach( ( block ) => {
+			// Group header per top-level container (matches the List View).
+			if ( block.containerId !== lastContainer ) {
+				lastContainer = block.containerId;
+				const header = document.createElement( 'div' );
+				header.className =
+					'fw-bold text-uppercase small text-muted mt-3 mb-2 pb-1 border-bottom';
+				header.textContent = block.container || '';
+				fieldsEl.appendChild( header );
+			}
+
 			const card = document.createElement( 'div' );
 			card.className = 'card mb-3';
 			card.setAttribute( 'data-cw-block', String( block.index ) );
 
-			const blockName = block.name || block.label;
-			const subLabel = block.section
-				? block.section
-				: block.label + ' #' + block.index;
 			let html = '<div class="card-body">';
-			html += '<h6 class="card-title mb-1">' + esc( blockName ) + '</h6>';
-			html +=
-				'<div class="small text-muted mb-3">' + esc( subLabel ) + '</div>';
+			html += '<h6 class="card-title mb-3">' + esc( block.name || block.label ) + '</h6>';
 			block.fields.forEach( ( field ) => {
 				const fid = 'cw-field-' + block.index + '-' + field.key;
 				html += '<div class="mb-3">';

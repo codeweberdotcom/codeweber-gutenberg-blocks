@@ -368,9 +368,13 @@ class InlineTextEditor {
 			}
 
 			$new_content = serialize_blocks($blocks);
+			// wp_update_post() runs wp_unslash() on the data, which would strip
+			// the backslashes from the JSON unicode escapes (<) that
+			// serialize_blocks puts in block-comment attributes. Slash first so
+			// the stored markup keeps valid escapes and blocks stay valid.
 			$result = wp_update_post([
 				'ID'           => $post_id,
-				'post_content' => $new_content,
+				'post_content' => wp_slash($new_content),
 			], true);
 
 			if (is_wp_error($result)) {

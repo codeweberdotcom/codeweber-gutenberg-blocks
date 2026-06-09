@@ -172,8 +172,14 @@ function init() {
 			credentials: 'same-origin',
 			body: JSON.stringify( { index, values } ),
 		} )
-			.then( ( r ) => r.json() )
-			.then( ( res ) => {
+			.then( ( r ) => r.json().then( ( body ) => ( { ok: r.ok, body } ) ) )
+			.then( ( { ok, body } ) => {
+				if ( ! ok ) {
+					throw new Error(
+						( body && body.message ) || 'Save failed'
+					);
+				}
+				const res = body;
 				if ( res && res.html ) {
 					swapBlock( index, res.html );
 					// Commit new originals for fields that were not skipped.

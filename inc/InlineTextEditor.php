@@ -281,9 +281,8 @@ class InlineTextEditor {
 		$blocks   = parse_blocks($post->post_content);
 		$registry = self::registry();
 		$counter  = 0;
-		$found    = null;
 
-		self::find_editable($blocks, $registry, $index, $counter, $found);
+		$found = &self::find_editable($blocks, $registry, $index, $counter);
 		if ($found === null) {
 			return new \WP_Error('cw_not_found', 'Editable block not found', ['status' => 404]);
 		}
@@ -342,31 +341,34 @@ class InlineTextEditor {
 	}
 
 	/**
-	 * Locate the Nth editable block by reference.
+	 * Locate the Nth editable block, returned by reference so callers can mutate
+	 * it in place. Returns a reference to null when not found.
 	 *
-	 * @param array      $blocks
-	 * @param array      $registry
-	 * @param int        $target
-	 * @param int        $counter
-	 * @param array|null $found
+	 * @param array $blocks
+	 * @param array $registry
+	 * @param int   $target
+	 * @param int   $counter
+	 * @return array|null
 	 */
-	private static function find_editable(array &$blocks, array $registry, int $target, int &$counter, &$found): void {
+	private static function &find_editable(array &$blocks, array $registry, int $target, int &$counter) {
+		$null = null;
 		foreach ($blocks as &$block) {
 			$name = $block['blockName'] ?? '';
 			if ($name !== '' && isset($registry[$name])) {
 				if ($counter === $target) {
-					$found = &$block;
-					return;
+					return $block;
 				}
 				$counter++;
 			}
 			if (!empty($block['innerBlocks'])) {
-				self::find_editable($block['innerBlocks'], $registry, $target, $counter, $found);
+				$found = &self::find_editable($block['innerBlocks'], $registry, $target, $counter);
 				if ($found !== null) {
-					return;
+					return $found;
 				}
+				unset($found);
 			}
 		}
+		return $null;
 	}
 
 	/* --------------------------------------------------------------------- */

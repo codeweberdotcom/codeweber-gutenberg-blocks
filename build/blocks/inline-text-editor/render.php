@@ -68,7 +68,7 @@ $cw_config = [
 			<div class="cwgb-inline-editor-status small text-muted mb-3" data-cw-status></div>
 			<form data-cw-form>
 				<div data-cw-fields></div>
-				<div class="d-grid gap-2 mt-3" data-cw-actions hidden>
+				<div class="d-grid gap-2 position-sticky bottom-0 bg-white border-top pt-3 pb-2" data-cw-actions hidden>
 					<button type="submit" class="btn btn-primary" data-cw-save>
 						<?php echo esc_html__('Save changes', 'codeweber-gutenberg-blocks'); ?>
 					</button>

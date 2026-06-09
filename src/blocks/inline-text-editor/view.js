@@ -33,6 +33,8 @@ function init() {
 
 	const actionsEl = root.querySelector( '[data-cw-actions]' );
 	const statusEl = root.querySelector( '[data-cw-status]' );
+	const saveBtn = root.querySelector( '[data-cw-save]' );
+	const saveLabel = saveBtn ? saveBtn.textContent.trim() : '';
 	let loaded = false;
 
 	const setStatus = ( msg, type ) => {
@@ -197,10 +199,21 @@ function init() {
 			} );
 	};
 
+	const setSaving = ( saving ) => {
+		if ( ! saveBtn ) {
+			return;
+		}
+		saveBtn.disabled = saving;
+		saveBtn.textContent = saving
+			? config.i18nSaving || 'Saving…'
+			: saveLabel;
+	};
+
 	formEl.addEventListener( 'submit', ( e ) => {
 		e.preventDefault();
 		const cards = Array.from( fieldsEl.querySelectorAll( '[data-cw-block]' ) );
 		setStatus( config.i18nSaving || 'Saving…', '' );
+		setSaving( true );
 		Promise.all( cards.map( ( c ) => saveBlock( c ) ) )
 			.then( ( results ) => {
 				const skippedCount = results.reduce(
@@ -219,6 +232,9 @@ function init() {
 			} )
 			.catch( () => {
 				setStatus( config.i18nError || 'Save failed.', 'error' );
+			} )
+			.finally( () => {
+				setSaving( false );
 			} );
 	} );
 

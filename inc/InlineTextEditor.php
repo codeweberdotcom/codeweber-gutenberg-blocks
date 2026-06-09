@@ -260,22 +260,17 @@ class InlineTextEditor {
 				}
 
 				if ($fields) {
-					// Human-friendly name: first non-empty field value (e.g. the
-					// heading text) so editors can tell blocks apart. Falls back
-					// to the registry label.
+					// Block's own Gutenberg name: the "Rename block" value
+					// (attrs.metadata.name) if set, else the registered block
+					// title (e.g. "Title"), else the registry label.
+					$attrs   = $block['attrs'] ?? [];
 					$display = '';
-					foreach ($fields as $f) {
-						$text = trim(wp_strip_all_tags($f['value']));
-						if ($text !== '') {
-							$display = $text;
-							break;
-						}
+					if (!empty($attrs['metadata']['name']) && is_string($attrs['metadata']['name'])) {
+						$display = trim($attrs['metadata']['name']);
 					}
 					if ($display === '') {
-						$display = $registry[$name]['label'];
-					}
-					if (function_exists('mb_strlen') && mb_strlen($display) > 60) {
-						$display = mb_substr($display, 0, 60) . '…';
+						$type = \WP_Block_Type_Registry::get_instance()->get_registered($name);
+						$display = ($type && !empty($type->title)) ? $type->title : $registry[$name]['label'];
 					}
 
 					$collected[] = [

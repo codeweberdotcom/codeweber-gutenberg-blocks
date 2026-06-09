@@ -405,12 +405,14 @@ $has_current_in_subtree = function ($by_parent, $parent_id) use (&$has_current_i
  * Первый уровень: nav-item + nav-link, dropdown вниз.
  * Вложенные уровни: dropdown-item + dropdown-menu, dropend вправо.
  */
-$render_menu_horizontal = function ( $by_parent, $parent_id, $depth_limit, $current_lvl = 1 ) use ( &$render_menu_horizontal, $linkClass, $itemClass, &$has_current_in_subtree ) {
+$render_menu_horizontal = function ( $by_parent, $parent_id, $depth_limit, $current_lvl = 1 ) use ( &$render_menu_horizontal, $linkClass, $itemClass, $topLevelClass, $topLevelClassStart, $topLevelClassEnd, &$has_current_in_subtree ) {
 	$children = isset( $by_parent[ $parent_id ] ) ? $by_parent[ $parent_id ] : [];
 	if ( empty( $children ) ) {
 		return '';
 	}
 	$html = '';
+	$child_count = count( $children );
+	$child_idx = 0;
 	foreach ( $children as $item ) {
 		$has_sub = ( $depth_limit === 0 || $current_lvl < $depth_limit ) && isset( $item['wp_id'] ) && ! empty( $by_parent[ $item['wp_id'] ] );
 		$is_current = ! empty( $item['current'] );
@@ -428,6 +430,20 @@ $render_menu_horizontal = function ( $by_parent, $parent_id, $depth_limit, $curr
 		}
 		if ( $is_current || $has_current_child ) {
 			$li_cls[] = 'active';
+		}
+		// Top-level classes: first → _start, last → _end (if set), else top_level_class.
+		if ( $is_top ) {
+			$top_extra = '';
+			if ( $child_idx === 0 && $topLevelClassStart !== '' ) {
+				$top_extra = $topLevelClassStart;
+			} elseif ( $child_idx === $child_count - 1 && $topLevelClassEnd !== '' ) {
+				$top_extra = $topLevelClassEnd;
+			} elseif ( $topLevelClass !== '' ) {
+				$top_extra = $topLevelClass;
+			}
+			if ( $top_extra !== '' ) {
+				$li_cls = array_merge( $li_cls, array_filter( explode( ' ', trim( $top_extra ) ) ) );
+			}
 		}
 		if ( $itemClass ) {
 			$li_cls = array_merge( $li_cls, array_filter( explode( ' ', trim( $itemClass ) ) ) );
@@ -456,6 +472,7 @@ $render_menu_horizontal = function ( $by_parent, $parent_id, $depth_limit, $curr
 			$html .= '</ul>';
 		}
 		$html .= '</li>';
+		$child_idx++;
 	}
 	return $html;
 };
@@ -631,7 +648,7 @@ if ($enableMegaMenu) {
 	// Горизонтальное меню: navbar-nav с Bootstrap dropdowns
 	if ($mode === 'wp-menu' && $wpMenuId > 0 && class_exists('WP_Bootstrap_Navwalker')) {
 		// WP Menu: Bootstrap Navwalker для стандартной dropdown-разметки
-		$bootstrap_menu_class = 'navbar-nav flex-md-row';
+		$bootstrap_menu_class = trim('navbar-nav flex-md-row' . ($containerClass !== '' ? ' ' . $containerClass : ''));
 		$nav_args = array(
 			'menu'            => $wpMenuId,
 			'depth'           => $depth,
@@ -643,15 +660,50 @@ if ($enableMegaMenu) {
 			'items_wrap'      => '<ul id="%1$s" class="%2$s">%3$s</ul>',
 			'item_spacing'    => 'discard',
 		);
+		// Navwalker doesn't know our element-class attributes — inject
+		// item/link/top-level classes via WP nav menu filters.
+		$top_items_h  = isset($wpMenuItemsTree[0]) ? $wpMenuItemsTree[0] : [];
+		$first_top_id = !empty($top_items_h) ? (int) $top_items_h[0]['wp_id'] : 0;
+		$last_top_id  = !empty($top_items_h) ? (int) $top_items_h[count($top_items_h) - 1]['wp_id'] : 0;
+		$mb_css_filter = function ($classes, $item, $args, $depth_f) use ($itemClass, $topLevelClass, $topLevelClassStart, $topLevelClassEnd, $first_top_id, $last_top_id) {
+			if ($itemClass !== '') {
+				$classes = array_merge($classes, array_filter(explode(' ', trim($itemClass))));
+			}
+			if ((int) $depth_f === 0) {
+				$tl = '';
+				if ((int) $item->ID === $first_top_id && $topLevelClassStart !== '') {
+					$tl = $topLevelClassStart;
+				} elseif ((int) $item->ID === $last_top_id && $topLevelClassEnd !== '') {
+					$tl = $topLevelClassEnd;
+				} elseif ($topLevelClass !== '') {
+					$tl = $topLevelClass;
+				}
+				if ($tl !== '') {
+					$classes = array_merge($classes, array_filter(explode(' ', trim($tl))));
+				}
+			}
+			return $classes;
+		};
+		$mb_link_filter = function ($atts, $item, $args, $depth_f) use ($linkClass) {
+			if ($linkClass !== '') {
+				$atts['class'] = trim((isset($atts['class']) ? $atts['class'] . ' ' : '') . $linkClass);
+			}
+			return $atts;
+		};
+		add_filter('nav_menu_css_class', $mb_css_filter, 10, 4);
+		add_filter('nav_menu_link_attributes', $mb_link_filter, 10, 4);
 		ob_start();
 		wp_nav_menu($nav_args);
 		$menuContent = ob_get_clean();
+		remove_filter('nav_menu_css_class', $mb_css_filter, 10);
+		remove_filter('nav_menu_link_attributes', $mb_link_filter, 10);
 		if (empty(trim(strip_tags($menuContent)))) {
 			$menuContent = '<p>' . esc_html__('No menu items found.', 'codeweber-gutenberg-blocks') . '</p>';
 		}
 	} else {
 		// Custom/Taxonomy (или WP Menu fallback без Walker): кастомный горизонтальный рендер
-		$menuContent = '<ul class="navbar-nav flex-md-row">';
+		$h_ul_class = trim('navbar-nav flex-md-row' . ($containerClass !== '' ? ' ' . $containerClass : ''));
+		$menuContent = '<ul class="' . esc_attr($h_ul_class) . '">';
 		$menuContent .= $render_menu_horizontal($wpMenuItemsTree, 0, $depth);
 		$menuContent .= '</ul>';
 	}
@@ -726,9 +778,23 @@ if ($enableMegaMenu) {
 	// Custom mode или fallback — плоский список
 	if ($orientation === 'horizontal' && !$enableMegaMenu) {
 		// Горизонтальный плоский список: navbar-nav
-		$menuContent = '<ul class="navbar-nav flex-md-row">';
+		$flat_ul_class = trim( 'navbar-nav flex-md-row' . ( $containerClass !== '' ? ' ' . $containerClass : '' ) );
+		$menuContent = '<ul class="' . esc_attr( $flat_ul_class ) . '">';
+		$flat_count = count( $itemsToRender );
+		$flat_idx = 0;
 		foreach ($itemsToRender as $item) {
 			$li_cls = array( 'nav-item' );
+			$top_extra = '';
+			if ( $flat_idx === 0 && $topLevelClassStart !== '' ) {
+				$top_extra = $topLevelClassStart;
+			} elseif ( $flat_idx === $flat_count - 1 && $topLevelClassEnd !== '' ) {
+				$top_extra = $topLevelClassEnd;
+			} elseif ( $topLevelClass !== '' ) {
+				$top_extra = $topLevelClass;
+			}
+			if ( $top_extra !== '' ) {
+				$li_cls = array_merge( $li_cls, array_filter( explode( ' ', trim( $top_extra ) ) ) );
+			}
 			if ( $itemClass ) {
 				$li_cls = array_merge( $li_cls, array_filter( explode( ' ', trim( $itemClass ) ) ) );
 			}
@@ -739,6 +805,7 @@ if ($enableMegaMenu) {
 			$menuContent .= '<li class="' . esc_attr( implode( ' ', $li_cls ) ) . '">';
 			$menuContent .= '<a href="' . esc_url( $item['url'] ) . '" class="' . esc_attr( implode( ' ', $a_cls ) ) . '">' . esc_html( $item['text'] ) . '</a>';
 			$menuContent .= '</li>';
+			$flat_idx++;
 		}
 		$menuContent .= '</ul>';
 	} else {

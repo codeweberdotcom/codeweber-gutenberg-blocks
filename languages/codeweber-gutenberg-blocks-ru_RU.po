@@ -7388,7 +7388,7 @@ msgstr "Временной период (секунды)"
 #: build/blocks/post-grid/index.js:1 build/blocks/widget/index.js:1
 #: build/blocks/yandex-map/index.js:1
 msgid "Title"
-msgstr "Title"
+msgstr "Заголовок"
 
 #: build/blocks/heading-subtitle/index.js:1
 msgid "Title Align"

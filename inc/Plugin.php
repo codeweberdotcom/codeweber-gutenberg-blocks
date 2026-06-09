@@ -366,6 +366,7 @@ class Plugin {
 		'copyright',
 		'floating-navigator',
 		'opening-hours',
+		'inline-text-editor',
 	];
 	}
 

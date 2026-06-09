@@ -1,0 +1,23 @@
+// Editor-only placeholder styling for the Inline Text Editor block.
+// Frontend uses Bootstrap classes only (see render.php).
+.cwgb-inline-text-editor-placeholder {
+	display: flex;
+	gap: 12px;
+	align-items: flex-start;
+	padding: 16px;
+	border: 1px dashed #c3c4c7;
+	border-radius: 4px;
+	background: #f6f7f7;
+	color: #50575e;
+
+	.dashicons {
+		font-size: 24px;
+		width: 24px;
+		height: 24px;
+	}
+
+	p {
+		margin: 4px 0 0;
+		font-size: 12px;
+	}
+}

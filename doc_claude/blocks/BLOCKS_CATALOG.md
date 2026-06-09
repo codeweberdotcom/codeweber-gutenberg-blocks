@@ -125,6 +125,7 @@ Legend: `S` = static (JS save) | `D` = dynamic (PHP render.php)
 | `html-blocks` | D | Render HTML Block CPT content |
 | `shortcode-render` | D | WordPress shortcode renderer |
 | `widget` | S | WordPress widget area |
+| `inline-text-editor` | D | Frontend inline text editor — Bootstrap offcanvas drawer (editors only) to edit Codeweber block texts on the current page; rewrites `post_content` via REST. Self-contained/removable. See block `README.md` |
 
 ---
 

@@ -1,0 +1,23 @@
+{
+	"apiVersion": 3,
+	"name": "codeweber-blocks/inline-text-editor",
+	"version": "0.1.0",
+	"title": "Inline Text Editor",
+	"category": "codeweber-gutenberg-elements",
+	"icon": "edit-page",
+	"description": "Place once (e.g. in the footer). On the frontend it shows a trigger button and a Bootstrap offcanvas drawer — visible only to logged-in editors — for editing texts of Codeweber blocks on the current page.",
+	"keywords": ["inline", "editor", "drawer", "offcanvas", "text"],
+	"supports": {
+		"html": false,
+		"customClassName": false,
+		"multiple": false,
+		"reusable": false,
+		"anchor": false
+	},
+	"attributes": {},
+	"textdomain": "codeweber-gutenberg-blocks",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"render": "file:./render.php",
+	"viewScript": "file:./view.js"
+}

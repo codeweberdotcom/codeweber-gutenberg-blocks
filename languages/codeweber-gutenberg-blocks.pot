@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-06-07T19:25:15+00:00\n"
+"POT-Creation-Date: 2026-06-09T10:03:41+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: codeweber-gutenberg-blocks\n"
@@ -35,7 +35,32 @@ msgstr ""
 msgid "Codeweber"
 msgstr ""
 
+#: build/blocks/accordion/render.php:160
+#: inc/Plugin.php:1289
+#: build/blocks/accordion/index.js:1
+msgid "No content available"
+msgstr ""
+
+#: build/blocks/accordion/render.php:292
+#: build/blocks/blog-post-widget/render.php:80
+#: build/blocks/post-grid/render.php:1590
+msgid "No posts found."
+msgstr ""
+
+#: build/blocks/blog-category-widget/render.php:40
+msgid "No categories found."
+msgstr ""
+
+#: build/blocks/blog-tag-widget/render.php:47
+msgid "No tags found."
+msgstr ""
+
+#: build/blocks/blog-year-widget/render.php:32
+msgid "No archives found."
+msgstr ""
+
 #: build/blocks/contacts/render.php:588
+#: build/blocks/navbar/templates/offcanvas-info-panel.php:70
 #: build/blocks/contacts/index.js:1
 #: build/blocks/header-widgets/index.js:1
 #: build/blocks/navbar/index.js:1
@@ -126,6 +151,78 @@ msgstr ""
 msgid "Toggle info"
 msgstr ""
 
+#: build/blocks/inline-text-editor/render.php:44
+#: build/blocks/inline-text-editor/render.php:57
+msgid "Edit page texts"
+msgstr ""
+
+#: build/blocks/inline-text-editor/render.php:63
+#: build/blocks/navbar/render.php:297
+#: build/blocks/navbar/templates/extended-center-logo.php:47
+#: build/blocks/navbar/templates/extended.php:60
+#: build/blocks/navbar/templates/fancy-center-logo.php:51
+#: build/blocks/accordion/index.js:1
+#: build/blocks/button/index.js:1
+#: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
+#: build/blocks/divider/index.js:1
+#: build/blocks/feature/index.js:1
+#: build/blocks/features/index.js:1
+#: build/blocks/floating-navigator/index.js:1
+#: build/blocks/header-widgets/index.js:1
+#: build/blocks/icon/index.js:1
+#: build/blocks/label-plus/index.js:1
+#: build/blocks/lists/index.js:1
+#: build/blocks/menu/index.js:1
+msgid "Close"
+msgstr ""
+
+#: build/blocks/inline-text-editor/render.php:72
+msgid "Save changes"
+msgstr ""
+
+#: build/blocks/lists/render.php:207
+msgid "No items found."
+msgstr ""
+
+#: build/blocks/menu/render.php:508
+#: build/blocks/menu/index.js:1
+msgid "Expand submenu"
+msgstr ""
+
+#: build/blocks/menu/render.php:556
+#: build/blocks/menu/render.php:595
+#: build/blocks/menu/render.php:628
+#: build/blocks/menu/render.php:650
+#: build/blocks/menu/render.php:681
+#: build/blocks/menu/render.php:724
+msgid "No menu items found."
+msgstr ""
+
+#: build/blocks/navbar/templates/center-logo.php:36
+#: build/blocks/navbar/templates/classic.php:89
+#: build/blocks/navbar/templates/extended-center-logo.php:96
+#: build/blocks/navbar/templates/extended.php:48
+#: build/blocks/navbar/templates/fancy-center-logo.php:40
+#: build/blocks/navbar/templates/fancy.php:89
+#: build/blocks/header-widgets/index.js:1
+#: build/blocks/menu/index.js:1
+#: build/blocks/navbar/index.js:1
+msgid "Menu"
+msgstr ""
+
+#: build/blocks/navbar/templates/offcanvas-info-panel.php:74
+#: build/blocks/header-widgets/index.js:1
+#: build/blocks/navbar/index.js:1
+msgid "Legal address"
+msgstr ""
+
+#: build/blocks/navbar/templates/offcanvas-info-panel.php:77
+#: build/blocks/header-widgets/index.js:1
+#: build/blocks/navbar/index.js:1
+msgid "Requisites"
+msgstr ""
+
 #: build/blocks/post-grid/render.php:124
 #: build/blocks/card/index.js:1
 #: build/blocks/counter/index.js:1
@@ -172,27 +269,27 @@ msgid "Show All"
 msgstr ""
 
 #. translators: %d: number of posts in taxonomy term
-#: build/blocks/post-grid/render.php:1077
+#: build/blocks/post-grid/render.php:1109
 #, php-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] ""
 msgstr[1] ""
 
-#: build/blocks/post-grid/render.php:1157
+#: build/blocks/post-grid/render.php:1189
 msgid "No terms selected. Add terms in block settings."
 msgstr ""
 
-#: build/blocks/post-grid/render.php:1217
+#: build/blocks/post-grid/render.php:1249
 msgid "Please select a taxonomy in block settings."
 msgstr ""
 
-#: build/blocks/post-grid/render.php:1236
+#: build/blocks/post-grid/render.php:1268
 msgid "No terms found."
 msgstr ""
 
-#: build/blocks/post-grid/render.php:1517
-#: inc/Plugin.php:798
+#: build/blocks/post-grid/render.php:1549
+#: inc/Plugin.php:799
 #: build/blocks/accordion/index.js:1
 #: build/blocks/avatar/index.js:1
 #: build/blocks/banners/index.js:1
@@ -213,8 +310,13 @@ msgstr ""
 msgid "Loading..."
 msgstr ""
 
-#: build/blocks/post-grid/render.php:1558
-msgid "No posts found."
+#: build/blocks/shortcode-render/render.php:38
+msgid "Enter a shortcode in the block settings."
+msgstr ""
+
+#: build/blocks/tables/render.php:222
+#: build/blocks/tabulator/render.php:85
+msgid "No data"
 msgstr ""
 
 #: build/blocks/tabulator/render.php:40
@@ -223,10 +325,6 @@ msgstr ""
 
 #: build/blocks/tabulator/render.php:44
 msgid "Select a document in block settings."
-msgstr ""
-
-#: build/blocks/tabulator/render.php:85
-msgid "No data"
 msgstr ""
 
 #: build/blocks/tabulator/render.php:86
@@ -678,6 +776,7 @@ msgid "Content Type"
 msgstr ""
 
 #: inc/ImageHotspotCPT.php:768
+#: inc/InlineTextEditor.php:61
 #: build/blocks/contacts/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/form-field/index.js:35
@@ -761,6 +860,40 @@ msgstr ""
 msgid "Failed to copy shortcode"
 msgstr ""
 
+#: inc/InlineTextEditor.php:48
+msgid "Title block"
+msgstr ""
+
+#: inc/InlineTextEditor.php:51
+#: build/blocks/accordion/index.js:1
+#: build/blocks/blog-post-widget/index.js:1
+#: build/blocks/contacts/index.js:1
+#: build/blocks/divider/index.js:1
+#: build/blocks/feature/index.js:1
+#: build/blocks/features/index.js:1
+#: build/blocks/heading-subtitle/index.js:1
+#: build/blocks/label-plus/index.js:1
+#: build/blocks/lists/index.js:1
+#: build/blocks/menu/index.js:1
+#: build/blocks/opening-hours/index.js:1
+#: build/blocks/post-grid/index.js:1
+#: build/blocks/widget/index.js:1
+#: build/blocks/yandex-map-v3/index.js:1
+#: build/blocks/yandex-map/index.js:1
+msgid "Title"
+msgstr ""
+
+#: inc/InlineTextEditor.php:56
+#: build/blocks/contacts/index.js:1
+#: build/blocks/divider/index.js:1
+#: build/blocks/feature/index.js:1
+#: build/blocks/features/index.js:1
+#: build/blocks/heading-subtitle/index.js:1
+#: build/blocks/menu/index.js:1
+#: build/blocks/widget/index.js:1
+msgid "Subtitle"
+msgstr ""
+
 #: inc/OpeningHours.php:104
 #: build/blocks/contacts/index.js:1
 msgid "to"
@@ -773,87 +906,83 @@ msgstr ""
 msgid "Daily from %1$s to %2$s"
 msgstr ""
 
-#: inc/Plugin.php:1288
-#: build/blocks/accordion/index.js:1
-msgid "No content available"
-msgstr ""
-
-#: inc/Plugin.php:1506
-msgid "Drag & drop your files or <span class=\"filepond--label-action\">browse</span>"
-msgstr ""
-
 #: inc/Plugin.php:1507
-#, php-format
-msgid "Maximum number of files: %s. Please remove excess files."
+msgid "Drag & drop your files or <span class=\"filepond--label-action\">browse</span>"
 msgstr ""
 
 #: inc/Plugin.php:1508
 #, php-format
-msgid "File is too large. Maximum size: %s"
+msgid "Maximum number of files: %s. Please remove excess files."
 msgstr ""
 
 #: inc/Plugin.php:1509
 #, php-format
-msgid "Total file size is too large. Maximum: %s"
+msgid "File is too large. Maximum size: %s"
 msgstr ""
 
 #: inc/Plugin.php:1510
-msgid "Error uploading file"
+#, php-format
+msgid "Total file size is too large. Maximum: %s"
 msgstr ""
 
 #: inc/Plugin.php:1511
-msgid "Error adding file"
+msgid "Error uploading file"
 msgstr ""
 
 #: inc/Plugin.php:1512
-#, php-format
-msgid "Maximum number of files: %s. Files removed: %s"
+msgid "Error adding file"
 msgstr ""
 
 #: inc/Plugin.php:1513
 #, php-format
-msgid "Total file size exceeded. Maximum: %s"
+msgid "Maximum number of files: %s. Files removed: %s"
 msgstr ""
 
 #: inc/Plugin.php:1514
-msgid "Upload complete"
+#, php-format
+msgid "Total file size exceeded. Maximum: %s"
 msgstr ""
 
 #: inc/Plugin.php:1515
-msgid "Tap to undo"
+msgid "Upload complete"
 msgstr ""
 
 #: inc/Plugin.php:1516
-msgid "Uploading"
+msgid "Tap to undo"
 msgstr ""
 
 #: inc/Plugin.php:1517
+msgid "Uploading"
+msgstr ""
+
+#: inc/Plugin.php:1518
 msgid "tap to cancel"
 msgstr ""
 
-#: inc/Plugin.php:1705
+#: inc/Plugin.php:1706
+#: build/blocks/tables/index.js:1
 msgid "— None —"
 msgstr ""
 
-#: inc/Plugin.php:2449
-#: inc/Plugin.php:2487
+#: inc/Plugin.php:2450
+#: inc/Plugin.php:2488
 msgid "Document not found."
 msgstr ""
 
-#: inc/Plugin.php:2453
-#: inc/Plugin.php:2457
+#: inc/Plugin.php:2454
+#: inc/Plugin.php:2458
 msgid "No file attached to this document."
 msgstr ""
 
-#: inc/Plugin.php:2461
+#: inc/Plugin.php:2462
 msgid "Document file must be CSV, XLS or XLSX."
 msgstr ""
 
-#: inc/Plugin.php:2490
+#: inc/Plugin.php:2491
 msgid "You do not have permission to edit this document."
 msgstr ""
 
-#: inc/Plugin.php:2494
+#: inc/Plugin.php:2495
 msgid "Invalid rows data."
 msgstr ""
 
@@ -1013,24 +1142,6 @@ msgstr ""
 #: build/blocks/yandex-map-v3/index.js:1
 #: build/blocks/yandex-map/index.js:1
 msgid "Date"
-msgstr ""
-
-#: build/blocks/accordion/index.js:1
-#: build/blocks/blog-post-widget/index.js:1
-#: build/blocks/contacts/index.js:1
-#: build/blocks/divider/index.js:1
-#: build/blocks/feature/index.js:1
-#: build/blocks/features/index.js:1
-#: build/blocks/heading-subtitle/index.js:1
-#: build/blocks/label-plus/index.js:1
-#: build/blocks/lists/index.js:1
-#: build/blocks/menu/index.js:1
-#: build/blocks/opening-hours/index.js:1
-#: build/blocks/post-grid/index.js:1
-#: build/blocks/widget/index.js:1
-#: build/blocks/yandex-map-v3/index.js:1
-#: build/blocks/yandex-map/index.js:1
-msgid "Title"
 msgstr ""
 
 #: build/blocks/accordion/index.js:1
@@ -1414,22 +1525,6 @@ msgstr ""
 #: build/blocks/lists/index.js:1
 #: build/blocks/menu/index.js:1
 msgid "No icon tabs available"
-msgstr ""
-
-#: build/blocks/accordion/index.js:1
-#: build/blocks/button/index.js:1
-#: build/blocks/contacts/index.js:1
-#: build/blocks/counter/index.js:1
-#: build/blocks/divider/index.js:1
-#: build/blocks/feature/index.js:1
-#: build/blocks/features/index.js:1
-#: build/blocks/floating-navigator/index.js:1
-#: build/blocks/header-widgets/index.js:1
-#: build/blocks/icon/index.js:1
-#: build/blocks/label-plus/index.js:1
-#: build/blocks/lists/index.js:1
-#: build/blocks/menu/index.js:1
-msgid "Close"
 msgstr ""
 
 #: build/blocks/accordion/index.js:1
@@ -5710,16 +5805,6 @@ msgid "Columns ID"
 msgstr ""
 
 #: build/blocks/contacts/index.js:1
-#: build/blocks/divider/index.js:1
-#: build/blocks/feature/index.js:1
-#: build/blocks/features/index.js:1
-#: build/blocks/heading-subtitle/index.js:1
-#: build/blocks/menu/index.js:1
-#: build/blocks/widget/index.js:1
-msgid "Subtitle"
-msgstr ""
-
-#: build/blocks/contacts/index.js:1
 #: build/blocks/counter/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
@@ -8093,23 +8178,7 @@ msgid "Socials"
 msgstr ""
 
 #: build/blocks/header-widgets/index.js:1
-#: build/blocks/menu/index.js:1
-#: build/blocks/navbar/index.js:1
-msgid "Menu"
-msgstr ""
-
-#: build/blocks/header-widgets/index.js:1
 msgid "Сотрудник"
-msgstr ""
-
-#: build/blocks/header-widgets/index.js:1
-#: build/blocks/navbar/index.js:1
-msgid "Legal address"
-msgstr ""
-
-#: build/blocks/header-widgets/index.js:1
-#: build/blocks/navbar/index.js:1
-msgid "Requisites"
 msgstr ""
 
 #: build/blocks/header-widgets/index.js:1
@@ -8567,6 +8636,14 @@ msgstr ""
 msgid "Lightbox is disabled — Link Type is set in the Link tab."
 msgstr ""
 
+#: build/blocks/inline-text-editor/index.js:1
+msgid "Inline Text Editor"
+msgstr ""
+
+#: build/blocks/inline-text-editor/index.js:1
+msgid "No output for visitors. On the frontend, logged-in editors see a button that opens a drawer to edit texts of Codeweber blocks on this page."
+msgstr ""
+
 #: build/blocks/label-plus/index.js:1
 msgid "Add \"counter\" class"
 msgstr ""
@@ -8620,7 +8697,6 @@ msgid "Number of posts to display"
 msgstr ""
 
 #: build/blocks/lists/index.js:1
-#: build/blocks/post-grid/index.js:1
 msgid "Enable Links"
 msgstr ""
 
@@ -9070,10 +9146,6 @@ msgstr ""
 
 #: build/blocks/menu/index.js:1
 msgid "Classes for <a> links"
-msgstr ""
-
-#: build/blocks/menu/index.js:1
-msgid "Expand submenu"
 msgstr ""
 
 #: build/blocks/menu/index.js:1
@@ -9607,7 +9679,19 @@ msgid "Pick and order posts manually instead of a query."
 msgstr ""
 
 #: build/blocks/post-grid/index.js:1
-msgid "Enable links to client posts (disabled by default)"
+msgid "Disable Links"
+msgstr ""
+
+#: build/blocks/post-grid/index.js:1
+msgid "Make cards non-clickable (remove all links in the card)"
+msgstr ""
+
+#: build/blocks/post-grid/index.js:1
+msgid "Link to company website"
+msgstr ""
+
+#: build/blocks/post-grid/index.js:1
+msgid "Link client cards to the company URL instead of the client post"
 msgstr ""
 
 #: build/blocks/post-grid/index.js:1
@@ -10299,7 +10383,15 @@ msgid "table-dark"
 msgstr ""
 
 #: build/blocks/tables/index.js:1
+msgid "table-sm"
+msgstr ""
+
+#: build/blocks/tables/index.js:1
 msgid "table-striped"
+msgstr ""
+
+#: build/blocks/tables/index.js:1
+msgid "table-striped-columns"
 msgstr ""
 
 #: build/blocks/tables/index.js:1
@@ -10311,7 +10403,47 @@ msgid "table-borderless"
 msgstr ""
 
 #: build/blocks/tables/index.js:1
+msgid "Hide top border line"
+msgstr ""
+
+#: build/blocks/tables/index.js:1
+msgid "Remove the border above the first row (border-top-0)."
+msgstr ""
+
+#: build/blocks/tables/index.js:1
+msgid "Hide bottom border line"
+msgstr ""
+
+#: build/blocks/tables/index.js:1
+msgid "Remove the border below the last row (border-bottom-0)."
+msgstr ""
+
+#: build/blocks/tables/index.js:1
 msgid "table-hover"
+msgstr ""
+
+#: build/blocks/tables/index.js:1
+msgid "Table color"
+msgstr ""
+
+#: build/blocks/tables/index.js:1
+msgid "Header"
+msgstr ""
+
+#: build/blocks/tables/index.js:1
+msgid "Show table header"
+msgstr ""
+
+#: build/blocks/tables/index.js:1
+msgid "Hide the <thead> row on the frontend."
+msgstr ""
+
+#: build/blocks/tables/index.js:1
+msgid "Header style"
+msgstr ""
+
+#: build/blocks/tables/index.js:1
+msgid "— Default —"
 msgstr ""
 
 #: build/blocks/tables/index.js:1
@@ -10320,6 +10452,14 @@ msgstr ""
 
 #: build/blocks/tables/index.js:1
 msgid "Remove column"
+msgstr ""
+
+#: build/blocks/tables/index.js:1
+msgid "Column text alignment (Left / Center / Right)"
+msgstr ""
+
+#: build/blocks/tables/index.js:1
+msgid "Shrink column to content"
 msgstr ""
 
 #: build/blocks/tables/index.js:1
@@ -10348,6 +10488,14 @@ msgstr ""
 
 #: build/blocks/tables/index.js:1
 msgid "…"
+msgstr ""
+
+#: build/blocks/tables/index.js:1
+msgid "Columns (header hidden):"
+msgstr ""
+
+#: build/blocks/tables/index.js:1
+msgid "Col"
 msgstr ""
 
 #: build/blocks/tables/index.js:1
@@ -12218,6 +12366,7 @@ msgid "navbar"
 msgstr ""
 
 #: build/blocks/header-widgets/block.json
+#: build/blocks/inline-text-editor/block.json
 msgctxt "block keyword"
 msgid "offcanvas"
 msgstr ""
@@ -12312,6 +12461,38 @@ msgstr ""
 #: build/blocks/image-simple/block.json
 msgctxt "block keyword"
 msgid "overlay"
+msgstr ""
+
+#: build/blocks/inline-text-editor/block.json
+msgctxt "block title"
+msgid "Inline Text Editor"
+msgstr ""
+
+#: build/blocks/inline-text-editor/block.json
+msgctxt "block description"
+msgid "Place once (e.g. in the footer). On the frontend it shows a trigger button and a Bootstrap offcanvas drawer — visible only to logged-in editors — for editing texts of Codeweber blocks on the current page."
+msgstr ""
+
+#: build/blocks/inline-text-editor/block.json
+msgctxt "block keyword"
+msgid "inline"
+msgstr ""
+
+#: build/blocks/inline-text-editor/block.json
+msgctxt "block keyword"
+msgid "editor"
+msgstr ""
+
+#: build/blocks/inline-text-editor/block.json
+msgctxt "block keyword"
+msgid "drawer"
+msgstr ""
+
+#: build/blocks/inline-text-editor/block.json
+#: build/blocks/paragraph/block.json
+#: build/blocks/text-rotator/block.json
+msgctxt "block keyword"
+msgid "text"
 msgstr ""
 
 #: build/blocks/label-plus/block.json
@@ -12465,12 +12646,6 @@ msgstr ""
 #: build/blocks/paragraph/block.json
 msgctxt "block keyword"
 msgid "paragraph"
-msgstr ""
-
-#: build/blocks/paragraph/block.json
-#: build/blocks/text-rotator/block.json
-msgctxt "block keyword"
-msgid "text"
 msgstr ""
 
 #: build/blocks/paragraph/block.json

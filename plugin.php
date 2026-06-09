@@ -62,6 +62,9 @@ require_once plugin_dir_path(__FILE__) . 'src/blocks/card/init.php';
 // Button block: форма кнопки "Theme" — класс из getThemeButton()
 require_once plugin_dir_path(__FILE__) . 'src/blocks/button/init.php';
 
+// Inline Text Editor block: REST + frontend DOM tagging (self-contained, removable).
+add_action('init', __NAMESPACE__ . '\InlineTextEditor::boot');
+
 // Загрузка переводов для JavaScript
 	add_action('init', function() {
 	$blocks = [

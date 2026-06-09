@@ -21,7 +21,16 @@ of Codeweber blocks **on the frontend**, via a Bootstrap offcanvas drawer.
    `serialize_blocks` → `wp_update_post`).
 
 Supported blocks are listed in `InlineTextEditor::registry()`. Currently:
-`heading-subtitle` (title / subtitle / text). Extend the registry to add more.
+`heading-subtitle` (title / subtitle / text), `paragraph`, `feature`
+(title / text / button), `counter` (number / label / subtitle), `blockquote`
+(quote / caption), `label-plus` (number / label).
+
+Two rewrite strategies (per registry entry, `strategy` key):
+- `dom` — positional DOM rewrite (heading-subtitle, whose save() transforms the
+  value by stripping `<strong>`).
+- `value` (default) — replaces the field's current value verbatim in the block's
+  serialized content. Layout-independent; works for any static block whose
+  save() renders the RichText value verbatim. Extend the registry to add more.
 
 ## Removing the feature (nothing else depends on it)
 

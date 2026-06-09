@@ -44,9 +44,12 @@ class InlineTextEditor {
 		return [
 			// NOTE: heading-subtitle is registered under the legacy
 			// `codeweber-gutenberg-blocks/` namespace (unlike most blocks).
+			// Strategy 'dom': positional rewrite (its save() cleans <strong>
+			// from the title, so the markup differs from the raw attribute).
 			'codeweber-gutenberg-blocks/heading-subtitle' => [
-				'label'  => __('Title block', 'codeweber-gutenberg-blocks'),
-				'fields' => [
+				'label'    => __('Title block', 'codeweber-gutenberg-blocks'),
+				'strategy' => 'dom',
+				'fields'   => [
 					'title'    => [
 						'label'         => __('Title', 'codeweber-gutenberg-blocks'),
 						'enable'        => 'enableTitle',
@@ -61,6 +64,80 @@ class InlineTextEditor {
 						'label'         => __('Text', 'codeweber-gutenberg-blocks'),
 						'enable'        => 'enableText',
 						'enableDefault' => false,
+					],
+				],
+			],
+
+			// Strategy 'value' (default): the field value is rendered verbatim
+			// into the markup, so we locate it by its current value — works
+			// across every layout of the block without knowing its structure.
+			'codeweber-blocks/paragraph' => [
+				'label'  => __('Paragraph', 'codeweber-gutenberg-blocks'),
+				'fields' => [
+					'text' => [
+						'label' => __('Text', 'codeweber-gutenberg-blocks'),
+					],
+				],
+			],
+			'codeweber-blocks/feature' => [
+				'label'  => __('Feature', 'codeweber-gutenberg-blocks'),
+				'fields' => [
+					'title'     => [
+						'label'         => __('Title', 'codeweber-gutenberg-blocks'),
+						'enable'        => 'enableTitle',
+						'enableDefault' => true,
+					],
+					'paragraph' => [
+						'label'         => __('Text', 'codeweber-gutenberg-blocks'),
+						'enable'        => 'enableParagraph',
+						'enableDefault' => true,
+					],
+					'buttonText' => [
+						'label'         => __('Button', 'codeweber-gutenberg-blocks'),
+						'enable'        => 'enableButton',
+						'enableDefault' => true,
+					],
+				],
+			],
+			'codeweber-blocks/counter' => [
+				'label'  => __('Counter', 'codeweber-gutenberg-blocks'),
+				'fields' => [
+					'title'     => [
+						'label'         => __('Number', 'codeweber-gutenberg-blocks'),
+						'enable'        => 'enableCounter',
+						'enableDefault' => true,
+					],
+					'paragraph' => [
+						'label'         => __('Label', 'codeweber-gutenberg-blocks'),
+						'enable'        => 'enableParagraph',
+						'enableDefault' => true,
+					],
+					'subtitle'  => [
+						'label'         => __('Subtitle', 'codeweber-gutenberg-blocks'),
+						'enable'        => 'enableSubtitle',
+						'enableDefault' => false,
+					],
+				],
+			],
+			'codeweber-blocks/blockquote' => [
+				'label'  => __('Blockquote', 'codeweber-gutenberg-blocks'),
+				'fields' => [
+					'quote'   => [
+						'label' => __('Quote', 'codeweber-gutenberg-blocks'),
+					],
+					'caption' => [
+						'label' => __('Caption', 'codeweber-gutenberg-blocks'),
+					],
+				],
+			],
+			'codeweber-blocks/label-plus' => [
+				'label'  => __('Label', 'codeweber-gutenberg-blocks'),
+				'fields' => [
+					'counterText' => [
+						'label' => __('Number', 'codeweber-gutenberg-blocks'),
+					],
+					'labelText'   => [
+						'label' => __('Label', 'codeweber-gutenberg-blocks'),
 					],
 				],
 			],
@@ -253,6 +330,7 @@ class InlineTextEditor {
 			if ($name !== '' && isset($registry[$name])) {
 				$index = $counter++;
 				$attrs = $block['attrs'] ?? [];
+				$strategy = $registry[$name]['strategy'] ?? 'value';
 				$fields = [];
 
 				foreach ($registry[$name]['fields'] as $key => $field) {
@@ -262,7 +340,7 @@ class InlineTextEditor {
 					$fields[] = [
 						'key'   => $key,
 						'label' => $field['label'],
-						'value' => self::read_field_value($block, $attrs, $key),
+						'value' => self::read_field_value($block, $attrs, $key, $strategy),
 					];
 				}
 
@@ -338,10 +416,11 @@ class InlineTextEditor {
 			return new \WP_Error('cw_not_editable', 'Block is not editable', ['status' => 400]);
 		}
 
-		$attrs   = $found['attrs'] ?? [];
-		$inner   = (string) ($found['innerHTML'] ?? '');
-		$skipped = [];
-		$changed = false;
+		$strategy = $registry[$name]['strategy'] ?? 'value';
+		$attrs    = $found['attrs'] ?? [];
+		$inner    = (string) ($found['innerHTML'] ?? '');
+		$skipped  = [];
+		$changed  = false;
 
 		foreach ($values as $value) {
 			$key = isset($value['key']) ? (string) $value['key'] : '';
@@ -351,20 +430,30 @@ class InlineTextEditor {
 			$old = isset($value['old']) ? (string) $value['old'] : '';
 			$new = isset($value['new']) ? wp_kses((string) $value['new'], self::allowed_html()) : '';
 
-			$rewritten = self::write_field_value($inner, $attrs, $key, $old, $new);
-			if ($rewritten === false) {
-				$skipped[] = $key;
-				continue;
+			if ($strategy === 'dom') {
+				$rewritten = self::write_field_value($inner, $attrs, $key, $old, $new);
+				if ($rewritten === false) {
+					$skipped[] = $key;
+					continue;
+				}
+				$inner = $rewritten;
+			} else {
+				if (!self::write_field_value_by_value($found, $old, $new)) {
+					$skipped[] = $key;
+					continue;
+				}
 			}
-			$inner = $rewritten;
+
 			$found['attrs'][$key] = $new;
 			$changed = true;
 		}
 
 		if ($changed) {
-			$found['innerHTML'] = $inner;
-			if (empty($found['innerBlocks'])) {
-				$found['innerContent'] = [$inner];
+			if ($strategy === 'dom') {
+				$found['innerHTML'] = $inner;
+				if (empty($found['innerBlocks'])) {
+					$found['innerContent'] = [$inner];
+				}
 			}
 
 			$new_content = serialize_blocks($blocks);
@@ -439,22 +528,92 @@ class InlineTextEditor {
 	}
 
 	/**
-	 * Read the live value of a field from the block markup.
+	 * Read the current value of a field.
+	 *
+	 * - 'dom': read the rendered text from the markup (heading-subtitle).
+	 * - 'value' (default): the raw attribute, falling back to the registered
+	 *   block default (which is what save() rendered into the markup).
 	 *
 	 * @param array  $block
 	 * @param array  $attrs
 	 * @param string $key
+	 * @param string $strategy
 	 * @return string
 	 */
-	private static function read_field_value(array $block, array $attrs, string $key): string {
-		$inner = (string) ($block['innerHTML'] ?? '');
-		$node  = null;
-		$dom   = self::locate($inner, $attrs, $key, $node);
-		if ($dom === null || $node === null) {
-			// Fallback: clean attribute value.
-			return (string) ($attrs[$key] ?? '');
+	private static function read_field_value(array $block, array $attrs, string $key, string $strategy = 'value'): string {
+		if ($strategy === 'dom') {
+			$inner = (string) ($block['innerHTML'] ?? '');
+			$node  = null;
+			$dom   = self::locate($inner, $attrs, $key, $node);
+			if ($dom === null || $node === null) {
+				return (string) ($attrs[$key] ?? '');
+			}
+			return self::inner_html($node);
 		}
-		return self::inner_html($node);
+
+		if (array_key_exists($key, $attrs)) {
+			return (string) $attrs[$key];
+		}
+
+		$name = $block['blockName'] ?? '';
+		if ($name !== '') {
+			$type = \WP_Block_Type_Registry::get_instance()->get_registered($name);
+			if ($type && isset($type->attributes[$key]['default'])) {
+				return (string) $type->attributes[$key]['default'];
+			}
+		}
+		return '';
+	}
+
+	/**
+	 * Rewrite a field by replacing its current value verbatim in the block's
+	 * serialized content. Works for any static block whose save() renders the
+	 * RichText value verbatim, regardless of layout. Mutates $found in place.
+	 *
+	 * Optimistic lock: the old value must still be present in the markup.
+	 *
+	 * @param array  $found Parsed block (by reference).
+	 * @param string $old   Current value as the client read it.
+	 * @param string $new   Already sanitized new value.
+	 * @return bool True if replaced.
+	 */
+	private static function write_field_value_by_value(array &$found, string $old, string $new): bool {
+		if ($old === '') {
+			// Cannot anchor an empty value to a position in the markup.
+			return false;
+		}
+
+		// Prefer the innerContent chunks (survives inner blocks + interleaving).
+		if (!empty($found['innerContent']) && is_array($found['innerContent'])) {
+			foreach ($found['innerContent'] as $k => $chunk) {
+				if (is_string($chunk)) {
+					$pos = strpos($chunk, $old);
+					if ($pos !== false) {
+						$found['innerContent'][$k] = substr_replace($chunk, $new, $pos, strlen($old));
+						$html = '';
+						foreach ($found['innerContent'] as $c) {
+							if (is_string($c)) {
+								$html .= $c;
+							}
+						}
+						$found['innerHTML'] = $html;
+						return true;
+					}
+				}
+			}
+		}
+
+		// Fallback: operate on innerHTML directly.
+		$inner = (string) ($found['innerHTML'] ?? '');
+		$pos   = $inner !== '' ? strpos($inner, $old) : false;
+		if ($pos === false) {
+			return false;
+		}
+		$found['innerHTML'] = substr_replace($inner, $new, $pos, strlen($old));
+		if (empty($found['innerBlocks'])) {
+			$found['innerContent'] = [$found['innerHTML']];
+		}
+		return true;
 	}
 
 	/**

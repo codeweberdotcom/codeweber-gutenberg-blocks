@@ -87,7 +87,6 @@ function init() {
 			card.setAttribute( 'data-cw-block', String( block.index ) );
 
 			let html = '<div class="card-body">';
-			html += '<h6 class="card-title mb-3">' + esc( block.name || block.label ) + '</h6>';
 			block.fields.forEach( ( field ) => {
 				const fid = 'cw-field-' + block.index + '-' + field.key;
 				html += '<div class="mb-3">';

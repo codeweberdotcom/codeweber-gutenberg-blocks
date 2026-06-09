@@ -66,7 +66,10 @@ export const ImageSimpleRender = ({
 	});
 
 	// Формируем финальные классы
-	const figureClasses = `${hoverClasses} ${borderRadius || ''}`.trim();
+	// overflow-hidden нужен, чтобы figure обрезала углы img по border-radius
+	// (без него скругление figure не видно, т.к. img «вылезает» за углы)
+	const figureClasses =
+		`${hoverClasses} ${borderRadius || ''}${borderRadius ? ' overflow-hidden' : ''}`.trim();
 
 	// Получаем title для tooltip
 	const tooltipTitle = getTooltipTitle(image, effectType);

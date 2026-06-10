@@ -38,7 +38,7 @@ const ALLOWED_BLOCKS = [
 	'codeweber-blocks/heading-subtitle',
 	'codeweber-blocks/icon',
 	'codeweber-blocks/lists',
-	'codeweber-blocks/media',
+	'codeweber-blocks/video',
 	'codeweber-blocks/paragraph',
 	'codeweber-blocks/card',
 	'codeweber-blocks/feature',

@@ -1,10 +1,9 @@
 import { useBlockProps } from '@wordpress/block-editor';
-import { ImageRender } from './components/ImageRender';
 import { VideoRender } from './components/VideoRender';
 import { buildLinkAttrs } from '../../utilities/buildLinkAttrs';
 
 export default function save({ attributes }) {
-	const { mediaType, blockClass, blockId, blockData } = attributes;
+	const { blockClass, blockId, blockData } = attributes;
 
 	const blockProps = useBlockProps.save({
 		className: `cwgb-media-block ${blockClass || ''}`.trim(),
@@ -13,7 +12,6 @@ export default function save({ attributes }) {
 	});
 
 	const linkBuildResult = buildLinkAttrs( attributes );
-	const activeLinkProps = linkBuildResult ? linkBuildResult.linkProps : null;
 
 	const hiddenIframeEl = linkBuildResult?.videoFrameId ? (
 		<div id={ linkBuildResult.videoFrameId } style={ { display: 'none' } }>
@@ -30,15 +28,7 @@ export default function save({ attributes }) {
 	return (
 		<div {...blockProps}>
 			{ hiddenIframeEl }
-			{mediaType === 'image' ? (
-				<ImageRender
-					attributes={attributes}
-					isEditor={false}
-					linkProps={activeLinkProps}
-				/>
-			) : (
-				<VideoRender attributes={attributes} isEditor={false} />
-			)}
+			<VideoRender attributes={attributes} isEditor={false} />
 		</div>
 	);
 }

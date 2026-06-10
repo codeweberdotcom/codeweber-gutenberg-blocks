@@ -1,7 +1,7 @@
 /**
- * Media Block
+ * Video Block
  *
- * Display image or video with effects, masks and lightbox
+ * Display video (HTML5, Vimeo, YouTube, VK, Rutube) with poster and lightbox
  */
 import { registerBlockType } from '@wordpress/blocks';
 import './style.scss';
@@ -9,8 +9,6 @@ import './editor.scss';
 import Edit from './edit';
 import save from './save';
 import metadata from './block.json';
-
-console.log('🔵 Registering Media block:', metadata.name);
 
 registerBlockType(metadata.name, {
 	...metadata,

@@ -1,10 +1,8 @@
 import { InspectorControls } from '@wordpress/block-editor';
 import { TabPanel, PanelBody, ToggleControl } from '@wordpress/components';
-import { LightboxControl } from '../../components/lightbox/LightboxControl';
 import { __ } from '@wordpress/i18n';
-import { Icon, image, starFilled, search, cog, link } from '@wordpress/icons';
+import { Icon, image, cog, link } from '@wordpress/icons';
 import { MediaControl } from './controls/MediaControl';
-import { ImageHoverControl } from '../../components/image-hover/ImageHoverControl';
 import { BorderRadiusControl } from '../../components/border-radius';
 import { BlockMetaFields } from '../../components/block-meta/BlockMetaFields';
 import { LinkTypeSelector } from '../../utilities/link_type';
@@ -23,23 +21,14 @@ const TabIcon = ({ icon, label }) => (
 	</span>
 );
 
-export const ImageSidebar = ({ attributes, setAttributes }) => {
+export const VideoSidebar = ({ attributes, setAttributes }) => {
 	const tabs = [
 		{
 			name: 'media',
 			title: (
 				<TabIcon
 					icon={image}
-					label={__('Media', 'codeweber-gutenberg-blocks')}
-				/>
-			),
-		},
-		{
-			name: 'effects',
-			title: (
-				<TabIcon
-					icon={starFilled}
-					label={__('Effects', 'codeweber-gutenberg-blocks')}
+					label={__('Video', 'codeweber-gutenberg-blocks')}
 				/>
 			),
 		},
@@ -68,7 +57,7 @@ export const ImageSidebar = ({ attributes, setAttributes }) => {
 			<TabPanel tabs={tabs}>
 				{(tab) => (
 					<>
-						{/* MEDIA TAB */}
+						{/* VIDEO TAB */}
 						{tab.name === 'media' && (
 							<PanelBody>
 								<MediaControl
@@ -77,74 +66,33 @@ export const ImageSidebar = ({ attributes, setAttributes }) => {
 								/>
 
 								{/* Video Lightbox Settings */}
-								{attributes.mediaType === 'video' && (
+								<div style={{ marginTop: '16px' }}>
+									<ToggleControl
+										label={__(
+											'Enable Video Lightbox',
+											'codeweber-gutenberg-blocks'
+										)}
+										checked={attributes.videoLightbox}
+										onChange={(value) =>
+											setAttributes({
+												videoLightbox: value,
+											})
+										}
+									/>
+								</div>
+
+								{/* Border Radius */}
+								{attributes.videoPoster.url && (
 									<div style={{ marginTop: '16px' }}>
-										<ToggleControl
-											label={__(
-												'Enable Video Lightbox',
-												'codeweber-gutenberg-blocks'
-											)}
-											checked={attributes.videoLightbox}
+										<BorderRadiusControl
+											value={attributes.borderRadius}
 											onChange={(value) =>
 												setAttributes({
-													videoLightbox: value,
+													borderRadius: value,
 												})
 											}
 										/>
 									</div>
-								)}
-
-								{/* Border Radius */}
-								{attributes.mediaType === 'image' &&
-									attributes.image.url && (
-										<div style={{ marginTop: '16px' }}>
-											<BorderRadiusControl
-												value={attributes.borderRadius}
-												onChange={(value) =>
-													setAttributes({
-														borderRadius: value,
-													})
-												}
-											/>
-										</div>
-									)}
-							</PanelBody>
-						)}
-
-						{/* EFFECTS TAB */}
-						{tab.name === 'effects' && (
-							<PanelBody>
-								{attributes.mediaType === 'image' &&
-								attributes.image.url ? (
-									<>
-										{ ! attributes.LinkType ? (
-											<LightboxControl
-												attributes={attributes}
-												setAttributes={setAttributes}
-											/>
-										) : (
-											<p className="description" style={ { marginBottom: '1em' } }>
-												{ __( 'Lightbox is disabled — Link Type is set in the Link tab.', 'codeweber-gutenberg-blocks' ) }
-											</p>
-										) }
-										<ImageHoverControl
-											attributes={attributes}
-											setAttributes={setAttributes}
-											showAdvanced={ ! attributes.LinkType && attributes.enableLightbox }
-										/>
-									</>
-								) : (
-									<p
-										style={{
-											color: '#757575',
-											fontSize: '13px',
-										}}
-									>
-										{__(
-											'Hover effects are only available for images.',
-											'codeweber-gutenberg-blocks'
-										)}
-									</p>
 								)}
 							</PanelBody>
 						)}

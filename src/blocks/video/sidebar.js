@@ -1,5 +1,10 @@
 import { InspectorControls } from '@wordpress/block-editor';
-import { TabPanel, PanelBody, ToggleControl } from '@wordpress/components';
+import {
+	TabPanel,
+	PanelBody,
+	ToggleControl,
+	TextControl,
+} from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { Icon, image, cog } from '@wordpress/icons';
 import { MediaControl } from './controls/MediaControl';
@@ -69,6 +74,24 @@ export const VideoSidebar = ({ attributes, setAttributes }) => {
 											})
 										}
 									/>
+									{attributes.videoLightbox && (
+										<TextControl
+											label={__(
+												'Gallery Name',
+												'codeweber-gutenberg-blocks'
+											)}
+											help={__(
+												'Videos sharing the same gallery name open in one lightbox slider.',
+												'codeweber-gutenberg-blocks'
+											)}
+											value={attributes.lightboxGallery}
+											onChange={(value) =>
+												setAttributes({
+													lightboxGallery: value,
+												})
+											}
+										/>
+									)}
 								</div>
 
 								{/* Border Radius */}

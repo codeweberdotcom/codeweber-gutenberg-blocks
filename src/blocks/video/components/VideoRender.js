@@ -21,6 +21,7 @@ export const VideoRender = ({
 		showPlayIcon,
 		videoLightbox,
 		lightboxUniqueId,
+		lightboxGallery,
 	} = attributes;
 
 	// Функция для получения embed URL (используется inline плеером)
@@ -196,6 +197,11 @@ export const VideoRender = ({
 						href={href}
 						onClick={onClickHandler}
 						data-glightbox={isEditor ? undefined : glightboxAttr}
+						data-gallery={
+							!isEditor && lightboxGallery
+								? lightboxGallery
+								: undefined
+						}
 						style={linkStyle}
 					>
 						{videoPoster.url ? (

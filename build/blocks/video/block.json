@@ -96,6 +96,10 @@
       "type": "string",
       "default": ""
     },
+    "lightboxGallery": {
+      "type": "string",
+      "default": ""
+    },
     "blockClass": {
       "type": "string",
       "default": ""

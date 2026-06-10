@@ -1,11 +1,10 @@
 import { InspectorControls } from '@wordpress/block-editor';
 import { TabPanel, PanelBody, ToggleControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import { Icon, image, cog, link } from '@wordpress/icons';
+import { Icon, image, cog } from '@wordpress/icons';
 import { MediaControl } from './controls/MediaControl';
 import { BorderRadiusControl } from '../../components/border-radius';
 import { BlockMetaFields } from '../../components/block-meta/BlockMetaFields';
-import { LinkTypeSelector } from '../../utilities/link_type';
 
 // Tab icon with native title tooltip
 const TabIcon = ({ icon, label }) => (
@@ -29,15 +28,6 @@ export const VideoSidebar = ({ attributes, setAttributes }) => {
 				<TabIcon
 					icon={image}
 					label={__('Video', 'codeweber-gutenberg-blocks')}
-				/>
-			),
-		},
-		{
-			name: 'link',
-			title: (
-				<TabIcon
-					icon={link}
-					label={__('Link', 'codeweber-gutenberg-blocks')}
 				/>
 			),
 		},
@@ -95,14 +85,6 @@ export const VideoSidebar = ({ attributes, setAttributes }) => {
 									</div>
 								)}
 							</PanelBody>
-						)}
-
-						{/* LINK TAB */}
-						{tab.name === 'link' && (
-							<LinkTypeSelector
-								attributes={attributes}
-								setAttributes={setAttributes}
-							/>
 						)}
 
 						{/* SETTINGS TAB */}

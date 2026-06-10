@@ -195,11 +195,7 @@ export const VideoRender = ({
 					<a
 						href={href}
 						onClick={onClickHandler}
-						data-glightbox={
-							!isEditor && glightboxAttr
-								? glightboxAttr
-								: undefined
-						}
+						data-glightbox={isEditor ? undefined : glightboxAttr}
 						style={linkStyle}
 					>
 						{videoPoster.url ? (

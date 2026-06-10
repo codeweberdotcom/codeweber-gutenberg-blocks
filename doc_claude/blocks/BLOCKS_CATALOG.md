@@ -38,7 +38,7 @@ Legend: `S` = static (JS save) | `D` = dynamic (PHP render.php)
 
 | Block | Type | Description |
 |-------|------|-------------|
-| `image-simple` | S | Image with optional caption and link |
+| `image-simple` | S | Image gallery/carousel with hover effects, lightbox, load-more, swiper; imageSize auto-refreshes missing sizes on change |
 | `media` | S | Media block with video/image support |
 | `banners` | S | Full-width banner with overlay and CTA |
 | `swiper` | D | Swiper.js carousel/slider |

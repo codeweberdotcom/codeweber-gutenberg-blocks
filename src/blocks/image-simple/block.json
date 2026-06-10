@@ -93,14 +93,6 @@
 			"type": "string",
 			"default": ""
 		},
-		"gridGapX": {
-			"type": "string",
-			"default": "md-5"
-		},
-		"gridGapY": {
-			"type": "string",
-			"default": "5"
-		},
 		"gridGapType": {
 			"type": "string",
 			"default": "general"

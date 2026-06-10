@@ -100,14 +100,6 @@
       "type": "string",
       "default": ""
     },
-    "gridGapX": {
-      "type": "string",
-      "default": ""
-    },
-    "gridGapY": {
-      "type": "string",
-      "default": ""
-    },
     "gridGapType": {
       "type": "string",
       "default": "general"
@@ -144,6 +136,10 @@
       "type": "string",
       "default": ""
     },
+    "gridGapX": {
+      "type": "string",
+      "default": ""
+    },
     "gridGapXXs": {
       "type": "string",
       "default": ""
@@ -165,6 +161,10 @@
       "default": ""
     },
     "gridGapXXxl": {
+      "type": "string",
+      "default": ""
+    },
+    "gridGapY": {
       "type": "string",
       "default": ""
     },

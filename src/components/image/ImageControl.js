@@ -59,6 +59,35 @@ export const ImageControl = ({ images, setAttributes, imageSize }) => {
 		setAttributes({ images: newImages });
 	};
 
+	// Смена размера с подгрузкой sizes для изображений, у которых их нет
+	const handleSizeChange = async (value) => {
+		const needsRefresh = images.some(
+			(img) => ! img.sizes || ! img.sizes[ value ]
+		);
+		if ( ! needsRefresh ) {
+			setAttributes({ imageSize: value });
+			return;
+		}
+		const updatedImages = await Promise.all(
+			images.map( async ( image ) => {
+				if ( image.sizes && image.sizes[ value ] ) {
+					return image;
+				}
+				try {
+					const response = await fetch( `/wp-json/wp/v2/media/${ image.id }` );
+					if ( response.ok ) {
+						const fullData = await response.json();
+						if ( fullData.media_details?.sizes ) {
+							return { ...image, sizes: fullData.media_details.sizes };
+						}
+					}
+				} catch ( e ) {}
+				return image;
+			} )
+		);
+		setAttributes({ imageSize: value, images: updatedImages });
+	};
+
 	// Удаление изображения
 	const handleRemoveImage = (index) => {
 		const newImages = [...images];
@@ -123,9 +152,7 @@ export const ImageControl = ({ images, setAttributes, imageSize }) => {
 					<div style={{ marginBottom: '16px' }}>
 						<ImageSizeControl
 							value={imageSize}
-							onChange={(value) =>
-								setAttributes({ imageSize: value })
-							}
+							onChange={handleSizeChange}
 							label={__(
 								'Image Size',
 								'codeweber-gutenberg-blocks'

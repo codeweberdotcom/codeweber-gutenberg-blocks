@@ -464,6 +464,12 @@ import ImageControl from '../../components/image/ImageControl';
 
 Image object structure: `{ id, url, sizes, alt, title, caption, description, linkUrl }`.
 
+**Sizes resolution strategy:**
+1. `handleSelectImages` — uses `item.sizes` from the MediaUpload `onSelect` callback as the primary source (always available, authenticated). If REST API (`/wp-json/wp/v2/media/:id`) is reachable, enriches with `media_details.sizes` (prefers `source_url` format). If REST API returns 401, `item.sizes` is the fallback.
+2. `handleSizeChange` — uses `useSelect('core').getMedia` (authenticated WP store) to refresh `image.sizes` for images missing the selected size. No fetch, no 401 risk.
+
+**Why:** direct REST API fetch (`/wp-json/wp/v2/media`) requires auth on many WP setups and silently returns `{}`, causing `save.js` to fall back to the full-size URL on the frontend.
+
 ---
 
 ### `ImageRender` / `ImageRenderSave`

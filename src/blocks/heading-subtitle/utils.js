@@ -8,7 +8,7 @@ import {
 } from '../../utilities/class-generators';
 
 export const getTitleClasses = (attrs) => {
-	const classes = [];
+	const classes = ['cw-title'];
 	const {
 		titleTag,
 		titleColor,
@@ -51,7 +51,7 @@ export const getTitleClasses = (attrs) => {
 };
 
 export const getSubtitleClasses = (attrs) => {
-	const classes = [];
+	const classes = ['cw-subtitle'];
 	const {
 		subtitleTag,
 		subtitleColor,

@@ -15,7 +15,7 @@ import {
  * Генерация классов для параграфа
  */
 export const getParagraphClasses = (attrs, prefix = '') => {
-	const classes = [];
+	const classes = ['cw-paragraph'];
 
 	const getAttr = (name) => {
 		const attrName = prefix

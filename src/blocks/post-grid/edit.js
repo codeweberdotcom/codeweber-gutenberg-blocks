@@ -472,11 +472,20 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 
 						// Для documents получаем URL файла документа из метаполя
 						let documentFileUrl = '';
+						let documentFileExt = '';
+						let documentFileSize = '';
+						let documentTypeName = '';
 						if (postType === 'documents') {
 							documentFileUrl =
 								post._document_file ||
 								post.meta?._document_file ||
 								'';
+							documentFileExt =
+								post._document_file_ext || '';
+							documentFileSize =
+								post._document_file_size || '';
+							documentTypeName =
+								post._document_type_name || '';
 						}
 
 						// Для testimonials получаем дополнительные данные из метаполей
@@ -649,6 +658,9 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 							shortDescription: shortDescription,
 							linkUrl: linkUrl,
 							documentFile: documentFileUrl, // URL файла документа для documents
+							documentFileExt: documentFileExt, // Расширение файла (PDF, XLSX...)
+							documentFileSize: documentFileSize, // Размер файла (форматированный)
+							documentTypeName: documentTypeName, // Название термина document_type
 							...testimonialData, // Добавляем данные testimonials если есть
 							...staffData, // Добавляем данные staff если есть
 						};

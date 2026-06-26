@@ -1414,88 +1414,62 @@ export const PostGridItemRender = ({
 			</article>
 		);
 	} else if (template === 'document-card-download') {
-		// Document Card Download template - на основе overlay-5, с AJAX кнопкой загрузки
-		const excerptLimited =
-			descriptionLimited.length > 116
-				? descriptionLimited.substring(0, 113) + '...'
-				: descriptionLimited;
-		const documentCardClasses = `overlay overlay-5 ${borderRadius || 'rounded'}`;
-
-		// Получаем ID поста для AJAX загрузки
+		// Document Card Download - карточка-строка документа с AJAX кнопкой загрузки.
+		// Должна совпадать с PHP-шаблоном темы templates/post-cards/documents/card_download.php
 		const postId = post.id || post.ID || '';
-
-		// Получаем URL файла документа (если есть в данных поста)
 		const documentFileUrl =
 			post.documentFile || post.meta?.document_file || '';
+		const fileExt = post.documentFileExt || '';
+		const fileSize = post.documentFileSize || '';
+		const typeName = post.documentTypeName || '';
+		const fileMeta = [fileExt, fileSize].filter(Boolean).join(' · ');
 
 		return (
-			<article>
-				<figure className={documentCardClasses}>
-					<a
-						href={isEditor ? '#' : postLink}
-						onClick={
-							isEditor ? (e) => e.preventDefault() : undefined
-						}
-					>
-						<div className="bottom-overlay post-meta fs-16 justify-content-between position-absolute zindex-1 d-flex flex-column h-100 w-100 p-5">
-							<div className="d-flex w-100 justify-content-end"></div>
-							<TitleTag className={titleClassNameOverlay}>{titleLimited}</TitleTag>
-						</div>
-						<img
-							src={imageUrl}
-							alt={post.alt || postTitle}
-							className={borderRadius || 'rounded'}
-						/>
-					</a>
-					<figcaption className="p-5">
-						<div className="post-body from-left">
-							{excerptLimited && (
-								<p className="mb-3">{excerptLimited}</p>
-							)}
-							{documentFileUrl && postId ? (
-								<a
-									href="javascript:void(0)"
-									className="btn btn-primary btn-icon btn-icon-start btn-sm d-flex"
-									data-bs-toggle="download"
-									data-value={`doc-${postId}`}
-									data-loading-text={__(
-										'Loading...',
-										'codeweber-gutenberg-blocks'
-									)}
-									onClick={
-										isEditor
-											? (e) => e.preventDefault()
-											: undefined
-									}
-								>
-									<i className="uil uil-import fs-15"></i>
-									<span className="ms-1">
-										{__(
-											'Download',
-											'codeweber-gutenberg-blocks'
-										)}
-									</span>
-								</a>
-							) : (
-								<a
-									href={isEditor ? '#' : postLink}
-									className="hover-8 link-body label-s text-charcoal-blue me-4 post-read-more"
-									onClick={
-										isEditor
-											? (e) => e.preventDefault()
-											: undefined
-									}
-								>
-									{__(
-										'Read more',
-										'codeweber-gutenberg-blocks'
-									)}
-								</a>
-							)}
-						</div>
-					</figcaption>
-				</figure>
-			</article>
+			<div className="card p-6 card-lift rounded h-100">
+				<div className="d-flex align-items-center gap-3">
+					<div className="bg-primary bg-opacity-10 rounded-2 text-center p-3 flex-shrink-0 text-primary lh-1">
+						<i className="uil uil-file fs-30 d-block"></i>
+						{fileExt && (
+							<span className="cw-subtitle fs-11">{fileExt}</span>
+						)}
+					</div>
+					<div className="flex-grow-1">
+						{typeName && (
+							<p className="cw-subtitle mb-0">{typeName}</p>
+						)}
+						<h5 className="mb-1">{titleLimited}</h5>
+						{fileMeta && (
+							<p className="mb-0 text-muted fs-sm">{fileMeta}</p>
+						)}
+					</div>
+					{documentFileUrl && postId ? (
+						<a
+							href="javascript:void(0)"
+							className="btn btn-sm btn-outline-primary rounded-pill flex-shrink-0"
+							data-value={`doc-${postId}`}
+							data-bs-toggle="download"
+							onClick={
+								isEditor ? (e) => e.preventDefault() : undefined
+							}
+						>
+							<span>
+								{__('Download', 'codeweber-gutenberg-blocks')}
+							</span>{' '}
+							<i className="uil uil-import ms-1"></i>
+						</a>
+					) : (
+						<a
+							href={isEditor ? '#' : postLink}
+							className="btn btn-sm btn-outline-primary rounded-pill flex-shrink-0"
+							onClick={
+								isEditor ? (e) => e.preventDefault() : undefined
+							}
+						>
+							{__('Read more', 'codeweber-gutenberg-blocks')}
+						</a>
+					)}
+				</div>
+			</div>
 		);
 	} else if (template === 'client-simple') {
 		// Client Simple template - для Swiper (без figure, просто img)

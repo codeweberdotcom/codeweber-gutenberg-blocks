@@ -8,6 +8,7 @@ import { __ } from '@wordpress/i18n';
 import { PanelBody, ToggleControl, SelectControl } from '@wordpress/components';
 import { useEffect, useState } from '@wordpress/element';
 import apiFetch from '@wordpress/api-fetch';
+import { colors } from '../../utilities/colors';
 
 export const TablesSidebar = ({ attributes, setAttributes }) => {
 	const {
@@ -21,6 +22,7 @@ export const TablesSidebar = ({ attributes, setAttributes }) => {
 		tableBorderless,
 		tableHover,
 		tableVariant,
+		textColor,
 		theadVariant,
 		showHeader,
 		hideTopBorder,
@@ -154,6 +156,21 @@ export const TablesSidebar = ({ attributes, setAttributes }) => {
 						{ value: 'dark', label: 'table-dark' },
 					]}
 					onChange={(v) => setAttributes({ tableVariant: v })}
+				/>
+
+				{/* Font color — independent of the table theme/variant */}
+				<div className="component-sidebar-title" style={{ marginTop: '16px' }}>
+					<label>
+						{__('Font color', 'codeweber-gutenberg-blocks')}
+					</label>
+				</div>
+				<SelectControl
+					value={textColor || ''}
+					options={[
+						{ value: '', label: __('— Default —', 'codeweber-gutenberg-blocks') },
+						...colors.map((c) => ({ value: c.value, label: c.label })),
+					]}
+					onChange={(v) => setAttributes({ textColor: v })}
 				/>
 
 				{/* Header style + visibility */}

@@ -50,6 +50,10 @@
       "type": "string",
       "default": ""
     },
+    "textColor": {
+      "type": "string",
+      "default": ""
+    },
     "theadVariant": {
       "type": "string",
       "default": ""

@@ -23,6 +23,7 @@ $table_bordered = !empty($attributes['tableBordered']);
 $table_borderless = !empty($attributes['tableBorderless']);
 $table_hover = !empty($attributes['tableHover']);
 $table_variant = isset($attributes['tableVariant']) ? trim((string) $attributes['tableVariant']) : '';
+$text_color = isset($attributes['textColor']) ? trim((string) $attributes['textColor']) : '';
 $thead_variant = isset($attributes['theadVariant']) ? trim((string) $attributes['theadVariant']) : '';
 $show_header = isset($attributes['showHeader']) ? (bool) $attributes['showHeader'] : true;
 $hide_top_border = !empty($attributes['hideTopBorder']);
@@ -31,6 +32,13 @@ $responsive = isset($attributes['responsive']) ? (bool) $attributes['responsive'
 
 $allowed_variants = ['primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark'];
 $allowed_thead = ['table-light', 'table-dark'];
+$allowed_text_colors = [
+	'transparent', 'primary', 'dark', 'light', 'yellow', 'orange', 'red', 'pink',
+	'fuchsia', 'violet', 'purple', 'blue', 'aqua', 'sky', 'green', 'leaf', 'ash',
+	'navy', 'grape', 'gray', 'bronze', 'coffee', 'flame', 'emerald', 'crimson',
+	'muted', 'white', 'pinterest', 'dewalt', 'facebook', 'telegram', 'frost',
+	'soft-frost', 'pale-frost',
+];
 
 $table_classes = ['table'];
 if ($table_dark) $table_classes[] = 'table-dark';
@@ -41,6 +49,7 @@ if ($table_bordered) $table_classes[] = 'table-bordered';
 if ($table_borderless) $table_classes[] = 'table-borderless';
 if ($table_hover) $table_classes[] = 'table-hover';
 if ($table_variant && in_array($table_variant, $allowed_variants, true)) $table_classes[] = 'table-' . $table_variant;
+if ($text_color && in_array($text_color, $allowed_text_colors, true)) $table_classes[] = 'text-' . $text_color;
 $table_class_str = implode(' ', $table_classes);
 
 $thead_class = ($thead_variant && in_array($thead_variant, $allowed_thead, true)) ? $thead_variant : '';

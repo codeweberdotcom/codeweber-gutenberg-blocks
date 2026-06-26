@@ -38,6 +38,7 @@ const TablesEdit = ({ attributes, setAttributes }) => {
 		tableBorderless,
 		tableHover,
 		tableVariant,
+		textColor,
 		theadVariant,
 		showHeader,
 		hideTopBorder,
@@ -82,6 +83,7 @@ const TablesEdit = ({ attributes, setAttributes }) => {
 		if (tableBorderless) classes.push('table-borderless');
 		if (tableHover) classes.push('table-hover');
 		if (tableVariant) classes.push(`table-${tableVariant}`);
+		if (textColor) classes.push(`text-${textColor}`);
 		return classes.join(' ');
 	};
 

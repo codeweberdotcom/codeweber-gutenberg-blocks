@@ -5,3 +5,12 @@
  *
  * @package CodeWeber Gutenberg Blocks
  */
+
+.wp-block-codeweber-blocks-tables {
+	// Font color override independent of the table theme/variant.
+	// Bootstrap sets cell color via --bs-table-color; force the cells to inherit
+	// so the text-* utility on the <table> wins over the theme color.
+	table[class*="text-"] > :not(caption) > * > * {
+		color: inherit;
+	}
+}

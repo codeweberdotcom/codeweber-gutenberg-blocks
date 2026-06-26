@@ -54,6 +54,10 @@
       "type": "string",
       "default": ""
     },
+    "customTableClass": {
+      "type": "string",
+      "default": ""
+    },
     "theadVariant": {
       "type": "string",
       "default": ""

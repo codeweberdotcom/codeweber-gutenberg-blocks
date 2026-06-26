@@ -24,6 +24,7 @@ $table_borderless = !empty($attributes['tableBorderless']);
 $table_hover = !empty($attributes['tableHover']);
 $table_variant = isset($attributes['tableVariant']) ? trim((string) $attributes['tableVariant']) : '';
 $text_color = isset($attributes['textColor']) ? trim((string) $attributes['textColor']) : '';
+$custom_table_class = isset($attributes['customTableClass']) ? trim((string) $attributes['customTableClass']) : '';
 $thead_variant = isset($attributes['theadVariant']) ? trim((string) $attributes['theadVariant']) : '';
 $show_header = isset($attributes['showHeader']) ? (bool) $attributes['showHeader'] : true;
 $hide_top_border = !empty($attributes['hideTopBorder']);
@@ -50,6 +51,12 @@ if ($table_borderless) $table_classes[] = 'table-borderless';
 if ($table_hover) $table_classes[] = 'table-hover';
 if ($table_variant && in_array($table_variant, $allowed_variants, true)) $table_classes[] = 'table-' . $table_variant;
 if ($text_color && in_array($text_color, $allowed_text_colors, true)) $table_classes[] = 'text-' . $text_color;
+if ($custom_table_class) {
+	foreach (preg_split('/\s+/', $custom_table_class) as $cls) {
+		$cls = sanitize_html_class($cls);
+		if ($cls !== '') $table_classes[] = $cls;
+	}
+}
 $table_class_str = implode(' ', $table_classes);
 
 $thead_class = ($thead_variant && in_array($thead_variant, $allowed_thead, true)) ? $thead_variant : '';

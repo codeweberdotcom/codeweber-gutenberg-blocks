@@ -5,7 +5,12 @@
  */
 
 import { __ } from '@wordpress/i18n';
-import { PanelBody, ToggleControl, SelectControl } from '@wordpress/components';
+import {
+	PanelBody,
+	ToggleControl,
+	SelectControl,
+	TextControl,
+} from '@wordpress/components';
 import { useEffect, useState } from '@wordpress/element';
 import apiFetch from '@wordpress/api-fetch';
 import { colors } from '../../utilities/colors';
@@ -23,6 +28,7 @@ export const TablesSidebar = ({ attributes, setAttributes }) => {
 		tableHover,
 		tableVariant,
 		textColor,
+		customTableClass,
 		theadVariant,
 		showHeader,
 		hideTopBorder,
@@ -171,6 +177,21 @@ export const TablesSidebar = ({ attributes, setAttributes }) => {
 						...colors.map((c) => ({ value: c.value, label: c.label })),
 					]}
 					onChange={(v) => setAttributes({ textColor: v })}
+				/>
+
+				{/* Custom CSS classes on the <table> tag */}
+				<div className="component-sidebar-title" style={{ marginTop: '16px' }}>
+					<label>
+						{__('Custom table classes', 'codeweber-gutenberg-blocks')}
+					</label>
+				</div>
+				<TextControl
+					value={customTableClass || ''}
+					help={__(
+						'Add your own classes to the <table> tag, space-separated.',
+						'codeweber-gutenberg-blocks'
+					)}
+					onChange={(v) => setAttributes({ customTableClass: v })}
 				/>
 
 				{/* Header style + visibility */}

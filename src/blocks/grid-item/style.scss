@@ -1,4 +1,22 @@
 .cwgb-grid-item {
-	// Prevent content from blowing out grid cell width
 	min-width: 0;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+
+	> * {
+		flex: 1 1 auto;
+		min-height: 0;
+	}
+
+	figure {
+		height: 100%;
+
+		img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			display: block;
+		}
+	}
 }

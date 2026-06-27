@@ -552,6 +552,15 @@ if (!function_exists('get_swiper_data_attributes')) {
 		$items_xl = $attributes['swiperItemsXl'] ?? '3';
 		$items_xxl = $attributes['swiperItemsXxl'] ?? '';
 		$items_xxxl = $attributes['swiperItemsXxxl'] ?? '';
+		$rows = $attributes['swiperRows'] ?? '1';
+		$fill = (($attributes['swiperFill'] ?? 'row') === 'column') ? 'column' : 'row';
+		$rows_xs = $attributes['swiperRowsXs'] ?? '';
+		$rows_sm = $attributes['swiperRowsSm'] ?? '';
+		$rows_md = $attributes['swiperRowsMd'] ?? '';
+		$rows_lg = $attributes['swiperRowsLg'] ?? '';
+		$rows_xl = $attributes['swiperRowsXl'] ?? '';
+		$rows_xxl = $attributes['swiperRowsXxl'] ?? '';
+		$rows_xxxl = $attributes['swiperRowsXxxl'] ?? '';
 		$items_auto = isset($attributes['swiperItemsAuto']) ? $attributes['swiperItemsAuto'] : false;
 		$margin = isset($attributes['swiperMargin']) ? (int) $attributes['swiperMargin'] : 30;
 		$loop = isset($attributes['swiperLoop']) ? $attributes['swiperLoop'] : false;
@@ -582,7 +591,21 @@ if (!function_exists('get_swiper_data_attributes')) {
 			if ($items_xxl) $attrs['data-items-xxl'] = $items_xxl;
 			if ($items_xxxl) $attrs['data-items-xxxl'] = $items_xxxl;
 		}
-		
+
+		// Grid (multi-row) — only emit when base rows > 1 so single-row
+		// sliders keep identical markup. Mirrors the Swiper block.
+		if ((int) $rows > 1) {
+			$attrs['data-rows'] = (string) $rows;
+			$attrs['data-fill'] = $fill;
+			if ($rows_xs) $attrs['data-rows-xs'] = $rows_xs;
+			if ($rows_sm) $attrs['data-rows-sm'] = $rows_sm;
+			if ($rows_md) $attrs['data-rows-md'] = $rows_md;
+			if ($rows_lg) $attrs['data-rows-lg'] = $rows_lg;
+			if ($rows_xl) $attrs['data-rows-xl'] = $rows_xl;
+			if ($rows_xxl) $attrs['data-rows-xxl'] = $rows_xxl;
+			if ($rows_xxxl) $attrs['data-rows-xxxl'] = $rows_xxxl;
+		}
+
 		$attrs['data-margin'] = (string) $margin;
 		$attrs['data-loop'] = $loop ? 'true' : 'false';
 		$attrs['data-centered'] = $centered ? 'true' : 'false';

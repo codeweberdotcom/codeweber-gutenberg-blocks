@@ -112,6 +112,11 @@ export const LayoutControl = ({ attributes, setAttributes }) => {
 		swiperItemsXl,
 		swiperItemsXxl,
 		swiperItemsXxxl,
+		swiperRows,
+		swiperFill,
+		swiperRowsXs,
+		swiperRowsMd,
+		swiperRowsXl,
 		swiperSpeed,
 		swiperAutoplay,
 		swiperAutoplayTime,
@@ -491,6 +496,94 @@ export const LayoutControl = ({ attributes, setAttributes }) => {
 							setAttributes({ swiperItemsAuto: value })
 						}
 					/>
+
+					<h3
+						style={{
+							marginTop: '16px',
+							marginBottom: '12px',
+							fontSize: '14px',
+							fontWeight: 'bold',
+						}}
+					>
+						{__('Grid (rows)', 'codeweber-gutenberg-blocks')}
+					</h3>
+
+					<TextControl
+						label={__('Rows (default)', 'codeweber-gutenberg-blocks')}
+						type="number"
+						value={swiperRows}
+						onChange={(value) =>
+							setAttributes({ swiperRows: value })
+						}
+						help={__(
+							'Number of rows (Swiper Grid). > 1 enables multi-row layout. Incompatible with Loop and Auto Width.',
+							'codeweber-gutenberg-blocks'
+						)}
+					/>
+
+					{Number(swiperRows) > 1 && (
+						<>
+							<SelectControl
+								label={__('Fill', 'codeweber-gutenberg-blocks')}
+								value={swiperFill}
+								options={[
+									{
+										label: __(
+											'Row',
+											'codeweber-gutenberg-blocks'
+										),
+										value: 'row',
+									},
+									{
+										label: __(
+											'Column',
+											'codeweber-gutenberg-blocks'
+										),
+										value: 'column',
+									},
+								]}
+								onChange={(value) =>
+									setAttributes({ swiperFill: value })
+								}
+							/>
+
+							<TextControl
+								label={__(
+									'Rows XL (≥1200px)',
+									'codeweber-gutenberg-blocks'
+								)}
+								type="number"
+								value={swiperRowsXl}
+								onChange={(value) =>
+									setAttributes({ swiperRowsXl: value })
+								}
+							/>
+
+							<TextControl
+								label={__(
+									'Rows MD (≥768px)',
+									'codeweber-gutenberg-blocks'
+								)}
+								type="number"
+								value={swiperRowsMd}
+								onChange={(value) =>
+									setAttributes({ swiperRowsMd: value })
+								}
+							/>
+
+							<TextControl
+								label={__(
+									'Rows XS (<576px)',
+									'codeweber-gutenberg-blocks'
+								)}
+								type="number"
+								value={swiperRowsXs}
+								onChange={(value) =>
+									setAttributes({ swiperRowsXs: value })
+								}
+							/>
+						</>
+					)}
 
 					<h3
 						style={{

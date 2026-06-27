@@ -362,16 +362,29 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 	}, [ pendingPreset, innerBlocks.length ] );
 
 	const applyPreset = ( preset ) => {
+		// Pause auto-sync FIRST so it doesn't over-insert while we work.
+		// setPendingPreset causes a React state update that is processed before
+		// the WP store actions (setAttributes / insertBlocks) complete.
+		setPendingPreset( preset );
+
 		setAttributes( {
 			colCount: preset.colCount,
 			colSizes: preset.colSizes || [],
 			rowCount: preset.rowCount,
 			rowSizes: preset.rowSizes || [],
-			// cellCount limits auto-sync to the actual number of cells in the preset,
-			// not colCount × rowCount (which would be wrong for spanning layouts).
+			// cellCount so auto-sync targets the right count after preset is done.
 			cellCount: preset.items.length,
 		} );
-		setPendingPreset( preset );
+
+		// Explicitly insert missing blocks (auto-sync is paused and won't do it).
+		// If already have enough, pending preset useEffect applies attrs on next render.
+		const needed = preset.items.length;
+		if ( innerBlocks.length < needed ) {
+			const toAdd = Array.from( { length: needed - innerBlocks.length }, () =>
+				createBlock( 'codeweber-blocks/grid-item' )
+			);
+			insertBlocks( toAdd, innerBlocks.length, clientId, false );
+		}
 	};
 
 	const blockProps = useBlockProps( {

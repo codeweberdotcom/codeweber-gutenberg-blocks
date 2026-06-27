@@ -367,6 +367,8 @@ class Plugin {
 		'floating-navigator',
 		'opening-hours',
 		'inline-text-editor',
+		'grid-layout',
+		'grid-item',
 	];
 	}
 

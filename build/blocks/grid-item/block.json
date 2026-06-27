@@ -1,0 +1,215 @@
+{
+  "apiVersion": 3,
+  "name": "codeweber-blocks/grid-item",
+  "version": "0.1.0",
+  "title": "Grid Item",
+  "category": "codeweber-gutenberg-elements",
+  "icon": "layout",
+  "description": "Grid cell inside a Grid Layout block. Supports grid-column, grid-row, span and self-alignment.",
+  "parent": [
+    "codeweber-blocks/grid-layout"
+  ],
+  "supports": {
+    "html": false,
+    "customClassName": false,
+    "anchor": true
+  },
+  "attributes": {
+    "anchor": {
+      "type": "string",
+      "default": ""
+    },
+    "itemId": {
+      "type": "string",
+      "default": ""
+    },
+    "gridColumn": {
+      "type": "string",
+      "default": ""
+    },
+    "gridColumnSm": {
+      "type": "string",
+      "default": ""
+    },
+    "gridColumnMd": {
+      "type": "string",
+      "default": ""
+    },
+    "gridColumnLg": {
+      "type": "string",
+      "default": ""
+    },
+    "gridColumnXl": {
+      "type": "string",
+      "default": ""
+    },
+    "gridColumnXxl": {
+      "type": "string",
+      "default": ""
+    },
+    "gridColumnXxxl": {
+      "type": "string",
+      "default": ""
+    },
+    "gridRow": {
+      "type": "string",
+      "default": ""
+    },
+    "gridRowSm": {
+      "type": "string",
+      "default": ""
+    },
+    "gridRowMd": {
+      "type": "string",
+      "default": ""
+    },
+    "gridRowLg": {
+      "type": "string",
+      "default": ""
+    },
+    "gridRowXl": {
+      "type": "string",
+      "default": ""
+    },
+    "gridRowXxl": {
+      "type": "string",
+      "default": ""
+    },
+    "gridRowXxxl": {
+      "type": "string",
+      "default": ""
+    },
+    "order": {
+      "type": "string",
+      "default": ""
+    },
+    "orderSm": {
+      "type": "string",
+      "default": ""
+    },
+    "orderMd": {
+      "type": "string",
+      "default": ""
+    },
+    "orderLg": {
+      "type": "string",
+      "default": ""
+    },
+    "orderXl": {
+      "type": "string",
+      "default": ""
+    },
+    "orderXxl": {
+      "type": "string",
+      "default": ""
+    },
+    "orderXxxl": {
+      "type": "string",
+      "default": ""
+    },
+    "alignSelf": {
+      "type": "string",
+      "default": ""
+    },
+    "justifySelf": {
+      "type": "string",
+      "default": ""
+    },
+    "backgroundType": {
+      "type": "string",
+      "default": "none"
+    },
+    "backgroundColor": {
+      "type": "string",
+      "default": "primary"
+    },
+    "backgroundColorType": {
+      "type": "string",
+      "default": "solid"
+    },
+    "backgroundGradient": {
+      "type": "string",
+      "default": "gradient-1"
+    },
+    "backgroundImageId": {
+      "type": "number",
+      "default": 0
+    },
+    "backgroundImageUrl": {
+      "type": "string",
+      "default": ""
+    },
+    "backgroundImageSize": {
+      "type": "string",
+      "default": ""
+    },
+    "backgroundSize": {
+      "type": "string",
+      "default": ""
+    },
+    "backgroundOverlay": {
+      "type": "string",
+      "default": ""
+    },
+    "backgroundPatternUrl": {
+      "type": "string",
+      "default": ""
+    },
+    "backgroundVideoId": {
+      "type": "number",
+      "default": 0
+    },
+    "backgroundVideoUrl": {
+      "type": "string",
+      "default": ""
+    },
+    "spacingType": {
+      "type": "string",
+      "default": "padding"
+    },
+    "spacingXs": {
+      "type": "string",
+      "default": ""
+    },
+    "spacingSm": {
+      "type": "string",
+      "default": ""
+    },
+    "spacingMd": {
+      "type": "string",
+      "default": ""
+    },
+    "spacingLg": {
+      "type": "string",
+      "default": ""
+    },
+    "spacingXl": {
+      "type": "string",
+      "default": ""
+    },
+    "spacingXxl": {
+      "type": "string",
+      "default": ""
+    },
+    "spacingXxxl": {
+      "type": "string",
+      "default": ""
+    },
+    "itemClass": {
+      "type": "string",
+      "default": ""
+    },
+    "itemHtmlId": {
+      "type": "string",
+      "default": ""
+    },
+    "itemData": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "textdomain": "codeweber-gutenberg-blocks",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

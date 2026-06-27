@@ -1,0 +1,21 @@
+.cwgb-grid-item {
+	&.cwgb-grid-item--edit {
+		min-height: 60px;
+		outline: 2px dashed rgba( 0, 120, 212, 0.25 );
+		outline-offset: -2px;
+		position: relative;
+
+		// Show empty-state hint when no child blocks
+		&:empty::before {
+			content: "Grid Item";
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			position: absolute;
+			inset: 0;
+			font-size: 11px;
+			color: rgba( 0, 120, 212, 0.5 );
+			pointer-events: none;
+		}
+	}
+}

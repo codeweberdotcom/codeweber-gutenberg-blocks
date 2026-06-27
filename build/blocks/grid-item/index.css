@@ -1,0 +1,1 @@
+.cwgb-grid-item.cwgb-grid-item--edit{min-height:60px;outline:2px dashed rgba(0,120,212,.25);outline-offset:-2px;position:relative}.cwgb-grid-item.cwgb-grid-item--edit:empty:before{align-items:center;color:rgba(0,120,212,.5);content:"Grid Item";display:flex;font-size:11px;inset:0;justify-content:center;pointer-events:none;position:absolute}

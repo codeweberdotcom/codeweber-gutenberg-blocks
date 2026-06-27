@@ -5,7 +5,7 @@ import {
 	SelectControl,
 	Button,
 } from '@wordpress/components';
-import { useEffect, useRef } from '@wordpress/element';
+import { useEffect, useState } from '@wordpress/element';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { createBlock } from '@wordpress/blocks';
 import { __ } from '@wordpress/i18n';
@@ -29,117 +29,122 @@ const INITIAL_TEMPLATE = [
 ];
 
 // ─── Presets ────────────────────────────────────────────────────────────────
+// cellCount MUST equal items.length on every spanning preset to prevent
+// auto-sync from creating colCount×rowCount cells instead of the actual number.
 
 const PRESETS = [
 	{
-		id: 'equal-2x2',
-		label: __( '2×2', 'codeweber-gutenberg-blocks' ),
-		colCount: 2,
-		colSizes: [],
-		rowCount: 2,
-		rowSizes: [],
-		items: [
-			{ gridColumn: '', gridRow: '' },
-			{ gridColumn: '', gridRow: '' },
-			{ gridColumn: '', gridRow: '' },
-			{ gridColumn: '', gridRow: '' },
-		],
-	},
-	{
-		id: 'equal-3cols',
-		label: __( '3 cols', 'codeweber-gutenberg-blocks' ),
-		colCount: 3,
-		colSizes: [],
-		rowCount: 1,
-		rowSizes: [],
-		items: [
-			{ gridColumn: '', gridRow: '' },
-			{ gridColumn: '', gridRow: '' },
-			{ gridColumn: '', gridRow: '' },
-		],
-	},
-	{
 		id: 'magazine',
 		label: __( 'Magazine', 'codeweber-gutenberg-blocks' ),
-		// 6-column grid: items use spans
 		colCount: 6,
 		colSizes: [],
 		rowCount: 3,
 		rowSizes: [],
 		items: [
-			{ gridColumn: '1 / 4', gridRow: '1 / 3' }, // big left
-			{ gridColumn: '4 / 7', gridRow: '1' },      // top right
-			{ gridColumn: '4 / 7', gridRow: '2' },      // mid right
-			{ gridColumn: '1 / 3', gridRow: '3' },      // bottom 1
-			{ gridColumn: '3 / 5', gridRow: '3' },      // bottom 2
-			{ gridColumn: '5 / 7', gridRow: '3' },      // bottom 3
+			{ gridColumn: '1 / 4', gridRow: '1 / 3' },
+			{ gridColumn: '4 / 7', gridRow: '1' },
+			{ gridColumn: '4 / 7', gridRow: '2' },
+			{ gridColumn: '1 / 3', gridRow: '3' },
+			{ gridColumn: '3 / 5', gridRow: '3' },
+			{ gridColumn: '5 / 7', gridRow: '3' },
 		],
 	},
 	{
-		id: 'bento',
-		label: __( 'Bento', 'codeweber-gutenberg-blocks' ),
+		// Tall block on left (spans 2 rows) + 2 right + 2 bottom
+		id: 'bento-left-hero',
+		label: __( 'Bento 1', 'codeweber-gutenberg-blocks' ),
+		colCount: 2,
+		colSizes: [],
+		rowCount: 3,
+		rowSizes: [],
+		items: [
+			{ gridColumn: '1', gridRow: '1 / 3' },
+			{ gridColumn: '2', gridRow: '1' },
+			{ gridColumn: '2', gridRow: '2' },
+			{ gridColumn: '1', gridRow: '3' },
+			{ gridColumn: '2', gridRow: '3' },
+		],
+	},
+	{
+		// Full-width top banner + 2×2 grid below
+		id: 'bento-top-banner',
+		label: __( 'Bento 2', 'codeweber-gutenberg-blocks' ),
+		colCount: 2,
+		colSizes: [],
+		rowCount: 3,
+		rowSizes: [],
+		items: [
+			{ gridColumn: '1 / -1', gridRow: '1' },
+			{ gridColumn: '1', gridRow: '2' },
+			{ gridColumn: '2', gridRow: '2' },
+			{ gridColumn: '1', gridRow: '3' },
+			{ gridColumn: '2', gridRow: '3' },
+		],
+	},
+	{
+		// 3 left blocks + tall block on right (spans all rows)
+		id: 'bento-right-hero',
+		label: __( 'Bento 3', 'codeweber-gutenberg-blocks' ),
+		colCount: 2,
+		colSizes: [],
+		rowCount: 3,
+		rowSizes: [],
+		items: [
+			{ gridColumn: '1', gridRow: '1' },
+			{ gridColumn: '1', gridRow: '2' },
+			{ gridColumn: '1', gridRow: '3' },
+			{ gridColumn: '2', gridRow: '1 / 4' },
+		],
+	},
+	{
+		// Alternating wide/narrow rows (checkerboard)
+		id: 'bento-checker',
+		label: __( 'Bento 4', 'codeweber-gutenberg-blocks' ),
 		colCount: 3,
 		colSizes: [],
 		rowCount: 2,
 		rowSizes: [],
 		items: [
-			{ gridColumn: '1 / 2', gridRow: '1' },  // small top-left
-			{ gridColumn: '2 / 4', gridRow: '1' },  // wide top-right
-			{ gridColumn: '1 / 3', gridRow: '2' },  // wide bottom-left
-			{ gridColumn: '3 / 4', gridRow: '2' },  // small bottom-right
+			{ gridColumn: '1 / 3', gridRow: '1' },
+			{ gridColumn: '3 / 4', gridRow: '1' },
+			{ gridColumn: '1 / 2', gridRow: '2' },
+			{ gridColumn: '2 / 4', gridRow: '2' },
 		],
 	},
 	{
-		id: 'sidebar',
-		label: __( 'Sidebar', 'codeweber-gutenberg-blocks' ),
-		colCount: 2,
-		colSizes: [ '280px', '1fr' ],
-		rowCount: 1,
+		// Wide featured cell top-left + grid of 4
+		id: 'bento-featured',
+		label: __( 'Bento 5', 'codeweber-gutenberg-blocks' ),
+		colCount: 3,
+		colSizes: [],
+		rowCount: 3,
 		rowSizes: [],
 		items: [
-			{ gridColumn: '', gridRow: '' },
-			{ gridColumn: '', gridRow: '' },
+			{ gridColumn: '1 / 3', gridRow: '1 / 3' },
+			{ gridColumn: '3 / 4', gridRow: '1' },
+			{ gridColumn: '3 / 4', gridRow: '2' },
+			{ gridColumn: '1 / 2', gridRow: '3' },
+			{ gridColumn: '2 / 3', gridRow: '3' },
+			{ gridColumn: '3 / 4', gridRow: '3' },
 		],
 	},
 ];
 
-// Mini visual preview of each preset
+// Mini visual preview — CSS Grid div
 function PresetVisual( { id } ) {
-	const cell = {
-		background: 'currentColor',
-		opacity: 0.45,
-		borderRadius: '1px',
-	};
-	const grid = ( cols, rows, children ) => ( {
+	const cell = { background: 'currentColor', opacity: 0.45, borderRadius: '1px' };
+	const g = ( cols, rows ) => ( {
 		display: 'grid',
 		gridTemplateColumns: cols,
 		gridTemplateRows: rows,
 		gap: '2px',
 		width: '44px',
-		height: '32px',
+		height: '34px',
 	} );
 
-	if ( id === 'equal-2x2' ) {
-		return (
-			<div style={ grid( '1fr 1fr', '1fr 1fr' ) }>
-				{ [ 0, 1, 2, 3 ].map( ( i ) => (
-					<div key={ i } style={ cell } />
-				) ) }
-			</div>
-		);
-	}
-	if ( id === 'equal-3cols' ) {
-		return (
-			<div style={ grid( '1fr 1fr 1fr', '1fr' ) }>
-				{ [ 0, 1, 2 ].map( ( i ) => (
-					<div key={ i } style={ cell } />
-				) ) }
-			</div>
-		);
-	}
 	if ( id === 'magazine' ) {
 		return (
-			<div style={ grid( 'repeat(6,1fr)', 'repeat(3,1fr)' ) }>
+			<div style={ g( 'repeat(6,1fr)', 'repeat(3,1fr)' ) }>
 				<div style={ { ...cell, gridColumn: '1/4', gridRow: '1/3', opacity: 0.65 } } />
 				<div style={ { ...cell, gridColumn: '4/7', gridRow: '1' } } />
 				<div style={ { ...cell, gridColumn: '4/7', gridRow: '2' } } />
@@ -149,21 +154,57 @@ function PresetVisual( { id } ) {
 			</div>
 		);
 	}
-	if ( id === 'bento' ) {
+	if ( id === 'bento-left-hero' ) {
 		return (
-			<div style={ grid( '1fr 2fr', 'repeat(2,1fr)' ) }>
-				<div style={ cell } />
-				<div style={ { ...cell, opacity: 0.65 } } />
-				<div style={ { ...cell, opacity: 0.65 } } />
-				<div style={ cell } />
+			<div style={ g( '1fr 1fr', 'repeat(3,1fr)' ) }>
+				<div style={ { ...cell, gridColumn: '1', gridRow: '1/3', opacity: 0.65 } } />
+				<div style={ { ...cell, gridColumn: '2', gridRow: '1' } } />
+				<div style={ { ...cell, gridColumn: '2', gridRow: '2' } } />
+				<div style={ { ...cell, gridColumn: '1', gridRow: '3' } } />
+				<div style={ { ...cell, gridColumn: '2', gridRow: '3' } } />
 			</div>
 		);
 	}
-	if ( id === 'sidebar' ) {
+	if ( id === 'bento-top-banner' ) {
 		return (
-			<div style={ grid( '1fr 2.5fr', '1fr' ) }>
+			<div style={ g( '1fr 1fr', 'repeat(3,1fr)' ) }>
+				<div style={ { ...cell, gridColumn: '1/-1', gridRow: '1', opacity: 0.65 } } />
+				<div style={ { ...cell, gridColumn: '1', gridRow: '2' } } />
+				<div style={ { ...cell, gridColumn: '2', gridRow: '2' } } />
+				<div style={ { ...cell, gridColumn: '1', gridRow: '3' } } />
+				<div style={ { ...cell, gridColumn: '2', gridRow: '3' } } />
+			</div>
+		);
+	}
+	if ( id === 'bento-right-hero' ) {
+		return (
+			<div style={ g( '1fr 1fr', 'repeat(3,1fr)' ) }>
+				<div style={ { ...cell, gridColumn: '1', gridRow: '1' } } />
+				<div style={ { ...cell, gridColumn: '1', gridRow: '2' } } />
+				<div style={ { ...cell, gridColumn: '1', gridRow: '3' } } />
+				<div style={ { ...cell, gridColumn: '2', gridRow: '1/4', opacity: 0.65 } } />
+			</div>
+		);
+	}
+	if ( id === 'bento-checker' ) {
+		return (
+			<div style={ g( '1fr 1fr 1fr', '1fr 1fr' ) }>
+				<div style={ { ...cell, gridColumn: '1/3', opacity: 0.65 } } />
 				<div style={ cell } />
-				<div style={ { ...cell, opacity: 0.65 } } />
+				<div style={ cell } />
+				<div style={ { ...cell, gridColumn: '2/4', opacity: 0.65 } } />
+			</div>
+		);
+	}
+	if ( id === 'bento-featured' ) {
+		return (
+			<div style={ g( '1fr 1fr 1fr', 'repeat(3,1fr)' ) }>
+				<div style={ { ...cell, gridColumn: '1/3', gridRow: '1/3', opacity: 0.65 } } />
+				<div style={ { ...cell, gridColumn: '3', gridRow: '1' } } />
+				<div style={ { ...cell, gridColumn: '3', gridRow: '2' } } />
+				<div style={ cell } />
+				<div style={ cell } />
+				<div style={ cell } />
 			</div>
 		);
 	}
@@ -181,10 +222,7 @@ const AUTO_FLOW_OPTIONS = [
 	{ value: 'column', label: __( 'Column', 'codeweber-gutenberg-blocks' ) },
 	{ value: 'dense', label: __( 'Dense', 'codeweber-gutenberg-blocks' ) },
 	{ value: 'row dense', label: __( 'Row Dense', 'codeweber-gutenberg-blocks' ) },
-	{
-		value: 'column dense',
-		label: __( 'Column Dense', 'codeweber-gutenberg-blocks' ),
-	},
+	{ value: 'column dense', label: __( 'Column Dense', 'codeweber-gutenberg-blocks' ) },
 ];
 
 const ALIGN_OPTIONS = [
@@ -223,6 +261,32 @@ function CountButtons( { counts, active, onChange } ) {
 	);
 }
 
+function buildItemPatch( item ) {
+	return {
+		gridColumn: item.gridColumn || '',
+		gridColumnSm: '',
+		gridColumnMd: '',
+		gridColumnLg: '',
+		gridColumnXl: '',
+		gridColumnXxl: '',
+		gridColumnXxxl: '',
+		gridRow: item.gridRow || '',
+		gridRowSm: '',
+		gridRowMd: '',
+		gridRowLg: '',
+		gridRowXl: '',
+		gridRowXxl: '',
+		gridRowXxxl: '',
+		order: '',
+		orderSm: '',
+		orderMd: '',
+		orderLg: '',
+		orderXl: '',
+		orderXxl: '',
+		orderXxxl: '',
+	};
+}
+
 // ─── Edit ─────────────────────────────────────────────────────────────────────
 
 export default function Edit( { attributes, setAttributes, clientId } ) {
@@ -232,6 +296,7 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 		gridData,
 		colCount,
 		rowCount,
+		cellCount,
 		colSizes,
 		rowSizes,
 		colCountSm,
@@ -253,120 +318,60 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 		spacingXxxl,
 	} = attributes;
 
+	// useState so the pending-preset effect re-runs when it changes.
+	const [ pendingPreset, setPendingPreset ] = useState( null );
+
 	const innerBlocks = useSelect(
 		( select ) => select( 'core/block-editor' ).getBlocks( clientId ),
 		[ clientId ]
 	);
-	const { insertBlocks, updateBlockAttributes } =
-		useDispatch( 'core/block-editor' );
-
-	// Pending preset: applied to child blocks once they exist
-	const pendingPreset = useRef( null );
+	const { insertBlocks, updateBlockAttributes } = useDispatch( 'core/block-editor' );
 
 	// Generate unique gridId on first mount
 	useEffect( () => {
 		if ( ! gridId ) {
-			setAttributes( {
-				gridId: Math.random().toString( 36 ).substr( 2, 8 ),
-			} );
+			setAttributes( { gridId: Math.random().toString( 36 ).substr( 2, 8 ) } );
 		}
 	}, [] );
 
-	// Auto-sync inner block count to colCount × rowCount
+	// Auto-sync child block count.
+	// cellCount overrides colCount×rowCount — critical for spanning presets like Magazine
+	// (6 cols × 3 rows = 18 without cellCount, but only 6 cells are needed).
+	// Skipped while a preset is pending to avoid race conditions.
 	useEffect( () => {
-		const total = colCount * rowCount;
+		if ( pendingPreset ) return;
+		const target = cellCount > 0 ? cellCount : colCount * rowCount;
 		const current = innerBlocks.length;
-		if ( current < total ) {
-			const toAdd = Array.from( { length: total - current }, () =>
+		if ( current < target ) {
+			const toAdd = Array.from( { length: target - current }, () =>
 				createBlock( 'codeweber-blocks/grid-item' )
 			);
 			insertBlocks( toAdd, current, clientId, false );
 		}
-	}, [ colCount, rowCount, innerBlocks.length ] );
+	}, [ colCount, rowCount, cellCount, innerBlocks.length, pendingPreset ] );
 
-	// Apply pending preset item attrs once enough blocks exist
+	// Apply pending preset grid-column/grid-row to children once enough blocks exist.
 	useEffect( () => {
-		if ( ! pendingPreset.current ) return;
-		const preset = pendingPreset.current;
-		if ( innerBlocks.length >= preset.items.length ) {
-			innerBlocks.slice( 0, preset.items.length ).forEach( ( block, i ) => {
-				const item = preset.items[ i ];
-				updateBlockAttributes( block.clientId, {
-					gridColumn: item.gridColumn || '',
-					gridColumnSm: '',
-					gridColumnMd: '',
-					gridColumnLg: '',
-					gridColumnXl: '',
-					gridColumnXxl: '',
-					gridColumnXxxl: '',
-					gridRow: item.gridRow || '',
-					gridRowSm: '',
-					gridRowMd: '',
-					gridRowLg: '',
-					gridRowXl: '',
-					gridRowXxl: '',
-					gridRowXxxl: '',
-					order: '',
-					orderSm: '',
-					orderMd: '',
-					orderLg: '',
-					orderXl: '',
-					orderXxl: '',
-					orderXxxl: '',
-				} );
-			} );
-			pendingPreset.current = null;
-		}
-	}, [ innerBlocks.length ] );
+		if ( ! pendingPreset ) return;
+		if ( innerBlocks.length < pendingPreset.items.length ) return;
 
-	// Apply a preset: set layout attrs + sync child block positions
+		innerBlocks.slice( 0, pendingPreset.items.length ).forEach( ( block, i ) => {
+			updateBlockAttributes( block.clientId, buildItemPatch( pendingPreset.items[ i ] ) );
+		} );
+		setPendingPreset( null );
+	}, [ pendingPreset, innerBlocks.length ] );
+
 	const applyPreset = ( preset ) => {
 		setAttributes( {
 			colCount: preset.colCount,
 			colSizes: preset.colSizes || [],
 			rowCount: preset.rowCount,
 			rowSizes: preset.rowSizes || [],
+			// cellCount limits auto-sync to the actual number of cells in the preset,
+			// not colCount × rowCount (which would be wrong for spanning layouts).
+			cellCount: preset.items.length,
 		} );
-
-		const needed = preset.items.length;
-
-		if ( innerBlocks.length >= needed ) {
-			// Enough blocks — apply attrs immediately
-			innerBlocks.slice( 0, needed ).forEach( ( block, i ) => {
-				const item = preset.items[ i ];
-				updateBlockAttributes( block.clientId, {
-					gridColumn: item.gridColumn || '',
-					gridColumnSm: '',
-					gridColumnMd: '',
-					gridColumnLg: '',
-					gridColumnXl: '',
-					gridColumnXxl: '',
-					gridColumnXxxl: '',
-					gridRow: item.gridRow || '',
-					gridRowSm: '',
-					gridRowMd: '',
-					gridRowLg: '',
-					gridRowXl: '',
-					gridRowXxl: '',
-					gridRowXxxl: '',
-					order: '',
-					orderSm: '',
-					orderMd: '',
-					orderLg: '',
-					orderXl: '',
-					orderXxl: '',
-					orderXxxl: '',
-				} );
-			} );
-		} else {
-			// Need more blocks — store preset and let useEffect apply when ready
-			pendingPreset.current = preset;
-			const toAdd = Array.from(
-				{ length: needed - innerBlocks.length },
-				() => createBlock( 'codeweber-blocks/grid-item' )
-			);
-			insertBlocks( toAdd, innerBlocks.length, clientId, false );
-		}
+		setPendingPreset( preset );
 	};
 
 	const blockProps = useBlockProps( {
@@ -417,12 +422,8 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 									fontSize: '10px',
 									lineHeight: 1,
 								} }
-								onMouseEnter={ ( e ) =>
-									( e.currentTarget.style.borderColor = '#007cba' )
-								}
-								onMouseLeave={ ( e ) =>
-									( e.currentTarget.style.borderColor = '#ddd' )
-								}
+								onMouseEnter={ ( e ) => ( e.currentTarget.style.borderColor = '#007cba' ) }
+								onMouseLeave={ ( e ) => ( e.currentTarget.style.borderColor = '#ddd' ) }
 							>
 								<PresetVisual id={ preset.id } />
 								{ preset.label }
@@ -431,7 +432,7 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 					</div>
 				</PanelBody>
 
-				{ /* ── Grid structure ── */ }
+				{ /* ── Grid ── */ }
 				<PanelBody
 					title={ __( 'Grid', 'codeweber-gutenberg-blocks' ) }
 					initialOpen={ true }
@@ -442,7 +443,9 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 					<CountButtons
 						counts={ COL_COUNTS }
 						active={ colCount }
-						onChange={ ( n ) => setAttributes( { colCount: n } ) }
+						onChange={ ( n ) =>
+							setAttributes( { colCount: n, cellCount: n * rowCount } )
+						}
 					/>
 					<div style={ { display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '16px' } }>
 						{ Array.from( { length: colCount }, ( _, i ) => (
@@ -463,7 +466,9 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 					<CountButtons
 						counts={ ROW_COUNTS }
 						active={ rowCount }
-						onChange={ ( n ) => setAttributes( { rowCount: n } ) }
+						onChange={ ( n ) =>
+							setAttributes( { rowCount: n, cellCount: colCount * n } )
+						}
 					/>
 					<div style={ { display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '16px' } }>
 						{ Array.from( { length: rowCount }, ( _, i ) => (
@@ -542,25 +547,19 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 						label={ __( 'align-content', 'codeweber-gutenberg-blocks' ) }
 						value={ alignContent || '' }
 						options={ CONTENT_OPTIONS }
-						onChange={ ( val ) =>
-							setAttributes( { alignContent: val } )
-						}
+						onChange={ ( val ) => setAttributes( { alignContent: val } ) }
 					/>
 					<SelectControl
 						label={ __( 'justify-content', 'codeweber-gutenberg-blocks' ) }
 						value={ justifyContent || '' }
 						options={ CONTENT_OPTIONS }
-						onChange={ ( val ) =>
-							setAttributes( { justifyContent: val } )
-						}
+						onChange={ ( val ) => setAttributes( { justifyContent: val } ) }
 					/>
 					<SelectControl
 						label={ __( 'grid-auto-flow', 'codeweber-gutenberg-blocks' ) }
 						value={ gridAutoFlow || 'row' }
 						options={ AUTO_FLOW_OPTIONS }
-						onChange={ ( val ) =>
-							setAttributes( { gridAutoFlow: val } )
-						}
+						onChange={ ( val ) => setAttributes( { gridAutoFlow: val } ) }
 					/>
 					<TextControl
 						label={ __( 'min-height', 'codeweber-gutenberg-blocks' ) }
@@ -584,9 +583,7 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 						spacingXl={ spacingXl }
 						spacingXxl={ spacingXxl }
 						spacingXxxl={ spacingXxxl }
-						onChange={ ( key, val ) =>
-							setAttributes( { [ key ]: val } )
-						}
+						onChange={ ( key, val ) => setAttributes( { [ key ]: val } ) }
 					/>
 				</PanelBody>
 
@@ -598,24 +595,11 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 					<BlockMetaFields
 						attributes={ attributes }
 						setAttributes={ setAttributes }
-						fieldKeys={ {
-							classKey: 'gridClass',
-							dataKey: 'gridData',
-							idKey: 'gridHtmlId',
-						} }
+						fieldKeys={ { classKey: 'gridClass', dataKey: 'gridData', idKey: 'gridHtmlId' } }
 						labels={ {
-							classLabel: __(
-								'Grid Class',
-								'codeweber-gutenberg-blocks'
-							),
-							dataLabel: __(
-								'Grid Data',
-								'codeweber-gutenberg-blocks'
-							),
-							idLabel: __(
-								'Grid ID',
-								'codeweber-gutenberg-blocks'
-							),
+							classLabel: __( 'Grid Class', 'codeweber-gutenberg-blocks' ),
+							dataLabel: __( 'Grid Data', 'codeweber-gutenberg-blocks' ),
+							idLabel: __( 'Grid ID', 'codeweber-gutenberg-blocks' ),
 						} }
 					/>
 				</PanelBody>

@@ -48,6 +48,10 @@
         "type": "string"
       }
     },
+    "cellCount": {
+      "type": "number",
+      "default": 0
+    },
     "colCountSm": {
       "type": "number",
       "default": 1

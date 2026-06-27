@@ -27,6 +27,7 @@
 			"default": [],
 			"items": { "type": "string" }
 		},
+		"cellCount": { "type": "number", "default": 0 },
 		"colCountSm": { "type": "number", "default": 1 },
 		"gapType": { "type": "string", "default": "theme" },
 		"gridGap": { "type": "string", "default": "" },

@@ -88,6 +88,15 @@ export const getSwiperDataAttributes = (config = {}) => {
 		itemsXxl = '',
 		itemsXxxl = '',
 		itemsAuto = false,
+		rows = '1',
+		fill = 'row',
+		rowsXs = '',
+		rowsSm = '',
+		rowsMd = '',
+		rowsLg = '',
+		rowsXl = '',
+		rowsXxl = '',
+		rowsXxxl = '',
 		margin = '30',
 		loop = false,
 		centered = false,
@@ -123,6 +132,20 @@ export const getSwiperDataAttributes = (config = {}) => {
 		if (itemsXl) attrs['data-items-xl'] = itemsXl;
 		if (itemsXxl) attrs['data-items-xxl'] = itemsXxl;
 		if (itemsXxxl) attrs['data-items-xxxl'] = itemsXxxl;
+	}
+
+	// Grid (multi-row) — only emit when base rows > 1 so existing
+	// single-row blocks keep identical markup (no save validation break).
+	if (Number(rows) > 1) {
+		attrs['data-rows'] = String(rows);
+		attrs['data-fill'] = fill === 'column' ? 'column' : 'row';
+		if (rowsXs) attrs['data-rows-xs'] = rowsXs;
+		if (rowsSm) attrs['data-rows-sm'] = rowsSm;
+		if (rowsMd) attrs['data-rows-md'] = rowsMd;
+		if (rowsLg) attrs['data-rows-lg'] = rowsLg;
+		if (rowsXl) attrs['data-rows-xl'] = rowsXl;
+		if (rowsXxl) attrs['data-rows-xxl'] = rowsXxl;
+		if (rowsXxxl) attrs['data-rows-xxxl'] = rowsXxxl;
 	}
 
 	// Spacing & Behavior
@@ -305,6 +328,15 @@ export const getSwiperConfigFromAttributes = (attributes) => {
 		itemsXxl: attributes.swiperItemsXxl,
 		itemsXxxl: attributes.swiperItemsXxxl,
 		itemsAuto: attributes.swiperItemsAuto,
+		rows: attributes.swiperRows,
+		fill: attributes.swiperFill,
+		rowsXs: attributes.swiperRowsXs,
+		rowsSm: attributes.swiperRowsSm,
+		rowsMd: attributes.swiperRowsMd,
+		rowsLg: attributes.swiperRowsLg,
+		rowsXl: attributes.swiperRowsXl,
+		rowsXxl: attributes.swiperRowsXxl,
+		rowsXxxl: attributes.swiperRowsXxxl,
 		margin: attributes.swiperMargin,
 		loop: attributes.swiperLoop,
 		centered: attributes.swiperCentered,

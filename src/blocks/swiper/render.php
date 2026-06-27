@@ -25,6 +25,15 @@ $swiperItemsSm = isset($attributes['swiperItemsSm']) ? $attributes['swiperItemsS
 $swiperItemsLg = isset($attributes['swiperItemsLg']) ? $attributes['swiperItemsLg'] : '';
 $swiperItemsXxl = isset($attributes['swiperItemsXxl']) ? $attributes['swiperItemsXxl'] : '';
 $swiperItemsXxxl = isset($attributes['swiperItemsXxxl']) ? $attributes['swiperItemsXxxl'] : '';
+$swiperRows = isset($attributes['swiperRows']) ? $attributes['swiperRows'] : '1';
+$swiperFill = (isset($attributes['swiperFill']) && $attributes['swiperFill'] === 'column') ? 'column' : 'row';
+$swiperRowsXs = isset($attributes['swiperRowsXs']) ? $attributes['swiperRowsXs'] : '';
+$swiperRowsSm = isset($attributes['swiperRowsSm']) ? $attributes['swiperRowsSm'] : '';
+$swiperRowsMd = isset($attributes['swiperRowsMd']) ? $attributes['swiperRowsMd'] : '';
+$swiperRowsLg = isset($attributes['swiperRowsLg']) ? $attributes['swiperRowsLg'] : '';
+$swiperRowsXl = isset($attributes['swiperRowsXl']) ? $attributes['swiperRowsXl'] : '';
+$swiperRowsXxl = isset($attributes['swiperRowsXxl']) ? $attributes['swiperRowsXxl'] : '';
+$swiperRowsXxxl = isset($attributes['swiperRowsXxxl']) ? $attributes['swiperRowsXxxl'] : '';
 $swiperEffect = isset($attributes['swiperEffect']) ? $attributes['swiperEffect'] : 'slide';
 $swiperSpeed = isset($attributes['swiperSpeed']) ? (int) $attributes['swiperSpeed'] : 500;
 $swiperLoop = isset($attributes['swiperLoop']) ? (bool) $attributes['swiperLoop'] : false;
@@ -87,6 +96,33 @@ if (!$swiperItemsAuto) {
 	}
 	if ($swiperItemsXxxl) {
 		$dataAttrs['data-items-xxxl'] = esc_attr($swiperItemsXxxl);
+	}
+}
+// Grid (multi-row) — only emit when base rows > 1 so single-row blocks
+// keep identical markup. Mirrors getSwiperDataAttributes() in JS.
+if ((int) $swiperRows > 1) {
+	$dataAttrs['data-rows'] = esc_attr($swiperRows);
+	$dataAttrs['data-fill'] = esc_attr($swiperFill);
+	if ($swiperRowsXs) {
+		$dataAttrs['data-rows-xs'] = esc_attr($swiperRowsXs);
+	}
+	if ($swiperRowsSm) {
+		$dataAttrs['data-rows-sm'] = esc_attr($swiperRowsSm);
+	}
+	if ($swiperRowsMd) {
+		$dataAttrs['data-rows-md'] = esc_attr($swiperRowsMd);
+	}
+	if ($swiperRowsLg) {
+		$dataAttrs['data-rows-lg'] = esc_attr($swiperRowsLg);
+	}
+	if ($swiperRowsXl) {
+		$dataAttrs['data-rows-xl'] = esc_attr($swiperRowsXl);
+	}
+	if ($swiperRowsXxl) {
+		$dataAttrs['data-rows-xxl'] = esc_attr($swiperRowsXxl);
+	}
+	if ($swiperRowsXxxl) {
+		$dataAttrs['data-rows-xxxl'] = esc_attr($swiperRowsXxxl);
 	}
 }
 if ($swiperEffect) {

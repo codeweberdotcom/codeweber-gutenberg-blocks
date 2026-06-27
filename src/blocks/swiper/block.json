@@ -66,6 +66,42 @@
 			"type": "string",
 			"default": ""
 		},
+		"swiperRows": {
+			"type": "string",
+			"default": "1"
+		},
+		"swiperFill": {
+			"type": "string",
+			"default": "row"
+		},
+		"swiperRowsXs": {
+			"type": "string",
+			"default": ""
+		},
+		"swiperRowsSm": {
+			"type": "string",
+			"default": ""
+		},
+		"swiperRowsMd": {
+			"type": "string",
+			"default": ""
+		},
+		"swiperRowsLg": {
+			"type": "string",
+			"default": ""
+		},
+		"swiperRowsXl": {
+			"type": "string",
+			"default": ""
+		},
+		"swiperRowsXxl": {
+			"type": "string",
+			"default": ""
+		},
+		"swiperRowsXxxl": {
+			"type": "string",
+			"default": ""
+		},
 		"swiperEffect": {
 			"type": "string",
 			"default": "slide"

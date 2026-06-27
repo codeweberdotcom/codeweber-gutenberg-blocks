@@ -41,7 +41,7 @@ Legend: `S` = static (JS save) | `D` = dynamic (PHP render.php)
 | `image-simple` | S | Image gallery/carousel with hover effects, lightbox, load-more, swiper; imageSize auto-refreshes missing sizes on change |
 | `media` | S | Media block with video/image support |
 | `banners` | S | Full-width banner with overlay and CTA |
-| `swiper` | D | Swiper.js carousel/slider |
+| `swiper` | D | Swiper.js carousel/slider; supports Grid multi-row layout (swiperRows/swiperFill + per-breakpoint rows → data-rows/data-fill) |
 
 ---
 

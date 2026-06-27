@@ -339,12 +339,13 @@ class LoadMoreAPI {
 		$overlay_style    = $attributes['overlayStyle']    ?? 'overlay-1';
 		$overlay_icon_color = $attributes['overlayIconColor'] ?? 'bg-frost';
 		$image_render_type  = $attributes['imageRenderType']  ?? 'img';
+		$image_class        = $attributes['imageClass']        ?? '';
 
 		// Overlay отключается, если лайтбокс выключен (activeEffectType в JS).
 		$active_effect_type = (!$enable_lightbox && $effect_type === 'overlay') ? 'none' : $effect_type;
 
 		$hover_classes  = $this->get_image_hover_classes(array_merge($attributes, ['effectType' => $active_effect_type]));
-		$figure_classes = trim($hover_classes . ' ' . $border_radius);
+		$figure_classes = trim($hover_classes . ' ' . $border_radius . ' ' . $image_class);
 
 		// href: linkUrl при наличии, иначе полный URL изображения (для GLightbox).
 		$link_url = (!empty($image['linkUrl']) && trim($image['linkUrl']) !== '') ? $image['linkUrl'] : '';
@@ -380,7 +381,7 @@ class LoadMoreAPI {
 
 		// ── Background-режим ───────────────────────────────────────────────
 		if ($image_render_type === 'background') {
-			$bg_classes = trim('wrapper image-wrapper bg-image bg-cover h-100 ' . $border_radius . ' ' . $hover_classes);
+			$bg_classes = trim('wrapper image-wrapper bg-image bg-cover h-100 ' . $border_radius . ' ' . $hover_classes . ' ' . $image_class);
 			$fig_open = '<figure class="' . esc_attr($bg_classes) . '" data-image-src="' . esc_url($image_url) . '">';
 
 			// Overlay-7: item-link внутри figure, без внешнего <a>.

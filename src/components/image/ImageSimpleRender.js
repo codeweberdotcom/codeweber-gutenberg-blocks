@@ -26,6 +26,7 @@ export const ImageSimpleRender = ({
 	overlayColor,
 	overlayIconColor = 'bg-frost',
 	cursorStyle,
+	imageClass = '',
 	imageRenderType = 'img', // 'img' или 'background'
 	isEditor = false,
 	// LinkType override: when set, replaces lightbox <a> with these props
@@ -69,7 +70,7 @@ export const ImageSimpleRender = ({
 	// overflow-hidden нужен, чтобы figure обрезала углы img по border-radius
 	// (без него скругление figure не видно, т.к. img «вылезает» за углы)
 	const figureClasses =
-		`${hoverClasses} ${borderRadius || ''}${borderRadius ? ' overflow-hidden' : ''}`.trim();
+		`${hoverClasses} ${borderRadius || ''}${borderRadius ? ' overflow-hidden' : ''} ${imageClass || ''}`.trim();
 
 	// Получаем title для tooltip
 	const tooltipTitle = getTooltipTitle(image, effectType);
@@ -89,7 +90,7 @@ export const ImageSimpleRender = ({
 	// Рендеринг как background
 	if (imageRenderType === 'background') {
 		const backgroundClasses =
-			`wrapper image-wrapper bg-image bg-cover h-100 ${borderRadius || ''} ${hoverClasses}`.trim();
+			`wrapper image-wrapper bg-image bg-cover h-100 ${borderRadius || ''} ${hoverClasses} ${imageClass || ''}`.trim();
 		const backgroundDataAttrs = !isEditor
 			? { 'data-image-src': imageUrl }
 			: {};

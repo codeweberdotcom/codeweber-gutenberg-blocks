@@ -448,6 +448,10 @@
       "type": "string",
       "default": ""
     },
+    "imageClass": {
+      "type": "string",
+      "default": ""
+    },
     "blockData": {
       "type": "string",
       "default": ""

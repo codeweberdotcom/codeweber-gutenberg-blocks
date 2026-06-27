@@ -65,6 +65,7 @@ export default function Save({ attributes }) {
 		overlayGradient,
 		overlayColor,
 		cursorStyle,
+		imageClass,
 		blockClass,
 		blockId,
 		blockData,
@@ -238,7 +239,7 @@ export default function Save({ attributes }) {
 					overlayGradient={overlayGradient}
 					overlayColor={overlayColor}
 					cursorStyle={cursorStyle}
-					imageRenderType={imageRenderType}
+					imageClass={imageClass} imageRenderType={imageRenderType}
 					isEditor={false}
 					linkProps={activeLinkProps}
 				/>
@@ -277,6 +278,7 @@ export default function Save({ attributes }) {
 							overlayColor,
 							overlayIconColor: attributes.overlayIconColor,
 							cursorStyle,
+							imageClass,
 							imageRenderType,
 							gridColumns,
 							gridColumnsXs: attributes.gridColumnsXs,
@@ -463,7 +465,7 @@ export default function Save({ attributes }) {
 										overlayGradient={overlayGradient}
 										overlayColor={overlayColor}
 										cursorStyle={cursorStyle}
-										imageRenderType={imageRenderType}
+										imageClass={imageClass} imageRenderType={imageRenderType}
 										isEditor={false}
 										linkProps={activeLinkProps}
 									/>
@@ -503,7 +505,7 @@ export default function Save({ attributes }) {
 								overlayGradient={overlayGradient}
 								overlayColor={overlayColor}
 								cursorStyle={cursorStyle}
-								imageRenderType={imageRenderType}
+								imageClass={imageClass} imageRenderType={imageRenderType}
 								isEditor={false}
 								linkProps={activeLinkProps}
 							/>

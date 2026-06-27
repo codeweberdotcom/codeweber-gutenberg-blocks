@@ -70,6 +70,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		overlayGradient,
 		overlayColor,
 		cursorStyle,
+		imageClass,
 		blockClass,
 		// Load More атрибуты
 		loadMoreEnable,
@@ -354,7 +355,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 						overlayGradient={overlayGradient}
 						overlayColor={overlayColor}
 						cursorStyle={cursorStyle}
-						imageRenderType={imageRenderType}
+						imageClass={imageClass} imageRenderType={imageRenderType}
 						isEditor={true}
 					/>
 				</div>
@@ -399,7 +400,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 								overlayGradient={overlayGradient}
 								overlayColor={overlayColor}
 								cursorStyle={cursorStyle}
-								imageRenderType={imageRenderType}
+								imageClass={imageClass} imageRenderType={imageRenderType}
 								isEditor={true}
 							/>
 						</div>
@@ -531,7 +532,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 										overlayGradient={overlayGradient}
 										overlayColor={overlayColor}
 										cursorStyle={cursorStyle}
-										imageRenderType={imageRenderType}
+										imageClass={imageClass} imageRenderType={imageRenderType}
 										isEditor={true}
 									/>
 								</SwiperSlide>
@@ -565,7 +566,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 									overlayGradient={overlayGradient}
 									overlayColor={overlayColor}
 									cursorStyle={cursorStyle}
-									imageRenderType={imageRenderType}
+									imageClass={imageClass} imageRenderType={imageRenderType}
 									isEditor={true}
 								/>
 							</SwiperSlide>

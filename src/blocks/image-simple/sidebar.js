@@ -1,5 +1,5 @@
 import { InspectorControls } from '@wordpress/block-editor';
-import { TabPanel, PanelBody, ButtonGroup } from '@wordpress/components';
+import { TabPanel, PanelBody, ButtonGroup, TextControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { Icon, image, grid, cog, starFilled, link, update } from '@wordpress/icons';
 import { ImageControl } from '../../components/image/ImageControl';
@@ -249,6 +249,20 @@ export const ImageSimpleSidebar = ({ attributes, setAttributes }) => {
 											'codeweber-gutenberg-blocks'
 										),
 									}}
+								/>
+								<TextControl
+									label={__(
+										'Image Class',
+										'codeweber-gutenberg-blocks'
+									)}
+									help={__(
+										'Custom CSS class added to the image <figure> element.',
+										'codeweber-gutenberg-blocks'
+									)}
+									value={attributes.imageClass || ''}
+									onChange={(value) =>
+										setAttributes({ imageClass: value })
+									}
 								/>
 							</PanelBody>
 						)}

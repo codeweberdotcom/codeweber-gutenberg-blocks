@@ -1,66 +1,85 @@
-export const BREAKPOINTS = [
-	{ key: '', label: 'Base', minWidth: null },
-	{ key: 'Sm', label: 'SM', minWidth: '576px' },
-	{ key: 'Md', label: 'MD', minWidth: '768px' },
-	{ key: 'Lg', label: 'LG', minWidth: '992px' },
-	{ key: 'Xl', label: 'XL', minWidth: '1200px' },
-	{ key: 'Xxl', label: 'XXL', minWidth: '1400px' },
-	{ key: 'Xxxl', label: 'XXXL', minWidth: '1920px' },
-];
+// Theme gap — uses Bootstrap gutter var (matches the site's Redux gap setting)
+export const THEME_GAP_VALUE = 'var(--bs-gutter-x, 1.5rem)';
+
+export function buildColsValue( colCount, colSizes ) {
+	if ( ! colCount ) return '';
+	const widths = Array.from(
+		{ length: colCount },
+		( _, i ) => ( colSizes && colSizes[ i ] && colSizes[ i ].trim() ) || '1fr'
+	);
+	if ( widths.every( ( w ) => w === '1fr' ) ) return `repeat(${ colCount }, 1fr)`;
+	return widths.join( ' ' );
+}
+
+export function buildRowsValue( rowCount, rowSizes ) {
+	if ( ! rowCount ) return '';
+	const heights = Array.from(
+		{ length: rowCount },
+		( _, i ) => ( rowSizes && rowSizes[ i ] && rowSizes[ i ].trim() ) || 'auto'
+	);
+	if ( heights.every( ( h ) => h === 'auto' ) ) return '';
+	return heights.join( ' ' );
+}
+
+export function resolveGap( gapType, gridGap ) {
+	if ( gapType === 'theme' ) return THEME_GAP_VALUE;
+	return ( gridGap && gridGap.trim() ) || '';
+}
 
 export function generateGridStyles( attributes, gridId ) {
 	if ( ! gridId ) return '';
 
 	const {
+		colCount,
+		colSizes,
+		rowCount,
+		rowSizes,
+		colCountSm,
+		gapType,
+		gridGap,
 		gridAutoFlow,
 		alignItems,
 		justifyItems,
 		alignContent,
 		justifyContent,
+		minHeight,
 	} = attributes;
 
 	const selector = `.cwgb-grid-${ gridId }`;
-	const bpRules = {};
+	const gap = resolveGap( gapType, gridGap );
 
-	// Base: display:grid + static (non-responsive) props
-	bpRules[ '' ] = { display: 'grid' };
-	if ( gridAutoFlow && gridAutoFlow !== 'row' ) {
-		bpRules[ '' ][ 'grid-auto-flow' ] = gridAutoFlow;
-	}
-	if ( alignItems ) bpRules[ '' ][ 'align-items' ] = alignItems;
-	if ( justifyItems ) bpRules[ '' ][ 'justify-items' ] = justifyItems;
-	if ( alignContent ) bpRules[ '' ][ 'align-content' ] = alignContent;
-	if ( justifyContent ) bpRules[ '' ][ 'justify-content' ] = justifyContent;
+	// Base declarations (mobile — single column by default)
+	const baseDecls = { display: 'grid' };
+	const mobileCols = colCountSm > 0 ? colCountSm : 1;
+	baseDecls[ 'grid-template-columns' ] = `repeat(${ mobileCols }, 1fr)`;
+	if ( gap ) baseDecls.gap = gap;
+	if ( gridAutoFlow && gridAutoFlow !== 'row' )
+		baseDecls[ 'grid-auto-flow' ] = gridAutoFlow;
+	if ( alignItems ) baseDecls[ 'align-items' ] = alignItems;
+	if ( justifyItems ) baseDecls[ 'justify-items' ] = justifyItems;
+	if ( alignContent ) baseDecls[ 'align-content' ] = alignContent;
+	if ( justifyContent ) baseDecls[ 'justify-content' ] = justifyContent;
+	if ( minHeight ) baseDecls[ 'min-height' ] = minHeight;
 
-	// Responsive props per breakpoint
-	BREAKPOINTS.forEach( ( { key } ) => {
-		if ( ! bpRules[ key ] ) bpRules[ key ] = {};
-		const cols = attributes[ `gridTemplateCols${ key }` ];
-		const rows = attributes[ `gridTemplateRows${ key }` ];
-		const autoRows = attributes[ `gridAutoRows${ key }` ];
-		const gap = attributes[ `gridGap${ key }` ];
-		const minH = attributes[ `minHeight${ key }` ];
-		if ( cols ) bpRules[ key ][ 'grid-template-columns' ] = cols;
-		if ( rows ) bpRules[ key ][ 'grid-template-rows' ] = rows;
-		if ( autoRows ) bpRules[ key ][ 'grid-auto-rows' ] = autoRows;
-		if ( gap ) bpRules[ key ].gap = gap;
-		if ( minH ) bpRules[ key ][ 'min-height' ] = minH;
-	} );
+	const baseDecl = Object.entries( baseDecls )
+		.map( ( [ p, v ] ) => `${ p }:${ v }` )
+		.join( ';' );
+	let css = `${ selector }{${ baseDecl }}`;
 
-	let css = '';
+	// Desktop (min-width: 768px)
+	const deskDecls = {};
+	const cols = buildColsValue( colCount, colSizes );
+	if ( cols ) deskDecls[ 'grid-template-columns' ] = cols;
 
-	BREAKPOINTS.forEach( ( { key, minWidth } ) => {
-		const rules = bpRules[ key ];
-		if ( ! rules || ! Object.keys( rules ).length ) return;
-		const decls = Object.entries( rules )
+	const rows = buildRowsValue( rowCount, rowSizes );
+	if ( rows ) deskDecls[ 'grid-template-rows' ] = rows;
+
+	if ( Object.keys( deskDecls ).length ) {
+		const deskDecl = Object.entries( deskDecls )
 			.map( ( [ p, v ] ) => `${ p }:${ v }` )
 			.join( ';' );
-		if ( ! minWidth ) {
-			css += `${ selector }{${ decls }}`;
-		} else {
-			css += `@media(min-width:${ minWidth }){${ selector }{${ decls }}}`;
-		}
-	} );
+		css += `@media(min-width:768px){${ selector }{${ deskDecl }}}`;
+	}
 
 	return css;
 }
@@ -77,10 +96,7 @@ export function normalizeGridData( value ) {
 		const val = ( rest.join( '=' ) || '' ).trim();
 		const cleanKey = ( key || '' ).trim().toLowerCase();
 		if ( ! cleanKey || ! val ) return;
-		if (
-			cleanKey.startsWith( 'data-' ) ||
-			cleanKey.startsWith( 'aria-' )
-		) {
+		if ( cleanKey.startsWith( 'data-' ) || cleanKey.startsWith( 'aria-' ) ) {
 			attrs[ cleanKey ] = val;
 		} else {
 			attrs[ `data-${ cleanKey }` ] = val;
@@ -119,41 +135,23 @@ export function getGridLayoutClassNames( attrs ) {
 	return classes.filter( Boolean ).join( ' ' );
 }
 
-// Returns inline style for editor preview using full cascade (highest breakpoint wins).
+// Editor inline style — shows desktop layout (editor is desktop width)
 export function getEditorGridStyle( attrs ) {
+	const { colCount, colSizes, rowCount, rowSizes, gapType, gridGap, alignItems, justifyItems, minHeight } = attrs;
 	const style = { display: 'grid' };
 
-	// Simulate CSS cascade: apply from base up, each higher bp overrides
-	const cascade = ( prop ) => {
-		const suffixes = [ '', 'Sm', 'Md', 'Lg', 'Xl', 'Xxl', 'Xxxl' ];
-		let result = '';
-		for ( const s of suffixes ) {
-			const val = attrs[ `${ prop }${ s }` ];
-			if ( val ) result = val;
-		}
-		return result;
-	};
-
-	const cols = cascade( 'gridTemplateCols' );
+	const cols = buildColsValue( colCount, colSizes );
 	if ( cols ) style.gridTemplateColumns = cols;
 
-	const rows = cascade( 'gridTemplateRows' );
+	const rows = buildRowsValue( rowCount, rowSizes );
 	if ( rows ) style.gridTemplateRows = rows;
 
-	const autoRows = cascade( 'gridAutoRows' );
-	if ( autoRows ) style.gridAutoRows = autoRows;
-
-	const gap = cascade( 'gridGap' );
+	const gap = resolveGap( gapType, gridGap );
 	if ( gap ) style.gap = gap;
 
-	const minH = cascade( 'minHeight' );
-	if ( minH ) style.minHeight = minH;
-
-	if ( attrs.gridAutoFlow ) style.gridAutoFlow = attrs.gridAutoFlow;
-	if ( attrs.alignItems ) style.alignItems = attrs.alignItems;
-	if ( attrs.justifyItems ) style.justifyItems = attrs.justifyItems;
-	if ( attrs.alignContent ) style.alignContent = attrs.alignContent;
-	if ( attrs.justifyContent ) style.justifyContent = attrs.justifyContent;
+	if ( alignItems ) style.alignItems = alignItems;
+	if ( justifyItems ) style.justifyItems = justifyItems;
+	if ( minHeight ) style.minHeight = minHeight;
 
 	return style;
 }

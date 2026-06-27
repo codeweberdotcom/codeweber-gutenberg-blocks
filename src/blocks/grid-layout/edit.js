@@ -4,13 +4,15 @@ import {
 	TextControl,
 	SelectControl,
 	Button,
-	ButtonGroup,
 } from '@wordpress/components';
-import { useState, useEffect } from '@wordpress/element';
+import { useEffect } from '@wordpress/element';
+import { useSelect, useDispatch } from '@wordpress/data';
+import { createBlock } from '@wordpress/blocks';
 import { __ } from '@wordpress/i18n';
 import { SpacingControl } from '../../components/spacing/SpacingControl';
 import { BlockMetaFields } from '../../components/block-meta/BlockMetaFields';
 import {
+	THEME_GAP_VALUE,
 	getEditorGridStyle,
 	getGridLayoutClassNames,
 	normalizeGridId,
@@ -19,57 +21,30 @@ import {
 
 const ALLOWED_BLOCKS = [ 'codeweber-blocks/grid-item' ];
 
-const DEFAULT_TEMPLATE = [
+// Initial 2×2 template so the block isn't empty on first insert
+const INITIAL_TEMPLATE = [
+	[ 'codeweber-blocks/grid-item' ],
 	[ 'codeweber-blocks/grid-item' ],
 	[ 'codeweber-blocks/grid-item' ],
 	[ 'codeweber-blocks/grid-item' ],
 ];
 
-const BPS = [
-	{ key: '', label: 'Base' },
-	{ key: 'Sm', label: 'SM' },
-	{ key: 'Md', label: 'MD' },
-	{ key: 'Lg', label: 'LG' },
-	{ key: 'Xl', label: 'XL' },
-	{ key: 'Xxl', label: 'XXL' },
-	{ key: 'Xxxl', label: 'XXXL' },
-];
-
-const COL_PRESETS = [
-	{ label: '1fr', value: '1fr' },
-	{ label: '1:1', value: '1fr 1fr' },
-	{ label: '1:1:1', value: 'repeat(3, 1fr)' },
-	{ label: '4', value: 'repeat(4, 1fr)' },
-	{ label: '◄─', value: '280px 1fr' },
-	{ label: '─►', value: '1fr 280px' },
-	{ label: '2:1', value: '2fr 1fr' },
-	{ label: 'auto', value: 'repeat(auto-fill, minmax(200px, 1fr))' },
-];
+const COL_COUNTS = [ 1, 2, 3, 4, 5, 6 ];
+const ROW_COUNTS = [ 1, 2, 3, 4, 5 ];
+const MOB_COUNTS = [ 1, 2, 3 ];
 
 const AUTO_FLOW_OPTIONS = [
 	{ value: 'row', label: __( 'Row', 'codeweber-gutenberg-blocks' ) },
 	{ value: 'column', label: __( 'Column', 'codeweber-gutenberg-blocks' ) },
 	{ value: 'dense', label: __( 'Dense', 'codeweber-gutenberg-blocks' ) },
-	{
-		value: 'row dense',
-		label: __( 'Row Dense', 'codeweber-gutenberg-blocks' ),
-	},
+	{ value: 'row dense', label: __( 'Row Dense', 'codeweber-gutenberg-blocks' ) },
 	{
 		value: 'column dense',
 		label: __( 'Column Dense', 'codeweber-gutenberg-blocks' ),
 	},
 ];
 
-const ALIGN_ITEMS_OPTIONS = [
-	{ value: '', label: '—' },
-	{ value: 'start', label: 'Start' },
-	{ value: 'end', label: 'End' },
-	{ value: 'center', label: 'Center' },
-	{ value: 'stretch', label: 'Stretch' },
-	{ value: 'baseline', label: 'Baseline' },
-];
-
-const JUSTIFY_ITEMS_OPTIONS = [
+const ALIGN_OPTIONS = [
 	{ value: '', label: '—' },
 	{ value: 'start', label: 'Start' },
 	{ value: 'end', label: 'End' },
@@ -88,38 +63,41 @@ const CONTENT_OPTIONS = [
 	{ value: 'space-evenly', label: 'Space Evenly' },
 ];
 
-function BpSwitcher( { active, onChange } ) {
+function CountButtons( { counts, active, onChange } ) {
 	return (
-		<ButtonGroup style={ { flexWrap: 'wrap', marginBottom: '8px' } }>
-			{ BPS.map( ( { key, label } ) => (
+		<div style={ { display: 'flex', gap: '4px', marginBottom: '12px' } }>
+			{ counts.map( ( n ) => (
 				<Button
-					key={ key }
-					variant={ active === key ? 'primary' : 'secondary' }
+					key={ n }
+					variant={ active === n ? 'primary' : 'secondary' }
 					isSmall
-					onClick={ () => onChange( key ) }
+					onClick={ () => onChange( n ) }
 				>
-					{ label }
+					{ n }
 				</Button>
 			) ) }
-		</ButtonGroup>
+		</div>
 	);
 }
 
-export default function Edit( { attributes, setAttributes } ) {
-	const [ colBp, setColBp ] = useState( 'Md' );
-	const [ rowBp, setRowBp ] = useState( 'Md' );
-	const [ gapBp, setGapBp ] = useState( 'Md' );
-	const [ heightBp, setHeightBp ] = useState( '' );
-
+export default function Edit( { attributes, setAttributes, clientId } ) {
 	const {
 		gridId,
 		gridHtmlId,
 		gridData,
+		colCount,
+		rowCount,
+		colSizes,
+		rowSizes,
+		colCountSm,
+		gapType,
+		gridGap,
 		gridAutoFlow,
 		alignItems,
 		justifyItems,
 		alignContent,
 		justifyContent,
+		minHeight,
 		spacingType,
 		spacingXs,
 		spacingSm,
@@ -130,6 +108,13 @@ export default function Edit( { attributes, setAttributes } ) {
 		spacingXxxl,
 	} = attributes;
 
+	const innerBlocks = useSelect(
+		( select ) => select( 'core/block-editor' ).getBlocks( clientId ),
+		[ clientId ]
+	);
+	const { insertBlocks } = useDispatch( 'core/block-editor' );
+
+	// Generate unique gridId on first mount
 	useEffect( () => {
 		if ( ! gridId ) {
 			setAttributes( {
@@ -138,6 +123,18 @@ export default function Edit( { attributes, setAttributes } ) {
 		}
 	}, [] );
 
+	// Auto-sync inner block count to colCount × rowCount
+	useEffect( () => {
+		const total = colCount * rowCount;
+		const current = innerBlocks.length;
+		if ( current < total ) {
+			const toAdd = Array.from( { length: total - current }, () =>
+				createBlock( 'codeweber-blocks/grid-item' )
+			);
+			insertBlocks( toAdd, current, clientId, false );
+		}
+	}, [ colCount, rowCount, innerBlocks.length ] );
+
 	const blockProps = useBlockProps( {
 		className: getGridLayoutClassNames( attributes ),
 		id: normalizeGridId( gridHtmlId ) || undefined,
@@ -145,110 +142,112 @@ export default function Edit( { attributes, setAttributes } ) {
 		...normalizeGridData( gridData ),
 	} );
 
-	const colAttr = `gridTemplateCols${ colBp }`;
-	const rowAttr = `gridTemplateRows${ rowBp }`;
-	const autoRowsAttr = `gridAutoRows${ rowBp }`;
-	const gapAttr = `gridGap${ gapBp }`;
-	const heightAttr = `minHeight${ heightBp }`;
+	const handleColSize = ( i, val ) => {
+		const next = [ ...( colSizes || [] ) ];
+		next[ i ] = val;
+		setAttributes( { colSizes: next } );
+	};
+
+	const handleRowSize = ( i, val ) => {
+		const next = [ ...( rowSizes || [] ) ];
+		next[ i ] = val;
+		setAttributes( { rowSizes: next } );
+	};
 
 	return (
 		<>
 			<InspectorControls>
-				{ /* Columns */ }
+				{ /* Grid structure */ }
 				<PanelBody
-					title={ __( 'Columns', 'codeweber-gutenberg-blocks' ) }
+					title={ __( 'Grid', 'codeweber-gutenberg-blocks' ) }
 					initialOpen={ true }
 				>
-					<BpSwitcher active={ colBp } onChange={ setColBp } />
-					<p style={ { fontSize: '11px', color: '#757575', margin: '0 0 6px' } }>
-						{ __( 'grid-template-columns', 'codeweber-gutenberg-blocks' ) }
+					{ /* Columns */ }
+					<p style={ { margin: '0 0 4px', fontSize: '11px', fontWeight: 600, textTransform: 'uppercase' } }>
+						{ __( 'Columns', 'codeweber-gutenberg-blocks' ) }
 					</p>
-					<div style={ { display: 'flex', flexWrap: 'wrap', gap: '4px', marginBottom: '8px' } }>
-						{ COL_PRESETS.map( ( p ) => (
-							<Button
-								key={ p.value }
-								variant={
-									attributes[ colAttr ] === p.value
-										? 'primary'
-										: 'secondary'
-								}
-								isSmall
-								onClick={ () =>
-									setAttributes( { [ colAttr ]: p.value } )
-								}
-							>
-								{ p.label }
-							</Button>
+					<CountButtons
+						counts={ COL_COUNTS }
+						active={ colCount }
+						onChange={ ( n ) => setAttributes( { colCount: n } ) }
+					/>
+					<div style={ { display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '16px' } }>
+						{ Array.from( { length: colCount }, ( _, i ) => (
+							<div key={ i } style={ { flex: '1 1 52px', minWidth: '44px' } }>
+								<TextControl
+									label={ String( i + 1 ) }
+									value={ ( colSizes && colSizes[ i ] ) || '' }
+									placeholder="1fr"
+									onChange={ ( val ) => handleColSize( i, val ) }
+								/>
+							</div>
 						) ) }
 					</div>
-					<TextControl
-						value={ attributes[ colAttr ] || '' }
-						onChange={ ( val ) =>
-							setAttributes( { [ colAttr ]: val } )
-						}
-						placeholder="repeat(3, 1fr)"
-						help={ __( 'Any valid CSS value', 'codeweber-gutenberg-blocks' ) }
-					/>
-				</PanelBody>
 
-				{ /* Rows */ }
-				<PanelBody
-					title={ __( 'Rows', 'codeweber-gutenberg-blocks' ) }
-					initialOpen={ false }
-				>
-					<BpSwitcher active={ rowBp } onChange={ setRowBp } />
-					<TextControl
-						label={ __(
-							'grid-template-rows',
-							'codeweber-gutenberg-blocks'
-						) }
-						value={ attributes[ rowAttr ] || '' }
-						onChange={ ( val ) =>
-							setAttributes( { [ rowAttr ]: val } )
-						}
-						placeholder="auto 200px auto"
+					{ /* Rows */ }
+					<p style={ { margin: '0 0 4px', fontSize: '11px', fontWeight: 600, textTransform: 'uppercase' } }>
+						{ __( 'Rows', 'codeweber-gutenberg-blocks' ) }
+					</p>
+					<CountButtons
+						counts={ ROW_COUNTS }
+						active={ rowCount }
+						onChange={ ( n ) => setAttributes( { rowCount: n } ) }
 					/>
-					<TextControl
-						label={ __(
-							'grid-auto-rows',
-							'codeweber-gutenberg-blocks'
-						) }
-						value={ attributes[ autoRowsAttr ] || '' }
-						onChange={ ( val ) =>
-							setAttributes( { [ autoRowsAttr ]: val } )
-						}
-						placeholder="minmax(100px, auto)"
-					/>
-					<SelectControl
-						label={ __(
-							'grid-auto-flow',
-							'codeweber-gutenberg-blocks'
-						) }
-						value={ gridAutoFlow || 'row' }
-						options={ AUTO_FLOW_OPTIONS }
-						onChange={ ( val ) =>
-							setAttributes( { gridAutoFlow: val } )
-						}
-					/>
-				</PanelBody>
+					<div style={ { display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '16px' } }>
+						{ Array.from( { length: rowCount }, ( _, i ) => (
+							<div key={ i } style={ { flex: '1 1 52px', minWidth: '44px' } }>
+								<TextControl
+									label={ String( i + 1 ) }
+									value={ ( rowSizes && rowSizes[ i ] ) || '' }
+									placeholder="auto"
+									onChange={ ( val ) => handleRowSize( i, val ) }
+								/>
+							</div>
+						) ) }
+					</div>
 
-				{ /* Gap */ }
-				<PanelBody
-					title={ __( 'Gap', 'codeweber-gutenberg-blocks' ) }
-					initialOpen={ false }
-				>
-					<BpSwitcher active={ gapBp } onChange={ setGapBp } />
-					<TextControl
-						label={ __( 'gap', 'codeweber-gutenberg-blocks' ) }
-						value={ attributes[ gapAttr ] || '' }
-						onChange={ ( val ) =>
-							setAttributes( { [ gapAttr ]: val } )
-						}
-						placeholder="16px"
-						help={ __(
-							'Two values: row-gap column-gap (e.g. 16px 24px)',
-							'codeweber-gutenberg-blocks'
-						) }
+					{ /* Gap */ }
+					<p style={ { margin: '0 0 4px', fontSize: '11px', fontWeight: 600, textTransform: 'uppercase' } }>
+						{ __( 'Gap', 'codeweber-gutenberg-blocks' ) }
+					</p>
+					<div style={ { display: 'flex', gap: '4px', marginBottom: gapType === 'custom' ? '8px' : '12px' } }>
+						<Button
+							variant={ gapType === 'theme' ? 'primary' : 'secondary' }
+							isSmall
+							onClick={ () => setAttributes( { gapType: 'theme' } ) }
+						>
+							{ __( 'Theme', 'codeweber-gutenberg-blocks' ) }
+						</Button>
+						<Button
+							variant={ gapType === 'custom' ? 'primary' : 'secondary' }
+							isSmall
+							onClick={ () => setAttributes( { gapType: 'custom' } ) }
+						>
+							{ __( 'Custom', 'codeweber-gutenberg-blocks' ) }
+						</Button>
+					</div>
+					{ gapType === 'theme' && (
+						<p style={ { margin: '0 0 12px', fontSize: '11px', color: '#757575' } }>
+							{ THEME_GAP_VALUE }
+						</p>
+					) }
+					{ gapType === 'custom' && (
+						<TextControl
+							value={ gridGap || '' }
+							placeholder="20px"
+							onChange={ ( val ) => setAttributes( { gridGap: val } ) }
+							help={ __( 'CSS gap value, e.g. 20px or 1rem 2rem', 'codeweber-gutenberg-blocks' ) }
+						/>
+					) }
+
+					{ /* Mobile */ }
+					<p style={ { margin: '0 0 4px', fontSize: '11px', fontWeight: 600, textTransform: 'uppercase' } }>
+						{ __( 'Mobile columns (< 768px)', 'codeweber-gutenberg-blocks' ) }
+					</p>
+					<CountButtons
+						counts={ MOB_COUNTS }
+						active={ colCountSm || 1 }
+						onChange={ ( n ) => setAttributes( { colCountSm: n } ) }
 					/>
 				</PanelBody>
 
@@ -258,32 +257,19 @@ export default function Edit( { attributes, setAttributes } ) {
 					initialOpen={ false }
 				>
 					<SelectControl
-						label={ __(
-							'align-items',
-							'codeweber-gutenberg-blocks'
-						) }
+						label={ __( 'align-items', 'codeweber-gutenberg-blocks' ) }
 						value={ alignItems || '' }
-						options={ ALIGN_ITEMS_OPTIONS }
-						onChange={ ( val ) =>
-							setAttributes( { alignItems: val } )
-						}
+						options={ ALIGN_OPTIONS }
+						onChange={ ( val ) => setAttributes( { alignItems: val } ) }
 					/>
 					<SelectControl
-						label={ __(
-							'justify-items',
-							'codeweber-gutenberg-blocks'
-						) }
+						label={ __( 'justify-items', 'codeweber-gutenberg-blocks' ) }
 						value={ justifyItems || '' }
-						options={ JUSTIFY_ITEMS_OPTIONS }
-						onChange={ ( val ) =>
-							setAttributes( { justifyItems: val } )
-						}
+						options={ ALIGN_OPTIONS }
+						onChange={ ( val ) => setAttributes( { justifyItems: val } ) }
 					/>
 					<SelectControl
-						label={ __(
-							'align-content',
-							'codeweber-gutenberg-blocks'
-						) }
+						label={ __( 'align-content', 'codeweber-gutenberg-blocks' ) }
 						value={ alignContent || '' }
 						options={ CONTENT_OPTIONS }
 						onChange={ ( val ) =>
@@ -291,31 +277,26 @@ export default function Edit( { attributes, setAttributes } ) {
 						}
 					/>
 					<SelectControl
-						label={ __(
-							'justify-content',
-							'codeweber-gutenberg-blocks'
-						) }
+						label={ __( 'justify-content', 'codeweber-gutenberg-blocks' ) }
 						value={ justifyContent || '' }
 						options={ CONTENT_OPTIONS }
 						onChange={ ( val ) =>
 							setAttributes( { justifyContent: val } )
 						}
 					/>
-				</PanelBody>
-
-				{ /* Min Height */ }
-				<PanelBody
-					title={ __( 'Min Height', 'codeweber-gutenberg-blocks' ) }
-					initialOpen={ false }
-				>
-					<BpSwitcher active={ heightBp } onChange={ setHeightBp } />
+					<SelectControl
+						label={ __( 'grid-auto-flow', 'codeweber-gutenberg-blocks' ) }
+						value={ gridAutoFlow || 'row' }
+						options={ AUTO_FLOW_OPTIONS }
+						onChange={ ( val ) =>
+							setAttributes( { gridAutoFlow: val } )
+						}
+					/>
 					<TextControl
 						label={ __( 'min-height', 'codeweber-gutenberg-blocks' ) }
-						value={ attributes[ heightAttr ] || '' }
-						onChange={ ( val ) =>
-							setAttributes( { [ heightAttr ]: val } )
-						}
+						value={ minHeight || '' }
 						placeholder="400px"
+						onChange={ ( val ) => setAttributes( { minHeight: val } ) }
 					/>
 				</PanelBody>
 
@@ -373,7 +354,7 @@ export default function Edit( { attributes, setAttributes } ) {
 			<div { ...blockProps }>
 				<InnerBlocks
 					allowedBlocks={ ALLOWED_BLOCKS }
-					template={ DEFAULT_TEMPLATE }
+					template={ INITIAL_TEMPLATE }
 					templateLock={ false }
 				/>
 			</div>

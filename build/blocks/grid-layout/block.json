@@ -5,7 +5,7 @@
   "title": "Grid Layout",
   "category": "codeweber-gutenberg-elements",
   "icon": "layout",
-  "description": "CSS Grid container with responsive grid-template-columns, rows, gap and alignment control.",
+  "description": "CSS Grid container with responsive columns, rows, gap and alignment.",
   "keywords": [
     "grid",
     "layout",
@@ -26,121 +26,43 @@
       "type": "string",
       "default": ""
     },
-    "gridTemplateCols": {
-      "type": "string",
-      "default": ""
+    "colCount": {
+      "type": "number",
+      "default": 2
     },
-    "gridTemplateColsSm": {
-      "type": "string",
-      "default": ""
+    "rowCount": {
+      "type": "number",
+      "default": 2
     },
-    "gridTemplateColsMd": {
-      "type": "string",
-      "default": ""
+    "colSizes": {
+      "type": "array",
+      "default": [],
+      "items": {
+        "type": "string"
+      }
     },
-    "gridTemplateColsLg": {
-      "type": "string",
-      "default": ""
+    "rowSizes": {
+      "type": "array",
+      "default": [],
+      "items": {
+        "type": "string"
+      }
     },
-    "gridTemplateColsXl": {
-      "type": "string",
-      "default": ""
+    "colCountSm": {
+      "type": "number",
+      "default": 1
     },
-    "gridTemplateColsXxl": {
+    "gapType": {
       "type": "string",
-      "default": ""
+      "default": "theme"
     },
-    "gridTemplateColsXxxl": {
-      "type": "string",
-      "default": ""
-    },
-    "gridTemplateRows": {
-      "type": "string",
-      "default": ""
-    },
-    "gridTemplateRowsSm": {
-      "type": "string",
-      "default": ""
-    },
-    "gridTemplateRowsMd": {
-      "type": "string",
-      "default": ""
-    },
-    "gridTemplateRowsLg": {
-      "type": "string",
-      "default": ""
-    },
-    "gridTemplateRowsXl": {
-      "type": "string",
-      "default": ""
-    },
-    "gridTemplateRowsXxl": {
-      "type": "string",
-      "default": ""
-    },
-    "gridTemplateRowsXxxl": {
-      "type": "string",
-      "default": ""
-    },
-    "gridAutoRows": {
-      "type": "string",
-      "default": ""
-    },
-    "gridAutoRowsSm": {
-      "type": "string",
-      "default": ""
-    },
-    "gridAutoRowsMd": {
-      "type": "string",
-      "default": ""
-    },
-    "gridAutoRowsLg": {
-      "type": "string",
-      "default": ""
-    },
-    "gridAutoRowsXl": {
-      "type": "string",
-      "default": ""
-    },
-    "gridAutoRowsXxl": {
-      "type": "string",
-      "default": ""
-    },
-    "gridAutoRowsXxxl": {
+    "gridGap": {
       "type": "string",
       "default": ""
     },
     "gridAutoFlow": {
       "type": "string",
       "default": "row"
-    },
-    "gridGap": {
-      "type": "string",
-      "default": ""
-    },
-    "gridGapSm": {
-      "type": "string",
-      "default": ""
-    },
-    "gridGapMd": {
-      "type": "string",
-      "default": ""
-    },
-    "gridGapLg": {
-      "type": "string",
-      "default": ""
-    },
-    "gridGapXl": {
-      "type": "string",
-      "default": ""
-    },
-    "gridGapXxl": {
-      "type": "string",
-      "default": ""
-    },
-    "gridGapXxxl": {
-      "type": "string",
-      "default": ""
     },
     "alignItems": {
       "type": "string",
@@ -159,30 +81,6 @@
       "default": ""
     },
     "minHeight": {
-      "type": "string",
-      "default": ""
-    },
-    "minHeightSm": {
-      "type": "string",
-      "default": ""
-    },
-    "minHeightMd": {
-      "type": "string",
-      "default": ""
-    },
-    "minHeightLg": {
-      "type": "string",
-      "default": ""
-    },
-    "minHeightXl": {
-      "type": "string",
-      "default": ""
-    },
-    "minHeightXxl": {
-      "type": "string",
-      "default": ""
-    },
-    "minHeightXxxl": {
       "type": "string",
       "default": ""
     },

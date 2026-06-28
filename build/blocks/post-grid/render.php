@@ -1159,6 +1159,12 @@ if ( $source_type === 'taxonomy' ) {
 	$manual_term_items   = isset( $attributes['manualTermItems'] ) ? (array) $attributes['manualTermItems'] : [];
 
 	$term_template    = isset( $attributes['template'] ) ? $attributes['template'] : 'overlay-5';
+
+	$post_card_templates_path = get_template_directory() . '/functions/post-card-templates.php';
+	if ( file_exists( $post_card_templates_path ) && ! function_exists( 'cw_render_term_card' ) ) {
+		require_once $post_card_templates_path;
+	}
+
 	$use_theme_render = function_exists( 'cw_render_term_card' );
 
 	$term_display_settings = [

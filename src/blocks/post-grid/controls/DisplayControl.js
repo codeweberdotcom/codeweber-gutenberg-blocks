@@ -17,6 +17,7 @@ export const DisplayControl = ({ attributes, setAttributes }) => {
 		excerptLength,
 		showCardArrow,
 		cardReadMore,
+		disableLink,
 		postType,
 		showOfficeAddress,
 		showOfficePhone,
@@ -142,6 +143,20 @@ export const DisplayControl = ({ attributes, setAttributes }) => {
 					borderTop: '1px solid #e0e0e0',
 				}}
 			>
+				<ToggleControl
+					label={__(
+						'Disable Link',
+						'codeweber-gutenberg-blocks'
+					)}
+					checked={!!disableLink}
+					onChange={(value) =>
+						setAttributes({ disableLink: value })
+					}
+					help={__(
+						'Remove links from cards — all anchors become non-clickable spans.',
+						'codeweber-gutenberg-blocks'
+					)}
+				/>
 				<ToggleControl
 					label={__(
 						'Show Card Arrow',

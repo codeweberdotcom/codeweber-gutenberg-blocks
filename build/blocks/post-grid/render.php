@@ -306,6 +306,17 @@ if (!function_exists('get_post_grid_col_classes')) {
 $grid_classes = get_post_grid_container_classes($attributes, $grid_type);
 $col_classes = get_post_grid_col_classes($attributes, $grid_type);
 
+$disable_link     = isset( $attributes['disableLink'] ) ? (bool) $attributes['disableLink'] : false;
+$cwgb_strip_links = function ( $html ) {
+	if ( empty( $html ) ) return $html;
+	$html = preg_replace_callback( '/<a\b([^>]*)>/i', function ( $m ) {
+		return preg_match( '/\bclass\s*=\s*"([^"]*)"/i', $m[1], $c )
+			? '<span class="' . $c[1] . '">'
+			: '<span>';
+	}, $html );
+	return preg_replace( '#</a\s*>#i', '</span>', $html );
+};
+
 if ( $source_type !== 'taxonomy' ) :
 
 	// Manual selection mode: query only the explicitly chosen posts in their saved order.
@@ -673,23 +684,6 @@ if (!function_exists('render_post_grid_item')) {
 				}
 			}
 
-			// Disable Links: тумблер «Disable Links» делает карточку некликабельной —
-			// все <a> в карточке превращаем в <span> (классы сохраняем, переход убираем).
-			// Применяется в контентных ветках (post/services/faq/staff/offices/...),
-			// кроме clients/testimonials (свой Enable Links), documents и WC-product
-			// (функциональные ссылки).
-			$disable_link = isset($attributes['disableLink']) ? (bool) $attributes['disableLink'] : false;
-			$cwgb_strip_links = function ($html) {
-				if (empty($html)) {
-					return $html;
-				}
-				$html = preg_replace_callback('/<a\b([^>]*)>/i', function ($m) {
-					return preg_match('/\bclass\s*=\s*"([^"]*)"/i', $m[1], $c)
-						? '<span class="' . $c[1] . '">'
-						: '<span>';
-				}, $html);
-				return preg_replace('#</a\s*>#i', '</span>', $html);
-			};
 
 			// Специальная обработка для clients
 			if ($post_type === 'clients') {
@@ -1187,11 +1181,13 @@ if ( $source_type === 'taxonomy' ) {
 	];
 
 	// Helper: render one term card (HTML without col-wrap).
-	$render_one_term = function( $term ) use ( $use_theme_render, $term_template, $term_display_settings, $term_template_args, $attributes, $image_size, $grid_type, $col_classes, $title_tag, $title_class ) {
+	$render_one_term = function( $term ) use ( $use_theme_render, $term_template, $term_display_settings, $term_template_args, $attributes, $image_size, $grid_type, $col_classes, $title_tag, $title_class, $disable_link, $cwgb_strip_links ) {
 		if ( $use_theme_render ) {
-			return cw_render_term_card( $term, $term_template, $term_display_settings, $term_template_args );
+			$html = cw_render_term_card( $term, $term_template, $term_display_settings, $term_template_args );
+		} else {
+			$html = cwgb_render_term_card( $term, $attributes, $image_size, $grid_type, $col_classes, false, $title_tag, $title_class );
 		}
-		return cwgb_render_term_card( $term, $attributes, $image_size, $grid_type, $col_classes, false, $title_tag, $title_class );
+		return $disable_link ? $cwgb_strip_links( $html ) : $html;
 	};
 
 	// Helper: wrap card in col/swiper-slide.

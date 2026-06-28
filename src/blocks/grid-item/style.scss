@@ -38,3 +38,12 @@
 		height: 100%;
 	}
 }
+
+// On mobile, reset explicit grid positions and ensure cards have visible height
+@media (max-width: 767.98px) {
+	.cwgb-grid-item {
+		grid-column: auto !important;
+		grid-row: auto !important;
+		min-height: 250px;
+	}
+}

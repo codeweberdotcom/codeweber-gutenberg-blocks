@@ -35,6 +35,7 @@ export function generateGridStyles( attributes, gridId ) {
 		rowCount,
 		rowSizes,
 		colCountSm,
+		colCountMd,
 		gapType,
 		gridGap,
 		gridAutoFlow,
@@ -66,7 +67,15 @@ export function generateGridStyles( attributes, gridId ) {
 		.join( ';' );
 	let css = `${ selector }{${ baseDecl }}`;
 
-	// Desktop (min-width: 768px)
+	// When colCountMd is set: MD (768px) = intermediate columns, LG (992px) = full desktop.
+	// When not set: keep original single breakpoint at 768px (backward compatible).
+	const hasMd = colCountMd > 0;
+
+	if ( hasMd ) {
+		css += `@media(min-width:768px){${ selector }{grid-template-columns:repeat(${ colCountMd },1fr)}}`;
+	}
+
+	const deskBreakpoint = hasMd ? '992px' : '768px';
 	const deskDecls = {};
 	const cols = buildColsValue( colCount, colSizes );
 	if ( cols ) deskDecls[ 'grid-template-columns' ] = cols;
@@ -78,7 +87,7 @@ export function generateGridStyles( attributes, gridId ) {
 		const deskDecl = Object.entries( deskDecls )
 			.map( ( [ p, v ] ) => `${ p }:${ v }` )
 			.join( ';' );
-		css += `@media(min-width:768px){${ selector }{${ deskDecl }}}`;
+		css += `@media(min-width:${ deskBreakpoint }){${ selector }{${ deskDecl }}}`;
 	}
 
 	return css;

@@ -37,16 +37,17 @@ const PRESETS = [
 		id: 'magazine',
 		label: __( 'Magazine', 'codeweber-gutenberg-blocks' ),
 		colCount: 6,
+		colCountMd: 2,
 		colSizes: [],
 		rowCount: 3,
 		rowSizes: [],
 		items: [
-			{ gridColumn: '1 / 4', gridRow: '1 / 3' },
-			{ gridColumn: '4 / 7', gridRow: '1' },
-			{ gridColumn: '4 / 7', gridRow: '2' },
-			{ gridColumn: '1 / 3', gridRow: '3' },
-			{ gridColumn: '3 / 5', gridRow: '3' },
-			{ gridColumn: '5 / 7', gridRow: '3' },
+			{ gridColumnLg: '1 / 4', gridRowLg: '1 / 3' },
+			{ gridColumnLg: '4 / 7', gridRowLg: '1' },
+			{ gridColumnLg: '4 / 7', gridRowLg: '2' },
+			{ gridColumnLg: '1 / 3', gridRowLg: '3' },
+			{ gridColumnLg: '3 / 5', gridRowLg: '3' },
+			{ gridColumnLg: '5 / 7', gridRowLg: '3' },
 		],
 	},
 	{
@@ -54,15 +55,16 @@ const PRESETS = [
 		id: 'bento-left-hero',
 		label: __( 'Bento 1', 'codeweber-gutenberg-blocks' ),
 		colCount: 2,
+		colCountMd: 2,
 		colSizes: [],
 		rowCount: 3,
 		rowSizes: [],
 		items: [
-			{ gridColumn: '1', gridRow: '1 / 3' },
-			{ gridColumn: '2', gridRow: '1' },
-			{ gridColumn: '2', gridRow: '2' },
-			{ gridColumn: '1', gridRow: '3' },
-			{ gridColumn: '2', gridRow: '3' },
+			{ gridColumnLg: '1', gridRowLg: '1 / 3' },
+			{ gridColumnLg: '2', gridRowLg: '1' },
+			{ gridColumnLg: '2', gridRowLg: '2' },
+			{ gridColumnLg: '1', gridRowLg: '3' },
+			{ gridColumnLg: '2', gridRowLg: '3' },
 		],
 	},
 	{
@@ -70,15 +72,16 @@ const PRESETS = [
 		id: 'bento-top-banner',
 		label: __( 'Bento 2', 'codeweber-gutenberg-blocks' ),
 		colCount: 2,
+		colCountMd: 2,
 		colSizes: [],
 		rowCount: 3,
 		rowSizes: [],
 		items: [
-			{ gridColumn: '1 / -1', gridRow: '1' },
-			{ gridColumn: '1', gridRow: '2' },
-			{ gridColumn: '2', gridRow: '2' },
-			{ gridColumn: '1', gridRow: '3' },
-			{ gridColumn: '2', gridRow: '3' },
+			{ gridColumnLg: '1 / -1', gridRowLg: '1' },
+			{ gridColumnLg: '1', gridRowLg: '2' },
+			{ gridColumnLg: '2', gridRowLg: '2' },
+			{ gridColumnLg: '1', gridRowLg: '3' },
+			{ gridColumnLg: '2', gridRowLg: '3' },
 		],
 	},
 	{
@@ -86,14 +89,15 @@ const PRESETS = [
 		id: 'bento-right-hero',
 		label: __( 'Bento 3', 'codeweber-gutenberg-blocks' ),
 		colCount: 2,
+		colCountMd: 2,
 		colSizes: [],
 		rowCount: 3,
 		rowSizes: [],
 		items: [
-			{ gridColumn: '1', gridRow: '1' },
-			{ gridColumn: '1', gridRow: '2' },
-			{ gridColumn: '1', gridRow: '3' },
-			{ gridColumn: '2', gridRow: '1 / 4' },
+			{ gridColumnLg: '1', gridRowLg: '1' },
+			{ gridColumnLg: '1', gridRowLg: '2' },
+			{ gridColumnLg: '1', gridRowLg: '3' },
+			{ gridColumnLg: '2', gridRowLg: '1 / 4' },
 		],
 	},
 	{
@@ -101,14 +105,15 @@ const PRESETS = [
 		id: 'bento-checker',
 		label: __( 'Bento 4', 'codeweber-gutenberg-blocks' ),
 		colCount: 3,
+		colCountMd: 2,
 		colSizes: [],
 		rowCount: 2,
 		rowSizes: [],
 		items: [
-			{ gridColumn: '1 / 3', gridRow: '1' },
-			{ gridColumn: '3 / 4', gridRow: '1' },
-			{ gridColumn: '1 / 2', gridRow: '2' },
-			{ gridColumn: '2 / 4', gridRow: '2' },
+			{ gridColumnLg: '1 / 3', gridRowLg: '1' },
+			{ gridColumnLg: '3 / 4', gridRowLg: '1' },
+			{ gridColumnLg: '1 / 2', gridRowLg: '2' },
+			{ gridColumnLg: '2 / 4', gridRowLg: '2' },
 		],
 	},
 	{
@@ -116,16 +121,17 @@ const PRESETS = [
 		id: 'bento-featured',
 		label: __( 'Bento 5', 'codeweber-gutenberg-blocks' ),
 		colCount: 3,
+		colCountMd: 2,
 		colSizes: [],
 		rowCount: 3,
 		rowSizes: [],
 		items: [
-			{ gridColumn: '1 / 3', gridRow: '1 / 3' },
-			{ gridColumn: '3 / 4', gridRow: '1' },
-			{ gridColumn: '3 / 4', gridRow: '2' },
-			{ gridColumn: '1 / 2', gridRow: '3' },
-			{ gridColumn: '2 / 3', gridRow: '3' },
-			{ gridColumn: '3 / 4', gridRow: '3' },
+			{ gridColumnLg: '1 / 3', gridRowLg: '1 / 3' },
+			{ gridColumnLg: '3 / 4', gridRowLg: '1' },
+			{ gridColumnLg: '3 / 4', gridRowLg: '2' },
+			{ gridColumnLg: '1 / 2', gridRowLg: '3' },
+			{ gridColumnLg: '2 / 3', gridRowLg: '3' },
+			{ gridColumnLg: '3 / 4', gridRowLg: '3' },
 		],
 	},
 ];
@@ -263,17 +269,17 @@ function CountButtons( { counts, active, onChange } ) {
 
 function buildItemPatch( item ) {
 	return {
-		gridColumn: item.gridColumn || '',
+		gridColumn: '',
 		gridColumnSm: '',
 		gridColumnMd: '',
-		gridColumnLg: '',
+		gridColumnLg: item.gridColumnLg || '',
 		gridColumnXl: '',
 		gridColumnXxl: '',
 		gridColumnXxxl: '',
-		gridRow: item.gridRow || '',
+		gridRow: '',
 		gridRowSm: '',
 		gridRowMd: '',
-		gridRowLg: '',
+		gridRowLg: item.gridRowLg || '',
 		gridRowXl: '',
 		gridRowXxl: '',
 		gridRowXxxl: '',
@@ -300,6 +306,7 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 		colSizes,
 		rowSizes,
 		colCountSm,
+		colCountMd,
 		gapType,
 		gridGap,
 		gridAutoFlow,
@@ -369,6 +376,7 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 
 		setAttributes( {
 			colCount: preset.colCount,
+			colCountMd: preset.colCountMd || 2,
 			colSizes: preset.colSizes || [],
 			rowCount: preset.rowCount,
 			rowSizes: preset.rowSizes || [],
@@ -536,6 +544,15 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 						counts={ MOB_COUNTS }
 						active={ colCountSm || 1 }
 						onChange={ ( n ) => setAttributes( { colCountSm: n } ) }
+					/>
+
+					<p style={ { margin: '8px 0 4px', fontSize: '11px', fontWeight: 600, textTransform: 'uppercase' } }>
+						{ __( 'Tablet columns (768px–991px)', 'codeweber-gutenberg-blocks' ) }
+					</p>
+					<CountButtons
+						counts={ MOB_COUNTS }
+						active={ colCountMd || 0 }
+						onChange={ ( n ) => setAttributes( { colCountMd: colCountMd === n ? 0 : n } ) }
 					/>
 				</PanelBody>
 

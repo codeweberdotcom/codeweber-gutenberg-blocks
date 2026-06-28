@@ -29,6 +29,7 @@
 		},
 		"cellCount": { "type": "number", "default": 0 },
 		"colCountSm": { "type": "number", "default": 1 },
+		"colCountMd": { "type": "number", "default": 0 },
 		"gapType": { "type": "string", "default": "theme" },
 		"gridGap": { "type": "string", "default": "" },
 		"gridAutoFlow": { "type": "string", "default": "row" },

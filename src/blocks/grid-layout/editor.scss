@@ -3,4 +3,10 @@
 		min-height: 60px;
 		width: 100%;
 	}
+
+	// Make Gutenberg inner-block wrappers transparent to CSS Grid
+	> .block-editor-inner-blocks,
+	> .block-editor-inner-blocks > .block-editor-block-list__layout {
+		display: contents;
+	}
 }

@@ -19,4 +19,17 @@
 			display: block;
 		}
 	}
+
+	// Stretch inner Post Grid chain to fill the cell
+	.cwgb-post-grid-results,
+	.cwgb-load-more-items,
+	.cwgb-load-more-items > div,
+	article {
+		height: 100%;
+	}
+
+	figure > a {
+		display: block;
+		height: 100%;
+	}
 }

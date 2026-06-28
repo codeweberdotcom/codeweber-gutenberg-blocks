@@ -376,6 +376,7 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 
 		setAttributes( {
 			colCount: preset.colCount,
+			colCountSm: 1,
 			colCountMd: preset.colCountMd || 2,
 			colSizes: preset.colSizes || [],
 			rowCount: preset.rowCount,

@@ -639,7 +639,17 @@ if (!function_exists('get_swiper_data_attributes')) {
 // Helper function to render post item based on template
 if (!function_exists('render_post_grid_item')) {
 	function render_post_grid_item($post, $attributes, $image_url, $image_size, $grid_type, $col_classes, $is_swiper = false) {
-		$template = isset($attributes['template']) ? $attributes['template'] : 'default';
+		$template      = isset($attributes['template']) ? $attributes['template'] : 'default';
+		$_disable_link = isset( $attributes['disableLink'] ) ? (bool) $attributes['disableLink'] : false;
+		$_strip_links  = function ( $html ) {
+			if ( empty( $html ) ) return $html;
+			$html = preg_replace_callback( '/<a\b([^>]*)>/i', function ( $m ) {
+				return preg_match( '/\bclass\s*=\s*"([^"]*)"/i', $m[1], $c )
+					? '<span class="' . $c[1] . '">'
+					: '<span>';
+			}, $html );
+			return preg_replace( '#</a\s*>#i', '</span>', $html );
+		};
 
 		// Title tag: display-* рендерится как <h2 class="display-*"> (класс добавит compose_title_class).
 		$allowed_title_tags = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'div', 'span'];
@@ -745,8 +755,8 @@ if (!function_exists('render_post_grid_item')) {
 				// Используем шаблон testimonials
 				$html = cw_render_post_card($post, $testimonial_template, $display_settings, $template_args);
 
-				if ($disable_link) {
-					$html = $cwgb_strip_links($html);
+				if ( $_disable_link ) {
+					$html = $_strip_links( $html );
 				}
 			} elseif ($post_type === 'documents') {
 				// Специальная обработка для documents
@@ -810,10 +820,10 @@ if (!function_exists('render_post_grid_item')) {
 				// Используем шаблон default для FAQ
 				$html = cw_render_post_card($post, 'default', $display_settings, $template_args);
 
-				if ($disable_link) {
-					$html = $cwgb_strip_links($html);
+				if ( $_disable_link ) {
+					$html = $_strip_links( $html );
 				}
-				
+
 				// Если функция вернула не пустую строку, используем её
 				if (!empty($html) && trim($html) !== '') {
 					// Добавляем обертку для grid режима (не swiper)
@@ -896,8 +906,8 @@ if (!function_exists('render_post_grid_item')) {
 				// Используем шаблон staff
 				$html = cw_render_post_card($post, $staff_template, $display_settings, $template_args);
 
-				if ($disable_link) {
-					$html = $cwgb_strip_links($html);
+				if ( $_disable_link ) {
+					$html = $_strip_links( $html );
 				}
 				
 				// Если функция вернула не пустую строку, используем её
@@ -1026,8 +1036,8 @@ if (!function_exists('render_post_grid_item')) {
 			$html = cw_render_post_card($post, $template, $display_settings, $template_args);
 
 			// Disable Links: WC-shop пропускаем (функциональные ссылки add-to-cart/quick view)
-			if ($disable_link && !$is_wc_shop_template) {
-				$html = $cwgb_strip_links($html);
+			if ( $_disable_link && ! $is_wc_shop_template ) {
+				$html = $_strip_links( $html );
 			}
 
 			if ( $alt_title_filter ) {

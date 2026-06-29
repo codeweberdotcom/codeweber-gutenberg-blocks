@@ -149,6 +149,10 @@
 			"type": "string",
 			"default": ""
 		},
+		"wrapperEnabled": {
+			"type": "boolean",
+			"default": true
+		},
 		"wrapperClass": {
 			"type": "string",
 			"default": ""

@@ -5,6 +5,7 @@ import {
 	ButtonGroup,
 	Button,
 	TextControl,
+	ToggleControl,
 } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { useState, createElement } from '@wordpress/element';
@@ -78,6 +79,7 @@ const HeadingSubtitleEdit = ({ attributes, setAttributes }) => {
 		animationType,
 		animationDuration,
 		animationDelay,
+		wrapperEnabled,
 		wrapperClass,
 		wrapperId,
 	} = attributes;
@@ -481,6 +483,20 @@ const HeadingSubtitleEdit = ({ attributes, setAttributes }) => {
 							)}
 							{tab.name === 'wrapper' && (
 								<div style={{ padding: '16px' }}>
+									<ToggleControl
+										label={__(
+											'Enable wrapper div',
+											'codeweber-gutenberg-blocks'
+										)}
+										checked={wrapperEnabled !== false}
+										onChange={(value) =>
+											setAttributes({ wrapperEnabled: value })
+										}
+										help={__(
+											'Uncheck to remove the d-flex wrapper (useful inside card wrappers)',
+											'codeweber-gutenberg-blocks'
+										)}
+									/>
 									<TextControl
 										label={__(
 											'Wrapper CSS Class',

@@ -37,6 +37,7 @@ const HeadingSubtitleSave = ({ attributes }) => {
 		animationType,
 		animationDuration,
 		animationDelay,
+		wrapperEnabled,
 		wrapperClass,
 		wrapperId,
 	} = attributes;
@@ -90,6 +91,10 @@ const HeadingSubtitleSave = ({ attributes }) => {
 				tag={textTag}
 			/>
 		);
+	}
+
+	if ( wrapperEnabled === false ) {
+		return <>{ elements }</>;
 	}
 
 	// Обёртка с Bootstrap-классами для вертикального позиционирования

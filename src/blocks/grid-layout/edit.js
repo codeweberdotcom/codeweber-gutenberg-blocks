@@ -492,6 +492,20 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 							setAttributes( { rowCount: n, cellCount: colCount * n } )
 						}
 					/>
+					<Button
+						variant="secondary"
+						isSmall
+						style={ { marginBottom: '8px' } }
+						onClick={ () => {
+							const addItems = Math.max( 1, Math.floor( colCount / 2 ) );
+							setAttributes( {
+								rowCount: rowCount + 1,
+								cellCount: ( cellCount || innerBlocks.length ) + addItems,
+							} );
+						} }
+					>
+						{ __( '+ Add Row', 'codeweber-gutenberg-blocks' ) }
+					</Button>
 					<div style={ { display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '16px' } }>
 						{ Array.from( { length: rowCount }, ( _, i ) => (
 							<div key={ i } style={ { flex: '1 1 52px', minWidth: '44px' } }>

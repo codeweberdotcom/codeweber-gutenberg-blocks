@@ -976,6 +976,14 @@ export const MainControl = ( { attributes, setAttributes } ) => {
 							value={ template || 'overlay-5' }
 							onChange={ ( value ) => setAttributes( { template: value } ) }
 						/>
+						<div style={ { marginTop: '16px' } }>
+							<ToggleControl
+								label={ __( 'Disable Links', 'codeweber-gutenberg-blocks' ) }
+								checked={ disableLink || false }
+								onChange={ ( value ) => setAttributes( { disableLink: value } ) }
+								help={ __( 'Make cards non-clickable (remove all links in the card)', 'codeweber-gutenberg-blocks' ) }
+							/>
+						</div>
 					</div>
 				</>
 			) : (
@@ -1026,13 +1034,13 @@ export const MainControl = ( { attributes, setAttributes } ) => {
 							}
 							postType={ postType || 'post' }
 						/>
-						{ ( isTaxonomyMode || ( postType &&
+						{ postType &&
 							! [
 								'clients',
 								'documents',
 								'product',
 								'offices',
-							].includes( postType ) ) ) && (
+							].includes( postType ) && (
 							<div style={ { marginTop: '16px' } }>
 								<ToggleControl
 									label={ __(

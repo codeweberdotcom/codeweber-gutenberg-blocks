@@ -1026,13 +1026,13 @@ export const MainControl = ( { attributes, setAttributes } ) => {
 							}
 							postType={ postType || 'post' }
 						/>
-						{ postType &&
+						{ ( isTaxonomyMode || ( postType &&
 							! [
 								'clients',
 								'documents',
 								'product',
 								'offices',
-							].includes( postType ) && (
+							].includes( postType ) ) ) && (
 							<div style={ { marginTop: '16px' } }>
 								<ToggleControl
 									label={ __(

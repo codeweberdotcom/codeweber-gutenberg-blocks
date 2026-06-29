@@ -72,7 +72,12 @@ export function generateGridStyles( attributes, gridId ) {
 	const hasMd = colCountMd > 0;
 
 	if ( hasMd ) {
-		css += `@media(min-width:768px){${ selector }{grid-template-columns:repeat(${ colCountMd },1fr)}}`;
+		const firstRowSize =
+			rowSizes && rowSizes.find( ( s ) => s && s.trim() && s.trim() !== 'auto' );
+		const mdDecl =
+			`grid-template-columns:repeat(${ colCountMd },1fr)` +
+			( firstRowSize ? `;grid-auto-rows:${ firstRowSize.trim() }` : '' );
+		css += `@media(min-width:768px){${ selector }{${ mdDecl }}}`;
 	}
 
 	const deskBreakpoint = hasMd ? '992px' : '768px';

@@ -83,6 +83,18 @@
 			"type": "string",
 			"default": "#FF0000"
 		},
+		"markerType": {
+			"type": "string",
+			"default": "dot"
+		},
+		"markerIconUrl": {
+			"type": "string",
+			"default": ""
+		},
+		"markerSize": {
+			"type": "number",
+			"default": 0
+		},
 		"balloonFields": {
 			"type": "object",
 			"default": {

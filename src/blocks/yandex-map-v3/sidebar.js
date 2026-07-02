@@ -15,6 +15,7 @@ import {
 	Button,
 } from '@wordpress/components';
 import { Icon, cog, mapMarker, settings, layout } from '@wordpress/icons';
+import { MediaUpload, MediaUploadCheck } from '@wordpress/block-editor';
 import { useInstanceId } from '@wordpress/compose';
 import { BlockMetaFields } from '../../components/block-meta/BlockMetaFields';
 import { MarkerRepeaterControl } from '../yandex-map/controls/MarkerRepeaterControl';
@@ -32,6 +33,7 @@ const TabIcon = ( { icon, label } ) => (
 
 export const YandexMapV3Sidebar = ( { attributes, setAttributes } ) => {
 	const schemeControlId = useInstanceId( YandexMapV3Sidebar, 'cwgb-map-scheme' );
+	const markerIconControlId = useInstanceId( YandexMapV3Sidebar, 'cwgb-map-marker-icon' );
 	const {
 		dataSource,
 		center,
@@ -47,6 +49,9 @@ export const YandexMapV3Sidebar = ( { attributes, setAttributes } ) => {
 		officesQuery,
 		customMarkers,
 		markerColor,
+		markerType,
+		markerIconUrl,
+		markerSize,
 		balloonFields,
 		showSidebar,
 		sidebarPosition,
@@ -248,11 +253,81 @@ export const YandexMapV3Sidebar = ( { attributes, setAttributes } ) => {
 								title={ __( 'Marker Display', 'codeweber-gutenberg-blocks' ) }
 								initialOpen={ false }
 							>
-								<TextControl
-									label={ __( 'Marker Color', 'codeweber-gutenberg-blocks' ) }
-									value={ markerColor }
-									onChange={ ( value ) => setAttributes( { markerColor: value } ) }
-									type="color"
+								<SelectControl
+									label={ __( 'Marker Type', 'codeweber-gutenberg-blocks' ) }
+									value={ markerType }
+									options={ [
+										{ label: __( 'Dot', 'codeweber-gutenberg-blocks' ), value: 'dot' },
+										{ label: __( 'Pin', 'codeweber-gutenberg-blocks' ), value: 'pin' },
+										{ label: __( 'Custom Icon', 'codeweber-gutenberg-blocks' ), value: 'icon' },
+										{ label: __( 'Logo (theme setting)', 'codeweber-gutenberg-blocks' ), value: 'logo' },
+									] }
+									onChange={ ( value ) => setAttributes( { markerType: value } ) }
+								/>
+
+								{ ( markerType === 'dot' || markerType === 'pin' ) && (
+									<TextControl
+										label={ __( 'Marker Color', 'codeweber-gutenberg-blocks' ) }
+										value={ markerColor }
+										onChange={ ( value ) => setAttributes( { markerColor: value } ) }
+										type="color"
+									/>
+								) }
+
+								{ markerType === 'icon' && (
+									<BaseControl
+										id={ markerIconControlId }
+										label={ __( 'Marker Icon', 'codeweber-gutenberg-blocks' ) }
+										__nextHasNoMarginBottom
+									>
+										{ markerIconUrl ? (
+											<div style={ { marginBottom: '8px' } }>
+												<img
+													src={ markerIconUrl }
+													alt=""
+													style={ {
+														maxWidth: '64px',
+														maxHeight: '64px',
+														display: 'block',
+														marginBottom: '8px',
+													} }
+												/>
+												<Button
+													variant="secondary"
+													size="small"
+													isDestructive
+													onClick={ () => setAttributes( { markerIconUrl: '' } ) }
+												>
+													{ __( 'Remove', 'codeweber-gutenberg-blocks' ) }
+												</Button>
+											</div>
+										) : null }
+										<MediaUploadCheck>
+											<MediaUpload
+												onSelect={ ( media ) =>
+													setAttributes( { markerIconUrl: media?.url || '' } )
+												}
+												allowedTypes={ [ 'image' ] }
+												render={ ( { open } ) => (
+													<Button variant="secondary" onClick={ open }>
+														{ markerIconUrl
+															? __( 'Replace Image', 'codeweber-gutenberg-blocks' )
+															: __( 'Select Image', 'codeweber-gutenberg-blocks' ) }
+													</Button>
+												) }
+											/>
+										</MediaUploadCheck>
+									</BaseControl>
+								) }
+
+								<RangeControl
+									label={ __( 'Marker Size', 'codeweber-gutenberg-blocks' ) }
+									value={ markerSize }
+									onChange={ ( value ) => setAttributes( { markerSize: value } ) }
+									min={ 0 }
+									max={ 100 }
+									step={ 2 }
+									help={ __( '0 = auto size for the selected marker type', 'codeweber-gutenberg-blocks' ) }
 								/>
 							</PanelBody>
 

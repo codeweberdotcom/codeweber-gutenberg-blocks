@@ -39,6 +39,9 @@ $scroll_zoom    = isset( $attributes['enableScrollZoom'] ) ? (bool) $attributes[
 $enable_drag    = isset( $attributes['enableDrag'] ) ? (bool) $attributes['enableDrag'] : true;
 $auto_fit       = isset( $attributes['autoFitBounds'] ) ? (bool) $attributes['autoFitBounds'] : true;
 $marker_color   = isset( $attributes['markerColor'] ) ? $attributes['markerColor'] : '#FF0000';
+$marker_type    = isset( $attributes['markerType'] ) ? $attributes['markerType'] : 'dot';
+$marker_icon    = isset( $attributes['markerIconUrl'] ) ? $attributes['markerIconUrl'] : '';
+$marker_size    = isset( $attributes['markerSize'] ) ? (int) $attributes['markerSize'] : 0;
 
 $balloon_fields = isset( $attributes['balloonFields'] ) && is_array( $attributes['balloonFields'] )
 	? $attributes['balloonFields']
@@ -184,8 +187,10 @@ $map_args = array(
 	'enable_scroll_zoom'  => $scroll_zoom,
 	'enable_drag'         => $enable_drag,
 	'auto_fit_bounds'     => $auto_fit,
-	'marker_type'         => 'custom',
+	'marker_type'         => $marker_type,
 	'marker_color'        => $marker_color,
+	'marker_icon'         => $marker_icon,
+	'marker_size'         => $marker_size,
 	'balloon_fields'      => $balloon_fields,
 	'show_sidebar'        => $show_sidebar,
 	'sidebar_position'    => $sidebar_position,

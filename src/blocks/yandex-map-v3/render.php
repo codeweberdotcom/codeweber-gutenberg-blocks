@@ -31,6 +31,7 @@ $data_source    = isset( $attributes['dataSource'] ) ? $attributes['dataSource']
 $center_attr    = isset( $attributes['center'] ) ? $attributes['center'] : array( 'lat' => 55.76, 'lng' => 37.64 );
 $zoom           = isset( $attributes['zoom'] ) ? (int) $attributes['zoom'] : 10;
 $height         = isset( $attributes['height'] ) ? (int) $attributes['height'] : 500;
+$height_mobile  = isset( $attributes['heightMobile'] ) ? (int) $attributes['heightMobile'] : 0;
 $map_type       = isset( $attributes['mapType'] ) ? $attributes['mapType'] : 'normal';
 $color_scheme   = isset( $attributes['colorScheme'] ) ? $attributes['colorScheme'] : 'light';
 $custom_style   = isset( $attributes['customStyleJson'] ) ? $attributes['customStyleJson'] : '';
@@ -182,6 +183,7 @@ $map_args = array(
 	'center'              => array( floatval( $center_attr['lat'] ), floatval( $center_attr['lng'] ) ),
 	'zoom'                => $zoom,
 	'height'              => $height,
+	'height_mobile'       => $height_mobile,
 	'map_type'            => $map_type,
 	'border_radius'       => $border_radius,
 	'enable_scroll_zoom'  => $scroll_zoom,

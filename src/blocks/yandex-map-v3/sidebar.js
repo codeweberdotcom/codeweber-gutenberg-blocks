@@ -39,6 +39,7 @@ export const YandexMapV3Sidebar = ( { attributes, setAttributes } ) => {
 		center,
 		zoom,
 		height,
+		heightMobile,
 		mapType,
 		colorScheme,
 		customStyleJson,
@@ -170,6 +171,16 @@ export const YandexMapV3Sidebar = ( { attributes, setAttributes } ) => {
 									min={ 200 }
 									max={ 1000 }
 									step={ 50 }
+								/>
+
+								<RangeControl
+									label={ __( 'Map Height (Mobile)', 'codeweber-gutenberg-blocks' ) }
+									value={ heightMobile }
+									onChange={ ( value ) => setAttributes( { heightMobile: value } ) }
+									min={ 0 }
+									max={ 1000 }
+									step={ 50 }
+									help={ __( '0 = same as desktop', 'codeweber-gutenberg-blocks' ) }
 								/>
 
 								<SelectControl

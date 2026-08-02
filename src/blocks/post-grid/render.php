@@ -160,11 +160,13 @@ if (!function_exists('cwgb_post_grid_filter_item_classes')) {
 
 		switch ($style) {
 			case 'btn-xs':
-				$base = ['btn', 'btn-xs'];
+				$_r   = class_exists('Codeweber_Options') ? trim(Codeweber_Options::style('button')) : '';
+				$base = array_values(array_filter(['btn', 'btn-xs', $_r]));
 				$active[] = $color_mod ?: 'btn-primary';
 				break;
 			case 'btn-sm':
-				$base = ['btn', 'btn-sm'];
+				$_r   = class_exists('Codeweber_Options') ? trim(Codeweber_Options::style('button')) : '';
+				$base = array_values(array_filter(['btn', 'btn-sm', $_r]));
 				$active[] = $color_mod ?: 'btn-primary';
 				break;
 			case 'badge':

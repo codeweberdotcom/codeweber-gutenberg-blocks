@@ -13,6 +13,7 @@ const Save = ({ attributes }) => {
 	const {
 		iconType,
 		iconName,
+		iconText,
 		svgIcon,
 		svgStyle,
 		iconSize,
@@ -47,6 +48,7 @@ const Save = ({ attributes }) => {
 		<IconRenderSave
 			iconType={iconType}
 			iconName={iconName}
+			iconText={iconText}
 			svgIcon={svgIcon}
 			svgStyle={svgStyle}
 			iconSize={iconSize}

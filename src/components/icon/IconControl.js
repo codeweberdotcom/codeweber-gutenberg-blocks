@@ -10,6 +10,7 @@ import {
 	Button,
 	ButtonGroup,
 	SelectControl,
+	TextControl,
 	ToggleControl,
 	BaseControl,
 	ComboboxControl,
@@ -103,6 +104,7 @@ export const IconControl = ({
 	const customSvgUrl = getAttr(attributes, prefix, 'customSvgUrl') || '';
 	const customSvgId = getAttr(attributes, prefix, 'customSvgId') || null;
 	const customSvgSize = getAttr(attributes, prefix, 'customSvgSize') || 0;
+	const iconText = getAttr(attributes, prefix, 'iconText') || '';
 
 	// Фильтруем доступные типы иконок
 	const availableTypes = iconTypes.filter((type) => {
@@ -110,6 +112,7 @@ export const IconControl = ({
 		if (type.value === 'font') return allowFont;
 		if (type.value === 'svg') return allowSvg;
 		if (type.value === 'custom') return allowCustom;
+		if (type.value === 'text') return true;
 		return false;
 	});
 
@@ -163,6 +166,19 @@ export const IconControl = ({
 					onChange={(value) =>
 						setAttr(setAttributes, prefix, 'iconType', value)
 					}
+					__nextHasNoMarginBottom
+				/>
+			)}
+
+			{/* Text / Number input */}
+			{iconType === 'text' && (
+				<TextControl
+					label={__('Text / Number', 'codeweber-gutenberg-blocks')}
+					value={iconText}
+					onChange={(value) =>
+						setAttr(setAttributes, prefix, 'iconText', value)
+					}
+					placeholder="01"
 					__nextHasNoMarginBottom
 				/>
 			)}

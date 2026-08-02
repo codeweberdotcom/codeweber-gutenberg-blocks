@@ -22,6 +22,7 @@ const Edit = ({ attributes, setAttributes }) => {
 	const {
 		iconType,
 		iconName,
+		iconText,
 		svgIcon,
 		svgStyle,
 		iconSize,
@@ -115,6 +116,7 @@ const Edit = ({ attributes, setAttributes }) => {
 					<IconRender
 						iconType={iconType}
 						iconName={iconName}
+						iconText={iconText}
 						svgIcon={svgIcon}
 						svgStyle={svgStyle}
 						iconSize={iconSize}

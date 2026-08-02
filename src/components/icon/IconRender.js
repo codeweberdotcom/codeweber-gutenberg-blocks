@@ -176,7 +176,7 @@ const getWrapperClasses = ({
  * IconRender Component
  *
  * @param {Object} props
- * @param {string} props.iconType - Тип иконки: 'none', 'font', 'svg', 'custom'
+ * @param {string} props.iconType - Тип иконки: 'none', 'font', 'svg', 'custom', 'text'
  * @param {string} props.iconName - Имя Font иконки (без префикса uil-)
  * @param {string} props.svgIcon - Имя SVG иконки
  * @param {string} props.svgStyle - Стиль SVG: 'lineal', 'solid', 'solid-mono', 'solid-duo'
@@ -202,6 +202,7 @@ const getWrapperClasses = ({
 export const IconRender = ({
 	iconType = 'none',
 	iconName = '',
+	iconText = '',
 	svgIcon = '',
 	svgStyle = 'lineal',
 	iconSize = 'xs',
@@ -323,6 +324,16 @@ export const IconRender = ({
 				/>
 			);
 		}
+	}
+
+	// Text / Number label
+	if (iconType === 'text' && iconText) {
+		const textClasses = [iconFontSize, iconClass]
+			.filter(Boolean)
+			.join(' ');
+		iconElement = (
+			<span className={textClasses || undefined}>{iconText}</span>
+		);
 	}
 
 	// Если нет элемента — выходим

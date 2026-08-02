@@ -104,6 +104,7 @@ export const iconTypes = [
 	{ value: 'font', label: 'Font Icon (Unicons)' },
 	{ value: 'svg', label: 'SVG Icon' },
 	{ value: 'custom', label: 'Custom SVG' },
+	{ value: 'text', label: 'Text / Number' },
 ];
 
 /**

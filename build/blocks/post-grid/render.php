@@ -1374,12 +1374,14 @@ if ( $source_type === 'taxonomy' ) {
 		};
 		?>
 		<?php if ($is_default_style) : ?>
-			<ul class="<?php echo esc_attr(implode(' ', $container_classes)); ?>" <?php echo $common_data_attrs; ?>>
-				<li><?php echo $render_filter_item($filter_all_label, 0, $filter_active_term === 0); ?></li>
-				<?php foreach ($filter_terms as $term) : ?>
-					<li><?php echo $render_filter_item($term->name, $term->term_id, $filter_active_term === (int) $term->term_id); ?></li>
-				<?php endforeach; ?>
-			</ul>
+			<div class="<?php echo esc_attr(implode(' ', $container_classes)); ?>" <?php echo $common_data_attrs; ?>>
+				<ul>
+					<li><?php echo $render_filter_item($filter_all_label, 0, $filter_active_term === 0); ?></li>
+					<?php foreach ($filter_terms as $term) : ?>
+						<li><?php echo $render_filter_item($term->name, $term->term_id, $filter_active_term === (int) $term->term_id); ?></li>
+					<?php endforeach; ?>
+				</ul>
+			</div>
 		<?php else : ?>
 			<div class="<?php echo esc_attr(implode(' ', $container_classes)); ?>" <?php echo $common_data_attrs; ?>>
 				<?php echo $render_filter_item($filter_all_label, 0, $filter_active_term === 0); ?>

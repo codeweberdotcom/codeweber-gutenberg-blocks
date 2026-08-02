@@ -203,6 +203,11 @@
 							reinitializeTheme(container);
 							applyButtonRadiusClass();
 
+							// Re-init WFS hover-scroll for newly appended cw_website cards
+							if (typeof window.cwWfsInitScreenScroll === 'function') {
+								window.cwWfsInitScreenScroll(itemsContainer);
+							}
+
 							// Прокрутка к первому новому элементу
 							if (itemsContainer.children.length > existingChildrenCount) {
 								const firstNewElement = itemsContainer.children[existingChildrenCount];

@@ -1199,6 +1199,47 @@ class LoadMoreAPI {
 					
 					return $html;
 				}
+			} elseif ($post_type === 'cw_website') {
+				$_allowed_tags = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'div', 'span'];
+				$_tag_raw      = isset($attributes['titleTag']) ? $attributes['titleTag'] : 'h3';
+				$_title_tag    = in_array($_tag_raw, $_allowed_tags, true) ? $_tag_raw : 'h3';
+
+				$display_settings = [
+					'show_title'          => array_key_exists('showTitle', $attributes)    ? (bool) $attributes['showTitle']    : true,
+					'show_date'           => false,
+					'show_category'       => array_key_exists('showCategory', $attributes) ? (bool) $attributes['showCategory'] : true,
+					'show_comments'       => false,
+					'show_excerpt'        => false,
+					'excerpt_hide_mobile' => false,
+					'title_length'        => isset($attributes['titleLength'])   ? (int) $attributes['titleLength']   : 0,
+					'excerpt_length'      => 0,
+					'title_tag'           => $_title_tag,
+					'title_class'         => isset($attributes['titleClass']) ? sanitize_text_field($attributes['titleClass']) : '',
+				];
+
+				$simple_effect = isset($attributes['simpleEffect']) ? $attributes['simpleEffect'] : 'none';
+				$enable_lift   = ($simple_effect === 'lift');
+
+				$template_args = [
+					'image_size'    => $image_size,
+					'border_radius' => isset($attributes['borderRadius']) ? $attributes['borderRadius'] : 'rounded',
+					'enable_lift'   => $enable_lift,
+					'scroll_mode'   => ($template === 'card-3b'),
+					'screen_height' => 220,
+				];
+
+				$html = cw_render_post_card($post, $template, $display_settings, $template_args);
+
+				if (!empty($html) && trim($html) !== '') {
+					if (!$is_swiper) {
+						if ($grid_type === 'classic' && !empty($col_classes)) {
+							$html = '<div class="' . esc_attr($col_classes) . '">' . $html . '</div>';
+						} elseif ($grid_type === 'columns-grid') {
+							$html = '<div class="col">' . $html . '</div>';
+						}
+					}
+					return $html;
+				}
 			} else {
 				// Display settings read from block attributes — mirrors render.php logic.
 				$_allowed_tags = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'div', 'span'];

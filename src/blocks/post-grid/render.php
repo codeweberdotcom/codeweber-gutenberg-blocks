@@ -963,6 +963,43 @@ if (!function_exists('render_post_grid_item')) {
 					}
 					return $html;
 				}
+			} elseif ($post_type === 'cw_website') {
+				$display_settings = [
+					'show_title'          => array_key_exists('showTitle', $attributes)    ? (bool) $attributes['showTitle']    : true,
+					'show_date'           => false,
+					'show_category'       => array_key_exists('showCategory', $attributes) ? (bool) $attributes['showCategory'] : true,
+					'show_comments'       => false,
+					'show_excerpt'        => false,
+					'excerpt_hide_mobile' => false,
+					'title_length'        => isset($attributes['titleLength'])   ? (int) $attributes['titleLength']   : 0,
+					'excerpt_length'      => 0,
+					'title_tag'           => $title_tag,
+					'title_class'         => $title_class,
+				];
+
+				$simple_effect = isset($attributes['simpleEffect']) ? $attributes['simpleEffect'] : 'none';
+				$enable_lift   = ($simple_effect === 'lift');
+
+				$template_args = [
+					'image_size'    => $image_size,
+					'border_radius' => isset($attributes['borderRadius']) ? $attributes['borderRadius'] : 'rounded',
+					'enable_lift'   => $enable_lift,
+					'scroll_mode'   => ($template === 'card-3b'),
+					'screen_height' => 220,
+				];
+
+				$html = cw_render_post_card($post, $template, $display_settings, $template_args);
+
+				if (!empty($html) && trim($html) !== '') {
+					if (!$is_swiper) {
+						if ($grid_type === 'classic' && !empty($col_classes)) {
+							$html = '<div class="' . esc_attr($col_classes) . '">' . $html . '</div>';
+						} elseif ($grid_type === 'columns-grid') {
+							$html = '<div class="col">' . $html . '</div>';
+						}
+					}
+					return $html;
+				}
 			} else {
 				// Настройки отображения для обычных постов — читаются из атрибутов блока
 				$display_settings = [

@@ -22,7 +22,6 @@ export const FilterControl = ({ attributes, setAttributes }) => {
 		filterActiveColor,
 		filterActiveColorType,
 		filterTextReset,
-		filterAllLabel,
 		selectedTaxonomies,
 	} = attributes;
 
@@ -212,18 +211,6 @@ export const FilterControl = ({ attributes, setAttributes }) => {
 							'Adds Bootstrap .text-reset to the filter container so text inherits the surrounding section color (useful on dark or inverse backgrounds).',
 							'codeweber-gutenberg-blocks'
 						)}
-					/>
-
-					<TextControl
-						label={__(
-							'"All" Button Label',
-							'codeweber-gutenberg-blocks'
-						)}
-						value={filterAllLabel || 'All'}
-						onChange={(value) =>
-							setAttributes({ filterAllLabel: value })
-						}
-						placeholder="All"
 					/>
 
 					{hasInitialFilter && (

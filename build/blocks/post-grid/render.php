@@ -119,9 +119,7 @@ $filter_taxonomy = isset($attributes['filterTaxonomy']) ? sanitize_key($attribut
 $filter_style = isset($attributes['filterStyle']) ? $attributes['filterStyle'] : 'default';
 $filter_active_color = isset($attributes['filterActiveColor']) ? sanitize_key($attributes['filterActiveColor']) : '';
 $filter_active_color_type = isset($attributes['filterActiveColorType']) ? $attributes['filterActiveColorType'] : 'solid';
-$filter_all_label = isset($attributes['filterAllLabel']) && $attributes['filterAllLabel'] !== ''
-	? $attributes['filterAllLabel']
-	: __('All', 'codeweber-gutenberg-blocks');
+$filter_all_label = __('All', 'codeweber-gutenberg-blocks');
 $filter_terms = [];
 $filter_active_term = isset($_GET['cwgb_filter']) ? (int) $_GET['cwgb_filter'] : 0;
 if ($enable_filter && $filter_taxonomy && taxonomy_exists($filter_taxonomy)) {

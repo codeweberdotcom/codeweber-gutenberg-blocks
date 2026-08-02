@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-06-09T10:03:41+00:00\n"
+"POT-Creation-Date: 2026-08-02T14:12:15+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: codeweber-gutenberg-blocks\n"
@@ -36,14 +36,14 @@ msgid "Codeweber"
 msgstr ""
 
 #: build/blocks/accordion/render.php:160
-#: inc/Plugin.php:1289
+#: inc/Plugin.php:1291
 #: build/blocks/accordion/index.js:1
 msgid "No content available"
 msgstr ""
 
 #: build/blocks/accordion/render.php:292
 #: build/blocks/blog-post-widget/render.php:80
-#: build/blocks/post-grid/render.php:1590
+#: build/blocks/post-grid/render.php:1625
 msgid "No posts found."
 msgstr ""
 
@@ -81,7 +81,6 @@ msgstr ""
 #: build/blocks/contacts/index.js:1
 #: build/blocks/form-field/index.js:35
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 #: build/blocks/post-grid/index.js:1
 #: build/blocks/yandex-map-v3/index.js:1
 #: build/blocks/yandex-map/index.js:1
@@ -152,11 +151,11 @@ msgid "Toggle info"
 msgstr ""
 
 #: build/blocks/inline-text-editor/render.php:44
-#: build/blocks/inline-text-editor/render.php:57
+#: build/blocks/inline-text-editor/render.php:58
 msgid "Edit page texts"
 msgstr ""
 
-#: build/blocks/inline-text-editor/render.php:63
+#: build/blocks/inline-text-editor/render.php:64
 #: build/blocks/navbar/render.php:297
 #: build/blocks/navbar/templates/extended-center-logo.php:47
 #: build/blocks/navbar/templates/extended.php:60
@@ -177,7 +176,7 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
-#: build/blocks/inline-text-editor/render.php:72
+#: build/blocks/inline-text-editor/render.php:73
 msgid "Save changes"
 msgstr ""
 
@@ -185,17 +184,17 @@ msgstr ""
 msgid "No items found."
 msgstr ""
 
-#: build/blocks/menu/render.php:508
+#: build/blocks/menu/render.php:525
 #: build/blocks/menu/index.js:1
 msgid "Expand submenu"
 msgstr ""
 
-#: build/blocks/menu/render.php:556
-#: build/blocks/menu/render.php:595
-#: build/blocks/menu/render.php:628
-#: build/blocks/menu/render.php:650
-#: build/blocks/menu/render.php:681
-#: build/blocks/menu/render.php:724
+#: build/blocks/menu/render.php:573
+#: build/blocks/menu/render.php:612
+#: build/blocks/menu/render.php:645
+#: build/blocks/menu/render.php:701
+#: build/blocks/menu/render.php:733
+#: build/blocks/menu/render.php:776
 msgid "No menu items found."
 msgstr ""
 
@@ -223,7 +222,7 @@ msgstr ""
 msgid "Requisites"
 msgstr ""
 
-#: build/blocks/post-grid/render.php:124
+#: build/blocks/post-grid/render.php:122
 #: build/blocks/card/index.js:1
 #: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
@@ -232,64 +231,64 @@ msgstr ""
 msgid "All"
 msgstr ""
 
-#: build/blocks/post-grid/render.php:202
+#: build/blocks/post-grid/render.php:200
 #: build/blocks/image-simple/index.js:1
 #: build/blocks/post-grid/index.js:1
 msgid "Show More"
 msgstr ""
 
-#: build/blocks/post-grid/render.php:203
+#: build/blocks/post-grid/render.php:201
 #: build/blocks/image-simple/index.js:1
 #: build/blocks/post-grid/index.js:1
 msgid "Load More"
 msgstr ""
 
-#: build/blocks/post-grid/render.php:204
+#: build/blocks/post-grid/render.php:202
 #: build/blocks/image-simple/index.js:1
 #: build/blocks/post-grid/index.js:1
 msgid "Show More Items"
 msgstr ""
 
-#: build/blocks/post-grid/render.php:205
+#: build/blocks/post-grid/render.php:203
 #: build/blocks/image-simple/index.js:1
 #: build/blocks/post-grid/index.js:1
 msgid "More Posts"
 msgstr ""
 
-#: build/blocks/post-grid/render.php:206
+#: build/blocks/post-grid/render.php:204
 #: build/blocks/image-simple/index.js:1
 #: build/blocks/post-grid/index.js:1
 msgid "View All"
 msgstr ""
 
-#: build/blocks/post-grid/render.php:207
+#: build/blocks/post-grid/render.php:205
 #: build/blocks/image-simple/index.js:1
 #: build/blocks/post-grid/index.js:1
 msgid "Show All"
 msgstr ""
 
 #. translators: %d: number of posts in taxonomy term
-#: build/blocks/post-grid/render.php:1109
+#: build/blocks/post-grid/render.php:1134
 #, php-format
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] ""
 msgstr[1] ""
 
-#: build/blocks/post-grid/render.php:1189
+#: build/blocks/post-grid/render.php:1222
 msgid "No terms selected. Add terms in block settings."
 msgstr ""
 
-#: build/blocks/post-grid/render.php:1249
+#: build/blocks/post-grid/render.php:1282
 msgid "Please select a taxonomy in block settings."
 msgstr ""
 
-#: build/blocks/post-grid/render.php:1268
+#: build/blocks/post-grid/render.php:1301
 msgid "No terms found."
 msgstr ""
 
-#: build/blocks/post-grid/render.php:1549
-#: inc/Plugin.php:799
+#: build/blocks/post-grid/render.php:1584
+#: inc/Plugin.php:801
 #: build/blocks/accordion/index.js:1
 #: build/blocks/avatar/index.js:1
 #: build/blocks/banners/index.js:1
@@ -301,12 +300,13 @@ msgstr ""
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/form-field/index.js:35
+#: build/blocks/grid-item/index.js:1
 #: build/blocks/image-simple/index.js:1
 #: build/blocks/lists/index.js:1
-#: build/blocks/media/index.js:1
 #: build/blocks/post-grid/index.js:1
 #: build/blocks/section/index.js:1
 #: build/blocks/top-header/index.js:1
+#: build/blocks/video/index.js:1
 msgid "Loading..."
 msgstr ""
 
@@ -314,7 +314,7 @@ msgstr ""
 msgid "Enter a shortcode in the block settings."
 msgstr ""
 
-#: build/blocks/tables/render.php:222
+#: build/blocks/tables/render.php:238
 #: build/blocks/tabulator/render.php:85
 msgid "No data"
 msgstr ""
@@ -466,10 +466,11 @@ msgstr ""
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
+#: build/blocks/grid-item/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 #: build/blocks/post-grid/index.js:1
 #: build/blocks/section/index.js:1
+#: build/blocks/video/index.js:1
 msgid "Image Size"
 msgstr ""
 
@@ -557,6 +558,7 @@ msgid "Global shape for all hotspot buttons"
 msgstr ""
 
 #: inc/ImageHotspotCPT.php:472
+#: build/blocks/yandex-map-v3/index.js:1
 #: build/blocks/yandex-map/index.js:1
 msgid "Marker Type"
 msgstr ""
@@ -616,6 +618,7 @@ msgstr ""
 #: build/blocks/features/index.js:1
 #: build/blocks/form-field/index.js:1
 #: build/blocks/form/index.js:1
+#: build/blocks/grid-item/index.js:1
 #: build/blocks/image-simple/index.js:1
 #: build/blocks/navbar/index.js:1
 #: build/blocks/post-grid/index.js:1
@@ -776,7 +779,9 @@ msgid "Content Type"
 msgstr ""
 
 #: inc/ImageHotspotCPT.php:768
-#: inc/InlineTextEditor.php:61
+#: inc/InlineTextEditor.php:64
+#: inc/InlineTextEditor.php:78
+#: inc/InlineTextEditor.php:91
 #: build/blocks/contacts/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/form-field/index.js:35
@@ -789,7 +794,6 @@ msgstr ""
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
 #: build/blocks/lists/index.js:1
-#: build/blocks/media/index.js:1
 #: build/blocks/post-grid/index.js:1
 msgid "Post"
 msgstr ""
@@ -801,7 +805,6 @@ msgstr ""
 #: inc/ImageHotspotCPT.php:771
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Select Post"
 msgstr ""
 
@@ -816,7 +819,6 @@ msgstr ""
 #: inc/ImageHotspotCPT.php:774
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Select Post Type"
 msgstr ""
 
@@ -860,11 +862,12 @@ msgstr ""
 msgid "Failed to copy shortcode"
 msgstr ""
 
-#: inc/InlineTextEditor.php:48
+#: inc/InlineTextEditor.php:50
 msgid "Title block"
 msgstr ""
 
-#: inc/InlineTextEditor.php:51
+#: inc/InlineTextEditor.php:54
+#: inc/InlineTextEditor.php:86
 #: build/blocks/accordion/index.js:1
 #: build/blocks/blog-post-widget/index.js:1
 #: build/blocks/contacts/index.js:1
@@ -883,7 +886,8 @@ msgstr ""
 msgid "Title"
 msgstr ""
 
-#: inc/InlineTextEditor.php:56
+#: inc/InlineTextEditor.php:59
+#: inc/InlineTextEditor.php:116
 #: build/blocks/contacts/index.js:1
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
@@ -892,6 +896,78 @@ msgstr ""
 #: build/blocks/menu/index.js:1
 #: build/blocks/widget/index.js:1
 msgid "Subtitle"
+msgstr ""
+
+#: inc/InlineTextEditor.php:75
+#: build/blocks/contacts/index.js:1
+#: build/blocks/counter/index.js:1
+#: build/blocks/divider/index.js:1
+#: build/blocks/feature/index.js:1
+#: build/blocks/features/index.js:1
+#: build/blocks/heading-subtitle/index.js:1
+#: build/blocks/menu/index.js:1
+#: build/blocks/widget/index.js:1
+msgid "Paragraph"
+msgstr ""
+
+#: inc/InlineTextEditor.php:83
+#: build/blocks/feature/index.js:1
+#: build/blocks/features/index.js:1
+msgid "Feature"
+msgstr ""
+
+#: inc/InlineTextEditor.php:96
+#: build/blocks/feature/index.js:1
+#: build/blocks/features/index.js:1
+#: build/blocks/image-simple/index.js:1
+#: build/blocks/post-grid/index.js:1
+#: build/blocks/submit-button/index.js:1
+msgid "Button"
+msgstr ""
+
+#: inc/InlineTextEditor.php:103
+#: build/blocks/counter/index.js:1
+msgid "Counter"
+msgstr ""
+
+#. translators: Default label for number input field
+#: inc/InlineTextEditor.php:106
+#: inc/InlineTextEditor.php:137
+#: build/blocks/counter/index.js:1
+#: build/blocks/form-field/index.js:25
+#: build/blocks/form-field/index.js:35
+msgid "Number"
+msgstr ""
+
+#: inc/InlineTextEditor.php:111
+#: inc/InlineTextEditor.php:134
+#: inc/InlineTextEditor.php:140
+#: build/blocks/copyright/index.js:1
+#: build/blocks/counter/index.js:1
+#: build/blocks/floating-navigator/index.js:1
+#: build/blocks/label-plus/index.js:1
+#: build/blocks/social-icons/index.js:1
+msgid "Label"
+msgstr ""
+
+#: inc/InlineTextEditor.php:123
+#: build/blocks/blockquote/index.js:1
+msgid "Blockquote"
+msgstr ""
+
+#: inc/InlineTextEditor.php:126
+msgid "Quote"
+msgstr ""
+
+#: inc/InlineTextEditor.php:129
+msgid "Caption"
+msgstr ""
+
+#: inc/InlineTextEditor.php:303
+#: build/blocks/header-widgets/index.js:1
+#: build/blocks/navbar/index.js:1
+#: build/blocks/social-icons/index.js:1
+msgid "Block"
 msgstr ""
 
 #: inc/OpeningHours.php:104
@@ -906,83 +982,83 @@ msgstr ""
 msgid "Daily from %1$s to %2$s"
 msgstr ""
 
-#: inc/Plugin.php:1507
-msgid "Drag & drop your files or <span class=\"filepond--label-action\">browse</span>"
-msgstr ""
-
-#: inc/Plugin.php:1508
-#, php-format
-msgid "Maximum number of files: %s. Please remove excess files."
-msgstr ""
-
 #: inc/Plugin.php:1509
-#, php-format
-msgid "File is too large. Maximum size: %s"
+msgid "Drag & drop your files or <span class=\"filepond--label-action\">browse</span>"
 msgstr ""
 
 #: inc/Plugin.php:1510
 #, php-format
-msgid "Total file size is too large. Maximum: %s"
+msgid "Maximum number of files: %s. Please remove excess files."
 msgstr ""
 
 #: inc/Plugin.php:1511
-msgid "Error uploading file"
+#, php-format
+msgid "File is too large. Maximum size: %s"
 msgstr ""
 
 #: inc/Plugin.php:1512
-msgid "Error adding file"
+#, php-format
+msgid "Total file size is too large. Maximum: %s"
 msgstr ""
 
 #: inc/Plugin.php:1513
+msgid "Error uploading file"
+msgstr ""
+
+#: inc/Plugin.php:1514
+msgid "Error adding file"
+msgstr ""
+
+#: inc/Plugin.php:1515
 #, php-format
 msgid "Maximum number of files: %s. Files removed: %s"
 msgstr ""
 
-#: inc/Plugin.php:1514
+#: inc/Plugin.php:1516
 #, php-format
 msgid "Total file size exceeded. Maximum: %s"
 msgstr ""
 
-#: inc/Plugin.php:1515
+#: inc/Plugin.php:1517
 msgid "Upload complete"
 msgstr ""
 
-#: inc/Plugin.php:1516
+#: inc/Plugin.php:1518
 msgid "Tap to undo"
 msgstr ""
 
-#: inc/Plugin.php:1517
+#: inc/Plugin.php:1519
 msgid "Uploading"
 msgstr ""
 
-#: inc/Plugin.php:1518
+#: inc/Plugin.php:1520
 msgid "tap to cancel"
 msgstr ""
 
-#: inc/Plugin.php:1706
+#: inc/Plugin.php:1708
 #: build/blocks/tables/index.js:1
 msgid "— None —"
 msgstr ""
 
-#: inc/Plugin.php:2450
-#: inc/Plugin.php:2488
+#: inc/Plugin.php:2452
+#: inc/Plugin.php:2490
 msgid "Document not found."
 msgstr ""
 
-#: inc/Plugin.php:2454
-#: inc/Plugin.php:2458
+#: inc/Plugin.php:2456
+#: inc/Plugin.php:2460
 msgid "No file attached to this document."
 msgstr ""
 
-#: inc/Plugin.php:2462
+#: inc/Plugin.php:2464
 msgid "Document file must be CSV, XLS or XLSX."
 msgstr ""
 
-#: inc/Plugin.php:2491
+#: inc/Plugin.php:2493
 msgid "You do not have permission to edit this document."
 msgstr ""
 
-#: inc/Plugin.php:2495
+#: inc/Plugin.php:2497
 msgid "Invalid rows data."
 msgstr ""
 
@@ -1239,7 +1315,6 @@ msgstr ""
 #: build/blocks/heading-subtitle/index.js:1
 #: build/blocks/image-simple/index.js:1
 #: build/blocks/lists/index.js:1
-#: build/blocks/media/index.js:1
 #: build/blocks/menu/index.js:1
 #: build/blocks/navbar/index.js:1
 #: build/blocks/opening-hours/index.js:1
@@ -1248,6 +1323,7 @@ msgstr ""
 #: build/blocks/spacer/index.js:1
 #: build/blocks/swiper/index.js:1
 #: build/blocks/text-rotator/index.js:1
+#: build/blocks/video/index.js:1
 #: build/blocks/wc-filter-panel/index.js:1
 #: build/blocks/widget/index.js:1
 #: build/blocks/yandex-map/index.js:1
@@ -1270,6 +1346,7 @@ msgstr ""
 
 #: build/blocks/accordion/index.js:1
 #: build/blocks/avatar/index.js:1
+#: build/blocks/grid-layout/index.js:1
 #: build/blocks/lists/index.js:1
 #: build/blocks/menu/index.js:1
 #: build/blocks/yandex-map/index.js:1
@@ -1402,6 +1479,7 @@ msgstr ""
 #: build/blocks/columns/index.js:1
 #: build/blocks/contacts/index.js:1
 #: build/blocks/form/index.js:1
+#: build/blocks/grid-layout/index.js:1
 #: build/blocks/header-widgets/index.js:1
 #: build/blocks/image-simple/index.js:1
 #: build/blocks/menu/index.js:1
@@ -1429,7 +1507,6 @@ msgstr ""
 #: build/blocks/image-simple/index.js:1
 #: build/blocks/lists/index.js:1
 #: build/blocks/logo/index.js:1
-#: build/blocks/media/index.js:1
 #: build/blocks/menu/index.js:1
 #: build/blocks/navbar/index.js:1
 #: build/blocks/post-grid/index.js:1
@@ -1452,7 +1529,6 @@ msgstr ""
 #: build/blocks/header-widgets/index.js:1
 #: build/blocks/image-simple/index.js:1
 #: build/blocks/logo/index.js:1
-#: build/blocks/media/index.js:1
 #: build/blocks/menu/index.js:1
 #: build/blocks/navbar/index.js:1
 #: build/blocks/post-grid/index.js:1
@@ -1579,7 +1655,6 @@ msgstr ""
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
 #: build/blocks/lists/index.js:1
-#: build/blocks/media/index.js:1
 #: build/blocks/post-grid/index.js:1
 msgid "Loading posts..."
 msgstr ""
@@ -1646,6 +1721,7 @@ msgstr ""
 #: build/blocks/lists/index.js:1
 #: build/blocks/menu/index.js:1
 #: build/blocks/social-icons/index.js:1
+#: build/blocks/yandex-map-v3/index.js:1
 msgid "Remove"
 msgstr ""
 
@@ -1703,6 +1779,8 @@ msgstr ""
 #: build/blocks/form-field/index.js:1
 #: build/blocks/form-field/index.js:35
 #: build/blocks/form/index.js:1
+#: build/blocks/grid-item/index.js:1
+#: build/blocks/grid-layout/index.js:1
 #: build/blocks/group-button/index.js:1
 #: build/blocks/heading-subtitle/index.js:1
 #: build/blocks/html-blocks/index.js:1
@@ -1711,7 +1789,6 @@ msgstr ""
 #: build/blocks/label-plus/index.js:1
 #: build/blocks/lists/index.js:1
 #: build/blocks/logo/index.js:1
-#: build/blocks/media/index.js:1
 #: build/blocks/menu/index.js:1
 #: build/blocks/navbar/index.js:1
 #: build/blocks/paragraph/index.js:1
@@ -1725,6 +1802,7 @@ msgstr ""
 #: build/blocks/tabs/index.js:1
 #: build/blocks/text-rotator/index.js:1
 #: build/blocks/top-header/index.js:1
+#: build/blocks/video/index.js:1
 #: build/blocks/widget/index.js:1
 #: build/blocks/yandex-map-v3/index.js:1
 #: build/blocks/yandex-map/index.js:1
@@ -1744,6 +1822,8 @@ msgstr ""
 #: build/blocks/form-field/index.js:1
 #: build/blocks/form-field/index.js:35
 #: build/blocks/form/index.js:1
+#: build/blocks/grid-item/index.js:1
+#: build/blocks/grid-layout/index.js:1
 #: build/blocks/group-button/index.js:1
 #: build/blocks/heading-subtitle/index.js:1
 #: build/blocks/html-blocks/index.js:1
@@ -1752,7 +1832,6 @@ msgstr ""
 #: build/blocks/label-plus/index.js:1
 #: build/blocks/lists/index.js:1
 #: build/blocks/logo/index.js:1
-#: build/blocks/media/index.js:1
 #: build/blocks/menu/index.js:1
 #: build/blocks/paragraph/index.js:1
 #: build/blocks/post-grid/index.js:1
@@ -1763,6 +1842,7 @@ msgstr ""
 #: build/blocks/swiper/index.js:1
 #: build/blocks/tabs/index.js:1
 #: build/blocks/top-header/index.js:1
+#: build/blocks/video/index.js:1
 #: build/blocks/widget/index.js:1
 #: build/blocks/yandex-map-v3/index.js:1
 #: build/blocks/yandex-map/index.js:1
@@ -1783,6 +1863,8 @@ msgstr ""
 #: build/blocks/form-field/index.js:1
 #: build/blocks/form-field/index.js:35
 #: build/blocks/form/index.js:1
+#: build/blocks/grid-item/index.js:1
+#: build/blocks/grid-layout/index.js:1
 #: build/blocks/group-button/index.js:1
 #: build/blocks/heading-subtitle/index.js:1
 #: build/blocks/html-blocks/index.js:1
@@ -1791,7 +1873,6 @@ msgstr ""
 #: build/blocks/label-plus/index.js:1
 #: build/blocks/lists/index.js:1
 #: build/blocks/logo/index.js:1
-#: build/blocks/media/index.js:1
 #: build/blocks/menu/index.js:1
 #: build/blocks/navbar/index.js:1
 #: build/blocks/paragraph/index.js:1
@@ -1806,6 +1887,7 @@ msgstr ""
 #: build/blocks/tabs/index.js:1
 #: build/blocks/text-rotator/index.js:1
 #: build/blocks/top-header/index.js:1
+#: build/blocks/video/index.js:1
 #: build/blocks/widget/index.js:1
 #: build/blocks/yandex-map-v3/index.js:1
 #: build/blocks/yandex-map/index.js:1
@@ -1823,6 +1905,8 @@ msgstr ""
 #: build/blocks/feature/index.js:1
 #: build/blocks/form-field/index.js:1
 #: build/blocks/form/index.js:1
+#: build/blocks/grid-item/index.js:1
+#: build/blocks/grid-layout/index.js:1
 #: build/blocks/group-button/index.js:1
 #: build/blocks/heading-subtitle/index.js:1
 #: build/blocks/html-blocks/index.js:1
@@ -1831,7 +1915,6 @@ msgstr ""
 #: build/blocks/label-plus/index.js:1
 #: build/blocks/lists/index.js:1
 #: build/blocks/logo/index.js:1
-#: build/blocks/media/index.js:1
 #: build/blocks/menu/index.js:1
 #: build/blocks/navbar/index.js:1
 #: build/blocks/paragraph/index.js:1
@@ -1842,6 +1925,7 @@ msgstr ""
 #: build/blocks/swiper/index.js:1
 #: build/blocks/tabs/index.js:1
 #: build/blocks/top-header/index.js:1
+#: build/blocks/video/index.js:1
 #: build/blocks/widget/index.js:1
 #: build/blocks/yandex-map-v3/index.js:1
 #: build/blocks/yandex-map/index.js:1
@@ -1859,6 +1943,8 @@ msgstr ""
 #: build/blocks/feature/index.js:1
 #: build/blocks/form-field/index.js:1
 #: build/blocks/form/index.js:1
+#: build/blocks/grid-item/index.js:1
+#: build/blocks/grid-layout/index.js:1
 #: build/blocks/group-button/index.js:1
 #: build/blocks/heading-subtitle/index.js:1
 #: build/blocks/html-blocks/index.js:1
@@ -1867,7 +1953,6 @@ msgstr ""
 #: build/blocks/label-plus/index.js:1
 #: build/blocks/lists/index.js:1
 #: build/blocks/logo/index.js:1
-#: build/blocks/media/index.js:1
 #: build/blocks/menu/index.js:1
 #: build/blocks/paragraph/index.js:1
 #: build/blocks/post-grid/index.js:1
@@ -1877,6 +1962,7 @@ msgstr ""
 #: build/blocks/swiper/index.js:1
 #: build/blocks/tabs/index.js:1
 #: build/blocks/top-header/index.js:1
+#: build/blocks/video/index.js:1
 #: build/blocks/widget/index.js:1
 #: build/blocks/yandex-map-v3/index.js:1
 #: build/blocks/yandex-map/index.js:1
@@ -1894,6 +1980,8 @@ msgstr ""
 #: build/blocks/feature/index.js:1
 #: build/blocks/form-field/index.js:1
 #: build/blocks/form/index.js:1
+#: build/blocks/grid-item/index.js:1
+#: build/blocks/grid-layout/index.js:1
 #: build/blocks/group-button/index.js:1
 #: build/blocks/heading-subtitle/index.js:1
 #: build/blocks/html-blocks/index.js:1
@@ -1902,7 +1990,6 @@ msgstr ""
 #: build/blocks/label-plus/index.js:1
 #: build/blocks/lists/index.js:1
 #: build/blocks/logo/index.js:1
-#: build/blocks/media/index.js:1
 #: build/blocks/menu/index.js:1
 #: build/blocks/navbar/index.js:1
 #: build/blocks/paragraph/index.js:1
@@ -1913,6 +2000,7 @@ msgstr ""
 #: build/blocks/swiper/index.js:1
 #: build/blocks/tabs/index.js:1
 #: build/blocks/top-header/index.js:1
+#: build/blocks/video/index.js:1
 #: build/blocks/widget/index.js:1
 #: build/blocks/yandex-map-v3/index.js:1
 #: build/blocks/yandex-map/index.js:1
@@ -1930,6 +2018,8 @@ msgstr ""
 #: build/blocks/feature/index.js:1
 #: build/blocks/form-field/index.js:1
 #: build/blocks/form/index.js:1
+#: build/blocks/grid-item/index.js:1
+#: build/blocks/grid-layout/index.js:1
 #: build/blocks/group-button/index.js:1
 #: build/blocks/heading-subtitle/index.js:1
 #: build/blocks/html-blocks/index.js:1
@@ -1938,7 +2028,6 @@ msgstr ""
 #: build/blocks/label-plus/index.js:1
 #: build/blocks/lists/index.js:1
 #: build/blocks/logo/index.js:1
-#: build/blocks/media/index.js:1
 #: build/blocks/menu/index.js:1
 #: build/blocks/paragraph/index.js:1
 #: build/blocks/post-grid/index.js:1
@@ -1948,6 +2037,7 @@ msgstr ""
 #: build/blocks/swiper/index.js:1
 #: build/blocks/tabs/index.js:1
 #: build/blocks/top-header/index.js:1
+#: build/blocks/video/index.js:1
 #: build/blocks/widget/index.js:1
 #: build/blocks/yandex-map-v3/index.js:1
 #: build/blocks/yandex-map/index.js:1
@@ -1963,6 +2053,8 @@ msgstr ""
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/form/index.js:1
+#: build/blocks/grid-item/index.js:1
+#: build/blocks/grid-layout/index.js:1
 #: build/blocks/group-button/index.js:1
 #: build/blocks/heading-subtitle/index.js:1
 #: build/blocks/image-simple/index.js:1
@@ -1981,6 +2073,8 @@ msgstr ""
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/form/index.js:1
+#: build/blocks/grid-item/index.js:1
+#: build/blocks/grid-layout/index.js:1
 #: build/blocks/group-button/index.js:1
 #: build/blocks/heading-subtitle/index.js:1
 #: build/blocks/image-simple/index.js:1
@@ -2002,13 +2096,14 @@ msgstr ""
 #: build/blocks/form-field/index.js:1
 #: build/blocks/form-field/index.js:35
 #: build/blocks/form/index.js:1
+#: build/blocks/grid-item/index.js:1
+#: build/blocks/grid-layout/index.js:1
 #: build/blocks/group-button/index.js:1
 #: build/blocks/heading-subtitle/index.js:1
 #: build/blocks/icon/index.js:1
 #: build/blocks/image-simple/index.js:1
 #: build/blocks/lists/index.js:1
 #: build/blocks/logo/index.js:1
-#: build/blocks/media/index.js:1
 #: build/blocks/menu/index.js:1
 #: build/blocks/post-grid/index.js:1
 #: build/blocks/section/index.js:1
@@ -2026,6 +2121,8 @@ msgstr ""
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/form/index.js:1
+#: build/blocks/grid-item/index.js:1
+#: build/blocks/grid-layout/index.js:1
 #: build/blocks/group-button/index.js:1
 #: build/blocks/heading-subtitle/index.js:1
 #: build/blocks/image-simple/index.js:1
@@ -2041,6 +2138,8 @@ msgstr ""
 #: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
+#: build/blocks/grid-item/index.js:1
+#: build/blocks/grid-layout/index.js:1
 #: build/blocks/group-button/index.js:1
 #: build/blocks/heading-subtitle/index.js:1
 #: build/blocks/section/index.js:1
@@ -2053,6 +2152,8 @@ msgstr ""
 #: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
+#: build/blocks/grid-item/index.js:1
+#: build/blocks/grid-layout/index.js:1
 #: build/blocks/group-button/index.js:1
 #: build/blocks/heading-subtitle/index.js:1
 #: build/blocks/section/index.js:1
@@ -2065,6 +2166,8 @@ msgstr ""
 #: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
+#: build/blocks/grid-item/index.js:1
+#: build/blocks/grid-layout/index.js:1
 #: build/blocks/group-button/index.js:1
 #: build/blocks/heading-subtitle/index.js:1
 #: build/blocks/section/index.js:1
@@ -2077,6 +2180,8 @@ msgstr ""
 #: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
+#: build/blocks/grid-item/index.js:1
+#: build/blocks/grid-layout/index.js:1
 #: build/blocks/group-button/index.js:1
 #: build/blocks/heading-subtitle/index.js:1
 #: build/blocks/section/index.js:1
@@ -2089,6 +2194,8 @@ msgstr ""
 #: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
+#: build/blocks/grid-item/index.js:1
+#: build/blocks/grid-layout/index.js:1
 #: build/blocks/group-button/index.js:1
 #: build/blocks/heading-subtitle/index.js:1
 #: build/blocks/section/index.js:1
@@ -2101,6 +2208,8 @@ msgstr ""
 #: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
+#: build/blocks/grid-item/index.js:1
+#: build/blocks/grid-layout/index.js:1
 #: build/blocks/group-button/index.js:1
 #: build/blocks/heading-subtitle/index.js:1
 #: build/blocks/section/index.js:1
@@ -2113,6 +2222,8 @@ msgstr ""
 #: build/blocks/counter/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
+#: build/blocks/grid-item/index.js:1
+#: build/blocks/grid-layout/index.js:1
 #: build/blocks/group-button/index.js:1
 #: build/blocks/heading-subtitle/index.js:1
 #: build/blocks/section/index.js:1
@@ -2146,7 +2257,6 @@ msgstr ""
 #: build/blocks/image-simple/index.js:1
 #: build/blocks/label-plus/index.js:1
 #: build/blocks/logo/index.js:1
-#: build/blocks/media/index.js:1
 #: build/blocks/menu/index.js:1
 #: build/blocks/navbar/index.js:1
 #: build/blocks/paragraph/index.js:1
@@ -2154,6 +2264,7 @@ msgstr ""
 #: build/blocks/section/index.js:1
 #: build/blocks/submit-button/index.js:1
 #: build/blocks/text-rotator/index.js:1
+#: build/blocks/video/index.js:1
 #: build/blocks/widget/index.js:1
 msgid "Settings"
 msgstr ""
@@ -2186,8 +2297,9 @@ msgstr ""
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
-#: build/blocks/media/index.js:1
+#: build/blocks/grid-item/index.js:1
 #: build/blocks/section/index.js:1
+#: build/blocks/yandex-map-v3/index.js:1
 msgid "Select Image"
 msgstr ""
 
@@ -2199,6 +2311,7 @@ msgstr ""
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
+#: build/blocks/grid-item/index.js:1
 #: build/blocks/section/index.js:1
 #: build/blocks/top-header/index.js:1
 msgid "Background Color"
@@ -2364,6 +2477,7 @@ msgstr ""
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/floating-navigator/index.js:1
+#: build/blocks/grid-item/index.js:1
 #: build/blocks/heading-subtitle/index.js:1
 #: build/blocks/image-simple/index.js:1
 #: build/blocks/lists/index.js:1
@@ -2389,6 +2503,7 @@ msgstr ""
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/floating-navigator/index.js:1
+#: build/blocks/grid-item/index.js:1
 #: build/blocks/heading-subtitle/index.js:1
 #: build/blocks/lists/index.js:1
 #: build/blocks/menu/index.js:1
@@ -2412,6 +2527,7 @@ msgstr ""
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/floating-navigator/index.js:1
+#: build/blocks/grid-item/index.js:1
 #: build/blocks/heading-subtitle/index.js:1
 #: build/blocks/menu/index.js:1
 #: build/blocks/paragraph/index.js:1
@@ -2433,6 +2549,7 @@ msgstr ""
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/floating-navigator/index.js:1
+#: build/blocks/grid-item/index.js:1
 #: build/blocks/heading-subtitle/index.js:1
 #: build/blocks/menu/index.js:1
 #: build/blocks/paragraph/index.js:1
@@ -2452,6 +2569,7 @@ msgstr ""
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/floating-navigator/index.js:1
+#: build/blocks/grid-item/index.js:1
 #: build/blocks/heading-subtitle/index.js:1
 #: build/blocks/menu/index.js:1
 #: build/blocks/paragraph/index.js:1
@@ -2469,10 +2587,11 @@ msgstr ""
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
+#: build/blocks/grid-item/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 #: build/blocks/post-grid/index.js:1
 #: build/blocks/section/index.js:1
+#: build/blocks/video/index.js:1
 msgid "Loading sizes..."
 msgstr ""
 
@@ -2485,6 +2604,7 @@ msgstr ""
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
+#: build/blocks/grid-item/index.js:1
 #: build/blocks/icon/index.js:1
 #: build/blocks/label-plus/index.js:1
 #: build/blocks/paragraph/index.js:1
@@ -2500,8 +2620,8 @@ msgstr ""
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
+#: build/blocks/grid-item/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 #: build/blocks/section/index.js:1
 msgid "Image"
 msgstr ""
@@ -2513,6 +2633,7 @@ msgstr ""
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
+#: build/blocks/grid-item/index.js:1
 #: build/blocks/section/index.js:1
 msgid "Pattern"
 msgstr ""
@@ -2524,6 +2645,7 @@ msgstr ""
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
+#: build/blocks/grid-item/index.js:1
 #: build/blocks/section/index.js:1
 msgid "Cover"
 msgstr ""
@@ -2535,6 +2657,7 @@ msgstr ""
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
+#: build/blocks/grid-item/index.js:1
 #: build/blocks/section/index.js:1
 msgid "Full"
 msgstr ""
@@ -2546,6 +2669,7 @@ msgstr ""
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
+#: build/blocks/grid-item/index.js:1
 #: build/blocks/section/index.js:1
 msgid "Dark 30%"
 msgstr ""
@@ -2557,6 +2681,7 @@ msgstr ""
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
+#: build/blocks/grid-item/index.js:1
 #: build/blocks/section/index.js:1
 msgid "Dark 40%"
 msgstr ""
@@ -2568,6 +2693,7 @@ msgstr ""
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
+#: build/blocks/grid-item/index.js:1
 #: build/blocks/section/index.js:1
 msgid "Dark 50%"
 msgstr ""
@@ -2579,6 +2705,7 @@ msgstr ""
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
+#: build/blocks/grid-item/index.js:1
 #: build/blocks/section/index.js:1
 msgid "Dark 60%"
 msgstr ""
@@ -2590,6 +2717,7 @@ msgstr ""
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
+#: build/blocks/grid-item/index.js:1
 #: build/blocks/section/index.js:1
 msgid "Dark 70%"
 msgstr ""
@@ -2601,6 +2729,7 @@ msgstr ""
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
+#: build/blocks/grid-item/index.js:1
 #: build/blocks/section/index.js:1
 msgid "Dark 80%"
 msgstr ""
@@ -2612,6 +2741,7 @@ msgstr ""
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
+#: build/blocks/grid-item/index.js:1
 #: build/blocks/section/index.js:1
 msgid "Light 30%"
 msgstr ""
@@ -2623,6 +2753,7 @@ msgstr ""
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
+#: build/blocks/grid-item/index.js:1
 #: build/blocks/section/index.js:1
 msgid "Light 40%"
 msgstr ""
@@ -2634,6 +2765,7 @@ msgstr ""
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
+#: build/blocks/grid-item/index.js:1
 #: build/blocks/section/index.js:1
 msgid "Light 50%"
 msgstr ""
@@ -2645,6 +2777,7 @@ msgstr ""
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
+#: build/blocks/grid-item/index.js:1
 #: build/blocks/section/index.js:1
 msgid "Light 60%"
 msgstr ""
@@ -2656,6 +2789,7 @@ msgstr ""
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
+#: build/blocks/grid-item/index.js:1
 #: build/blocks/section/index.js:1
 msgid "Light 70%"
 msgstr ""
@@ -2667,6 +2801,7 @@ msgstr ""
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
+#: build/blocks/grid-item/index.js:1
 #: build/blocks/section/index.js:1
 msgid "Light 80%"
 msgstr ""
@@ -2678,8 +2813,9 @@ msgstr ""
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
-#: build/blocks/media/index.js:1
+#: build/blocks/grid-item/index.js:1
 #: build/blocks/section/index.js:1
+#: build/blocks/video/index.js:1
 msgid "Video"
 msgstr ""
 
@@ -2690,6 +2826,7 @@ msgstr ""
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
+#: build/blocks/grid-item/index.js:1
 #: build/blocks/section/index.js:1
 msgid "Background Overlay"
 msgstr ""
@@ -2701,6 +2838,7 @@ msgstr ""
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
+#: build/blocks/grid-item/index.js:1
 #: build/blocks/section/index.js:1
 msgid "Available"
 msgstr ""
@@ -2712,6 +2850,7 @@ msgstr ""
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
+#: build/blocks/grid-item/index.js:1
 #: build/blocks/section/index.js:1
 msgid "Not Available"
 msgstr ""
@@ -2723,7 +2862,7 @@ msgstr ""
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
-#: build/blocks/media/index.js:1
+#: build/blocks/grid-item/index.js:1
 #: build/blocks/section/index.js:1
 msgid "Background Image"
 msgstr ""
@@ -2735,6 +2874,7 @@ msgstr ""
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
+#: build/blocks/grid-item/index.js:1
 #: build/blocks/section/index.js:1
 msgid "Pattern Image"
 msgstr ""
@@ -2746,6 +2886,7 @@ msgstr ""
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
+#: build/blocks/grid-item/index.js:1
 #: build/blocks/section/index.js:1
 msgid "Select Pattern"
 msgstr ""
@@ -2757,6 +2898,7 @@ msgstr ""
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
+#: build/blocks/grid-item/index.js:1
 #: build/blocks/section/index.js:1
 msgid "Pattern Size"
 msgstr ""
@@ -2768,6 +2910,7 @@ msgstr ""
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
+#: build/blocks/grid-item/index.js:1
 #: build/blocks/section/index.js:1
 msgid "Background Type"
 msgstr ""
@@ -2779,6 +2922,7 @@ msgstr ""
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
+#: build/blocks/grid-item/index.js:1
 #: build/blocks/section/index.js:1
 msgid "Background Color Type"
 msgstr ""
@@ -2790,6 +2934,7 @@ msgstr ""
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
+#: build/blocks/grid-item/index.js:1
 #: build/blocks/section/index.js:1
 msgid "Background Gradient"
 msgstr ""
@@ -2801,6 +2946,7 @@ msgstr ""
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
+#: build/blocks/grid-item/index.js:1
 #: build/blocks/section/index.js:1
 msgid "Background Video"
 msgstr ""
@@ -2812,8 +2958,9 @@ msgstr ""
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
-#: build/blocks/media/index.js:1
+#: build/blocks/grid-item/index.js:1
 #: build/blocks/section/index.js:1
+#: build/blocks/video/index.js:1
 msgid "Select Video"
 msgstr ""
 
@@ -2824,6 +2971,7 @@ msgstr ""
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
+#: build/blocks/grid-item/index.js:1
 #: build/blocks/section/index.js:1
 msgid "Video loaded"
 msgstr ""
@@ -2835,8 +2983,9 @@ msgstr ""
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
-#: build/blocks/media/index.js:1
+#: build/blocks/grid-item/index.js:1
 #: build/blocks/section/index.js:1
+#: build/blocks/video/index.js:1
 msgid "Video Poster"
 msgstr ""
 
@@ -2847,78 +2996,79 @@ msgstr ""
 #: build/blocks/divider/index.js:1
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
-#: build/blocks/media/index.js:1
+#: build/blocks/grid-item/index.js:1
 #: build/blocks/section/index.js:1
+#: build/blocks/video/index.js:1
 msgid "Select Poster"
 msgstr ""
 
 #: build/blocks/banners/index.js:1
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
+#: build/blocks/video/index.js:1
 msgid "VK Video URL or iframe"
 msgstr ""
 
 #: build/blocks/banners/index.js:1
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
+#: build/blocks/video/index.js:1
 msgid "Paste VK video embed URL or full iframe code - URL will be extracted automatically"
 msgstr ""
 
 #: build/blocks/banners/index.js:1
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
+#: build/blocks/video/index.js:1
 msgid "Rutube Video URL or ID"
 msgstr ""
 
 #: build/blocks/banners/index.js:1
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
+#: build/blocks/video/index.js:1
 msgid "Paste Rutube embed URL, video ID, or full iframe code - URL will be extracted automatically"
 msgstr ""
 
 #: build/blocks/banners/index.js:1
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
+#: build/blocks/video/index.js:1
 msgid "YouTube Video URL or ID"
 msgstr ""
 
 #: build/blocks/banners/index.js:1
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
+#: build/blocks/video/index.js:1
 msgid "Enter YouTube video URL or video ID"
 msgstr ""
 
 #: build/blocks/banners/index.js:1
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
+#: build/blocks/video/index.js:1
 msgid "Vimeo Video ID"
 msgstr ""
 
 #: build/blocks/banners/index.js:1
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
+#: build/blocks/video/index.js:1
 msgid "Enter Vimeo video ID"
 msgstr ""
 
 #: build/blocks/banners/index.js:1
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
+#: build/blocks/video/index.js:1
 msgid "Video URL"
 msgstr ""
 
 #: build/blocks/banners/index.js:1
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
+#: build/blocks/video/index.js:1
 msgid "Loading poster..."
 msgstr ""
 
@@ -2954,55 +3104,46 @@ msgstr ""
 
 #: build/blocks/banners/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Simple Effects (Choose One)"
 msgstr ""
 
 #: build/blocks/banners/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Lift"
 msgstr ""
 
 #: build/blocks/banners/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Hover Scale"
 msgstr ""
 
 #: build/blocks/banners/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Scale Rotate"
 msgstr ""
 
 #: build/blocks/banners/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Advanced Effects (Choose One)"
 msgstr ""
 
 #: build/blocks/banners/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Tooltip"
 msgstr ""
 
 #: build/blocks/banners/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Overlay"
 msgstr ""
 
 #: build/blocks/banners/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Cursor"
 msgstr ""
 
 #: build/blocks/banners/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Tooltip Style"
 msgstr ""
 
@@ -3012,7 +3153,6 @@ msgstr ""
 #: build/blocks/floating-navigator/index.js:1
 #: build/blocks/image-simple/index.js:1
 #: build/blocks/lists/index.js:1
-#: build/blocks/media/index.js:1
 #: build/blocks/menu/index.js:1
 #: build/blocks/post-grid/index.js:1
 msgid "Primary"
@@ -3020,85 +3160,72 @@ msgstr ""
 
 #: build/blocks/banners/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Overlay Style"
 msgstr ""
 
 #: build/blocks/banners/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Overlay 5 (Plus Icon)"
 msgstr ""
 
 #: build/blocks/banners/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Overlay 5 + Bottom Caption"
 msgstr ""
 
 #: build/blocks/banners/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Overlay 6 (Hover Overlay)"
 msgstr ""
 
 #: build/blocks/banners/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Overlay 7 (Item Link)"
 msgstr ""
 
 #: build/blocks/banners/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Icon Background"
 msgstr ""
 
 #: build/blocks/banners/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Frost"
 msgstr ""
 
 #: build/blocks/banners/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Soft Frost"
 msgstr ""
 
 #: build/blocks/banners/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Pale Frost"
 msgstr ""
 
 #: build/blocks/banners/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Cursor Style"
 msgstr ""
 
 #: build/blocks/banners/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Enable Lightbox"
 msgstr ""
 
 #: build/blocks/banners/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Show title & description"
 msgstr ""
 
 #: build/blocks/banners/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Shows image title and description in the lightbox caption if filled in."
 msgstr ""
 
 #: build/blocks/banners/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
+#: build/blocks/video/index.js:1
 msgid "Gallery Name"
 msgstr ""
 
@@ -3108,9 +3235,9 @@ msgstr ""
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 #: build/blocks/post-grid/index.js:1
 #: build/blocks/section/index.js:1
+#: build/blocks/video/index.js:1
 msgid "Rounded-0 (0)"
 msgstr ""
 
@@ -3120,9 +3247,9 @@ msgstr ""
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 #: build/blocks/post-grid/index.js:1
 #: build/blocks/section/index.js:1
+#: build/blocks/video/index.js:1
 msgid "Rounded-1 (0.2rem)"
 msgstr ""
 
@@ -3132,9 +3259,9 @@ msgstr ""
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 #: build/blocks/post-grid/index.js:1
 #: build/blocks/section/index.js:1
+#: build/blocks/video/index.js:1
 msgid "Rounded-2 (0.25rem)"
 msgstr ""
 
@@ -3144,9 +3271,9 @@ msgstr ""
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 #: build/blocks/post-grid/index.js:1
 #: build/blocks/section/index.js:1
+#: build/blocks/video/index.js:1
 msgid "Rounded (0.4rem)"
 msgstr ""
 
@@ -3156,9 +3283,9 @@ msgstr ""
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 #: build/blocks/post-grid/index.js:1
 #: build/blocks/section/index.js:1
+#: build/blocks/video/index.js:1
 msgid "Rounded-3 (0.5rem)"
 msgstr ""
 
@@ -3168,9 +3295,9 @@ msgstr ""
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 #: build/blocks/post-grid/index.js:1
 #: build/blocks/section/index.js:1
+#: build/blocks/video/index.js:1
 msgid "Rounded-4 (1rem)"
 msgstr ""
 
@@ -3180,9 +3307,9 @@ msgstr ""
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 #: build/blocks/post-grid/index.js:1
 #: build/blocks/section/index.js:1
+#: build/blocks/video/index.js:1
 msgid "Rounded-5 (1.5rem)"
 msgstr ""
 
@@ -3192,9 +3319,9 @@ msgstr ""
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 #: build/blocks/post-grid/index.js:1
 #: build/blocks/section/index.js:1
+#: build/blocks/video/index.js:1
 msgid "Rounded-xl (0.8rem - Theme)"
 msgstr ""
 
@@ -3204,9 +3331,9 @@ msgstr ""
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 #: build/blocks/post-grid/index.js:1
 #: build/blocks/section/index.js:1
+#: build/blocks/video/index.js:1
 msgid "Rounded-pill (50rem)"
 msgstr ""
 
@@ -3216,9 +3343,9 @@ msgstr ""
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 #: build/blocks/post-grid/index.js:1
 #: build/blocks/section/index.js:1
+#: build/blocks/video/index.js:1
 msgid "Rounded-circle (50%)"
 msgstr ""
 
@@ -3228,9 +3355,9 @@ msgstr ""
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 #: build/blocks/post-grid/index.js:1
 #: build/blocks/section/index.js:1
+#: build/blocks/video/index.js:1
 msgid "All Sides"
 msgstr ""
 
@@ -3240,9 +3367,9 @@ msgstr ""
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 #: build/blocks/post-grid/index.js:1
 #: build/blocks/section/index.js:1
+#: build/blocks/video/index.js:1
 msgid "Top Only"
 msgstr ""
 
@@ -3252,9 +3379,9 @@ msgstr ""
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 #: build/blocks/post-grid/index.js:1
 #: build/blocks/section/index.js:1
+#: build/blocks/video/index.js:1
 msgid "Bottom Only"
 msgstr ""
 
@@ -3264,9 +3391,9 @@ msgstr ""
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 #: build/blocks/post-grid/index.js:1
 #: build/blocks/section/index.js:1
+#: build/blocks/video/index.js:1
 msgid "Start (Left) Only"
 msgstr ""
 
@@ -3276,9 +3403,9 @@ msgstr ""
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 #: build/blocks/post-grid/index.js:1
 #: build/blocks/section/index.js:1
+#: build/blocks/video/index.js:1
 msgid "End (Right) Only"
 msgstr ""
 
@@ -3288,9 +3415,9 @@ msgstr ""
 #: build/blocks/feature/index.js:1
 #: build/blocks/features/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 #: build/blocks/post-grid/index.js:1
 #: build/blocks/section/index.js:1
+#: build/blocks/video/index.js:1
 #: build/blocks/yandex-map-v3/index.js:1
 #: build/blocks/yandex-map/index.js:1
 msgid "Border Radius"
@@ -3525,6 +3652,7 @@ msgstr ""
 #: build/blocks/counters/index.js:1
 #: build/blocks/form-field/index.js:1
 #: build/blocks/form/index.js:1
+#: build/blocks/grid-layout/index.js:1
 #: build/blocks/image-simple/index.js:1
 #: build/blocks/lists/index.js:1
 #: build/blocks/menu/index.js:1
@@ -3668,6 +3796,7 @@ msgstr ""
 #: build/blocks/banners/index.js:1
 #: build/blocks/columns/index.js:1
 #: build/blocks/form/index.js:1
+#: build/blocks/grid-layout/index.js:1
 #: build/blocks/image-simple/index.js:1
 #: build/blocks/post-grid/index.js:1
 #: build/blocks/spacer/index.js:1
@@ -3833,6 +3962,7 @@ msgid "Single"
 msgstr ""
 
 #: build/blocks/banners/index.js:1
+#: build/blocks/grid-layout/index.js:1
 #: build/blocks/image-simple/index.js:1
 #: build/blocks/post-grid/index.js:1
 msgid "Grid"
@@ -3952,10 +4082,10 @@ msgstr ""
 
 #: build/blocks/banners/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 #: build/blocks/post-grid/index.js:1
 #: build/blocks/swiper/index.js:1
 #: build/blocks/text-rotator/index.js:1
+#: build/blocks/video/index.js:1
 msgid "Loop"
 msgstr ""
 
@@ -4019,9 +4149,9 @@ msgstr ""
 
 #: build/blocks/banners/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 #: build/blocks/post-grid/index.js:1
 #: build/blocks/swiper/index.js:1
+#: build/blocks/video/index.js:1
 msgid "Autoplay"
 msgstr ""
 
@@ -4295,6 +4425,7 @@ msgstr ""
 #: build/blocks/code/index.js:1
 #: build/blocks/column/index.js:1
 #: build/blocks/divider/index.js:1
+#: build/blocks/grid-item/index.js:1
 #: build/blocks/image-simple/index.js:1
 #: build/blocks/section/index.js:1
 msgid "Background"
@@ -4449,10 +4580,6 @@ msgstr ""
 
 #: build/blocks/blockquote/index.js:1
 msgid "Blockquote Settings"
-msgstr ""
-
-#: build/blocks/blockquote/index.js:1
-msgid "Blockquote"
 msgstr ""
 
 #: build/blocks/blockquote/index.js:1
@@ -4749,103 +4876,90 @@ msgstr ""
 
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Archive"
 msgstr ""
 
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Link Settings"
 msgstr ""
 
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Type link"
 msgstr ""
 
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "External"
 msgstr ""
 
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "CF7"
 msgstr ""
 
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Forms"
 msgstr ""
 
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Modal"
 msgstr ""
 
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "PDF"
 msgstr ""
 
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Html5 Video"
 msgstr ""
 
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
+#: build/blocks/video/index.js:1
 msgid "YouTube"
 msgstr ""
 
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
+#: build/blocks/video/index.js:1
 msgid "Vimeo"
 msgstr ""
 
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
+#: build/blocks/video/index.js:1
 msgid "Rutube"
 msgstr ""
 
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
+#: build/blocks/video/index.js:1
 msgid "VK Video"
 msgstr ""
 
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Document"
 msgstr ""
 
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Anchor"
 msgstr ""
 
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "YouTube Video URL"
 msgstr ""
 
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Vimeo Video URL"
 msgstr ""
 
@@ -4853,7 +4967,6 @@ msgstr ""
 #: build/blocks/copyright/index.js:1
 #: build/blocks/form-field/index.js:35
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 #: build/blocks/menu/index.js:1
 #: build/blocks/social-icons/index.js:1
 msgid "URL"
@@ -4861,182 +4974,152 @@ msgstr ""
 
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Anchor ID"
 msgstr ""
 
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Smooth scroll (scroll class)"
 msgstr ""
 
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Open in new tab (target=_blank)"
 msgstr ""
 
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "PDF width"
 msgstr ""
 
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Lightbox width for the PDF (e.g. 1140px, 90vw, 80%). Leave empty for the default."
 msgstr ""
 
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Hide PDF toolbar"
 msgstr ""
 
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Adds #toolbar=0 to the URL. Works in Chromium-based browsers; Firefox/pdf.js ignores it."
 msgstr ""
 
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Image URL"
 msgstr ""
 
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Html 5 video URL"
 msgstr ""
 
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Gallery ID"
 msgstr ""
 
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Phone Type"
 msgstr ""
 
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Custom phone"
 msgstr ""
 
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Loading phones..."
 msgstr ""
 
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Select Phone"
 msgstr ""
 
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "No phones found"
 msgstr ""
 
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "No post types found"
 msgstr ""
 
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Select the type of post to display"
 msgstr ""
 
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "No posts found"
 msgstr ""
 
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Loading archives..."
 msgstr ""
 
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Select Archive"
 msgstr ""
 
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "No archives found"
 msgstr ""
 
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Select CF7"
 msgstr ""
 
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "CF7 Forms not found"
 msgstr ""
 
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Loading forms..."
 msgstr ""
 
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Select Form"
 msgstr ""
 
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "No CodeWeber forms found"
 msgstr ""
 
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Select Modal"
 msgstr ""
 
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Document Action"
 msgstr ""
 
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 #: build/blocks/post-grid/index.js:1
 msgid "Download"
 msgstr ""
 
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 #: build/blocks/post-grid/index.js:1
 msgid "Send to Email"
 msgstr ""
@@ -5044,13 +5127,11 @@ msgstr ""
 #: build/blocks/button/index.js:1
 #: build/blocks/form-field/index.js:35
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Select Document"
 msgstr ""
 
 #: build/blocks/button/index.js:1
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "No documents found"
 msgstr ""
 
@@ -5593,6 +5674,8 @@ msgstr ""
 #: build/blocks/card/index.js:1
 #: build/blocks/column/index.js:1
 #: build/blocks/columns/index.js:1
+#: build/blocks/grid-item/index.js:1
+#: build/blocks/grid-layout/index.js:1
 #: build/blocks/group-button/index.js:1
 #: build/blocks/heading-subtitle/index.js:1
 #: build/blocks/section/index.js:1
@@ -5802,17 +5885,6 @@ msgstr ""
 
 #: build/blocks/columns/index.js:1
 msgid "Columns ID"
-msgstr ""
-
-#: build/blocks/contacts/index.js:1
-#: build/blocks/counter/index.js:1
-#: build/blocks/divider/index.js:1
-#: build/blocks/feature/index.js:1
-#: build/blocks/features/index.js:1
-#: build/blocks/heading-subtitle/index.js:1
-#: build/blocks/menu/index.js:1
-#: build/blocks/widget/index.js:1
-msgid "Paragraph"
 msgstr ""
 
 #: build/blocks/contacts/index.js:1
@@ -6427,6 +6499,7 @@ msgid "Block Settings"
 msgstr ""
 
 #: build/blocks/contacts/index.js:1
+#: build/blocks/grid-item/index.js:1
 #: build/blocks/lists/index.js:1
 msgid "Item Class"
 msgstr ""
@@ -6488,7 +6561,7 @@ msgid "contact"
 msgstr ""
 
 #: build/blocks/copyright/index.js:1
-#: build/blocks/media/index.js:1
+#: build/blocks/video/index.js:1
 msgid "Muted"
 msgstr ""
 
@@ -6549,14 +6622,6 @@ msgid "Show developer credit"
 msgstr ""
 
 #: build/blocks/copyright/index.js:1
-#: build/blocks/counter/index.js:1
-#: build/blocks/floating-navigator/index.js:1
-#: build/blocks/label-plus/index.js:1
-#: build/blocks/social-icons/index.js:1
-msgid "Label"
-msgstr ""
-
-#: build/blocks/copyright/index.js:1
 msgid "Text before the link, e.g. \"Developed by\""
 msgstr ""
 
@@ -6585,6 +6650,7 @@ msgid "Text color"
 msgstr ""
 
 #: build/blocks/copyright/index.js:1
+#: build/blocks/grid-layout/index.js:1
 msgid "Alignment"
 msgstr ""
 
@@ -6622,17 +6688,6 @@ msgstr ""
 
 #: build/blocks/counter/index.js:1
 msgid "Static"
-msgstr ""
-
-#: build/blocks/counter/index.js:1
-msgid "Counter"
-msgstr ""
-
-#. translators: Default label for number input field
-#: build/blocks/counter/index.js:1
-#: build/blocks/form-field/index.js:25
-#: build/blocks/form-field/index.js:35
-msgid "Number"
 msgstr ""
 
 #: build/blocks/counter/index.js:1
@@ -6940,6 +6995,8 @@ msgstr ""
 #: build/blocks/divider/index.js:1
 #: build/blocks/form-field/index.js:35
 #: build/blocks/form/index.js:1
+#: build/blocks/grid-item/index.js:1
+#: build/blocks/grid-layout/index.js:1
 #: build/blocks/submit-button/index.js:1
 #: build/blocks/swiper/index.js:1
 #: build/blocks/yandex-map-v3/index.js:1
@@ -7079,19 +7136,6 @@ msgstr ""
 
 #: build/blocks/dropcap/index.js:1
 msgid "initial"
-msgstr ""
-
-#: build/blocks/feature/index.js:1
-#: build/blocks/features/index.js:1
-msgid "Feature"
-msgstr ""
-
-#: build/blocks/feature/index.js:1
-#: build/blocks/features/index.js:1
-#: build/blocks/image-simple/index.js:1
-#: build/blocks/post-grid/index.js:1
-#: build/blocks/submit-button/index.js:1
-msgid "Button"
 msgstr ""
 
 #: build/blocks/feature/index.js:1
@@ -8134,6 +8178,155 @@ msgstr ""
 msgid "Form Align"
 msgstr ""
 
+#: build/blocks/grid-item/index.js:1
+msgid "Grid Position"
+msgstr ""
+
+#: build/blocks/grid-item/index.js:1
+msgid "grid-column"
+msgstr ""
+
+#: build/blocks/grid-item/index.js:1
+msgid "CSS grid-column value"
+msgstr ""
+
+#: build/blocks/grid-item/index.js:1
+msgid "grid-row"
+msgstr ""
+
+#: build/blocks/grid-item/index.js:1
+msgid "order"
+msgstr ""
+
+#: build/blocks/grid-item/index.js:1
+msgid "Self Alignment"
+msgstr ""
+
+#: build/blocks/grid-item/index.js:1
+msgid "align-self"
+msgstr ""
+
+#: build/blocks/grid-item/index.js:1
+msgid "justify-self"
+msgstr ""
+
+#: build/blocks/grid-item/index.js:1
+msgid "Item Data"
+msgstr ""
+
+#: build/blocks/grid-item/index.js:1
+msgid "Item ID"
+msgstr ""
+
+#: build/blocks/grid-layout/index.js:1
+msgid "Magazine"
+msgstr ""
+
+#: build/blocks/grid-layout/index.js:1
+msgid "Bento 1"
+msgstr ""
+
+#: build/blocks/grid-layout/index.js:1
+msgid "Bento 2"
+msgstr ""
+
+#: build/blocks/grid-layout/index.js:1
+msgid "Bento 3"
+msgstr ""
+
+#: build/blocks/grid-layout/index.js:1
+msgid "Bento 4"
+msgstr ""
+
+#: build/blocks/grid-layout/index.js:1
+msgid "Bento 5"
+msgstr ""
+
+#: build/blocks/grid-layout/index.js:1
+#: build/blocks/post-grid/index.js:1
+#: build/blocks/swiper/index.js:1
+msgid "Row"
+msgstr ""
+
+#: build/blocks/grid-layout/index.js:1
+#: build/blocks/post-grid/index.js:1
+#: build/blocks/swiper/index.js:1
+msgid "Column"
+msgstr ""
+
+#: build/blocks/grid-layout/index.js:1
+msgid "Dense"
+msgstr ""
+
+#: build/blocks/grid-layout/index.js:1
+msgid "Row Dense"
+msgstr ""
+
+#: build/blocks/grid-layout/index.js:1
+msgid "Column Dense"
+msgstr ""
+
+#: build/blocks/grid-layout/index.js:1
+msgid "Presets"
+msgstr ""
+
+#: build/blocks/grid-layout/index.js:1
+msgid "Rows"
+msgstr ""
+
+#: build/blocks/grid-layout/index.js:1
+#: build/blocks/tables/index.js:1
+msgid "+ Add Row"
+msgstr ""
+
+#: build/blocks/grid-layout/index.js:1
+msgid "e.g. 20px or 1rem 2rem"
+msgstr ""
+
+#: build/blocks/grid-layout/index.js:1
+msgid "Mobile columns (< 768px)"
+msgstr ""
+
+#: build/blocks/grid-layout/index.js:1
+msgid "Tablet columns (768px–991px)"
+msgstr ""
+
+#: build/blocks/grid-layout/index.js:1
+msgid "align-items"
+msgstr ""
+
+#: build/blocks/grid-layout/index.js:1
+msgid "justify-items"
+msgstr ""
+
+#: build/blocks/grid-layout/index.js:1
+msgid "align-content"
+msgstr ""
+
+#: build/blocks/grid-layout/index.js:1
+msgid "justify-content"
+msgstr ""
+
+#: build/blocks/grid-layout/index.js:1
+msgid "grid-auto-flow"
+msgstr ""
+
+#: build/blocks/grid-layout/index.js:1
+msgid "min-height"
+msgstr ""
+
+#: build/blocks/grid-layout/index.js:1
+msgid "Grid Class"
+msgstr ""
+
+#: build/blocks/grid-layout/index.js:1
+msgid "Grid Data"
+msgstr ""
+
+#: build/blocks/grid-layout/index.js:1
+msgid "Grid ID"
+msgstr ""
+
 #: build/blocks/group-button/index.js:1
 msgid "Group align"
 msgstr ""
@@ -8341,12 +8534,6 @@ msgstr ""
 
 #: build/blocks/header-widgets/index.js:1
 #: build/blocks/navbar/index.js:1
-#: build/blocks/social-icons/index.js:1
-msgid "Block"
-msgstr ""
-
-#: build/blocks/header-widgets/index.js:1
-#: build/blocks/navbar/index.js:1
 msgid "Order items in side menu"
 msgstr ""
 
@@ -8480,6 +8667,14 @@ msgid "Paragraph ID"
 msgstr ""
 
 #: build/blocks/heading-subtitle/index.js:1
+msgid "Enable wrapper div"
+msgstr ""
+
+#: build/blocks/heading-subtitle/index.js:1
+msgid "Uncheck to remove the d-flex wrapper (useful inside card wrappers)"
+msgstr ""
+
+#: build/blocks/heading-subtitle/index.js:1
 msgid "Wrapper CSS Class"
 msgstr ""
 
@@ -8558,7 +8753,6 @@ msgid "Select icon in settings"
 msgstr ""
 
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 #: build/blocks/post-grid/index.js:1
 #: build/blocks/yandex-map-v3/index.js:1
 #: build/blocks/yandex-map/index.js:1
@@ -8618,7 +8812,6 @@ msgid "Outline"
 msgstr ""
 
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Effects"
 msgstr ""
 
@@ -8632,8 +8825,15 @@ msgid "Image Tag"
 msgstr ""
 
 #: build/blocks/image-simple/index.js:1
-#: build/blocks/media/index.js:1
 msgid "Lightbox is disabled — Link Type is set in the Link tab."
+msgstr ""
+
+#: build/blocks/image-simple/index.js:1
+msgid "Image Class"
+msgstr ""
+
+#: build/blocks/image-simple/index.js:1
+msgid "Custom CSS class added to the image <figure> element."
 msgstr ""
 
 #: build/blocks/inline-text-editor/index.js:1
@@ -8841,106 +9041,6 @@ msgstr ""
 
 #: build/blocks/logo/index.js:1
 msgid "Logo Light"
-msgstr ""
-
-#: build/blocks/media/index.js:1
-msgid "Media Type"
-msgstr ""
-
-#: build/blocks/media/index.js:1
-msgid "Image Mask"
-msgstr ""
-
-#: build/blocks/media/index.js:1
-msgid "Mask 1"
-msgstr ""
-
-#: build/blocks/media/index.js:1
-msgid "Mask 2"
-msgstr ""
-
-#: build/blocks/media/index.js:1
-msgid "Mask 3"
-msgstr ""
-
-#: build/blocks/media/index.js:1
-msgid "Video Type"
-msgstr ""
-
-#: build/blocks/media/index.js:1
-msgid "HTML5 Video"
-msgstr ""
-
-#: build/blocks/media/index.js:1
-msgid "Embed Code"
-msgstr ""
-
-#: build/blocks/media/index.js:1
-msgid "Video File"
-msgstr ""
-
-#: build/blocks/media/index.js:1
-msgid "Example: 15801179"
-msgstr ""
-
-#: build/blocks/media/index.js:1
-msgid "YouTube Video ID"
-msgstr ""
-
-#: build/blocks/media/index.js:1
-msgid "Example: j_Y2Gwaj7Gs"
-msgstr ""
-
-#: build/blocks/media/index.js:1
-msgid "Paste iframe or embed code"
-msgstr ""
-
-#: build/blocks/media/index.js:1
-msgid "Auto-load Poster from Provider"
-msgstr ""
-
-#: build/blocks/media/index.js:1
-msgid "Show Controls"
-msgstr ""
-
-#: build/blocks/media/index.js:1
-msgid "Show Play Icon"
-msgstr ""
-
-#: build/blocks/media/index.js:1
-msgid "Media"
-msgstr ""
-
-#: build/blocks/media/index.js:1
-msgid "Enable Video Lightbox"
-msgstr ""
-
-#: build/blocks/media/index.js:1
-msgid "Hover effects are only available for images."
-msgstr ""
-
-#: build/blocks/media/index.js:1
-msgid "Video Player (Preview)"
-msgstr ""
-
-#: build/blocks/media/index.js:1
-msgid "Upload video file"
-msgstr ""
-
-#: build/blocks/media/index.js:1
-msgid "Enter YouTube video ID"
-msgstr ""
-
-#: build/blocks/media/index.js:1
-msgid "Enter VK video ID"
-msgstr ""
-
-#: build/blocks/media/index.js:1
-msgid "Enter Rutube video ID"
-msgstr ""
-
-#: build/blocks/media/index.js:1
-msgid "Paste embed code"
 msgstr ""
 
 #: build/blocks/menu/index.js:1
@@ -9671,19 +9771,19 @@ msgid "Pick and order terms manually instead of a query."
 msgstr ""
 
 #: build/blocks/post-grid/index.js:1
-msgid "Manual post selection"
-msgstr ""
-
-#: build/blocks/post-grid/index.js:1
-msgid "Pick and order posts manually instead of a query."
-msgstr ""
-
-#: build/blocks/post-grid/index.js:1
 msgid "Disable Links"
 msgstr ""
 
 #: build/blocks/post-grid/index.js:1
 msgid "Make cards non-clickable (remove all links in the card)"
+msgstr ""
+
+#: build/blocks/post-grid/index.js:1
+msgid "Manual post selection"
+msgstr ""
+
+#: build/blocks/post-grid/index.js:1
+msgid "Pick and order posts manually instead of a query."
 msgstr ""
 
 #: build/blocks/post-grid/index.js:1
@@ -9708,6 +9808,40 @@ msgstr ""
 
 #: build/blocks/post-grid/index.js:1
 msgid "Slider"
+msgstr ""
+
+#: build/blocks/post-grid/index.js:1
+msgid "Grid (rows)"
+msgstr ""
+
+#: build/blocks/post-grid/index.js:1
+#: build/blocks/swiper/index.js:1
+msgid "Rows (default)"
+msgstr ""
+
+#: build/blocks/post-grid/index.js:1
+#: build/blocks/swiper/index.js:1
+msgid "Number of rows (Swiper Grid). > 1 enables multi-row layout. Incompatible with Loop and Auto Width."
+msgstr ""
+
+#: build/blocks/post-grid/index.js:1
+#: build/blocks/swiper/index.js:1
+msgid "Fill"
+msgstr ""
+
+#: build/blocks/post-grid/index.js:1
+#: build/blocks/swiper/index.js:1
+msgid "Rows XL (≥1200px)"
+msgstr ""
+
+#: build/blocks/post-grid/index.js:1
+#: build/blocks/swiper/index.js:1
+msgid "Rows MD (≥768px)"
+msgstr ""
+
+#: build/blocks/post-grid/index.js:1
+#: build/blocks/swiper/index.js:1
+msgid "Rows XS (<576px)"
 msgstr ""
 
 #: build/blocks/post-grid/index.js:1
@@ -9798,6 +9932,14 @@ msgstr ""
 
 #: build/blocks/post-grid/index.js:1
 msgid "Hide excerpt on mobile"
+msgstr ""
+
+#: build/blocks/post-grid/index.js:1
+msgid "Disable Link"
+msgstr ""
+
+#: build/blocks/post-grid/index.js:1
+msgid "Remove links from cards — all anchors become non-clickable spans."
 msgstr ""
 
 #: build/blocks/post-grid/index.js:1
@@ -9939,10 +10081,6 @@ msgstr ""
 
 #: build/blocks/post-grid/index.js:1
 msgid "Adds Bootstrap .text-reset to the filter container so text inherits the surrounding section color (useful on dark or inverse backgrounds)."
-msgstr ""
-
-#: build/blocks/post-grid/index.js:1
-msgid "\"All\" Button Label"
 msgstr ""
 
 #: build/blocks/post-grid/index.js:1
@@ -10305,6 +10443,10 @@ msgid "Items (default)"
 msgstr ""
 
 #: build/blocks/swiper/index.js:1
+msgid "Slide fill order across the grid."
+msgstr ""
+
+#: build/blocks/swiper/index.js:1
 msgid "Nav Style"
 msgstr ""
 
@@ -10427,6 +10569,22 @@ msgid "Table color"
 msgstr ""
 
 #: build/blocks/tables/index.js:1
+msgid "Font color"
+msgstr ""
+
+#: build/blocks/tables/index.js:1
+msgid "— Default —"
+msgstr ""
+
+#: build/blocks/tables/index.js:1
+msgid "Custom table classes"
+msgstr ""
+
+#: build/blocks/tables/index.js:1
+msgid "Add your own classes to the <table> tag, space-separated."
+msgstr ""
+
+#: build/blocks/tables/index.js:1
 msgid "Header"
 msgstr ""
 
@@ -10440,10 +10598,6 @@ msgstr ""
 
 #: build/blocks/tables/index.js:1
 msgid "Header style"
-msgstr ""
-
-#: build/blocks/tables/index.js:1
-msgid "— Default —"
 msgstr ""
 
 #: build/blocks/tables/index.js:1
@@ -10512,10 +10666,6 @@ msgstr ""
 
 #: build/blocks/tables/index.js:1
 msgid "+ Add Column"
-msgstr ""
-
-#: build/blocks/tables/index.js:1
-msgid "+ Add Row"
 msgstr ""
 
 #: build/blocks/tables/index.js:1
@@ -10826,6 +10976,86 @@ msgstr ""
 
 #: build/blocks/top-header/index.js:1
 msgid "topbar"
+msgstr ""
+
+#: build/blocks/video/index.js:1
+msgid "Video Type"
+msgstr ""
+
+#: build/blocks/video/index.js:1
+msgid "HTML5 Video"
+msgstr ""
+
+#: build/blocks/video/index.js:1
+msgid "Embed Code"
+msgstr ""
+
+#: build/blocks/video/index.js:1
+msgid "Video File"
+msgstr ""
+
+#: build/blocks/video/index.js:1
+msgid "Example: 15801179"
+msgstr ""
+
+#: build/blocks/video/index.js:1
+msgid "YouTube Video ID"
+msgstr ""
+
+#: build/blocks/video/index.js:1
+msgid "Example: j_Y2Gwaj7Gs"
+msgstr ""
+
+#: build/blocks/video/index.js:1
+msgid "Paste iframe or embed code"
+msgstr ""
+
+#: build/blocks/video/index.js:1
+msgid "Poster Size"
+msgstr ""
+
+#: build/blocks/video/index.js:1
+msgid "Auto-load Poster from Provider"
+msgstr ""
+
+#: build/blocks/video/index.js:1
+msgid "Show Controls"
+msgstr ""
+
+#: build/blocks/video/index.js:1
+msgid "Show Play Icon"
+msgstr ""
+
+#: build/blocks/video/index.js:1
+msgid "Enable Video Lightbox"
+msgstr ""
+
+#: build/blocks/video/index.js:1
+msgid "Videos sharing the same gallery name open in one lightbox slider."
+msgstr ""
+
+#: build/blocks/video/index.js:1
+msgid "Video Player (Preview)"
+msgstr ""
+
+#: build/blocks/video/index.js:1
+msgid "Upload video file"
+msgstr ""
+
+#: build/blocks/video/index.js:1
+msgid "Enter YouTube video ID"
+msgstr ""
+
+#: build/blocks/video/index.js:1
+msgid "Enter VK video ID"
+msgstr ""
+
+#: build/blocks/video/index.js:1
+msgid "Enter Rutube video ID"
+msgstr ""
+
+#: build/blocks/video/index.js:1
+msgid "Paste embed code"
 msgstr ""
 
 #: build/blocks/wc-filter-panel/index.js:1
@@ -11464,6 +11694,14 @@ msgid "Map Height"
 msgstr ""
 
 #: build/blocks/yandex-map-v3/index.js:1
+msgid "Map Height (Mobile)"
+msgstr ""
+
+#: build/blocks/yandex-map-v3/index.js:1
+msgid "0 = same as desktop"
+msgstr ""
+
+#: build/blocks/yandex-map-v3/index.js:1
 #: build/blocks/yandex-map/index.js:1
 msgid "Map Type"
 msgstr ""
@@ -11487,8 +11725,40 @@ msgid "Marker Display"
 msgstr ""
 
 #: build/blocks/yandex-map-v3/index.js:1
+msgid "Dot"
+msgstr ""
+
+#: build/blocks/yandex-map-v3/index.js:1
+msgid "Pin"
+msgstr ""
+
+#: build/blocks/yandex-map-v3/index.js:1
+msgid "Custom Icon"
+msgstr ""
+
+#: build/blocks/yandex-map-v3/index.js:1
+msgid "Logo (theme setting)"
+msgstr ""
+
+#: build/blocks/yandex-map-v3/index.js:1
 #: build/blocks/yandex-map/index.js:1
 msgid "Marker Color"
+msgstr ""
+
+#: build/blocks/yandex-map-v3/index.js:1
+msgid "Marker Icon"
+msgstr ""
+
+#: build/blocks/yandex-map-v3/index.js:1
+msgid "Replace Image"
+msgstr ""
+
+#: build/blocks/yandex-map-v3/index.js:1
+msgid "Marker Size"
+msgstr ""
+
+#: build/blocks/yandex-map-v3/index.js:1
+msgid "0 = auto size for the selected marker type"
 msgstr ""
 
 #: build/blocks/yandex-map-v3/index.js:1
@@ -11736,7 +12006,6 @@ msgstr ""
 #: build/blocks/avatar/block.json
 #: build/blocks/image-simple/block.json
 #: build/blocks/logo/block.json
-#: build/blocks/media/block.json
 msgctxt "block keyword"
 msgid "image"
 msgstr ""
@@ -12125,6 +12394,7 @@ msgid "numbers"
 msgstr ""
 
 #: build/blocks/counters/block.json
+#: build/blocks/grid-layout/block.json
 #: build/blocks/post-grid/block.json
 msgctxt "block keyword"
 msgid "grid"
@@ -12244,6 +12514,7 @@ msgid "features"
 msgstr ""
 
 #: build/blocks/features/block.json
+#: build/blocks/grid-layout/block.json
 msgctxt "block keyword"
 msgid "columns"
 msgstr ""
@@ -12314,6 +12585,36 @@ msgstr ""
 #: build/blocks/form/block.json
 msgctxt "block description"
 msgid "Создавайте контактные формы с разными типами полей"
+msgstr ""
+
+#: build/blocks/grid-item/block.json
+msgctxt "block title"
+msgid "Grid Item"
+msgstr ""
+
+#: build/blocks/grid-item/block.json
+msgctxt "block description"
+msgid "Grid cell inside a Grid Layout block. Supports grid-column, grid-row, span and self-alignment."
+msgstr ""
+
+#: build/blocks/grid-layout/block.json
+msgctxt "block title"
+msgid "Grid Layout"
+msgstr ""
+
+#: build/blocks/grid-layout/block.json
+msgctxt "block description"
+msgid "CSS Grid container with responsive columns, rows, gap and alignment."
+msgstr ""
+
+#: build/blocks/grid-layout/block.json
+msgctxt "block keyword"
+msgid "layout"
+msgstr ""
+
+#: build/blocks/grid-layout/block.json
+msgctxt "block keyword"
+msgid "css grid"
 msgstr ""
 
 #: build/blocks/group-button/block.json
@@ -12448,7 +12749,6 @@ msgid "carousel"
 msgstr ""
 
 #: build/blocks/image-simple/block.json
-#: build/blocks/media/block.json
 msgctxt "block keyword"
 msgid "hover"
 msgstr ""
@@ -12543,31 +12843,6 @@ msgstr ""
 #: build/blocks/logo/block.json
 msgctxt "block keyword"
 msgid "brand"
-msgstr ""
-
-#: build/blocks/media/block.json
-msgctxt "block title"
-msgid "Media"
-msgstr ""
-
-#: build/blocks/media/block.json
-msgctxt "block description"
-msgid "Display image or video with effects, masks and lightbox"
-msgstr ""
-
-#: build/blocks/media/block.json
-msgctxt "block keyword"
-msgid "video"
-msgstr ""
-
-#: build/blocks/media/block.json
-msgctxt "block keyword"
-msgid "mask"
-msgstr ""
-
-#: build/blocks/media/block.json
-msgctxt "block keyword"
-msgid "lightbox"
 msgstr ""
 
 #: build/blocks/menu/block.json
@@ -12980,6 +13255,46 @@ msgstr ""
 #: build/blocks/top-header/block.json
 msgctxt "block keyword"
 msgid "topbar"
+msgstr ""
+
+#: build/blocks/video/block.json
+msgctxt "block title"
+msgid "Video"
+msgstr ""
+
+#: build/blocks/video/block.json
+msgctxt "block description"
+msgid "Display video (HTML5, Vimeo, YouTube, VK, Rutube) with poster and lightbox"
+msgstr ""
+
+#: build/blocks/video/block.json
+msgctxt "block keyword"
+msgid "video"
+msgstr ""
+
+#: build/blocks/video/block.json
+msgctxt "block keyword"
+msgid "vimeo"
+msgstr ""
+
+#: build/blocks/video/block.json
+msgctxt "block keyword"
+msgid "youtube"
+msgstr ""
+
+#: build/blocks/video/block.json
+msgctxt "block keyword"
+msgid "vk"
+msgstr ""
+
+#: build/blocks/video/block.json
+msgctxt "block keyword"
+msgid "rutube"
+msgstr ""
+
+#: build/blocks/video/block.json
+msgctxt "block keyword"
+msgid "lightbox"
 msgstr ""
 
 #: build/blocks/wc-filter-panel/block.json

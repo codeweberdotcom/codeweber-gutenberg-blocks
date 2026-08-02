@@ -1200,27 +1200,24 @@ class LoadMoreAPI {
 					return $html;
 				}
 			} else {
-				// Настройки отображения для обычных постов
+				// Display settings read from block attributes — mirrors render.php logic.
+				$_allowed_tags = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'div', 'span'];
+				$_tag_raw      = isset($attributes['titleTag']) ? $attributes['titleTag'] : 'h3';
+				$_title_tag    = in_array($_tag_raw, $_allowed_tags, true) ? $_tag_raw : 'h3';
+
 				$display_settings = [
-					'show_title' => true,
-					'show_date' => true,
-					'show_category' => true,
-					'show_comments' => true,
-					'title_length' => 56,
-					'excerpt_length' => 0,
-					'title_tag' => 'h2',
-					'title_class' => '',
+					'show_title'          => array_key_exists('showTitle', $attributes)    ? (bool) $attributes['showTitle']    : true,
+					'show_date'           => array_key_exists('showDate', $attributes)     ? (bool) $attributes['showDate']     : true,
+					'show_category'       => array_key_exists('showCategory', $attributes) ? (bool) $attributes['showCategory'] : true,
+					'show_comments'       => array_key_exists('showComments', $attributes) ? (bool) $attributes['showComments'] : true,
+					'show_excerpt'        => array_key_exists('showExcerpt', $attributes)  ? (bool) $attributes['showExcerpt']  : false,
+					'excerpt_hide_mobile' => ! empty($attributes['excerptHideMobile']),
+					'title_length'        => isset($attributes['titleLength'])   ? (int) $attributes['titleLength']   : 56,
+					'excerpt_length'      => isset($attributes['excerptLength']) ? (int) $attributes['excerptLength'] : 20,
+					'title_tag'           => $_title_tag,
+					'title_class'         => isset($attributes['titleClass']) ? sanitize_text_field($attributes['titleClass']) : '',
 				];
-				
-				// Для card-content и slider включаем excerpt
-				if ($template === 'card-content' || $template === 'slider') {
-					$display_settings['excerpt_length'] = 20;
-				}
-				// Для overlay-5 используем больше слов для обрезки до 116 символов
-				if ($template === 'overlay-5') {
-					$display_settings['excerpt_length'] = 40;
-				}
-				
+
 				// Настройки шаблона
 				$hover_classes = 'overlay overlay-1';
 				// Для overlay-5 используем overlay-5

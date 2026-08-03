@@ -1,9 +1,16 @@
-import { useBlockProps, InnerBlocks, InspectorControls } from '@wordpress/block-editor';
+import {
+	useBlockProps,
+	InnerBlocks,
+	InspectorControls,
+	BlockControls,
+} from '@wordpress/block-editor';
 import {
 	PanelBody,
 	TextControl,
 	SelectControl,
 	Button,
+	ToolbarGroup,
+	ToolbarButton,
 } from '@wordpress/components';
 import { useEffect, useState } from '@wordpress/element';
 import { useSelect, useDispatch } from '@wordpress/data';
@@ -11,7 +18,7 @@ import { createBlock } from '@wordpress/blocks';
 import { __ } from '@wordpress/i18n';
 import { SpacingControl } from '../../components/spacing/SpacingControl';
 import { BlockMetaFields } from '../../components/block-meta/BlockMetaFields';
-import PositionDesigner from './controls/PositionDesigner';
+import GridCanvasOverlay from './controls/GridCanvasOverlay';
 import {
 	THEME_GAP_VALUE,
 	getEditorGridStyle,
@@ -324,6 +331,10 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 	// useState so the pending-preset effect re-runs when it changes.
 	const [ pendingPreset, setPendingPreset ] = useState( null );
 
+	// Visual Position Designer: on-canvas overlay toggled from the toolbar.
+	const [ isDesigning, setIsDesigning ] = useState( false );
+	const [ activeClientId, setActiveClientId ] = useState( null );
+
 	const innerBlocks = useSelect(
 		( select ) => select( 'core/block-editor' ).getBlocks( clientId ),
 		[ clientId ]
@@ -336,6 +347,14 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 			setAttributes( { gridId: Math.random().toString( 36 ).substr( 2, 8 ) } );
 		}
 	}, [] );
+
+	// Default (or recover) the active item whenever Design mode is on.
+	useEffect( () => {
+		if ( ! isDesigning ) return;
+		if ( ! activeClientId || ! innerBlocks.some( ( b ) => b.clientId === activeClientId ) ) {
+			setActiveClientId( innerBlocks[ 0 ] ? innerBlocks[ 0 ].clientId : null );
+		}
+	}, [ isDesigning, innerBlocks, activeClientId ] );
 
 	// Auto-sync child block count.
 	// cellCount overrides colCount×rowCount — critical for spanning presets like Magazine
@@ -388,9 +407,11 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 	};
 
 	const blockProps = useBlockProps( {
-		className: getGridDesignerClassNames( attributes ),
+		className:
+			getGridDesignerClassNames( attributes ) +
+			( isDesigning ? ' cwgb-grid-designer--designing' : '' ),
 		id: normalizeGridId( gridHtmlId ) || undefined,
-		style: getEditorGridStyle( attributes ),
+		style: { ...getEditorGridStyle( attributes ), position: 'relative' },
 		...normalizeGridData( gridData ),
 	} );
 
@@ -408,24 +429,29 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 
 	return (
 		<>
+			<BlockControls>
+				<ToolbarGroup>
+					<ToolbarButton
+						icon="grid-view"
+						label={ __( 'Design positions', 'codeweber-gutenberg-blocks' ) }
+						isPressed={ isDesigning }
+						onClick={ () => setIsDesigning( ( v ) => ! v ) }
+					/>
+				</ToolbarGroup>
+			</BlockControls>
+
 			<InspectorControls>
 				{ /* ── Position Designer ── */ }
 				<PanelBody
 					title={ __( 'Design Grid', 'codeweber-gutenberg-blocks' ) }
 					initialOpen={ true }
 				>
-					<p style={ { margin: '0 0 8px', fontSize: '12px', color: '#757575' } }>
+					<p style={ { margin: 0, fontSize: '12px', color: '#757575' } }>
 						{ __(
-							'Pick an item below, then drag across the grid to place it.',
+							'Click the grid icon in the block toolbar to design positions directly on the canvas: pick a numbered item, then drag across the grid.',
 							'codeweber-gutenberg-blocks'
 						) }
 					</p>
-					<PositionDesigner
-						colCount={ colCount }
-						rowCount={ rowCount }
-						innerBlocks={ innerBlocks }
-						updateBlockAttributes={ updateBlockAttributes }
-					/>
 				</PanelBody>
 
 				{ /* ── Presets ── */ }
@@ -666,6 +692,16 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 					template={ INITIAL_TEMPLATE }
 					templateLock={ false }
 				/>
+				{ isDesigning && (
+					<GridCanvasOverlay
+						colCount={ colCount }
+						rowCount={ rowCount }
+						innerBlocks={ innerBlocks }
+						activeClientId={ activeClientId }
+						setActiveClientId={ setActiveClientId }
+						updateBlockAttributes={ updateBlockAttributes }
+					/>
+				) }
 			</div>
 		</>
 	);

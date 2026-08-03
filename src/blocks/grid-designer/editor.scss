@@ -12,49 +12,82 @@
 		display: contents;
 	}
 	// stylelint-enable selector-class-pattern
+
+	&--designing {
+		outline: 2px dashed #007cba;
+		outline-offset: 4px;
+	}
 }
 
-// ─── Position Designer (Inspector) ─────────────────────────────────────────
-.cwgb-position-designer {
-
-	&__grid {
-		display: grid;
-		gap: 2px;
-		margin: 8px 0 12px;
-		user-select: none;
-	}
+// ─── Position Designer (on-canvas overlay) ─────────────────────────────────
+// Overlay cells are extra children of the grid-designer's own CSS Grid — each
+// pinned to a single track via inline gridColumn/gridRow — so they align
+// pixel-perfect with the real content without any coordinate math.
+.cwgb-grid-overlay {
 
 	&__cell {
 		appearance: none;
-		background: #f0f0f1;
-		border: 1px solid #ddd;
+		position: relative;
+		z-index: 5;
+		background: rgba(0, 124, 186, 0.06);
+		border: 1px solid rgba(0, 124, 186, 0.35);
 		border-radius: 2px;
 		cursor: pointer;
 		margin: 0;
 		padding: 0;
 		min-height: 22px;
-		font: inherit;
+		font-size: 11px;
+		font-weight: 600;
+		color: #007cba;
+		user-select: none;
 
 		&:hover {
+			background: rgba(0, 124, 186, 0.15);
+		}
+
+		&.is-ghost {
+			background: rgba(117, 117, 117, 0.12);
+			border-color: rgba(117, 117, 117, 0.4);
+			color: #757575;
+		}
+
+		&.is-active-ghost {
+			background: rgba(0, 124, 186, 0.18);
 			border-color: #007cba;
 		}
 
-		&.is-selected {
-			background: #007cba;
+		&.is-preview {
+			background: rgba(0, 124, 186, 0.35);
 			border-color: #007cba;
 		}
 	}
 
-	&__empty {
-		font-size: 12px;
-		color: #757575;
-		margin: 0 0 8px;
+	&__pills {
+		position: absolute;
+		top: 6px;
+		left: 6px;
+		z-index: 30;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 4px;
 	}
 
-	&__value {
+	&__pill {
+		appearance: none;
+		min-width: 22px;
+		height: 22px;
+		padding: 0 4px;
+		border: 1px solid #007cba;
+		border-radius: 11px;
+		background: #fff;
+		color: #007cba;
 		font-size: 11px;
-		font-family: monospace;
-		color: #757575;
-		margin: 0 0 8px;
+		font-weight: 600;
+		cursor: pointer;
+
+		&.is-active {
+			background: #007cba;
+			color: #fff;
+		}
 	}
 }

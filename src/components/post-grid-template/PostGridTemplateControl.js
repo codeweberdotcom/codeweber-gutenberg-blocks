@@ -50,9 +50,12 @@ export const PostGridTemplateControl = ({
 				setTemplates(list);
 				setIsLoading(false);
 
-				// Auto-select first template if current value doesn't exist in new list
-				const exists = list.some((t) => t.value === value);
-				if (!exists && list.length > 0) {
+				// Only auto-pick a default for a genuinely new/unconfigured block
+				// (empty value). A previously-saved value that merely isn't in
+				// *this* response (network hiccup, registry not populated yet,
+				// etc.) must never be silently overwritten — doing so was
+				// resetting real, saved template choices on reload.
+				if (!value && list.length > 0) {
 					onChange(list[0].value);
 				}
 			})

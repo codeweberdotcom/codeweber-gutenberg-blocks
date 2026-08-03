@@ -81,10 +81,12 @@
 		padding: 0 4px;
 	}
 
+	// Sits just above the grid's own top edge — a strip, not an overlap —
+	// so it never covers a cell/area's content while designing.
 	&__pills {
 		position: absolute;
-		top: 6px;
-		left: 6px;
+		top: -30px;
+		left: 0;
 		z-index: 30;
 		display: flex;
 		flex-wrap: wrap;

@@ -1,4 +1,18 @@
 .cwgb-grid-item {
+	// Gutenberg wraps the actual child block in its own editor-only markup
+	// (.block-editor-inner-blocks > .block-editor-block-list__layout), so the
+	// real child isn't a direct child of .cwgb-grid-item here the way it is
+	// in the saved frontend HTML. That breaks style.scss's
+	// `.cwgb-grid-item > * { flex: 1 1 auto }` stretch rule in the editor —
+	// it grows the wrapper, not the actual block inside it. Same fix as the
+	// grid-layout/grid-designer containers: make the wrappers transparent.
+	// stylelint-disable selector-class-pattern
+	> .block-editor-inner-blocks,
+	> .block-editor-inner-blocks > .block-editor-block-list__layout {
+		display: contents;
+	}
+	// stylelint-enable selector-class-pattern
+
 	&.cwgb-grid-item--edit {
 		min-height: 60px;
 		outline: 2px dashed rgba( 0, 120, 212, 0.25 );

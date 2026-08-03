@@ -1,13 +1,13 @@
-import { useEffect, useRef, useState } from '@wordpress/element';
+import { useLayoutEffect, useEffect, useRef, useState } from '@wordpress/element';
 import { parseGridLine, normalizeCellRect } from '../utils';
 
-// Two layers, both extra children of the SAME CSS Grid container as the real
-// grid-item blocks:
-//  - a transparent, single-track hit-test grid that only captures the drag
-//    gesture (no fill, so real content stays visible underneath);
-//  - one rectangle overlay per positioned item, spanning its full
-//    gridColumn/gridRow in one element (not per-cell), so occupied areas
-//    read as a single highlighted region instead of a wall of tinted cells.
+// Renders as a SEPARATE, absolutely-positioned layer on top of the real grid
+// (not as literal children of the same CSS Grid). Explicit grid children of
+// the real container would reserve every track for auto-placement purposes,
+// starving any real grid-item that has no explicit position of a track to
+// land in. Instead this reads the real container's *resolved* pixel track
+// sizes via getComputedStyle (correct even for "auto" row heights) and
+// mirrors them on its own grid — pixel-perfect alignment, zero interference.
 export default function GridCanvasOverlay( {
 	colCount,
 	rowCount,
@@ -16,9 +16,32 @@ export default function GridCanvasOverlay( {
 	setActiveClientId,
 	updateBlockAttributes,
 } ) {
+	const wrapperRef = useRef( null );
 	const dragRef = useRef( null );
 	const cleanupRef = useRef( null );
 	const [ dragRect, setDragRect ] = useState( null );
+	const [ gridTemplate, setGridTemplate ] = useState( null );
+
+	useLayoutEffect( () => {
+		const wrapper = wrapperRef.current;
+		const container = wrapper && wrapper.parentElement;
+		if ( ! container ) return undefined;
+
+		const win = container.ownerDocument.defaultView;
+
+		const measure = () => {
+			const cs = win.getComputedStyle( container );
+			setGridTemplate( {
+				columns: cs.gridTemplateColumns,
+				rows: cs.gridTemplateRows,
+				gap: cs.gap,
+			} );
+		};
+
+		measure();
+		win.addEventListener( 'resize', measure );
+		return () => win.removeEventListener( 'resize', measure );
+	}, [ colCount, rowCount ] );
 
 	useEffect( () => {
 		return () => {
@@ -112,7 +135,19 @@ export default function GridCanvasOverlay( {
 	} );
 
 	return (
-		<>
+		<div
+			ref={ wrapperRef }
+			className="cwgb-grid-overlay"
+			style={
+				gridTemplate
+					? {
+							gridTemplateColumns: gridTemplate.columns,
+							gridTemplateRows: gridTemplate.rows,
+							gap: gridTemplate.gap,
+					  }
+					: undefined
+			}
+		>
 			{ innerBlocks.length > 1 && (
 				<div className="cwgb-grid-overlay__pills">
 					{ innerBlocks.map( ( block, i ) => (
@@ -131,9 +166,9 @@ export default function GridCanvasOverlay( {
 					) ) }
 				</div>
 			) }
-			{ hitCells }
-			{ areaOverlays }
-			{ previewRect && (
+			{ gridTemplate && hitCells }
+			{ gridTemplate && areaOverlays }
+			{ gridTemplate && previewRect && (
 				<div
 					className="cwgb-grid-overlay__area cwgb-grid-overlay__area--preview"
 					style={ {
@@ -144,6 +179,6 @@ export default function GridCanvasOverlay( {
 					<span className="cwgb-grid-overlay__area-id">{ activeIndex + 1 }</span>
 				</div>
 			) }
-		</>
+		</div>
 	);
 }

@@ -446,9 +446,19 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 					title={ __( 'Design Grid', 'codeweber-gutenberg-blocks' ) }
 					initialOpen={ true }
 				>
+					<Button
+						variant={ isDesigning ? 'primary' : 'secondary' }
+						icon="grid-view"
+						style={ { marginBottom: '8px' } }
+						onClick={ () => setIsDesigning( ( v ) => ! v ) }
+					>
+						{ isDesigning
+							? __( 'Stop designing', 'codeweber-gutenberg-blocks' )
+							: __( 'Design positions', 'codeweber-gutenberg-blocks' ) }
+					</Button>
 					<p style={ { margin: 0, fontSize: '12px', color: '#757575' } }>
 						{ __(
-							'Click the grid icon in the block toolbar to design positions directly on the canvas: pick a numbered item, then drag across the grid.',
+							'Pick a numbered item, then drag across the grid on the canvas to position it. (Same toggle is also in the block toolbar.)',
 							'codeweber-gutenberg-blocks'
 						) }
 					</p>

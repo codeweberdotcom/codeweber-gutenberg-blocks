@@ -33,7 +33,11 @@ export default function GridCanvasOverlay( {
 
 	const activeIndex = innerBlocks.findIndex( ( b ) => b.clientId === activeClientId );
 
-	const beginDrag = ( col, row ) => {
+	// The overlay lives inside the block-editor iframe, but this script executes
+	// in the top document — a plain `window.addEventListener` would miss the
+	// mouseup fired when the user releases over the iframe canvas (iframe DOM
+	// events don't reach the parent window). Use the node's own window instead.
+	const beginDrag = ( col, row, ownerWindow ) => {
 		const start = { col, row };
 		dragRef.current = { start, end: start };
 		setDragRect( dragRef.current );
@@ -49,12 +53,12 @@ export default function GridCanvasOverlay( {
 			}
 			dragRef.current = null;
 			setDragRect( null );
-			window.removeEventListener( 'mouseup', onMouseUp );
+			ownerWindow.removeEventListener( 'mouseup', onMouseUp );
 			cleanupRef.current = null;
 		};
 
-		window.addEventListener( 'mouseup', onMouseUp );
-		cleanupRef.current = () => window.removeEventListener( 'mouseup', onMouseUp );
+		ownerWindow.addEventListener( 'mouseup', onMouseUp );
+		cleanupRef.current = () => ownerWindow.removeEventListener( 'mouseup', onMouseUp );
 	};
 
 	const updateDragEnd = ( col, row ) => {
@@ -102,7 +106,7 @@ export default function GridCanvasOverlay( {
 					style={ { gridColumn: `${ col } / ${ col + 1 }`, gridRow: `${ row } / ${ row + 1 }` } }
 					onMouseDown={ ( e ) => {
 						e.preventDefault();
-						beginDrag( col, row );
+						beginDrag( col, row, e.currentTarget.ownerDocument.defaultView );
 					} }
 					onMouseEnter={ () => updateDragEnd( col, row ) }
 				>

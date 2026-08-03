@@ -108,5 +108,16 @@
 			background: #007cba;
 			color: #fff;
 		}
+
+		&--add {
+			border-color: #4ab866;
+			color: #4ab866;
+			font-weight: 700;
+
+			&:hover {
+				background: #4ab866;
+				color: #fff;
+			}
+		}
 	}
 }

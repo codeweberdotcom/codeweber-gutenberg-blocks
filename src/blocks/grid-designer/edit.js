@@ -29,12 +29,9 @@ import {
 
 const ALLOWED_BLOCKS = [ 'codeweber-blocks/grid-item' ];
 
-const INITIAL_TEMPLATE = [
-	[ 'codeweber-blocks/grid-item' ],
-	[ 'codeweber-blocks/grid-item' ],
-	[ 'codeweber-blocks/grid-item' ],
-	[ 'codeweber-blocks/grid-item' ],
-];
+// Start with a single item — further areas are added on demand via the "+"
+// button in the Design mode overlay, not pre-filled from colCount×rowCount.
+const INITIAL_TEMPLATE = [ [ 'codeweber-blocks/grid-item' ] ];
 
 // ─── Presets ────────────────────────────────────────────────────────────────
 // cellCount MUST equal items.length on every spanning preset to prevent
@@ -222,8 +219,9 @@ function PresetVisual( { id } ) {
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
-const COL_COUNTS = [ 1, 2, 3, 4, 5, 6 ];
-const ROW_COUNTS = [ 1, 2, 3, 4, 5 ];
+// Wide enough to also work as a fine drawing grid (e.g. 12×6, Bootstrap-style).
+const COL_COUNTS = [ 1, 2, 3, 4, 6, 8, 12 ];
+const ROW_COUNTS = [ 1, 2, 3, 4, 6, 8 ];
 const MOB_COUNTS = [ 1, 2, 3 ];
 
 const AUTO_FLOW_OPTIONS = [
@@ -356,21 +354,22 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 		}
 	}, [ isDesigning, innerBlocks, activeClientId ] );
 
-	// Auto-sync child block count.
-	// cellCount overrides colCount×rowCount — critical for spanning presets like Magazine
-	// (6 cols × 3 rows = 18 without cellCount, but only 6 cells are needed).
+	// Auto-sync child block count to a preset's cellCount only (spanning presets
+	// like Magazine need exactly items.length cells, not colCount×rowCount).
+	// Changing colCount/rowCount alone no longer creates items — grid resolution
+	// and item count are independent; use "+" in the Design overlay to add areas.
 	// Skipped while a preset is pending to avoid race conditions.
 	useEffect( () => {
 		if ( pendingPreset ) return;
-		const target = cellCount > 0 ? cellCount : colCount * rowCount;
+		if ( ! ( cellCount > 0 ) ) return;
 		const current = innerBlocks.length;
-		if ( current < target ) {
-			const toAdd = Array.from( { length: target - current }, () =>
+		if ( current < cellCount ) {
+			const toAdd = Array.from( { length: cellCount - current }, () =>
 				createBlock( 'codeweber-blocks/grid-item' )
 			);
 			insertBlocks( toAdd, current, clientId, false );
 		}
-	}, [ colCount, rowCount, cellCount, innerBlocks.length, pendingPreset ] );
+	}, [ cellCount, innerBlocks.length, pendingPreset ] );
 
 	// Apply pending preset grid-column/grid-row to children once enough blocks exist.
 	useEffect( () => {
@@ -404,6 +403,12 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 			);
 			insertBlocks( toAdd, innerBlocks.length, clientId, false );
 		}
+	};
+
+	const handleAddItem = () => {
+		const newBlock = createBlock( 'codeweber-blocks/grid-item' );
+		insertBlocks( [ newBlock ], innerBlocks.length, clientId, false );
+		setActiveClientId( newBlock.clientId );
 	};
 
 	const blockProps = useBlockProps( {
@@ -511,9 +516,7 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 					<CountButtons
 						counts={ COL_COUNTS }
 						active={ colCount }
-						onChange={ ( n ) =>
-							setAttributes( { colCount: n, cellCount: n * rowCount } )
-						}
+						onChange={ ( n ) => setAttributes( { colCount: n } ) }
 					/>
 					<div style={ { display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '16px' } }>
 						{ Array.from( { length: colCount }, ( _, i ) => (
@@ -534,21 +537,13 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 					<CountButtons
 						counts={ ROW_COUNTS }
 						active={ rowCount }
-						onChange={ ( n ) =>
-							setAttributes( { rowCount: n, cellCount: colCount * n } )
-						}
+						onChange={ ( n ) => setAttributes( { rowCount: n } ) }
 					/>
 					<Button
 						variant="secondary"
 						isSmall
 						style={ { marginBottom: '8px' } }
-						onClick={ () => {
-							const addItems = Math.max( 1, Math.floor( colCount / 2 ) );
-							setAttributes( {
-								rowCount: rowCount + 1,
-								cellCount: ( cellCount || innerBlocks.length ) + addItems,
-							} );
-						} }
+						onClick={ () => setAttributes( { rowCount: rowCount + 1 } ) }
 					>
 						{ __( '+ Add Row', 'codeweber-gutenberg-blocks' ) }
 					</Button>
@@ -710,6 +705,7 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 						activeClientId={ activeClientId }
 						setActiveClientId={ setActiveClientId }
 						updateBlockAttributes={ updateBlockAttributes }
+						onAddItem={ handleAddItem }
 					/>
 				) }
 			</div>

@@ -15,6 +15,7 @@ export default function GridCanvasOverlay( {
 	activeClientId,
 	setActiveClientId,
 	updateBlockAttributes,
+	onAddItem,
 } ) {
 	const wrapperRef = useRef( null );
 	const dragRef = useRef( null );
@@ -148,24 +149,30 @@ export default function GridCanvasOverlay( {
 					: undefined
 			}
 		>
-			{ innerBlocks.length > 1 && (
-				<div className="cwgb-grid-overlay__pills">
-					{ innerBlocks.map( ( block, i ) => (
-						<button
-							key={ block.clientId }
-							type="button"
-							className={
-								'cwgb-grid-overlay__pill' +
-								( block.clientId === activeClientId ? ' is-active' : '' )
-							}
-							onMouseDown={ ( e ) => e.stopPropagation() }
-							onClick={ () => setActiveClientId( block.clientId ) }
-						>
-							{ i + 1 }
-						</button>
-					) ) }
-				</div>
-			) }
+			<div className="cwgb-grid-overlay__pills">
+				{ innerBlocks.map( ( block, i ) => (
+					<button
+						key={ block.clientId }
+						type="button"
+						className={
+							'cwgb-grid-overlay__pill' +
+							( block.clientId === activeClientId ? ' is-active' : '' )
+						}
+						onMouseDown={ ( e ) => e.stopPropagation() }
+						onClick={ () => setActiveClientId( block.clientId ) }
+					>
+						{ i + 1 }
+					</button>
+				) ) }
+				<button
+					type="button"
+					className="cwgb-grid-overlay__pill cwgb-grid-overlay__pill--add"
+					onMouseDown={ ( e ) => e.stopPropagation() }
+					onClick={ onAddItem }
+				>
+					+
+				</button>
+			</div>
 			{ gridTemplate && hitCells }
 			{ gridTemplate && areaOverlays }
 			{ gridTemplate && previewRect && (

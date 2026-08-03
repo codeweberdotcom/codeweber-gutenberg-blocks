@@ -21,6 +21,20 @@ export function buildRowsValue( rowCount, rowSizes ) {
 	return heights.join( ' ' );
 }
 
+// Unlike buildRowsValue, never collapses to '' for all-auto rows — the editor
+// preview (and the position-designer overlay, which mirrors this container's
+// computed style) needs `rowCount` real tracks to draw on, even before any
+// item actually occupies them. Frontend output (generateGridStyles) keeps the
+// collapsing behavior so genuinely unused rows don't reserve empty space.
+export function buildEditorRowsValue( rowCount, rowSizes ) {
+	if ( ! rowCount ) return '';
+	const heights = Array.from(
+		{ length: rowCount },
+		( _, i ) => ( rowSizes && rowSizes[ i ] && rowSizes[ i ].trim() ) || 'minmax(60px, auto)'
+	);
+	return heights.join( ' ' );
+}
+
 export function resolveGap( gapType, gridGap ) {
 	if ( gapType === 'theme' ) return THEME_GAP_VALUE;
 	return ( gridGap && gridGap.trim() ) || '';
@@ -157,7 +171,7 @@ export function getEditorGridStyle( attrs ) {
 	const cols = buildColsValue( colCount, colSizes );
 	if ( cols ) style.gridTemplateColumns = cols;
 
-	const rows = buildRowsValue( rowCount, rowSizes );
+	const rows = buildEditorRowsValue( rowCount, rowSizes );
 	if ( rows ) style.gridTemplateRows = rows;
 
 	const gap = resolveGap( gapType, gridGap );

@@ -16,6 +16,10 @@
 	&--designing {
 		outline: 2px dashed #007cba;
 		outline-offset: 4px;
+		// Reserves real, in-flow space for the pills strip — a negative offset
+		// above the block would get clipped by the editor iframe's own bounds
+		// whenever the block sits at (or near) the very top of the content.
+		padding-top: 34px;
 	}
 }
 
@@ -27,7 +31,12 @@
 // cells/areas still land pixel-perfect without any coordinate math here.
 .cwgb-grid-overlay {
 	position: absolute;
-	inset: 0;
+	// Starts where the real grid content starts — after the reserved
+	// padding-top strip (see .cwgb-grid-designer--designing).
+	top: 34px;
+	right: 0;
+	bottom: 0;
+	left: 0;
 	display: grid;
 
 	&__cell {
@@ -81,11 +90,11 @@
 		padding: 0 4px;
 	}
 
-	// Sits just above the grid's own top edge — a strip, not an overlap —
-	// so it never covers a cell/area's content while designing.
+	// Lands exactly in the reserved padding-top strip (real, in-flow space,
+	// still inside the block's own outline) — not an overlap with any cell.
 	&__pills {
 		position: absolute;
-		top: -30px;
+		top: -34px;
 		left: 0;
 		z-index: 30;
 		display: flex;

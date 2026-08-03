@@ -15,7 +15,8 @@ export default function GridCanvasOverlay( {
 	activeClientId,
 	setActiveClientId,
 	updateBlockAttributes,
-	onAddItem,
+	onCreateItem,
+	onRemoveItem,
 } ) {
 	const wrapperRef = useRef( null );
 	const dragRef = useRef( null );
@@ -59,20 +60,39 @@ export default function GridCanvasOverlay( {
 
 	const activeIndex = innerBlocks.findIndex( ( b ) => b.clientId === activeClientId );
 
+	const findHitIndex = ( col, row ) =>
+		itemRects.findIndex(
+			( rect ) =>
+				rect &&
+				col >= rect.colStart &&
+				col <= rect.colEnd &&
+				row >= rect.rowStart &&
+				row <= rect.rowEnd
+		);
+
 	// The overlay lives inside the block-editor iframe, but this script executes
 	// in the top document — a plain `window.addEventListener` would miss the
 	// mouseup fired when the user releases over the iframe canvas (iframe DOM
 	// events don't reach the parent window). Use the node's own window instead.
+	//
+	// Dragging from a cell that's part of an existing item repositions that
+	// item; dragging from empty space creates a brand-new item on the spot —
+	// no separate "add" step, matching the reference plugin's draw-to-create.
 	const beginDrag = ( col, row, ownerWindow ) => {
+		const hitIndex = findHitIndex( col, row );
+		const targetClientId =
+			hitIndex !== -1 ? innerBlocks[ hitIndex ].clientId : onCreateItem();
+		if ( ! targetClientId ) return;
+		setActiveClientId( targetClientId );
+
 		const start = { col, row };
-		dragRef.current = { start, end: start };
+		dragRef.current = { start, end: start, targetClientId };
 		setDragRect( dragRef.current );
 
 		const onMouseUp = () => {
-			const activeBlock = innerBlocks.find( ( b ) => b.clientId === activeClientId );
-			if ( activeBlock && dragRef.current ) {
+			if ( dragRef.current ) {
 				const rect = normalizeCellRect( dragRef.current.start, dragRef.current.end );
-				updateBlockAttributes( activeBlock.clientId, {
+				updateBlockAttributes( dragRef.current.targetClientId, {
 					gridColumnLg: `${ rect.colStart } / ${ rect.colEnd + 1 }`,
 					gridRowLg: `${ rect.rowStart } / ${ rect.rowEnd + 1 }`,
 				} );
@@ -94,6 +114,7 @@ export default function GridCanvasOverlay( {
 	};
 
 	const previewRect = dragRect ? normalizeCellRect( dragRect.start, dragRect.end ) : null;
+	const previewTargetClientId = dragRect ? dragRect.targetClientId : null;
 
 	// Transparent hit-test grid — one cell per track intersection, no fill.
 	const hitCells = [];
@@ -120,7 +141,7 @@ export default function GridCanvasOverlay( {
 	// One rectangle per already-positioned item (skip the one currently being redrawn).
 	const areaOverlays = itemRects.map( ( rect, idx ) => {
 		if ( ! rect ) return null;
-		if ( previewRect && idx === activeIndex ) return null;
+		if ( previewRect && innerBlocks[ idx ].clientId === previewTargetClientId ) return null;
 		return (
 			<div
 				key={ innerBlocks[ idx ].clientId }
@@ -149,30 +170,33 @@ export default function GridCanvasOverlay( {
 					: undefined
 			}
 		>
-			<div className="cwgb-grid-overlay__pills">
-				{ innerBlocks.map( ( block, i ) => (
-					<button
-						key={ block.clientId }
-						type="button"
-						className={
-							'cwgb-grid-overlay__pill' +
-							( block.clientId === activeClientId ? ' is-active' : '' )
-						}
-						onMouseDown={ ( e ) => e.stopPropagation() }
-						onClick={ () => setActiveClientId( block.clientId ) }
-					>
-						{ i + 1 }
-					</button>
-				) ) }
-				<button
-					type="button"
-					className="cwgb-grid-overlay__pill cwgb-grid-overlay__pill--add"
-					onMouseDown={ ( e ) => e.stopPropagation() }
-					onClick={ onAddItem }
-				>
-					+
-				</button>
-			</div>
+			{ innerBlocks.length > 0 && (
+				<div className="cwgb-grid-overlay__pills">
+					{ innerBlocks.map( ( block, i ) => (
+						<div key={ block.clientId } className="cwgb-grid-overlay__pill-group">
+							<button
+								type="button"
+								className={
+									'cwgb-grid-overlay__pill' +
+									( block.clientId === activeClientId ? ' is-active' : '' )
+								}
+								onMouseDown={ ( e ) => e.stopPropagation() }
+								onClick={ () => setActiveClientId( block.clientId ) }
+							>
+								{ i + 1 }
+							</button>
+							<button
+								type="button"
+								className="cwgb-grid-overlay__pill-remove"
+								onMouseDown={ ( e ) => e.stopPropagation() }
+								onClick={ () => onRemoveItem( block.clientId ) }
+							>
+								×
+							</button>
+						</div>
+					) ) }
+				</div>
+			) }
 			{ gridTemplate && hitCells }
 			{ gridTemplate && areaOverlays }
 			{ gridTemplate && previewRect && (

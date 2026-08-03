@@ -337,7 +337,7 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 		( select ) => select( 'core/block-editor' ).getBlocks( clientId ),
 		[ clientId ]
 	);
-	const { insertBlocks, updateBlockAttributes } = useDispatch( 'core/block-editor' );
+	const { insertBlocks, updateBlockAttributes, removeBlock } = useDispatch( 'core/block-editor' );
 
 	// Generate unique gridId on first mount
 	useEffect( () => {
@@ -357,7 +357,8 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 	// Auto-sync child block count to a preset's cellCount only (spanning presets
 	// like Magazine need exactly items.length cells, not colCount×rowCount).
 	// Changing colCount/rowCount alone no longer creates items — grid resolution
-	// and item count are independent; use "+" in the Design overlay to add areas.
+	// and item count are independent; dragging on empty space in the Design
+	// overlay creates a new area on the spot instead.
 	// Skipped while a preset is pending to avoid race conditions.
 	useEffect( () => {
 		if ( pendingPreset ) return;
@@ -405,10 +406,18 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 		}
 	};
 
-	const handleAddItem = () => {
+	// Called from the overlay when a drag starts on empty space — creates the
+	// new item and returns its clientId synchronously so the same gesture can
+	// position it immediately, without a separate "add" step.
+	const handleCreateItem = () => {
 		const newBlock = createBlock( 'codeweber-blocks/grid-item' );
 		insertBlocks( [ newBlock ], innerBlocks.length, clientId, false );
-		setActiveClientId( newBlock.clientId );
+		return newBlock.clientId;
+	};
+
+	const handleRemoveItem = ( itemClientId ) => {
+		removeBlock( itemClientId, false );
+		if ( activeClientId === itemClientId ) setActiveClientId( null );
 	};
 
 	const blockProps = useBlockProps( {
@@ -463,7 +472,7 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 					</Button>
 					<p style={ { margin: 0, fontSize: '12px', color: '#757575' } }>
 						{ __(
-							'Pick a numbered item, then drag across the grid on the canvas to position it. (Same toggle is also in the block toolbar.)',
+							'Drag across empty space on the canvas to draw a new item; drag inside an existing one to reposition it. Remove one with × next to its number. (Same toggle is also in the block toolbar.)',
 							'codeweber-gutenberg-blocks'
 						) }
 					</p>
@@ -705,7 +714,8 @@ export default function Edit( { attributes, setAttributes, clientId } ) {
 						activeClientId={ activeClientId }
 						setActiveClientId={ setActiveClientId }
 						updateBlockAttributes={ updateBlockAttributes }
-						onAddItem={ handleAddItem }
+						onCreateItem={ handleCreateItem }
+						onRemoveItem={ handleRemoveItem }
 					/>
 				) }
 			</div>

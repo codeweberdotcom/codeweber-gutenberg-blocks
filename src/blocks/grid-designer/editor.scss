@@ -99,7 +99,13 @@
 		z-index: 30;
 		display: flex;
 		flex-wrap: wrap;
-		gap: 4px;
+		gap: 6px;
+	}
+
+	&__pill-group {
+		display: flex;
+		align-items: center;
+		gap: 2px;
 	}
 
 	&__pill {
@@ -119,16 +125,24 @@
 			background: #007cba;
 			color: #fff;
 		}
+	}
 
-		&--add {
-			border-color: #4ab866;
-			color: #4ab866;
-			font-weight: 700;
+	&__pill-remove {
+		appearance: none;
+		width: 18px;
+		height: 18px;
+		padding: 0;
+		border: 1px solid rgba(197, 44, 44, 0.5);
+		border-radius: 50%;
+		background: #fff;
+		color: #c52c2c;
+		font-size: 11px;
+		line-height: 1;
+		cursor: pointer;
 
-			&:hover {
-				background: #4ab866;
-				color: #fff;
-			}
+		&:hover {
+			background: #c52c2c;
+			color: #fff;
 		}
 	}
 }

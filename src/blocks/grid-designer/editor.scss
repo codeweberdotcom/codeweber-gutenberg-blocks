@@ -20,46 +20,67 @@
 }
 
 // ─── Position Designer (on-canvas overlay) ─────────────────────────────────
-// Overlay cells are extra children of the grid-designer's own CSS Grid — each
-// pinned to a single track via inline gridColumn/gridRow — so they align
-// pixel-perfect with the real content without any coordinate math.
+// Two layers, both extra children of the grid-designer's own CSS Grid — each
+// pinned to explicit gridColumn/gridRow tracks, so they align pixel-perfect
+// with the real content without any coordinate math:
+//  - __cell: transparent hit-test grid, one per track intersection.
+//  - __area: one rectangle per positioned item, spanning its full extent —
+//    reads as a single highlighted region instead of a wall of tinted cells.
 .cwgb-grid-overlay {
 
 	&__cell {
 		appearance: none;
 		position: relative;
 		z-index: 5;
-		background: rgba(0, 124, 186, 0.06);
-		border: 1px solid rgba(0, 124, 186, 0.35);
+		background: transparent;
+		border: 1px solid transparent;
 		border-radius: 2px;
 		cursor: pointer;
 		margin: 0;
 		padding: 0;
 		min-height: 22px;
-		font-size: 11px;
-		font-weight: 600;
-		color: #007cba;
-		user-select: none;
 
 		&:hover {
-			background: rgba(0, 124, 186, 0.15);
+			background: rgba(0, 124, 186, 0.08);
+			border-color: rgba(0, 124, 186, 0.35);
+		}
+	}
+
+	&__area {
+		position: relative;
+		z-index: 8;
+		pointer-events: none;
+		border: 2px dashed rgba(117, 117, 117, 0.5);
+		border-radius: 3px;
+
+		&.is-active {
+			border: 2px solid #007cba;
+			background: rgba(0, 124, 186, 0.12);
 		}
 
-		&.is-ghost {
-			background: rgba(117, 117, 117, 0.12);
-			border-color: rgba(117, 117, 117, 0.4);
-			color: #757575;
+		&--preview {
+			z-index: 10;
+			border: 2px solid #007cba;
+			background: rgba(0, 124, 186, 0.2);
 		}
+	}
 
-		&.is-active-ghost {
-			background: rgba(0, 124, 186, 0.18);
-			border-color: #007cba;
-		}
-
-		&.is-preview {
-			background: rgba(0, 124, 186, 0.35);
-			border-color: #007cba;
-		}
+	&__area-id {
+		position: absolute;
+		top: 4px;
+		left: 4px;
+		min-width: 18px;
+		height: 18px;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 9px;
+		background: #007cba;
+		color: #fff;
+		font-size: 10px;
+		font-weight: 600;
+		line-height: 1;
+		padding: 0 4px;
 	}
 
 	&__pills {

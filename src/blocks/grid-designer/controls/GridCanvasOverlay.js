@@ -1,11 +1,13 @@
 import { useEffect, useRef, useState } from '@wordpress/element';
 import { parseGridLine, normalizeCellRect } from '../utils';
 
-// Renders as extra children of the SAME CSS Grid container as the real
-// grid-item blocks: each cell button gets an explicit single-track
-// gridColumn/gridRow, so it lines up pixel-perfect with the real tracks
-// (including "auto" row heights) with no coordinate math or mirrored
-// dimensions needed. Painted after <InnerBlocks>, so it sits on top.
+// Two layers, both extra children of the SAME CSS Grid container as the real
+// grid-item blocks:
+//  - a transparent, single-track hit-test grid that only captures the drag
+//    gesture (no fill, so real content stays visible underneath);
+//  - one rectangle overlay per positioned item, spanning its full
+//    gridColumn/gridRow in one element (not per-cell), so occupied areas
+//    read as a single highlighted region instead of a wall of tinted cells.
 export default function GridCanvasOverlay( {
 	colCount,
 	rowCount,
@@ -69,52 +71,45 @@ export default function GridCanvasOverlay( {
 
 	const previewRect = dragRect ? normalizeCellRect( dragRect.start, dragRect.end ) : null;
 
-	const cells = [];
+	// Transparent hit-test grid — one cell per track intersection, no fill.
+	const hitCells = [];
 	for ( let ri = 0; ri < rowCount; ri++ ) {
 		for ( let ci = 0; ci < colCount; ci++ ) {
 			const col = ci + 1;
 			const row = ri + 1;
-
-			const inPreview =
-				!! previewRect &&
-				col >= previewRect.colStart &&
-				col <= previewRect.colEnd &&
-				row >= previewRect.rowStart &&
-				row <= previewRect.rowEnd;
-
-			const occupyingIndex = itemRects.findIndex( ( rect, idx ) => {
-				if ( ! rect ) return false;
-				if ( previewRect && idx === activeIndex ) return false; // being redrawn right now
-				return (
-					col >= rect.colStart &&
-					col <= rect.colEnd &&
-					row >= rect.rowStart &&
-					row <= rect.rowEnd
-				);
-			} );
-
-			let cls = 'cwgb-grid-overlay__cell';
-			if ( inPreview ) cls += ' is-preview';
-			else if ( occupyingIndex === activeIndex && occupyingIndex !== -1 ) cls += ' is-active-ghost';
-			else if ( occupyingIndex !== -1 ) cls += ' is-ghost';
-
-			cells.push(
+			hitCells.push(
 				<button
 					key={ `${ col }-${ row }` }
 					type="button"
-					className={ cls }
+					className="cwgb-grid-overlay__cell"
 					style={ { gridColumn: `${ col } / ${ col + 1 }`, gridRow: `${ row } / ${ row + 1 }` } }
 					onMouseDown={ ( e ) => {
 						e.preventDefault();
 						beginDrag( col, row, e.currentTarget.ownerDocument.defaultView );
 					} }
 					onMouseEnter={ () => updateDragEnd( col, row ) }
-				>
-					{ ! inPreview && occupyingIndex !== -1 ? occupyingIndex + 1 : '' }
-				</button>
+				/>
 			);
 		}
 	}
+
+	// One rectangle per already-positioned item (skip the one currently being redrawn).
+	const areaOverlays = itemRects.map( ( rect, idx ) => {
+		if ( ! rect ) return null;
+		if ( previewRect && idx === activeIndex ) return null;
+		return (
+			<div
+				key={ innerBlocks[ idx ].clientId }
+				className={ 'cwgb-grid-overlay__area' + ( idx === activeIndex ? ' is-active' : '' ) }
+				style={ {
+					gridColumn: `${ rect.colStart } / ${ rect.colEnd + 1 }`,
+					gridRow: `${ rect.rowStart } / ${ rect.rowEnd + 1 }`,
+				} }
+			>
+				<span className="cwgb-grid-overlay__area-id">{ idx + 1 }</span>
+			</div>
+		);
+	} );
 
 	return (
 		<>
@@ -136,7 +131,19 @@ export default function GridCanvasOverlay( {
 					) ) }
 				</div>
 			) }
-			{ cells }
+			{ hitCells }
+			{ areaOverlays }
+			{ previewRect && (
+				<div
+					className="cwgb-grid-overlay__area cwgb-grid-overlay__area--preview"
+					style={ {
+						gridColumn: `${ previewRect.colStart } / ${ previewRect.colEnd + 1 }`,
+						gridRow: `${ previewRect.rowStart } / ${ previewRect.rowEnd + 1 }`,
+					} }
+				>
+					<span className="cwgb-grid-overlay__area-id">{ activeIndex + 1 }</span>
+				</div>
+			) }
 		</>
 	);
 }

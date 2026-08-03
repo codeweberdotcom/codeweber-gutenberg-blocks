@@ -1,0 +1,57 @@
+{
+	"apiVersion": 3,
+	"name": "codeweber-blocks/grid-designer",
+	"version": "0.1.0",
+	"title": "Grid Designer",
+	"category": "codeweber-gutenberg-elements",
+	"icon": "grid-view",
+	"description": "CSS Grid container with a visual drag-to-position designer for placing cells.",
+	"keywords": ["grid", "designer", "layout", "css grid", "bento"],
+	"supports": {
+		"html": false,
+		"customClassName": false,
+		"anchor": true
+	},
+	"attributes": {
+		"anchor": { "type": "string", "default": "" },
+		"gridId": { "type": "string", "default": "" },
+		"colCount": { "type": "number", "default": 2 },
+		"rowCount": { "type": "number", "default": 2 },
+		"colSizes": {
+			"type": "array",
+			"default": [],
+			"items": { "type": "string" }
+		},
+		"rowSizes": {
+			"type": "array",
+			"default": [],
+			"items": { "type": "string" }
+		},
+		"cellCount": { "type": "number", "default": 0 },
+		"colCountSm": { "type": "number", "default": 1 },
+		"colCountMd": { "type": "number", "default": 0 },
+		"gapType": { "type": "string", "default": "theme" },
+		"gridGap": { "type": "string", "default": "" },
+		"gridAutoFlow": { "type": "string", "default": "row" },
+		"alignItems": { "type": "string", "default": "" },
+		"justifyItems": { "type": "string", "default": "" },
+		"alignContent": { "type": "string", "default": "" },
+		"justifyContent": { "type": "string", "default": "" },
+		"minHeight": { "type": "string", "default": "" },
+		"gridClass": { "type": "string", "default": "" },
+		"gridHtmlId": { "type": "string", "default": "" },
+		"gridData": { "type": "string", "default": "" },
+		"spacingType": { "type": "string", "default": "padding" },
+		"spacingXs": { "type": "string", "default": "" },
+		"spacingSm": { "type": "string", "default": "" },
+		"spacingMd": { "type": "string", "default": "" },
+		"spacingLg": { "type": "string", "default": "" },
+		"spacingXl": { "type": "string", "default": "" },
+		"spacingXxl": { "type": "string", "default": "" },
+		"spacingXxxl": { "type": "string", "default": "" }
+	},
+	"textdomain": "codeweber-gutenberg-blocks",
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css"
+}

@@ -6,7 +6,7 @@
 	"category": "codeweber-gutenberg-elements",
 	"icon": "layout",
 	"description": "Grid cell inside a Grid Layout block. Supports grid-column, grid-row, span and self-alignment.",
-	"parent": [ "codeweber-blocks/grid-layout" ],
+	"parent": [ "codeweber-blocks/grid-layout", "codeweber-blocks/grid-designer" ],
 	"supports": {
 		"html": false,
 		"customClassName": false,

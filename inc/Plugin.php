@@ -369,6 +369,7 @@ class Plugin {
 		'inline-text-editor',
 		'grid-layout',
 		'grid-item',
+		'grid-designer',
 	];
 	}
 

@@ -104,6 +104,29 @@ blockClass,
 		}
 	}, [postId, postType, formId, setAttributes]);
 
+	// Sidebar step nav в режиме shortcode требует Block ID (это и есть id
+	// шорткода [codeweber_form_steps]) — проставляем его автоматически,
+	// чтобы шорткод был готов к копированию сразу, без ручной настройки.
+	useEffect(() => {
+		if (
+			sidebarStepNav &&
+			sidebarStepNavMode === 'shortcode' &&
+			!blockId
+		) {
+			const generatedId = formId
+				? `form-${formId}`
+				: `cwgb-form-${clientId.slice(0, 8)}`;
+			setAttributes({ blockId: generatedId });
+		}
+	}, [
+		sidebarStepNav,
+		sidebarStepNavMode,
+		blockId,
+		formId,
+		clientId,
+		setAttributes,
+	]);
+
 	// Инициализируем дефолтные значения для сообщений, если они пустые
 	useEffect(() => {
 		const defaultSuccessMessage = __(
@@ -563,17 +586,10 @@ blockClass,
 													}
 													readOnly
 													onChange={() => {}}
-													help={
-														blockId
-															? __(
-																	'Copy this shortcode into any other block on the page to place the step list there.',
-																	'codeweber-gutenberg-blocks'
-																)
-															: __(
-																	'Set a Block ID first (Settings tab → Advanced) — the shortcode needs it to find this form.',
-																	'codeweber-gutenberg-blocks'
-																)
-													}
+													help={__(
+														'Copy this shortcode into any other block on the page to place the step list there.',
+														'codeweber-gutenberg-blocks'
+													)}
 													__nextHasNoMarginBottom
 													__next40pxDefaultSize
 												/>

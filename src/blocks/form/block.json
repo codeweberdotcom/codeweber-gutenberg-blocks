@@ -216,6 +216,18 @@
 		"sidebarStepNavMode": {
 			"type": "string",
 			"default": "inline"
+		},
+		"sidebarTheme": {
+			"type": "string",
+			"default": "light"
+		},
+		"sidebarAccentColor": {
+			"type": "string",
+			"default": ""
+		},
+		"sidebarAccentColorType": {
+			"type": "string",
+			"default": "solid"
 		}
 	},
 	"allowedBlocks": [

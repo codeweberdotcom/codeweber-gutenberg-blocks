@@ -9,6 +9,7 @@ import {
 	TextareaControl,
 	ToggleControl,
 	SelectControl,
+	ComboboxControl,
 	TabPanel,
 } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
@@ -27,6 +28,8 @@ import { TagControl } from '../../components/tag/TagControl';
 import { BlockMetaFields } from '../../components/block-meta/BlockMetaFields';
 import { GridControl, getGapClasses } from '../../components/grid-control';
 import { PositioningControl } from '../../components/layout/PositioningControl';
+import { ColorTypeControl } from '../../components/colors/ColorTypeControl';
+import { colors } from '../../utilities/colors';
 
 // Tab icon with native title tooltip
 const TabIcon = ({ icon, label }) => (
@@ -81,6 +84,9 @@ blockClass,
 		formSubtitleClass,
 		sidebarStepNav,
 		sidebarStepNavMode,
+		sidebarTheme,
+		sidebarAccentColor,
+		sidebarAccentColorType,
 	} = attributes;
 
 	// Получаем информацию о текущем посте (для синхронизации ID формы с CPT "Форма")
@@ -594,6 +600,92 @@ blockClass,
 													__next40pxDefaultSize
 												/>
 											)}
+											<SelectControl
+												label={__(
+													'Sidebar Theme',
+													'codeweber-gutenberg-blocks'
+												)}
+												value={sidebarTheme || 'light'}
+												options={[
+													{
+														label: __(
+															'Light',
+															'codeweber-gutenberg-blocks'
+														),
+														value: 'light',
+													},
+													{
+														label: __(
+															'Dark',
+															'codeweber-gutenberg-blocks'
+														),
+														value: 'dark',
+													},
+												]}
+												onChange={(value) =>
+													setAttributes({
+														sidebarTheme: value,
+													})
+												}
+												__nextHasNoMarginBottom
+												__next40pxDefaultSize
+											/>
+											<ColorTypeControl
+												label={__(
+													'Accent Color Type',
+													'codeweber-gutenberg-blocks'
+												)}
+												value={
+													sidebarAccentColorType ||
+													'solid'
+												}
+												options={[
+													{
+														value: 'solid',
+														label: __(
+															'Solid',
+															'codeweber-gutenberg-blocks'
+														),
+													},
+													{
+														value: 'soft',
+														label: __(
+															'Soft',
+															'codeweber-gutenberg-blocks'
+														),
+													},
+													{
+														value: 'pale',
+														label: __(
+															'Pale',
+															'codeweber-gutenberg-blocks'
+														),
+													},
+												]}
+												onChange={(value) =>
+													setAttributes({
+														sidebarAccentColorType:
+															value,
+													})
+												}
+											/>
+											<ComboboxControl
+												label={__(
+													'Accent Color',
+													'codeweber-gutenberg-blocks'
+												)}
+												value={
+													sidebarAccentColor ||
+													'primary'
+												}
+												options={colors}
+												onChange={(value) =>
+													setAttributes({
+														sidebarAccentColor:
+															value,
+													})
+												}
+											/>
 										</>
 									)}
 								</PanelBody>

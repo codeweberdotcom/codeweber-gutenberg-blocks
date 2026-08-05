@@ -212,6 +212,10 @@
     "sidebarStepNav": {
       "type": "boolean",
       "default": false
+    },
+    "sidebarStepNavMode": {
+      "type": "string",
+      "default": "inline"
     }
   },
   "allowedBlocks": [

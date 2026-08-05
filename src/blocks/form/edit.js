@@ -80,6 +80,7 @@ blockClass,
 		formTitleClass,
 		formSubtitleClass,
 		sidebarStepNav,
+		sidebarStepNavMode,
 	} = attributes;
 
 	// Получаем информацию о текущем посте (для синхронизации ID формы с CPT "Форма")
@@ -512,6 +513,73 @@ blockClass,
 										)}
 										__nextHasNoMarginBottom
 									/>
+									{sidebarStepNav && (
+										<>
+											<SelectControl
+												label={__(
+													'Sidebar Placement',
+													'codeweber-gutenberg-blocks'
+												)}
+												value={
+													sidebarStepNavMode ||
+													'inline'
+												}
+												options={[
+													{
+														label: __(
+															'Inline (next to the form)',
+															'codeweber-gutenberg-blocks'
+														),
+														value: 'inline',
+													},
+													{
+														label: __(
+															'Shortcode (place manually)',
+															'codeweber-gutenberg-blocks'
+														),
+														value: 'shortcode',
+													},
+												]}
+												onChange={(value) =>
+													setAttributes({
+														sidebarStepNavMode:
+															value,
+													})
+												}
+												__nextHasNoMarginBottom
+												__next40pxDefaultSize
+											/>
+											{sidebarStepNavMode ===
+												'shortcode' && (
+												<TextControl
+													label={__(
+														'Shortcode',
+														'codeweber-gutenberg-blocks'
+													)}
+													value={
+														blockId
+															? `[codeweber_form_steps id="${blockId}"]`
+															: ''
+													}
+													readOnly
+													onChange={() => {}}
+													help={
+														blockId
+															? __(
+																	'Copy this shortcode into any other block on the page to place the step list there.',
+																	'codeweber-gutenberg-blocks'
+																)
+															: __(
+																	'Set a Block ID first (Settings tab → Advanced) — the shortcode needs it to find this form.',
+																	'codeweber-gutenberg-blocks'
+																)
+													}
+													__nextHasNoMarginBottom
+													__next40pxDefaultSize
+												/>
+											)}
+										</>
+									)}
 								</PanelBody>
 							)}
 

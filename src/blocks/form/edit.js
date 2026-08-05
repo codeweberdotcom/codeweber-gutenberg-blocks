@@ -79,6 +79,7 @@ blockClass,
 		formSubtitleTag,
 		formTitleClass,
 		formSubtitleClass,
+		sidebarStepNav,
 	} = attributes;
 
 	// Получаем информацию о текущем посте (для синхронизации ID формы с CPT "Форма")
@@ -493,6 +494,23 @@ blockClass,
 										)}
 										__nextHasNoMarginBottom
 										__next40pxDefaultSize
+									/>
+									<ToggleControl
+										label={__(
+											'Sidebar Step Navigation',
+											'codeweber-gutenberg-blocks'
+										)}
+										checked={!!sidebarStepNav}
+										onChange={(value) =>
+											setAttributes({
+												sidebarStepNav: value,
+											})
+										}
+										help={__(
+											'Show step list in a left sidebar instead of the progress bar. Only applies to multi-page forms (2+ Form Page blocks).',
+											'codeweber-gutenberg-blocks'
+										)}
+										__nextHasNoMarginBottom
 									/>
 								</PanelBody>
 							)}

@@ -208,6 +208,10 @@
 		"formSubtitleClass": {
 			"type": "string",
 			"default": "lead mb-4 text-start"
+		},
+		"sidebarStepNav": {
+			"type": "boolean",
+			"default": false
 		}
 	},
 	"allowedBlocks": [

@@ -181,7 +181,7 @@ export const FilterControl = ({ attributes, setAttributes }) => {
 							'codeweber-gutenberg-blocks'
 						)}
 						help={__(
-							'Extra classes for the non-active filter buttons. Leave empty for the plain button.',
+							'Extra classes for the non-active filter buttons. Leave empty to use the theme default.',
 							'codeweber-gutenberg-blocks'
 						)}
 					/>

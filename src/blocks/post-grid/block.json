@@ -283,6 +283,66 @@
 			"type": "string",
 			"default": ""
 		},
+		"excerptColor": {
+			"type": "string",
+			"default": ""
+		},
+		"excerptColorType": {
+			"type": "string",
+			"default": "solid"
+		},
+		"excerptSize": {
+			"type": "string",
+			"default": ""
+		},
+		"excerptWeight": {
+			"type": "string",
+			"default": ""
+		},
+		"excerptTransform": {
+			"type": "string",
+			"default": ""
+		},
+		"excerptClass": {
+			"type": "string",
+			"default": ""
+		},
+		"categoryColor": {
+			"type": "string",
+			"default": ""
+		},
+		"categoryColorType": {
+			"type": "string",
+			"default": "solid"
+		},
+		"categorySize": {
+			"type": "string",
+			"default": ""
+		},
+		"categoryWeight": {
+			"type": "string",
+			"default": ""
+		},
+		"categoryTransform": {
+			"type": "string",
+			"default": ""
+		},
+		"categoryClass": {
+			"type": "string",
+			"default": ""
+		},
+		"iconColor": {
+			"type": "string",
+			"default": ""
+		},
+		"iconFontSize": {
+			"type": "string",
+			"default": ""
+		},
+		"iconClass": {
+			"type": "string",
+			"default": ""
+		},
 		"showTitle": {
 			"type": "boolean",
 			"default": true

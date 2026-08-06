@@ -1,10 +1,21 @@
 import { InspectorControls } from '@wordpress/block-editor';
 import { TabPanel, PanelBody, ToggleControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
-import { Icon, cog, grid, typography, seen, filter } from '@wordpress/icons';
+import {
+	Icon,
+	cog,
+	grid,
+	typography,
+	seen,
+	filter,
+	starEmpty,
+} from '@wordpress/icons';
 import { MainControl } from './controls/MainControl';
 import { LayoutControl } from './controls/LayoutControl';
 import { TitleControl } from './controls/TitleControl';
+import { ParagraphControl } from './controls/ParagraphControl';
+import { SubtitleControl } from './controls/SubtitleControl';
+import { IconControl } from './controls/IconControl';
 import { DisplayControl } from './controls/DisplayControl';
 import { FilterControl } from './controls/FilterControl';
 import { BorderRadiusControl } from '../../components/border-radius';
@@ -31,6 +42,8 @@ export const PostGridSidebar = ({ attributes, setAttributes }) => {
 	const hasDisplayTab = isTaxonomyMode ? true : attributes.postType !== 'clients';
 	// Filter tab: not applicable for taxonomy source mode.
 	const hasFilterTab  = ! isTaxonomyMode;
+	// Icon tab: only Modules cards currently render a template-driven icon.
+	const hasIconTab = attributes.postType === 'cw_module';
 
 	const tabs = [
 		{
@@ -60,6 +73,40 @@ export const PostGridSidebar = ({ attributes, setAttributes }) => {
 				/>
 			),
 		},
+		{
+			name: 'paragraph',
+			title: (
+				<TabIcon
+					icon={typography}
+					label={__('Paragraph', 'codeweber-gutenberg-blocks')}
+				/>
+			),
+		},
+		{
+			name: 'subtitle',
+			title: (
+				<TabIcon
+					icon={typography}
+					label={__('Subtitle', 'codeweber-gutenberg-blocks')}
+				/>
+			),
+		},
+		...(hasIconTab
+			? [
+					{
+						name: 'icon',
+						title: (
+							<TabIcon
+								icon={starEmpty}
+								label={__(
+									'Icon',
+									'codeweber-gutenberg-blocks'
+								)}
+							/>
+						),
+					},
+				]
+			: []),
 		...(hasDisplayTab
 			? [
 					{
@@ -168,6 +215,36 @@ export const PostGridSidebar = ({ attributes, setAttributes }) => {
 						{tab.name === 'title' && (
 							<PanelBody>
 								<TitleControl
+									attributes={attributes}
+									setAttributes={setAttributes}
+								/>
+							</PanelBody>
+						)}
+
+						{/* PARAGRAPH TAB */}
+						{tab.name === 'paragraph' && (
+							<PanelBody>
+								<ParagraphControl
+									attributes={attributes}
+									setAttributes={setAttributes}
+								/>
+							</PanelBody>
+						)}
+
+						{/* SUBTITLE TAB (category typography) */}
+						{tab.name === 'subtitle' && (
+							<PanelBody>
+								<SubtitleControl
+									attributes={attributes}
+									setAttributes={setAttributes}
+								/>
+							</PanelBody>
+						)}
+
+						{/* ICON TAB */}
+						{tab.name === 'icon' && hasIconTab && (
+							<PanelBody>
+								<IconControl
 									attributes={attributes}
 									setAttributes={setAttributes}
 								/>

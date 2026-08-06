@@ -86,7 +86,70 @@ if (!function_exists('cwgb_post_grid_compose_title_class')) {
 	}
 }
 
+// Собрать typography-класс (size + weight + transform + color + custom) для
+// произвольного префикса атрибутов ({prefix}Size/Weight/Transform/Color/ColorType/Class).
+// Общая версия cwgb_post_grid_compose_title_class() без tag-логики и cwgb-title-color
+// маркера — используется для excerpt/category (шаблоны читают их через display_settings).
+if (!function_exists('cwgb_post_grid_compose_typography_class')) {
+	function cwgb_post_grid_compose_typography_class($attributes, $prefix) {
+		$parts = [];
+
+		foreach (['Size', 'Weight', 'Transform'] as $suffix) {
+			$key = $prefix . $suffix;
+			if (!empty($attributes[$key])) {
+				$parts[] = $attributes[$key];
+			}
+		}
+
+		$color_key = $prefix . 'Color';
+		$color_type_key = $prefix . 'ColorType';
+		$color = isset($attributes[$color_key]) ? $attributes[$color_key] : '';
+		$color_type = isset($attributes[$color_type_key]) ? $attributes[$color_type_key] : 'solid';
+		if ($color) {
+			if ($color_type === 'soft') {
+				$parts[] = 'text-soft-' . $color;
+			} elseif ($color_type === 'pale') {
+				$parts[] = 'text-pale-' . $color;
+			} else {
+				$parts[] = 'text-' . $color;
+			}
+		}
+
+		$class_key = $prefix . 'Class';
+		if (!empty($attributes[$class_key])) {
+			$parts[] = $attributes[$class_key];
+		}
+
+		return trim(implode(' ', array_filter($parts)));
+	}
+}
+
+// Собрать icon-класс (fontSize + color + custom) — иконка не текст, поэтому
+// без Weight/Transform, цвет напрямую text-{color} (без soft/pale — как у Icon-блока).
+if (!function_exists('cwgb_post_grid_compose_icon_class')) {
+	function cwgb_post_grid_compose_icon_class($attributes) {
+		$parts = [];
+
+		if (!empty($attributes['iconFontSize'])) {
+			$parts[] = $attributes['iconFontSize'];
+		}
+
+		if (!empty($attributes['iconColor'])) {
+			$parts[] = 'text-' . $attributes['iconColor'];
+		}
+
+		if (!empty($attributes['iconClass'])) {
+			$parts[] = $attributes['iconClass'];
+		}
+
+		return trim(implode(' ', array_filter($parts)));
+	}
+}
+
 $title_class = sanitize_text_field(cwgb_post_grid_compose_title_class($attributes));
+$excerpt_class = sanitize_text_field(cwgb_post_grid_compose_typography_class($attributes, 'excerpt'));
+$category_class = sanitize_text_field(cwgb_post_grid_compose_typography_class($attributes, 'category'));
+$icon_class = sanitize_text_field(cwgb_post_grid_compose_icon_class($attributes));
 
 // Генерируем уникальный ID для блока, если он не задан (необходимо для Load More)
 if (empty($block_id)) {
@@ -1006,6 +1069,9 @@ if (!function_exists('render_post_grid_item')) {
 					'excerpt_length'      => isset($attributes['excerptLength']) ? (int) $attributes['excerptLength'] : 20,
 					'title_tag'           => $title_tag,
 					'title_class'         => $title_class,
+					'excerpt_class'       => $excerpt_class,
+					'category_class'      => $category_class,
+					'icon_class'          => $icon_class,
 				];
 
 				// Hover-классы для фигуры (зависят только от шаблона)

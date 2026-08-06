@@ -811,11 +811,21 @@ class LoadMoreAPI {
 		
 		$classes = [];
 		$colsDefault = $attributes['gridColumns'] ?? '';
-		$colsMd = $attributes['gridColumnsMd'] ?? '';
-		
+		$colsXs     = $attributes['gridColumnsXs'] ?? '';
+		$colsSm     = $attributes['gridColumnsSm'] ?? '';
+		$colsMd     = $attributes['gridColumnsMd'] ?? '';
+		$colsLg     = $attributes['gridColumnsLg'] ?? '';
+		$colsXl     = $attributes['gridColumnsXl'] ?? '';
+		$colsXxl    = $attributes['gridColumnsXxl'] ?? '';
+
 		if ($colsDefault) $classes[] = "col-{$colsDefault}";
-		if ($colsMd) $classes[] = "col-md-{$colsMd}";
-		
+		if ($colsXs)      $classes[] = "col-{$colsXs}";
+		if ($colsSm)      $classes[] = "col-sm-{$colsSm}";
+		if ($colsMd)      $classes[] = "col-md-{$colsMd}";
+		if ($colsLg)      $classes[] = "col-lg-{$colsLg}";
+		if ($colsXl)      $classes[] = "col-xl-{$colsXl}";
+		if ($colsXxl)     $classes[] = "col-xxl-{$colsXxl}";
+
 		return implode(' ', $classes);
 	}
 

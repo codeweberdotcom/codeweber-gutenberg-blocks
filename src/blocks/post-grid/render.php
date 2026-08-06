@@ -717,6 +717,11 @@ if (!function_exists('render_post_grid_item')) {
 		}
 		// Итоговый title_class = size + weight + transform + color + custom — та же логика что и в верхнем скоупе.
 		$title_class = sanitize_text_field(cwgb_post_grid_compose_title_class($attributes));
+		// render_post_grid_item() - обычная функция, а не замыкание, поэтому не видит
+		// $excerpt_class/$category_class/$icon_class из верхнего скоупа (строки 149-152) - пересчитываем локально.
+		$excerpt_class = sanitize_text_field(cwgb_post_grid_compose_typography_class($attributes, 'excerpt'));
+		$category_class = sanitize_text_field(cwgb_post_grid_compose_typography_class($attributes, 'category'));
+		$icon_class = sanitize_text_field(cwgb_post_grid_compose_icon_class($attributes));
 
 		// Загружаем новую систему шаблонов из темы, если доступна
 		$post_card_templates_path = get_template_directory() . '/functions/post-card-templates.php';

@@ -179,7 +179,7 @@ export const TitleTypographyControl = ({ attributes, setAttributes }) => {
 						value={categoryColor || ''}
 						options={colors}
 						onChange={(value) =>
-							setAttributes({ categoryColor: value })
+							setAttributes({ categoryColor: value || '' })
 						}
 					/>
 
@@ -256,7 +256,7 @@ export const TitleTypographyControl = ({ attributes, setAttributes }) => {
 						value={excerptColor || ''}
 						options={colors}
 						onChange={(value) =>
-							setAttributes({ excerptColor: value })
+							setAttributes({ excerptColor: value || '' })
 						}
 					/>
 

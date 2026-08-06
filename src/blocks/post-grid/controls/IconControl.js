@@ -17,7 +17,7 @@ export const IconControl = ({ attributes, setAttributes }) => {
 				label={__('Icon Color', 'codeweber-gutenberg-blocks')}
 				value={iconColor || ''}
 				options={colors}
-				onChange={(value) => setAttributes({ iconColor: value })}
+				onChange={(value) => setAttributes({ iconColor: value || '' })}
 				help={__(
 					'Leave empty to use each item’s own color.',
 					'codeweber-gutenberg-blocks'

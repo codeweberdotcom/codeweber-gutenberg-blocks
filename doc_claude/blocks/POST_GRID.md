@@ -144,6 +144,33 @@
 
 Если выбран цвет — добавляется маркер `cwgb-title-color`. CSS плагина пробрасывает цвет на вложенный `<a class="link-dark">` внутри заголовка (см. `style.scss`).
 
+### Paragraph
+Та же типографика (Color/Color Type/Size/Weight/Transform/Class), но для excerpt-текста. Поля: `excerptColor`, `excerptColorType`, `excerptSize`, `excerptWeight`, `excerptTransform`, `excerptClass`. Собираются в `cwgb_post_grid_compose_typography_class($attributes, 'excerpt')` → `$display['excerpt_class']`.
+
+**Без cwgb-title-color маркера** и без tag-логики — упрощённая версия compose title-функции, переиспользуемая и для Subtitle.
+
+Пусто → у шаблона остаётся его собственный дефолтный класс (`mb-0` и т.п.).
+
+### Subtitle
+Та же типографика для текста категории/таксономии (`post-category` div). Поля: `categoryColor`, `categoryColorType`, `categorySize`, `categoryWeight`, `categoryTransform`, `categoryClass` → `cwgb_post_grid_compose_typography_class($attributes, 'category')` → `$display['category_class']`.
+
+### Icon
+Виден **только когда `postType === 'cw_module'`** — это единственный CPT, чьи шаблоны карточек рендерят иконку, привязанную к посту (`_module_icon`/`_module_color` мета), а не декоративную/фиксированную. Поля: `iconColor` (палитра темы, `text-{color}`), `iconFontSize` (готовые `fs-14`…`fs-48` из `utilities/icon_sizes.js`, тот же список что у блока Icon), `iconClass` (свободный текст). Собираются в `cwgb_post_grid_compose_icon_class($attributes)` → `$display['icon_class']`, добавляется к `<i class="uil uil-{icon}">` **в дополнение** к цвету из мета поста (не заменяет его — при заданном `iconColor` на теге будет два `text-*` класса, выигрывает по CSS-каскаду).
+
+Условие видимости — `hasIconTab = attributes.postType === 'cw_module'` в `sidebar.js`. Не завязано на реестр шаблонов (там нет метаданных про поддержку иконки на клиенте) — просто прямая проверка CPT.
+
+### Paragraph/Subtitle/Icon — область применения шаблонов
+
+В отличие от Title (подключён к ~34 из 49 шаблонов темы + все 9 у cw-websites-for-sale), эти три — **точечно**, только там, где реально нужно на момент внедрения:
+
+| Ключ | Где подключено |
+|---|---|
+| `excerpt_class` | `theme/templates/post-cards/post/default.php`, `post/card.php`; `cw-websites-for-sale/templates/post-cards/cw_module/{card,card-sm,card-2}.php` |
+| `category_class` | `theme/templates/post-cards/post/default.php`, `post/card.php`; `cw_module/card-2.php` (единственный, кто выводит категорию модуля) |
+| `icon_class` | все 3 шаблона `cw_module` |
+
+Все ключи уже прокинуты в `$display_settings` для ЛЮБОГО CPT через единственную общую ветку (`else` в конце switch по `$post_type` в render.php — обслуживает `post` и любой незарегистрированный CPT, включая `cw_module`); специальные ветки (`clients`, `testimonials`, `documents`, `faq`, `staff`, `offices`, `cw_website`) их не получают — при необходимости добавляются туда так же, плюс правится соответствующий шаблон.
+
 ### Display
 Видимость элементов карточки + длины.
 

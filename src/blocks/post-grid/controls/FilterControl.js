@@ -21,6 +21,8 @@ export const FilterControl = ({ attributes, setAttributes }) => {
 		filterStyle,
 		filterActiveColor,
 		filterActiveColorType,
+		filterInactiveColor,
+		filterInactiveColorType,
 		filterTextReset,
 		selectedTaxonomies,
 	} = attributes;
@@ -194,6 +196,56 @@ export const FilterControl = ({ attributes, setAttributes }) => {
 						}
 						help={__(
 							'Leave empty to use the theme default.',
+							'codeweber-gutenberg-blocks'
+						)}
+					/>
+
+					<ColorTypeControl
+						label={__(
+							'Inactive Color Type',
+							'codeweber-gutenberg-blocks'
+						)}
+						value={filterInactiveColorType || 'solid'}
+						onChange={(value) =>
+							setAttributes({ filterInactiveColorType: value })
+						}
+						options={[
+							{
+								value: 'solid',
+								label: __(
+									'Solid',
+									'codeweber-gutenberg-blocks'
+								),
+							},
+							{
+								value: 'soft',
+								label: __(
+									'Soft',
+									'codeweber-gutenberg-blocks'
+								),
+							},
+							{
+								value: 'pale',
+								label: __(
+									'Pale',
+									'codeweber-gutenberg-blocks'
+								),
+							},
+						]}
+					/>
+
+					<ComboboxControl
+						label={__(
+							'Inactive Color',
+							'codeweber-gutenberg-blocks'
+						)}
+						value={filterInactiveColor || ''}
+						options={colors}
+						onChange={(value) =>
+							setAttributes({ filterInactiveColor: value })
+						}
+						help={__(
+							'Leave empty for the plain (uncolored) button.',
 							'codeweber-gutenberg-blocks'
 						)}
 					/>

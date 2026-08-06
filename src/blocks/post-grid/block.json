@@ -371,6 +371,14 @@
 			"type": "string",
 			"default": "solid"
 		},
+		"filterInactiveColor": {
+			"type": "string",
+			"default": ""
+		},
+		"filterInactiveColorType": {
+			"type": "string",
+			"default": "solid"
+		},
 		"filterTextReset": {
 			"type": "boolean",
 			"default": false

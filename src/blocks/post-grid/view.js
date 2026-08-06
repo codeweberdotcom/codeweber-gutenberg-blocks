@@ -149,11 +149,45 @@
 				// data-cwgb-results-for в ответе не совпадёт с нашим и подмена не произойдёт.
 				attrs.blockId = blockId;
 
-				// UI: активная кнопка
+				// UI: активная кнопка. Переключаем не только .active, но и
+				// цветовые модификаторы (btn-primary / bg-primary / text-primary
+				// и т.п.) — иначе визуально "активной" навсегда остаётся тот
+				// пункт, что получил цвет при первой отрисовке (обычно "Все").
+				var toExtraClasses = function (el, attr) {
+					return (el.getAttribute(attr) || '')
+						.split(' ')
+						.filter(Boolean);
+				};
 				bar.querySelectorAll('.filter-item').forEach(function (b) {
-					b.classList.remove('active');
+					var activeExtra = toExtraClasses(
+						b,
+						'data-cwgb-active-extra'
+					);
+					var inactiveExtra = toExtraClasses(
+						b,
+						'data-cwgb-inactive-extra'
+					);
+					if (activeExtra.length) {
+						b.classList.remove.apply(b.classList, activeExtra);
+					}
+					if (inactiveExtra.length) {
+						b.classList.add.apply(b.classList, inactiveExtra);
+					}
 				});
-				btn.classList.add('active');
+				var btnInactiveExtra = toExtraClasses(
+					btn,
+					'data-cwgb-inactive-extra'
+				);
+				var btnActiveExtra = toExtraClasses(
+					btn,
+					'data-cwgb-active-extra'
+				);
+				if (btnInactiveExtra.length) {
+					btn.classList.remove.apply(btn.classList, btnInactiveExtra);
+				}
+				if (btnActiveExtra.length) {
+					btn.classList.add.apply(btn.classList, btnActiveExtra);
+				}
 
 				// Визуальная блокировка результатов
 				results.style.opacity = '0.5';

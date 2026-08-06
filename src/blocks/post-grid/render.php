@@ -119,6 +119,8 @@ $filter_taxonomy = isset($attributes['filterTaxonomy']) ? sanitize_key($attribut
 $filter_style = isset($attributes['filterStyle']) ? $attributes['filterStyle'] : 'default';
 $filter_active_color = isset($attributes['filterActiveColor']) ? sanitize_key($attributes['filterActiveColor']) : '';
 $filter_active_color_type = isset($attributes['filterActiveColorType']) ? $attributes['filterActiveColorType'] : 'solid';
+$filter_inactive_color = isset($attributes['filterInactiveColor']) ? sanitize_key($attributes['filterInactiveColor']) : '';
+$filter_inactive_color_type = isset($attributes['filterInactiveColorType']) ? $attributes['filterInactiveColorType'] : 'solid';
 $filter_all_label = __('All', 'codeweber-gutenberg-blocks');
 $filter_terms = [];
 $filter_active_term = isset($_GET['cwgb_filter']) ? (int) $_GET['cwgb_filter'] : 0;
@@ -132,59 +134,92 @@ if ($enable_filter && $filter_taxonomy && taxonomy_exists($filter_taxonomy)) {
 	}
 }
 
+// Helper: строит цветовой класс-модификатор (btn-primary / text-soft-primary / bg-pale-primary...).
+if (!function_exists('cwgb_post_grid_filter_color_mod')) {
+	function cwgb_post_grid_filter_color_mod($prefix, $color, $color_type) {
+		if (!$color) {
+			return '';
+		}
+		if ($color_type === 'soft') {
+			return $prefix . '-soft-' . $color;
+		}
+		if ($color_type === 'pale') {
+			return $prefix . '-pale-' . $color;
+		}
+		return $prefix . '-' . $color;
+	}
+}
+
 // Helper: классы для одного элемента фильтр-бара в зависимости от стиля.
-// Возвращает ['base' => [базовые классы], 'active' => [классы активного состояния]].
+// Возвращает ['base' => [...], 'active' => [классы активного состояния],
+// 'inactive' => [классы неактивного состояния]]. 'active'/'inactive' — это
+// ДОПОЛНИТЕЛЬНЫЕ классы поверх 'base', переключаемые JS при клике.
 if (!function_exists('cwgb_post_grid_filter_item_classes')) {
-	function cwgb_post_grid_filter_item_classes($style, $color, $color_type) {
+	function cwgb_post_grid_filter_item_classes($style, $active_color, $active_color_type, $inactive_color = '', $inactive_color_type = 'solid') {
 		$base = [];
 		$active = ['active'];
+		$inactive = [];
 
-		// Префикс цветовой модификатор (btn-primary / text-primary / bg-primary).
-		$color_mod = '';
-		if ($color) {
-			$prefix_map = [
-				'default' => 'text',
-				'btn-xs'  => 'btn',
-				'btn-sm'  => 'btn',
-				'badge'   => 'bg',
-			];
-			$prefix = isset($prefix_map[$style]) ? $prefix_map[$style] : 'text';
-			if ($color_type === 'soft') {
-				$color_mod = $prefix . '-soft-' . $color;
-			} elseif ($color_type === 'pale') {
-				$color_mod = $prefix . '-pale-' . $color;
-			} else {
-				$color_mod = $prefix . '-' . $color;
-			}
-		}
+		$active_prefix_map = [
+			'default' => 'text',
+			'btn-xs'  => 'btn',
+			'btn-sm'  => 'btn',
+			'badge'   => 'bg',
+		];
+		// Неактивная кнопка — outline-вариант для btn-стилей (сплошной btn-{color}
+		// выглядел бы неотличимо от активной), для остальных стилей — та же логика.
+		$inactive_prefix_map = [
+			'default' => 'text',
+			'btn-xs'  => 'btn-outline',
+			'btn-sm'  => 'btn-outline',
+			'badge'   => 'bg',
+		];
+
+		$active_prefix   = isset($active_prefix_map[$style]) ? $active_prefix_map[$style] : 'text';
+		$inactive_prefix = isset($inactive_prefix_map[$style]) ? $inactive_prefix_map[$style] : 'text';
+
+		$active_color_mod   = cwgb_post_grid_filter_color_mod($active_prefix, $active_color, $active_color_type);
+		$inactive_color_mod = cwgb_post_grid_filter_color_mod($inactive_prefix, $inactive_color, $inactive_color_type);
 
 		switch ($style) {
 			case 'btn-xs':
 				$_r   = class_exists('Codeweber_Options') ? trim(Codeweber_Options::style('button')) : '';
 				$base = array_values(array_filter(['btn', 'btn-xs', $_r]));
-				$active[] = $color_mod ?: 'btn-primary';
+				$active[] = $active_color_mod ?: 'btn-primary';
+				if ($inactive_color_mod) {
+					$inactive[] = $inactive_color_mod;
+				}
 				break;
 			case 'btn-sm':
 				$_r   = class_exists('Codeweber_Options') ? trim(Codeweber_Options::style('button')) : '';
 				$base = array_values(array_filter(['btn', 'btn-sm', $_r]));
-				$active[] = $color_mod ?: 'btn-primary';
+				$active[] = $active_color_mod ?: 'btn-primary';
+				if ($inactive_color_mod) {
+					$inactive[] = $inactive_color_mod;
+				}
 				break;
 			case 'badge':
 				$base = ['badge', 'rounded-pill'];
-				$active[] = $color_mod ?: 'bg-primary';
+				$active[] = $active_color_mod ?: 'bg-primary';
 				$active[] = 'text-white';
+				if ($inactive_color_mod) {
+					$inactive[] = $inactive_color_mod;
+				}
 				break;
 			case 'default':
 			default:
 				// filter-item добавляется в разметке глобально (для JS-селектора),
 				// дополнительных базовых классов не требуется.
-				if ($color_mod) {
-					$active[] = $color_mod;
+				if ($active_color_mod) {
+					$active[] = $active_color_mod;
+				}
+				if ($inactive_color_mod) {
+					$inactive[] = $inactive_color_mod;
 				}
 				break;
 		}
 
-		return ['base' => $base, 'active' => $active];
+		return ['base' => $base, 'active' => $active, 'inactive' => $inactive];
 	}
 }
 
@@ -1376,9 +1411,10 @@ if ( $source_type === 'taxonomy' ) {
 
 <div <?php echo $wrapper_attributes; ?>>
 	<?php if ($enable_filter && !empty($filter_terms)) :
-		$filter_item_classes = cwgb_post_grid_filter_item_classes($filter_style, $filter_active_color, $filter_active_color_type);
+		$filter_item_classes = cwgb_post_grid_filter_item_classes($filter_style, $filter_active_color, $filter_active_color_type, $filter_inactive_color, $filter_inactive_color_type);
 		$base_item_class = implode(' ', $filter_item_classes['base']);
 		$active_item_class = implode(' ', $filter_item_classes['active']);
+		$inactive_item_class = implode(' ', $filter_item_classes['inactive']);
 
 		// Разметка зависит от стиля:
 		// - default: <ul class="filter isotope-filter"> — тема сама обнулит bullets/padding
@@ -1405,9 +1441,13 @@ if ( $source_type === 'taxonomy' ) {
 			esc_attr($filter_style)
 		);
 
-		$render_filter_item = function ($label, $term_id, $is_active) use ($base_item_class, $active_item_class) {
-			$cls = trim('filter-item ' . $base_item_class . ($is_active ? ' ' . $active_item_class : ''));
-			return '<a href="#" class="' . esc_attr($cls) . '" data-cwgb-filter-term="' . esc_attr($term_id) . '">' . esc_html($label) . '</a>';
+		$render_filter_item = function ($label, $term_id, $is_active) use ($base_item_class, $active_item_class, $inactive_item_class) {
+			$cls = trim('filter-item ' . $base_item_class . ' ' . ($is_active ? $active_item_class : $inactive_item_class));
+			return '<a href="#" class="' . esc_attr($cls) . '"'
+				. ' data-cwgb-filter-term="' . esc_attr($term_id) . '"'
+				. ' data-cwgb-active-extra="' . esc_attr($active_item_class) . '"'
+				. ' data-cwgb-inactive-extra="' . esc_attr($inactive_item_class) . '"'
+				. '>' . esc_html($label) . '</a>';
 		};
 		?>
 		<?php if ($is_default_style) : ?>

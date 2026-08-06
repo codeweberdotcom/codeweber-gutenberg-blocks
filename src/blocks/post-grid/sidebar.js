@@ -12,9 +12,7 @@ import {
 } from '@wordpress/icons';
 import { MainControl } from './controls/MainControl';
 import { LayoutControl } from './controls/LayoutControl';
-import { TitleControl } from './controls/TitleControl';
-import { ParagraphControl } from './controls/ParagraphControl';
-import { SubtitleControl } from './controls/SubtitleControl';
+import { TitleTypographyControl } from './controls/TitleTypographyControl';
 import { IconControl } from './controls/IconControl';
 import { DisplayControl } from './controls/DisplayControl';
 import { FilterControl } from './controls/FilterControl';
@@ -69,25 +67,10 @@ export const PostGridSidebar = ({ attributes, setAttributes }) => {
 			title: (
 				<TabIcon
 					icon={typography}
-					label={__('Title', 'codeweber-gutenberg-blocks')}
-				/>
-			),
-		},
-		{
-			name: 'paragraph',
-			title: (
-				<TabIcon
-					icon={typography}
-					label={__('Paragraph', 'codeweber-gutenberg-blocks')}
-				/>
-			),
-		},
-		{
-			name: 'subtitle',
-			title: (
-				<TabIcon
-					icon={typography}
-					label={__('Subtitle', 'codeweber-gutenberg-blocks')}
+					label={__(
+						'Title / Subtitle / Paragraph',
+						'codeweber-gutenberg-blocks'
+					)}
 				/>
 			),
 		},
@@ -211,30 +194,10 @@ export const PostGridSidebar = ({ attributes, setAttributes }) => {
 							</PanelBody>
 						)}
 
-						{/* TITLE TAB */}
+						{/* TITLE / SUBTITLE / PARAGRAPH TAB */}
 						{tab.name === 'title' && (
 							<PanelBody>
-								<TitleControl
-									attributes={attributes}
-									setAttributes={setAttributes}
-								/>
-							</PanelBody>
-						)}
-
-						{/* PARAGRAPH TAB */}
-						{tab.name === 'paragraph' && (
-							<PanelBody>
-								<ParagraphControl
-									attributes={attributes}
-									setAttributes={setAttributes}
-								/>
-							</PanelBody>
-						)}
-
-						{/* SUBTITLE TAB (category typography) */}
-						{tab.name === 'subtitle' && (
-							<PanelBody>
-								<SubtitleControl
+								<TitleTypographyControl
 									attributes={attributes}
 									setAttributes={setAttributes}
 								/>

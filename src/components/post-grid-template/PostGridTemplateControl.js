@@ -7,7 +7,7 @@
 
 import { __ } from '@wordpress/i18n';
 import { SelectControl, Spinner } from '@wordpress/components';
-import { useEffect, useState } from '@wordpress/element';
+import { useEffect, useRef, useState } from '@wordpress/element';
 import apiFetch from '@wordpress/api-fetch';
 import { addQueryArgs } from '@wordpress/url';
 
@@ -28,6 +28,11 @@ export const PostGridTemplateControl = ({
 	const [templates, setTemplates] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 
+	// Источник, для которого уже приходил ответ. Нужен, чтобы отличить первую
+	// загрузку (сохранённое значение трогать нельзя) от смены типа записи
+	// пользователем (шаблон прошлого CPT нужно сбросить).
+	const loadedSourceRef = useRef(null);
+
 	// Fetch templates from registry whenever postType/sourceType changes
 	useEffect(() => {
 		let cancelled = false;
@@ -46,16 +51,36 @@ export const PostGridTemplateControl = ({
 		})
 			.then((data) => {
 				if (cancelled) return;
-				const list = Array.isArray(data) && data.length > 0 ? data : FALLBACK_TEMPLATES;
+				const hasRegistry = Array.isArray(data) && data.length > 0;
+				const list = hasRegistry ? data : FALLBACK_TEMPLATES;
 				setTemplates(list);
 				setIsLoading(false);
+
+				const source = `${postType}|${sourceType}`;
+				const previousSource = loadedSourceRef.current;
+				loadedSourceRef.current = source;
 
 				// Only auto-pick a default for a genuinely new/unconfigured block
 				// (empty value). A previously-saved value that merely isn't in
 				// *this* response (network hiccup, registry not populated yet,
 				// etc.) must never be silently overwritten — doing so was
 				// resetting real, saved template choices on reload.
-				if (!value && list.length > 0) {
+				if (!value) {
+					if (list.length > 0) {
+						onChange(list[0].value);
+					}
+					return;
+				}
+
+				// The user switched post type and the saved template belongs to
+				// the previous one — fall back to the first available template.
+				// Only ever runs on a real switch with a real registry answer.
+				if (
+					hasRegistry &&
+					previousSource !== null &&
+					previousSource !== source &&
+					!list.some((t) => t.value === value)
+				) {
 					onChange(list[0].value);
 				}
 			})

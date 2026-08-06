@@ -47,8 +47,11 @@ Import path: `../../components/<name>/<ComponentName>`
 | `TaxonomyFilterControl` | `taxonomy-filter/` | Taxonomy checkboxes (loads from REST) |
 | `PostSortControl` | `post-sort/` | orderBy + order selects |
 | `PostGridTemplateControl` | `post-grid-template/` | Template picker per post type |
-| `PostGridItemRender` | `post-grid-item/` | Renders individual post cards |
 | `SwiperSlider` | `swiper/` | Swiper config helpers |
+
+> `PostGridItemRender` (`post-grid-item/`) was removed — Post Grid renders its
+> editor preview through `ServerSideRender` instead of mirroring the theme's PHP
+> card templates in JSX. See `doc_claude/blocks/POST_GRID.md`.
 
 ---
 

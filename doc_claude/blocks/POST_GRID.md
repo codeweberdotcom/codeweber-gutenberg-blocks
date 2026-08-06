@@ -7,7 +7,7 @@
 | Путь | Назначение |
 |------|-----------|
 | `src/blocks/post-grid/block.json` | Источник правды (атрибуты) |
-| `src/blocks/post-grid/edit.js` | Editor UI, загрузка постов через REST |
+| `src/blocks/post-grid/edit.js` | Editor UI: сайдбар + `ServerSideRender` превью |
 | `src/blocks/post-grid/render.php` | Server-side рендер, fallback для WC-продуктов |
 | `src/blocks/post-grid/save.js` | `return null` — динамический блок |
 | `src/blocks/post-grid/view.js` | Front-end: swiper init, filter bar AJAX, theme effect re-init |
@@ -18,16 +18,20 @@
 | `src/blocks/post-grid/controls/DisplayControl.js` | Show Title/Date/Category/Comments/Excerpt + lengths + Overlay Card Options |
 | `src/blocks/post-grid/controls/FilterControl.js` | Runtime filter-bar settings |
 | `src/blocks/post-grid/style.scss`, `editor.scss` | Стили (минимально; фронт — Bootstrap темы) |
-| `src/components/post-grid-item/PostGridItemRender.js` | Клиентский рендер карточки в editor preview (зеркалирует PHP-шаблоны) |
-| `src/components/post-grid-template/PostGridTemplateControl.js` | Dropdown шаблонов — читает REST из темы |
+| `src/components/post-grid-template/PostGridTemplateControl.js` | Dropdown шаблонов — читает REST из темы, сбрасывает шаблон при смене CPT |
 
 Плагин целиком отсылает к реестру и шаблонам темы:
 
 | В теме codeweber | Роль |
 |---|---|
 | `functions/post-card-templates.php` | `cw_render_post_card()` — диспетчер шаблонов |
-| `functions/post-cards-registry.php` | Registry `post_type → [templates]`, используется REST-эндпоинтом |
+| `functions/post-cards-scanner.php` | Автоскан `templates/post-cards/` темы и зарегистрированных плагинами директорий |
+| `functions/post-cards-registry.php` | Явные записи поверх скана; источник REST-эндпоинта |
 | `templates/post-cards/<cpt>/*.php` | Сами шаблоны карточек |
+
+**Новый шаблон карточки = один `.php` в нужной папке.** Ни в блоке, ни в реестре
+править ничего не нужно — сканер темы подхватит файл, метаданные возьмёт из его
+шапки. Подробности — `themes/codeweber/doc_claude/templates/POST_CARDS_SYSTEM.md`.
 
 ---
 
@@ -95,7 +99,7 @@
 - `return;` в конце taxonomy-ветки предотвращает исполнение post-render кода.
 - Load More отключается (`$load_more_enable = false`). Filter bar в taxonomy mode также отключён.
 
-**Editor preview:** в taxonomy mode используется `ServerSideRender` (так же, как для `product` и manual mode) — JS не умеет рендерить термы.
+**Editor preview:** как и во всех остальных режимах — `ServerSideRender`, см. [Editor preview](#editor-preview).
 
 ---
 
@@ -164,17 +168,12 @@ Runtime-фильтр **над** сеткой — AJAX-фильтрация по 
   - `btn-xs` — `<div><a class="filter-item btn btn-xs">…</a></div>`.
   - `btn-sm` — то же с `btn-sm`.
   - `badge` — `<div><a class="filter-item badge rounded-pill">…</a></div>`.
-- **Active Color Type** — `solid` / `soft` / `pale`.
-- **Active Color** — палитра темы. Префикс модификатора зависит от стиля:
-  - `default`: `text-{color}`
-  - `btn-xs`/`btn-sm`: `btn-{color}`
-  - `badge`: `bg-{color}` (+ `text-white`)
-- **Inactive Color Type** / **Inactive Color** — тот же принцип для НЕ активных кнопок (по умолчанию — пусто, обычная `.btn`/`.badge` без цвета):
-  - `default`: `text-{color}`
-  - `btn-xs`/`btn-sm`: `btn-outline-{color}` (не сплошной `btn-{color}` — иначе неотличимо от активной)
-  - `badge`: `bg-{color}` (без принудительного `text-white`)
-- **Inherit Text Color (text-reset)** — добавляет Bootstrap `.text-reset` к контейнеру фильтра (для тёмных/inverse-секций).
+- **Active Button Class** — свободный текст, доп. классы для активной кнопки (`filterActiveClass`). Пусто → тематический дефолт по стилю: `btn-primary` (btn-xs/btn-sm), `bg-primary text-white` (badge), ничего (default).
+- **Inactive Button Class** — то же для остальных (неактивных) кнопок (`filterInactiveClass`). Пусто → обычная `.btn`/`.badge` без цвета. Пример: `btn-outline-primary` для btn-стилей.
+- **Inherit Text Color (text-reset)** — добавляет Bootstrap `.text-reset` к контейнеру фильтра (для тёмных/inverse-секций). Независимая настройка — при желании тот же эффект (`inherit`) можно получить, вписав `text-reset` прямо в поле класса.
 - **"All" Button Label** — текст reset-кнопки.
+
+> До этой версии здесь были палитровые контролы (`filterActiveColor`/`filterActiveColorType`/`filterInactiveColor`/`filterInactiveColorType`, солид/софт/бледный из палитры темы). Заменены на два текстовых поля — свободный ввод любых классов, без привязки к палитре, по аналогии с `optionButtonClass` в полях формы CodeWeber Forms.
 
 **Переключение active/inactive классов (JS).** Каждый `<a class="filter-item">` несёт `data-cwgb-active-extra` и `data-cwgb-inactive-extra` — полные наборы дополнительных классов для каждого состояния (генерируются `cwgb_post_grid_filter_item_classes()` в render.php). На клик `view.js` не просто переключает `.active`, а меняет местами именно эти наборы на ВСЕХ кнопках бара — иначе цветовой модификатор (`btn-primary`/`bg-primary`/…), полученный кнопкой при первой отрисовке, никогда не снимается, и она выглядит «активной» даже после клика по другому фильтру (частый баг на "Все", раз это единственный пункт с цветом в initial render).
 
@@ -214,7 +213,7 @@ Runtime-фильтр **над** сеткой — AJAX-фильтрация по 
 `useAltTitle` (bool, default `false`) — использовать мета `_alt_title` вместо штатного заголовка. Применяется только в post-mode (не в taxonomy/manual). При `true`: форсирует `title_length=0` и `use_html_title=true` в display_settings, вешает временный `the_title` фильтр на конкретный `post->ID` перед `cw_render_post_card()`. Подробнее — `doc_claude/development/ALT_TITLE.md`.
 
 ### Filter bar
-`enableFilter`, `filterTaxonomy`, `filterStyle`, `filterActiveColor`, `filterActiveColorType`, `filterInactiveColor`, `filterInactiveColorType`, `filterTextReset`, `filterAllLabel`.
+`enableFilter`, `filterTaxonomy`, `filterStyle`, `filterActiveClass`, `filterInactiveClass`, `filterTextReset`, `filterAllLabel`.
 
 ### Wrapper
 `blockClass`, `blockData`, `blockId`, `textInverse`.
@@ -375,14 +374,43 @@ on click .filter-item:
 
 ## Editor preview
 
-`PostGridItemRender.js` рендерит карточки в редакторе без обращения к PHP. Логика веток совпадает с render.php, в частности:
+Превью рендерит **PHP через `ServerSideRender`** — тот же `render.php`, что и на
+фронте, для всех типов записей и обоих режимов (grid / swiper). JS-копий карточек
+в плагине нет.
 
-- `composeTitleClass(attrs)` — зеркало `cwgb_post_grid_compose_title_class()` в PHP.
-- `liftClass` — `lift` применяется на `<article>` / `<div class="card">` (root), а не на `<figure>`.
-- Overlay-5 / overlay-5-primary — одинаковая структура с `bottom-overlay`, `mt-auto` на заголовке, `hover_card_button_hide`, read-more label.
-- Services: `shortDescription` из REST-meta `_service_short_description` используется вместо excerpt когда есть.
+Так сделано потому, что набор шаблонов динамический: тема, дочерняя тема и любой
+плагин подкладывают свои `.php` в `templates/post-cards/`. Зеркалить их в JSX
+означало бы, что превью разъезжается с фронтом на первом же новом шаблоне (так и
+было: для `services`, `projects`, `events`, `cw_website` и др. редактор показывал
+голую картинку вместо карточки).
 
-Editor preview **не** рендерит filter bar интерактивно — только показывает таксономию в placeholder-плашке. Пользователь видит эффект на фронте.
+Что даёт ядро WP «из коробки» и чего поэтому нет в блоке:
+
+- **debounce 500 мс** на запросы `/wp/v2/block-renderer/...` — собственный не нужен;
+- **предыдущая разметка сохраняется**, пока грузится новая (спиннер появляется
+  только через 1 секунду) — превью не моргает.
+
+Запрос идёт методом **POST** (`httpMethod="POST"`): у блока около сотни атрибутов,
+плюс `manualItems` — GET-строка упёрлась бы в лимит длины URL.
+
+**Ре-инициализация скриптов темы.** Разметку подставляет PHP, значит `span.bg`
+у overlay, swiper и ripple нужно поднимать вручную. В `edit.js` за это отвечает
+`MutationObserver` на контейнере превью:
+
+- наблюдение только `childList` **без** `subtree` — SSR заменяет содержимое одним
+  узлом, а мутации самого swiper идут глубже и повторный цикл не запускают;
+- на время инициализации observer отключается и подключается обратно через 400 мс —
+  иначе изменения, сделанные самой инициализацией, вызвали бы её же заново;
+- функции темы берутся из `root.ownerDocument.defaultView`, а не из `window`:
+  ассеты темы живут в iframe холста редактора, в окне редактора их нет.
+
+Filter bar в редакторе теперь рендерится реально (статически, без AJAX) — плашки
+«виден только на фронте» больше нет.
+
+**Сброс шаблона при смене CPT** живёт в `PostGridTemplateControl`: если после
+успешного ответа REST сохранённое значение отсутствует в списке нового типа
+записи — подставляется первый шаблон. На первой загрузке сброса не происходит
+никогда, иначе сетевой сбой затирал бы сохранённый выбор.
 
 ---
 

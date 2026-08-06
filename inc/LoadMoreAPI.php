@@ -1235,7 +1235,6 @@ class LoadMoreAPI {
 					'border_radius' => isset($attributes['borderRadius']) ? $attributes['borderRadius'] : 'rounded',
 					'enable_lift'   => $enable_lift,
 					'scroll_mode'   => ($template === 'card-3b'),
-					'screen_height' => 220,
 				];
 
 				$html = cw_render_post_card($post, $template, $display_settings, $template_args);

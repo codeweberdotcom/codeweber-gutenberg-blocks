@@ -369,21 +369,13 @@
       "type": "string",
       "default": "default"
     },
-    "filterActiveColor": {
+    "filterActiveClass": {
       "type": "string",
       "default": ""
     },
-    "filterActiveColorType": {
-      "type": "string",
-      "default": "solid"
-    },
-    "filterInactiveColor": {
+    "filterInactiveClass": {
       "type": "string",
       "default": ""
-    },
-    "filterInactiveColorType": {
-      "type": "string",
-      "default": "solid"
     },
     "filterTextReset": {
       "type": "boolean",

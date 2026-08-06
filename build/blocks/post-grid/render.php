@@ -117,10 +117,8 @@ if ($post_type === 'projects' && !empty($attributes['filterByImageTag'])) {
 $enable_filter = !empty($attributes['enableFilter']);
 $filter_taxonomy = isset($attributes['filterTaxonomy']) ? sanitize_key($attributes['filterTaxonomy']) : '';
 $filter_style = isset($attributes['filterStyle']) ? $attributes['filterStyle'] : 'default';
-$filter_active_color = isset($attributes['filterActiveColor']) ? sanitize_key($attributes['filterActiveColor']) : '';
-$filter_active_color_type = isset($attributes['filterActiveColorType']) ? $attributes['filterActiveColorType'] : 'solid';
-$filter_inactive_color = isset($attributes['filterInactiveColor']) ? sanitize_key($attributes['filterInactiveColor']) : '';
-$filter_inactive_color_type = isset($attributes['filterInactiveColorType']) ? $attributes['filterInactiveColorType'] : 'solid';
+$filter_active_class = isset($attributes['filterActiveClass']) ? sanitize_text_field($attributes['filterActiveClass']) : '';
+$filter_inactive_class = isset($attributes['filterInactiveClass']) ? sanitize_text_field($attributes['filterInactiveClass']) : '';
 $filter_all_label = __('All', 'codeweber-gutenberg-blocks');
 $filter_terms = [];
 $filter_active_term = isset($_GET['cwgb_filter']) ? (int) $_GET['cwgb_filter'] : 0;
@@ -134,87 +132,51 @@ if ($enable_filter && $filter_taxonomy && taxonomy_exists($filter_taxonomy)) {
 	}
 }
 
-// Helper: строит цветовой класс-модификатор (btn-primary / text-soft-primary / bg-pale-primary...).
-if (!function_exists('cwgb_post_grid_filter_color_mod')) {
-	function cwgb_post_grid_filter_color_mod($prefix, $color, $color_type) {
-		if (!$color) {
-			return '';
-		}
-		if ($color_type === 'soft') {
-			return $prefix . '-soft-' . $color;
-		}
-		if ($color_type === 'pale') {
-			return $prefix . '-pale-' . $color;
-		}
-		return $prefix . '-' . $color;
-	}
-}
-
 // Helper: классы для одного элемента фильтр-бара в зависимости от стиля.
 // Возвращает ['base' => [...], 'active' => [классы активного состояния],
 // 'inactive' => [классы неактивного состояния]]. 'active'/'inactive' — это
 // ДОПОЛНИТЕЛЬНЫЕ классы поверх 'base', переключаемые JS при клике.
+// $active_class/$inactive_class — свободный текст из Inspector (Active/Inactive
+// Button Class); при пустом значении используется тематический дефолт по стилю.
 if (!function_exists('cwgb_post_grid_filter_item_classes')) {
-	function cwgb_post_grid_filter_item_classes($style, $active_color, $active_color_type, $inactive_color = '', $inactive_color_type = 'solid') {
+	function cwgb_post_grid_filter_item_classes($style, $active_class = '', $inactive_class = '') {
 		$base = [];
 		$active = ['active'];
 		$inactive = [];
-
-		$active_prefix_map = [
-			'default' => 'text',
-			'btn-xs'  => 'btn',
-			'btn-sm'  => 'btn',
-			'badge'   => 'bg',
-		];
-		// Неактивная кнопка — outline-вариант для btn-стилей (сплошной btn-{color}
-		// выглядел бы неотличимо от активной), для остальных стилей — та же логика.
-		$inactive_prefix_map = [
-			'default' => 'text',
-			'btn-xs'  => 'btn-outline',
-			'btn-sm'  => 'btn-outline',
-			'badge'   => 'bg',
-		];
-
-		$active_prefix   = isset($active_prefix_map[$style]) ? $active_prefix_map[$style] : 'text';
-		$inactive_prefix = isset($inactive_prefix_map[$style]) ? $inactive_prefix_map[$style] : 'text';
-
-		$active_color_mod   = cwgb_post_grid_filter_color_mod($active_prefix, $active_color, $active_color_type);
-		$inactive_color_mod = cwgb_post_grid_filter_color_mod($inactive_prefix, $inactive_color, $inactive_color_type);
 
 		switch ($style) {
 			case 'btn-xs':
 				$_r   = class_exists('Codeweber_Options') ? trim(Codeweber_Options::style('button')) : '';
 				$base = array_values(array_filter(['btn', 'btn-xs', $_r]));
-				$active[] = $active_color_mod ?: 'btn-primary';
-				if ($inactive_color_mod) {
-					$inactive[] = $inactive_color_mod;
+				$active[] = $active_class !== '' ? $active_class : 'btn-primary';
+				if ($inactive_class !== '') {
+					$inactive[] = $inactive_class;
 				}
 				break;
 			case 'btn-sm':
 				$_r   = class_exists('Codeweber_Options') ? trim(Codeweber_Options::style('button')) : '';
 				$base = array_values(array_filter(['btn', 'btn-sm', $_r]));
-				$active[] = $active_color_mod ?: 'btn-primary';
-				if ($inactive_color_mod) {
-					$inactive[] = $inactive_color_mod;
+				$active[] = $active_class !== '' ? $active_class : 'btn-primary';
+				if ($inactive_class !== '') {
+					$inactive[] = $inactive_class;
 				}
 				break;
 			case 'badge':
 				$base = ['badge', 'rounded-pill'];
-				$active[] = $active_color_mod ?: 'bg-primary';
-				$active[] = 'text-white';
-				if ($inactive_color_mod) {
-					$inactive[] = $inactive_color_mod;
+				$active[] = $active_class !== '' ? $active_class : 'bg-primary text-white';
+				if ($inactive_class !== '') {
+					$inactive[] = $inactive_class;
 				}
 				break;
 			case 'default':
 			default:
 				// filter-item добавляется в разметке глобально (для JS-селектора),
 				// дополнительных базовых классов не требуется.
-				if ($active_color_mod) {
-					$active[] = $active_color_mod;
+				if ($active_class !== '') {
+					$active[] = $active_class;
 				}
-				if ($inactive_color_mod) {
-					$inactive[] = $inactive_color_mod;
+				if ($inactive_class !== '') {
+					$inactive[] = $inactive_class;
 				}
 				break;
 		}
@@ -1411,7 +1373,7 @@ if ( $source_type === 'taxonomy' ) {
 
 <div <?php echo $wrapper_attributes; ?>>
 	<?php if ($enable_filter && !empty($filter_terms)) :
-		$filter_item_classes = cwgb_post_grid_filter_item_classes($filter_style, $filter_active_color, $filter_active_color_type, $filter_inactive_color, $filter_inactive_color_type);
+		$filter_item_classes = cwgb_post_grid_filter_item_classes($filter_style, $filter_active_class, $filter_inactive_class);
 		$base_item_class = implode(' ', $filter_item_classes['base']);
 		$active_item_class = implode(' ', $filter_item_classes['active']);
 		$inactive_item_class = implode(' ', $filter_item_classes['inactive']);

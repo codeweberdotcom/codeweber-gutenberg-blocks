@@ -1,6 +1,5 @@
 import { __ } from '@wordpress/i18n';
 import {
-	ComboboxControl,
 	SelectControl,
 	TextControl,
 	ToggleControl,
@@ -10,8 +9,6 @@ import {
 import { useEffect, useState } from '@wordpress/element';
 import apiFetch from '@wordpress/api-fetch';
 import { addQueryArgs } from '@wordpress/url';
-import { ColorTypeControl } from '../../../components/colors/ColorTypeControl';
-import { colors } from '../../../utilities/colors';
 
 export const FilterControl = ({ attributes, setAttributes }) => {
 	const {
@@ -19,10 +16,8 @@ export const FilterControl = ({ attributes, setAttributes }) => {
 		enableFilter,
 		filterTaxonomy,
 		filterStyle,
-		filterActiveColor,
-		filterActiveColorType,
-		filterInactiveColor,
-		filterInactiveColorType,
+		filterActiveClass,
+		filterInactiveClass,
 		filterTextReset,
 		selectedTaxonomies,
 	} = attributes;
@@ -153,99 +148,40 @@ export const FilterControl = ({ attributes, setAttributes }) => {
 						}
 					/>
 
-					<ColorTypeControl
+					<TextControl
 						label={__(
-							'Active Color Type',
+							'Active Button Class',
 							'codeweber-gutenberg-blocks'
 						)}
-						value={filterActiveColorType || 'solid'}
+						value={filterActiveClass || ''}
 						onChange={(value) =>
-							setAttributes({ filterActiveColorType: value })
+							setAttributes({ filterActiveClass: value })
 						}
-						options={[
-							{
-								value: 'solid',
-								label: __(
-									'Solid',
-									'codeweber-gutenberg-blocks'
-								),
-							},
-							{
-								value: 'soft',
-								label: __(
-									'Soft',
-									'codeweber-gutenberg-blocks'
-								),
-							},
-							{
-								value: 'pale',
-								label: __(
-									'Pale',
-									'codeweber-gutenberg-blocks'
-								),
-							},
-						]}
-					/>
-
-					<ComboboxControl
-						label={__('Active Color', 'codeweber-gutenberg-blocks')}
-						value={filterActiveColor || ''}
-						options={colors}
-						onChange={(value) =>
-							setAttributes({ filterActiveColor: value })
-						}
+						placeholder={__(
+							'e.g. btn-primary',
+							'codeweber-gutenberg-blocks'
+						)}
 						help={__(
-							'Leave empty to use the theme default.',
+							'Extra classes for the active filter button. Leave empty for the theme default.',
 							'codeweber-gutenberg-blocks'
 						)}
 					/>
 
-					<ColorTypeControl
+					<TextControl
 						label={__(
-							'Inactive Color Type',
+							'Inactive Button Class',
 							'codeweber-gutenberg-blocks'
 						)}
-						value={filterInactiveColorType || 'solid'}
+						value={filterInactiveClass || ''}
 						onChange={(value) =>
-							setAttributes({ filterInactiveColorType: value })
+							setAttributes({ filterInactiveClass: value })
 						}
-						options={[
-							{
-								value: 'solid',
-								label: __(
-									'Solid',
-									'codeweber-gutenberg-blocks'
-								),
-							},
-							{
-								value: 'soft',
-								label: __(
-									'Soft',
-									'codeweber-gutenberg-blocks'
-								),
-							},
-							{
-								value: 'pale',
-								label: __(
-									'Pale',
-									'codeweber-gutenberg-blocks'
-								),
-							},
-						]}
-					/>
-
-					<ComboboxControl
-						label={__(
-							'Inactive Color',
+						placeholder={__(
+							'e.g. btn-outline-primary',
 							'codeweber-gutenberg-blocks'
 						)}
-						value={filterInactiveColor || ''}
-						options={colors}
-						onChange={(value) =>
-							setAttributes({ filterInactiveColor: value })
-						}
 						help={__(
-							'Leave empty for the plain (uncolored) button.',
+							'Extra classes for the non-active filter buttons. Leave empty for the plain button.',
 							'codeweber-gutenberg-blocks'
 						)}
 					/>

@@ -169,8 +169,14 @@ Runtime-фильтр **над** сеткой — AJAX-фильтрация по 
   - `default`: `text-{color}`
   - `btn-xs`/`btn-sm`: `btn-{color}`
   - `badge`: `bg-{color}` (+ `text-white`)
+- **Inactive Color Type** / **Inactive Color** — тот же принцип для НЕ активных кнопок (по умолчанию — пусто, обычная `.btn`/`.badge` без цвета):
+  - `default`: `text-{color}`
+  - `btn-xs`/`btn-sm`: `btn-outline-{color}` (не сплошной `btn-{color}` — иначе неотличимо от активной)
+  - `badge`: `bg-{color}` (без принудительного `text-white`)
 - **Inherit Text Color (text-reset)** — добавляет Bootstrap `.text-reset` к контейнеру фильтра (для тёмных/inverse-секций).
 - **"All" Button Label** — текст reset-кнопки.
+
+**Переключение active/inactive классов (JS).** Каждый `<a class="filter-item">` несёт `data-cwgb-active-extra` и `data-cwgb-inactive-extra` — полные наборы дополнительных классов для каждого состояния (генерируются `cwgb_post_grid_filter_item_classes()` в render.php). На клик `view.js` не просто переключает `.active`, а меняет местами именно эти наборы на ВСЕХ кнопках бара — иначе цветовой модификатор (`btn-primary`/`bg-primary`/…), полученный кнопкой при первой отрисовке, никогда не снимается, и она выглядит «активной» даже после клика по другому фильтру (частый баг на "Все", раз это единственный пункт с цветом в initial render).
 
 ### Settings
 - **Text Inverse** — добавляет `text-inverse` к wrapper'у блока (для тёмных фонов).
@@ -208,7 +214,7 @@ Runtime-фильтр **над** сеткой — AJAX-фильтрация по 
 `useAltTitle` (bool, default `false`) — использовать мета `_alt_title` вместо штатного заголовка. Применяется только в post-mode (не в taxonomy/manual). При `true`: форсирует `title_length=0` и `use_html_title=true` в display_settings, вешает временный `the_title` фильтр на конкретный `post->ID` перед `cw_render_post_card()`. Подробнее — `doc_claude/development/ALT_TITLE.md`.
 
 ### Filter bar
-`enableFilter`, `filterTaxonomy`, `filterStyle`, `filterActiveColor`, `filterActiveColorType`, `filterTextReset`, `filterAllLabel`.
+`enableFilter`, `filterTaxonomy`, `filterStyle`, `filterActiveColor`, `filterActiveColorType`, `filterInactiveColor`, `filterInactiveColorType`, `filterTextReset`, `filterAllLabel`.
 
 ### Wrapper
 `blockClass`, `blockData`, `blockId`, `textInverse`.
@@ -281,17 +287,23 @@ Runtime-фильтр **над** сеткой — AJAX-фильтрация по 
     data-cwgb-filter-for="{blockId}"
     data-cwgb-filter-taxonomy="{slug}"
     data-cwgb-filter-style="default">
-    <li><a class="filter-item active" data-cwgb-filter-term="0">All</a></li>
-    <li><a class="filter-item" data-cwgb-filter-term="42">Term</a></li>
+    <li><a class="filter-item active" data-cwgb-filter-term="0"
+           data-cwgb-active-extra="active" data-cwgb-inactive-extra="">All</a></li>
+    <li><a class="filter-item" data-cwgb-filter-term="42"
+           data-cwgb-active-extra="active" data-cwgb-inactive-extra="">Term</a></li>
 </ul>
 
 <!-- btn-xs / btn-sm / badge -->
 <div class="cwgb-post-grid-filter mb-6 d-flex flex-wrap gap-2 align-items-center [text-reset]"
      data-cwgb-filter-for="{blockId}" …>
-    <a class="filter-item btn btn-xs active btn-primary" data-cwgb-filter-term="0">All</a>
-    <a class="filter-item btn btn-xs"                    data-cwgb-filter-term="42">Term</a>
+    <a class="filter-item btn btn-xs active btn-primary" data-cwgb-filter-term="0"
+       data-cwgb-active-extra="active btn-primary" data-cwgb-inactive-extra="btn-outline-primary">All</a>
+    <a class="filter-item btn btn-xs btn-outline-primary" data-cwgb-filter-term="42"
+       data-cwgb-active-extra="active btn-primary" data-cwgb-inactive-extra="btn-outline-primary">Term</a>
 </div>
 ```
+
+`data-cwgb-active-extra` / `data-cwgb-inactive-extra` — одинаковые на КАЖДОЙ кнопке бара (полный набор классов для каждого состояния); `view.js` использует их, а не жёстко `.active`, чтобы корректно снять цвет со старой активной кнопки и поставить на новую (см. Inactive Color выше).
 
 - Для `default` стиля тема автоматически снимает буллеты через `.filter:not(.basic-filter) ul { list-style: none; padding: 0 }` в `_type.scss`.
 - Класс `.list-unstyled` НЕ используется сознательно — тема имеет глобальное правило `.list-unstyled li a.active { color: #9c886f !important }`, которое перекрывает активные цвета кнопок.

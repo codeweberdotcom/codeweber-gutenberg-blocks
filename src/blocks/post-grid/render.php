@@ -259,13 +259,13 @@ if (!function_exists('cwgb_post_grid_filter_item_classes')) {
 		switch ($style) {
 			case 'btn-xs':
 				$_r   = class_exists('Codeweber_Options') ? trim(Codeweber_Options::style('button')) : '';
-				$base = array_values(array_filter(['btn', 'btn-xs', $_r]));
+				$base = array_values(array_filter(['btn', 'btn-xs', 'has-ripple', $_r]));
 				$active[] = $active_class !== '' ? $active_class : 'btn-primary';
 				$inactive[] = $inactive_class !== '' ? $inactive_class : 'btn-outline-primary';
 				break;
 			case 'btn-sm':
 				$_r   = class_exists('Codeweber_Options') ? trim(Codeweber_Options::style('button')) : '';
-				$base = array_values(array_filter(['btn', 'btn-sm', $_r]));
+				$base = array_values(array_filter(['btn', 'btn-sm', 'has-ripple', $_r]));
 				$active[] = $active_class !== '' ? $active_class : 'btn-primary';
 				$inactive[] = $inactive_class !== '' ? $inactive_class : 'btn-outline-primary';
 				break;

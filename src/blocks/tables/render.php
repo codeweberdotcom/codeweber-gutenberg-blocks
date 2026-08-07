@@ -32,7 +32,7 @@ $hide_bottom_border = !empty($attributes['hideBottomBorder']);
 $responsive = isset($attributes['responsive']) ? (bool) $attributes['responsive'] : true;
 
 $allowed_variants = ['primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark'];
-$allowed_thead = ['table-light', 'table-dark'];
+$allowed_thead = ['table-primary', 'table-secondary', 'table-success', 'table-danger', 'table-warning', 'table-info', 'table-light', 'table-dark'];
 $allowed_text_colors = [
 	'transparent', 'primary', 'dark', 'light', 'yellow', 'orange', 'red', 'pink',
 	'fuchsia', 'violet', 'purple', 'blue', 'aqua', 'sky', 'green', 'leaf', 'ash',

@@ -15,6 +15,7 @@ export const FilterControl = ({ attributes, setAttributes }) => {
 		postType = 'post',
 		enableFilter,
 		filterTaxonomy,
+		filterHideEmpty,
 		filterStyle,
 		filterActiveClass,
 		filterInactiveClass,
@@ -109,6 +110,22 @@ export const FilterControl = ({ attributes, setAttributes }) => {
 							)}
 						/>
 					)}
+
+					<ToggleControl
+						label={__(
+							'Hide Empty Terms',
+							'codeweber-gutenberg-blocks'
+						)}
+						checked={!!filterHideEmpty}
+						onChange={(value) =>
+							setAttributes({ filterHideEmpty: value })
+						}
+						help={__(
+							'Show only terms that have posts within the block selection; hide the whole bar when none remain.',
+							'codeweber-gutenberg-blocks'
+						)}
+						__nextHasNoMarginBottom
+					/>
 
 					<SelectControl
 						label={__('Filter Style', 'codeweber-gutenberg-blocks')}

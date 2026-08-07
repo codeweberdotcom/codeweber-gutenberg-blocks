@@ -185,6 +185,7 @@ $filter_inactive_class = isset($attributes['filterInactiveClass']) ? sanitize_te
 $filter_all_label = __('All', 'codeweber-gutenberg-blocks');
 $filter_terms = [];
 $filter_active_term = isset($_GET['cwgb_filter']) ? (int) $_GET['cwgb_filter'] : 0;
+$filter_hide_empty = !empty($attributes['filterHideEmpty']);
 if ($enable_filter && $filter_taxonomy && taxonomy_exists($filter_taxonomy)) {
 	$filter_terms = get_terms([
 		'taxonomy' => $filter_taxonomy,
@@ -192,6 +193,54 @@ if ($enable_filter && $filter_taxonomy && taxonomy_exists($filter_taxonomy)) {
 	]);
 	if (is_wp_error($filter_terms)) {
 		$filter_terms = [];
+	}
+
+	// Hide Empty Terms: оставить только термины, у которых есть записи в пуле блока
+	// (post_type + ограничения selectedTaxonomies БЕЗ ключа фильтр-таксономии — клик
+	// по терму заменяет именно его). Пул пустой → бар скрывается целиком, т.к.
+	// разметка проверяет !empty($filter_terms). Manual-режим ниже перезапишет
+	// $filter_terms своим сужением через object_ids.
+	if ($filter_hide_empty && !empty($filter_terms)) {
+		$pool_args = [
+			'post_type'      => $post_type,
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+			'fields'         => 'ids',
+			'no_found_rows'  => true,
+		];
+
+		$pool_tax_query = ['relation' => 'AND'];
+		if (!empty($selected_taxonomies) && is_array($selected_taxonomies)) {
+			foreach ($selected_taxonomies as $taxonomy_slug => $term_ids) {
+				if ($taxonomy_slug === $filter_taxonomy) {
+					continue;
+				}
+				if (!empty($term_ids) && is_array($term_ids)) {
+					$pool_tax_query[] = [
+						'taxonomy' => $taxonomy_slug,
+						'field'    => 'term_id',
+						'terms'    => array_map('intval', $term_ids),
+						'operator' => 'IN',
+					];
+				}
+			}
+		}
+		if (count($pool_tax_query) > 1) {
+			$pool_args['tax_query'] = $pool_tax_query;
+		}
+
+		$pool_ids = (new WP_Query($pool_args))->posts;
+
+		if (empty($pool_ids)) {
+			$filter_terms = [];
+		} else {
+			$pool_terms = get_terms([
+				'taxonomy'   => $filter_taxonomy,
+				'hide_empty' => false,
+				'object_ids' => $pool_ids,
+			]);
+			$filter_terms = is_wp_error($pool_terms) ? [] : $pool_terms;
+		}
 	}
 }
 

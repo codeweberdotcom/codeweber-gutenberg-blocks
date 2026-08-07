@@ -419,6 +419,10 @@
 			"type": "string",
 			"default": ""
 		},
+		"filterHideEmpty": {
+			"type": "boolean",
+			"default": false
+		},
 		"filterStyle": {
 			"type": "string",
 			"default": "default"

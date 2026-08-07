@@ -214,6 +214,7 @@ export const TablesSidebar = ({ attributes, setAttributes }) => {
 					value={theadVariant || ''}
 					options={[
 						{ value: '', label: __('— Default —', 'codeweber-gutenberg-blocks') },
+						{ value: '', label: '── Bootstrap ──', disabled: true },
 						{ value: 'table-primary', label: 'table-primary' },
 						{ value: 'table-secondary', label: 'table-secondary' },
 						{ value: 'table-success', label: 'table-success' },
@@ -222,6 +223,30 @@ export const TablesSidebar = ({ attributes, setAttributes }) => {
 						{ value: 'table-info', label: 'table-info' },
 						{ value: 'table-light', label: 'table-light' },
 						{ value: 'table-dark', label: 'table-dark' },
+						{ value: '', label: '── Theme colors ──', disabled: true },
+						{ value: 'table-blue', label: 'table-blue' },
+						{ value: 'table-sky', label: 'table-sky' },
+						{ value: 'table-purple', label: 'table-purple' },
+						{ value: 'table-grape', label: 'table-grape' },
+						{ value: 'table-violet', label: 'table-violet' },
+						{ value: 'table-pink', label: 'table-pink' },
+						{ value: 'table-fuchsia', label: 'table-fuchsia' },
+						{ value: 'table-red', label: 'table-red' },
+						{ value: 'table-orange', label: 'table-orange' },
+						{ value: 'table-yellow', label: 'table-yellow' },
+						{ value: 'table-green', label: 'table-green' },
+						{ value: 'table-leaf', label: 'table-leaf' },
+						{ value: 'table-aqua', label: 'table-aqua' },
+						{ value: 'table-navy', label: 'table-navy' },
+						{ value: 'table-ash', label: 'table-ash' },
+						{ value: 'table-dewalt', label: 'table-dewalt' },
+						{ value: 'table-max', label: 'table-max' },
+						{ value: 'table-bronze', label: 'table-bronze' },
+						{ value: 'table-coffee', label: 'table-coffee' },
+						{ value: 'table-flame', label: 'table-flame' },
+						{ value: 'table-emerald', label: 'table-emerald' },
+						{ value: 'table-crimson', label: 'table-crimson' },
+						{ value: 'table-gray', label: 'table-gray' },
 					]}
 					disabled={showHeader === false}
 					onChange={(v) => setAttributes({ theadVariant: v })}

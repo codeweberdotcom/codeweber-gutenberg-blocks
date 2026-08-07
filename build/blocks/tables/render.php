@@ -32,7 +32,17 @@ $hide_bottom_border = !empty($attributes['hideBottomBorder']);
 $responsive = isset($attributes['responsive']) ? (bool) $attributes['responsive'] : true;
 
 $allowed_variants = ['primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark'];
-$allowed_thead = ['table-primary', 'table-secondary', 'table-success', 'table-danger', 'table-warning', 'table-info', 'table-light', 'table-dark'];
+$allowed_thead = [
+	// Bootstrap semantic tints
+	'table-primary', 'table-secondary', 'table-success', 'table-danger',
+	'table-warning', 'table-info', 'table-light', 'table-dark',
+	// CodeWeber theme colors
+	'table-blue', 'table-sky', 'table-purple', 'table-grape', 'table-violet',
+	'table-pink', 'table-fuchsia', 'table-red', 'table-orange', 'table-yellow',
+	'table-green', 'table-leaf', 'table-aqua', 'table-navy', 'table-ash',
+	'table-dewalt', 'table-max', 'table-bronze', 'table-coffee', 'table-flame',
+	'table-emerald', 'table-crimson', 'table-gray',
+];
 $allowed_text_colors = [
 	'transparent', 'primary', 'dark', 'light', 'yellow', 'orange', 'red', 'pink',
 	'fuchsia', 'violet', 'purple', 'blue', 'aqua', 'sky', 'green', 'leaf', 'ash',

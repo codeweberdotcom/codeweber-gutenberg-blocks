@@ -506,7 +506,6 @@ const TablesEdit = ({ attributes, setAttributes }) => {
 								value={cell.content}
 								onChange={(value) => updateHeaderCell(colIndex, value)}
 								placeholder={__('Header…', 'codeweber-gutenberg-blocks')}
-								withoutInteractiveFormatting
 							/>
 						</th>
 					))}
@@ -641,7 +640,6 @@ const TablesEdit = ({ attributes, setAttributes }) => {
 												updateRowCell(rowIndex, colIndex, value)
 											}
 											placeholder={__('…', 'codeweber-gutenberg-blocks')}
-											withoutInteractiveFormatting
 										/>
 									</CellTag>
 								);

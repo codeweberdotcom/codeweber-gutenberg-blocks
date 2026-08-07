@@ -210,10 +210,16 @@ export const TablesSidebar = ({ attributes, setAttributes }) => {
 					onChange={(v) => setAttributes({ showHeader: v })}
 				/>
 				<SelectControl
-					label={__('Header style', 'codeweber-gutenberg-blocks')}
+					label={__('Header background', 'codeweber-gutenberg-blocks')}
 					value={theadVariant || ''}
 					options={[
 						{ value: '', label: __('— Default —', 'codeweber-gutenberg-blocks') },
+						{ value: 'table-primary', label: 'table-primary' },
+						{ value: 'table-secondary', label: 'table-secondary' },
+						{ value: 'table-success', label: 'table-success' },
+						{ value: 'table-danger', label: 'table-danger' },
+						{ value: 'table-warning', label: 'table-warning' },
+						{ value: 'table-info', label: 'table-info' },
 						{ value: 'table-light', label: 'table-light' },
 						{ value: 'table-dark', label: 'table-dark' },
 					]}

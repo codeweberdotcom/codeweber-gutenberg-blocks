@@ -21,6 +21,50 @@
       "type": "string",
       "default": "btn btn-primary"
     },
+    "styleMode": {
+      "type": "string",
+      "default": "preset"
+    },
+    "ButtonType": {
+      "type": "string",
+      "default": "solid"
+    },
+    "ButtonSize": {
+      "type": "string",
+      "default": ""
+    },
+    "ButtonStyle": {
+      "type": "string",
+      "default": "solid"
+    },
+    "ButtonColor": {
+      "type": "string",
+      "default": "primary"
+    },
+    "ButtonGradientColor": {
+      "type": "string",
+      "default": ""
+    },
+    "ButtonShape": {
+      "type": "string",
+      "default": "theme"
+    },
+    "ButtonIconPosition": {
+      "type": "string",
+      "default": "left"
+    },
+    "IconClass": {
+      "type": "string",
+      "default": ""
+    },
+    "LeftIcon": {
+      "type": "string",
+      "default": ""
+    },
+    "RightIcon": {
+      "type": "string",
+      "default": ""
+    },
     "blockClass": {
       "type": "string",
       "default": ""

@@ -1,6 +1,12 @@
 .submit-button-preview {
 	.form-submit-wrapper {
 		margin-top: 1rem;
+
+		/* Превью не интерактивно (клик выделяет блок), но без атрибута disabled —
+		   тема красит .btn:disabled в белый и убивает выбранный цвет кнопки */
+		button {
+			pointer-events: none;
+		}
 	}
 }
 

@@ -290,11 +290,12 @@ export default function Edit({ attributes, setAttributes }) {
 				const iconEl = (cls) =>
 					cls ? <i className={cls}></i> : null;
 
+				// Без атрибута disabled: тема стилизует .btn:disabled белым
+				// и перекрывает выбранный цвет; клики глушатся в editor.scss
 				const buttonElement = (
 					<button
 						type="button"
 						className={buttonClassName}
-						disabled
 					>
 						{!isCustom && iconEl(LeftIcon)}
 						<span>

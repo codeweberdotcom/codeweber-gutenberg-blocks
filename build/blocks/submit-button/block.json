@@ -65,6 +65,10 @@
       "type": "string",
       "default": ""
     },
+    "CircleIcon": {
+      "type": "string",
+      "default": ""
+    },
     "blockClass": {
       "type": "string",
       "default": ""

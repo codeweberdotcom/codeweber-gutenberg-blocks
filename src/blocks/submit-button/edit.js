@@ -273,9 +273,19 @@ export default function Edit({ attributes, setAttributes }) {
 					.filter(Boolean)
 					.join(' ');
 
+				// Явные дефолты: блок, распарсенный без новых атрибутов,
+				// всё равно получает btn btn-primary, а не пустой класс
 				const buttonClassName = isCustom
 					? buttonClass || 'btn btn-primary'
-					: getClassNames({ ...attributes, blockClass: '' });
+					: getClassNames({
+							ButtonType: 'solid',
+							ButtonStyle: 'solid',
+							ButtonColor: 'primary',
+							ButtonShape: 'theme',
+							ButtonSize: '',
+							...attributes,
+							blockClass: '',
+						});
 
 				const iconEl = (cls) =>
 					cls ? <i className={cls}></i> : null;

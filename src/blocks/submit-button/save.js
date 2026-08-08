@@ -51,9 +51,22 @@ export default function Save({ attributes }) {
 	const isCustom = styleMode === 'custom';
 	// forSave: Theme shape всегда сериализуется как rounded-pill (стабильный контент);
 	// на фронте data-button-shape="theme" переключается скриптом темы, как у блока Button.
+	// Явные дефолты в подмешивании — защита от пустого класса, если блок
+	// распарсен без новых атрибутов (старый бандл/схема).
 	const buttonClassName = isCustom
 		? buttonClass || 'btn btn-primary'
-		: getClassNames({ ...attributes, blockClass: '' }, { forSave: true });
+		: getClassNames(
+				{
+					ButtonType: 'solid',
+					ButtonStyle: 'solid',
+					ButtonColor: 'primary',
+					ButtonShape: 'theme',
+					ButtonSize: '',
+					...attributes,
+					blockClass: '',
+				},
+				{ forSave: true }
+			);
 
 	const iconEl = (cls) => (cls ? <i className={cls}></i> : null);
 

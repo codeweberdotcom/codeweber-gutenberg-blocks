@@ -34,15 +34,17 @@ export const ButtonStyleControls = ({
 	iconPickerOpen: iconPickerOpenProp,
 	setIconPickerOpen: setIconPickerOpenProp,
 }) => {
+	// Явные фолбэки: если блок распарсен без новых атрибутов (старый бандл,
+	// незарегистрированная схема), контролы всё равно показывают дефолты.
 	const {
-		ButtonSize,
-		ButtonColor,
-		ButtonGradientColor,
-		ButtonStyle,
-		ButtonType,
-		ButtonShape,
-		ButtonIconPosition,
-		IconClass,
+		ButtonSize = '',
+		ButtonColor = 'primary',
+		ButtonGradientColor = '',
+		ButtonStyle = 'solid',
+		ButtonType = 'solid',
+		ButtonShape = 'theme',
+		ButtonIconPosition = 'left',
+		IconClass = '',
 	} = attributes;
 
 	// IconPicker: управляемое состояние (Button) или локальное (Submit Button)

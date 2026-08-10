@@ -103,6 +103,10 @@
     "useAltTitle": {
       "type": "boolean",
       "default": false
+    },
+    "itemGap": {
+      "type": "number",
+      "default": null
     }
   },
   "textdomain": "codeweber-gutenberg-blocks",

@@ -39,6 +39,7 @@ $items = isset($attributes['items']) ? $attributes['items'] : [];
 $orderBy = isset($attributes['orderBy']) ? $attributes['orderBy'] : 'date';
 $order = isset($attributes['order']) ? $attributes['order'] : 'desc';
 $theme = isset($attributes['theme']) ? $attributes['theme'] : 'light';
+$itemGap = isset($attributes['itemGap']) && is_numeric($attributes['itemGap']) ? (int) $attributes['itemGap'] : null;
 
 // Отладка: логируем извлеченные значения
 if (defined('WP_DEBUG') && WP_DEBUG) {
@@ -200,7 +201,8 @@ if (defined('WP_DEBUG') && WP_DEBUG) {
 
 // Получаем wrapper атрибуты
 // Формируем атрибуты вручную, чтобы избежать проблем с контекстом блока в get_block_wrapper_attributes()
-$wrapperAttributes = 'class="' . esc_attr(implode(' ', $accordionClasses)) . '" id="' . esc_attr($container_id) . '"';
+$wrapperStyle = !is_null($itemGap) ? ' style="--cwgb-accordion-gap: ' . $itemGap . 'px"' : '';
+$wrapperAttributes = 'class="' . esc_attr(implode(' ', $accordionClasses)) . '" id="' . esc_attr($container_id) . '"' . $wrapperStyle;
 ?>
 
 <div <?php echo $wrapperAttributes; ?>>

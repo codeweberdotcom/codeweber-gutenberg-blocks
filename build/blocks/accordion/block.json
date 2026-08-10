@@ -105,8 +105,8 @@
       "default": false
     },
     "itemGap": {
-      "type": "number",
-      "default": null
+      "type": "string",
+      "default": ""
     }
   },
   "textdomain": "codeweber-gutenberg-blocks",

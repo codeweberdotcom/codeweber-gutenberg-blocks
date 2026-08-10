@@ -11,7 +11,6 @@ import {
 	ButtonGroup,
 	ToggleControl,
 	SelectControl,
-	RangeControl,
 } from '@wordpress/components';
 import { PostTypeTaxonomyControl } from '../../components/post-type-taxonomy/PostTypeTaxonomyControl';
 import { PostSortControl } from '../../components/post-sort/PostSortControl';
@@ -279,29 +278,22 @@ export const AccordionSidebar = ({ attributes, setAttributes }) => {
 			/>
 
 			{/* Item Spacing */}
-			<div style={{ marginTop: '16px' }}>
-				<RangeControl
-					label={__(
-						'Item spacing (px)',
-						'codeweber-gutenberg-blocks'
-					)}
-					value={itemGap ?? ''}
-					onChange={(value) =>
-						setAttributes({
-							itemGap: value !== undefined ? value : null,
-						})
-					}
-					min={0}
-					max={80}
-					step={1}
-					allowReset
-					resetFallbackValue={null}
-					help={__(
-						'Gap between accordion items. Leave empty to use the theme default.',
-						'codeweber-gutenberg-blocks'
-					)}
-				/>
+			<div className="component-sidebar-title" style={{ marginTop: '16px' }}>
+				<label>{__('Item spacing', 'codeweber-gutenberg-blocks')}</label>
 			</div>
+			<SelectControl
+				value={itemGap || ''}
+				options={[
+					{ label: __('Default (theme)', 'codeweber-gutenberg-blocks'), value: '' },
+					{ label: 'mb-0 (0)', value: 'mb-0' },
+					{ label: 'mb-1 (4px)', value: 'mb-1' },
+					{ label: 'mb-2 (8px)', value: 'mb-2' },
+					{ label: 'mb-3 (16px)', value: 'mb-3' },
+					{ label: 'mb-4 (24px)', value: 'mb-4' },
+					{ label: 'mb-5 (48px)', value: 'mb-5' },
+				]}
+				onChange={(value) => setAttributes({ itemGap: value })}
+			/>
 
 			{/* Card Background Color */}
 			<div className="component-sidebar-title" style={{ marginTop: '16px' }}>

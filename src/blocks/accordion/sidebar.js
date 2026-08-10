@@ -11,6 +11,7 @@ import {
 	ButtonGroup,
 	ToggleControl,
 	SelectControl,
+	TextControl,
 } from '@wordpress/components';
 import { PostTypeTaxonomyControl } from '../../components/post-type-taxonomy/PostTypeTaxonomyControl';
 import { PostSortControl } from '../../components/post-sort/PostSortControl';
@@ -33,6 +34,8 @@ export const AccordionSidebar = ({ attributes, setAttributes }) => {
 		buttonBackgroundColor,
 		useAltTitle = false,
 		itemGap,
+		cardClass,
+		buttonClass,
 	} = attributes;
 
 	const bgColorOptions = [
@@ -293,6 +296,20 @@ export const AccordionSidebar = ({ attributes, setAttributes }) => {
 					{ label: 'mb-5 (48px)', value: 'mb-5' },
 				]}
 				onChange={(value) => setAttributes({ itemGap: value })}
+			/>
+
+			{/* Card Class */}
+			<TextControl
+				label={__('Card class', 'codeweber-gutenberg-blocks')}
+				value={cardClass || ''}
+				onChange={(value) => setAttributes({ cardClass: value })}
+			/>
+
+			{/* Button Class */}
+			<TextControl
+				label={__('Button class', 'codeweber-gutenberg-blocks')}
+				value={buttonClass || ''}
+				onChange={(value) => setAttributes({ buttonClass: value })}
 			/>
 
 			{/* Card Background Color */}

@@ -40,6 +40,8 @@ $orderBy = isset($attributes['orderBy']) ? $attributes['orderBy'] : 'date';
 $order = isset($attributes['order']) ? $attributes['order'] : 'desc';
 $theme = isset($attributes['theme']) ? $attributes['theme'] : 'light';
 $itemGap = isset($attributes['itemGap']) ? sanitize_html_class($attributes['itemGap']) : '';
+$cardClass = isset($attributes['cardClass']) ? sanitize_html_class($attributes['cardClass']) : '';
+$buttonClass = isset($attributes['buttonClass']) ? sanitize_html_class($attributes['buttonClass']) : '';
 
 // Отладка: логируем извлеченные значения
 if (defined('WP_DEBUG') && WP_DEBUG) {
@@ -220,6 +222,9 @@ $wrapperAttributes = 'class="' . esc_attr(implode(' ', $accordionClasses)) . '" 
 			if (!empty($itemGap)) {
 				$itemClasses[] = $itemGap;
 			}
+			if (!empty($cardClass)) {
+				$itemClasses[] = $cardClass;
+			}
 			if (!empty($buttonBackgroundColor)) {
 				$itemClasses[] = 'bg-' . esc_attr(sanitize_html_class($buttonBackgroundColor));
 			}
@@ -237,6 +242,9 @@ $wrapperAttributes = 'class="' . esc_attr(implode(' ', $accordionClasses)) . '" 
 			$buttonClasses = ['accordion-button'];
 			if (!$isOpen) {
 				$buttonClasses[] = 'collapsed';
+			}
+			if (!empty($buttonClass)) {
+				$buttonClasses[] = $buttonClass;
 			}
 			
 			// Классы для collapse

@@ -107,6 +107,14 @@
 		"itemGap": {
 			"type": "string",
 			"default": ""
+		},
+		"cardClass": {
+			"type": "string",
+			"default": ""
+		},
+		"buttonClass": {
+			"type": "string",
+			"default": ""
 		}
 	},
 	"textdomain": "codeweber-gutenberg-blocks",

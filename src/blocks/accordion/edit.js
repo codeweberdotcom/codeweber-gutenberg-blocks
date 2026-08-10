@@ -32,6 +32,9 @@ const AccordionEdit = ({ attributes, setAttributes, clientId }) => {
 		order,
 		theme,
 		buttonBackgroundColor,
+		itemGap,
+		cardClass,
+		buttonClass,
 	} = attributes;
 	const previousItemsLengthRef = useRef(items?.length || 0);
 	const previousFirstItemOpenRef = useRef(firstItemOpen);
@@ -359,6 +362,12 @@ const AccordionEdit = ({ attributes, setAttributes, clientId }) => {
 	// Get item classes
 	const getItemClasses = (item, index) => {
 		const classes = ['card', 'accordion-item'];
+		if (itemGap) {
+			classes.push(itemGap);
+		}
+		if (cardClass) {
+			classes.push(cardClass);
+		}
 		if (buttonBackgroundColor) {
 			classes.push(`bg-${buttonBackgroundColor}`);
 		}
@@ -375,6 +384,9 @@ const AccordionEdit = ({ attributes, setAttributes, clientId }) => {
 		const classes = ['accordion-button'];
 		if (!item.isOpen) {
 			classes.push('collapsed');
+		}
+		if (buttonClass) {
+			classes.push(buttonClass);
 		}
 		return classes.join(' ');
 	};

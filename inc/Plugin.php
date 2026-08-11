@@ -633,8 +633,8 @@ class Plugin {
 
 				// Yandex Map v3 editor init handled by theme's Codeweber_Yandex_Maps class.
 
-				// Button block: форма Theme — класс из Codeweber_Options::style('button') для превью в редакторе
-				if ($block_name === 'button') {
+				// Button / Label+ blocks: форма Theme — класс из Codeweber_Options::style('button') для превью в редакторе
+				if ($block_name === 'button' || $block_name === 'label-plus') {
 					$theme_btn = class_exists('\Codeweber_Options') ? trim(\Codeweber_Options::style('button')) : '';
 					wp_localize_script($script_handle, 'cwgbButtonThemeShape', [
 						'class' => $theme_btn,

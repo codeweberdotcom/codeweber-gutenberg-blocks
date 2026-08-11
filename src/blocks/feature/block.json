@@ -214,6 +214,18 @@
 			"type": "string",
 			"default": ""
 		},
+		"borderWidth": {
+			"type": "string",
+			"default": ""
+		},
+		"borderPosition": {
+			"type": "string",
+			"default": ""
+		},
+		"borderColorType": {
+			"type": "string",
+			"default": "solid"
+		},
 		"borderAccent": {
 			"type": "string",
 			"default": ""

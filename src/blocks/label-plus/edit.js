@@ -9,6 +9,8 @@ import {
 	PanelBody,
 	TextControl,
 	ToggleControl,
+	RadioControl,
+	ComboboxControl,
 } from '@wordpress/components';
 import {
 	Icon,
@@ -21,7 +23,15 @@ import apiFetch from '@wordpress/api-fetch';
 import { IconRender } from '../../components/icon';
 import { IconControl } from '../../components/icon/IconControl';
 import { BlockMetaFields } from '../../components/block-meta/BlockMetaFields';
+import { ButtonStyleControls } from '../../components/button-style/ButtonStyleControls';
+import { getClassNames } from '../button/buttonclass';
+import { colors } from '../../utilities/colors';
 import { useEffect } from '@wordpress/element';
+
+const BUTTON_TYPES = [
+	{ label: 'Solid', value: 'solid' },
+	{ label: 'Icon', value: 'icon' },
+];
 
 const Edit = ({ attributes, setAttributes }) => {
 	const {
@@ -50,9 +60,14 @@ const Edit = ({ attributes, setAttributes }) => {
 		blockClass,
 		blockData,
 		blockId,
+		displayType,
+		badgeColor,
+		ButtonType,
+		ButtonIconPosition,
+		LeftIcon,
+		RightIcon,
 	} = attributes;
 
-	// Tab icon with native title tooltip
 	const TabIcon = ({ icon, label }) => (
 		<span
 			title={label}
@@ -66,63 +81,68 @@ const Edit = ({ attributes, setAttributes }) => {
 		</span>
 	);
 
-	const tabs = [
-		{
-			name: 'content',
-			title: (
-				<TabIcon
-					icon={typography}
-					label={__('Content', 'codeweber-gutenberg-blocks')}
-				/>
-			),
-		},
-		{
-			name: 'position',
-			title: (
-				<TabIcon
-					icon={dragHandle}
-					label={__('Position', 'codeweber-gutenberg-blocks')}
-				/>
-			),
-		},
-		{
-			name: 'icon',
-			title: (
-				<TabIcon
-					icon={starFilled}
-					label={__('Icon', 'codeweber-gutenberg-blocks')}
-				/>
-			),
-		},
-		{
-			name: 'settings',
-			title: (
-				<TabIcon
-					icon={cog}
-					label={__('Settings', 'codeweber-gutenberg-blocks')}
-				/>
-			),
-		},
-	];
+	const contentTab = {
+		name: 'content',
+		title: (
+			<TabIcon
+				icon={typography}
+				label={__('Content', 'codeweber-gutenberg-blocks')}
+			/>
+		),
+	};
+	const positionTab = {
+		name: 'position',
+		title: (
+			<TabIcon
+				icon={dragHandle}
+				label={__('Position', 'codeweber-gutenberg-blocks')}
+			/>
+		),
+	};
+	const iconTab = {
+		name: 'icon',
+		title: (
+			<TabIcon
+				icon={starFilled}
+				label={__('Icon', 'codeweber-gutenberg-blocks')}
+			/>
+		),
+	};
+	const styleTab = {
+		name: 'style',
+		title: (
+			<TabIcon
+				icon={starFilled}
+				label={__('Style', 'codeweber-gutenberg-blocks')}
+			/>
+		),
+	};
+	const settingsTab = {
+		name: 'settings',
+		title: (
+			<TabIcon
+				icon={cog}
+				label={__('Settings', 'codeweber-gutenberg-blocks')}
+			/>
+		),
+	};
+
+	const tabs =
+		displayType === 'card'
+			? [contentTab, positionTab, iconTab, settingsTab]
+			: displayType === 'button'
+				? [contentTab, styleTab, settingsTab]
+				: [contentTab, settingsTab];
 
 	const blockProps = useBlockProps({
 		className: 'cw-label-plus position-relative',
 		id: blockId || undefined,
 	});
 
-	// Fetch theme card radius class once and store in attributes
 	useEffect(() => {
 		if (cardRadiusClass) return;
 		apiFetch({ path: '/codeweber/v1/styles' })
 			.then((res) => {
-				// Debug: log card radius from API
-				if (process.env.NODE_ENV !== 'production') {
-					// eslint-disable-next-line no-console
-					console.log(
-						'Label+ card radius from API:',
-						res?.card_radius_class
-					);
-				}
 				if (res?.card_radius_class !== undefined) {
 					setAttributes({ cardRadiusClass: res.card_radius_class });
 				}
@@ -135,7 +155,6 @@ const Edit = ({ attributes, setAttributes }) => {
 		right: positionRight || undefined,
 	};
 
-	// Parse data attributes
 	const dataAttributes = {};
 	if (blockData) {
 		blockData.split(',').forEach((pair) => {
@@ -146,39 +165,200 @@ const Edit = ({ attributes, setAttributes }) => {
 		});
 	}
 
+	// Button-type preview classes
+	const btnPreviewClasses = getClassNames(attributes);
+
+	const renderPreview = () => {
+		if (displayType === 'badge') {
+			return (
+				<span className={`badge bg-${badgeColor || 'primary'} rounded-pill`}>
+					<RichText
+						tagName="span"
+						value={labelText}
+						onChange={(value) => setAttributes({ labelText: value })}
+						placeholder={__(
+							'Label',
+							'codeweber-gutenberg-blocks'
+						)}
+						aria-label={__(
+							'Label',
+							'codeweber-gutenberg-blocks'
+						)}
+					/>
+				</span>
+			);
+		}
+
+		if (displayType === 'button') {
+			const hasLeftIcon =
+				ButtonType === 'icon' &&
+				ButtonIconPosition === 'left' &&
+				LeftIcon;
+			const hasRightIcon =
+				ButtonType === 'icon' &&
+				ButtonIconPosition === 'right' &&
+				RightIcon;
+			return (
+				<span className={btnPreviewClasses}>
+					{hasLeftIcon && <i className={LeftIcon}></i>}
+					<RichText
+						tagName="span"
+						value={labelText}
+						onChange={(value) => setAttributes({ labelText: value })}
+						placeholder={__(
+							'Label',
+							'codeweber-gutenberg-blocks'
+						)}
+						aria-label={__(
+							'Label',
+							'codeweber-gutenberg-blocks'
+						)}
+					/>
+					{hasRightIcon && <i className={RightIcon}></i>}
+				</span>
+			);
+		}
+
+		// card (default)
+		return (
+			<div
+				className={`card shadow-lg position-absolute p-0${cardRadiusClass ? ' ' + cardRadiusClass : ''}${blockClass ? ' ' + blockClass : ''}`}
+				style={cardStyle}
+			>
+				<div className="card-body py-4 px-5">
+					<div className="d-flex flex-row align-items-center">
+						<div>
+							<IconRender
+								iconType={iconType}
+								iconName={iconName}
+								svgIcon={svgIcon}
+								svgStyle={svgStyle}
+								iconSize={iconSize}
+								iconFontSize={iconFontSize}
+								iconColor={iconColor}
+								iconColor2={iconColor2}
+								iconClass={iconClass}
+								iconWrapper={iconWrapper}
+								iconWrapperStyle={iconWrapperStyle}
+								iconBtnSize={iconBtnSize}
+								iconBtnVariant={iconBtnVariant}
+								iconWrapperClass="pe-none mx-auto me-3"
+								customSvgUrl={customSvgUrl}
+								customSvgId={customSvgId}
+								customSvgSize={customSvgSize}
+								isEditor={true}
+							/>
+						</div>
+						<div>
+							<RichText
+								tagName="div"
+								className={`h3 mb-0 text-nowrap${showCounterClass ? ' counter' : ''}`}
+								value={counterText}
+								onChange={(value) =>
+									setAttributes({ counterText: value })
+								}
+								placeholder={__(
+									'25000+',
+									'codeweber-gutenberg-blocks'
+								)}
+								aria-label={__(
+									'Title',
+									'codeweber-gutenberg-blocks'
+								)}
+							/>
+							<RichText
+								tagName="p"
+								className="fs-14 lh-sm mb-0 text-nowrap"
+								value={labelText}
+								onChange={(value) =>
+									setAttributes({ labelText: value })
+								}
+								placeholder={__(
+									'Happy Clients',
+									'codeweber-gutenberg-blocks'
+								)}
+								aria-label={__(
+									'Label',
+									'codeweber-gutenberg-blocks'
+								)}
+							/>
+						</div>
+					</div>
+				</div>
+			</div>
+		);
+	};
+
 	return (
 		<>
 			<InspectorControls>
-				<TabPanel tabs={tabs}>
+				<TabPanel key={displayType} tabs={tabs}>
 					{(tab) => (
 						<>
 							{/* CONTENT TAB */}
 							{tab.name === 'content' && (
 								<PanelBody>
-									<TextControl
+									<RadioControl
 										label={__(
-											'Title',
+											'Display Type',
 											'codeweber-gutenberg-blocks'
 										)}
-										value={counterText}
+										options={[
+											{
+												label: __(
+													'Card',
+													'codeweber-gutenberg-blocks'
+												),
+												value: 'card',
+											},
+											{
+												label: __(
+													'Badge',
+													'codeweber-gutenberg-blocks'
+												),
+												value: 'badge',
+											},
+											{
+												label: __(
+													'Button',
+													'codeweber-gutenberg-blocks'
+												),
+												value: 'button',
+											},
+										]}
+										selected={displayType}
 										onChange={(value) =>
-											setAttributes({
-												counterText: value,
-											})
+											setAttributes({ displayType: value })
 										}
 									/>
-									<ToggleControl
-										label={__(
-											'Add "counter" class',
-											'codeweber-gutenberg-blocks'
-										)}
-										checked={showCounterClass}
-										onChange={(value) =>
-											setAttributes({
-												showCounterClass: value,
-											})
-										}
-									/>
+									{displayType === 'card' && (
+										<>
+											<TextControl
+												label={__(
+													'Title',
+													'codeweber-gutenberg-blocks'
+												)}
+												value={counterText}
+												onChange={(value) =>
+													setAttributes({
+														counterText: value,
+													})
+												}
+											/>
+											<ToggleControl
+												label={__(
+													'Add "counter" class',
+													'codeweber-gutenberg-blocks'
+												)}
+												checked={showCounterClass}
+												onChange={(value) =>
+													setAttributes({
+														showCounterClass: value,
+													})
+												}
+											/>
+										</>
+									)}
 									<TextControl
 										label={__(
 											'Label',
@@ -189,10 +369,25 @@ const Edit = ({ attributes, setAttributes }) => {
 											setAttributes({ labelText: value })
 										}
 									/>
+									{displayType === 'badge' && (
+										<ComboboxControl
+											label={__(
+												'Badge Color',
+												'codeweber-gutenberg-blocks'
+											)}
+											value={badgeColor}
+											options={colors}
+											onChange={(value) =>
+												setAttributes({
+													badgeColor: value,
+												})
+											}
+										/>
+									)}
 								</PanelBody>
 							)}
 
-							{/* POSITION TAB */}
+							{/* POSITION TAB (card only) */}
 							{tab.name === 'position' && (
 								<PanelBody>
 									<TextControl
@@ -230,7 +425,7 @@ const Edit = ({ attributes, setAttributes }) => {
 								</PanelBody>
 							)}
 
-							{/* ICON TAB */}
+							{/* ICON TAB (card only) */}
 							{tab.name === 'icon' && (
 								<PanelBody>
 									<IconControl
@@ -247,6 +442,17 @@ const Edit = ({ attributes, setAttributes }) => {
 										showWrapper={true}
 										showMargin={false}
 										initialOpen={true}
+									/>
+								</PanelBody>
+							)}
+
+							{/* STYLE TAB (button only) */}
+							{tab.name === 'style' && (
+								<PanelBody>
+									<ButtonStyleControls
+										attributes={attributes}
+										setAttributes={setAttributes}
+										types={BUTTON_TYPES}
 									/>
 								</PanelBody>
 							)}
@@ -285,71 +491,7 @@ const Edit = ({ attributes, setAttributes }) => {
 			</InspectorControls>
 
 			<div {...blockProps} {...dataAttributes}>
-				<div
-					className={`card shadow-lg position-absolute p-0${cardRadiusClass ? ' ' + cardRadiusClass : ''}${blockClass ? ' ' + blockClass : ''}`}
-					style={cardStyle}
-				>
-					<div className="card-body py-4 px-5">
-						<div className="d-flex flex-row align-items-center">
-							<div>
-								<IconRender
-									iconType={iconType}
-									iconName={iconName}
-									svgIcon={svgIcon}
-									svgStyle={svgStyle}
-									iconSize={iconSize}
-									iconFontSize={iconFontSize}
-									iconColor={iconColor}
-									iconColor2={iconColor2}
-									iconClass={iconClass}
-									iconWrapper={iconWrapper}
-									iconWrapperStyle={iconWrapperStyle}
-									iconBtnSize={iconBtnSize}
-									iconBtnVariant={iconBtnVariant}
-									iconWrapperClass="pe-none mx-auto me-3"
-									customSvgUrl={customSvgUrl}
-									customSvgId={customSvgId}
-									customSvgSize={customSvgSize}
-									isEditor={true}
-								/>
-							</div>
-							<div>
-								<RichText
-									tagName="div"
-									className={`h3 mb-0 text-nowrap${showCounterClass ? ' counter' : ''}`}
-									value={counterText}
-									onChange={(value) =>
-										setAttributes({ counterText: value })
-									}
-									placeholder={__(
-										'25000+',
-										'codeweber-gutenberg-blocks'
-									)}
-									aria-label={__(
-										'Title',
-										'codeweber-gutenberg-blocks'
-									)}
-								/>
-								<RichText
-									tagName="p"
-									className="fs-14 lh-sm mb-0 text-nowrap"
-									value={labelText}
-									onChange={(value) =>
-										setAttributes({ labelText: value })
-									}
-									placeholder={__(
-										'Happy Clients',
-										'codeweber-gutenberg-blocks'
-									)}
-									aria-label={__(
-										'Label',
-										'codeweber-gutenberg-blocks'
-									)}
-								/>
-							</div>
-						</div>
-					</div>
-				</div>
+				{renderPreview()}
 			</div>
 		</>
 	);

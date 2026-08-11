@@ -55,7 +55,7 @@ Legend: `S` = static (JS save) | `D` = dynamic (PHP render.php)
 | `counter` | S | Single animated counter (`.counter` / counterUp). 4 layouts: Counter 1 (icon-left card), Counter 2 (svg icon on top, centered), Counter 3 (number + label, centered), Counter 4 (number + h6 subtitle + ratings). Optional icon, card wrapper, and absolute positioning (`positionType` + top/bottom/left/right offsets + z-index) for floating banner cards |
 | `counters` | S | Counters grid container (InnerBlocks: columns → column → counter). 4 templates: Cards (icon-left, col-md-6), SVG icons (centered, col-md-4), Plain (large, dark bg, col-6/col-lg-3), Ratings (col-md-6). Switching template rebuilds the grid |
 | `cta` | S | Call-to-action block |
-| `label-plus` | S | Label/badge with optional plus icon |
+| `label-plus` | S | Floating label with 3 display types: **card** (floating Bootstrap card with icon + counter/title + label, absolute-positioned with bottom/right offsets), **badge** (`<span class="badge bg-{color} rounded-pill">`), **button** (button-style `<span>` without link, rendered via `getClassNames()` from the button block — supports solid/icon types, all button styles/sizes/shapes via `ButtonStyleControls`). Type selected via RadioControl in the Content inspector tab. |
 
 ---
 

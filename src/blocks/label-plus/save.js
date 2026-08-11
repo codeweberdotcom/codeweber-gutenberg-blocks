@@ -1,5 +1,6 @@
 import { RichText } from '@wordpress/block-editor';
 import { IconRenderSave } from '../../components/icon';
+import { getClassNames } from '../button/buttonclass';
 
 const Save = ({ attributes }) => {
 	const {
@@ -28,12 +29,13 @@ const Save = ({ attributes }) => {
 		blockClass,
 		blockData,
 		blockId,
+		displayType,
+		badgeColor,
+		ButtonType,
+		ButtonIconPosition,
+		LeftIcon,
+		RightIcon,
 	} = attributes;
-
-	const cardStyle = {
-		bottom: positionBottom || undefined,
-		right: positionRight || undefined,
-	};
 
 	// Parse data attributes
 	const dataAttributes = {};
@@ -45,6 +47,55 @@ const Save = ({ attributes }) => {
 			}
 		});
 	}
+
+	// Badge type
+	if (displayType === 'badge') {
+		const badgeClasses = [
+			'badge',
+			`bg-${badgeColor || 'primary'}`,
+			'rounded-pill',
+			blockClass,
+		]
+			.filter(Boolean)
+			.join(' ');
+
+		return (
+			<RichText.Content
+				tagName="span"
+				className={badgeClasses}
+				id={blockId || undefined}
+				value={labelText}
+				{...dataAttributes}
+			/>
+		);
+	}
+
+	// Button type (no link — rendered as <span>)
+	if (displayType === 'button') {
+		const btnClasses = getClassNames(attributes, { forSave: true });
+		const hasLeftIcon =
+			ButtonType === 'icon' && ButtonIconPosition === 'left' && LeftIcon;
+		const hasRightIcon =
+			ButtonType === 'icon' && ButtonIconPosition === 'right' && RightIcon;
+
+		return (
+			<span
+				className={btnClasses || undefined}
+				id={blockId || undefined}
+				{...dataAttributes}
+			>
+				{hasLeftIcon && <i className={LeftIcon}></i>}
+				<RichText.Content tagName="span" value={labelText} />
+				{hasRightIcon && <i className={RightIcon}></i>}
+			</span>
+		);
+	}
+
+	// Card type (default — original markup)
+	const cardStyle = {
+		bottom: positionBottom || undefined,
+		right: positionRight || undefined,
+	};
 
 	const cardClasses = [
 		'card',

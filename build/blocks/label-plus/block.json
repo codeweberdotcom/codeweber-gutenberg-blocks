@@ -109,6 +109,58 @@
     "customSvgSize": {
       "type": "number",
       "default": 0
+    },
+    "displayType": {
+      "type": "string",
+      "default": "card"
+    },
+    "badgeColor": {
+      "type": "string",
+      "default": "primary"
+    },
+    "ButtonSize": {
+      "type": "string",
+      "default": ""
+    },
+    "ButtonColor": {
+      "type": "string",
+      "default": "primary"
+    },
+    "ButtonGradientColor": {
+      "type": "string",
+      "default": ""
+    },
+    "ButtonStyle": {
+      "type": "string",
+      "default": "soft"
+    },
+    "ButtonType": {
+      "type": "string",
+      "default": "solid"
+    },
+    "ButtonShape": {
+      "type": "string",
+      "default": "theme"
+    },
+    "ButtonIconPosition": {
+      "type": "string",
+      "default": "left"
+    },
+    "IconClass": {
+      "type": "string",
+      "default": ""
+    },
+    "LeftIcon": {
+      "type": "string",
+      "default": ""
+    },
+    "RightIcon": {
+      "type": "string",
+      "default": ""
+    },
+    "CircleIcon": {
+      "type": "string",
+      "default": ""
     }
   },
   "editorScript": "file:./index.js",

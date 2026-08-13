@@ -3115,7 +3115,7 @@ msgstr "Фильтр по категории"
 #: build/blocks/yandex-map/index.js:1
 #, fuzzy
 msgid "Filter by Category"
-msgstr "Фильтр по таксономиям"
+msgstr "Фильтр по категориям офисов"
 
 #: build/blocks/yandex-map/index.js:1
 #, fuzzy
@@ -3125,7 +3125,7 @@ msgstr "Фильтр по таксономиям"
 #: build/blocks/yandex-map/index.js:1
 #, fuzzy
 msgid "Filter by City"
-msgstr "Фильтр по таксономиям"
+msgstr "Фильтр по городам"
 
 #: build/blocks/accordion/index.js:1 build/blocks/lists/index.js:1
 #: build/blocks/post-grid/index.js:1

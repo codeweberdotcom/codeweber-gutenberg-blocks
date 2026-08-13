@@ -57,19 +57,27 @@ $balloon_fields = isset( $attributes['balloonFields'] ) && is_array( $attributes
 
 $show_sidebar     = isset( $attributes['showSidebar'] ) ? (bool) $attributes['showSidebar'] : false;
 $sidebar_position = isset( $attributes['sidebarPosition'] ) ? $attributes['sidebarPosition'] : 'left';
+$sidebar_style     = isset( $attributes['sidebarStyle'] ) && 'compact' === $attributes['sidebarStyle'] ? 'compact' : 'default';
 $sidebar_title    = isset( $attributes['sidebarTitle'] ) ? $attributes['sidebarTitle'] : '';
 $show_filters     = isset( $attributes['showFilters'] ) ? (bool) $attributes['showFilters'] : false;
 $filter_by_city   = isset( $attributes['filterByCity'] ) ? (bool) $attributes['filterByCity'] : false;
 $filter_by_cat    = isset( $attributes['filterByCategory'] ) ? (bool) $attributes['filterByCategory'] : false;
-$sidebar_fields   = isset( $attributes['sidebarFields'] ) && is_array( $attributes['sidebarFields'] )
-	? $attributes['sidebarFields']
-	: array(
+$sidebar_fields = wp_parse_args(
+	isset( $attributes['sidebarFields'] ) && is_array( $attributes['sidebarFields'] ) ? $attributes['sidebarFields'] : array(),
+	array(
+		'showTitle'        => true,
 		'showCity'         => true,
 		'showAddress'      => false,
+		'showLandmark'     => false,
+		'showStatus'       => false,
 		'showPhone'        => false,
 		'showWorkingHours' => true,
 		'showDescription'  => true,
-	);
+	)
+);
+foreach ( $sidebar_fields as $field_name => $field_value ) {
+	$sidebar_fields[ $field_name ] = (bool) $field_value;
+}
 
 $block_class = isset( $attributes['blockClass'] ) ? $attributes['blockClass'] : '';
 $block_id    = isset( $attributes['blockId'] ) && ! empty( $attributes['blockId'] )
@@ -134,6 +142,13 @@ if ( $data_source === 'offices' ) {
 
 			$street          = get_post_meta( $post_id, '_office_street', true );
 			$display_address = $street ?: get_post_meta( $post_id, '_office_full_address', true );
+			$office_phones   = get_post_meta( $post_id, '_office_phones', true );
+			if ( ! is_array( $office_phones ) || empty( $office_phones ) ) {
+				$office_phones = array_filter( array(
+					get_post_meta( $post_id, '_office_phone', true ),
+					get_post_meta( $post_id, '_office_phone_2', true ),
+				) );
+			}
 
 			$markers[] = array(
 				'id'           => $post_id,
@@ -141,7 +156,8 @@ if ( $data_source === 'offices' ) {
 				'longitude'    => floatval( $longitude ),
 				'title'        => get_the_title(),
 				'address'      => $display_address,
-				'phone'        => get_post_meta( $post_id, '_office_phone', true ),
+				'phone'        => implode( ' · ', array_map( 'sanitize_text_field', $office_phones ) ),
+				'phones'       => array_values( array_map( 'sanitize_text_field', $office_phones ) ),
 				'workingHours' => get_post_meta( $post_id, '_office_working_hours', true ),
 				'city'         => get_post_meta( $post_id, '_office_city', true ),
 				'link'         => get_permalink( $post_id ),
@@ -196,6 +212,7 @@ $map_args = array(
 	'balloon_fields'      => $balloon_fields,
 	'show_sidebar'        => $show_sidebar,
 	'sidebar_position'    => $sidebar_position,
+	'sidebar_style'       => $sidebar_style,
 	'sidebar_title'       => $sidebar_title,
 	'show_filters'        => $show_filters,
 	'filter_by_city'      => $filter_by_city,

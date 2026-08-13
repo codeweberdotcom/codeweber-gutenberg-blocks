@@ -56,6 +56,7 @@ export const YandexMapV3Sidebar = ( { attributes, setAttributes } ) => {
 		balloonFields,
 		showSidebar,
 		sidebarPosition,
+		sidebarStyle,
 		sidebarTitle,
 		showFilters,
 		filterByCity,
@@ -412,6 +413,16 @@ export const YandexMapV3Sidebar = ( { attributes, setAttributes } ) => {
 											onChange={ ( value ) => setAttributes( { sidebarPosition: value } ) }
 										/>
 
+										<SelectControl
+											label={ __( 'Sidebar Design', 'codeweber-gutenberg-blocks' ) }
+											value={ sidebarStyle || 'default' }
+											options={ [
+												{ label: __( 'Default', 'codeweber-gutenberg-blocks' ), value: 'default' },
+												{ label: __( 'Compact', 'codeweber-gutenberg-blocks' ), value: 'compact' },
+											] }
+											onChange={ ( value ) => setAttributes( { sidebarStyle: value } ) }
+										/>
+
 										<TextControl
 											label={ __( 'Sidebar Title', 'codeweber-gutenberg-blocks' ) }
 											value={ sidebarTitle }
@@ -456,6 +467,12 @@ export const YandexMapV3Sidebar = ( { attributes, setAttributes } ) => {
 										initialOpen={ false }
 									>
 										<ToggleControl
+											label={ __( 'Show Title', 'codeweber-gutenberg-blocks' ) }
+											checked={ sidebarFields?.showTitle ?? true }
+											onChange={ ( v ) => setAttributes( { sidebarFields: { ...sidebarFields, showTitle: v } } ) }
+											__nextHasNoMarginBottom
+										/>
+										<ToggleControl
 											label={ __( 'Show City', 'codeweber-gutenberg-blocks' ) }
 											checked={ sidebarFields?.showCity ?? true }
 											onChange={ ( v ) => setAttributes( { sidebarFields: { ...sidebarFields, showCity: v } } ) }
@@ -465,6 +482,18 @@ export const YandexMapV3Sidebar = ( { attributes, setAttributes } ) => {
 											label={ __( 'Show Address', 'codeweber-gutenberg-blocks' ) }
 											checked={ sidebarFields?.showAddress ?? false }
 											onChange={ ( v ) => setAttributes( { sidebarFields: { ...sidebarFields, showAddress: v } } ) }
+											__nextHasNoMarginBottom
+										/>
+										<ToggleControl
+											label={ __( 'Show Landmark', 'codeweber-gutenberg-blocks' ) }
+											checked={ sidebarFields?.showLandmark ?? false }
+											onChange={ ( v ) => setAttributes( { sidebarFields: { ...sidebarFields, showLandmark: v } } ) }
+											__nextHasNoMarginBottom
+										/>
+										<ToggleControl
+											label={ __( 'Show Office Status', 'codeweber-gutenberg-blocks' ) }
+											checked={ sidebarFields?.showStatus ?? false }
+											onChange={ ( v ) => setAttributes( { sidebarFields: { ...sidebarFields, showStatus: v } } ) }
 											__nextHasNoMarginBottom
 										/>
 										<ToggleControl

@@ -164,6 +164,13 @@ if ($data_source === 'offices') {
 			// Для отображения используем только улицу (город выводится отдельным полем).
 			$street = get_post_meta($post_id, '_office_street', true);
 			$display_address = $street ?: get_post_meta($post_id, '_office_full_address', true);
+			$office_phones = get_post_meta($post_id, '_office_phones', true);
+			if (!is_array($office_phones) || empty($office_phones)) {
+				$office_phones = array_filter(array(
+					get_post_meta($post_id, '_office_phone', true),
+					get_post_meta($post_id, '_office_phone_2', true),
+				));
+			}
 
 			$markers[] = array(
 				'id' => $post_id,
@@ -171,7 +178,8 @@ if ($data_source === 'offices') {
 				'longitude' => floatval($longitude),
 				'title' => get_the_title(),
 				'address' => $display_address,
-				'phone' => get_post_meta($post_id, '_office_phone', true),
+				'phone' => implode(' · ', array_map('sanitize_text_field', $office_phones)),
+				'phones' => array_values(array_map('sanitize_text_field', $office_phones)),
 				'workingHours' => get_post_meta($post_id, '_office_working_hours', true),
 				'city' => get_post_meta($post_id, '_office_city', true),
 				'link' => get_permalink($post_id),

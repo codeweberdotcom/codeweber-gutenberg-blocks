@@ -126,6 +126,10 @@
 			"type": "string",
 			"default": "left"
 		},
+		"sidebarStyle": {
+			"type": "string",
+			"default": "default"
+		},
 		"sidebarTitle": {
 			"type": "string",
 			"default": ""
@@ -145,8 +149,11 @@
 		"sidebarFields": {
 			"type": "object",
 			"default": {
+				"showTitle": true,
 				"showCity": true,
 				"showAddress": false,
+				"showLandmark": false,
+				"showStatus": false,
 				"showPhone": false,
 				"showWorkingHours": true,
 				"showDescription": true

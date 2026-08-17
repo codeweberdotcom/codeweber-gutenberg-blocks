@@ -105,6 +105,7 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 	const {
 		counterLayout,
 		iconType,
+		iconText,
 		iconName,
 		svgIcon,
 		svgStyle,
@@ -279,6 +280,7 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 		showIcon && iconType !== 'none' ? (
 			<IconRender
 				iconType={iconType}
+				iconText={iconText}
 				iconName={iconName}
 				svgIcon={svgIcon}
 				svgStyle={svgStyle}

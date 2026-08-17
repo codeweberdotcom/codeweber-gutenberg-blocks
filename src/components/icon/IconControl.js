@@ -334,8 +334,8 @@ export const IconControl = ({
 				</>
 			)}
 
-			{/* Размер Font иконки */}
-			{iconType === 'font' && (
+			{/* Размер Font иконки и текстовой метки — обе используют fs-* класс */}
+			{(iconType === 'font' || iconType === 'text') && (
 				<SelectControl
 					label={__('Font Size', 'codeweber-gutenberg-blocks')}
 					value={iconFontSize}

@@ -41,6 +41,7 @@ const Edit = ({ attributes, setAttributes }) => {
 		positionRight,
 		cardRadiusClass,
 		iconType,
+		iconText,
 		iconName,
 		svgIcon,
 		svgStyle,
@@ -230,6 +231,7 @@ const Edit = ({ attributes, setAttributes }) => {
 						<div>
 							<IconRender
 								iconType={iconType}
+								iconText={iconText}
 								iconName={iconName}
 								svgIcon={svgIcon}
 								svgStyle={svgStyle}

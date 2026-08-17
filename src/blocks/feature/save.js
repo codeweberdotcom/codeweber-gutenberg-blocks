@@ -19,6 +19,7 @@ const Save = ({ attributes }) => {
 		featureLayout,
 		// Icon
 		iconType,
+		iconText,
 		iconName,
 		svgIcon,
 		svgStyle,
@@ -214,6 +215,7 @@ const Save = ({ attributes }) => {
 	const iconElement = (
 		<IconRenderSave
 			iconType={iconType}
+			iconText={iconText}
 			iconName={iconName}
 			svgIcon={svgIcon}
 			svgStyle={svgStyle}

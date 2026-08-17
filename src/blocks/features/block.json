@@ -33,6 +33,10 @@
 			"type": "string",
 			"default": "font"
 		},
+		"iconText": {
+			"type": "string",
+			"default": ""
+		},
 		"iconName": {
 			"type": "string",
 			"default": "phone-volume"

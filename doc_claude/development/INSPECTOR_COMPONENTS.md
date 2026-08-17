@@ -414,13 +414,26 @@ import IconControl from '../../components/icon/IconControl';
 />
 ```
 
-**Prefixed attributes written:** `{prefix}IconType`, `{prefix}IconName`, `{prefix}SvgIcon`,
-`{prefix}SvgStyle`, `{prefix}IconSize`, `{prefix}IconFontSize`, `{prefix}IconColor`,
-`{prefix}IconColor2`, `{prefix}IconWrapper`, `{prefix}IconWrapperStyle`, `{prefix}IconBtnSize`,
-`{prefix}IconBtnVariant`, `{prefix}IconWrapperClass`, `{prefix}IconGradientColor`,
-`{prefix}CustomSvgUrl`, `{prefix}CustomSvgId`.
+**Prefixed attributes written:** `{prefix}IconType`, `{prefix}IconText`, `{prefix}IconName`,
+`{prefix}SvgIcon`, `{prefix}SvgStyle`, `{prefix}IconSize`, `{prefix}IconFontSize`,
+`{prefix}IconColor`, `{prefix}IconColor2`, `{prefix}IconWrapper`, `{prefix}IconWrapperStyle`,
+`{prefix}IconBtnSize`, `{prefix}IconBtnVariant`, `{prefix}IconWrapperClass`,
+`{prefix}IconGradientColor`, `{prefix}CustomSvgUrl`, `{prefix}CustomSvgId`.
 
 Use `prefix="second"` for a second icon in the same block.
+
+**Icon type `text` (Text / Number).** `IconRender` draws the label only when **both**
+`iconType === 'text'` and `iconText` are set, otherwise it returns `null`. A block offering
+this type must therefore:
+
+1. declare `iconText` (`string`, default `''`) in its `block.json` — Gutenberg silently drops
+   attributes it does not know, so the inspector field would appear to accept input but save
+   nothing;
+2. pass `iconText` to both `IconRender` (edit.js) and `IconRenderSave` (save.js).
+
+Size for this type comes from the same `Font Size` select as font icons (`iconFontSize` →
+`fs-*` class applied to the `<span>`), so a block that hardcodes an `iconFontSize` default
+gives the text label that size until the editor changes it.
 
 ---
 

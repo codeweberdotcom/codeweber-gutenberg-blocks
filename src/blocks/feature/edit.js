@@ -75,6 +75,7 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 		featureLayout,
 		// Icon
 		iconType,
+		iconText,
 		iconName,
 		svgIcon,
 		svgStyle,
@@ -559,6 +560,7 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 		const iconElement = (
 			<IconRender
 				iconType={iconType}
+				iconText={iconText}
 				iconName={iconName}
 				svgIcon={svgIcon}
 				svgStyle={svgStyle}

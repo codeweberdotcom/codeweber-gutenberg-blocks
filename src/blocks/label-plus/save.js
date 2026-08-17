@@ -10,6 +10,7 @@ const Save = ({ attributes }) => {
 		positionRight,
 		cardRadiusClass,
 		iconType,
+		iconText,
 		iconName,
 		svgIcon,
 		svgStyle,
@@ -120,6 +121,7 @@ const Save = ({ attributes }) => {
 					<div>
 						<IconRenderSave
 							iconType={iconType}
+							iconText={iconText}
 							iconName={iconName}
 							svgIcon={svgIcon}
 							svgStyle={svgStyle}

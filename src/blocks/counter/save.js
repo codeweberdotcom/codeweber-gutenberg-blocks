@@ -20,6 +20,7 @@ const Save = ({ attributes }) => {
 		counterLayout,
 		// Icon
 		iconType,
+		iconText,
 		iconName,
 		svgIcon,
 		svgStyle,
@@ -79,6 +80,7 @@ const Save = ({ attributes }) => {
 		showIcon && iconType !== 'none' ? (
 			<IconRenderSave
 				iconType={iconType}
+				iconText={iconText}
 				iconName={iconName}
 				svgIcon={svgIcon}
 				svgStyle={svgStyle}

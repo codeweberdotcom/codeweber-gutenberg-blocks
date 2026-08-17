@@ -166,7 +166,7 @@ if ( $data_source === 'offices' ) {
 		}
 		wp_reset_postdata();
 	}
-} elseif ( $data_source === 'mkd_object' ) {
+} elseif ( $data_source === 'mkd_object' && post_type_exists( 'mkd_object' ) ) {
 	$args = array(
 		'post_type'      => 'mkd_object',
 		'posts_per_page' => -1,

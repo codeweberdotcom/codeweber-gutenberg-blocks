@@ -166,6 +166,47 @@ if ( $data_source === 'offices' ) {
 		}
 		wp_reset_postdata();
 	}
+} elseif ( $data_source === 'mkd_object' ) {
+	$args = array(
+		'post_type'      => 'mkd_object',
+		'posts_per_page' => -1,
+		'post_status'    => 'publish',
+		'orderby'        => 'title',
+		'order'          => 'asc',
+	);
+
+	$objects = new WP_Query( $args );
+
+	if ( $objects->have_posts() ) {
+		while ( $objects->have_posts() ) {
+			$objects->the_post();
+			$post_id   = get_the_ID();
+			$latitude  = get_post_meta( $post_id, '_mkd_latitude', true );
+			$longitude = get_post_meta( $post_id, '_mkd_longitude', true );
+
+			if ( empty( $latitude ) || empty( $longitude ) ) {
+				continue;
+			}
+
+			$address = get_post_meta( $post_id, '_mkd_address', true );
+			$floors  = get_post_meta( $post_id, '_mkd_floors', true );
+
+			$markers[] = array(
+				'id'           => $post_id,
+				'latitude'     => floatval( $latitude ),
+				'longitude'    => floatval( $longitude ),
+				'title'        => get_the_title(),
+				'address'      => $address,
+				'phone'        => '',
+				'phones'       => array(),
+				'workingHours' => $floors ? esc_html( $floors ) . ' ' . esc_html__( 'floors', 'codeweber-gutenberg-blocks' ) : '',
+				'city'         => '',
+				'link'         => get_permalink( $post_id ),
+				'description'  => '',
+			);
+		}
+		wp_reset_postdata();
+	}
 } else {
 	$custom_markers = isset( $attributes['customMarkers'] ) && is_array( $attributes['customMarkers'] )
 		? $attributes['customMarkers']

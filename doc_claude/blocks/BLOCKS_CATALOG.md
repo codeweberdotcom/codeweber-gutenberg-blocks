@@ -118,6 +118,7 @@ Legend: `S` = static (JS save) | `D` = dynamic (PHP render.php)
 | Block | Type | Description |
 |-------|------|-------------|
 | `yandex-map` | D | Yandex Maps embed with hotspot support |
+| `yandex-map-v3` | D | Yandex Maps API v3 — native dark theme, custom color schemes, sidebar, filters. `dataSource`: `offices` (offices CPT), `mkd_object` (residential buildings CPT — queries `_mkd_latitude`/`_mkd_longitude`/`_mkd_address`/`_mkd_floors`), `custom` (inline markers). See block sidebar for per-source query controls. |
 | `contacts` | D | Contacts from theme Redux options |
 | `social-icons` | D | Social icons from theme Redux options |
 | `logo` | D | Logo from theme Redux options |

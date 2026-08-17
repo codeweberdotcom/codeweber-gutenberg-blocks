@@ -140,6 +140,7 @@ export const YandexMapV3Sidebar = ( { attributes, setAttributes } ) => {
 									value={ dataSource }
 									options={ [
 										{ label: __( 'Offices from CPT', 'codeweber-gutenberg-blocks' ), value: 'offices' },
+										{ label: __( 'Buildings from CPT (mkd_object)', 'codeweber-gutenberg-blocks' ), value: 'mkd_object' },
 										{ label: __( 'Custom Markers', 'codeweber-gutenberg-blocks' ), value: 'custom' },
 									] }
 									onChange={ ( value ) => setAttributes( { dataSource: value } ) }
@@ -248,6 +249,15 @@ export const YandexMapV3Sidebar = ( { attributes, setAttributes } ) => {
 										attributes={ attributes }
 										setAttributes={ setAttributes }
 									/>
+								</PanelBody>
+							) : dataSource === 'mkd_object' ? (
+								<PanelBody
+									title={ __( 'Buildings Query', 'codeweber-gutenberg-blocks' ) }
+									initialOpen={ true }
+								>
+									<p style={ { color: '#757575', fontSize: '12px' } }>
+										{ __( 'All published buildings (mkd_object) are shown. Ordering: by title.', 'codeweber-gutenberg-blocks' ) }
+									</p>
 								</PanelBody>
 							) : (
 								<PanelBody

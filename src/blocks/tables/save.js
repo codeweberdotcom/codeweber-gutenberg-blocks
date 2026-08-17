@@ -29,6 +29,7 @@ const TablesSave = ({ attributes }) => {
 		tableHover,
 		tableVariant,
 		theadVariant,
+		theadTextColor,
 		showHeader,
 		hideTopBorder,
 		hideBottomBorder,
@@ -126,7 +127,7 @@ const TablesSave = ({ attributes }) => {
 	const tableContent = (
 		<table className={getTableClasses()}>
 			{showHeader !== false && (
-			<thead className={theadVariant || undefined}>
+			<thead className={[theadVariant, theadTextColor].filter(Boolean).join(' ') || undefined}>
 				<tr>
 					{headerCellsNorm.map((cell, colIndex) => (
 						<th

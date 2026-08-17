@@ -62,6 +62,10 @@
       "type": "string",
       "default": ""
     },
+    "theadTextColor": {
+      "type": "string",
+      "default": ""
+    },
     "showHeader": {
       "type": "boolean",
       "default": true

@@ -65,13 +65,22 @@ const deprecationSourceMode = {
 	},
 };
 
+const deprecationTheadTextColor = {
+	isEligible(attributes) {
+		return attributes.theadTextColor === undefined;
+	},
+	migrate(attributes) {
+		return { ...attributes, theadTextColor: '' };
+	},
+};
+
 /**
  * Block Registration
  */
 registerBlockType(metadata, {
 	edit: Edit,
 	save: Save,
-	deprecated: [deprecationCardWrapper, deprecationCellFormat, deprecationSourceMode],
+	deprecated: [deprecationTheadTextColor, deprecationCardWrapper, deprecationCellFormat, deprecationSourceMode],
 	title: __('Tables', 'codeweber-gutenberg-blocks'),
 	description: __(
 		'Bootstrap 5 tables. Supports Simple, Dark, Striped, Bordered, Borderless, Hoverable, and Responsive styles.',

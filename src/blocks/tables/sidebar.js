@@ -30,6 +30,7 @@ export const TablesSidebar = ({ attributes, setAttributes }) => {
 		textColor,
 		customTableClass,
 		theadVariant,
+		theadTextColor,
 		showHeader,
 		hideTopBorder,
 		hideBottomBorder,
@@ -247,9 +248,44 @@ export const TablesSidebar = ({ attributes, setAttributes }) => {
 						{ value: 'table-emerald', label: 'table-emerald' },
 						{ value: 'table-crimson', label: 'table-crimson' },
 						{ value: 'table-gray', label: 'table-gray' },
+							{ value: '', label: '── Solid ──', disabled: true },
+							{ value: 'table-blue-solid', label: 'table-blue-solid' },
+							{ value: 'table-sky-solid', label: 'table-sky-solid' },
+							{ value: 'table-purple-solid', label: 'table-purple-solid' },
+							{ value: 'table-grape-solid', label: 'table-grape-solid' },
+							{ value: 'table-violet-solid', label: 'table-violet-solid' },
+							{ value: 'table-pink-solid', label: 'table-pink-solid' },
+							{ value: 'table-fuchsia-solid', label: 'table-fuchsia-solid' },
+							{ value: 'table-red-solid', label: 'table-red-solid' },
+							{ value: 'table-orange-solid', label: 'table-orange-solid' },
+							{ value: 'table-yellow-solid', label: 'table-yellow-solid' },
+							{ value: 'table-green-solid', label: 'table-green-solid' },
+							{ value: 'table-leaf-solid', label: 'table-leaf-solid' },
+							{ value: 'table-aqua-solid', label: 'table-aqua-solid' },
+							{ value: 'table-navy-solid', label: 'table-navy-solid' },
+							{ value: 'table-ash-solid', label: 'table-ash-solid' },
+							{ value: 'table-dewalt-solid', label: 'table-dewalt-solid' },
+							{ value: 'table-max-solid', label: 'table-max-solid' },
+							{ value: 'table-bronze-solid', label: 'table-bronze-solid' },
+							{ value: 'table-coffee-solid', label: 'table-coffee-solid' },
+							{ value: 'table-flame-solid', label: 'table-flame-solid' },
+							{ value: 'table-emerald-solid', label: 'table-emerald-solid' },
+							{ value: 'table-crimson-solid', label: 'table-crimson-solid' },
+							{ value: 'table-gray-solid', label: 'table-gray-solid' },
 					]}
 					disabled={showHeader === false}
 					onChange={(v) => setAttributes({ theadVariant: v })}
+				/>
+				<SelectControl
+					label={__('Header text color', 'codeweber-gutenberg-blocks')}
+					value={theadTextColor || ''}
+					options={[
+						{ value: '', label: __('— Auto —', 'codeweber-gutenberg-blocks') },
+						{ value: 'text-dark', label: __('Dark', 'codeweber-gutenberg-blocks') },
+						{ value: 'text-white', label: __('Light', 'codeweber-gutenberg-blocks') },
+					]}
+					disabled={showHeader === false}
+					onChange={(v) => setAttributes({ theadTextColor: v })}
 				/>
 
 				{/* Responsive Toggle */}

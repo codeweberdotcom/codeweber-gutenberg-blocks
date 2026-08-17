@@ -26,6 +26,7 @@ $table_variant = isset($attributes['tableVariant']) ? trim((string) $attributes[
 $text_color = isset($attributes['textColor']) ? trim((string) $attributes['textColor']) : '';
 $custom_table_class = isset($attributes['customTableClass']) ? trim((string) $attributes['customTableClass']) : '';
 $thead_variant = isset($attributes['theadVariant']) ? trim((string) $attributes['theadVariant']) : '';
+$thead_text_color = isset($attributes['theadTextColor']) ? trim((string) $attributes['theadTextColor']) : '';
 $show_header = isset($attributes['showHeader']) ? (bool) $attributes['showHeader'] : true;
 $hide_top_border = !empty($attributes['hideTopBorder']);
 $hide_bottom_border = !empty($attributes['hideBottomBorder']);
@@ -36,12 +37,19 @@ $allowed_thead = [
 	// Bootstrap semantic tints
 	'table-primary', 'table-secondary', 'table-success', 'table-danger',
 	'table-warning', 'table-info', 'table-light', 'table-dark',
-	// CodeWeber theme colors
+	// CodeWeber theme colors — soft tints
 	'table-blue', 'table-sky', 'table-purple', 'table-grape', 'table-violet',
 	'table-pink', 'table-fuchsia', 'table-red', 'table-orange', 'table-yellow',
 	'table-green', 'table-leaf', 'table-aqua', 'table-navy', 'table-ash',
 	'table-dewalt', 'table-max', 'table-bronze', 'table-coffee', 'table-flame',
 	'table-emerald', 'table-crimson', 'table-gray',
+	// CodeWeber theme colors — solid
+	'table-blue-solid', 'table-sky-solid', 'table-purple-solid', 'table-grape-solid',
+	'table-violet-solid', 'table-pink-solid', 'table-fuchsia-solid', 'table-red-solid',
+	'table-orange-solid', 'table-yellow-solid', 'table-green-solid', 'table-leaf-solid',
+	'table-aqua-solid', 'table-navy-solid', 'table-ash-solid', 'table-dewalt-solid',
+	'table-max-solid', 'table-bronze-solid', 'table-coffee-solid', 'table-flame-solid',
+	'table-emerald-solid', 'table-crimson-solid', 'table-gray-solid',
 ];
 $allowed_text_colors = [
 	'transparent', 'primary', 'dark', 'light', 'yellow', 'orange', 'red', 'pink',
@@ -69,7 +77,15 @@ if ($custom_table_class) {
 }
 $table_class_str = implode(' ', $table_classes);
 
-$thead_class = ($thead_variant && in_array($thead_variant, $allowed_thead, true)) ? $thead_variant : '';
+$allowed_thead_text = ['text-dark', 'text-white'];
+$thead_classes = [];
+if ($thead_variant && in_array($thead_variant, $allowed_thead, true)) {
+	$thead_classes[] = $thead_variant;
+}
+if ($thead_text_color && in_array($thead_text_color, $allowed_thead_text, true)) {
+	$thead_classes[] = $thead_text_color;
+}
+$thead_class = implode(' ', $thead_classes);
 
 $allowed_aligns = ['center', 'end'];
 $column_aligns = (isset($attributes['columnAligns']) && is_array($attributes['columnAligns'])) ? $attributes['columnAligns'] : [];

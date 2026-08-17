@@ -41,6 +41,7 @@ const TablesEdit = ({ attributes, setAttributes }) => {
 		textColor,
 		customTableClass,
 		theadVariant,
+		theadTextColor,
 		showHeader,
 		hideTopBorder,
 		hideBottomBorder,
@@ -90,7 +91,8 @@ const TablesEdit = ({ attributes, setAttributes }) => {
 	};
 
 	const headerVisible = showHeader !== false;
-	const theadClassName = theadVariant || undefined;
+	const theadClassName =
+		[theadVariant, theadTextColor].filter(Boolean).join(' ') || undefined;
 
 	const aligns = Array.isArray(columnAligns) ? columnAligns : [];
 	const alignClass = (i) => (aligns[i] ? `text-${aligns[i]}` : '');

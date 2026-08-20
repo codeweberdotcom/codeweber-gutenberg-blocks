@@ -35,12 +35,14 @@ const OVERLAY_OPTIONS = [
 	{ label: __('Dark 60%', 'codeweber-gutenberg-blocks'), value: 'bg-overlay bg-overlay-600' },
 	{ label: __('Dark 70%', 'codeweber-gutenberg-blocks'), value: 'bg-overlay bg-overlay-700' },
 	{ label: __('Dark 80%', 'codeweber-gutenberg-blocks'), value: 'bg-overlay bg-overlay-800' },
+	{ label: __('Dark 90%', 'codeweber-gutenberg-blocks'), value: 'bg-overlay bg-overlay-900' },
 	{ label: __('Light 30%', 'codeweber-gutenberg-blocks'), value: 'bg-overlay bg-overlay-light-300' },
 	{ label: __('Light 40%', 'codeweber-gutenberg-blocks'), value: 'bg-overlay bg-overlay-light-400' },
 	{ label: __('Light 50%', 'codeweber-gutenberg-blocks'), value: 'bg-overlay bg-overlay-light-500' },
 	{ label: __('Light 60%', 'codeweber-gutenberg-blocks'), value: 'bg-overlay bg-overlay-light-600' },
 	{ label: __('Light 70%', 'codeweber-gutenberg-blocks'), value: 'bg-overlay bg-overlay-light-700' },
 	{ label: __('Light 80%', 'codeweber-gutenberg-blocks'), value: 'bg-overlay bg-overlay-light-800' },
+	{ label: __('Light 90%', 'codeweber-gutenberg-blocks'), value: 'bg-overlay bg-overlay-light-900' },
 ];
 
 export const BackgroundSettingsPanel = ({

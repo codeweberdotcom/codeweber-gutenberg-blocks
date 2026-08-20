@@ -24,7 +24,9 @@ import { IconRender } from '../../components/icon';
 import { IconControl } from '../../components/icon/IconControl';
 import { BlockMetaFields } from '../../components/block-meta/BlockMetaFields';
 import { ButtonStyleControls } from '../../components/button-style/ButtonStyleControls';
+import { HeadingTypographyControl } from '../../components/heading/HeadingTypographyControl';
 import { getClassNames } from '../button/buttonclass';
+import { getLabelPartClasses, getLabelPartTag } from './utils';
 import { colors } from '../../utilities/colors';
 import { useEffect } from '@wordpress/element';
 
@@ -63,6 +65,12 @@ const Edit = ({ attributes, setAttributes }) => {
 		blockId,
 		displayType,
 		badgeColor,
+		cardAbsolute,
+		enableIcon,
+		enableTitle,
+		enableText,
+		titleTag,
+		textTag,
 		ButtonType,
 		ButtonIconPosition,
 		LeftIcon,
@@ -100,6 +108,15 @@ const Edit = ({ attributes, setAttributes }) => {
 			/>
 		),
 	};
+	const typographyTab = {
+		name: 'typography',
+		title: (
+			<TabIcon
+				icon={typography}
+				label={__('Typography', 'codeweber-gutenberg-blocks')}
+			/>
+		),
+	};
 	const iconTab = {
 		name: 'icon',
 		title: (
@@ -130,7 +147,13 @@ const Edit = ({ attributes, setAttributes }) => {
 
 	const tabs =
 		displayType === 'card'
-			? [contentTab, positionTab, iconTab, settingsTab]
+			? [
+					contentTab,
+					typographyTab,
+					positionTab,
+					iconTab,
+					settingsTab,
+				]
 			: displayType === 'button'
 				? [contentTab, styleTab, settingsTab]
 				: [contentTab, settingsTab];
@@ -151,10 +174,12 @@ const Edit = ({ attributes, setAttributes }) => {
 			.catch(() => {});
 	}, [cardRadiusClass, setAttributes]);
 
-	const cardStyle = {
-		bottom: positionBottom || undefined,
-		right: positionRight || undefined,
-	};
+	const cardStyle = cardAbsolute
+		? {
+				bottom: positionBottom || undefined,
+				right: positionRight || undefined,
+			}
+		: undefined;
 
 	const dataAttributes = {};
 	if (blockData) {
@@ -221,13 +246,29 @@ const Edit = ({ attributes, setAttributes }) => {
 		}
 
 		// card (default)
+		const cardPreviewClasses = [
+			'card',
+			'shadow-lg',
+			cardAbsolute ? 'position-absolute' : '',
+			'p-0',
+			cardRadiusClass,
+			blockClass,
+		]
+			.filter(Boolean)
+			.join(' ');
+
+		const titlePreviewClasses = [
+			getLabelPartClasses(attributes, 'title'),
+			showCounterClass ? 'counter' : '',
+		]
+			.filter(Boolean)
+			.join(' ');
+
 		return (
-			<div
-				className={`card shadow-lg position-absolute p-0${cardRadiusClass ? ' ' + cardRadiusClass : ''}${blockClass ? ' ' + blockClass : ''}`}
-				style={cardStyle}
-			>
+			<div className={cardPreviewClasses} style={cardStyle}>
 				<div className="card-body py-4 px-5">
 					<div className="d-flex flex-row align-items-center">
+						{enableIcon && (
 						<div>
 							<IconRender
 								iconType={iconType}
@@ -251,40 +292,50 @@ const Edit = ({ attributes, setAttributes }) => {
 								isEditor={true}
 							/>
 						</div>
+						)}
+						{(enableTitle || enableText) && (
 						<div>
-							<RichText
-								tagName="div"
-								className={`h3 mb-0 text-nowrap${showCounterClass ? ' counter' : ''}`}
-								value={counterText}
-								onChange={(value) =>
-									setAttributes({ counterText: value })
-								}
-								placeholder={__(
-									'25000+',
-									'codeweber-gutenberg-blocks'
-								)}
-								aria-label={__(
-									'Title',
-									'codeweber-gutenberg-blocks'
-								)}
-							/>
-							<RichText
-								tagName="p"
-								className="fs-14 lh-sm mb-0 text-nowrap"
-								value={labelText}
-								onChange={(value) =>
-									setAttributes({ labelText: value })
-								}
-								placeholder={__(
-									'Happy Clients',
-									'codeweber-gutenberg-blocks'
-								)}
-								aria-label={__(
-									'Label',
-									'codeweber-gutenberg-blocks'
-								)}
-							/>
+							{enableTitle && (
+								<RichText
+									tagName={getLabelPartTag(titleTag, 'div')}
+									className={titlePreviewClasses}
+									value={counterText}
+									onChange={(value) =>
+										setAttributes({ counterText: value })
+									}
+									placeholder={__(
+										'25000+',
+										'codeweber-gutenberg-blocks'
+									)}
+									aria-label={__(
+										'Title',
+										'codeweber-gutenberg-blocks'
+									)}
+								/>
+							)}
+							{enableText && (
+								<RichText
+									tagName={getLabelPartTag(textTag, 'p')}
+									className={getLabelPartClasses(
+										attributes,
+										'text'
+									)}
+									value={labelText}
+									onChange={(value) =>
+										setAttributes({ labelText: value })
+									}
+									placeholder={__(
+										'Happy Clients',
+										'codeweber-gutenberg-blocks'
+									)}
+									aria-label={__(
+										'Label',
+										'codeweber-gutenberg-blocks'
+									)}
+								/>
+							)}
 						</div>
+						)}
 					</div>
 				</div>
 			</div>
@@ -335,42 +386,90 @@ const Edit = ({ attributes, setAttributes }) => {
 									/>
 									{displayType === 'card' && (
 										<>
-											<TextControl
+											<ToggleControl
 												label={__(
-													'Title',
+													'Enable Icon',
 													'codeweber-gutenberg-blocks'
 												)}
-												value={counterText}
+												checked={enableIcon}
 												onChange={(value) =>
 													setAttributes({
-														counterText: value,
+														enableIcon: value,
 													})
 												}
 											/>
 											<ToggleControl
 												label={__(
-													'Add "counter" class',
+													'Enable Title',
 													'codeweber-gutenberg-blocks'
 												)}
-												checked={showCounterClass}
+												checked={enableTitle}
 												onChange={(value) =>
 													setAttributes({
-														showCounterClass: value,
+														enableTitle: value,
 													})
 												}
 											/>
+											<ToggleControl
+												label={__(
+													'Enable Paragraph',
+													'codeweber-gutenberg-blocks'
+												)}
+												checked={enableText}
+												onChange={(value) =>
+													setAttributes({
+														enableText: value,
+													})
+												}
+											/>
+											{enableTitle && (
+												<>
+													<TextControl
+														label={__(
+															'Title',
+															'codeweber-gutenberg-blocks'
+														)}
+														value={counterText}
+														onChange={(value) =>
+															setAttributes({
+																counterText:
+																	value,
+															})
+														}
+													/>
+													<ToggleControl
+														label={__(
+															'Add "counter" class',
+															'codeweber-gutenberg-blocks'
+														)}
+														checked={
+															showCounterClass
+														}
+														onChange={(value) =>
+															setAttributes({
+																showCounterClass:
+																	value,
+															})
+														}
+													/>
+												</>
+											)}
 										</>
 									)}
-									<TextControl
-										label={__(
-											'Label',
-											'codeweber-gutenberg-blocks'
-										)}
-										value={labelText}
-										onChange={(value) =>
-											setAttributes({ labelText: value })
-										}
-									/>
+									{(displayType !== 'card' || enableText) && (
+										<TextControl
+											label={__(
+												'Label',
+												'codeweber-gutenberg-blocks'
+											)}
+											value={labelText}
+											onChange={(value) =>
+												setAttributes({
+													labelText: value,
+												})
+											}
+										/>
+									)}
 									{displayType === 'badge' && (
 										<ComboboxControl
 											label={__(
@@ -392,37 +491,69 @@ const Edit = ({ attributes, setAttributes }) => {
 							{/* POSITION TAB (card only) */}
 							{tab.name === 'position' && (
 								<PanelBody>
-									<TextControl
+									<ToggleControl
 										label={__(
-											'Bottom',
+											'Absolute Position',
 											'codeweber-gutenberg-blocks'
 										)}
-										value={positionBottom}
 										help={__(
-											'Use CSS units, e.g. 10% or 20px',
+											'Off — the card sits in the normal flow instead of floating over the parent.',
 											'codeweber-gutenberg-blocks'
 										)}
+										checked={cardAbsolute}
 										onChange={(value) =>
 											setAttributes({
-												positionBottom: value,
+												cardAbsolute: value,
 											})
 										}
 									/>
-									<TextControl
-										label={__(
-											'Right',
-											'codeweber-gutenberg-blocks'
-										)}
-										value={positionRight}
-										help={__(
-											'Use CSS units, e.g. -3% or 0',
-											'codeweber-gutenberg-blocks'
-										)}
-										onChange={(value) =>
-											setAttributes({
-												positionRight: value,
-											})
-										}
+									{cardAbsolute && (
+										<>
+											<TextControl
+												label={__(
+													'Bottom',
+													'codeweber-gutenberg-blocks'
+												)}
+												value={positionBottom}
+												help={__(
+													'Use CSS units, e.g. 10% or 20px',
+													'codeweber-gutenberg-blocks'
+												)}
+												onChange={(value) =>
+													setAttributes({
+														positionBottom: value,
+													})
+												}
+											/>
+											<TextControl
+												label={__(
+													'Right',
+													'codeweber-gutenberg-blocks'
+												)}
+												value={positionRight}
+												help={__(
+													'Use CSS units, e.g. -3% or 0',
+													'codeweber-gutenberg-blocks'
+												)}
+												onChange={(value) =>
+													setAttributes({
+														positionRight: value,
+													})
+												}
+											/>
+										</>
+									)}
+								</PanelBody>
+							)}
+
+							{/* TYPOGRAPHY TAB (card only) */}
+							{tab.name === 'typography' && (
+								<PanelBody>
+									<HeadingTypographyControl
+										attributes={attributes}
+										setAttributes={setAttributes}
+										hideSubtitle={true}
+										hideText={!enableText}
 									/>
 								</PanelBody>
 							)}

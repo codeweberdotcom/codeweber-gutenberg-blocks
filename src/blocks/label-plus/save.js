@@ -1,6 +1,7 @@
 import { RichText } from '@wordpress/block-editor';
 import { IconRenderSave } from '../../components/icon';
 import { getClassNames } from '../button/buttonclass';
+import { getLabelPartClasses, getLabelPartTag } from './utils';
 
 const Save = ({ attributes }) => {
 	const {
@@ -32,6 +33,12 @@ const Save = ({ attributes }) => {
 		blockId,
 		displayType,
 		badgeColor,
+		cardAbsolute,
+		enableIcon,
+		enableTitle,
+		enableText,
+		titleTag,
+		textTag,
 		ButtonType,
 		ButtonIconPosition,
 		LeftIcon,
@@ -93,18 +100,27 @@ const Save = ({ attributes }) => {
 	}
 
 	// Card type (default — original markup)
-	const cardStyle = {
-		bottom: positionBottom || undefined,
-		right: positionRight || undefined,
-	};
+	const cardStyle = cardAbsolute
+		? {
+				bottom: positionBottom || undefined,
+				right: positionRight || undefined,
+			}
+		: undefined;
 
 	const cardClasses = [
 		'card',
 		'shadow-lg',
-		'position-absolute',
+		cardAbsolute ? 'position-absolute' : '',
 		'p-0',
 		cardRadiusClass,
 		blockClass,
+	]
+		.filter(Boolean)
+		.join(' ');
+
+	const titleClasses = [
+		getLabelPartClasses(attributes, 'title'),
+		showCounterClass ? 'counter' : '',
 	]
 		.filter(Boolean)
 		.join(' ');
@@ -118,40 +134,51 @@ const Save = ({ attributes }) => {
 		>
 			<div className="card-body py-4 px-5">
 				<div className="d-flex flex-row align-items-center">
-					<div>
-						<IconRenderSave
-							iconType={iconType}
-							iconText={iconText}
-							iconName={iconName}
-							svgIcon={svgIcon}
-							svgStyle={svgStyle}
-							iconSize={iconSize}
-							iconFontSize={iconFontSize}
-							iconColor={iconColor}
-							iconColor2={iconColor2}
-							iconClass={iconClass}
-							iconWrapper={iconWrapper}
-							iconWrapperStyle={iconWrapperStyle}
-							iconBtnSize={iconBtnSize}
-							iconBtnVariant={iconBtnVariant}
-							iconWrapperClass="pe-none mx-auto me-3"
-							customSvgUrl={customSvgUrl}
-							customSvgId={customSvgId}
-							customSvgSize={customSvgSize}
-						/>
-					</div>
-					<div>
-						<RichText.Content
-							tagName="div"
-							className={`h3 mb-0 text-nowrap${showCounterClass ? ' counter' : ''}`}
-							value={counterText}
-						/>
-						<RichText.Content
-							tagName="p"
-							className="fs-14 lh-sm mb-0 text-nowrap"
-							value={labelText}
-						/>
-					</div>
+					{enableIcon && (
+						<div>
+							<IconRenderSave
+								iconType={iconType}
+								iconText={iconText}
+								iconName={iconName}
+								svgIcon={svgIcon}
+								svgStyle={svgStyle}
+								iconSize={iconSize}
+								iconFontSize={iconFontSize}
+								iconColor={iconColor}
+								iconColor2={iconColor2}
+								iconClass={iconClass}
+								iconWrapper={iconWrapper}
+								iconWrapperStyle={iconWrapperStyle}
+								iconBtnSize={iconBtnSize}
+								iconBtnVariant={iconBtnVariant}
+								iconWrapperClass="pe-none mx-auto me-3"
+								customSvgUrl={customSvgUrl}
+								customSvgId={customSvgId}
+								customSvgSize={customSvgSize}
+							/>
+						</div>
+					)}
+					{(enableTitle || enableText) && (
+						<div>
+							{enableTitle && (
+								<RichText.Content
+									tagName={getLabelPartTag(titleTag, 'div')}
+									className={titleClasses}
+									value={counterText}
+								/>
+							)}
+							{enableText && (
+								<RichText.Content
+									tagName={getLabelPartTag(textTag, 'p')}
+									className={getLabelPartClasses(
+										attributes,
+										'text'
+									)}
+									value={labelText}
+								/>
+							)}
+						</div>
+					)}
 				</div>
 			</div>
 		</div>

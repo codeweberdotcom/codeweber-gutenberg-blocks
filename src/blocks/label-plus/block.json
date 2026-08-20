@@ -118,6 +118,78 @@
 			"type": "string",
 			"default": "card"
 		},
+		"cardAbsolute": {
+			"type": "boolean",
+			"default": true
+		},
+		"enableIcon": {
+			"type": "boolean",
+			"default": true
+		},
+		"enableTitle": {
+			"type": "boolean",
+			"default": true
+		},
+		"enableText": {
+			"type": "boolean",
+			"default": true
+		},
+		"titleTag": {
+			"type": "string",
+			"default": "div"
+		},
+		"titleColor": {
+			"type": "string",
+			"default": ""
+		},
+		"titleColorType": {
+			"type": "string",
+			"default": "solid"
+		},
+		"titleSize": {
+			"type": "string",
+			"default": ""
+		},
+		"titleWeight": {
+			"type": "string",
+			"default": ""
+		},
+		"titleTransform": {
+			"type": "string",
+			"default": ""
+		},
+		"titleClass": {
+			"type": "string",
+			"default": "h3 mb-0 text-nowrap"
+		},
+		"textTag": {
+			"type": "string",
+			"default": "p"
+		},
+		"textColor": {
+			"type": "string",
+			"default": ""
+		},
+		"textColorType": {
+			"type": "string",
+			"default": "solid"
+		},
+		"textSize": {
+			"type": "string",
+			"default": ""
+		},
+		"textWeight": {
+			"type": "string",
+			"default": ""
+		},
+		"textTransform": {
+			"type": "string",
+			"default": ""
+		},
+		"textClass": {
+			"type": "string",
+			"default": "fs-14 lh-sm mb-0 text-nowrap"
+		},
 		"badgeColor": {
 			"type": "string",
 			"default": "primary"

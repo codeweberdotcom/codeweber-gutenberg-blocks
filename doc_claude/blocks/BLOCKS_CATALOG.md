@@ -1,6 +1,6 @@
 # Blocks Catalog
 
-Total: **48 blocks** in `src/blocks/`. Namespace: `codeweber-blocks/`.
+Total: **49 blocks** in `src/blocks/`. Namespace: `codeweber-blocks/`.
 
 Legend: `S` = static (JS save) | `D` = dynamic (PHP render.php)
 
@@ -55,6 +55,7 @@ Legend: `S` = static (JS save) | `D` = dynamic (PHP render.php)
 | `counter` | S | Single animated counter (`.counter` / counterUp). 4 layouts: Counter 1 (icon-left card), Counter 2 (svg icon on top, centered), Counter 3 (number + label, centered), Counter 4 (number + h6 subtitle + ratings). Optional icon, card wrapper, and absolute positioning (`positionType` + top/bottom/left/right offsets + z-index) for floating banner cards |
 | `counters` | S | Counters grid container (InnerBlocks: columns → column → counter). 4 templates: Cards (icon-left, col-md-6), SVG icons (centered, col-md-4), Plain (large, dark bg, col-6/col-lg-3), Ratings (col-md-6). Switching template rebuilds the grid |
 | `cta` | S | Call-to-action block |
+| `switcher` | D | Segmented link switcher for splitting a site into audiences (B2B / B2C, rent / sale). Two styles: **pill** (`nav-pills` on a `bg-{color} rounded-pill` capsule — the theme already paints the active pill white with a shadow) and **segmented** (`btn-group` of `btn-soft-{color}` + `btn-outline-ash`). Items are `{ id, label, url }` pairs edited in the inspector. `activeMode: auto` matches each item's URL path against the page being viewed (host, query and trailing slash ignored; longest match wins, so `/business/pricing` still highlights `/business`), falling back to `activeIndex` when nothing matches; `manual` always highlights `activeIndex`. Size presets sm/md/lg drive `px-*`/`py-*`/`fs-*`. Dynamic because the editor cannot know which page will render it. |
 | `label-plus` | S | Floating label with 3 display types: **card** (floating Bootstrap card with icon + counter/title + label, absolute-positioned with bottom/right offsets), **badge** (`<span class="badge bg-{color} rounded-pill">`), **button** (button-style `<span>` without link, rendered via `getClassNames()` from the button block — supports solid/icon types, all button styles/sizes/shapes via `ButtonStyleControls`). Type selected via RadioControl in the Content inspector tab. Card type: `cardAbsolute` toggles `position-absolute` (off = normal flow, Bottom/Right hidden); `enableIcon` / `enableTitle` / `enableText` switch the three parts off; typography for title (`counterText`) and paragraph (`labelText`) comes from the Title block's `HeadingTypographyControl` (tag, color, size, weight, transform, extra class) via a Typography tab. `titleClass` / `textClass` default to the previously hardcoded `h3 mb-0 text-nowrap` and `fs-14 lh-sm mb-0 text-nowrap`, so blocks saved earlier keep validating — drop `h3` from the title's extra class if a chosen Size has to win. |
 
 ---

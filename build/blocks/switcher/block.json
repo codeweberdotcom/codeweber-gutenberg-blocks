@@ -1,0 +1,83 @@
+{
+  "apiVersion": 3,
+  "name": "codeweber-blocks/switcher",
+  "version": "0.1.0",
+  "title": "Switcher",
+  "category": "codeweber-gutenberg-elements",
+  "icon": "controls-repeat",
+  "description": "Segmented link switcher: two or more links where the one matching the current page is highlighted.",
+  "keywords": [
+    "switcher",
+    "toggle",
+    "segmented",
+    "pills",
+    "tabs"
+  ],
+  "supports": {
+    "html": false,
+    "customClassName": true,
+    "anchor": true
+  },
+  "attributes": {
+    "anchor": {
+      "type": "string",
+      "default": ""
+    },
+    "items": {
+      "type": "array",
+      "default": [
+        {
+          "id": "one",
+          "label": "For rent",
+          "url": ""
+        },
+        {
+          "id": "two",
+          "label": "For sale",
+          "url": ""
+        }
+      ]
+    },
+    "switchStyle": {
+      "type": "string",
+      "default": "pill"
+    },
+    "switchColor": {
+      "type": "string",
+      "default": "primary"
+    },
+    "switchSize": {
+      "type": "string",
+      "default": "md"
+    },
+    "alignment": {
+      "type": "string",
+      "default": "start"
+    },
+    "activeMode": {
+      "type": "string",
+      "default": "auto"
+    },
+    "activeIndex": {
+      "type": "number",
+      "default": 0
+    },
+    "blockClass": {
+      "type": "string",
+      "default": ""
+    },
+    "blockData": {
+      "type": "string",
+      "default": ""
+    },
+    "blockId": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "textdomain": "codeweber-gutenberg-blocks",
+  "render": "file:./render.php",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css"
+}

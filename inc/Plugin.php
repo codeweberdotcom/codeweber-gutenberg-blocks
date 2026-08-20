@@ -339,6 +339,7 @@ class Plugin {
 		'post-grid',
 		'tabs',
 		'tab-panel',
+		'switcher',
 		'tables',
 		'tabulator',
 		'label-plus',

@@ -145,15 +145,16 @@ const Edit = ({ attributes, setAttributes }) => {
 		),
 	};
 
+	// Position only carries the offsets, so it is pointless without absolute.
+	const cardTabs = [contentTab, typographyTab];
+	if (cardAbsolute) {
+		cardTabs.push(positionTab);
+	}
+	cardTabs.push(iconTab, settingsTab);
+
 	const tabs =
 		displayType === 'card'
-			? [
-					contentTab,
-					typographyTab,
-					positionTab,
-					iconTab,
-					settingsTab,
-				]
+			? cardTabs
 			: displayType === 'button'
 				? [contentTab, styleTab, settingsTab]
 				: [contentTab, settingsTab];
@@ -345,7 +346,10 @@ const Edit = ({ attributes, setAttributes }) => {
 	return (
 		<>
 			<InspectorControls>
-				<TabPanel key={displayType} tabs={tabs}>
+				<TabPanel
+					key={`${displayType}-${cardAbsolute ? 'abs' : 'flow'}`}
+					tabs={tabs}
+				>
 					{(tab) => (
 						<>
 							{/* CONTENT TAB */}
@@ -386,6 +390,22 @@ const Edit = ({ attributes, setAttributes }) => {
 									/>
 									{displayType === 'card' && (
 										<>
+											<ToggleControl
+												label={__(
+													'Absolute Position',
+													'codeweber-gutenberg-blocks'
+												)}
+												help={__(
+													'Off — the card sits in the normal flow instead of floating over the parent.',
+													'codeweber-gutenberg-blocks'
+												)}
+												checked={cardAbsolute}
+												onChange={(value) =>
+													setAttributes({
+														cardAbsolute: value,
+													})
+												}
+											/>
 											<ToggleControl
 												label={__(
 													'Enable Icon',
@@ -488,61 +508,41 @@ const Edit = ({ attributes, setAttributes }) => {
 								</PanelBody>
 							)}
 
-							{/* POSITION TAB (card only) */}
+							{/* POSITION TAB (card only, absolute only) */}
 							{tab.name === 'position' && (
 								<PanelBody>
-									<ToggleControl
+									<TextControl
 										label={__(
-											'Absolute Position',
+											'Bottom',
 											'codeweber-gutenberg-blocks'
 										)}
+										value={positionBottom}
 										help={__(
-											'Off — the card sits in the normal flow instead of floating over the parent.',
+											'Use CSS units, e.g. 10% or 20px',
 											'codeweber-gutenberg-blocks'
 										)}
-										checked={cardAbsolute}
 										onChange={(value) =>
 											setAttributes({
-												cardAbsolute: value,
+												positionBottom: value,
 											})
 										}
 									/>
-									{cardAbsolute && (
-										<>
-											<TextControl
-												label={__(
-													'Bottom',
-													'codeweber-gutenberg-blocks'
-												)}
-												value={positionBottom}
-												help={__(
-													'Use CSS units, e.g. 10% or 20px',
-													'codeweber-gutenberg-blocks'
-												)}
-												onChange={(value) =>
-													setAttributes({
-														positionBottom: value,
-													})
-												}
-											/>
-											<TextControl
-												label={__(
-													'Right',
-													'codeweber-gutenberg-blocks'
-												)}
-												value={positionRight}
-												help={__(
-													'Use CSS units, e.g. -3% or 0',
-													'codeweber-gutenberg-blocks'
-												)}
-												onChange={(value) =>
-													setAttributes({
-														positionRight: value,
-													})
-												}
-											/>
-										</>
-									)}
+									<TextControl
+										label={__(
+											'Right',
+											'codeweber-gutenberg-blocks'
+										)}
+										value={positionRight}
+										help={__(
+											'Use CSS units, e.g. -3% or 0',
+											'codeweber-gutenberg-blocks'
+										)}
+										onChange={(value) =>
+											setAttributes({
+												positionRight: value,
+											})
+										}
+									/>
 								</PanelBody>
 							)}
 

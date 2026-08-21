@@ -31,9 +31,25 @@
       "type": "string",
       "default": ""
     },
+    "menuSource": {
+      "type": "string",
+      "default": "location"
+    },
+    "menuId": {
+      "type": "number",
+      "default": 0
+    },
     "menuLocationRight": {
       "type": "string",
       "default": ""
+    },
+    "menuSourceRight": {
+      "type": "string",
+      "default": "location"
+    },
+    "menuIdRight": {
+      "type": "number",
+      "default": 0
     },
     "menuDepth": {
       "type": "number",

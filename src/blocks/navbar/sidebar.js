@@ -59,21 +59,6 @@ const NAVBAR_TYPES = [
 	{ label: __('Navbar 8 - Extended Center Logo', 'codeweber-gutenberg-blocks'), value: 'navbar-8' },
 ];
 
-const MENU_LOCATION_OPTIONS = [
-	{ label: __('Theme default (header_1)', 'codeweber-gutenberg-blocks'), value: '' },
-	{ label: __('Header Menu 1', 'codeweber-gutenberg-blocks'), value: 'header_1' },
-	{ label: __('Header Menu', 'codeweber-gutenberg-blocks'), value: 'header' },
-	{ label: __('Offcanvas Menu', 'codeweber-gutenberg-blocks'), value: 'offcanvas' },
-	{ label: __('Footer Menu', 'codeweber-gutenberg-blocks'), value: 'footer' },
-];
-
-const MENU_LOCATION_RIGHT_OPTIONS = [
-	{ label: __('Theme default (header)', 'codeweber-gutenberg-blocks'), value: '' },
-	{ label: __('Header Menu', 'codeweber-gutenberg-blocks'), value: 'header' },
-	{ label: __('Header Menu 1', 'codeweber-gutenberg-blocks'), value: 'header_1' },
-	{ label: __('Offcanvas Menu', 'codeweber-gutenberg-blocks'), value: 'offcanvas' },
-];
-
 const COLOR_OPTIONS = [
 	{ label: __('Light', 'codeweber-gutenberg-blocks'), value: 'light' },
 	{ label: __('Dark', 'codeweber-gutenberg-blocks'), value: 'dark' },
@@ -135,6 +120,10 @@ export const NavbarSidebar = ({ attributes, setAttributes }) => {
 		navbarType,
 		menuLocation,
 		menuLocationRight,
+		menuSource,
+		menuId,
+		menuSourceRight,
+		menuIdRight,
 		menuDepth,
 		navbarColor,
 		logoColor,
@@ -181,6 +170,62 @@ export const NavbarSidebar = ({ attributes, setAttributes }) => {
 		const arr = mobileMenuList.map((el) => (el.id === elemId ? { ...el, enabled } : el));
 		setMobileMenuElements(arr);
 	};
+
+	// Menu locations registered by the theme and every menu on the site — the
+	// list used to be hardcoded and showed only a subset of the locations.
+	const [menuLocations, setMenuLocations] = useState([]);
+	const [siteMenus, setSiteMenus] = useState([]);
+	useEffect(() => {
+		apiFetch({ path: '/wp/v2/menu-locations' })
+			.then((res) => {
+				const list = res && typeof res === 'object' ? Object.values(res) : [];
+				setMenuLocations(list);
+			})
+			.catch(() => setMenuLocations([]));
+
+		apiFetch({ path: '/wp/v2/menus?per_page=100' })
+			.then((res) => setSiteMenus(Array.isArray(res) ? res : []))
+			.catch(() => setSiteMenus([]));
+	}, []);
+
+	const menuNameById = (id) => {
+		const found = siteMenus.find((m) => m.id === id);
+		return found ? found.name : '';
+	};
+
+	const buildLocationOptions = (fallbackLabel, currentValue) => {
+		const options = [
+			{ label: fallbackLabel, value: '' },
+			...menuLocations.map((loc) => {
+				const assigned = menuNameById(loc.menu);
+				const title = loc.description || loc.name;
+				return {
+					label: assigned
+						? `${title} → ${assigned}`
+						: `${title} — ${__('not assigned', 'codeweber-gutenberg-blocks')}`,
+					value: loc.name,
+				};
+			}),
+		];
+
+		// Reading locations needs edit_theme_options; without it keep whatever
+		// the block already stores so opening the sidebar cannot wipe it.
+		if (currentValue && !options.some((o) => o.value === currentValue)) {
+			options.push({ label: currentValue, value: currentValue });
+		}
+
+		return options;
+	};
+
+	const menuOptions = [
+		{ label: __('— Select menu —', 'codeweber-gutenberg-blocks'), value: 0 },
+		...siteMenus.map((m) => ({ label: m.name, value: m.id })),
+	];
+
+	const MENU_SOURCE_OPTIONS = [
+		{ label: __('Theme location', 'codeweber-gutenberg-blocks'), value: 'location' },
+		{ label: __('Specific menu', 'codeweber-gutenberg-blocks'), value: 'menu' },
+	];
 
 	const [themeSocialsList, setThemeSocialsList] = useState([]);
 	const [themeSocialsLoading, setThemeSocialsLoading] = useState(false);
@@ -293,19 +338,55 @@ export const NavbarSidebar = ({ attributes, setAttributes }) => {
 					{tab.name === 'menu' && (
 						<PanelBody title={__('Menu', 'codeweber-gutenberg-blocks')} initialOpen={true}>
 							<SelectControl
-								label={__('Menu Location (Primary)', 'codeweber-gutenberg-blocks')}
-								value={menuLocation || ''}
-								options={MENU_LOCATION_OPTIONS}
-								onChange={(value) => setAttributes({ menuLocation: value || '' })}
-								help={__('Theme location for main menu', 'codeweber-gutenberg-blocks')}
+								label={__('Menu Source (Primary)', 'codeweber-gutenberg-blocks')}
+								value={menuSource || 'location'}
+								options={MENU_SOURCE_OPTIONS}
+								onChange={(value) => setAttributes({ menuSource: value || 'location' })}
+								help={__('Pick a theme location, or a menu directly — useful for menus assigned to no location', 'codeweber-gutenberg-blocks')}
 							/>
+							{'menu' === (menuSource || 'location') ? (
+								<SelectControl
+									label={__('Menu (Primary)', 'codeweber-gutenberg-blocks')}
+									value={menuId || 0}
+									options={menuOptions}
+									onChange={(value) => setAttributes({ menuId: parseInt(value, 10) || 0 })}
+								/>
+							) : (
+								<SelectControl
+									label={__('Menu Location (Primary)', 'codeweber-gutenberg-blocks')}
+									value={menuLocation || ''}
+									options={buildLocationOptions(
+										__('Theme default (header_1)', 'codeweber-gutenberg-blocks'),
+										menuLocation
+									)}
+									onChange={(value) => setAttributes({ menuLocation: value || '' })}
+								/>
+							)}
 							<SelectControl
-								label={__('Menu Location (Right)', 'codeweber-gutenberg-blocks')}
-								value={menuLocationRight || ''}
-								options={MENU_LOCATION_RIGHT_OPTIONS}
-								onChange={(value) => setAttributes({ menuLocationRight: value || '' })}
+								label={__('Menu Source (Right)', 'codeweber-gutenberg-blocks')}
+								value={menuSourceRight || 'location'}
+								options={MENU_SOURCE_OPTIONS}
+								onChange={(value) => setAttributes({ menuSourceRight: value || 'location' })}
 								help={__('For center-logo templates: second menu on the right', 'codeweber-gutenberg-blocks')}
 							/>
+							{'menu' === (menuSourceRight || 'location') ? (
+								<SelectControl
+									label={__('Menu (Right)', 'codeweber-gutenberg-blocks')}
+									value={menuIdRight || 0}
+									options={menuOptions}
+									onChange={(value) => setAttributes({ menuIdRight: parseInt(value, 10) || 0 })}
+								/>
+							) : (
+								<SelectControl
+									label={__('Menu Location (Right)', 'codeweber-gutenberg-blocks')}
+									value={menuLocationRight || ''}
+									options={buildLocationOptions(
+										__('Theme default (header)', 'codeweber-gutenberg-blocks'),
+										menuLocationRight
+									)}
+									onChange={(value) => setAttributes({ menuLocationRight: value || '' })}
+								/>
+							)}
 							<RangeControl
 								label={__('Menu Depth (levels)', 'codeweber-gutenberg-blocks')}
 								value={menuDepth ?? 4}

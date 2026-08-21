@@ -10,6 +10,7 @@
  * @var string $logo_brand_class Logo wrapper class (navbar-brand + optional w-*).
  * @var string $logo_custom_html  Custom HTML after logo link (when enabled and not empty).
  * @var string $menu_loc        Menu theme_location.
+ * @var int|string $menu_obj  Explicit menu id, wins over the location.
  * @var int    $menu_depth      Menu depth.
  * @var string $wrapper_class   Header wrapper classes.
  * @var string $header_bg_class Header background class (bg-* or bg-soft-*) for nav.
@@ -63,6 +64,7 @@ $btn_close_class = (isset($offcanvas_class) && strpos($offcanvas_class, 'dark') 
 						<div class="d-none d-lg-flex align-items-center">
 						<?php
 						wp_nav_menu([
+							'menu' => $menu_obj,
 							'theme_location' => $menu_loc,
 							'depth'          => $menu_depth,
 							'container'      => '',
@@ -76,6 +78,7 @@ $btn_close_class = (isset($offcanvas_class) && strpos($offcanvas_class, 'dark') 
 						if (class_exists('CodeWeber_Menu_Collapse_Walker')) :
 							$_collapse_theme = (strpos($offcanvas_class, 'dark') !== false) ? 'navbar-dark' : 'navbar-light';
 							wp_nav_menu([
+								'menu'  => $menu_obj,
 								'theme_location'  => $menu_loc,
 								'depth'           => $menu_depth,
 								'container'       => 'nav',

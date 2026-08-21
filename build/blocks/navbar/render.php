@@ -68,6 +68,15 @@ $home_link = $home_link_attr !== '' ? esc_url($home_link_attr) : home_url('/');
 $menu_loc  = $menu_loc_attr !== '' ? $menu_loc_attr : apply_filters('codeweber_navbar_menu_location', 'header_1');
 $menu_loc1 = $menu_loc1_attr !== '' ? $menu_loc1_attr : apply_filters('codeweber_navbar_menu_location_right', 'header');
 
+// A menu can be picked directly instead of through a theme location — the only
+// way to output a menu that is assigned to no location at all. wp_nav_menu()
+// gives 'menu' priority over 'theme_location' and ignores it when empty, so the
+// location stays the fallback for every block saved before this existed.
+$menu_source       = isset($attributes['menuSource']) ? $attributes['menuSource'] : 'location';
+$menu_source_right = isset($attributes['menuSourceRight']) ? $attributes['menuSourceRight'] : 'location';
+$menu_obj  = ('menu' === $menu_source && !empty($attributes['menuId'])) ? (int) $attributes['menuId'] : '';
+$menu_obj1 = ('menu' === $menu_source_right && !empty($attributes['menuIdRight'])) ? (int) $attributes['menuIdRight'] : '';
+
 $center_nav = in_array($header_model, ['1', '5'], true);
 
 // Build wrapper classes (header)
@@ -390,6 +399,8 @@ $template_vars = [
 	'logo_custom_html'              => $logo_custom_html,
 	'menu_loc'                     => $menu_loc,
 	'menu_loc1'                    => $menu_loc1,
+	'menu_obj'                     => $menu_obj,
+	'menu_obj1'                    => $menu_obj1,
 	'menu_depth'                   => $menu_depth,
 	'center_nav'                   => $center_nav,
 	'wrapper_class'                => $wrapper_class,

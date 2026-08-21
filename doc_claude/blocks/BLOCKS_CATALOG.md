@@ -78,7 +78,7 @@ Legend: `S` = static (JS save) | `D` = dynamic (PHP render.php)
 
 | Block | Type | Description |
 |-------|------|-------------|
-| `navbar` | D | Full navigation bar (Bootstrap navbar) |
+| `navbar` | D | Full navigation bar (Bootstrap navbar). Menu picking has two modes per side (`menuSource` / `menuSourceRight`): **Theme location** — `menuLocation` / `menuLocationRight`, listed live from `/wp/v2/menu-locations` with the assigned menu shown in the label; **Specific menu** — `menuId` / `menuIdRight` from `/wp/v2/menus`, the only way to output a menu assigned to no location. render.php passes `$menu_obj` / `$menu_obj1` to the templates, which hand them to `wp_nav_menu()` as `menu` — it outranks `theme_location` and is ignored when empty, so blocks saved before this keep using their location. Reading both endpoints needs `edit_theme_options`; without it the stored value is preserved as an option rather than dropped. |
 | `top-header` | D | Top bar above navbar (contacts, social icons, etc.) |
 | `header-widgets` | D | Widget area inside header CPT (restricted to CPT `header`) |
 | `menu` | D | Menu (custom/wp-menu/taxonomy), horizontal (`flex-md-row`) / vertical — см. `MENU_BLOCK.md` |

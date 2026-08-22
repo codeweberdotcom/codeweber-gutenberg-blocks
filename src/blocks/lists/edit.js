@@ -37,6 +37,15 @@ const ListsEdit = ({ attributes, setAttributes, clientId }) => {
 		listId,
 		listData,
 		columns,
+		sourceType = 'post',
+		manualMode = false,
+		manualItems = [],
+		sourceTaxonomy = '',
+		taxonomyHideEmpty = true,
+		taxonomyOrderBy = 'name',
+		taxonomyOrder = 'asc',
+		manualTermMode = false,
+		manualTermItems = [],
 	} = attributes;
 
 	const previousModeRef = useRef(mode);
@@ -76,9 +85,154 @@ const ListsEdit = ({ attributes, setAttributes, clientId }) => {
 		setAttributes({ items: updatedItems });
 	}, [clientId, items, setAttributes]);
 
+	// Preview for the sources the query above deliberately skips. Kept in local
+	// state: these items are resolved at render time on the frontend, so writing
+	// them into the items attribute would only duplicate stale data.
+	const [sourcePreview, setSourcePreview] = useState(null);
+
+	useEffect(() => {
+		const isTaxonomy = 'taxonomy' === sourceType;
+
+		if (mode !== 'post' || (!manualMode && !isTaxonomy)) {
+			setSourcePreview(null);
+			return undefined;
+		}
+
+		let cancelled = false;
+		setIsLoadingPosts(true);
+
+		const finish = (list) => {
+			if (cancelled) {
+				return;
+			}
+			setSourcePreview(list);
+			setIsLoadingPosts(false);
+		};
+
+		const restBaseOf = (collection, slug) =>
+			collection?.[slug]?.rest_base || slug;
+
+		if (isTaxonomy && manualTermMode) {
+			// Names are stored alongside the ids, so no request is needed.
+			finish(
+				manualTermItems.map((item) => ({
+					id: `term-${item.id}`,
+					text: item.name || `#${item.id}`,
+					url: '',
+				}))
+			);
+			return () => {
+				cancelled = true;
+			};
+		}
+
+		if (isTaxonomy) {
+			if (!sourceTaxonomy) {
+				finish([]);
+				return () => {
+					cancelled = true;
+				};
+			}
+
+			apiFetch({ path: '/wp/v2/taxonomies' })
+				.then((taxes) =>
+					apiFetch({
+						path: `/wp/v2/${restBaseOf(
+							taxes,
+							sourceTaxonomy
+						)}?per_page=100&_fields=id,name,link&hide_empty=${
+							taxonomyHideEmpty ? 'true' : 'false'
+						}&orderby=${taxonomyOrderBy}&order=${taxonomyOrder}`,
+					})
+				)
+				.then((terms) =>
+					finish(
+						(Array.isArray(terms) ? terms : []).map((term) => ({
+							id: `term-${term.id}`,
+							text: term.name,
+							url: term.link || '',
+						}))
+					)
+				)
+				.catch(() => finish([]));
+
+			return () => {
+				cancelled = true;
+			};
+		}
+
+		// Hand-picked posts: fetch by id, then restore the chosen order.
+		const ids = manualItems.map((item) => item.id).filter(Boolean);
+		if (!ids.length || !postType) {
+			finish([]);
+			return () => {
+				cancelled = true;
+			};
+		}
+
+		apiFetch({ path: '/wp/v2/types' })
+			.then((types) =>
+				apiFetch({
+					path: `/wp/v2/${restBaseOf(
+						types,
+						postType
+					)}?include=${ids.join(
+						','
+					)}&per_page=100&_fields=id,title,link`,
+				})
+			)
+			.then((posts) => {
+				const byId = new Map(
+					(Array.isArray(posts) ? posts : []).map((post) => [
+						post.id,
+						post,
+					])
+				);
+				finish(
+					ids
+						.map((id) => byId.get(id))
+						.filter(Boolean)
+						.map((post) => ({
+							id: `post-${post.id}`,
+							text:
+								post.title?.rendered ||
+								__('Untitled', 'codeweber-gutenberg-blocks'),
+							url: post.link || '',
+						}))
+				);
+			})
+			.catch(() => finish([]));
+
+		return () => {
+			cancelled = true;
+		};
+	}, [
+		mode,
+		sourceType,
+		manualMode,
+		manualItems,
+		postType,
+		sourceTaxonomy,
+		taxonomyHideEmpty,
+		taxonomyOrderBy,
+		taxonomyOrder,
+		manualTermMode,
+		manualTermItems,
+	]);
+
+	// The list the preview renders: either the items attribute or the source above.
+	const previewItems = sourcePreview !== null ? sourcePreview : items;
+
 	// Fetch posts from API when mode is 'post'
 	useEffect(() => {
-		if (mode !== 'post' || !postType) {
+		// Hand-picked posts and the taxonomy source own the output; the query
+		// below would overwrite the items attribute and undo the choice.
+		if (
+			mode !== 'post' ||
+			!postType ||
+			manualMode ||
+			'taxonomy' === sourceType
+		) {
 			previousModeRef.current = mode;
 			previousPostTypeRef.current = postType;
 			previousSelectedTaxonomiesRef.current = JSON.stringify(
@@ -174,6 +328,8 @@ const ListsEdit = ({ attributes, setAttributes, clientId }) => {
 		order,
 		clientId,
 		setAttributes,
+		manualMode,
+		sourceType,
 	]);
 
 	const updateItem = (index, field, value) => {
@@ -306,19 +462,21 @@ const ListsEdit = ({ attributes, setAttributes, clientId }) => {
 						{__('Loading posts...', 'codeweber-gutenberg-blocks')}
 					</div>
 				)}
-				{!isLoadingPosts && items.length === 0 && mode === 'post' && (
-					<div style={{ padding: '20px', textAlign: 'center' }}>
-						{__(
-							'No posts found. Please select a post type and check your filters.',
-							'codeweber-gutenberg-blocks'
-						)}
-					</div>
-				)}
+				{!isLoadingPosts &&
+					previewItems.length === 0 &&
+					mode === 'post' && (
+						<div style={{ padding: '20px', textAlign: 'center' }}>
+							{__(
+								'Nothing to show. Check the data source, the picked entries and the filters.',
+								'codeweber-gutenberg-blocks'
+							)}
+						</div>
+					)}
 				{(mode === 'post'
-					? items.length > 0 && !isLoadingPosts
+					? previewItems.length > 0 && !isLoadingPosts
 					: true) && (
 					<ListTag className={getListClasses()}>
-						{items.map((item, index) => (
+						{previewItems.map((item, index) => (
 							<li
 								key={item.id}
 								style={{ position: 'relative' }}

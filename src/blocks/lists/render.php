@@ -209,9 +209,12 @@ foreach ($wrapperAttrs as $key => $value) {
 		<<?php echo $tag; ?> class="<?php echo esc_attr(implode(' ', $listClasses)); ?>">
 			<?php foreach ($itemsToRender as $item) : ?>
 				<?php
-					$liClass = '';
-					if ($listType === 'line') $liClass = 'text-line';
-					elseif ($listType === 'plain' && $itemClass) $liClass = esc_attr($itemClass);
+					// LI classes: the line type keeps its own, and the custom class
+					// now applies to every list type, not just plain.
+					$liClasses = [];
+					if ($listType === 'line') $liClasses[] = 'text-line';
+					if ($itemClass) $liClasses[] = $itemClass;
+					$liClass = $liClasses ? esc_attr(implode(' ', $liClasses)) : '';
 				?><li<?php echo $liClass ? ' class="' . $liClass . '"' : ''; ?>>
 					<?php if ($listType === 'icon') : ?>
 						<span><i class="<?php echo esc_attr($iconClass); ?>"></i></span>

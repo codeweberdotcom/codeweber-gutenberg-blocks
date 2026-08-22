@@ -44,8 +44,15 @@ const ListsSave = ({ attributes }) => {
 		}
 
 		// Bullet/icon color (soft or solid)
-		if (listType !== 'line' && listType !== 'ordered' && listType !== 'plain' && bulletColor && bulletColor !== 'none') {
-			const bulletPrefix = bulletColorType === 'soft' ? 'bullet-soft-' : 'bullet-';
+		if (
+			listType !== 'line' &&
+			listType !== 'ordered' &&
+			listType !== 'plain' &&
+			bulletColor &&
+			bulletColor !== 'none'
+		) {
+			const bulletPrefix =
+				bulletColorType === 'soft' ? 'bullet-soft-' : 'bullet-';
 			classes.push(`${bulletPrefix}${bulletColor}`);
 		}
 
@@ -63,7 +70,8 @@ const ListsSave = ({ attributes }) => {
 
 		// Text color (soft or solid)
 		if (textColor) {
-			const textPrefix = textColorType === 'soft' ? 'text-soft-' : 'text-';
+			const textPrefix =
+				textColorType === 'soft' ? 'text-soft-' : 'text-';
 			classes.push(`${textPrefix}${textColor}`);
 		}
 
@@ -100,7 +108,14 @@ const ListsSave = ({ attributes }) => {
 		<div {...blockProps} {...getDataAttributes()}>
 			<ListTag className={getListClasses()}>
 				{items.map((item) => (
-					<li key={item.id} className={listType === 'line' ? 'text-line' : (listType === 'plain' && itemClass ? itemClass : undefined)}>
+					<li
+						key={item.id}
+						className={
+							[listType === 'line' ? 'text-line' : '', itemClass]
+								.filter(Boolean)
+								.join(' ') || undefined
+						}
+					>
 						{listType === 'icon' && (
 							<span>
 								<i

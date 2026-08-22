@@ -231,8 +231,15 @@ const ListsEdit = ({ attributes, setAttributes, clientId }) => {
 		}
 
 		// Bullet/icon color (soft or solid)
-		if (listType !== 'line' && listType !== 'ordered' && listType !== 'plain' && bulletColor && bulletColor !== 'none') {
-			const bulletPrefix = bulletColorType === 'soft' ? 'bullet-soft-' : 'bullet-';
+		if (
+			listType !== 'line' &&
+			listType !== 'ordered' &&
+			listType !== 'plain' &&
+			bulletColor &&
+			bulletColor !== 'none'
+		) {
+			const bulletPrefix =
+				bulletColorType === 'soft' ? 'bullet-soft-' : 'bullet-';
 			classes.push(`${bulletPrefix}${bulletColor}`);
 		}
 
@@ -250,7 +257,8 @@ const ListsEdit = ({ attributes, setAttributes, clientId }) => {
 
 		// Text color (soft or solid)
 		if (textColor) {
-			const textPrefix = textColorType === 'soft' ? 'text-soft-' : 'text-';
+			const textPrefix =
+				textColorType === 'soft' ? 'text-soft-' : 'text-';
 			classes.push(`${textPrefix}${textColor}`);
 		}
 
@@ -311,7 +319,18 @@ const ListsEdit = ({ attributes, setAttributes, clientId }) => {
 					: true) && (
 					<ListTag className={getListClasses()}>
 						{items.map((item, index) => (
-							<li key={item.id} style={{ position: 'relative' }} className={listType === 'line' ? 'text-line' : (listType === 'plain' && itemClass ? itemClass : undefined)}>
+							<li
+								key={item.id}
+								style={{ position: 'relative' }}
+								className={
+									[
+										listType === 'line' ? 'text-line' : '',
+										itemClass,
+									]
+										.filter(Boolean)
+										.join(' ') || undefined
+								}
+							>
 								{listType === 'icon' && (
 									<span>
 										<i

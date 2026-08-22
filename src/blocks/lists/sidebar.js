@@ -16,11 +16,26 @@ import {
 	TextControl,
 } from '@wordpress/components';
 import { useState } from '@wordpress/element';
+import { Icon, typography, starFilled, cog } from '@wordpress/icons';
 import { PostSourceControl } from '../../components/post-source';
 import { PostSortControl } from '../../components/post-sort/PostSortControl';
 import { SchemaTypeNotice } from '../../components/schema-type';
 import { IconPicker } from '../../components/icon/IconPicker';
 import { colors } from '../../utilities/colors';
+
+// Icon-only tabs; the label survives as the native tooltip.
+const TabIcon = ({ icon, label }) => (
+	<span
+		title={label}
+		style={{
+			display: 'flex',
+			alignItems: 'center',
+			justifyContent: 'center',
+		}}
+	>
+		<Icon icon={icon} size={20} />
+	</span>
+);
 
 export const ListsSidebar = ({ attributes, setAttributes }) => {
 	const {
@@ -63,15 +78,36 @@ export const ListsSidebar = ({ attributes, setAttributes }) => {
 				tabs={[
 					{
 						name: 'content',
-						title: __('Content', 'codeweber-gutenberg-blocks'),
+						title: (
+							<TabIcon
+								icon={typography}
+								label={__(
+									'Content',
+									'codeweber-gutenberg-blocks'
+								)}
+							/>
+						),
 					},
 					{
 						name: 'icon',
-						title: __('Icon', 'codeweber-gutenberg-blocks'),
+						title: (
+							<TabIcon
+								icon={starFilled}
+								label={__('Icon', 'codeweber-gutenberg-blocks')}
+							/>
+						),
 					},
 					{
 						name: 'block',
-						title: __('Block', 'codeweber-gutenberg-blocks'),
+						title: (
+							<TabIcon
+								icon={cog}
+								label={__(
+									'Block',
+									'codeweber-gutenberg-blocks'
+								)}
+							/>
+						),
 					},
 				]}
 			>

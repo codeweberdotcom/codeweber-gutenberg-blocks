@@ -44,6 +44,7 @@ Import path: `../../components/<name>/<ComponentName>`
 | `ResponsiveControl` | `responsive-control/` | Responsive dropdown/select per breakpoint |
 | `LoadMoreControl` | `load-more/` | "Load More" button settings |
 | `PostTypeTaxonomyControl` | `post-type-taxonomy/` | Post type + taxonomy filter |
+| `PostSourceControl` | `post-source/` | Data source: posts or taxonomy terms, queried or hand-picked |
 | `TaxonomyFilterControl` | `taxonomy-filter/` | Taxonomy checkboxes (loads from REST) |
 | `PostSortControl` | `post-sort/` | orderBy + order selects |
 | `PostGridTemplateControl` | `post-grid-template/` | Template picker per post type |
@@ -628,6 +629,32 @@ const config = createSwiperItemsConfig(attributes, setAttributes);
 ---
 
 ## Posts & Data
+
+### `PostSourceControl`
+
+Data-source picker shared by blocks that can list either posts or taxonomy terms.
+Wraps `PostTypeTaxonomyControl` for the post branch and adds hand-picking with ordering.
+
+```jsx
+import { PostSourceControl } from '../../components/post-source';
+
+<PostSourceControl attributes={attributes} setAttributes={setAttributes} />
+```
+
+**Attributes read and written** (add them to the block's `block.json`):
+`sourceType` (`post` | `taxonomy`), `postType`, `selectedTaxonomies`,
+`manualMode`, `manualItems` (`[{ id, name }]`), `sourceTaxonomy`,
+`taxonomyHideEmpty`, `taxonomyOrderBy`, `taxonomyOrder`,
+`manualTermMode`, `manualTermItems` (`[{ id, taxonomy, name }]`).
+
+Hand-picked entries keep their order — the render side must iterate `manualItems` /
+`manualTermItems` rather than re-querying, or the ordering is lost.
+
+Post Grid predates this component and still carries its own copies of the same
+sections inside `controls/MainControl.js`, including html-block injection that is
+specific to that block.
+
+---
 
 ### `PostTypeTaxonomyControl`
 

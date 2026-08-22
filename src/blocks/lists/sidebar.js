@@ -16,7 +16,7 @@ import {
 	TextControl,
 } from '@wordpress/components';
 import { useState } from '@wordpress/element';
-import { PostTypeTaxonomyControl } from '../../components/post-type-taxonomy/PostTypeTaxonomyControl';
+import { PostSourceControl } from '../../components/post-source';
 import { PostSortControl } from '../../components/post-sort/PostSortControl';
 import { SchemaTypeNotice } from '../../components/schema-type';
 import { IconPicker } from '../../components/icon/IconPicker';
@@ -34,13 +34,14 @@ export const ListsSidebar = ({ attributes, setAttributes }) => {
 		textColor,
 		textColorType,
 		postType,
-		selectedTaxonomies,
 		enableLinks,
 		postsPerPage,
 		orderBy,
 		order,
 		columns,
 		useAltTitle = false,
+		sourceType = 'post',
+		manualMode = false,
 		listClass,
 		listData,
 		listId,
@@ -176,120 +177,108 @@ export const ListsSidebar = ({ attributes, setAttributes }) => {
 									</ButtonGroup>
 								</div>
 
-								{/* Post Type Selection - показываем только в режиме Post */}
+								{/* Data source: posts or taxonomy terms, queried or hand-picked */}
 								{mode === 'post' && (
 									<div style={{ marginTop: '16px' }}>
-										<PostTypeTaxonomyControl
-											postType={postType || ''}
-											selectedTaxonomies={
-												selectedTaxonomies || {}
-											}
-											onPostTypeChange={(value) =>
-												setAttributes({
-													postType: value,
-												})
-											}
-											onTaxonomyChange={(value) =>
-												setAttributes({
-													selectedTaxonomies: value,
-												})
-											}
-											help={__(
-												'Select the post type to generate list items from',
-												'codeweber-gutenberg-blocks'
-											)}
+										<PostSourceControl
+											attributes={attributes}
+											setAttributes={setAttributes}
 										/>
 									</div>
 								)}
 
-								{mode === 'post' && (
+								{mode === 'post' && 'post' === sourceType && (
 									<SchemaTypeNotice
 										mode="post"
 										postType={postType || ''}
 									/>
 								)}
 
-								{/* Post Settings - только в режиме Post */}
-								{mode === 'post' && (
-									<>
-										<div style={{ marginTop: '16px' }}>
-											<PostSortControl
-												orderBy={orderBy || 'date'}
-												order={order || 'desc'}
-												onOrderByChange={(value) =>
-													setAttributes({
-														orderBy: value,
-													})
-												}
-												onOrderChange={(value) =>
-													setAttributes({
-														order: value,
-													})
-												}
-											/>
-										</div>
+								{/* Post query settings — not used for terms or a manual pick */}
+								{mode === 'post' &&
+									'post' === sourceType &&
+									!manualMode && (
+										<>
+											<div style={{ marginTop: '16px' }}>
+												<PostSortControl
+													orderBy={orderBy || 'date'}
+													order={order || 'desc'}
+													onOrderByChange={(value) =>
+														setAttributes({
+															orderBy: value,
+														})
+													}
+													onOrderChange={(value) =>
+														setAttributes({
+															order: value,
+														})
+													}
+												/>
+											</div>
 
-										<div style={{ marginTop: '16px' }}>
-											<RangeControl
-												label={__(
-													'Posts Per Page',
-													'codeweber-gutenberg-blocks'
-												)}
-												value={postsPerPage || 10}
-												onChange={(value) =>
-													setAttributes({
-														postsPerPage: value,
-													})
-												}
-												min={1}
-												max={50}
-												initialPosition={10}
-												help={__(
-													'Number of posts to display',
-													'codeweber-gutenberg-blocks'
-												)}
-											/>
-										</div>
+											<div style={{ marginTop: '16px' }}>
+												<RangeControl
+													label={__(
+														'Posts Per Page',
+														'codeweber-gutenberg-blocks'
+													)}
+													value={postsPerPage || 10}
+													onChange={(value) =>
+														setAttributes({
+															postsPerPage: value,
+														})
+													}
+													min={1}
+													max={50}
+													initialPosition={10}
+													help={__(
+														'Number of posts to display',
+														'codeweber-gutenberg-blocks'
+													)}
+												/>
+											</div>
 
-										<div style={{ marginTop: '16px' }}>
-											<ToggleControl
-												label={__(
-													'Enable Links',
-													'codeweber-gutenberg-blocks'
-												)}
-												checked={enableLinks || false}
-												onChange={(value) =>
-													setAttributes({
-														enableLinks: value,
-													})
-												}
-												help={__(
-													'Enable links to post pages',
-													'codeweber-gutenberg-blocks'
-												)}
-											/>
-										</div>
+											<div style={{ marginTop: '16px' }}>
+												<ToggleControl
+													label={__(
+														'Enable Links',
+														'codeweber-gutenberg-blocks'
+													)}
+													checked={
+														enableLinks || false
+													}
+													onChange={(value) =>
+														setAttributes({
+															enableLinks: value,
+														})
+													}
+													help={__(
+														'Enable links to post pages',
+														'codeweber-gutenberg-blocks'
+													)}
+												/>
+											</div>
 
-										<div style={{ marginTop: '16px' }}>
-											<ToggleControl
-												label={__(
-													'Use Alternative Title',
-													'codeweber-gutenberg-blocks'
-												)}
-												checked={useAltTitle}
-												onChange={(value) =>
-													setAttributes({
-														useAltTitle: value,
-													})
-												}
-												help={__(
-													'Use the HTML "Alternative Title" meta field (supports <br>, <strong> etc.).',
-													'codeweber-gutenberg-blocks'
-												)}
-											/>
-										</div>
-									</>
-								)}
+											<div style={{ marginTop: '16px' }}>
+												<ToggleControl
+													label={__(
+														'Use Alternative Title',
+														'codeweber-gutenberg-blocks'
+													)}
+													checked={useAltTitle}
+													onChange={(value) =>
+														setAttributes({
+															useAltTitle: value,
+														})
+													}
+													help={__(
+														'Use the HTML "Alternative Title" meta field (supports <br>, <strong> etc.).',
+														'codeweber-gutenberg-blocks'
+													)}
+												/>
+											</div>
+										</>
+									)}
 
 								{/* List Type */}
 								<div

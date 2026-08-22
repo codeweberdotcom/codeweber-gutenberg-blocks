@@ -41,6 +41,17 @@ $columns = isset($attributes['columns']) ? $attributes['columns'] : '1';
 $items = isset($attributes['items']) ? $attributes['items'] : [];
 $use_alt_title = !empty($attributes['useAltTitle']);
 
+// Data source: posts (query or hand-picked) or taxonomy terms (query or hand-picked).
+$sourceType        = isset($attributes['sourceType']) ? $attributes['sourceType'] : 'post';
+$manualMode        = !empty($attributes['manualMode']);
+$manualItems       = isset($attributes['manualItems']) && is_array($attributes['manualItems']) ? $attributes['manualItems'] : [];
+$sourceTaxonomy    = isset($attributes['sourceTaxonomy']) ? $attributes['sourceTaxonomy'] : '';
+$taxonomyHideEmpty = !isset($attributes['taxonomyHideEmpty']) || !empty($attributes['taxonomyHideEmpty']);
+$taxonomyOrderBy   = isset($attributes['taxonomyOrderBy']) ? $attributes['taxonomyOrderBy'] : 'name';
+$taxonomyOrder     = isset($attributes['taxonomyOrder']) ? $attributes['taxonomyOrder'] : 'asc';
+$manualTermMode    = !empty($attributes['manualTermMode']);
+$manualTermItems   = isset($attributes['manualTermItems']) && is_array($attributes['manualTermItems']) ? $attributes['manualTermItems'] : [];
+
 // Grid attributes
 $gridRowCols = isset($attributes['gridRowCols']) ? $attributes['gridRowCols'] : '';
 $gridRowColsSm = isset($attributes['gridRowColsSm']) ? $attributes['gridRowColsSm'] : '';
@@ -64,7 +75,63 @@ $gridGapY = isset($attributes['gridGapY']) ? $attributes['gridGapY'] : '';
 // Подготавливаем данные для рендеринга
 $itemsToRender = [];
 
-if ($mode === 'post' && !empty($postType)) {
+if ($mode === 'post' && 'taxonomy' === $sourceType) {
+	// Taxonomy source: either the terms picked by hand, in their order, or a query.
+	$terms = [];
+
+	if ($manualTermMode) {
+		foreach ($manualTermItems as $entry) {
+			$termId = isset($entry['id']) ? (int) $entry['id'] : 0;
+			if (!$termId) {
+				continue;
+			}
+			$term = get_term($termId);
+			if ($term && !is_wp_error($term)) {
+				$terms[] = $term;
+			}
+		}
+	} elseif ($sourceTaxonomy) {
+		$queried = get_terms([
+			'taxonomy'   => $sourceTaxonomy,
+			'hide_empty' => $taxonomyHideEmpty,
+			'orderby'    => $taxonomyOrderBy,
+			'order'      => strtoupper($taxonomyOrder),
+			'number'     => $postsPerPage > 0 ? $postsPerPage : 0,
+		]);
+		if (!is_wp_error($queried)) {
+			$terms = $queried;
+		}
+	}
+
+	foreach ($terms as $term) {
+		$link = get_term_link($term);
+		$itemsToRender[] = [
+			'id'   => 'term-' . $term->term_id,
+			'text' => $term->name,
+			'url'  => is_wp_error($link) ? '' : $link,
+		];
+	}
+} elseif ($mode === 'post' && $manualMode) {
+	// Hand-picked posts, kept in the order they were added.
+	foreach ($manualItems as $entry) {
+		$postId = isset($entry['id']) ? (int) $entry['id'] : 0;
+		if (!$postId || 'publish' !== get_post_status($postId)) {
+			continue;
+		}
+		$postTitle = get_the_title($postId);
+		if ($use_alt_title) {
+			$alt = get_post_meta($postId, '_alt_title', true);
+			if (!empty($alt)) {
+				$postTitle = wp_kses_post($alt);
+			}
+		}
+		$itemsToRender[] = [
+			'id'   => 'post-' . $postId,
+			'text' => $postTitle,
+			'url'  => get_permalink($postId),
+		];
+	}
+} elseif ($mode === 'post' && !empty($postType)) {
 	// Режим "Post" - загружаем посты через WP_Query
 	$queryArgs = array(
 		'post_type' => $postType,

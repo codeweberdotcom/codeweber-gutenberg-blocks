@@ -79,6 +79,42 @@
       "type": "object",
       "default": {}
     },
+    "sourceType": {
+      "type": "string",
+      "default": "post"
+    },
+    "manualMode": {
+      "type": "boolean",
+      "default": false
+    },
+    "manualItems": {
+      "type": "array",
+      "default": []
+    },
+    "sourceTaxonomy": {
+      "type": "string",
+      "default": ""
+    },
+    "taxonomyHideEmpty": {
+      "type": "boolean",
+      "default": true
+    },
+    "taxonomyOrderBy": {
+      "type": "string",
+      "default": "name"
+    },
+    "taxonomyOrder": {
+      "type": "string",
+      "default": "asc"
+    },
+    "manualTermMode": {
+      "type": "boolean",
+      "default": false
+    },
+    "manualTermItems": {
+      "type": "array",
+      "default": []
+    },
     "enableLinks": {
       "type": "boolean",
       "default": false

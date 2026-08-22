@@ -27,7 +27,7 @@ Legend: `S` = static (JS save) | `D` = dynamic (PHP render.php)
 | `blockquote` | S | Styled blockquote |
 | `dropcap` | S | Paragraph with decorative drop cap |
 | `code` | S | Syntax-highlighted code block (Prism.js) |
-| `lists` | D | Styled unordered/ordered list |
+| `lists` | D | Styled unordered/ordered list. Inspector is tabbed: **Content** (source, list type, columns, items, text colour), **Icon** (icon picker, icon colour, bullet background), **Block** (UL Class → `listClass`, LI Class → `itemClass`, block data and id). `itemClass` applies to every list type and stacks with `text-line`. In Post mode the source comes from the shared `PostSourceControl`: posts by query, posts hand-picked (`manualMode` / `manualItems`, order preserved), taxonomy terms by query (`sourceTaxonomy`, `taxonomyHideEmpty`, `taxonomyOrderBy`, `taxonomyOrder`) or terms hand-picked (`manualTermMode` / `manualTermItems`). |
 | `divider` | S | Horizontal divider with style options |
 | `spacer` | S | Responsive vertical spacer using Bootstrap py-* classes |
 | `icon` | S | Single icon from icon library |

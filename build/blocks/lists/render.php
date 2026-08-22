@@ -214,7 +214,7 @@ if ($listType === 'icon' && $bulletBg) {
 
 // Text color (soft or solid)
 if ($textColor) {
-	$textPrefix = ($textColorType === 'soft') ? 'text-soft-' : 'text-';
+	$textPrefix = ('soft' === $textColorType) ? 'text-soft-' : (('pale' === $textColorType) ? 'text-pale-' : 'text-');
 	$listClasses[] = $textPrefix . esc_attr($textColor);
 }
 

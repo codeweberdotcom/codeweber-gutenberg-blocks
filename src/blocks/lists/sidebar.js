@@ -21,6 +21,7 @@ import { PostSourceControl } from '../../components/post-source';
 import { PostSortControl } from '../../components/post-sort/PostSortControl';
 import { SchemaTypeNotice } from '../../components/schema-type';
 import { IconPicker } from '../../components/icon/IconPicker';
+import { ColorTypeControl } from '../../components/colors/ColorTypeControl';
 import { colors } from '../../utilities/colors';
 
 // Icon-only tabs; the label survives as the native tooltip.
@@ -417,44 +418,38 @@ export const ListsSidebar = ({ attributes, setAttributes }) => {
 										}
 									/>
 									{textColor && (
-										<div
-											className="button-group-sidebar_50"
-											style={{ marginTop: '8px' }}
-										>
-											{[
+										<ColorTypeControl
+											label=""
+											value={textColorType || 'solid'}
+											options={[
 												{
+													value: 'solid',
 													label: __(
 														'Solid',
 														'codeweber-gutenberg-blocks'
 													),
-													value: 'solid',
 												},
 												{
+													value: 'soft',
 													label: __(
 														'Soft',
 														'codeweber-gutenberg-blocks'
 													),
-													value: 'soft',
 												},
-											].map((opt) => (
-												<Button
-													key={opt.value}
-													isPrimary={
-														(textColorType ||
-															'solid') ===
-														opt.value
-													}
-													onClick={() =>
-														setAttributes({
-															textColorType:
-																opt.value,
-														})
-													}
-												>
-													{opt.label}
-												</Button>
-											))}
-										</div>
+												{
+													value: 'pale',
+													label: __(
+														'Pale',
+														'codeweber-gutenberg-blocks'
+													),
+												},
+											]}
+											onChange={(value) =>
+												setAttributes({
+													textColorType: value,
+												})
+											}
+										/>
 									)}
 								</div>
 							</>
@@ -521,31 +516,10 @@ export const ListsSidebar = ({ attributes, setAttributes }) => {
 													),
 													value: 'white',
 												},
-												...colors
-													.filter((c) =>
-														[
-															'aqua',
-															'green',
-															'leaf',
-															'navy',
-															'orange',
-															'pink',
-															'purple',
-															'red',
-															'violet',
-															'yellow',
-															'fuchsia',
-															'sky',
-															'grape',
-															'blue',
-															'dark',
-															'muted',
-														].includes(c.value)
-													)
-													.map((c) => ({
-														label: c.label,
-														value: c.value,
-													})),
+												...colors.map((c) => ({
+													label: c.label,
+													value: c.value,
+												})),
 											]}
 											onChange={(value) =>
 												setAttributes({
@@ -555,44 +529,35 @@ export const ListsSidebar = ({ attributes, setAttributes }) => {
 										/>
 										{bulletColor &&
 											bulletColor !== 'none' && (
-												<div
-													className="button-group-sidebar_50"
-													style={{ marginTop: '8px' }}
-												>
-													{[
+												<ColorTypeControl
+													label=""
+													value={
+														bulletColorType ||
+														'solid'
+													}
+													options={[
 														{
+															value: 'solid',
 															label: __(
 																'Solid',
 																'codeweber-gutenberg-blocks'
 															),
-															value: 'solid',
 														},
 														{
+															value: 'soft',
 															label: __(
 																'Soft',
 																'codeweber-gutenberg-blocks'
 															),
-															value: 'soft',
 														},
-													].map((opt) => (
-														<Button
-															key={opt.value}
-															isPrimary={
-																(bulletColorType ||
-																	'solid') ===
-																opt.value
-															}
-															onClick={() =>
-																setAttributes({
-																	bulletColorType:
-																		opt.value,
-																})
-															}
-														>
-															{opt.label}
-														</Button>
-													))}
-												</div>
+													]}
+													onChange={(value) =>
+														setAttributes({
+															bulletColorType:
+																value,
+														})
+													}
+												/>
 											)}
 									</div>
 								)}

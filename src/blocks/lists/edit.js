@@ -414,7 +414,11 @@ const ListsEdit = ({ attributes, setAttributes, clientId }) => {
 		// Text color (soft or solid)
 		if (textColor) {
 			const textPrefix =
-				textColorType === 'soft' ? 'text-soft-' : 'text-';
+				textColorType === 'soft'
+					? 'text-soft-'
+					: textColorType === 'pale'
+						? 'text-pale-'
+						: 'text-';
 			classes.push(`${textPrefix}${textColor}`);
 		}
 

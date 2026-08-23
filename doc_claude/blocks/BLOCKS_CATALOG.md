@@ -70,7 +70,7 @@ Legend: `S` = static (JS save) | `D` = dynamic (PHP render.php)
 | `blog-category-widget` | D | Sidebar widget: post categories |
 | `blog-tag-widget` | D | Sidebar widget: post tags |
 | `blog-year-widget` | D | Sidebar widget: posts by year |
-| `accordion` | D | Bootstrap accordion — custom items or posts from CPT |
+| `accordion` | D | Bootstrap accordion — custom items or posts from CPT. In Post mode `contentSource` picks the item text: **full** (default — shortcodes run, formatting kept via wp_kses_post + wpautop), **excerpt**, or **trim** to `contentLength` characters on a word boundary. Truncating used to cut shortcodes in half, and do_shortcode then swallowed the markup from the broken bracket to the next closing one — dropping neighbouring items on the frontend. Shared helper: `Plugin::accordion_prepare_content()`, used by both render.php and the editor's accordion-posts endpoint. |
 
 ---
 

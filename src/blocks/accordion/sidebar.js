@@ -11,6 +11,7 @@ import {
 	ButtonGroup,
 	ToggleControl,
 	SelectControl,
+	RangeControl,
 	TextControl,
 } from '@wordpress/components';
 import { PostTypeTaxonomyControl } from '../../components/post-type-taxonomy/PostTypeTaxonomyControl';
@@ -27,6 +28,8 @@ export const AccordionSidebar = ({ attributes, setAttributes }) => {
 		firstItemOpen,
 		mode,
 		postType,
+		contentSource = 'full',
+		contentLength = 200,
 		selectedTaxonomies,
 		orderBy,
 		order,
@@ -88,7 +91,10 @@ export const AccordionSidebar = ({ attributes, setAttributes }) => {
 
 			{/* Schema.org type indicator */}
 			<div style={{ marginTop: '12px' }}>
-				<SchemaTypeNotice mode={mode || 'custom'} postType={postType || ''} />
+				<SchemaTypeNotice
+					mode={mode || 'custom'}
+					postType={postType || ''}
+				/>
 			</div>
 
 			{/* Post Type Selection - показываем только в режиме Post */}
@@ -109,6 +115,64 @@ export const AccordionSidebar = ({ attributes, setAttributes }) => {
 								'codeweber-gutenberg-blocks'
 							)}
 						/>
+					</div>
+
+					<div style={{ marginTop: '16px' }}>
+						<SelectControl
+							label={__(
+								'Item text',
+								'codeweber-gutenberg-blocks'
+							)}
+							value={contentSource}
+							options={[
+								{
+									label: __(
+										'Full content',
+										'codeweber-gutenberg-blocks'
+									),
+									value: 'full',
+								},
+								{
+									label: __(
+										'Excerpt',
+										'codeweber-gutenberg-blocks'
+									),
+									value: 'excerpt',
+								},
+								{
+									label: __(
+										'Trimmed to length',
+										'codeweber-gutenberg-blocks'
+									),
+									value: 'trim',
+								},
+							]}
+							onChange={(value) =>
+								setAttributes({ contentSource: value })
+							}
+							help={__(
+								'Full content keeps formatting and runs shortcodes.',
+								'codeweber-gutenberg-blocks'
+							)}
+							__nextHasNoMarginBottom
+						/>
+						{'trim' === contentSource && (
+							<RangeControl
+								label={__(
+									'Length (characters)',
+									'codeweber-gutenberg-blocks'
+								)}
+								value={contentLength}
+								min={40}
+								max={2000}
+								step={10}
+								onChange={(value) =>
+									setAttributes({
+										contentLength: value || 200,
+									})
+								}
+							/>
+						)}
 					</div>
 
 					{/* Post Sort - показываем только в режиме Post */}
@@ -281,13 +345,24 @@ export const AccordionSidebar = ({ attributes, setAttributes }) => {
 			/>
 
 			{/* Item Spacing */}
-			<div className="component-sidebar-title" style={{ marginTop: '16px' }}>
-				<label>{__('Item spacing', 'codeweber-gutenberg-blocks')}</label>
+			<div
+				className="component-sidebar-title"
+				style={{ marginTop: '16px' }}
+			>
+				<label>
+					{__('Item spacing', 'codeweber-gutenberg-blocks')}
+				</label>
 			</div>
 			<SelectControl
 				value={itemGap || ''}
 				options={[
-					{ label: __('Default (theme)', 'codeweber-gutenberg-blocks'), value: '' },
+					{
+						label: __(
+							'Default (theme)',
+							'codeweber-gutenberg-blocks'
+						),
+						value: '',
+					},
 					{ label: 'mb-0 (0)', value: 'mb-0' },
 					{ label: 'mb-1 (4px)', value: 'mb-1' },
 					{ label: 'mb-2 (8px)', value: 'mb-2' },
@@ -313,13 +388,20 @@ export const AccordionSidebar = ({ attributes, setAttributes }) => {
 			/>
 
 			{/* Card Background Color */}
-			<div className="component-sidebar-title" style={{ marginTop: '16px' }}>
-				<label>{__('Card Background', 'codeweber-gutenberg-blocks')}</label>
+			<div
+				className="component-sidebar-title"
+				style={{ marginTop: '16px' }}
+			>
+				<label>
+					{__('Card Background', 'codeweber-gutenberg-blocks')}
+				</label>
 			</div>
 			<SelectControl
 				value={buttonBackgroundColor || ''}
 				options={bgColorOptions}
-				onChange={(v) => setAttributes({ buttonBackgroundColor: v || '' })}
+				onChange={(v) =>
+					setAttributes({ buttonBackgroundColor: v || '' })
+				}
 			/>
 
 			{/* Theme Selection */}

@@ -6,12 +6,7 @@
 	"category": "codeweber-gutenberg-elements",
 	"icon": "editor-ul",
 	"description": "Bootstrap accordion with multiple items. Supports simple, background, and icon styles.",
-	"keywords": [
-		"accordion",
-		"collapse",
-		"faq",
-		"tabs"
-	],
+	"keywords": ["accordion", "collapse", "faq", "tabs"],
 	"supports": {
 		"html": false,
 		"customClassName": true,
@@ -79,6 +74,14 @@
 		"postType": {
 			"type": "string",
 			"default": ""
+		},
+		"contentSource": {
+			"type": "string",
+			"default": "full"
+		},
+		"contentLength": {
+			"type": "number",
+			"default": 200
 		},
 		"selectedTaxonomies": {
 			"type": "object",

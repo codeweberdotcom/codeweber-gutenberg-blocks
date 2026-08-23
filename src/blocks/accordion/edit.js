@@ -27,6 +27,8 @@ const AccordionEdit = ({ attributes, setAttributes, clientId }) => {
 		firstItemOpen,
 		mode,
 		postType,
+		contentSource = 'full',
+		contentLength = 200,
 		selectedTaxonomies,
 		orderBy,
 		order,
@@ -173,7 +175,7 @@ const AccordionEdit = ({ attributes, setAttributes, clientId }) => {
 			setIsLoadingPosts(true);
 			try {
 				// Используем наш кастомный endpoint, который использует WP_Query (как в render.php)
-				const apiPath = `/codeweber-gutenberg-blocks/v1/accordion-posts?post_type=${postType}&selected_taxonomies=${encodeURIComponent(JSON.stringify(selectedTaxonomies || {}))}&orderby=${orderBy || 'date'}&order=${order || 'desc'}`;
+				const apiPath = `/codeweber-gutenberg-blocks/v1/accordion-posts?post_type=${postType}&selected_taxonomies=${encodeURIComponent(JSON.stringify(selectedTaxonomies || {}))}&orderby=${orderBy || 'date'}&order=${order || 'desc'}&content_source=${contentSource || 'full'}&content_length=${contentLength || 200}`;
 				console.log(
 					'[Accordion] Fetching from WP_Query endpoint:',
 					apiPath
@@ -248,6 +250,8 @@ const AccordionEdit = ({ attributes, setAttributes, clientId }) => {
 		clientId,
 		firstItemOpen,
 		setAttributes,
+		contentSource,
+		contentLength,
 	]);
 
 	// Ensure first item open (others closed) when option enabled

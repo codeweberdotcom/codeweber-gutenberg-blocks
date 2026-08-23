@@ -25,6 +25,8 @@ if (defined('WP_DEBUG') && WP_DEBUG) {
 // Получаем атрибуты
 $mode = isset($attributes['mode']) ? $attributes['mode'] : 'custom';
 $use_alt_title = !empty($attributes['useAltTitle']);
+$contentSource = isset($attributes['contentSource']) ? $attributes['contentSource'] : 'full';
+$contentLength = isset($attributes['contentLength']) ? (int) $attributes['contentLength'] : 200;
 $accordionStyle = isset($attributes['accordionStyle']) ? $attributes['accordionStyle'] : 'simple';
 $allowMultiple = isset($attributes['allowMultiple']) ? (bool) $attributes['allowMultiple'] : false;
 $accordionId = isset($attributes['accordionId']) ? $attributes['accordionId'] : '';
@@ -141,22 +143,7 @@ if ($mode === 'post' && !empty($postType)) {
 					$postTitle = wp_kses_post($alt);
 				}
 			}
-			$postContent = '';
-			
-			// Пытаемся получить excerpt
-			if (has_excerpt()) {
-				$postContent = get_the_excerpt();
-			} else {
-				// Берем первые 200 символов из content
-				$content = get_the_content();
-				$content = strip_tags($content);
-				$content = str_replace('&nbsp;', ' ', $content);
-				$content = trim($content);
-				$postContent = mb_substr($content, 0, 200);
-				if (mb_strlen($content) > 200) {
-					$postContent .= '...';
-				}
-			}
+			$postContent = \Codeweber\Blocks\Plugin::accordion_prepare_content($contentSource, $contentLength);
 			
 			// Если контент пустой, используем заглушку
 			if (empty($postContent)) {

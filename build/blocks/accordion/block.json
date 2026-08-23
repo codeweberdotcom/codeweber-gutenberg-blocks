@@ -80,6 +80,14 @@
       "type": "string",
       "default": ""
     },
+    "contentSource": {
+      "type": "string",
+      "default": "full"
+    },
+    "contentLength": {
+      "type": "number",
+      "default": 200
+    },
     "selectedTaxonomies": {
       "type": "object",
       "default": {}

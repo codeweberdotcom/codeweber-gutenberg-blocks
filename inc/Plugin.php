@@ -1229,6 +1229,9 @@ class Plugin {
 			}
 		}
 
+		$content_source = $request->get_param('content_source') ?: 'full';
+		$content_length = (int) ($request->get_param('content_length') ?: 200);
+
 		// Используем тот же WP_Query, что и в render.php
 		$queryArgs = array(
 			'post_type' => $post_type,
@@ -1273,20 +1276,7 @@ class Plugin {
 				$postTitle = get_the_title();
 				$postContent = '';
 
-				// Пытаемся получить excerpt
-				if (has_excerpt()) {
-					$postContent = get_the_excerpt();
-				} else {
-					// Берем первые 200 символов из content
-					$content = get_the_content();
-					$content = strip_tags($content);
-					$content = str_replace('&nbsp;', ' ', $content);
-					$content = trim($content);
-					$postContent = mb_substr($content, 0, 200);
-					if (mb_strlen($content) > 200) {
-						$postContent .= '...';
-					}
-				}
+				$postContent = self::accordion_prepare_content($content_source, $content_length);
 
 				// Если контент пустой, используем заглушку
 				if (empty($postContent)) {
@@ -1844,6 +1834,45 @@ class Plugin {
 	 * @param array  $enabled_slugs only show these slugs; empty = all
 	 * @return string HTML or empty
 	 */
+	/**
+	 * Готовит текст элемента аккордеона из текущего поста цикла.
+	 *
+	 * Шорткоды раскрываются ДО обрезки: срез по количеству символов разрывал
+	 * их посередине, и do_shortcode на странице съедал разметку от рваной
+	 * скобки до следующей закрывающей — вместе с соседними элементами.
+	 *
+	 * @param string $source 'full' | 'excerpt' | 'trim'.
+	 * @param int    $length Длина среза для 'trim'.
+	 * @return string
+	 */
+	public static function accordion_prepare_content($source = 'full', $length = 200) {
+		if ('excerpt' === $source) {
+			$text = get_the_excerpt();
+			return $text ? wp_kses_post($text) : '';
+		}
+
+		$content = do_shortcode(get_the_content());
+
+		if ('full' !== $source) {
+			$plain = trim(str_replace('&nbsp;', ' ', wp_strip_all_tags($content)));
+			$length = max(1, (int) $length);
+
+			if (mb_strlen($plain) > $length) {
+				$cut = mb_substr($plain, 0, $length);
+				// Не обрываем слово посередине.
+				$space = mb_strrpos($cut, ' ');
+				if ($space && $space > $length * 0.6) {
+					$cut = mb_substr($cut, 0, $space);
+				}
+				$plain = rtrim($cut, " ,.;:—-") . '...';
+			}
+
+			return $plain;
+		}
+
+		return wpautop(wp_kses_post($content));
+	}
+
 	public static function render_social_from_theme($style_type = 'type1', $size = 'sm', $button_color = 'primary', $button_style = 'solid', $button_form = 'circle', $nav_class = '', $enabled_slugs = []) {
 		$socials_raw = get_option('socials_urls');
 		if (!is_array($socials_raw)) {

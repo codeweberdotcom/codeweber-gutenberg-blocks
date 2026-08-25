@@ -16,6 +16,10 @@ import {
 	getRowColsClasses,
 	getGapClasses,
 } from '../../components/grid-control';
+import {
+	getPositionClasses,
+	getPositionStyle,
+} from '../../components/position';
 
 export default function Edit({ attributes, setAttributes, clientId }) {
 	const {
@@ -81,6 +85,7 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		loadMoreButtonSize,
 		loadMoreButtonStyle = 'solid',
 		imageRenderType = 'img',
+		posEnabled,
 	} = attributes;
 
 	// Подгружаем свежие sizes из WordPress core store для всех изображений
@@ -105,12 +110,23 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 		sizes: freshSizes[image.id] || image.sizes,
 	});
 
-	// Для режима background убираем обертку, применяя атрибуты напрямую к контенту
-	const shouldRemoveWrapper = imageRenderType === 'background';
+	// Для режима background убираем обертку, применяя атрибуты напрямую к контенту.
+	// При включённом позиционировании обертка нужна всегда — иначе некуда вешать position.
+	const shouldRemoveWrapper =
+		imageRenderType === 'background' && !posEnabled;
+
+	// В редакторе классы видимости не применяем: d-none спрятал бы блок в канвасе.
+	const positionClasses = getPositionClasses(attributes, 'pos', {
+		skipVisibility: true,
+	});
+	const positionStyle = getPositionStyle(attributes);
 
 	const blockProps = useBlockProps({
 		className:
-			`cwgb-image-simple-block ${imageRenderType === 'background' ? 'h-100' : ''} ${blockClass}`.trim(),
+			`cwgb-image-simple-block ${imageRenderType === 'background' ? 'h-100' : ''} ${blockClass} ${positionClasses}`
+				.replace(/\s+/g, ' ')
+				.trim(),
+		...(positionStyle && { style: positionStyle }),
 		'data-block': clientId,
 	});
 

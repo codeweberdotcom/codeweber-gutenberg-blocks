@@ -1,0 +1,7 @@
+// Подсветка позиционированного блока в редакторе: вынутый из потока блок
+// иначе сложно найти и выделить мышью.
+
+.editor-styles-wrapper .cwgb-position:hover {
+	outline: 1px dashed rgba(0, 124, 186, 0.5);
+	outline-offset: 2px;
+}

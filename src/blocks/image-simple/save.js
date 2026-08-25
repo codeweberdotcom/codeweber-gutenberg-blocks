@@ -11,6 +11,10 @@ import {
 	getGapClasses,
 } from '../../components/grid-control';
 import { buildLinkAttrs } from '../../utilities/buildLinkAttrs';
+import {
+	getPositionClasses,
+	getPositionStyle,
+} from '../../components/position';
 
 export default function Save({ attributes }) {
 	const {
@@ -78,6 +82,7 @@ export default function Save({ attributes }) {
 		loadMoreButtonSize,
 		loadMoreButtonStyle,
 		imageRenderType = 'img',
+		posEnabled,
 		animationEnabled,
 		animationType,
 		animationDuration,
@@ -208,14 +213,23 @@ export default function Save({ attributes }) {
 	const linkBuildResult = buildLinkAttrs( attributes );
 	const activeLinkProps = linkBuildResult ? linkBuildResult.linkProps : null;
 
-	// Для режима background убираем обертку на фронтенде для всех режимов
-	const shouldRemoveWrapper = imageRenderType === 'background';
+	// Для режима background убираем обертку на фронтенде для всех режимов.
+	// При включённом позиционировании обертка нужна всегда — иначе некуда вешать position.
+	const shouldRemoveWrapper =
+		imageRenderType === 'background' && !posEnabled;
+
+	const positionClasses = getPositionClasses(attributes);
+	const positionStyle = getPositionStyle(attributes);
 
 	// Создаем blockProps только если нужна обертка
 	const blockProps = shouldRemoveWrapper
 		? null
 		: useBlockProps.save({
-				className: `cwgb-image-simple-block ${blockClass}`,
+				className:
+					`cwgb-image-simple-block ${blockClass} ${positionClasses}`
+						.replace(/\s+/g, ' ')
+						.trim(),
+				...(positionStyle && { style: positionStyle }),
 				...(blockId && { id: blockId }),
 				...getDataAttributes(),
 			});

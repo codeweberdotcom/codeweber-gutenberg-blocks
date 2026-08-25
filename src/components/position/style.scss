@@ -1,0 +1,79 @@
+// Адаптивное позиционирование блока (компонент PositionControl).
+// Значения приходят inline через CSS custom properties, здесь — только каскад.
+
+$cwgb-pos-breakpoints: (
+	sm: 576px,
+	md: 768px,
+	lg: 992px,
+	xl: 1200px,
+	xxl: 1400px,
+	xxxl: 1921px,
+);
+
+$cwgb-pos-sides: top, right, bottom, left;
+
+.cwgb-position {
+	// Переменные наследуются вниз по дереву — гасим их, чтобы вложенный
+	// позиционированный блок не подхватывал смещения родителя.
+	@each $side in $cwgb-pos-sides {
+		--cwgb-pos-#{$side}: initial;
+
+		@each $key, $bp in $cwgb-pos-breakpoints {
+			--cwgb-pos-#{$side}-#{$key}: initial;
+		}
+	}
+
+	--cwgb-pos-scale: initial;
+
+	@each $key, $bp in $cwgb-pos-breakpoints {
+		--cwgb-pos-scale-#{$key}: initial;
+	}
+
+	--cwgb-pos-tx: initial;
+	--cwgb-pos-ty: initial;
+	--cwgb-pos-origin: initial;
+
+	@each $side in $cwgb-pos-sides {
+		#{$side}: var(--cwgb-pos-#{$side}, auto);
+	}
+}
+
+// Трансформация вешается отдельным модификатором, чтобы не создавать
+// stacking context там, где масштаб и центрирование не заданы.
+.cwgb-position--transform {
+	transform:
+		translate(var(--cwgb-pos-tx, 0), var(--cwgb-pos-ty, 0))
+		scale(var(--cwgb-pos-scale, 1));
+	transform-origin: var(--cwgb-pos-origin, center center);
+}
+
+// Каскад mobile-first: незаданный брейкпоинт наследует ближайший меньший.
+$cwp-top: var(--cwgb-pos-top, auto);
+$cwp-right: var(--cwgb-pos-right, auto);
+$cwp-bottom: var(--cwgb-pos-bottom, auto);
+$cwp-left: var(--cwgb-pos-left, auto);
+$cwp-scale: var(--cwgb-pos-scale, 1);
+
+@each $key, $bp in $cwgb-pos-breakpoints {
+	$cwp-top: var(--cwgb-pos-top-#{$key}, #{$cwp-top}) !global;
+	$cwp-right: var(--cwgb-pos-right-#{$key}, #{$cwp-right}) !global;
+	$cwp-bottom: var(--cwgb-pos-bottom-#{$key}, #{$cwp-bottom}) !global;
+	$cwp-left: var(--cwgb-pos-left-#{$key}, #{$cwp-left}) !global;
+	$cwp-scale: var(--cwgb-pos-scale-#{$key}, #{$cwp-scale}) !global;
+
+	@media (min-width: $bp) {
+
+		.cwgb-position {
+			top: $cwp-top;
+			right: $cwp-right;
+			bottom: $cwp-bottom;
+			left: $cwp-left;
+		}
+
+		.cwgb-position--transform {
+			transform:
+				translate(var(--cwgb-pos-tx, 0), var(--cwgb-pos-ty, 0))
+				scale($cwp-scale);
+		}
+	}
+}

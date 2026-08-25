@@ -11,6 +11,7 @@ import { ImageHoverControl } from '../../components/image-hover/ImageHoverContro
 import { LoadMoreControl } from '../../components/load-more';
 import { LinkTypeSelector } from '../../utilities/link_type';
 import { AnimationControl } from '../../components/animation/Animation';
+import { PositionControl } from '../../components/position';
 
 // Tab icon with native title tooltip
 const TabIcon = ({ icon, label }) => (
@@ -181,6 +182,27 @@ export const ImageSimpleSidebar = ({ attributes, setAttributes }) => {
 											})
 										}
 									/>
+								</div>
+
+								<div
+									style={{
+										marginTop: '24px',
+										paddingTop: '24px',
+										borderTop: '1px solid #ddd',
+									}}
+								>
+									<PanelBody
+										title={__(
+											'Position',
+											'codeweber-gutenberg-blocks'
+										)}
+										initialOpen={false}
+									>
+										<PositionControl
+											attributes={attributes}
+											setAttributes={setAttributes}
+										/>
+									</PanelBody>
 								</div>
 							</PanelBody>
 						)}

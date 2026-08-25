@@ -507,6 +507,182 @@
     "animationDelay": {
       "type": "number",
       "default": 0
+    },
+    "posEnabled": {
+      "type": "boolean",
+      "default": false
+    },
+    "posType": {
+      "type": "string",
+      "default": "absolute"
+    },
+    "posZIndex": {
+      "type": "string",
+      "default": ""
+    },
+    "posOrigin": {
+      "type": "string",
+      "default": ""
+    },
+    "posCenterX": {
+      "type": "boolean",
+      "default": false
+    },
+    "posCenterY": {
+      "type": "boolean",
+      "default": false
+    },
+    "posVisibleFrom": {
+      "type": "string",
+      "default": ""
+    },
+    "posVisibleDisplay": {
+      "type": "string",
+      "default": "block"
+    },
+    "posHiddenFrom": {
+      "type": "string",
+      "default": ""
+    },
+    "posTop": {
+      "type": "string",
+      "default": ""
+    },
+    "posRight": {
+      "type": "string",
+      "default": ""
+    },
+    "posBottom": {
+      "type": "string",
+      "default": ""
+    },
+    "posLeft": {
+      "type": "string",
+      "default": ""
+    },
+    "posScale": {
+      "type": "string",
+      "default": ""
+    },
+    "posTopSm": {
+      "type": "string",
+      "default": ""
+    },
+    "posRightSm": {
+      "type": "string",
+      "default": ""
+    },
+    "posBottomSm": {
+      "type": "string",
+      "default": ""
+    },
+    "posLeftSm": {
+      "type": "string",
+      "default": ""
+    },
+    "posScaleSm": {
+      "type": "string",
+      "default": ""
+    },
+    "posTopMd": {
+      "type": "string",
+      "default": ""
+    },
+    "posRightMd": {
+      "type": "string",
+      "default": ""
+    },
+    "posBottomMd": {
+      "type": "string",
+      "default": ""
+    },
+    "posLeftMd": {
+      "type": "string",
+      "default": ""
+    },
+    "posScaleMd": {
+      "type": "string",
+      "default": ""
+    },
+    "posTopLg": {
+      "type": "string",
+      "default": ""
+    },
+    "posRightLg": {
+      "type": "string",
+      "default": ""
+    },
+    "posBottomLg": {
+      "type": "string",
+      "default": ""
+    },
+    "posLeftLg": {
+      "type": "string",
+      "default": ""
+    },
+    "posScaleLg": {
+      "type": "string",
+      "default": ""
+    },
+    "posTopXl": {
+      "type": "string",
+      "default": ""
+    },
+    "posRightXl": {
+      "type": "string",
+      "default": ""
+    },
+    "posBottomXl": {
+      "type": "string",
+      "default": ""
+    },
+    "posLeftXl": {
+      "type": "string",
+      "default": ""
+    },
+    "posScaleXl": {
+      "type": "string",
+      "default": ""
+    },
+    "posTopXxl": {
+      "type": "string",
+      "default": ""
+    },
+    "posRightXxl": {
+      "type": "string",
+      "default": ""
+    },
+    "posBottomXxl": {
+      "type": "string",
+      "default": ""
+    },
+    "posLeftXxl": {
+      "type": "string",
+      "default": ""
+    },
+    "posScaleXxl": {
+      "type": "string",
+      "default": ""
+    },
+    "posTopXxxl": {
+      "type": "string",
+      "default": ""
+    },
+    "posRightXxxl": {
+      "type": "string",
+      "default": ""
+    },
+    "posBottomXxxl": {
+      "type": "string",
+      "default": ""
+    },
+    "posLeftXxxl": {
+      "type": "string",
+      "default": ""
+    },
+    "posScaleXxxl": {
+      "type": "string",
+      "default": ""
     }
   }
 }

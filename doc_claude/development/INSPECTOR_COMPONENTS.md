@@ -18,6 +18,7 @@ Import path: `../../components/<name>/<ComponentName>`
 | `GapControl` | `gap/` | Responsive gap/gx/gy between grid items |
 | `GridControl` | `grid-control/` | Combined: row-cols + gap + spacing |
 | `PositioningControl` | `layout/` | text-align, align-items, justify-content, position |
+| `PositionControl` | `position/` | Absolute positioning: z-index, per-breakpoint offsets, scale, visibility |
 | `SectionSettingsPanel` | `section/` | Section tag, text color, min-height, overflow |
 | `AngledControl` | `angled/` | Diagonal dividers (upper/lower angles) |
 | `WavesControl` | `waves/` | SVG wave dividers (5 styles, top/bottom) |
@@ -168,6 +169,33 @@ import PositioningControl from '../../components/layout/PositioningControl';
 ```
 
 Classes: `align-items-*`, `justify-content-*`, `text-start/center/end`, `position-*`.
+
+---
+
+### `PositionControl`
+
+Takes a block out of the flow: position type, z-index, `top/right/bottom/left`
+and `scale` per breakpoint, plus `d-*` visibility classes.
+
+```jsx
+import { PositionControl, getPositionClasses, getPositionStyle } from '../../components/position';
+
+// sidebar.js
+<PositionControl attributes={attributes} setAttributes={setAttributes} />
+
+// edit.js — skipVisibility, otherwise d-none hides the block in the canvas
+const positionClasses = getPositionClasses(attributes, 'pos', { skipVisibility: true });
+const positionStyle = getPositionStyle(attributes);
+
+// save.js
+const positionClasses = getPositionClasses(attributes);
+```
+
+Writes 44 `pos*` attributes. Emits `position-absolute cwgb-position` + inline
+`--cwgb-pos-*` custom properties; the per-breakpoint cascade lives in
+`components/position/style.scss`, which the block's own `style.scss` imports.
+
+Full reference: [POSITION_CONTROL.md](POSITION_CONTROL.md).
 
 ---
 

@@ -196,6 +196,38 @@ export const sanitizeZIndex = (raw) => {
 };
 
 /**
+ * Приводит скорость параллакса к числу в пределах, которые понимает rellax.
+ *
+ * @param {string|number} raw Значение скорости
+ * @return {string|null} Скорость или null
+ */
+export const sanitizeParallaxSpeed = (raw) => {
+	if (raw === null || raw === undefined || raw === '') {
+		return null;
+	}
+
+	const value = parseFloat(raw);
+
+	if (Number.isNaN(value)) {
+		return null;
+	}
+
+	return String(Math.min(10, Math.max(-10, value)));
+};
+
+/**
+ * Включён ли параллакс. Rellax на каждом скролле переписывает inline transform
+ * элемента, поэтому вместе с ним scale и центрирование не работают.
+ *
+ * @param {Object} attributes Атрибуты блока
+ * @param {string} prefix     Префикс атрибутов
+ * @return {boolean} true, если параллакс включён
+ */
+export const hasParallax = (attributes, prefix = 'pos') =>
+	!!attributes[positionAttr('Enabled', '', prefix)] &&
+	!!attributes[positionAttr('Parallax', '', prefix)];
+
+/**
  * Нужна ли блоку трансформация (scale на любом брейкпоинте или центрирование).
  *
  * @param {Object} attributes Атрибуты блока
@@ -203,6 +235,11 @@ export const sanitizeZIndex = (raw) => {
  * @return {boolean} true, если нужен класс-модификатор трансформации
  */
 export const hasPositionTransform = (attributes, prefix = 'pos') => {
+	// Под параллаксом transform принадлежит rellax — не вешаем мёртвый класс.
+	if (hasParallax(attributes, prefix)) {
+		return false;
+	}
+
 	if (
 		attributes[positionAttr('CenterX', '', prefix)] ||
 		attributes[positionAttr('CenterY', '', prefix)]
@@ -224,6 +261,7 @@ export const hasPositionTransform = (attributes, prefix = 'pos') => {
  * @param {string}  prefix                 Префикс атрибутов
  * @param {Object}  options                Опции
  * @param {boolean} options.skipVisibility Не добавлять d-* классы: в редакторе d-none спрятал бы блок
+ * @param {boolean} options.skipParallax   Не добавлять класс rellax: в редакторе theme.js таскал бы блок
  * @return {string} Строка классов (может быть пустой)
  */
 export const getPositionClasses = (
@@ -245,6 +283,10 @@ export const getPositionClasses = (
 
 	if (hasPositionTransform(attributes, prefix)) {
 		classes.push('cwgb-position--transform');
+	}
+
+	if (!options.skipParallax && hasParallax(attributes, prefix)) {
+		classes.push('rellax');
 	}
 
 	if (!options.skipVisibility) {
@@ -295,6 +337,10 @@ export const getPositionStyle = (attributes, prefix = 'pos') => {
 
 	const style = {};
 
+	// Под параллаксом transform принадлежит rellax: scale, центрирование и
+	// origin всё равно были бы затёрты, поэтому не пишем их вовсе.
+	const parallax = hasParallax(attributes, prefix);
+
 	POSITION_BREAKPOINTS.forEach((bp) => {
 		const suffix = bp.slug ? `-${bp.slug}` : '';
 
@@ -308,6 +354,10 @@ export const getPositionStyle = (attributes, prefix = 'pos') => {
 			}
 		});
 
+		if (parallax) {
+			return;
+		}
+
 		const scale = sanitizeScale(
 			attributes[positionAttr('Scale', bp.key, prefix)]
 		);
@@ -317,18 +367,23 @@ export const getPositionStyle = (attributes, prefix = 'pos') => {
 		}
 	});
 
-	if (attributes[positionAttr('CenterX', '', prefix)]) {
-		style['--cwgb-pos-tx'] = '-50%';
-	}
+	if (!parallax) {
+		if (attributes[positionAttr('CenterX', '', prefix)]) {
+			style['--cwgb-pos-tx'] = '-50%';
+		}
 
-	if (attributes[positionAttr('CenterY', '', prefix)]) {
-		style['--cwgb-pos-ty'] = '-50%';
-	}
+		if (attributes[positionAttr('CenterY', '', prefix)]) {
+			style['--cwgb-pos-ty'] = '-50%';
+		}
 
-	const origin = attributes[positionAttr('Origin', '', prefix)];
+		const origin = attributes[positionAttr('Origin', '', prefix)];
 
-	if (origin && POSITION_ORIGINS.some((option) => option.value === origin)) {
-		style['--cwgb-pos-origin'] = origin;
+		if (
+			origin &&
+			POSITION_ORIGINS.some((option) => option.value === origin)
+		) {
+			style['--cwgb-pos-origin'] = origin;
+		}
 	}
 
 	const zIndex = sanitizeZIndex(
@@ -340,6 +395,31 @@ export const getPositionStyle = (attributes, prefix = 'pos') => {
 	}
 
 	return Object.keys(style).length ? style : undefined;
+};
+
+/**
+ * Data-атрибуты для rellax. Пустой объект, если параллакс выключен.
+ *
+ * @param {Object}  attributes           Атрибуты блока
+ * @param {string}  prefix               Префикс атрибутов
+ * @param {Object}  options              Опции
+ * @param {boolean} options.skipParallax Ничего не отдавать (для редактора)
+ * @return {Object} Объект data-атрибутов
+ */
+export const getPositionDataAttributes = (
+	attributes,
+	prefix = 'pos',
+	options = {}
+) => {
+	if (options.skipParallax || !hasParallax(attributes, prefix)) {
+		return {};
+	}
+
+	const speed = sanitizeParallaxSpeed(
+		attributes[positionAttr('ParallaxSpeed', '', prefix)]
+	);
+
+	return speed === null ? {} : { 'data-rellax-speed': speed };
 };
 
 /**

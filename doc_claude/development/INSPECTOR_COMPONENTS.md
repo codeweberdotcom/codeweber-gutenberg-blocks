@@ -175,7 +175,8 @@ Classes: `align-items-*`, `justify-content-*`, `text-start/center/end`, `positio
 ### `PositionControl`
 
 Takes a block out of the flow: position type, z-index, `top/right/bottom/left`
-and `scale` per breakpoint, plus `d-*` visibility classes.
+and `scale` per breakpoint, `d-*` visibility classes, and the theme's `rellax`
+parallax.
 
 ```jsx
 import { PositionControl, getPositionClasses, getPositionStyle } from '../../components/position';
@@ -183,17 +184,24 @@ import { PositionControl, getPositionClasses, getPositionStyle } from '../../com
 // sidebar.js
 <PositionControl attributes={attributes} setAttributes={setAttributes} />
 
-// edit.js — skipVisibility, otherwise d-none hides the block in the canvas
-const positionClasses = getPositionClasses(attributes, 'pos', { skipVisibility: true });
+// edit.js — d-none would hide the block in the canvas, rellax would drag it
+const positionClasses = getPositionClasses(attributes, 'pos', {
+  skipVisibility: true,
+  skipParallax: true,
+});
 const positionStyle = getPositionStyle(attributes);
 
 // save.js
 const positionClasses = getPositionClasses(attributes);
+const positionData = getPositionDataAttributes(attributes); // data-rellax-speed
 ```
 
-Writes 44 `pos*` attributes. Emits `position-absolute cwgb-position` + inline
+Writes 46 `pos*` attributes. Emits `position-absolute cwgb-position` + inline
 `--cwgb-pos-*` custom properties; the per-breakpoint cascade lives in
 `components/position/style.scss`, which the block's own `style.scss` imports.
+Parallax and `scale`/centering are mutually exclusive — rellax overwrites the
+inline `transform`, so the component disables the transform controls when
+parallax is on.
 
 Full reference: [POSITION_CONTROL.md](POSITION_CONTROL.md).
 

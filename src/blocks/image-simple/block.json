@@ -430,6 +430,8 @@
 			"default": 0
 		},
 		"posEnabled": { "type": "boolean", "default": false },
+		"posParallax": { "type": "boolean", "default": false },
+		"posParallaxSpeed": { "type": "string", "default": "1" },
 		"posType": { "type": "string", "default": "absolute" },
 		"posZIndex": { "type": "string", "default": "" },
 		"posOrigin": { "type": "string", "default": "" },

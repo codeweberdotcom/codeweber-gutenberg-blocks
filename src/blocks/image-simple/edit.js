@@ -115,9 +115,11 @@ export default function Edit({ attributes, setAttributes, clientId }) {
 	const shouldRemoveWrapper =
 		imageRenderType === 'background' && !posEnabled;
 
-	// В редакторе классы видимости не применяем: d-none спрятал бы блок в канвасе.
+	// В редакторе не применяем ни классы видимости (d-none спрятал бы блок
+	// в канвасе), ни rellax — theme.js грузится и в админке и таскал бы блок.
 	const positionClasses = getPositionClasses(attributes, 'pos', {
 		skipVisibility: true,
+		skipParallax: true,
 	});
 	const positionStyle = getPositionStyle(attributes);
 

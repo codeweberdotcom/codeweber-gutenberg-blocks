@@ -26,6 +26,7 @@ import {
 	POSITION_DISPLAYS,
 	POSITION_VISIBILITY_BREAKPOINTS,
 	getBreakpointDescription,
+	hasParallax,
 	isBreakpointConfigured,
 	positionAttr,
 } from './helpers';
@@ -84,6 +85,13 @@ export const PositionControl = ({
 	}
 
 	const positionType = getValue('Type') || 'absolute';
+	const parallax = hasParallax(attributes, prefix);
+	const transformHelp = parallax
+		? __(
+				'Unavailable with parallax: rellax rewrites the inline transform on every scroll.',
+				'codeweber-gutenberg-blocks'
+			)
+		: undefined;
 	const scaleRaw = getValue('Scale', activeBreakpoint);
 	const scaleValue =
 		scaleRaw === '' || scaleRaw === undefined
@@ -153,6 +161,44 @@ export const PositionControl = ({
 					}
 				/>
 			</div>
+
+			<ToggleControl
+				label={__('Parallax (rellax)', 'codeweber-gutenberg-blocks')}
+				help={__(
+					'Moves the block on scroll, like the decorative shapes in the theme demos.',
+					'codeweber-gutenberg-blocks'
+				)}
+				checked={parallax}
+				onChange={(value) => setValue('Parallax', '', value)}
+			/>
+
+			{parallax && (
+				<div className="mb-3">
+					<NumberControl
+						label={__(
+							'Parallax speed',
+							'codeweber-gutenberg-blocks'
+						)}
+						help={__(
+							'Negative moves against the scroll, positive with it. Effect is off in the editor.',
+							'codeweber-gutenberg-blocks'
+						)}
+						value={getValue('ParallaxSpeed') ?? ''}
+						min={-10}
+						max={10}
+						step={0.5}
+						onChange={(value) =>
+							setValue(
+								'ParallaxSpeed',
+								'',
+								value === undefined || value === null
+									? ''
+									: String(value)
+							)
+						}
+					/>
+				</div>
+			)}
 
 			{/* Полоса брейкпоинтов */}
 			<div className="mb-3">
@@ -237,6 +283,8 @@ export const PositionControl = ({
 			<div className="mb-3">
 				<RangeControl
 					label={__('Scale, %', 'codeweber-gutenberg-blocks')}
+					help={transformHelp}
+					disabled={parallax}
 					value={scaleValue}
 					min={10}
 					max={300}
@@ -285,6 +333,8 @@ export const PositionControl = ({
 				<SelectControl
 					value={getValue('Origin') || ''}
 					options={POSITION_ORIGINS}
+					disabled={parallax}
+					help={transformHelp}
 					onChange={(value) => setValue('Origin', '', value)}
 				/>
 			</div>
@@ -294,10 +344,14 @@ export const PositionControl = ({
 					'Center horizontally (X: −50%)',
 					'codeweber-gutenberg-blocks'
 				)}
-				help={__(
-					'Use together with left: 50%.',
-					'codeweber-gutenberg-blocks'
-				)}
+				help={
+					transformHelp ||
+					__(
+						'Use together with left: 50%.',
+						'codeweber-gutenberg-blocks'
+					)
+				}
+				disabled={parallax}
 				checked={!!getValue('CenterX')}
 				onChange={(value) => setValue('CenterX', '', value)}
 			/>
@@ -307,10 +361,14 @@ export const PositionControl = ({
 					'Center vertically (Y: −50%)',
 					'codeweber-gutenberg-blocks'
 				)}
-				help={__(
-					'Use together with top: 50%.',
-					'codeweber-gutenberg-blocks'
-				)}
+				help={
+					transformHelp ||
+					__(
+						'Use together with top: 50%.',
+						'codeweber-gutenberg-blocks'
+					)
+				}
+				disabled={parallax}
 				checked={!!getValue('CenterY')}
 				onChange={(value) => setValue('CenterY', '', value)}
 			/>

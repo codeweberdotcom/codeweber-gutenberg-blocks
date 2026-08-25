@@ -44,7 +44,7 @@ Empty fields inherit the nearest smaller breakpoint (mobile-first).
 
 ## Attributes
 
-44 attributes with the `pos` prefix (the prefix is configurable via the
+46 attributes with the `pos` prefix (the prefix is configurable via the
 `prefix` prop, but every consumer so far uses `pos`).
 
 | Attribute | Type | Default | Meaning |
@@ -55,6 +55,8 @@ Empty fields inherit the nearest smaller breakpoint (mobile-first).
 | `posOrigin` | string | `''` | `transform-origin` (whitelisted values) |
 | `posCenterX` | boolean | `false` | `translate(-50%, …)` — pair with `left: 50%` |
 | `posCenterY` | boolean | `false` | `translate(…, -50%)` — pair with `top: 50%` |
+| `posParallax` | boolean | `false` | Adds the theme's `rellax` class — the block moves on scroll |
+| `posParallaxSpeed` | string | `1` | `data-rellax-speed`, clamped to −10…10 |
 | `posVisibleFrom` | string | `''` | Breakpoint slug → `d-none d-{bp}-{display}` |
 | `posVisibleDisplay` | string | `block` | `block` / `inline-block` / `flex` / `inline-flex` / `grid` |
 | `posHiddenFrom` | string | `''` | Breakpoint slug → `d-{bp}-none` |
@@ -98,6 +100,45 @@ blocks without them do not get a needless stacking context.
 
 ---
 
+## Parallax
+
+The toggle reuses the theme's own mechanism, the one behind the decorative
+shapes in the demos:
+
+```html
+<div class="shape bg-dot primary rellax w-17 h-19" data-rellax-speed="1" style="top: -1.7rem; left: -1.5rem">
+```
+
+`theme.js` runs `theme.rellax()` on init and instantiates
+`new Rellax('.rellax', { speed: 2, center: true, breakpoints: [576, 992, 1201] })`.
+`data-rellax-speed` overrides the global speed for one element.
+
+**Parallax and `transform` are mutually exclusive.** Rellax writes
+`transform: translate3d(...)` inline on every scroll, and inline beats the class
+rule — so `scale` and the `-50%` centering would be silently wiped. With
+`posParallax` on:
+
+- the Scale slider, both centering toggles and the origin select are disabled
+  in the sidebar with an explanation;
+- `getPositionStyle()` does not emit `--cwgb-pos-scale*`, `--cwgb-pos-tx/ty` or
+  `--cwgb-pos-origin`;
+- `hasPositionTransform()` returns `false`, so the `cwgb-position--transform`
+  class is not added at all.
+
+If both are ever needed at once, the way out is two elements — `rellax` on an
+outer wrapper, `scale` on the inner one. Not implemented: it would change the
+block's markup.
+
+The `rellax` class and `data-rellax-speed` are **not** emitted in the editor —
+the theme's `theme.js` is enqueued in wp-admin too (`enqueue_block_assets` +
+`is_admin()`), and the block would drift around the canvas on scroll.
+
+Note the theme also styles `.shape.rellax` (`position: absolute; z-index: 1`)
+and hides `.shape` below 576px. This component does not add `shape` — put it in
+the block's Block Class field if the dot/line decoration is what you want.
+
+---
+
 ## Usage
 
 ### Sidebar
@@ -118,7 +159,10 @@ the canvas:
 ```jsx
 import { getPositionClasses, getPositionStyle } from '../../components/position';
 
-const positionClasses = getPositionClasses(attributes, 'pos', { skipVisibility: true });
+const positionClasses = getPositionClasses(attributes, 'pos', {
+  skipVisibility: true,
+  skipParallax: true,
+});
 const positionStyle = getPositionStyle(attributes);
 
 const blockProps = useBlockProps({
@@ -132,10 +176,12 @@ const blockProps = useBlockProps({
 ```jsx
 const positionClasses = getPositionClasses(attributes);
 const positionStyle = getPositionStyle(attributes);
+const positionData = getPositionDataAttributes(attributes);
 
 const blockProps = useBlockProps.save({
   className: `my-block ${positionClasses}`.replace(/\s+/g, ' ').trim(),
   ...(positionStyle && { style: positionStyle }),
+  ...positionData,
 });
 ```
 

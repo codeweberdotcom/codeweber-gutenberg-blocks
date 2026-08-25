@@ -512,6 +512,14 @@
       "type": "boolean",
       "default": false
     },
+    "posParallax": {
+      "type": "boolean",
+      "default": false
+    },
+    "posParallaxSpeed": {
+      "type": "string",
+      "default": "1"
+    },
     "posType": {
       "type": "string",
       "default": "absolute"

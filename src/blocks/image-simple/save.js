@@ -13,6 +13,7 @@ import {
 import { buildLinkAttrs } from '../../utilities/buildLinkAttrs';
 import {
 	getPositionClasses,
+	getPositionDataAttributes,
 	getPositionStyle,
 } from '../../components/position';
 
@@ -220,6 +221,7 @@ export default function Save({ attributes }) {
 
 	const positionClasses = getPositionClasses(attributes);
 	const positionStyle = getPositionStyle(attributes);
+	const positionData = getPositionDataAttributes(attributes);
 
 	// Создаем blockProps только если нужна обертка
 	const blockProps = shouldRemoveWrapper
@@ -230,6 +232,7 @@ export default function Save({ attributes }) {
 						.replace(/\s+/g, ' ')
 						.trim(),
 				...(positionStyle && { style: positionStyle }),
+				...positionData,
 				...(blockId && { id: blockId }),
 				...getDataAttributes(),
 			});

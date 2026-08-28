@@ -127,8 +127,9 @@ const Save = ({ attributes }) => {
 			classes.push(cardBorder || borderPosition);
 		}
 
-		// Если выбраны цвет или ширина, но нет позиции - применяем обычный border
-		if ((borderColor || borderWidth) && !cardBorder && !borderPosition) {
+		// Общая рамка включается явной шириной (или позицией — обработано выше),
+		// но не одним лишь цветом — цвет может задаваться только для акцентной рамки.
+		if (borderWidth && !cardBorder && !borderPosition) {
 			classes.push('border');
 		}
 

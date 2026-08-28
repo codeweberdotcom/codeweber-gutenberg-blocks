@@ -58,50 +58,52 @@ const Save = ({ attributes }) => {
 	const getCardClasses = () => {
 		const classes = [];
 
-		// Card-specific classes only apply in card mode
-		if (cardType === 'card') {
-			if (enableCard) {
-				classes.push('card');
-			}
+		// The 'card' class itself (Bootstrap component) only applies in card mode.
+		if (cardType === 'card' && enableCard) {
+			classes.push('card');
+		}
 
-			if (overflowHidden) {
-				classes.push('overflow-hidden');
-			}
+		// Everything else here (border/shadow/radius/overflow/h100) is generic
+		// styling that applies in BOTH card and wrapper modes — the Borders tab
+		// is shown for both, so it has to actually work for both.
+		if (overflowHidden) {
+			classes.push('overflow-hidden');
+		}
 
-			if (h100) {
-				classes.push('h-100');
-			}
+		if (h100) {
+			classes.push('h-100');
+		}
 
-			if (borderRadius) {
-				classes.push(borderRadius);
-			}
+		if (borderRadius) {
+			classes.push(borderRadius);
+		}
 
-			if (shadow) {
-				classes.push(shadow);
-			}
+		if (shadow) {
+			classes.push(shadow);
+		}
 
-			if (cardBorder || borderPosition) {
-				classes.push(cardBorder || borderPosition);
-			}
+		if (cardBorder || borderPosition) {
+			classes.push(cardBorder || borderPosition);
+		}
 
-			// Если выбраны цвет или ширина, но нет позиции - применяем обычный border
-			if ((borderColor || borderWidth) && !cardBorder && !borderPosition) {
-				classes.push('border');
-			}
+		// Общая рамка включается явной шириной (или позицией — обработано выше),
+		// но не одним лишь цветом — цвет может задаваться только для акцентной рамки.
+		if (borderWidth && !cardBorder && !borderPosition) {
+			classes.push('border');
+		}
 
-			if (borderWidth) {
-				classes.push(borderWidth);
-			}
+		if (borderWidth) {
+			classes.push(borderWidth);
+		}
 
-			if (borderColor) {
-				const colorType = borderColorType || 'solid';
-				if (colorType === 'soft') {
-					classes.push(`border-soft-${borderColor}`);
-				} else if (colorType === 'pale') {
-					classes.push(`border-pale-${borderColor}`);
-				} else {
-					classes.push(`border-${borderColor}`);
-				}
+		if (borderColor) {
+			const colorType = borderColorType || 'solid';
+			if (colorType === 'soft') {
+				classes.push(`border-soft-${borderColor}`);
+			} else if (colorType === 'pale') {
+				classes.push(`border-pale-${borderColor}`);
+			} else {
+				classes.push(`border-${borderColor}`);
 			}
 		}
 
@@ -160,11 +162,12 @@ const Save = ({ attributes }) => {
 	const cardClasses = getCardClasses();
 	const dataAttributes = getDataAttributes();
 
-	// If card type is card and card is disabled, just output InnerBlocks
-	if (cardType === 'card' && !enableCard) {
-		return <InnerBlocks.Content />;
-	}
-
+	// Disabling "Card" (enableCard=false) only omits the Bootstrap 'card' class
+	// itself (handled in getCardClasses()) — it must NOT drop the wrapper
+	// entirely, or border/background/spacing/animation/id are lost with it.
+	// (This used to `return <InnerBlocks.Content />` here, which is exactly
+	// what caused those to silently disappear on the frontend while still
+	// showing in the editor, where no such early-return exists.)
 	return (
 		<div
 			{...(cardClasses && { className: cardClasses })}

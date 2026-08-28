@@ -216,50 +216,52 @@ const Edit = ({ attributes, setAttributes, clientId }) => {
 	const getCardClasses = () => {
 		const classes = [];
 
-		// Card-specific classes only apply in card mode
-		if (cardType === 'card') {
-			if (enableCard) {
-				classes.push('card');
-			}
+		// The 'card' class itself (Bootstrap component) only applies in card mode.
+		if (cardType === 'card' && enableCard) {
+			classes.push('card');
+		}
 
-			if (overflowHidden) {
-				classes.push('overflow-hidden');
-			}
+		// Everything else here (border/shadow/radius/overflow/h100) is generic
+		// styling that applies in BOTH card and wrapper modes — the Borders tab
+		// is shown for both, so it has to actually work for both.
+		if (overflowHidden) {
+			classes.push('overflow-hidden');
+		}
 
-			if (h100) {
-				classes.push('h-100');
-			}
+		if (h100) {
+			classes.push('h-100');
+		}
 
-			if (borderRadius) {
-				classes.push(borderRadius);
-			}
+		if (borderRadius) {
+			classes.push(borderRadius);
+		}
 
-			if (shadow) {
-				classes.push(shadow);
-			}
+		if (shadow) {
+			classes.push(shadow);
+		}
 
-			if (cardBorder || borderPosition) {
-				classes.push(cardBorder || borderPosition);
-			}
+		if (cardBorder || borderPosition) {
+			classes.push(cardBorder || borderPosition);
+		}
 
-			// Если выбраны цвет или ширина, но нет позиции - применяем обычный border
-			if ((borderColor || borderWidth) && !cardBorder && !borderPosition) {
-				classes.push('border');
-			}
+		// Общая рамка включается явной шириной (или позицией — обработано выше),
+		// но не одним лишь цветом — цвет может задаваться только для акцентной рамки.
+		if (borderWidth && !cardBorder && !borderPosition) {
+			classes.push('border');
+		}
 
-			if (borderWidth) {
-				classes.push(borderWidth);
-			}
+		if (borderWidth) {
+			classes.push(borderWidth);
+		}
 
-			if (borderColor) {
-				const colorType = borderColorType || 'solid';
-				if (colorType === 'soft') {
-					classes.push(`border-soft-${borderColor}`);
-				} else if (colorType === 'pale') {
-					classes.push(`border-pale-${borderColor}`);
-				} else {
-					classes.push(`border-${borderColor}`);
-				}
+		if (borderColor) {
+			const colorType = borderColorType || 'solid';
+			if (colorType === 'soft') {
+				classes.push(`border-soft-${borderColor}`);
+			} else if (colorType === 'pale') {
+				classes.push(`border-pale-${borderColor}`);
+			} else {
+				classes.push(`border-${borderColor}`);
 			}
 		}
 

@@ -102,7 +102,9 @@ export const getRootClasses = (attributes) => {
 		classes.push(cardBorder || borderPosition);
 	}
 
-	if ((borderColor || borderWidth) && !cardBorder && !borderPosition) {
+	// Общая рамка включается явной шириной (или позицией — обработано выше),
+	// но не одним лишь цветом — цвет может задаваться только для акцентной рамки.
+	if (borderWidth && !cardBorder && !borderPosition) {
 		classes.push('border');
 	}
 

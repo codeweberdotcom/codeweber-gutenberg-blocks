@@ -1278,9 +1278,9 @@ class Plugin {
 
 				$postContent = self::accordion_prepare_content($content_source, $content_length);
 
-				// Если контент пустой, используем заглушку
+				// Если контент пустой, используем заглушку в той же блочной форме
 				if (empty($postContent)) {
-					$postContent = __('No content available', 'codeweber-gutenberg-blocks');
+					$postContent = '<p>' . esc_html__('No content available', 'codeweber-gutenberg-blocks') . '</p>';
 				}
 
 				$posts[] = array(
@@ -1848,7 +1848,7 @@ class Plugin {
 	public static function accordion_prepare_content($source = 'full', $length = 200) {
 		if ('excerpt' === $source) {
 			$text = get_the_excerpt();
-			return $text ? wp_kses_post($text) : '';
+			return $text ? wpautop(wp_kses_post($text)) : '';
 		}
 
 		$content = do_shortcode(get_the_content());
@@ -1867,7 +1867,7 @@ class Plugin {
 				$plain = rtrim($cut, " ,.;:—-") . '...';
 			}
 
-			return $plain;
+			return '' === $plain ? '' : '<p>' . $plain . '</p>';
 		}
 
 		return wpautop(wp_kses_post($content));

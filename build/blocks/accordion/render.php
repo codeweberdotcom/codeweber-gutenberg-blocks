@@ -145,9 +145,9 @@ if ($mode === 'post' && !empty($postType)) {
 			}
 			$postContent = \Codeweber\Blocks\Plugin::accordion_prepare_content($contentSource, $contentLength);
 			
-			// Если контент пустой, используем заглушку
+			// Если контент пустой, используем заглушку в той же блочной форме
 			if (empty($postContent)) {
-				$postContent = __('No content available', 'codeweber-gutenberg-blocks');
+				$postContent = '<p>' . esc_html__('No content available', 'codeweber-gutenberg-blocks') . '</p>';
 			}
 			
 			$itemsToRender[] = array(
@@ -173,7 +173,21 @@ if ($mode === 'post' && !empty($postType)) {
 	}
 	
 	if (!empty($items) && is_array($items)) {
-		$itemsToRender = $items;
+		// Custom-элементы хранят inline-содержимое (RichText tagName="p"),
+		// приводим их к той же блочной форме, что и post-режим.
+		$itemsToRender = array_map(
+			static function ($item) {
+				$content = isset($item['content']) ? trim((string) $item['content']) : '';
+				$has_block = (bool) preg_match('/<(p|div|ul|ol|h[1-6]|blockquote|table|figure|pre)\b/i', $content);
+
+				$item['content'] = ('' === $content || $has_block)
+					? $content
+					: '<p>' . $content . '</p>';
+
+				return $item;
+			},
+			$items
+		);
 	} else {
 		// Если items пустые, используем пустой массив (ничего не отображаем)
 		$itemsToRender = [];
@@ -281,7 +295,7 @@ $wrapperAttributes = 'class="' . esc_attr(implode(' ', $accordionClasses)) . '" 
 				</div>
 				<div<?php echo $collapseAttrsString; ?>>
 					<div class="card-body">
-						<p><?php echo wp_kses_post($itemContent); ?></p>
+						<?php echo wp_kses_post($itemContent); ?>
 					</div>
 				</div>
 			</div>

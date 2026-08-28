@@ -630,8 +630,13 @@ const AccordionEdit = ({ attributes, setAttributes, clientId }) => {
 												)}
 											/>
 										) : (
-											// В режиме Post - только чтение, как на фронтенде
-											<p>{item.content}</p>
+											// В режиме Post — только чтение. Контент приходит
+											// из REST уже готовым блочным HTML, как на фронте.
+											<div
+												dangerouslySetInnerHTML={{
+													__html: item.content,
+												}}
+											/>
 										)}
 									</div>
 								</div>

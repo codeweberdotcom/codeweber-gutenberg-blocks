@@ -86,6 +86,8 @@ export const PositionControl = ({
 
 	const positionType = getValue('Type') || 'absolute';
 	const parallax = hasParallax(attributes, prefix);
+	const centerX = !!getValue('CenterX');
+	const centerY = !!getValue('CenterY');
 	const transformHelp = parallax
 		? __(
 				'Unavailable with parallax: rellax rewrites the inline transform on every scroll.',
@@ -109,6 +111,71 @@ export const PositionControl = ({
 		reset[attr('Type', activeBreakpoint)] = '';
 
 		setAttributes(reset);
+	};
+
+	// Center horizontally/vertically и ручные Left/Right (Top/Bottom) — режимы,
+	// исключающие друг друга: включение центрирования ставит left/top: 50% и
+	// чистит противоположную и ручную сторону на всех брейкпоинтах, иначе
+	// скрытые поля продолжали бы молча участвовать в вёрстке.
+	const setCenterX = (value) => {
+		const updates = { [attr('CenterX', '')]: value };
+
+		POSITION_BREAKPOINTS.forEach((bp) => {
+			updates[attr('Left', bp.key)] = value && bp.key === '' ? '50%' : '';
+
+			if (value) {
+				updates[attr('Right', bp.key)] = '';
+			}
+		});
+
+		setAttributes(updates);
+	};
+
+	const setCenterY = (value) => {
+		const updates = { [attr('CenterY', '')]: value };
+
+		POSITION_BREAKPOINTS.forEach((bp) => {
+			updates[attr('Top', bp.key)] = value && bp.key === '' ? '50%' : '';
+
+			if (value) {
+				updates[attr('Bottom', bp.key)] = '';
+			}
+		});
+
+		setAttributes(updates);
+	};
+
+	const visibleSides = POSITION_SIDES.filter((side) => {
+		if ((side === 'Left' || side === 'Right') && centerX) {
+			return false;
+		}
+
+		if ((side === 'Top' || side === 'Bottom') && centerY) {
+			return false;
+		}
+
+		return true;
+	});
+
+	const hiddenSidesNotice = () => {
+		if (centerX && centerY) {
+			return __(
+				'Left/Right and Top/Bottom are controlled by Center horizontally/vertically below.',
+				'codeweber-gutenberg-blocks'
+			);
+		}
+
+		if (centerX) {
+			return __(
+				'Left/Right are controlled by Center horizontally below.',
+				'codeweber-gutenberg-blocks'
+			);
+		}
+
+		return __(
+			'Top/Bottom are controlled by Center vertically below.',
+			'codeweber-gutenberg-blocks'
+		);
 	};
 
 	return (
@@ -274,26 +341,37 @@ export const PositionControl = ({
 			</div>
 
 			{/* Смещения активного брейкпоинта */}
-			<div
-				className="mb-3"
-				style={{
-					display: 'grid',
-					gridTemplateColumns: '1fr 1fr',
-					gap: '8px',
-				}}
-			>
-				{POSITION_SIDES.map((side) => (
-					<UnitControl
-						key={side}
-						label={SIDE_LABELS[side]}
-						value={getValue(side, activeBreakpoint) || ''}
-						units={UNITS}
-						onChange={(value) =>
-							setValue(side, activeBreakpoint, value ?? '')
-						}
-					/>
-				))}
-			</div>
+			{(centerX || centerY) && (
+				<p
+					className="description"
+					style={{ marginTop: 0, marginBottom: '8px' }}
+				>
+					{hiddenSidesNotice()}
+				</p>
+			)}
+
+			{visibleSides.length > 0 && (
+				<div
+					className="mb-3"
+					style={{
+						display: 'grid',
+						gridTemplateColumns: '1fr 1fr',
+						gap: '8px',
+					}}
+				>
+					{visibleSides.map((side) => (
+						<UnitControl
+							key={side}
+							label={SIDE_LABELS[side]}
+							value={getValue(side, activeBreakpoint) || ''}
+							units={UNITS}
+							onChange={(value) =>
+								setValue(side, activeBreakpoint, value ?? '')
+							}
+						/>
+					))}
+				</div>
+			)}
 
 			<div className="mb-3">
 				<RangeControl
@@ -362,13 +440,13 @@ export const PositionControl = ({
 				help={
 					transformHelp ||
 					__(
-						'Use together with left: 50%.',
+						'Sets left: 50% automatically and takes over Left/Right — clears any values set there.',
 						'codeweber-gutenberg-blocks'
 					)
 				}
 				disabled={parallax}
-				checked={!!getValue('CenterX')}
-				onChange={(value) => setValue('CenterX', '', value)}
+				checked={centerX}
+				onChange={setCenterX}
 			/>
 
 			<ToggleControl
@@ -379,13 +457,13 @@ export const PositionControl = ({
 				help={
 					transformHelp ||
 					__(
-						'Use together with top: 50%.',
+						'Sets top: 50% automatically and takes over Top/Bottom — clears any values set there.',
 						'codeweber-gutenberg-blocks'
 					)
 				}
 				disabled={parallax}
-				checked={!!getValue('CenterY')}
-				onChange={(value) => setValue('CenterY', '', value)}
+				checked={centerY}
+				onChange={setCenterY}
 			/>
 
 			{/* Видимость */}

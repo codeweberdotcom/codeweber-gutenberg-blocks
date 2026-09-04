@@ -44,13 +44,13 @@ Empty fields inherit the nearest smaller breakpoint (mobile-first).
 
 ## Attributes
 
-46 attributes with the `pos` prefix (the prefix is configurable via the
+52 attributes with the `pos` prefix (the prefix is configurable via the
 `prefix` prop, but every consumer so far uses `pos`).
 
 | Attribute | Type | Default | Meaning |
 |-----------|------|---------|---------|
 | `posEnabled` | boolean | `false` | Master toggle. When off, nothing is emitted |
-| `posType` | string | `absolute` | `absolute` / `relative` / `fixed` / `sticky` → `position-*` |
+| `posType{Bp}` | string | `absolute` on base, `''` on other breakpoints | `absolute` / `relative` / `fixed` / `sticky`, resolved per breakpoint (see below) |
 | `posZIndex` | string | `''` | Inline `z-index`, clamped to −100…9999 |
 | `posOrigin` | string | `''` | `transform-origin` (whitelisted values) |
 | `posCenterX` | boolean | `false` | `translate(-50%, …)` — pair with `left: 50%` |
@@ -67,7 +67,23 @@ Empty fields inherit the nearest smaller breakpoint (mobile-first).
 | `posScale{Bp}` | string | `''` | Scale in percent, 10–300 in the UI |
 
 `{Bp}` is one of `''`, `Sm`, `Md`, `Lg`, `Xl`, `Xxl`, `Xxxl` — e.g. `posTopLg`,
-`posScaleXxl`.
+`posScaleXxl`, `posTypeLg`.
+
+### Position type is per breakpoint, like the offsets
+
+`posType` is **not** a single global value — it follows the same mobile-first
+cascade as `Top/Right/Bottom/Left/Scale`: an empty value at a given breakpoint
+inherits the nearest smaller breakpoint, and the base breakpoint falls back to
+`absolute` when empty. This lets a block be e.g. `position-absolute` on mobile
+and switch to `position-relative` from `lg` up — something a single Bootstrap
+utility class could never express.
+
+Because of that, `posType` is **not** rendered as a Bootstrap `position-*`
+utility class any more (that class always carried the base value only and
+would need `!important` to be overridden per breakpoint, which defeats the
+cascade). It is resolved the same way as the offsets: a `--cwgb-pos-type*`
+CSS custom property per breakpoint, applied via a plain `position: var(...)`
+declaration in `style.scss`.
 
 A bare number without a unit is treated as pixels. Anything that is not a valid
 CSS length is dropped.
@@ -79,18 +95,19 @@ CSS length is dropped.
 Classes + inline CSS custom properties. No `<style>` tags, no dynamic CSS.
 
 ```html
-<div class="cwgb-image-simple-block position-absolute cwgb-position cwgb-position--transform d-none d-lg-block"
-     style="--cwgb-pos-top:10%; --cwgb-pos-left:-5%; --cwgb-pos-scale-lg:0.8; z-index:3">
+<div class="cwgb-image-simple-block cwgb-position cwgb-position--transform d-none d-lg-block"
+     style="--cwgb-pos-top:10%; --cwgb-pos-left:-5%; --cwgb-pos-scale-lg:0.8; --cwgb-pos-type-lg:relative; z-index:3">
 ```
 
 `style.scss` resolves the variables per breakpoint:
 
 ```css
-.cwgb-position { top: var(--cwgb-pos-top, auto); /* … */ }
+.cwgb-position { top: var(--cwgb-pos-top, auto); position: var(--cwgb-pos-type, absolute); /* … */ }
 
 @media (min-width: 992px) {
   .cwgb-position {
     top: var(--cwgb-pos-top-lg, var(--cwgb-pos-top-md, var(--cwgb-pos-top-sm, var(--cwgb-pos-top, auto))));
+    position: var(--cwgb-pos-type-lg, var(--cwgb-pos-type-md, var(--cwgb-pos-type-sm, var(--cwgb-pos-type, absolute))));
   }
 }
 ```
@@ -197,11 +214,9 @@ in the markup of every block that has positioning switched off.
 
 ### block.json
 
-Add the 44 attributes. The scaffold script used for `image-simple` lives in the
-session scratchpad; it is trivial to regenerate — 9 shared attributes plus
-`Top/Right/Bottom/Left/Scale` × 7 breakpoints, all strings defaulting to `''`
-except `posType` (`absolute`), `posVisibleDisplay` (`block`) and the three
-booleans.
+Add the 52 attributes: 8 shared attributes plus `Type/Top/Right/Bottom/Left/Scale`
+× 7 breakpoints, all strings defaulting to `''` except the base `posType`
+(`absolute`), `posVisibleDisplay` (`block`) and the three booleans.
 
 ---
 
@@ -210,10 +225,17 @@ booleans.
 - **The parent must be positioned.** `position-absolute` measures from the
   nearest positioned ancestor. In the theme that is usually a wrapper with
   `position-relative`; the sidebar shows this as a hint.
-- **No `deprecated` entry needed** when adding the attributes to an existing
-  block: with `posEnabled: false` the class list and attributes are unchanged.
-  Gutenberg compares `class` as a token list, so extra/absent whitespace from
-  `.replace(/\s+/g, ' ').trim()` does not invalidate old content.
+- **No `deprecated` entry needed** when adding the position attributes to a
+  block that doesn't have them yet: with `posEnabled: false` the class list
+  and attributes are unchanged. Gutenberg compares `class` as a token list, so
+  extra/absent whitespace from `.replace(/\s+/g, ' ').trim()` does not
+  invalidate old content. This does **not** apply to changing how an
+  *already-emitted* value is rendered — e.g. making `posType` responsive
+  dropped the static `position-{type}` class from the output entirely, which
+  changed the `save()` markup for every already-published block with
+  `posEnabled: true` and required a `deprecated` entry in `image-simple`'s
+  `index.js` (frozen copy of the old class + style generation, so old content
+  keeps validating).
 - **Editor is WYSIWYG for position and scale, but not for visibility.** An
   absolutely positioned block leaves the flow in the editor too and can be hard
   to click — select it from the List View. A dashed outline appears on hover.
@@ -224,6 +246,11 @@ booleans.
   `posEnabled` the wrapper is kept, otherwise there is nothing to position.
 - **`post-grid/style.scss` imports `image-simple/style.scss` inside a
   selector**, so the position CSS is also emitted nested under
-  `.cwgb-post-grid-block`. Same declarations, higher specificity — harmless.
-- **Bootstrap utilities win.** `position-absolute` carries `!important`, so it
-  overrides `position: relative` from the block's own editor styles.
+  `.cwgb-post-grid-block`. Same declarations, higher specificity — harmless,
+  and `post-grid` doesn't use `PositionControl` itself so the rules are inert
+  there (dead CSS, no `.cwgb-position` class is ever applied).
+- **Why `posType` isn't a Bootstrap utility class.** `.position-*` carries
+  `!important` in Bootstrap 5. A single `!important` class can't be overridden
+  per breakpoint by a later, more specific rule — it would always win over any
+  breakpoint-scoped `position` declaration. That's why `posType` resolves
+  through the same custom-property cascade as the offsets instead.

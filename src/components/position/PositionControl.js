@@ -106,6 +106,7 @@ export const PositionControl = ({
 		});
 
 		reset[attr('Scale', activeBreakpoint)] = '';
+		reset[attr('Type', activeBreakpoint)] = '';
 
 		setAttributes(reset);
 	};
@@ -125,19 +126,6 @@ export const PositionControl = ({
 				checked={true}
 				onChange={(value) => setValue('Enabled', '', value)}
 			/>
-
-			<div className="mb-3">
-				<div className="component-sidebar-title">
-					<label>
-						{__('Position type', 'codeweber-gutenberg-blocks')}
-					</label>
-				</div>
-				<SelectControl
-					value={positionType}
-					options={POSITION_TYPES}
-					onChange={(value) => setValue('Type', '', value)}
-				/>
-			</div>
 
 			<div className="mb-3">
 				<NumberControl
@@ -256,6 +244,33 @@ export const PositionControl = ({
 							)}`
 						: ''}
 				</p>
+			</div>
+
+			<div className="mb-3">
+				<div className="component-sidebar-title">
+					<label>
+						{__('Position type', 'codeweber-gutenberg-blocks')}
+					</label>
+				</div>
+				<SelectControl
+					value={getValue('Type', activeBreakpoint) || ''}
+					options={[
+						{
+							value: '',
+							label: activeBreakpoint
+								? __(
+										'Inherit from smaller breakpoint',
+										'codeweber-gutenberg-blocks'
+									)
+								: __(
+										'position-absolute (default)',
+										'codeweber-gutenberg-blocks'
+									),
+						},
+						...POSITION_TYPES,
+					]}
+					onChange={(value) => setValue('Type', activeBreakpoint, value)}
+				/>
 			</div>
 
 			{/* Смещения активного брейкпоинта */}

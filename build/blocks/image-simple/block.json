@@ -520,10 +520,6 @@
       "type": "string",
       "default": "1"
     },
-    "posType": {
-      "type": "string",
-      "default": "absolute"
-    },
     "posZIndex": {
       "type": "string",
       "default": ""
@@ -552,6 +548,10 @@
       "type": "string",
       "default": ""
     },
+    "posType": {
+      "type": "string",
+      "default": "absolute"
+    },
     "posTop": {
       "type": "string",
       "default": ""
@@ -569,6 +569,10 @@
       "default": ""
     },
     "posScale": {
+      "type": "string",
+      "default": ""
+    },
+    "posTypeSm": {
       "type": "string",
       "default": ""
     },
@@ -592,6 +596,10 @@
       "type": "string",
       "default": ""
     },
+    "posTypeMd": {
+      "type": "string",
+      "default": ""
+    },
     "posTopMd": {
       "type": "string",
       "default": ""
@@ -609,6 +617,10 @@
       "default": ""
     },
     "posScaleMd": {
+      "type": "string",
+      "default": ""
+    },
+    "posTypeLg": {
       "type": "string",
       "default": ""
     },
@@ -632,6 +644,10 @@
       "type": "string",
       "default": ""
     },
+    "posTypeXl": {
+      "type": "string",
+      "default": ""
+    },
     "posTopXl": {
       "type": "string",
       "default": ""
@@ -652,6 +668,10 @@
       "type": "string",
       "default": ""
     },
+    "posTypeXxl": {
+      "type": "string",
+      "default": ""
+    },
     "posTopXxl": {
       "type": "string",
       "default": ""
@@ -669,6 +689,10 @@
       "default": ""
     },
     "posScaleXxl": {
+      "type": "string",
+      "default": ""
+    },
+    "posTypeXxxl": {
       "type": "string",
       "default": ""
     },

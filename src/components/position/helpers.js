@@ -176,6 +176,20 @@ export const sanitizeScale = (raw) => {
 };
 
 /**
+ * Приводит тип позиционирования к одному из POSITION_TYPES.
+ *
+ * @param {string} raw Исходное значение
+ * @return {string|null} Тип позиционирования или null, если не задан/невалиден
+ */
+export const sanitizeType = (raw) => {
+	if (raw === null || raw === undefined || raw === '') {
+		return null;
+	}
+
+	return POSITION_TYPES.some((option) => option.value === raw) ? raw : null;
+};
+
+/**
  * Приводит z-index к целому числу в разумных пределах.
  *
  * @param {string|number} raw Значение z-index
@@ -275,12 +289,6 @@ export const getPositionClasses = (
 
 	const classes = ['cwgb-position'];
 
-	const type = attributes[positionAttr('Type', '', prefix)] || 'absolute';
-
-	if (POSITION_TYPES.some((option) => option.value === type)) {
-		classes.push(`position-${type}`);
-	}
-
 	if (hasPositionTransform(attributes, prefix)) {
 		classes.push('cwgb-position--transform');
 	}
@@ -343,6 +351,12 @@ export const getPositionStyle = (attributes, prefix = 'pos') => {
 
 	POSITION_BREAKPOINTS.forEach((bp) => {
 		const suffix = bp.slug ? `-${bp.slug}` : '';
+
+		const type = sanitizeType(attributes[positionAttr('Type', bp.key, prefix)]);
+
+		if (type !== null) {
+			style[`--cwgb-pos-type${suffix}`] = type;
+		}
 
 		POSITION_SIDES.forEach((side) => {
 			const value = sanitizeLength(
@@ -439,6 +453,7 @@ export const isBreakpointConfigured = (attributes, bpKey, prefix = 'pos') => {
 
 	return (
 		hasSide ||
-		sanitizeScale(attributes[positionAttr('Scale', bpKey, prefix)]) !== null
+		sanitizeScale(attributes[positionAttr('Scale', bpKey, prefix)]) !== null ||
+		sanitizeType(attributes[positionAttr('Type', bpKey, prefix)]) !== null
 	);
 };

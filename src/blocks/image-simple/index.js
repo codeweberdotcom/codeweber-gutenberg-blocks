@@ -1,4 +1,5 @@
 import { registerBlockType } from '@wordpress/blocks';
+import { __ } from '@wordpress/i18n';
 import './editor.scss';
 import './style.scss';
 import Edit from './edit';
@@ -16,12 +17,559 @@ import {
 	getGapClasses,
 } from '../../components/grid-control';
 import { buildLinkAttrs } from '../../utilities/buildLinkAttrs';
+import {
+	getPositionDataAttributes,
+	hasParallax,
+	hasPositionTransform,
+	positionAttr,
+	POSITION_BREAKPOINTS,
+	POSITION_DISPLAYS,
+	POSITION_ORIGINS,
+	POSITION_SIDES,
+	POSITION_TYPES,
+	POSITION_VISIBILITY_BREAKPOINTS,
+	sanitizeLength,
+	sanitizeScale,
+	sanitizeZIndex,
+} from '../../components/position';
+
+// Позиционирование до отзывчивого Position type: один статический класс
+// position-{type} на базовом брейкпоинте, без CSS-переменной --cwgb-pos-type.
+const getPositionClassesLegacy = (attributes, prefix = 'pos') => {
+	if (!attributes[positionAttr('Enabled', '', prefix)]) {
+		return '';
+	}
+
+	const classes = ['cwgb-position'];
+
+	const type = attributes[positionAttr('Type', '', prefix)] || 'absolute';
+
+	if (POSITION_TYPES.some((option) => option.value === type)) {
+		classes.push(`position-${type}`);
+	}
+
+	if (hasPositionTransform(attributes, prefix)) {
+		classes.push('cwgb-position--transform');
+	}
+
+	if (hasParallax(attributes, prefix)) {
+		classes.push('rellax');
+	}
+
+	const visibleFrom = attributes[positionAttr('VisibleFrom', '', prefix)];
+
+	if (
+		visibleFrom &&
+		POSITION_VISIBILITY_BREAKPOINTS.some((bp) => bp.slug === visibleFrom)
+	) {
+		const display =
+			attributes[positionAttr('VisibleDisplay', '', prefix)] || 'block';
+		const validDisplay = POSITION_DISPLAYS.some(
+			(option) => option.value === display
+		)
+			? display
+			: 'block';
+
+		classes.push('d-none', `d-${visibleFrom}-${validDisplay}`);
+	}
+
+	const hiddenFrom = attributes[positionAttr('HiddenFrom', '', prefix)];
+
+	if (
+		hiddenFrom &&
+		POSITION_VISIBILITY_BREAKPOINTS.some((bp) => bp.slug === hiddenFrom)
+	) {
+		classes.push(`d-${hiddenFrom}-none`);
+	}
+
+	return classes.join(' ');
+};
+
+const getPositionStyleLegacy = (attributes, prefix = 'pos') => {
+	if (!attributes[positionAttr('Enabled', '', prefix)]) {
+		return undefined;
+	}
+
+	const style = {};
+	const parallax = hasParallax(attributes, prefix);
+
+	POSITION_BREAKPOINTS.forEach((bp) => {
+		const suffix = bp.slug ? `-${bp.slug}` : '';
+
+		POSITION_SIDES.forEach((side) => {
+			const value = sanitizeLength(
+				attributes[positionAttr(side, bp.key, prefix)]
+			);
+
+			if (value !== null) {
+				style[`--cwgb-pos-${side.toLowerCase()}${suffix}`] = value;
+			}
+		});
+
+		if (parallax) {
+			return;
+		}
+
+		const scale = sanitizeScale(
+			attributes[positionAttr('Scale', bp.key, prefix)]
+		);
+
+		if (scale !== null) {
+			style[`--cwgb-pos-scale${suffix}`] = scale;
+		}
+	});
+
+	if (!parallax) {
+		if (attributes[positionAttr('CenterX', '', prefix)]) {
+			style['--cwgb-pos-tx'] = '-50%';
+		}
+
+		if (attributes[positionAttr('CenterY', '', prefix)]) {
+			style['--cwgb-pos-ty'] = '-50%';
+		}
+
+		const origin = attributes[positionAttr('Origin', '', prefix)];
+
+		if (
+			origin &&
+			POSITION_ORIGINS.some((option) => option.value === origin)
+		) {
+			style['--cwgb-pos-origin'] = origin;
+		}
+	}
+
+	const zIndex = sanitizeZIndex(
+		attributes[positionAttr('ZIndex', '', prefix)]
+	);
+
+	if (zIndex !== null) {
+		style.zIndex = zIndex;
+	}
+
+	return Object.keys(style).length ? style : undefined;
+};
 
 registerBlockType(metadata.name, {
 	...metadata,
 	edit: Edit,
 	save: Save,
 	deprecated: [
+		{
+			// Position type was a single global value (posType, base breakpoint
+			// only): static Bootstrap class position-{type}, no --cwgb-pos-type
+			// CSS variable, no per-breakpoint posType* attributes.
+			attributes: metadata.attributes,
+			save({ attributes }) {
+				const {
+					displayMode,
+					images,
+					imageSize,
+					gridType,
+					gridColumns,
+					gridGapX,
+					gridGapY,
+					borderRadius,
+					enableLightbox,
+					lightboxGallery,
+					lightboxShowDesc,
+					simpleEffect,
+					effectType,
+					tooltipStyle,
+					overlayStyle,
+					overlayGradient,
+					overlayColor,
+					cursorStyle,
+					imageClass,
+					blockClass,
+					blockId,
+					blockData,
+					loadMoreEnable,
+					loadMoreInitialCount,
+					loadMoreLoadMoreCount,
+					loadMoreText,
+					loadMoreType,
+					loadMoreButtonSize,
+					loadMoreButtonStyle,
+					imageRenderType = 'img',
+					posEnabled,
+					animationEnabled,
+					animationType,
+					animationDuration,
+					animationDelay,
+				} = attributes;
+
+				const getContainerClasses = () => {
+					if (displayMode === 'grid') {
+						const currentGridType = gridType || 'classic';
+						if (currentGridType === 'columns-grid') {
+							const rowColsClasses = getRowColsClasses(
+								attributes,
+								'grid',
+								gridColumns
+							);
+							const gapClasses = getGapClasses(attributes, 'grid');
+							let gapClassesStr = gapClasses.join(' ');
+							if (!gapClassesStr && (gridGapX || gridGapY)) {
+								const oldGapClasses = [];
+								if (gridGapY) oldGapClasses.push(`gy-${gridGapY}`);
+								if (gridGapX) oldGapClasses.push(`gx-${gridGapX}`);
+								gapClassesStr = oldGapClasses.join(' ');
+							}
+							return `row ${gapClassesStr} ${rowColsClasses.join(' ')}`;
+						}
+						const gapClasses = getGapClasses(attributes, 'grid');
+						let gapClassesStr = gapClasses.join(' ');
+						if (!gapClassesStr && (gridGapX || gridGapY)) {
+							const oldGapClasses = [];
+							if (gridGapY) oldGapClasses.push(`gy-${gridGapY}`);
+							if (gridGapX) oldGapClasses.push(`gx-${gridGapX}`);
+							gapClassesStr = oldGapClasses.join(' ');
+						}
+						return `row ${gapClassesStr}`.trim();
+					}
+					return '';
+				};
+
+				const getColClasses = () => {
+					if (displayMode !== 'grid' || gridType !== 'classic') return '';
+					const colClasses = [];
+					const {
+						gridColumns: colsDefault,
+						gridColumnsXs: colsXs,
+						gridColumnsSm: colsSm,
+						gridColumnsMd: colsMd,
+						gridColumnsLg: colsLg,
+						gridColumnsXl: colsXl,
+						gridColumnsXxl: colsXxl,
+						gridColumnsXxxl: colsXxxl,
+					} = attributes;
+					if (colsDefault) colClasses.push(`col-${colsDefault}`);
+					if (colsXs) colClasses.push(`col-${colsXs}`);
+					if (colsSm) colClasses.push(`col-sm-${colsSm}`);
+					if (colsMd) colClasses.push(`col-md-${colsMd}`);
+					if (colsLg) colClasses.push(`col-lg-${colsLg}`);
+					if (colsXl) colClasses.push(`col-xl-${colsXl}`);
+					if (colsXxl) colClasses.push(`col-xxl-${colsXxl}`);
+					if (colsXxxl) colClasses.push(`col-xxxl-${colsXxxl}`);
+					return colClasses.join(' ');
+				};
+
+				const getDataAttributes = () => {
+					const dataAttrs = {};
+					if (blockData) {
+						blockData.split(',').forEach((pair) => {
+							const [key, value] = pair.split('=').map((s) => s.trim());
+							if (key && value) dataAttrs[`data-${key}`] = value;
+						});
+					}
+					return dataAttrs;
+				};
+
+				if (images.length === 0) return null;
+
+				const swiperConfig = getSwiperConfigFromAttributes(attributes);
+				const linkBuildResult = buildLinkAttrs(attributes);
+				const activeLinkProps = linkBuildResult ? linkBuildResult.linkProps : null;
+				const shouldRemoveWrapper =
+					imageRenderType === 'background' && !posEnabled;
+
+				const positionClasses = getPositionClassesLegacy(attributes);
+				const positionStyle = getPositionStyleLegacy(attributes);
+				const positionData = getPositionDataAttributes(attributes);
+
+				const blockProps = shouldRemoveWrapper
+					? null
+					: useBlockProps.save({
+							className:
+								`cwgb-image-simple-block ${blockClass} ${positionClasses}`
+									.replace(/\s+/g, ' ')
+									.trim(),
+							...(positionStyle && { style: positionStyle }),
+							...positionData,
+							...(blockId && { id: blockId }),
+							...getDataAttributes(),
+						});
+
+				const renderContent = () => {
+					if (displayMode === 'single') {
+						return (
+							<ImageSimpleRender
+								image={images[0]}
+								imageSize={imageSize}
+								borderRadius={borderRadius}
+								enableLightbox={enableLightbox}
+								lightboxGallery={lightboxGallery}
+								lightboxShowDesc={lightboxShowDesc}
+								simpleEffect={simpleEffect}
+								effectType={effectType}
+								tooltipStyle={tooltipStyle}
+								overlayStyle={overlayStyle}
+								overlayGradient={overlayGradient}
+								overlayColor={overlayColor}
+								cursorStyle={cursorStyle}
+								imageClass={imageClass}
+								imageRenderType={imageRenderType}
+								isEditor={false}
+								linkProps={activeLinkProps}
+							/>
+						);
+					} else if (displayMode === 'grid') {
+						return (() => {
+							const shouldLimitImages = loadMoreEnable && loadMoreInitialCount > 0;
+							const initialImages = shouldLimitImages
+								? images.slice(0, loadMoreInitialCount)
+								: images;
+							const hasMoreImages =
+								shouldLimitImages && images.length > loadMoreInitialCount;
+
+							if (loadMoreEnable) {
+								const blockDataJson = JSON.stringify({
+									images,
+									imageSize,
+									gridType,
+									borderRadius,
+									enableLightbox,
+									lightboxGallery,
+									lightboxShowDesc,
+									simpleEffect,
+									effectType,
+									tooltipStyle,
+									overlayStyle,
+									overlayGradient,
+									overlayColor,
+									overlayIconColor: attributes.overlayIconColor,
+									cursorStyle,
+									imageClass,
+									imageRenderType,
+									gridColumns,
+									gridColumnsXs: attributes.gridColumnsXs,
+									gridColumnsSm: attributes.gridColumnsSm,
+									gridColumnsMd: attributes.gridColumnsMd,
+									gridColumnsLg: attributes.gridColumnsLg,
+									gridColumnsXl: attributes.gridColumnsXl,
+									gridColumnsXxl: attributes.gridColumnsXxl,
+								});
+								return (
+									<div
+										className="cwgb-load-more-container"
+										data-block-id={blockId || 'image-simple-block'}
+										data-block-type="image-simple"
+										data-current-offset={loadMoreInitialCount}
+										data-load-count={loadMoreLoadMoreCount || 6}
+										data-post-id=""
+										data-block-attributes={blockDataJson}
+									>
+										<div className={`cwgb-load-more-items ${getContainerClasses()}`}>
+											{initialImages.map((image, index) => (
+												<div
+													key={index}
+													className={gridType === 'classic' ? getColClasses() : ''}
+												>
+													<ImageSimpleRender
+														image={image}
+														imageSize={imageSize}
+														borderRadius={borderRadius}
+														enableLightbox={enableLightbox}
+														lightboxGallery={lightboxGallery}
+														simpleEffect={simpleEffect}
+														effectType={effectType}
+														tooltipStyle={tooltipStyle}
+														overlayStyle={overlayStyle}
+														overlayGradient={overlayGradient}
+														overlayColor={overlayColor}
+														cursorStyle={cursorStyle}
+														imageRenderType={imageRenderType}
+														isEditor={false}
+														linkProps={activeLinkProps}
+													/>
+												</div>
+											))}
+										</div>
+										{hasMoreImages &&
+											(() => {
+												const loadMoreTexts = {
+													'show-more': __(
+														'Show More',
+														'codeweber-gutenberg-blocks'
+													),
+													'load-more': __(
+														'Load More',
+														'codeweber-gutenberg-blocks'
+													),
+													'show-more-items': __(
+														'Show More Items',
+														'codeweber-gutenberg-blocks'
+													),
+													'more-posts': __(
+														'More Posts',
+														'codeweber-gutenberg-blocks'
+													),
+													'view-all': __(
+														'View All',
+														'codeweber-gutenberg-blocks'
+													),
+													'show-all': __(
+														'Show All',
+														'codeweber-gutenberg-blocks'
+													),
+												};
+												const lmTextKey = loadMoreText || 'show-more';
+												const lmTextValue =
+													loadMoreTexts[lmTextKey] || loadMoreTexts['show-more'];
+												const lmType = loadMoreType || 'button';
+												const loadingText = __(
+													'Loading...',
+													'codeweber-gutenberg-blocks'
+												);
+												const btnClasses = ['btn', 'cwgb-load-more-btn'];
+												if (loadMoreButtonStyle === 'outline')
+													btnClasses.push('btn-outline-primary');
+												else btnClasses.push('btn-primary');
+												if (loadMoreButtonSize) btnClasses.push(loadMoreButtonSize);
+												return (
+													<div className="text-center mt-5">
+														{lmType === 'link' ? (
+															<a
+																href="#"
+																className="hover cwgb-load-more-btn"
+																data-load-more="true"
+																data-loading-text={loadingText}
+															>
+																{lmTextValue}
+															</a>
+														) : (
+															<button
+																className={btnClasses.join(' ')}
+																type="button"
+																data-loading-text={loadingText}
+															>
+																{lmTextValue}
+															</button>
+														)}
+													</div>
+												);
+											})()}
+									</div>
+								);
+							}
+							return (
+								<div className={getContainerClasses()}>
+									{images.map((image, index) => (
+										<div
+											key={index}
+											className={gridType === 'classic' ? getColClasses() : ''}
+										>
+											<ImageSimpleRender
+												image={image}
+												imageSize={imageSize}
+												borderRadius={borderRadius}
+												enableLightbox={enableLightbox}
+												lightboxGallery={lightboxGallery}
+												lightboxShowDesc={lightboxShowDesc}
+												simpleEffect={simpleEffect}
+												effectType={effectType}
+												tooltipStyle={tooltipStyle}
+												overlayStyle={overlayStyle}
+												overlayGradient={overlayGradient}
+												overlayColor={overlayColor}
+												cursorStyle={cursorStyle}
+												imageClass={imageClass}
+												imageRenderType={imageRenderType}
+												isEditor={false}
+												linkProps={activeLinkProps}
+											/>
+										</div>
+									))}
+								</div>
+							);
+						})();
+					} else if (displayMode === 'swiper') {
+						const swiperClassName = imageRenderType === 'background' ? 'h-100' : '';
+						const swiperContainerClassName =
+							imageRenderType === 'background' ? 'h-100' : '';
+						return (
+							<SwiperSlider
+								config={swiperConfig}
+								className={swiperContainerClassName}
+								swiperClassName={swiperClassName}
+							>
+								{images.map((image, index) => (
+									<SwiperSlide key={index}>
+										<ImageSimpleRender
+											image={image}
+											imageSize={imageSize}
+											borderRadius={borderRadius}
+											enableLightbox={enableLightbox}
+											lightboxGallery={lightboxGallery}
+											lightboxShowDesc={lightboxShowDesc}
+											simpleEffect={simpleEffect}
+											effectType={effectType}
+											tooltipStyle={tooltipStyle}
+											overlayStyle={overlayStyle}
+											overlayGradient={overlayGradient}
+											overlayColor={overlayColor}
+											cursorStyle={cursorStyle}
+											imageClass={imageClass}
+											imageRenderType={imageRenderType}
+											isEditor={false}
+											linkProps={activeLinkProps}
+										/>
+									</SwiperSlide>
+								))}
+							</SwiperSlider>
+						);
+					}
+					return null;
+				};
+
+				const content = renderContent();
+
+				const hiddenIframeEl = linkBuildResult?.videoFrameId ? (
+					<div id={linkBuildResult.videoFrameId} style={{ display: 'none' }}>
+						<iframe
+							src={linkBuildResult.videoFrameSrc}
+							allow="autoplay; encrypted-media; fullscreen; picture-in-picture; clipboard-write;"
+							frameBorder="0"
+							allowFullScreen
+							style={{ width: '100%', height: '100%', aspectRatio: '16/9' }}
+						/>
+					</div>
+				) : null;
+
+				const wrapAnimation = (el) => {
+					if (animationEnabled && animationType) {
+						return (
+							<div
+								data-cue={animationType}
+								{...(animationDuration && { 'data-duration': animationDuration })}
+								{...(animationDelay && { 'data-delay': animationDelay })}
+							>
+								{el}
+							</div>
+						);
+					}
+					return el;
+				};
+
+				if (shouldRemoveWrapper) {
+					const inner = hiddenIframeEl ? (
+						<>
+							{hiddenIframeEl}
+							{content}
+						</>
+					) : (
+						content
+					);
+					return wrapAnimation(inner);
+				}
+				return wrapAnimation(
+					<div {...blockProps}>
+						{hiddenIframeEl}
+						{content}
+					</div>
+				);
+			},
+		},
 		{
 			// Animation wrapper was <span> (inline element) — transforms didn't apply
 			attributes: metadata.attributes,

@@ -29,12 +29,6 @@ $cwgb-pos-sides: top, right, bottom, left;
 		--cwgb-pos-scale-#{$key}: initial;
 	}
 
-	--cwgb-pos-type: initial;
-
-	@each $key, $bp in $cwgb-pos-breakpoints {
-		--cwgb-pos-type-#{$key}: initial;
-	}
-
 	--cwgb-pos-tx: initial;
 	--cwgb-pos-ty: initial;
 	--cwgb-pos-origin: initial;
@@ -42,8 +36,6 @@ $cwgb-pos-sides: top, right, bottom, left;
 	@each $side in $cwgb-pos-sides {
 		#{$side}: var(--cwgb-pos-#{$side}, auto);
 	}
-
-	position: var(--cwgb-pos-type, absolute);
 }
 
 // Трансформация вешается отдельным модификатором, чтобы не создавать
@@ -61,7 +53,6 @@ $cwp-right: var(--cwgb-pos-right, auto);
 $cwp-bottom: var(--cwgb-pos-bottom, auto);
 $cwp-left: var(--cwgb-pos-left, auto);
 $cwp-scale: var(--cwgb-pos-scale, 1);
-$cwp-type: var(--cwgb-pos-type, absolute);
 
 @each $key, $bp in $cwgb-pos-breakpoints {
 	$cwp-top: var(--cwgb-pos-top-#{$key}, #{$cwp-top}) !global;
@@ -69,7 +60,6 @@ $cwp-type: var(--cwgb-pos-type, absolute);
 	$cwp-bottom: var(--cwgb-pos-bottom-#{$key}, #{$cwp-bottom}) !global;
 	$cwp-left: var(--cwgb-pos-left-#{$key}, #{$cwp-left}) !global;
 	$cwp-scale: var(--cwgb-pos-scale-#{$key}, #{$cwp-scale}) !global;
-	$cwp-type: var(--cwgb-pos-type-#{$key}, #{$cwp-type}) !global;
 
 	@media (min-width: $bp) {
 
@@ -78,7 +68,6 @@ $cwp-type: var(--cwgb-pos-type, absolute);
 			right: $cwp-right;
 			bottom: $cwp-bottom;
 			left: $cwp-left;
-			position: $cwp-type;
 		}
 
 		.cwgb-position--transform {

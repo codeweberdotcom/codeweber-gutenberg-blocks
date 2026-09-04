@@ -75,15 +75,33 @@ Empty fields inherit the nearest smaller breakpoint (mobile-first).
 cascade as `Top/Right/Bottom/Left/Scale`: an empty value at a given breakpoint
 inherits the nearest smaller breakpoint, and the base breakpoint falls back to
 `absolute` when empty. This lets a block be e.g. `position-absolute` on mobile
-and switch to `position-relative` from `lg` up — something a single Bootstrap
-utility class could never express.
+and switch to `position-relative` from `lg` up.
 
-Because of that, `posType` is **not** rendered as a Bootstrap `position-*`
-utility class any more (that class always carried the base value only and
-would need `!important` to be overridden per breakpoint, which defeats the
-cascade). It is resolved the same way as the offsets: a `--cwgb-pos-type*`
-CSS custom property per breakpoint, applied via a plain `position: var(...)`
-declaration in `style.scss`.
+Unlike the offsets, this is rendered with **plain Bootstrap utility classes**,
+not a custom property: `position-{type}` for the base breakpoint,
+`position-{bp}-{type}` for the others (e.g. `position-lg-relative`). Bootstrap
+generates these classes as regular `min-width` media queries, so the same
+mobile-first inheritance falls out of the cascade for free — no JS or SCSS
+duplicating that logic is needed, matching the project rule of using Bootstrap
+classes on the frontend instead of custom CSS wherever Bootstrap already
+covers it.
+
+**Requires theme support.** Bootstrap's `position` utility does not generate
+responsive classes by default — only `.position-{type}` for the base
+breakpoint exists out of the box. The theme's
+`src/assets/scss/theme/_utilities.scss` opts it in:
+
+```scss
+"position": map-merge(map-get($utilities, "position"),
+  (responsive: true)
+),
+```
+
+This must be present (and the theme rebuilt) for `position-{bp}-{type}` to
+exist in the compiled theme CSS. Without it, the classes are emitted in the
+block markup but match no CSS rule, so the block silently stays on whatever
+the base `position-{type}` class set — the per-breakpoint override does
+nothing.
 
 A bare number without a unit is treated as pixels. Anything that is not a valid
 CSS length is dropped.
@@ -95,19 +113,19 @@ CSS length is dropped.
 Classes + inline CSS custom properties. No `<style>` tags, no dynamic CSS.
 
 ```html
-<div class="cwgb-image-simple-block cwgb-position cwgb-position--transform d-none d-lg-block"
-     style="--cwgb-pos-top:10%; --cwgb-pos-left:-5%; --cwgb-pos-scale-lg:0.8; --cwgb-pos-type-lg:relative; z-index:3">
+<div class="cwgb-image-simple-block position-absolute position-lg-relative cwgb-position cwgb-position--transform d-none d-lg-block"
+     style="--cwgb-pos-top:10%; --cwgb-pos-left:-5%; --cwgb-pos-scale-lg:0.8; z-index:3">
 ```
 
-`style.scss` resolves the variables per breakpoint:
+`style.scss` resolves the offset/scale variables per breakpoint; `position` is
+left entirely to the theme's responsive `position-*` utility classes:
 
 ```css
-.cwgb-position { top: var(--cwgb-pos-top, auto); position: var(--cwgb-pos-type, absolute); /* … */ }
+.cwgb-position { top: var(--cwgb-pos-top, auto); /* … */ }
 
 @media (min-width: 992px) {
   .cwgb-position {
     top: var(--cwgb-pos-top-lg, var(--cwgb-pos-top-md, var(--cwgb-pos-top-sm, var(--cwgb-pos-top, auto))));
-    position: var(--cwgb-pos-type-lg, var(--cwgb-pos-type-md, var(--cwgb-pos-type-sm, var(--cwgb-pos-type, absolute))));
   }
 }
 ```
@@ -226,16 +244,16 @@ Add the 52 attributes: 8 shared attributes plus `Type/Top/Right/Bottom/Left/Scal
   nearest positioned ancestor. In the theme that is usually a wrapper with
   `position-relative`; the sidebar shows this as a hint.
 - **No `deprecated` entry needed** when adding the position attributes to a
-  block that doesn't have them yet: with `posEnabled: false` the class list
-  and attributes are unchanged. Gutenberg compares `class` as a token list, so
-  extra/absent whitespace from `.replace(/\s+/g, ' ').trim()` does not
-  invalidate old content. This does **not** apply to changing how an
-  *already-emitted* value is rendered — e.g. making `posType` responsive
-  dropped the static `position-{type}` class from the output entirely, which
-  changed the `save()` markup for every already-published block with
-  `posEnabled: true` and required a `deprecated` entry in `image-simple`'s
-  `index.js` (frozen copy of the old class + style generation, so old content
-  keeps validating).
+  block that doesn't have them yet, or when adding a new per-breakpoint
+  variant of an attribute that already existed only on the base breakpoint
+  (like `posTypeLg` etc.): existing content never had those attributes set, so
+  it emits the exact same base-only class it always did — Gutenberg compares
+  `class` as a token list, so as long as the token *set* is unchanged, extra
+  attributes with empty defaults don't invalidate old content. This only holds
+  because `posType`'s base-breakpoint output (`position-{type}`, defaulting to
+  `position-absolute`) was kept byte-for-byte identical while adding the
+  responsive variants — changing what the *base* breakpoint itself emits would
+  still need a `deprecated` entry.
 - **Editor is WYSIWYG for position and scale, but not for visibility.** An
   absolutely positioned block leaves the flow in the editor too and can be hard
   to click — select it from the List View. A dashed outline appears on hover.
@@ -249,8 +267,12 @@ Add the 52 attributes: 8 shared attributes plus `Type/Top/Right/Bottom/Left/Scal
   `.cwgb-post-grid-block`. Same declarations, higher specificity — harmless,
   and `post-grid` doesn't use `PositionControl` itself so the rules are inert
   there (dead CSS, no `.cwgb-position` class is ever applied).
-- **Why `posType` isn't a Bootstrap utility class.** `.position-*` carries
-  `!important` in Bootstrap 5. A single `!important` class can't be overridden
-  per breakpoint by a later, more specific rule — it would always win over any
-  breakpoint-scoped `position` declaration. That's why `posType` resolves
-  through the same custom-property cascade as the offsets instead.
+- **Why the responsive `position-*` classes still cascade correctly despite
+  `!important`.** Bootstrap's `.position-*` utilities carry `!important`, so a
+  breakpoint-scoped override only wins if it has equal specificity and comes
+  *later* in the stylesheet — which is exactly how Bootstrap emits its own
+  responsive utilities (base rule first, then each breakpoint's `@media`
+  block, in ascending order). A single `!important` class on its own could
+  never be overridden per breakpoint; Bootstrap's generated responsive set
+  works only because every breakpoint gets its own class and the media-query
+  source order does the tie-breaking.

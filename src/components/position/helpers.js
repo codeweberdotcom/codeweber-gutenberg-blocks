@@ -289,6 +289,22 @@ export const getPositionClasses = (
 
 	const classes = ['cwgb-position'];
 
+	// position-{type} на базовом брейкпоинте, position-{bp}-{type} на остальных —
+	// каскад брейкпоинтов даёт сам Bootstrap (responsive position-* utilities,
+	// min-width media queries), без CSS-переменных.
+	POSITION_BREAKPOINTS.forEach((bp) => {
+		const type = sanitizeType(attributes[positionAttr('Type', bp.key, prefix)]);
+
+		if (type === null) {
+			if (bp.key === '') {
+				classes.push('position-absolute');
+			}
+			return;
+		}
+
+		classes.push(bp.slug ? `position-${bp.slug}-${type}` : `position-${type}`);
+	});
+
 	if (hasPositionTransform(attributes, prefix)) {
 		classes.push('cwgb-position--transform');
 	}
@@ -351,12 +367,6 @@ export const getPositionStyle = (attributes, prefix = 'pos') => {
 
 	POSITION_BREAKPOINTS.forEach((bp) => {
 		const suffix = bp.slug ? `-${bp.slug}` : '';
-
-		const type = sanitizeType(attributes[positionAttr('Type', bp.key, prefix)]);
-
-		if (type !== null) {
-			style[`--cwgb-pos-type${suffix}`] = type;
-		}
 
 		POSITION_SIDES.forEach((side) => {
 			const value = sanitizeLength(

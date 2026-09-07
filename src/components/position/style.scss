@@ -36,6 +36,14 @@ $cwgb-pos-sides: top, right, bottom, left;
 	@each $side in $cwgb-pos-sides {
 		#{$side}: var(--cwgb-pos-#{$side}, auto);
 	}
+
+	// Без явной width/height абсолютно спозиционированный блок с width:auto
+	// считает размер по shrink-to-fit: доступное место = ширина родителя
+	// минус left (или высота минус top), а не размер содержимого — картинка
+	// сжимается по мере роста left/top, даже если scale не менялся.
+	// max-content возвращает размер к тому, что диктует сама картинка.
+	width: max-content;
+	height: max-content;
 }
 
 // Трансформация вешается отдельным модификатором, чтобы не создавать

@@ -876,8 +876,8 @@ if (!function_exists('render_post_grid_item')) {
 					'show_date' => true,
 					'show_category' => false,
 					'show_comments' => false,
-					'title_length' => 56,
-					'excerpt_length' => 40,
+					'title_length' => isset($attributes['titleLength']) ? (int) $attributes['titleLength'] : 56,
+					'excerpt_length' => isset($attributes['excerptLength']) ? (int) $attributes['excerptLength'] : 40,
 					'title_tag' => $title_tag,
 					'title_class' => $title_class,
 				];
@@ -917,8 +917,8 @@ if (!function_exists('render_post_grid_item')) {
 					'show_date' => false,
 					'show_category' => false,
 					'show_comments' => false,
-					'title_length' => 0,
-					'excerpt_length' => 80, // Показываем ответ FAQ
+					'title_length' => isset($attributes['titleLength']) ? (int) $attributes['titleLength'] : 0,
+					'excerpt_length' => isset($attributes['excerptLength']) ? (int) $attributes['excerptLength'] : 80, // Показываем ответ FAQ
 					'title_tag' => $title_tag,
 					'title_class' => $title_class,
 				];
@@ -1044,7 +1044,7 @@ if (!function_exists('render_post_grid_item')) {
 					'show_date'           => false,
 					'show_category'       => false,
 					'show_comments'       => false,
-					'title_length'        => isset($attributes['titleLength']) ? (int) $attributes['titleLength'] : 0,
+					'title_length'        => isset($attributes['titleLength']) ? (int) $attributes['titleLength'] : 56,
 					'excerpt_length'      => 0,
 					'title_tag'           => $title_tag,
 					'title_class'         => $title_class,
@@ -1081,7 +1081,7 @@ if (!function_exists('render_post_grid_item')) {
 					'show_comments'       => false,
 					'show_excerpt'        => false,
 					'excerpt_hide_mobile' => false,
-					'title_length'        => isset($attributes['titleLength'])   ? (int) $attributes['titleLength']   : 0,
+					'title_length'        => isset($attributes['titleLength'])   ? (int) $attributes['titleLength']   : 56,
 					'excerpt_length'      => 0,
 					'title_tag'           => $title_tag,
 					'title_class'         => $title_class,
@@ -1241,8 +1241,8 @@ if ( ! function_exists( 'cwgb_render_term_card' ) ) {
 		$show_title     = array_key_exists( 'showTitle', $attributes ) ? (bool) $attributes['showTitle'] : true;
 		$show_excerpt   = ! empty( $attributes['showExcerpt'] );
 		$show_count     = ! empty( $attributes['showTermCount'] );
-		$excerpt_length = isset( $attributes['excerptLength'] ) ? (int) $attributes['excerptLength'] : 0;
-		$title_length   = isset( $attributes['titleLength'] ) ? (int) $attributes['titleLength'] : 0;
+		$excerpt_length = isset( $attributes['excerptLength'] ) ? (int) $attributes['excerptLength'] : 20;
+		$title_length   = isset( $attributes['titleLength'] ) ? (int) $attributes['titleLength'] : 56;
 
 		$image_url  = cwgb_get_term_image_url( $term->term_id, $image_size );
 		$term_name  = $term->name;
@@ -1324,8 +1324,8 @@ if ( $source_type === 'taxonomy' ) {
 		'show_title'          => array_key_exists( 'showTitle', $attributes ) ? (bool) $attributes['showTitle'] : true,
 		'show_excerpt'        => ! empty( $attributes['showExcerpt'] ),
 		'excerpt_hide_mobile' => ! empty( $attributes['excerptHideMobile'] ),
-		'excerpt_length'      => isset( $attributes['excerptLength'] ) ? (int) $attributes['excerptLength'] : 0,
-		'title_length'        => isset( $attributes['titleLength'] ) ? (int) $attributes['titleLength'] : 0,
+		'excerpt_length'      => isset( $attributes['excerptLength'] ) ? (int) $attributes['excerptLength'] : 20,
+		'title_length'        => isset( $attributes['titleLength'] ) ? (int) $attributes['titleLength'] : 56,
 		'title_tag'           => $title_tag,
 		'title_class'         => $title_class,
 		'use_alt_title'       => ! empty( $attributes['useAltTitle'] ),

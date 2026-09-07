@@ -392,12 +392,10 @@
 			"default": "button"
 		},
 		"titleLength": {
-			"type": "number",
-			"default": 56
+			"type": "number"
 		},
 		"excerptLength": {
-			"type": "number",
-			"default": 20
+			"type": "number"
 		},
 		"excerptHideMobile": {
 			"type": "boolean",

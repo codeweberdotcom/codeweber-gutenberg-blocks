@@ -1002,8 +1002,8 @@ class LoadMoreAPI {
 					'show_date' => true,
 					'show_category' => false,
 					'show_comments' => false,
-					'title_length' => 56,
-					'excerpt_length' => 40,
+					'title_length' => isset($attributes['titleLength']) ? (int) $attributes['titleLength'] : 56,
+					'excerpt_length' => isset($attributes['excerptLength']) ? (int) $attributes['excerptLength'] : 40,
 					'title_tag' => 'h2',
 					'title_class' => '',
 				];
@@ -1042,8 +1042,8 @@ class LoadMoreAPI {
 					'show_date' => false,
 					'show_category' => false,
 					'show_comments' => false,
-					'title_length' => 0,
-					'excerpt_length' => 80, // Показываем ответ FAQ
+					'title_length' => isset($attributes['titleLength']) ? (int) $attributes['titleLength'] : 0,
+					'excerpt_length' => isset($attributes['excerptLength']) ? (int) $attributes['excerptLength'] : 80, // Показываем ответ FAQ
 					'title_tag' => 'h4',
 					'title_class' => '',
 				];
@@ -1221,7 +1221,7 @@ class LoadMoreAPI {
 					'show_comments'       => false,
 					'show_excerpt'        => false,
 					'excerpt_hide_mobile' => false,
-					'title_length'        => isset($attributes['titleLength'])   ? (int) $attributes['titleLength']   : 0,
+					'title_length'        => isset($attributes['titleLength'])   ? (int) $attributes['titleLength']   : 56,
 					'excerpt_length'      => 0,
 					'title_tag'           => $_title_tag,
 					'title_class'         => isset($attributes['titleClass']) ? sanitize_text_field($attributes['titleClass']) : '',

@@ -379,8 +379,8 @@ export const PositionControl = ({
 					help={transformHelp}
 					disabled={parallax}
 					value={scaleValue}
-					min={10}
-					max={300}
+					min={1}
+					max={500}
 					step={1}
 					allowReset
 					resetFallbackValue={undefined}

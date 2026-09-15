@@ -29,13 +29,10 @@ const Save = ({ attributes }) => {
 		blockId,
 	} = attributes;
 
-	// Классы блока (для всех кроме text)
-	const blockClasses = ['cwgb-divider-block', blockClass]
-		.filter(Boolean)
-		.join(' ');
-
-	const blockProps = {
-		className: blockClasses,
+	// Обёртка cwgb-divider-block нужна только волне (тема стилизует
+	// .cwgb-divider-block .divider svg) — остальные стили сами по себе
+	// самодостаточные корневые элементы, лишний div им не нужен.
+	const elementProps = {
 		...(blockId && { id: blockId }),
 	};
 
@@ -44,12 +41,22 @@ const Save = ({ attributes }) => {
 		switch (dividerType) {
 			case 'border':
 				if (borderStyle === 'simple') {
-					return <hr className={blockClass} />;
+					return (
+						<hr className={blockClass} {...elementProps} />
+					);
 				} else if (borderStyle === 'double') {
-					return <hr className={`double ${blockClass}`} />;
+					return (
+						<hr
+							className={`double ${blockClass}`.trim()}
+							{...elementProps}
+						/>
+					);
 				} else if (borderStyle === 'icon') {
 					return (
-						<div className="divider-icon">
+						<div
+							className={`divider-icon ${blockClass}`.trim()}
+							{...elementProps}
+						>
 							{borderIcon && <i className={borderIcon}></i>}
 						</div>
 					);
@@ -143,30 +150,28 @@ const Save = ({ attributes }) => {
 				}
 				break;
 
-			case 'wave':
+			case 'wave': {
 				const waveColorClass = waveColor
 					? `text-${waveColor}`
 					: 'text-white';
 				return (
-					<div className="overflow-hidden">
+					<div
+						className={`cwgb-divider-block overflow-hidden ${blockClass}`.trim()}
+						{...elementProps}
+					>
 						<div className={`divider ${waveColorClass} mx-n2`}>
 							{renderWaveSVG(waveType)}
 						</div>
 					</div>
 				);
+			}
 
 			default:
-				return <hr className={blockClass} />;
+				return <hr className={blockClass} {...elementProps} />;
 		}
 	};
 
-	// Для текстового разделителя возвращаем без обертки
-	if (dividerType === 'border' && borderStyle === 'text') {
-		return renderDivider();
-	}
-
-	// Для остальных типов - с оберткой
-	return <div {...blockProps}>{renderDivider()}</div>;
+	return renderDivider();
 };
 
 /**

@@ -32,33 +32,35 @@ const Edit = ({ attributes, setAttributes }) => {
 		blockId,
 	} = attributes;
 
-	// Классы блока (без отступов для текстового разделителя)
-	const blockClasses = [
-		'cwgb-divider-block',
-		// Для текстового разделителя отступы не добавляем на обертку
-		...(dividerType === 'border' && borderStyle === 'text'
-			? []
-			: [blockClass]),
-	]
-		.filter(Boolean)
-		.join(' ');
-
-	const blockProps = useBlockProps({
-		className: blockClasses,
-		id: blockId || undefined,
-	});
+	// useBlockProps() крепится прямо на итоговый корневой элемент — лишняя
+	// обёртка cwgb-divider-block нужна только волне (тема стилизует
+	// .cwgb-divider-block .divider svg), остальным стилям она не нужна.
+	const rootBlockProps = useBlockProps({ id: blockId || undefined });
 
 	// Рендер превью в редакторе
 	const renderPreview = () => {
 		switch (dividerType) {
 			case 'border':
 				if (borderStyle === 'simple') {
-					return <hr className={blockClass} />;
+					return (
+						<hr
+							{...rootBlockProps}
+							className={`${rootBlockProps.className} ${blockClass}`.trim()}
+						/>
+					);
 				} else if (borderStyle === 'double') {
-					return <hr className={`double ${blockClass}`} />;
+					return (
+						<hr
+							{...rootBlockProps}
+							className={`${rootBlockProps.className} double ${blockClass}`.trim()}
+						/>
+					);
 				} else if (borderStyle === 'icon') {
 					return (
-						<div className="divider-icon">
+						<div
+							{...rootBlockProps}
+							className={`${rootBlockProps.className} divider-icon ${blockClass}`.trim()}
+						>
 							{borderIcon ? (
 								<i className={borderIcon}></i>
 							) : (
@@ -141,7 +143,8 @@ const Edit = ({ attributes, setAttributes }) => {
 
 					return (
 						<div
-							className={textDividerClasses}
+							{...rootBlockProps}
+							className={`${rootBlockProps.className} ${textDividerClasses}`.trim()}
 							style={
 								Object.keys(backgroundStyles).length > 0
 									? backgroundStyles
@@ -166,20 +169,29 @@ const Edit = ({ attributes, setAttributes }) => {
 				}
 				break;
 
-			case 'wave':
+			case 'wave': {
 				const waveColorClass = waveColor
 					? `text-${waveColor}`
 					: 'text-white';
 				return (
-					<div className="overflow-hidden">
+					<div
+						{...rootBlockProps}
+						className={`${rootBlockProps.className} cwgb-divider-block overflow-hidden ${blockClass}`.trim()}
+					>
 						<div className={`divider ${waveColorClass} mx-n2`}>
 							{renderWaveSVG(waveType)}
 						</div>
 					</div>
 				);
+			}
 
 			default:
-				return <hr className={blockClass} />;
+				return (
+					<hr
+						{...rootBlockProps}
+						className={`${rootBlockProps.className} ${blockClass}`.trim()}
+					/>
+				);
 		}
 	};
 
@@ -194,7 +206,7 @@ const Edit = ({ attributes, setAttributes }) => {
 			</InspectorControls>
 
 			{/* Preview */}
-			<div {...blockProps}>{renderPreview()}</div>
+			{renderPreview()}
 		</>
 	);
 };

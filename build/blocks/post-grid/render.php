@@ -1469,6 +1469,14 @@ if ( $source_type === 'taxonomy' ) {
 		$term_args['parent'] = $taxonomy_parent;
 	}
 
+	/**
+	 * Filters the term query of the taxonomy source.
+	 *
+	 * @param array $term_args get_terms() arguments.
+	 * @param array $attributes Block attributes.
+	 */
+	$term_args = apply_filters( 'cwgb_post_grid_term_query_args', $term_args, $attributes );
+
 	$terms = get_terms( $term_args );
 
 	if ( is_wp_error( $terms ) || empty( $terms ) ) {

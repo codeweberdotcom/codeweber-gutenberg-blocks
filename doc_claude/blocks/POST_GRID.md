@@ -515,3 +515,19 @@ Theme's overlay effects требуют JS-инициализации (добав
 11. **Alternative Title** — атрибут `useAltTitle` (Title tab). Мета `_alt_title` с `wp_kses_post` санитизацией регистрируется для всех post types и taxonomies (`inc/AltTitleMeta.php`). Шаблоны карточек переключаются между `esc_html()` и `wp_kses_post()` через флаг `use_html_title` в display_settings. Post Grid использует временный `the_title` фильтр (scope: один post ID) — единственный способ переопределить заголовок, т.к. `cw_get_post_card_data()` вызывает `get_the_title()` внутри.
 
 Полный журнал — в git log: `git log --oneline -- src/blocks/post-grid/` (плагин) и `git log --oneline -- templates/post-cards/post/ functions/post-cards-registry.php` (тема).
+
+## Template `cells` (offices and taxonomy terms)
+
+A bordered table-like grid, not a card per item. The theme templates
+(`post-cards/offices/cells.php`, `post-cards/taxonomy/cells.php`) output only the
+name link; `render.php` does the rest when `template === 'cells'` and the source
+is either `offices` or a taxonomy (`$cwgb_is_cells_grid`):
+
+- wrapper gains `card shadow-lg overflow-hidden`
+- grid classes drop every `g*-N` and gain `g-0 border-top border-start`
+  (any gutter breaks the shared cell edges)
+- each item is wrapped in `col border-end border-bottom py-4 px-5` regardless of
+  grid type — the borders belong to the cell, so `$col_classes` are not used
+
+Row Cols settings still drive the column count (2 / md-3 / xl-4 matches the
+original mockup).

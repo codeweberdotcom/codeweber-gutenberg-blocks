@@ -411,6 +411,18 @@ if (!function_exists('get_post_grid_col_classes')) {
 $grid_classes = get_post_grid_container_classes($attributes, $grid_type);
 $col_classes = get_post_grid_col_classes($attributes, $grid_type);
 
+// Offices "cells" template: the grid itself is the card and every office is a
+// bordered cell, so the borders live on the row and the column rather than in
+// the card template. Gaps are forced off — any gutter breaks the shared edges.
+$cwgb_source_type   = isset($attributes['sourceType']) ? $attributes['sourceType'] : 'post';
+$cwgb_is_cells_grid = 'cells' === $template
+	&& ('offices' === $post_type || 'taxonomy' === $cwgb_source_type);
+if ($cwgb_is_cells_grid) {
+	$grid_classes = preg_replace('/(?<![-\w])g[xy]?-(?:sm-|md-|lg-|xl-|xxl-)?\d+(?![-\w])/', '', $grid_classes);
+	$grid_classes = trim(preg_replace('/\s+/', ' ', $grid_classes)) . ' g-0 border-top border-start';
+	$col_classes  = 'col border-end border-bottom py-4 px-5';
+}
+
 $disable_link     = isset( $attributes['disableLink'] ) ? (bool) $attributes['disableLink'] : false;
 $cwgb_strip_links = function ( $html ) {
 	if ( empty( $html ) ) return $html;
@@ -543,6 +555,9 @@ endif;
 // Block wrapper attributes
 $text_inverse = !empty($attributes['textInverse']);
 $wrapper_classes = 'cwgb-post-grid-block ' . $block_class . ($text_inverse ? ' text-inverse' : '');
+if ($cwgb_is_cells_grid) {
+	$wrapper_classes .= ' card shadow-lg overflow-hidden';
+}
 $wrapper_data_attrs = [
 	'data-block-id' => $block_id,
 	'data-block-type' => 'post-grid',
@@ -1065,7 +1080,11 @@ if (!function_exists('render_post_grid_item')) {
 
 				if (!empty($html) && trim($html) !== '') {
 					if (!$is_swiper) {
-						if ($grid_type === 'classic' && !empty($col_classes)) {
+						if ('cells' === $template) {
+							// Borders live on the cell itself in both grid types;
+							// $col_classes already carries them for this template.
+							$html = '<div class="col border-end border-bottom py-4 px-5">' . $html . '</div>';
+						} elseif ($grid_type === 'classic' && !empty($col_classes)) {
 							$html = '<div class="' . esc_attr($col_classes) . '">' . $html . '</div>';
 						} elseif ($grid_type === 'columns-grid') {
 							$html = '<div class="col">' . $html . '</div>';
@@ -1350,11 +1369,15 @@ if ( $source_type === 'taxonomy' ) {
 	};
 
 	// Helper: wrap card in col/swiper-slide.
-	$wrap_term_card = function( $card_html, $is_swiper, $swiper_slide_cls = '' ) use ( $grid_type, $col_classes ) {
+	$wrap_term_card = function( $card_html, $is_swiper, $swiper_slide_cls = '' ) use ( $grid_type, $col_classes, $cwgb_is_cells_grid ) {
 		if ( empty( $card_html ) ) return '';
 		if ( $is_swiper ) {
 			$sc = 'swiper-slide' . ( $swiper_slide_cls ? ' ' . esc_attr( $swiper_slide_cls ) : '' );
 			return '<div class="' . esc_attr( $sc ) . '">' . $card_html . '</div>';
+		}
+		if ( $cwgb_is_cells_grid ) {
+			// Borders belong to the cell, not to a card inside it.
+			return '<div class="col border-end border-bottom py-4 px-5">' . $card_html . '</div>';
 		}
 		if ( $grid_type === 'classic' && ! empty( $col_classes ) ) {
 			return '<div class="' . esc_attr( $col_classes ) . '">' . $card_html . '</div>';

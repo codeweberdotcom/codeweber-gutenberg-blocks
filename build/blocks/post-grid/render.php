@@ -415,12 +415,12 @@ $col_classes = get_post_grid_col_classes($attributes, $grid_type);
 // bordered cell, so the borders live on the row and the column rather than in
 // the card template. Gaps are forced off — any gutter breaks the shared edges.
 $cwgb_source_type   = isset($attributes['sourceType']) ? $attributes['sourceType'] : 'post';
-$cwgb_is_cells_grid = 'cells' === $template
+$cwgb_is_cells_grid = in_array($template, ['cells', 'cells-1'], true)
 	&& ('offices' === $post_type || 'taxonomy' === $cwgb_source_type);
 if ($cwgb_is_cells_grid) {
 	$grid_classes = preg_replace('/(?<![-\w])g[xy]?-(?:sm-|md-|lg-|xl-|xxl-)?\d+(?![-\w])/', '', $grid_classes);
 	$grid_classes = trim(preg_replace('/\s+/', ' ', $grid_classes)) . ' g-0 border-top border-start';
-	$col_classes  = 'col border-end border-bottom py-4 px-5';
+	$col_classes  = ('cells-1' === $template ? 'col d-flex' : 'col') . ' border-end border-bottom py-4 px-5';
 }
 
 $disable_link     = isset( $attributes['disableLink'] ) ? (bool) $attributes['disableLink'] : false;
@@ -1080,10 +1080,10 @@ if (!function_exists('render_post_grid_item')) {
 
 				if (!empty($html) && trim($html) !== '') {
 					if (!$is_swiper) {
-						if ('cells' === $template) {
-							// Borders live on the cell itself in both grid types;
-							// $col_classes already carries them for this template.
-							$html = '<div class="col border-end border-bottom py-4 px-5">' . $html . '</div>';
+						if (in_array($template, ['cells', 'cells-1'], true)) {
+							// Borders live on the cell itself in both grid types.
+							$cell_cls = ('cells-1' === $template ? 'col d-flex' : 'col') . ' border-end border-bottom py-4 px-5';
+							$html = '<div class="' . $cell_cls . '">' . $html . '</div>';
 						} elseif ($grid_type === 'classic' && !empty($col_classes)) {
 							$html = '<div class="' . esc_attr($col_classes) . '">' . $html . '</div>';
 						} elseif ($grid_type === 'columns-grid') {
@@ -1377,7 +1377,7 @@ if ( $source_type === 'taxonomy' ) {
 		}
 		if ( $cwgb_is_cells_grid ) {
 			// Borders belong to the cell, not to a card inside it.
-			return '<div class="col border-end border-bottom py-4 px-5">' . $card_html . '</div>';
+			return '<div class="' . esc_attr( $col_classes ) . '">' . $card_html . '</div>';
 		}
 		if ( $grid_type === 'classic' && ! empty( $col_classes ) ) {
 			return '<div class="' . esc_attr( $col_classes ) . '">' . $card_html . '</div>';
